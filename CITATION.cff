@@ -20,6 +20,12 @@ keywords:
   - Chaṭṭhasaṅgīti
   - digital humanities
 url: "https://tipitaka.buddha-dhamma.net"
+repository-code: "https://github.com/admin-iebh/OSBCT"
 license: CC-BY-4.0
 version: "1.0.0"
 date-released: "2026-07-22"
+doi: "10.5281/zenodo.21495339"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.21495339"
+    description: "Zenodo archive of v1.0.0"

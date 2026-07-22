@@ -1,5 +1,7 @@
 # Sixth Buddhist Council Tipiṭaka (Chaṭṭhasaṅgītipiṭaka)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21495339.svg)](https://doi.org/10.5281/zenodo.21495339)
+
 A searchable, cross-referenced **Unicode** corpus of the Sixth Buddhist Council recension of the
 Pāḷi Tipiṭaka, together with its **Aṭṭhakathā** (commentaries) and **Ṭīkā** (subcommentaries) —
 118 volumes in all.
@@ -56,11 +58,12 @@ Affairs, Yangon, for free distribution as a Gift of the Dhamma. It is treated he
 domain. *(Confirm the exact terms before any commercial reuse — see the credits notice.)*
 
 **This project's code and data** (the pipeline, the website, the extracted structure, links, and
-apparatus) are released under the licence in [`LICENSE`](LICENSE).
+apparatus) are released under the licence in [`LICENSE.md`](LICENSE.md).
 
 ## How to cite
 
-See [`CITATION.cff`](CITATION.cff). A versioned snapshot with a DOI is archived on Zenodo.
+See [`CITATION.cff`](CITATION.cff). A versioned snapshot is archived on Zenodo with DOI
+[10.5281/zenodo.21495339](https://doi.org/10.5281/zenodo.21495339).
 
 ## Contact
 
