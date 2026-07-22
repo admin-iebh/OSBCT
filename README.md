@@ -6,7 +6,7 @@ A searchable, cross-referenced **Unicode** corpus of the Sixth Buddhist Council 
 Pāḷi Tipiṭaka, together with its **Aṭṭhakathā** (commentaries) and **Ṭīkā** (subcommentaries) —
 118 volumes in all.
 
-**Live site:** https://tipitaka.buddha-dhamma.net
+**Live site:** https://buddha-dhamma.net
 
 A project of the Instituto de Estudios Buddhistas Hispano (IEBH) and Buddhismo Theravāda
 México-Hispano AR (BTHAR).
