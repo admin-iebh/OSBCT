@@ -1,0 +1,1211 @@
+{
+ "volumes": {
+  "01Vin01": {
+   "file": "01Vin01",
+   "layer": "canon",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "02Vin02": {
+   "file": "02Vin02",
+   "layer": "canon",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "03Vin03": {
+   "file": "03Vin03",
+   "layer": "canon",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "04Vin04": {
+   "file": "04Vin04",
+   "layer": "canon",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "05Vin05": {
+   "file": "05Vin05",
+   "layer": "canon",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "01VinA01": {
+   "file": "01VinA01",
+   "layer": "commentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "02VinA02": {
+   "file": "02VinA02",
+   "layer": "commentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "03VinA03": {
+   "file": "03VinA03",
+   "layer": "commentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "04VinA04": {
+   "file": "04VinA04",
+   "layer": "commentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "05Kankha": {
+   "file": "05Kankha",
+   "layer": "commentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "06VinSg06": {
+   "file": "06VinSg06",
+   "layer": "commentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "01ViT01": {
+   "file": "01ViT01",
+   "layer": "subcommentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "02ViT02": {
+   "file": "02ViT02",
+   "layer": "subcommentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "03ViT03": {
+   "file": "03ViT03",
+   "layer": "subcommentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "04ViT04": {
+   "file": "04ViT04",
+   "layer": "subcommentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "05ViT05": {
+   "file": "05ViT05",
+   "layer": "subcommentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "06ViT06": {
+   "file": "06ViT06",
+   "layer": "subcommentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "07ViT07": {
+   "file": "07ViT07",
+   "layer": "subcommentary",
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries"
+  },
+  "06Di01": {
+   "file": "06Di01",
+   "layer": "canon",
+   "group": "dn-sila",
+   "work": "Dīgha Sīlakkhandhavagga — Sumaṅgalavilāsinī"
+  },
+  "07DiA01": {
+   "file": "07DiA01",
+   "layer": "commentary",
+   "group": "dn-sila",
+   "work": "Dīgha Sīlakkhandhavagga — Sumaṅgalavilāsinī"
+  },
+  "08DiT01": {
+   "file": "08DiT01",
+   "layer": "subcommentary",
+   "group": "dn-sila",
+   "work": "Dīgha Sīlakkhandhavagga — Sumaṅgalavilāsinī"
+  },
+  "09DiT02": {
+   "file": "09DiT02",
+   "layer": "subcommentary",
+   "group": "dn-sila",
+   "work": "Dīgha Sīlakkhandhavagga — Sumaṅgalavilāsinī"
+  },
+  "10DiT03": {
+   "file": "10DiT03",
+   "layer": "subcommentary",
+   "group": "dn-sila",
+   "work": "Dīgha Sīlakkhandhavagga — Sumaṅgalavilāsinī"
+  },
+  "07Di02": {
+   "file": "07Di02",
+   "layer": "canon",
+   "group": "dn-maha",
+   "work": "Dīgha Mahāvagga"
+  },
+  "08DiA02": {
+   "file": "08DiA02",
+   "layer": "commentary",
+   "group": "dn-maha",
+   "work": "Dīgha Mahāvagga"
+  },
+  "11DiT04": {
+   "file": "11DiT04",
+   "layer": "subcommentary",
+   "group": "dn-maha",
+   "work": "Dīgha Mahāvagga"
+  },
+  "08Di03": {
+   "file": "08Di03",
+   "layer": "canon",
+   "group": "dn-pathika",
+   "work": "Dīgha Pāthikavagga"
+  },
+  "09DiA03": {
+   "file": "09DiA03",
+   "layer": "commentary",
+   "group": "dn-pathika",
+   "work": "Dīgha Pāthikavagga"
+  },
+  "12DiT05": {
+   "file": "12DiT05",
+   "layer": "subcommentary",
+   "group": "dn-pathika",
+   "work": "Dīgha Pāthikavagga"
+  },
+  "09Ma01": {
+   "file": "09Ma01",
+   "layer": "canon",
+   "group": "mn-mula",
+   "work": "Majjhima Mūlapaṇṇāsa — Papañcasūdanī"
+  },
+  "10MaA01": {
+   "file": "10MaA01",
+   "layer": "commentary",
+   "group": "mn-mula",
+   "work": "Majjhima Mūlapaṇṇāsa — Papañcasūdanī"
+  },
+  "11MaA02": {
+   "file": "11MaA02",
+   "layer": "commentary",
+   "group": "mn-mula",
+   "work": "Majjhima Mūlapaṇṇāsa — Papañcasūdanī"
+  },
+  "13MaT01": {
+   "file": "13MaT01",
+   "layer": "subcommentary",
+   "group": "mn-mula",
+   "work": "Majjhima Mūlapaṇṇāsa — Papañcasūdanī"
+  },
+  "14MaT02": {
+   "file": "14MaT02",
+   "layer": "subcommentary",
+   "group": "mn-mula",
+   "work": "Majjhima Mūlapaṇṇāsa — Papañcasūdanī"
+  },
+  "10Ma02": {
+   "file": "10Ma02",
+   "layer": "canon",
+   "group": "mn-majjhima",
+   "work": "Majjhima Majjhimapaṇṇāsa"
+  },
+  "12MaA03": {
+   "file": "12MaA03",
+   "layer": "commentary",
+   "group": "mn-majjhima",
+   "work": "Majjhima Majjhimapaṇṇāsa"
+  },
+  "15MaT03": {
+   "file": "15MaT03",
+   "layer": "subcommentary",
+   "group": "mn-upari",
+   "work": "Majjhima Uparipaṇṇāsa"
+  },
+  "11Ma03": {
+   "file": "11Ma03",
+   "layer": "canon",
+   "group": "mn-upari",
+   "work": "Majjhima Uparipaṇṇāsa"
+  },
+  "13MaA04": {
+   "file": "13MaA04",
+   "layer": "commentary",
+   "group": "mn-upari",
+   "work": "Majjhima Uparipaṇṇāsa"
+  },
+  "12Sam01": {
+   "file": "12Sam01",
+   "layer": "canon",
+   "group": "sn",
+   "work": "Saṁyutta — Sāratthappakāsinī"
+  },
+  "13Sam02": {
+   "file": "13Sam02",
+   "layer": "canon",
+   "group": "sn",
+   "work": "Saṁyutta — Sāratthappakāsinī"
+  },
+  "14Sam03": {
+   "file": "14Sam03",
+   "layer": "canon",
+   "group": "sn",
+   "work": "Saṁyutta — Sāratthappakāsinī"
+  },
+  "14SamA01": {
+   "file": "14SamA01",
+   "layer": "commentary",
+   "group": "sn",
+   "work": "Saṁyutta — Sāratthappakāsinī"
+  },
+  "15SamA02": {
+   "file": "15SamA02",
+   "layer": "commentary",
+   "group": "sn",
+   "work": "Saṁyutta — Sāratthappakāsinī"
+  },
+  "16SamA03": {
+   "file": "16SamA03",
+   "layer": "commentary",
+   "group": "sn",
+   "work": "Saṁyutta — Sāratthappakāsinī"
+  },
+  "16SaT01": {
+   "file": "16SaT01",
+   "layer": "subcommentary",
+   "group": "sn",
+   "work": "Saṁyutta — Sāratthappakāsinī"
+  },
+  "17SaT02": {
+   "file": "17SaT02",
+   "layer": "subcommentary",
+   "group": "sn",
+   "work": "Saṁyutta — Sāratthappakāsinī"
+  },
+  "15An01": {
+   "file": "15An01",
+   "layer": "canon",
+   "group": "an",
+   "work": "Aṅguttara — Manorathapūraṇī"
+  },
+  "16An02": {
+   "file": "16An02",
+   "layer": "canon",
+   "group": "an",
+   "work": "Aṅguttara — Manorathapūraṇī"
+  },
+  "17An03": {
+   "file": "17An03",
+   "layer": "canon",
+   "group": "an",
+   "work": "Aṅguttara — Manorathapūraṇī"
+  },
+  "17AnA01": {
+   "file": "17AnA01",
+   "layer": "commentary",
+   "group": "an",
+   "work": "Aṅguttara — Manorathapūraṇī"
+  },
+  "18AnA02": {
+   "file": "18AnA02",
+   "layer": "commentary",
+   "group": "an",
+   "work": "Aṅguttara — Manorathapūraṇī"
+  },
+  "19AnA03": {
+   "file": "19AnA03",
+   "layer": "commentary",
+   "group": "an",
+   "work": "Aṅguttara — Manorathapūraṇī"
+  },
+  "18AnT01": {
+   "file": "18AnT01",
+   "layer": "subcommentary",
+   "group": "an",
+   "work": "Aṅguttara — Manorathapūraṇī"
+  },
+  "19AnT02": {
+   "file": "19AnT02",
+   "layer": "subcommentary",
+   "group": "an",
+   "work": "Aṅguttara — Manorathapūraṇī"
+  },
+  "20AnT03": {
+   "file": "20AnT03",
+   "layer": "subcommentary",
+   "group": "an",
+   "work": "Aṅguttara — Manorathapūraṇī"
+  },
+  "18Khu01": {
+   "file": "18Khu01",
+   "layer": "canon",
+   "group": "khu-1",
+   "work": "Khuddaka: Khuddakapāṭha-Dhammapada-Udāna-Itivuttaka-Suttanipāta"
+  },
+  "20KhuA01": {
+   "file": "20KhuA01",
+   "layer": "commentary",
+   "group": "khu-1",
+   "work": "Khuddaka: Khuddakapāṭha-Dhammapada-Udāna-Itivuttaka-Suttanipāta"
+  },
+  "21KhuA02": {
+   "file": "21KhuA02",
+   "layer": "commentary",
+   "group": "khu-1",
+   "work": "Khuddaka: Khuddakapāṭha-Dhammapada-Udāna-Itivuttaka-Suttanipāta"
+  },
+  "22KhuA03": {
+   "file": "22KhuA03",
+   "layer": "commentary",
+   "group": "khu-1",
+   "work": "Khuddaka: Khuddakapāṭha-Dhammapada-Udāna-Itivuttaka-Suttanipāta"
+  },
+  "23KhuA04": {
+   "file": "23KhuA04",
+   "layer": "commentary",
+   "group": "khu-1",
+   "work": "Khuddaka: Khuddakapāṭha-Dhammapada-Udāna-Itivuttaka-Suttanipāta"
+  },
+  "24KhuA05": {
+   "file": "24KhuA05",
+   "layer": "commentary",
+   "group": "khu-1",
+   "work": "Khuddaka: Khuddakapāṭha-Dhammapada-Udāna-Itivuttaka-Suttanipāta"
+  },
+  "25KhuA06": {
+   "file": "25KhuA06",
+   "layer": "commentary",
+   "group": "khu-1",
+   "work": "Khuddaka: Khuddakapāṭha-Dhammapada-Udāna-Itivuttaka-Suttanipāta"
+  },
+  "26KhuA07": {
+   "file": "26KhuA07",
+   "layer": "commentary",
+   "group": "khu-1",
+   "work": "Khuddaka: Khuddakapāṭha-Dhammapada-Udāna-Itivuttaka-Suttanipāta"
+  },
+  "19Khu02": {
+   "file": "19Khu02",
+   "layer": "canon",
+   "group": "khu-2",
+   "work": "Khuddaka: Vimāna-Peta-Thera-Therīgāthā"
+  },
+  "27KhuA08": {
+   "file": "27KhuA08",
+   "layer": "commentary",
+   "group": "khu-2",
+   "work": "Khuddaka: Vimāna-Peta-Thera-Therīgāthā"
+  },
+  "28KhuA09": {
+   "file": "28KhuA09",
+   "layer": "commentary",
+   "group": "khu-2",
+   "work": "Khuddaka: Vimāna-Peta-Thera-Therīgāthā"
+  },
+  "29KhuA10": {
+   "file": "29KhuA10",
+   "layer": "commentary",
+   "group": "khu-2",
+   "work": "Khuddaka: Vimāna-Peta-Thera-Therīgāthā"
+  },
+  "30KhuA11": {
+   "file": "30KhuA11",
+   "layer": "commentary",
+   "group": "khu-2",
+   "work": "Khuddaka: Vimāna-Peta-Thera-Therīgāthā"
+  },
+  "31KhuA12": {
+   "file": "31KhuA12",
+   "layer": "commentary",
+   "group": "khu-2",
+   "work": "Khuddaka: Vimāna-Peta-Thera-Therīgāthā"
+  },
+  "20Khu03": {
+   "file": "20Khu03",
+   "layer": "canon",
+   "group": "khu-apadana1",
+   "work": "Khuddaka: Apadāna I"
+  },
+  "32KhuA13": {
+   "file": "32KhuA13",
+   "layer": "commentary",
+   "group": "khu-apadana1",
+   "work": "Khuddaka: Apadāna I"
+  },
+  "21Khu04": {
+   "file": "21Khu04",
+   "layer": "canon",
+   "group": "khu-apadana2",
+   "work": "Khuddaka: Apadāna II + Buddhavaṁsa + Cariyāpiṭaka"
+  },
+  "33KhuA14": {
+   "file": "33KhuA14",
+   "layer": "commentary",
+   "group": "khu-apadana2",
+   "work": "Khuddaka: Apadāna II + Buddhavaṁsa + Cariyāpiṭaka"
+  },
+  "34KhuA15": {
+   "file": "34KhuA15",
+   "layer": "commentary",
+   "group": "khu-apadana2",
+   "work": "Khuddaka: Apadāna II + Buddhavaṁsa + Cariyāpiṭaka"
+  },
+  "35KhuA16": {
+   "file": "35KhuA16",
+   "layer": "commentary",
+   "group": "khu-apadana2",
+   "work": "Khuddaka: Apadāna II + Buddhavaṁsa + Cariyāpiṭaka"
+  },
+  "22Khu05": {
+   "file": "22Khu05",
+   "layer": "canon",
+   "group": "khu-jataka1",
+   "work": "Khuddaka: Jātaka I"
+  },
+  "36KhuA17": {
+   "file": "36KhuA17",
+   "layer": "commentary",
+   "group": "khu-jataka1",
+   "work": "Khuddaka: Jātaka I"
+  },
+  "37KhuA18": {
+   "file": "37KhuA18",
+   "layer": "commentary",
+   "group": "khu-jataka1",
+   "work": "Khuddaka: Jātaka I"
+  },
+  "38KhuA19": {
+   "file": "38KhuA19",
+   "layer": "commentary",
+   "group": "khu-jataka1",
+   "work": "Khuddaka: Jātaka I"
+  },
+  "39KhuA20": {
+   "file": "39KhuA20",
+   "layer": "commentary",
+   "group": "khu-jataka1",
+   "work": "Khuddaka: Jātaka I"
+  },
+  "23Khu06": {
+   "file": "23Khu06",
+   "layer": "canon",
+   "group": "khu-jataka2",
+   "work": "Khuddaka: Jātaka II"
+  },
+  "40KhuA21": {
+   "file": "40KhuA21",
+   "layer": "commentary",
+   "group": "khu-jataka2",
+   "work": "Khuddaka: Jātaka II"
+  },
+  "41KhuA22": {
+   "file": "41KhuA22",
+   "layer": "commentary",
+   "group": "khu-jataka2",
+   "work": "Khuddaka: Jātaka II"
+  },
+  "42KhuA23": {
+   "file": "42KhuA23",
+   "layer": "commentary",
+   "group": "khu-jataka2",
+   "work": "Khuddaka: Jātaka II"
+  },
+  "24Khu07": {
+   "file": "24Khu07",
+   "layer": "canon",
+   "group": "khu-mahaniddesa",
+   "work": "Khuddaka: Mahāniddesa"
+  },
+  "43KhuA24": {
+   "file": "43KhuA24",
+   "layer": "commentary",
+   "group": "khu-mahaniddesa",
+   "work": "Khuddaka: Mahāniddesa"
+  },
+  "25Khu08": {
+   "file": "25Khu08",
+   "layer": "canon",
+   "group": "khu-culaniddesa",
+   "work": "Khuddaka: Cūḷaniddesa"
+  },
+  "44KhuA25": {
+   "file": "44KhuA25",
+   "layer": "commentary",
+   "group": "khu-culaniddesa",
+   "work": "Khuddaka: Cūḷaniddesa"
+  },
+  "26Khu09": {
+   "file": "26Khu09",
+   "layer": "canon",
+   "group": "khu-patisambhida",
+   "work": "Khuddaka: Paṭisambhidāmagga — Saddhammappakāsinī"
+  },
+  "46KhuA27": {
+   "file": "46KhuA27",
+   "layer": "commentary",
+   "group": "khu-patisambhida",
+   "work": "Khuddaka: Paṭisambhidāmagga — Saddhammappakāsinī"
+  },
+  "47KhuA28": {
+   "file": "47KhuA28",
+   "layer": "commentary",
+   "group": "khu-patisambhida",
+   "work": "Khuddaka: Paṭisambhidāmagga — Saddhammappakāsinī"
+  },
+  "27Khu10": {
+   "file": "27Khu10",
+   "layer": "canon",
+   "group": "khu-netti",
+   "work": "Khuddaka: Netti-Peṭakopadesa"
+  },
+  "45KhuA26": {
+   "file": "45KhuA26",
+   "layer": "commentary",
+   "group": "khu-netti",
+   "work": "Khuddaka: Netti-Peṭakopadesa"
+  },
+  "21KhuT01": {
+   "file": "21KhuT01",
+   "layer": "subcommentary",
+   "group": "khu-netti",
+   "work": "Khuddaka: Netti-Peṭakopadesa"
+  },
+  "28Khu11": {
+   "file": "28Khu11",
+   "layer": "canon",
+   "group": "khu-milinda",
+   "work": "Khuddaka: Milindapañha"
+  },
+  "29Abhi01": {
+   "file": "29Abhi01",
+   "layer": "canon",
+   "group": "abhi-dhs",
+   "work": "Abhidhamma: Dhammasaṅgaṇī — Aṭṭhasālinī"
+  },
+  "48AbhiA01": {
+   "file": "48AbhiA01",
+   "layer": "commentary",
+   "group": "abhi-dhs",
+   "work": "Abhidhamma: Dhammasaṅgaṇī — Aṭṭhasālinī"
+  },
+  "22AbhiT01": {
+   "file": "22AbhiT01",
+   "layer": "subcommentary",
+   "group": "abhi-dhs",
+   "work": "Abhidhamma: Dhammasaṅgaṇī — Aṭṭhasālinī"
+  },
+  "30Abhi02": {
+   "file": "30Abhi02",
+   "layer": "canon",
+   "group": "abhi-vbh",
+   "work": "Abhidhamma: Vibhaṅga — Sammohavinodanī"
+  },
+  "49AbhiA02": {
+   "file": "49AbhiA02",
+   "layer": "commentary",
+   "group": "abhi-vbh",
+   "work": "Abhidhamma: Vibhaṅga — Sammohavinodanī"
+  },
+  "23AbhiT02": {
+   "file": "23AbhiT02",
+   "layer": "subcommentary",
+   "group": "abhi-vbh",
+   "work": "Abhidhamma: Vibhaṅga — Sammohavinodanī"
+  },
+  "31Abhi03": {
+   "file": "31Abhi03",
+   "layer": "canon",
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā"
+  },
+  "32Abhi04": {
+   "file": "32Abhi04",
+   "layer": "canon",
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā"
+  },
+  "33Abhi05": {
+   "file": "33Abhi05",
+   "layer": "canon",
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā"
+  },
+  "34Abhi06": {
+   "file": "34Abhi06",
+   "layer": "canon",
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā"
+  },
+  "35Abhi07": {
+   "file": "35Abhi07",
+   "layer": "canon",
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā"
+  },
+  "36Abhi08": {
+   "file": "36Abhi08",
+   "layer": "canon",
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā"
+  },
+  "37Abhi09": {
+   "file": "37Abhi09",
+   "layer": "canon",
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā"
+  },
+  "38Abhi10": {
+   "file": "38Abhi10",
+   "layer": "canon",
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā"
+  },
+  "39Abhi11": {
+   "file": "39Abhi11",
+   "layer": "canon",
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā"
+  },
+  "40Abhi12": {
+   "file": "40Abhi12",
+   "layer": "canon",
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā"
+  },
+  "50AbhiA03": {
+   "file": "50AbhiA03",
+   "layer": "commentary",
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā"
+  },
+  "24AbhiT03": {
+   "file": "24AbhiT03",
+   "layer": "subcommentary",
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā"
+  },
+  "51Vism01": {
+   "file": "51Vism01",
+   "layer": "commentary",
+   "group": "visuddhimagga",
+   "work": "Visuddhimagga (common to all three piṭakas)"
+  },
+  "52Vism02": {
+   "file": "52Vism02",
+   "layer": "commentary",
+   "group": "visuddhimagga",
+   "work": "Visuddhimagga (common to all three piṭakas)"
+  },
+  "25VsmT01": {
+   "file": "25VsmT01",
+   "layer": "subcommentary",
+   "group": "visuddhimagga",
+   "work": "Visuddhimagga (common to all three piṭakas)"
+  },
+  "26VsmT02": {
+   "file": "26VsmT02",
+   "layer": "subcommentary",
+   "group": "visuddhimagga",
+   "work": "Visuddhimagga (common to all three piṭakas)"
+  }
+ },
+ "order": {
+  "canon": [
+   "01Vin01",
+   "02Vin02",
+   "03Vin03",
+   "04Vin04",
+   "05Vin05",
+   "06Di01",
+   "07Di02",
+   "08Di03",
+   "09Ma01",
+   "10Ma02",
+   "11Ma03",
+   "12Sam01",
+   "13Sam02",
+   "14Sam03",
+   "15An01",
+   "16An02",
+   "17An03",
+   "18Khu01",
+   "19Khu02",
+   "20Khu03",
+   "21Khu04",
+   "22Khu05",
+   "23Khu06",
+   "24Khu07",
+   "25Khu08",
+   "26Khu09",
+   "27Khu10",
+   "28Khu11",
+   "29Abhi01",
+   "30Abhi02",
+   "31Abhi03",
+   "32Abhi04",
+   "33Abhi05",
+   "34Abhi06",
+   "35Abhi07",
+   "36Abhi08",
+   "37Abhi09",
+   "38Abhi10",
+   "39Abhi11",
+   "40Abhi12"
+  ],
+  "commentary": [
+   "01VinA01",
+   "02VinA02",
+   "03VinA03",
+   "04VinA04",
+   "05Kankha",
+   "06VinSg06",
+   "07DiA01",
+   "08DiA02",
+   "09DiA03",
+   "10MaA01",
+   "11MaA02",
+   "12MaA03",
+   "13MaA04",
+   "14SamA01",
+   "15SamA02",
+   "16SamA03",
+   "17AnA01",
+   "18AnA02",
+   "19AnA03",
+   "20KhuA01",
+   "21KhuA02",
+   "22KhuA03",
+   "23KhuA04",
+   "24KhuA05",
+   "25KhuA06",
+   "26KhuA07",
+   "27KhuA08",
+   "28KhuA09",
+   "29KhuA10",
+   "30KhuA11",
+   "31KhuA12",
+   "32KhuA13",
+   "33KhuA14",
+   "34KhuA15",
+   "35KhuA16",
+   "36KhuA17",
+   "37KhuA18",
+   "38KhuA19",
+   "39KhuA20",
+   "40KhuA21",
+   "41KhuA22",
+   "42KhuA23",
+   "43KhuA24",
+   "44KhuA25",
+   "45KhuA26",
+   "46KhuA27",
+   "47KhuA28",
+   "48AbhiA01",
+   "49AbhiA02",
+   "50AbhiA03",
+   "51Vism01",
+   "52Vism02"
+  ],
+  "subcommentary": [
+   "01ViT01",
+   "02ViT02",
+   "03ViT03",
+   "04ViT04",
+   "05ViT05",
+   "06ViT06",
+   "07ViT07",
+   "08DiT01",
+   "09DiT02",
+   "10DiT03",
+   "11DiT04",
+   "12DiT05",
+   "13MaT01",
+   "14MaT02",
+   "15MaT03",
+   "16SaT01",
+   "17SaT02",
+   "18AnT01",
+   "19AnT02",
+   "20AnT03",
+   "21KhuT01",
+   "22AbhiT01",
+   "23AbhiT02",
+   "24AbhiT03",
+   "25VsmT01",
+   "26VsmT02"
+  ]
+ },
+ "groups": [
+  {
+   "group": "vinaya",
+   "work": "Vinaya — Samantapāsādikā + subcommentaries",
+   "relation": "cluster",
+   "canon": [
+    "01Vin01",
+    "02Vin02",
+    "03Vin03",
+    "04Vin04",
+    "05Vin05"
+   ],
+   "commentary": [
+    "01VinA01",
+    "02VinA02",
+    "03VinA03",
+    "04VinA04",
+    "05Kankha",
+    "06VinSg06"
+   ],
+   "subcommentary": [
+    "01ViT01",
+    "02ViT02",
+    "03ViT03",
+    "04ViT04",
+    "05ViT05",
+    "06ViT06",
+    "07ViT07"
+   ]
+  },
+  {
+   "group": "dn-sila",
+   "work": "Dīgha Sīlakkhandhavagga — Sumaṅgalavilāsinī",
+   "relation": "1:1",
+   "canon": [
+    "06Di01"
+   ],
+   "commentary": [
+    "07DiA01"
+   ],
+   "subcommentary": [
+    "08DiT01",
+    "09DiT02",
+    "10DiT03"
+   ]
+  },
+  {
+   "group": "dn-maha",
+   "work": "Dīgha Mahāvagga",
+   "relation": "1:1",
+   "canon": [
+    "07Di02"
+   ],
+   "commentary": [
+    "08DiA02"
+   ],
+   "subcommentary": [
+    "11DiT04"
+   ]
+  },
+  {
+   "group": "dn-pathika",
+   "work": "Dīgha Pāthikavagga",
+   "relation": "1:1",
+   "canon": [
+    "08Di03"
+   ],
+   "commentary": [
+    "09DiA03"
+   ],
+   "subcommentary": [
+    "12DiT05"
+   ]
+  },
+  {
+   "group": "mn-mula",
+   "work": "Majjhima Mūlapaṇṇāsa — Papañcasūdanī",
+   "relation": "1:1",
+   "canon": [
+    "09Ma01"
+   ],
+   "commentary": [
+    "10MaA01",
+    "11MaA02"
+   ],
+   "subcommentary": [
+    "13MaT01",
+    "14MaT02"
+   ]
+  },
+  {
+   "group": "mn-majjhima",
+   "work": "Majjhima Majjhimapaṇṇāsa",
+   "relation": "1:1",
+   "canon": [
+    "10Ma02"
+   ],
+   "commentary": [
+    "12MaA03"
+   ],
+   "subcommentary": [
+    "15MaT03"
+   ]
+  },
+  {
+   "group": "mn-upari",
+   "work": "Majjhima Uparipaṇṇāsa",
+   "relation": "1:1",
+   "canon": [
+    "11Ma03"
+   ],
+   "commentary": [
+    "13MaA04"
+   ],
+   "subcommentary": [
+    "15MaT03"
+   ]
+  },
+  {
+   "group": "sn",
+   "work": "Saṁyutta — Sāratthappakāsinī",
+   "relation": "cluster",
+   "canon": [
+    "12Sam01",
+    "13Sam02",
+    "14Sam03"
+   ],
+   "commentary": [
+    "14SamA01",
+    "15SamA02",
+    "16SamA03"
+   ],
+   "subcommentary": [
+    "16SaT01",
+    "17SaT02"
+   ]
+  },
+  {
+   "group": "an",
+   "work": "Aṅguttara — Manorathapūraṇī",
+   "relation": "cluster",
+   "canon": [
+    "15An01",
+    "16An02",
+    "17An03"
+   ],
+   "commentary": [
+    "17AnA01",
+    "18AnA02",
+    "19AnA03"
+   ],
+   "subcommentary": [
+    "18AnT01",
+    "19AnT02",
+    "20AnT03"
+   ]
+  },
+  {
+   "group": "khu-1",
+   "work": "Khuddaka: Khuddakapāṭha-Dhammapada-Udāna-Itivuttaka-Suttanipāta",
+   "relation": "many",
+   "canon": [
+    "18Khu01"
+   ],
+   "commentary": [
+    "20KhuA01",
+    "21KhuA02",
+    "22KhuA03",
+    "23KhuA04",
+    "24KhuA05",
+    "25KhuA06",
+    "26KhuA07"
+   ],
+   "subcommentary": []
+  },
+  {
+   "group": "khu-2",
+   "work": "Khuddaka: Vimāna-Peta-Thera-Therīgāthā",
+   "relation": "many",
+   "canon": [
+    "19Khu02"
+   ],
+   "commentary": [
+    "27KhuA08",
+    "28KhuA09",
+    "29KhuA10",
+    "30KhuA11",
+    "31KhuA12"
+   ],
+   "subcommentary": []
+  },
+  {
+   "group": "khu-apadana1",
+   "work": "Khuddaka: Apadāna I",
+   "relation": "1:1",
+   "canon": [
+    "20Khu03"
+   ],
+   "commentary": [
+    "32KhuA13"
+   ],
+   "subcommentary": []
+  },
+  {
+   "group": "khu-apadana2",
+   "work": "Khuddaka: Apadāna II + Buddhavaṁsa + Cariyāpiṭaka",
+   "relation": "many",
+   "canon": [
+    "21Khu04"
+   ],
+   "commentary": [
+    "33KhuA14",
+    "34KhuA15",
+    "35KhuA16"
+   ],
+   "subcommentary": []
+  },
+  {
+   "group": "khu-jataka1",
+   "work": "Khuddaka: Jātaka I",
+   "relation": "many",
+   "canon": [
+    "22Khu05"
+   ],
+   "commentary": [
+    "36KhuA17",
+    "37KhuA18",
+    "38KhuA19",
+    "39KhuA20"
+   ],
+   "subcommentary": []
+  },
+  {
+   "group": "khu-jataka2",
+   "work": "Khuddaka: Jātaka II",
+   "relation": "many",
+   "canon": [
+    "23Khu06"
+   ],
+   "commentary": [
+    "40KhuA21",
+    "41KhuA22",
+    "42KhuA23"
+   ],
+   "subcommentary": []
+  },
+  {
+   "group": "khu-mahaniddesa",
+   "work": "Khuddaka: Mahāniddesa",
+   "relation": "1:1",
+   "canon": [
+    "24Khu07"
+   ],
+   "commentary": [
+    "43KhuA24"
+   ],
+   "subcommentary": []
+  },
+  {
+   "group": "khu-culaniddesa",
+   "work": "Khuddaka: Cūḷaniddesa",
+   "relation": "1:1",
+   "canon": [
+    "25Khu08"
+   ],
+   "commentary": [
+    "44KhuA25"
+   ],
+   "subcommentary": []
+  },
+  {
+   "group": "khu-patisambhida",
+   "work": "Khuddaka: Paṭisambhidāmagga — Saddhammappakāsinī",
+   "relation": "1:1",
+   "canon": [
+    "26Khu09"
+   ],
+   "commentary": [
+    "46KhuA27",
+    "47KhuA28"
+   ],
+   "subcommentary": []
+  },
+  {
+   "group": "khu-netti",
+   "work": "Khuddaka: Netti-Peṭakopadesa",
+   "relation": "1:1",
+   "canon": [
+    "27Khu10"
+   ],
+   "commentary": [
+    "45KhuA26"
+   ],
+   "subcommentary": [
+    "21KhuT01"
+   ]
+  },
+  {
+   "group": "khu-milinda",
+   "work": "Khuddaka: Milindapañha",
+   "relation": "none",
+   "canon": [
+    "28Khu11"
+   ],
+   "commentary": [],
+   "subcommentary": []
+  },
+  {
+   "group": "abhi-dhs",
+   "work": "Abhidhamma: Dhammasaṅgaṇī — Aṭṭhasālinī",
+   "relation": "1:1",
+   "canon": [
+    "29Abhi01"
+   ],
+   "commentary": [
+    "48AbhiA01"
+   ],
+   "subcommentary": [
+    "22AbhiT01"
+   ]
+  },
+  {
+   "group": "abhi-vbh",
+   "work": "Abhidhamma: Vibhaṅga — Sammohavinodanī",
+   "relation": "1:1",
+   "canon": [
+    "30Abhi02"
+   ],
+   "commentary": [
+    "49AbhiA02"
+   ],
+   "subcommentary": [
+    "23AbhiT02"
+   ]
+  },
+  {
+   "group": "abhi-panca",
+   "work": "Abhidhamma: Dhātukathā…Paṭṭhāna — Pañcapakaraṇa-aṭṭhakathā",
+   "relation": "shared",
+   "canon": [
+    "31Abhi03",
+    "32Abhi04",
+    "33Abhi05",
+    "34Abhi06",
+    "35Abhi07",
+    "36Abhi08",
+    "37Abhi09",
+    "38Abhi10",
+    "39Abhi11",
+    "40Abhi12"
+   ],
+   "commentary": [
+    "50AbhiA03"
+   ],
+   "subcommentary": [
+    "24AbhiT03"
+   ]
+  },
+  {
+   "group": "visuddhimagga",
+   "work": "Visuddhimagga (common to all three piṭakas)",
+   "relation": "standalone",
+   "canon": [],
+   "commentary": [
+    "51Vism01",
+    "52Vism02"
+   ],
+   "subcommentary": [
+    "25VsmT01",
+    "26VsmT02"
+   ]
+  }
+ ]
+}

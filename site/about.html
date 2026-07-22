@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Sixth Buddhist Council Tipiṭaka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="i18n.js"></script>
+<style>
+  :root{--fg:#20201c;--mut:#7a736a;--line:#e6e1d8;--accent:#7a5b34;--bg:#faf8f4;--panel:#fff;--tag:#efe9df}
+  html[data-theme=dark]{--fg:#e7e2d8;--mut:#9a9184;--line:#332f28;--accent:#cba976;--bg:#171511;--panel:#211e18;--tag:#2e2a1e}
+  *{box-sizing:border-box}
+  body{font-family:'Gentium Plus',Georgia,'Times New Roman',serif;color:var(--fg);background:var(--bg);margin:0;line-height:1.65}
+  header{padding:16px 24px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .topnav{font-family:system-ui,sans-serif;font-size:13px}
+  .topnav a{color:var(--accent);text-decoration:none;margin-right:6px}
+  .topnav a:hover{text-decoration:underline}
+  .sp{flex:1}
+  .themebtn,.langbtn{font-size:14px;background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;color:var(--fg);font-family:system-ui,sans-serif}
+  main{max-width:720px;margin:0 auto;padding:26px 24px 90px}
+  h1{font-size:26px;margin:0 0 4px}
+  h2{font-size:19px;color:var(--accent);margin:30px 0 8px;border-bottom:1px solid var(--line);padding-bottom:5px}
+  p,li{font-size:16px}
+  .lead{font-size:17px;color:var(--mut)}
+  code{font-family:ui-monospace,monospace;font-size:13px;background:var(--tag);padding:1px 5px;border-radius:4px}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+  td,th{border:1px solid var(--line);padding:5px 9px;text-align:left}
+  .cite{background:var(--tag);border-radius:8px;padding:12px 16px;font-size:14px;font-family:system-ui,sans-serif}
+  .mut{color:var(--mut);font-size:14px}
+</style>
+</head>
+<body>
+<header>
+  <div class="topnav"><a href="index.html">←&nbsp;<span data-i18n="nav_home">Home</span></a><a href="reader/reader.html" data-i18n="nav_reader">Reader</a><a href="search.html" data-i18n="nav_search">Search</a><a href="downloads.html" data-i18n="nav_downloads">Downloads</a></div>
+  <span class="sp"></span>
+  <button class="langbtn">ES</button>
+  <button class="themebtn" id="themebtn" title="Toggle light/dark">◐</button>
+</header>
+<script>
+document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+document.addEventListener('DOMContentLoaded',()=>{document.getElementById('themebtn').onclick=()=>{var d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n);};});
+// About-page translations (kept here so the shared i18n.js stays small)
+Object.assign(window.I18N,{
+ ab_h1:{en:'About this edition',es:'Acerca de esta edición'},
+ ab_lead:{en:'A searchable, cross-referenced Unicode corpus of the Sixth Buddhist Council (Chaṭṭhasaṅgīti) recension of the Pāḷi Tipiṭaka, together with its Aṭṭhakathā (commentaries) and Ṭīkā (subcommentaries) — 118 volumes in all.',
+          es:'Un corpus Unicode, con búsqueda y referencias cruzadas, de la recensión del Sexto Concilio Budista (Chaṭṭhasaṅgīti) del Tipiṭaka Pāḷi, junto con su Aṭṭhakathā (comentarios) y Ṭīkā (subcomentarios) — 118 volúmenes en total.'},
+ ab_h_source:{en:'Source &amp; provenance',es:'Fuente y procedencia'},
+ ab_source1:{en:'The base text is the romanised edition published by the <b>Ministry of Religious Affairs, Yangon, Myanmar</b> (Pāḷi Series; romanised from the Myanmar-script Sixth Council edition). This is the Sixth Council edition itself — <em>not</em> the VRI / Igatpuri (CST) digital recension, which carries its own editorial layer. Where the two differ, this corpus follows the printed edition.',
+             es:'El texto base es la edición romanizada publicada por el <b>Ministerio de Asuntos Religiosos, Yangon, Myanmar</b> (Serie Pāḷi; romanizada a partir de la edición del Sexto Concilio en escritura birmana). Es la edición del Sexto Concilio en sí — <em>no</em> la recensión digital VRI / Igatpuri (CST), que lleva su propia capa editorial. Donde ambas difieren, este corpus sigue la edición impresa.'},
+ ab_source2:{en:'The volumes are in the public domain. Original page layout and printed page numbers are preserved throughout, so citations to the physical edition remain valid.',
+             es:'Los volúmenes son de dominio público. Se conservan el diseño de página original y los números de página impresos, de modo que las citas a la edición física siguen siendo válidas.'},
+ ab_h_made:{en:'How the text was made',es:'Cómo se hizo el texto'},
+ ab_made1:{en:'The source PDFs carried a real text layer, but in a legacy 8-bit font (VZTimes) whose bytes mapped to Latin-1 code points rather than Unicode — so copying <em>nibbāna</em> yielded <code>nibbÈna</code>. Rather than re-typeset, a corrected <code>/ToUnicode</code> map was injected into each font: the pages render <b>pixel-identically to the print</b>, but the text is now proper Unicode, searchable and copyable.',
+           es:'Los PDF de origen contenían una capa de texto real, pero en una fuente heredada de 8 bits (VZTimes) cuyos bytes correspondían a puntos de código Latin-1 en lugar de Unicode — así que copiar <em>nibbāna</em> producía <code>nibbÈna</code>. En lugar de recomponer, se inyectó en cada fuente un mapa <code>/ToUnicode</code> corregido: las páginas se ven <b>idénticas píxel a píxel a la impresión</b>, pero el texto es ahora Unicode correcto, con búsqueda y copiable.'},
+ ab_made2:{en:'The conversion was self-verifying — a character census over all 73 million characters confirmed that, after mapping, every character belongs to the Pāḷi alphabet plus expected punctuation, with no residual legacy glyphs. The edition uses <b>ṁ</b> (dot above), preserved here rather than normalised to ṃ.',
+           es:'La conversión fue autoverificable — un censo de caracteres sobre los 73 millones de caracteres confirmó que, tras el mapeo, cada carácter pertenece al alfabeto Pāḷi más la puntuación esperada, sin glifos heredados residuales. La edición usa <b>ṁ</b> (punto arriba), conservado aquí en lugar de normalizarlo a ṃ.'},
+ ab_h_struct:{en:'Structure &amp; linking',es:'Estructura y enlaces'},
+ ab_struct1:{en:'Each paragraph is addressed hierarchically (book / vagga / sutta / number) and anchored to its printed page. Commentary and subcommentary are linked to the canon by the paragraph numbers shared across the three layers: a commentary paragraph governs the canon text from its own number until the next — so from any canon passage you can reach the comment that explains it, and the subcommentary on that. Where a paragraph has no direct comment, the reader points to the governing one rather than showing a gap.',
+             es:'Cada párrafo tiene una dirección jerárquica (libro / vagga / sutta / número) y está anclado a su página impresa. El comentario y el subcomentario se enlazan al canon mediante los números de párrafo compartidos entre las tres capas: un párrafo de comentario rige el texto del canon desde su propio número hasta el siguiente — así, desde cualquier pasaje del canon se puede llegar al comentario que lo explica, y al subcomentario sobre este. Donde un párrafo no tiene comentario directo, el lector remite al que lo rige en lugar de mostrar un vacío.'},
+ ab_struct2:{en:'The many-to-many volume relationships (one commentary covering several canon volumes; texts such as Milindapañha with no commentary; the Visuddhimagga standing outside the canon) follow the edition’s own volume concordance.',
+             es:'Las relaciones de volúmenes de muchos a muchos (un comentario que cubre varios volúmenes del canon; textos como el Milindapañha sin comentario; el Visuddhimagga fuera del canon) siguen la propia concordancia de volúmenes de la edición.'},
+ ab_h_app:{en:'The variant apparatus',es:'El aparato de variantes'},
+ ab_app_intro:{en:'The footnotes of the printed edition record variant readings from the manuscript traditions. These are extracted here as structured data — over 54,000 readings — each tagged with its witness siglum:',
+               es:'Las notas al pie de la edición impresa registran lecturas variantes de las tradiciones manuscritas. Aquí se extraen como datos estructurados — más de 54.000 lecturas — cada una etiquetada con la sigla de su testigo:'},
+ ab_th_sig:{en:'Siglum',es:'Sigla'}, ab_th_wit:{en:'Witness',es:'Testigo'},
+ ab_w_si:{en:'Sīhaḷa (Sinhalese)',es:'Sīhaḷa (cingalés)'},
+ ab_w_sya:{en:'Syāma (Thai)',es:'Syāma (tailandés)'},
+ ab_w_kam:{en:'Kamboja (Cambodian)',es:'Kamboja (camboyano)'},
+ ab_w_ka:{en:'Katthaci (some Burmese manuscripts)',es:'Katthaci (algunos manuscritos birmanos)'},
+ ab_w_i:{en:'Iṅgalisa (English / PTS)',es:'Iṅgalisa (inglés / PTS)'},
+ ab_w_ttha:{en:'reading found in the Aṭṭhakathā',es:'lectura encontrada en la Aṭṭhakathā'},
+ ab_w_q:{en:'conjectured old reading (<em>siyā nu kho porāṇapāṭho</em>)',es:'lectura antigua conjeturada (<em>siyā nu kho porāṇapāṭho</em>)'},
+ ab_h_search:{en:'Searching',es:'Búsqueda'},
+ ab_search:{en:'Search is <b>diacritic-insensitive</b>: typing <code>nibbana</code> finds <em>nibbāna</em>, and typing the diacritics works too. You can scope a search to the canon, commentary, or subcommentary. Search is exact and substring; lemma- and sandhi-aware search (finding <em>indriyāni</em> inside <em>yassindriyāni</em>) depend on separate grammatical work and are not yet available.',
+            es:'La búsqueda es <b>insensible a diacríticos</b>: escribir <code>nibbana</code> encuentra <em>nibbāna</em>, y escribir los diacríticos también funciona. Puede limitar la búsqueda al canon, al comentario o al subcomentario. La búsqueda es exacta y por subcadena; la búsqueda por lema y sensible a sandhi (encontrar <em>indriyāni</em> dentro de <em>yassindriyāni</em>) depende de un trabajo gramatical aparte y aún no está disponible.'},
+ ab_h_cite:{en:'How to cite',es:'Cómo citar'},
+ ab_cite:{en:'Cite by the printed page and paragraph of the physical edition, e.g. <b>Dīghanikāya, Sīlakkhandhavagga, Brahmajālasutta §2 (p. 2)</b>. Each paragraph in the reader has a permanent link and a “copy citation” button.',
+          es:'Cite por la página impresa y el párrafo de la edición física, p. ej. <b>Dīghanikāya, Sīlakkhandhavagga, Brahmajālasutta §2 (p. 2)</b>. Cada párrafo en el lector tiene un enlace permanente y un botón de “copiar cita”.'},
+ ab_h_scope:{en:'Scope &amp; limitations',es:'Alcance y limitaciones'},
+ ab_scope1:{en:'The corpus reproduces the printed edition faithfully, including its own occasional typographic errata, which are recorded rather than silently corrected.',
+            es:'El corpus reproduce fielmente la edición impresa, incluidas sus ocasionales erratas tipográficas, que se registran en vez de corregirse silenciosamente.'},
+ ab_scope2:{en:'Cross-layer links reach ~94% of canon paragraphs; a few text-specific groups are still being reconciled.',
+            es:'Los enlaces entre capas alcanzan ~94% de los párrafos del canon; algunos grupos de textos específicos aún se están reconciliando.'},
+ ab_scope3:{en:'This is a scholarly working edition, offered freely for study. Corrections are welcome.',
+            es:'Esta es una edición de trabajo académica, ofrecida libremente para el estudio. Se agradecen las correcciones.'},
+ ab_pipeline:{en:'Encoding, structural extraction, apparatus parsing and cross-layer linking by automated pipeline, with verification against the printed pages.',
+              es:'Codificación, extracción estructural, análisis del aparato y enlace entre capas mediante un proceso automatizado, con verificación contra las páginas impresas.'},
+ ab_h_ack:{en:'Editorial board &amp; acknowledgements',es:'Consejo editorial y agradecimientos'}
+});
+</script>
+<main>
+  <h1 data-i18n="ab_h1">About this edition</h1>
+  <p class="lead" data-i18n="ab_lead">A searchable, cross-referenced Unicode corpus of the Sixth Buddhist Council (Chaṭṭhasaṅgīti) recension of the Pāḷi Tipiṭaka, together with its Aṭṭhakathā (commentaries) and Ṭīkā (subcommentaries) — 118 volumes in all.</p>
+
+  <h2 data-i18n="ab_h_source">Source &amp; provenance</h2>
+  <p data-i18n="ab_source1"></p>
+  <p class="mut" data-i18n="ab_source2"></p>
+
+  <h2 data-i18n="ab_h_made">How the text was made</h2>
+  <p data-i18n="ab_made1"></p>
+  <p data-i18n="ab_made2"></p>
+
+  <h2 data-i18n="ab_h_struct">Structure &amp; linking</h2>
+  <p data-i18n="ab_struct1"></p>
+  <p data-i18n="ab_struct2"></p>
+
+  <h2 data-i18n="ab_h_app">The variant apparatus</h2>
+  <p data-i18n="ab_app_intro"></p>
+  <table>
+    <tr><th data-i18n="ab_th_sig">Siglum</th><th data-i18n="ab_th_wit">Witness</th></tr>
+    <tr><td>Sī</td><td data-i18n="ab_w_si"></td></tr>
+    <tr><td>Syā</td><td data-i18n="ab_w_sya"></td></tr>
+    <tr><td>Kaṁ</td><td data-i18n="ab_w_kam"></td></tr>
+    <tr><td>Ka</td><td data-i18n="ab_w_ka"></td></tr>
+    <tr><td>I</td><td data-i18n="ab_w_i"></td></tr>
+    <tr><td>Ṭṭha</td><td data-i18n="ab_w_ttha"></td></tr>
+    <tr><td>?</td><td data-i18n="ab_w_q"></td></tr>
+  </table>
+
+  <h2 data-i18n="ab_h_search">Searching</h2>
+  <p data-i18n="ab_search"></p>
+
+  <h2 data-i18n="ab_h_cite">How to cite</h2>
+  <div class="cite" data-i18n="ab_cite"></div>
+
+  <h2 data-i18n="ab_h_scope">Scope &amp; limitations</h2>
+  <ul>
+    <li data-i18n="ab_scope1"></li>
+    <li data-i18n="ab_scope2"></li>
+    <li data-i18n="ab_scope3"></li>
+  </ul>
+  <p class="mut" data-i18n="ab_pipeline"></p>
+
+  <h2 data-i18n="ab_h_ack">Editorial board &amp; acknowledgements</h2>
+  <p class="mut" data-i18n="credits"></p>
+</main>
+</body>
+</html>

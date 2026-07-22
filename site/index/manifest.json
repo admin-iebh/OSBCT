@@ -1,0 +1,828 @@
+[
+ {
+  "vol": "01ViT01",
+  "source": "tika-unicode/01ViT01.pdf",
+  "paras": 23,
+  "terms": 18146,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "01Vin01",
+  "source": "pali-unicode/01Vin01.pdf",
+  "paras": 662,
+  "terms": 8917,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "01VinA01",
+  "source": "atthakatha-unicode/01VinA01.pdf",
+  "paras": 138,
+  "terms": 15964,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "02ViT02",
+  "source": "tika-unicode/02ViT02.pdf",
+  "paras": 314,
+  "terms": 27292,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "02Vin02",
+  "source": "pali-unicode/02Vin02.pdf",
+  "paras": 1249,
+  "terms": 8453,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "02VinA02",
+  "source": "atthakatha-unicode/02VinA02.pdf",
+  "paras": 240,
+  "terms": 18311,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "03ViT03",
+  "source": "tika-unicode/03ViT03.pdf",
+  "paras": 648,
+  "terms": 29898,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "03Vin03",
+  "source": "pali-unicode/03Vin03.pdf",
+  "paras": 490,
+  "terms": 11843,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "03VinA03",
+  "source": "atthakatha-unicode/03VinA03.pdf",
+  "paras": 738,
+  "terms": 22789,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "04ViT04",
+  "source": "tika-unicode/04ViT04.pdf",
+  "paras": 280,
+  "terms": 20043,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "04Vin04",
+  "source": "pali-unicode/04Vin04.pdf",
+  "paras": 458,
+  "terms": 10113,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "04VinA04",
+  "source": "atthakatha-unicode/04VinA04.pdf",
+  "paras": 300,
+  "terms": 14626,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "05Kankha",
+  "source": "atthakatha-unicode/05Kankha.pdf",
+  "paras": 534,
+  "terms": 2672,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "05ViT05",
+  "source": "tika-unicode/05ViT05.pdf",
+  "paras": 673,
+  "terms": 18685,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "05Vin05",
+  "source": "pali-unicode/05Vin05.pdf",
+  "paras": 519,
+  "terms": 6562,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "06Di01",
+  "source": "pali-unicode/06Di01.pdf",
+  "paras": 559,
+  "terms": 5801,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "06ViT06",
+  "source": "tika-unicode/06ViT06.pdf",
+  "paras": 814,
+  "terms": 26670,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "06VinSg06",
+  "source": "atthakatha-unicode/06VinSg06.pdf",
+  "paras": 327,
+  "terms": 21297,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "07Di02",
+  "source": "pali-unicode/07Di02.pdf",
+  "paras": 444,
+  "terms": 8640,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "07DiA01",
+  "source": "atthakatha-unicode/07DiA01.pdf",
+  "paras": 324,
+  "terms": 20817,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "07ViT07",
+  "source": "tika-unicode/07ViT07.pdf",
+  "paras": 22,
+  "terms": 1132,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "08Di03",
+  "source": "pali-unicode/08Di03.pdf",
+  "paras": 360,
+  "terms": 7903,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "08DiA02",
+  "source": "atthakatha-unicode/08DiA02.pdf",
+  "paras": 345,
+  "terms": 25243,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "08DiT01",
+  "source": "tika-unicode/08DiT01.pdf",
+  "paras": 303,
+  "terms": 26658,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "09DiA03",
+  "source": "atthakatha-unicode/09DiA03.pdf",
+  "paras": 293,
+  "terms": 17441,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "09DiT02",
+  "source": "tika-unicode/09DiT02.pdf",
+  "paras": 80,
+  "terms": 26150,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "09Ma01",
+  "source": "pali-unicode/09Ma01.pdf",
+  "paras": 511,
+  "terms": 9820,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "10DiT03",
+  "source": "tika-unicode/10DiT03.pdf",
+  "paras": 245,
+  "terms": 31198,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "10Ma02",
+  "source": "pali-unicode/10Ma02.pdf",
+  "paras": 485,
+  "terms": 11007,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "10MaA01",
+  "source": "atthakatha-unicode/10MaA01.pdf",
+  "paras": 188,
+  "terms": 23253,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "11DiT04",
+  "source": "tika-unicode/11DiT04.pdf",
+  "paras": 336,
+  "terms": 26030,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "11Ma03",
+  "source": "pali-unicode/11Ma03.pdf",
+  "paras": 462,
+  "terms": 8658,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "11MaA02",
+  "source": "atthakatha-unicode/11MaA02.pdf",
+  "paras": 249,
+  "terms": 21244,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "12DiT05",
+  "source": "tika-unicode/12DiT05.pdf",
+  "paras": 293,
+  "terms": 21322,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "12MaA03",
+  "source": "atthakatha-unicode/12MaA03.pdf",
+  "paras": 354,
+  "terms": 21497,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "12Sam01",
+  "source": "pali-unicode/12Sam01.pdf",
+  "paras": 517,
+  "terms": 11715,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "13MaA04",
+  "source": "atthakatha-unicode/13MaA04.pdf",
+  "paras": 306,
+  "terms": 16650,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "13MaT01",
+  "source": "tika-unicode/13MaT01.pdf",
+  "paras": 133,
+  "terms": 23117,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "13Sam02",
+  "source": "pali-unicode/13Sam02.pdf",
+  "paras": 722,
+  "terms": 9192,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "14MaT02",
+  "source": "tika-unicode/14MaT02.pdf",
+  "paras": 309,
+  "terms": 24340,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "14Sam03",
+  "source": "pali-unicode/14Sam03.pdf",
+  "paras": 599,
+  "terms": 6570,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "14SamA01",
+  "source": "atthakatha-unicode/14SamA01.pdf",
+  "paras": 254,
+  "terms": 22270,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "15An01",
+  "source": "pali-unicode/15An01.pdf",
+  "paras": 952,
+  "terms": 12274,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "15MaT03",
+  "source": "tika-unicode/15MaT03.pdf",
+  "paras": 639,
+  "terms": 31189,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "15SamA02",
+  "source": "atthakatha-unicode/15SamA02.pdf",
+  "paras": 300,
+  "terms": 20486,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "16An02",
+  "source": "pali-unicode/16An02.pdf",
+  "paras": 497,
+  "terms": 11672,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "16SaT01",
+  "source": "tika-unicode/16SaT01.pdf",
+  "paras": 287,
+  "terms": 24211,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "16SamA03",
+  "source": "atthakatha-unicode/16SamA03.pdf",
+  "paras": 389,
+  "terms": 20625,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "17An03",
+  "source": "pali-unicode/17An03.pdf",
+  "paras": 426,
+  "terms": 10813,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "17AnA01",
+  "source": "atthakatha-unicode/17AnA01.pdf",
+  "paras": 229,
+  "terms": 21527,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "17SaT02",
+  "source": "tika-unicode/17SaT02.pdf",
+  "paras": 655,
+  "terms": 32226,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "18AnA02",
+  "source": "atthakatha-unicode/18AnA02.pdf",
+  "paras": 465,
+  "terms": 25606,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "18AnT01",
+  "source": "tika-unicode/18AnT01.pdf",
+  "paras": 218,
+  "terms": 21144,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "18Khu01",
+  "source": "pali-unicode/18Khu01.pdf",
+  "paras": 1867,
+  "terms": 13424,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "19AnA03",
+  "source": "atthakatha-unicode/19AnA03.pdf",
+  "paras": 517,
+  "terms": 23160,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "19AnT02",
+  "source": "tika-unicode/19AnT02.pdf",
+  "paras": 362,
+  "terms": 26204,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "19Khu02",
+  "source": "pali-unicode/19Khu02.pdf",
+  "paras": 3660,
+  "terms": 13708,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "20AnT03",
+  "source": "tika-unicode/20AnT03.pdf",
+  "paras": 339,
+  "terms": 24526,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "20Khu03",
+  "source": "pali-unicode/20Khu03.pdf",
+  "paras": 4461,
+  "terms": 11341,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "20KhuA01",
+  "source": "atthakatha-unicode/20KhuA01.pdf",
+  "paras": 67,
+  "terms": 6960,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "21Khu04",
+  "source": "pali-unicode/21Khu04.pdf",
+  "paras": 4858,
+  "terms": 12926,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "21KhuA02",
+  "source": "atthakatha-unicode/21KhuA02.pdf",
+  "paras": 127,
+  "terms": 19589,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "21KhuT01",
+  "source": "tika-unicode/21KhuT01.pdf",
+  "paras": 274,
+  "terms": 22547,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "22AbhiT01",
+  "source": "tika-unicode/22AbhiT01.pdf",
+  "paras": 431,
+  "terms": 22064,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "22Khu05",
+  "source": "pali-unicode/22Khu05.pdf",
+  "paras": 2985,
+  "terms": 14139,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "22KhuA03",
+  "source": "atthakatha-unicode/22KhuA03.pdf",
+  "paras": 310,
+  "terms": 20138,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "23AbhiT02",
+  "source": "tika-unicode/23AbhiT02.pdf",
+  "paras": 492,
+  "terms": 23495,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "23Khu06",
+  "source": "pali-unicode/23Khu06.pdf",
+  "paras": 3675,
+  "terms": 14504,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "23KhuA04",
+  "source": "atthakatha-unicode/23KhuA04.pdf",
+  "paras": 92,
+  "terms": 25353,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "24AbhiT03",
+  "source": "tika-unicode/24AbhiT03.pdf",
+  "paras": 963,
+  "terms": 21991,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "24Khu07",
+  "source": "pali-unicode/24Khu07.pdf",
+  "paras": 212,
+  "terms": 13814,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "24KhuA05",
+  "source": "atthakatha-unicode/24KhuA05.pdf",
+  "paras": 109,
+  "terms": 20763,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "25Khu08",
+  "source": "pali-unicode/25Khu08.pdf",
+  "paras": 335,
+  "terms": 10766,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "25KhuA06",
+  "source": "atthakatha-unicode/25KhuA06.pdf",
+  "paras": 232,
+  "terms": 17280,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "25VsmT01",
+  "source": "tika-unicode/25VsmT01.pdf",
+  "paras": 351,
+  "terms": 31777,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "26Khu09",
+  "source": "pali-unicode/26Khu09.pdf",
+  "paras": 405,
+  "terms": 8266,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "26KhuA07",
+  "source": "atthakatha-unicode/26KhuA07.pdf",
+  "paras": 675,
+  "terms": 17586,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "26VsmT02",
+  "source": "tika-unicode/26VsmT02.pdf",
+  "paras": 520,
+  "terms": 33313,
+  "layer": "tika-unicode"
+ },
+ {
+  "vol": "27Khu10",
+  "source": "pali-unicode/27Khu10.pdf",
+  "paras": 271,
+  "terms": 13070,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "27KhuA08",
+  "source": "atthakatha-unicode/27KhuA08.pdf",
+  "paras": 1382,
+  "terms": 12945,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "28Khu11",
+  "source": "pali-unicode/28Khu11.pdf",
+  "paras": 261,
+  "terms": 16511,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "28KhuA09",
+  "source": "atthakatha-unicode/28KhuA09.pdf",
+  "paras": 1066,
+  "terms": 11244,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "29Abhi01",
+  "source": "pali-unicode/29Abhi01.pdf",
+  "paras": 1780,
+  "terms": 2499,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "29KhuA10",
+  "source": "atthakatha-unicode/29KhuA10.pdf",
+  "paras": 262,
+  "terms": 11704,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "30Abhi02",
+  "source": "pali-unicode/30Abhi02.pdf",
+  "paras": 1044,
+  "terms": 5551,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "30KhuA11",
+  "source": "atthakatha-unicode/30KhuA11.pdf",
+  "paras": 1018,
+  "terms": 22797,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "31Abhi03",
+  "source": "pali-unicode/31Abhi03.pdf",
+  "paras": 890,
+  "terms": 3126,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "31KhuA12",
+  "source": "atthakatha-unicode/31KhuA12.pdf",
+  "paras": 523,
+  "terms": 12712,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "32Abhi04",
+  "source": "pali-unicode/32Abhi04.pdf",
+  "paras": 918,
+  "terms": 6531,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "32KhuA13",
+  "source": "atthakatha-unicode/32KhuA13.pdf",
+  "paras": 482,
+  "terms": 14219,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "33Abhi05",
+  "source": "pali-unicode/33Abhi05.pdf",
+  "paras": 762,
+  "terms": 633,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "33KhuA14",
+  "source": "atthakatha-unicode/33KhuA14.pdf",
+  "paras": 500,
+  "terms": 7595,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "34Abhi06",
+  "source": "pali-unicode/34Abhi06.pdf",
+  "paras": 627,
+  "terms": 403,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "34KhuA15",
+  "source": "atthakatha-unicode/34KhuA15.pdf",
+  "paras": 874,
+  "terms": 15452,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "35Abhi07",
+  "source": "pali-unicode/35Abhi07.pdf",
+  "paras": 714,
+  "terms": 586,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "35KhuA16",
+  "source": "atthakatha-unicode/35KhuA16.pdf",
+  "paras": 326,
+  "terms": 15946,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "36Abhi08",
+  "source": "pali-unicode/36Abhi08.pdf",
+  "paras": 1091,
+  "terms": 1126,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "36KhuA17",
+  "source": "atthakatha-unicode/36KhuA17.pdf",
+  "paras": 148,
+  "terms": 18447,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "37Abhi09",
+  "source": "pali-unicode/37Abhi09.pdf",
+  "paras": 1268,
+  "terms": 1373,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "37KhuA18",
+  "source": "atthakatha-unicode/37KhuA18.pdf",
+  "paras": 347,
+  "terms": 18410,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "38Abhi10",
+  "source": "pali-unicode/38Abhi10.pdf",
+  "paras": 2060,
+  "terms": 1654,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "38KhuA19",
+  "source": "atthakatha-unicode/38KhuA19.pdf",
+  "paras": 835,
+  "terms": 23458,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "39Abhi11",
+  "source": "pali-unicode/39Abhi11.pdf",
+  "paras": 2985,
+  "terms": 1780,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "39KhuA20",
+  "source": "atthakatha-unicode/39KhuA20.pdf",
+  "paras": 1149,
+  "terms": 23721,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "40Abhi12",
+  "source": "pali-unicode/40Abhi12.pdf",
+  "paras": 2413,
+  "terms": 1186,
+  "layer": "pali-unicode"
+ },
+ {
+  "vol": "40KhuA21",
+  "source": "atthakatha-unicode/40KhuA21.pdf",
+  "paras": 1573,
+  "terms": 27221,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "41KhuA22",
+  "source": "atthakatha-unicode/41KhuA22.pdf",
+  "paras": 782,
+  "terms": 13049,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "42KhuA23",
+  "source": "atthakatha-unicode/42KhuA23.pdf",
+  "paras": 1657,
+  "terms": 18476,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "43KhuA24",
+  "source": "atthakatha-unicode/43KhuA24.pdf",
+  "paras": 209,
+  "terms": 28810,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "44KhuA25",
+  "source": "atthakatha-unicode/44KhuA25.pdf",
+  "paras": 145,
+  "terms": 9939,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "45KhuA26",
+  "source": "atthakatha-unicode/45KhuA26.pdf",
+  "paras": 146,
+  "terms": 17553,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "46KhuA27",
+  "source": "atthakatha-unicode/46KhuA27.pdf",
+  "paras": 165,
+  "terms": 20650,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "47KhuA28",
+  "source": "atthakatha-unicode/47KhuA28.pdf",
+  "paras": 205,
+  "terms": 21613,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "48AbhiA01",
+  "source": "atthakatha-unicode/48AbhiA01.pdf",
+  "paras": 310,
+  "terms": 20188,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "49AbhiA02",
+  "source": "atthakatha-unicode/49AbhiA02.pdf",
+  "paras": 325,
+  "terms": 28008,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "50AbhiA03",
+  "source": "atthakatha-unicode/50AbhiA03.pdf",
+  "paras": 866,
+  "terms": 20520,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "51Vism01",
+  "source": "atthakatha-unicode/51Vism01.pdf",
+  "paras": 364,
+  "terms": 21516,
+  "layer": "atthakatha-unicode"
+ },
+ {
+  "vol": "52Vism02",
+  "source": "atthakatha-unicode/52Vism02.pdf",
+  "paras": 532,
+  "terms": 18803,
+  "layer": "atthakatha-unicode"
+ }
+]

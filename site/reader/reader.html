@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reader — Sixth Buddhist Council Tipiṭaka</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="../i18n.js"></script>
+<style>
+  :root{--fg:#20201c;--mut:#7a736a;--line:#e6e1d8;--accent:#7a5b34;--accent2:#33506e;--hl:#fbe7b8;--bg:#faf8f4;--panel:#fff;
+        --navbg:#fdfcfa;--navhover:#f2ece1;--navactive:#efe7d8;--appbg:#fcfbf8;--tag-c:#efe9df;--tag-ct:#5a4a30;
+        --tag-a:#e7eef5;--tag-at:#33506e;--tag-s:#ece7f2;--tag-st:#5a3f6e;--btnbg:#fff;--shl:#ffdf7e}
+  html[data-theme=dark]{--fg:#e7e2d8;--mut:#9a9184;--line:#332f28;--accent:#cBA976;--accent:#cba976;--accent2:#88add8;
+        --hl:#5c4a1c;--bg:#171511;--panel:#211e18;--navbg:#1c1a15;--navhover:#282318;--navactive:#302a1c;
+        --appbg:#1d1b15;--tag-c:#2e2a1e;--tag-ct:#d8c9a6;--tag-a:#1e2a38;--tag-at:#9fc2e6;--tag-s:#2a2338;--tag-st:#c3aede;--btnbg:#211e18;--shl:#9a7a24}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:'Gentium Plus',Georgia,'Times New Roman',serif;color:var(--fg);background:var(--bg);display:flex;flex-direction:column;height:100vh}
+  header{padding:10px 18px;border-bottom:1px solid var(--line);background:var(--panel);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  header h1{font-size:16px;margin:0;letter-spacing:.02em;white-space:nowrap}
+  .homelink{font-size:18px;text-decoration:none;color:var(--accent);border:1px solid var(--line);border-radius:6px;padding:2px 9px;line-height:1}
+  header .sp{flex:1}
+  header a{color:var(--accent);font-size:13px;font-family:system-ui,sans-serif;text-decoration:none}
+  header input[type=search]{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;width:260px;background:var(--panel);color:var(--fg)}
+  header select{font-family:system-ui,sans-serif;font-size:12px;padding:6px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--fg)}
+  .themebtn{font-size:15px;background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;color:var(--fg)}
+  aside#results{width:340px;border-left:1px solid var(--line);background:var(--navbg);overflow:auto;padding:0 0 40px}
+  #rhead{font-family:system-ui,sans-serif;font-size:12px;color:var(--mut);padding:12px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--navbg)}
+  #rhead .close{float:right;cursor:pointer;color:var(--accent);font-weight:bold}
+  .rhit{padding:9px 14px;border-bottom:1px solid var(--line);cursor:pointer;font-size:13px}
+  .rhit:hover{background:var(--navhover)}
+  .rhit .rloc{font-family:system-ui,sans-serif;font-size:11px;color:var(--accent);margin-bottom:3px}
+  .rhit .rlay{background:var(--tag-c);color:var(--tag-ct);border-radius:9px;padding:1px 6px;font-size:10px;margin-right:5px}
+  .rhit mark{background:var(--hl)}
+  .wrap{display:flex;flex:1;min-height:0}
+  nav{width:290px;border-right:1px solid var(--line);overflow:auto;background:var(--navbg);padding:8px 0}
+  nav .grp{font-family:system-ui,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);padding:12px 14px 4px}
+  nav .v{padding:5px 14px 5px 20px;font-size:13.5px;cursor:pointer;border-left:3px solid transparent;line-height:1.35}
+  nav .v:hover{background:var(--navhover)}
+  nav .v.active{border-left-color:var(--accent);background:var(--navactive);font-weight:bold}
+  nav .v .code{font-family:system-ui,sans-serif;font-size:10px;color:var(--mut);display:block}
+  main{flex:1;overflow:auto;padding:22px 30px 120px;scroll-behavior:smooth}
+  .reading{max-width:var(--rwidth,760px);margin:0 auto;font-size:var(--rsize,17px);line-height:1.62}
+  .ctrls{display:inline-flex;gap:2px;align-items:center}
+  .ctrls button{font-family:system-ui,sans-serif;font-size:13px;background:var(--panel);border:1px solid var(--line);color:var(--fg);border-radius:6px;padding:4px 9px;cursor:pointer}
+  .col-tag{display:inline-block;font-family:system-ui,sans-serif;font-size:11px;padding:2px 9px;border-radius:11px;margin-bottom:4px}
+  .t-canon{background:var(--tag-c);color:var(--tag-ct)}.t-comm{background:var(--tag-a);color:var(--tag-at)}.t-sub{background:var(--tag-s);color:var(--tag-st)}
+  .worktitle{font-size:20px;margin:2px 0 2px}
+  .crumb{color:var(--mut);font-size:13px;font-family:system-ui,sans-serif;margin-bottom:18px}
+  .pagemark{display:block;text-align:center;color:var(--mut);font-family:system-ui,sans-serif;font-size:11px;margin:16px 0 6px;letter-spacing:.05em;text-decoration:none}
+  .pagemark:hover{color:var(--accent)}
+  .pagemark::before,.pagemark::after{content:"";display:inline-block;width:34%;height:1px;background:var(--line);vertical-align:middle;margin:0 8px}
+  .cite{font-family:system-ui,sans-serif;font-size:10px;color:var(--mut);background:none;border:1px solid var(--line);border-radius:9px;padding:0 7px;margin-left:6px;cursor:pointer;vertical-align:middle;opacity:.5}
+  .para:hover .cite{opacity:1}
+  .apparatus .jump-x{font-family:system-ui,sans-serif;font-size:12px;color:var(--accent2);background:none;border:1px solid var(--line);border-radius:8px;padding:0 7px;cursor:pointer}
+  .apparatus .jump-x:hover{background:var(--navhover)}
+  .para.flash{background:var(--hl);border-radius:4px;transition:background .3s}
+  mark.shl{background:var(--shl,#ffdf7e);color:inherit;border-radius:2px;padding:0 1px}
+  .head{font-weight:bold;margin:20px 0 8px;font-size:16.5px}
+  .head.vagga{font-size:14px;color:var(--accent);font-variant:small-caps;letter-spacing:.03em}
+  .para{margin:0 0 13px;padding:2px 0 2px 2px;position:relative}
+  .para:target{background:var(--hl);border-radius:4px;padding:8px;margin-left:-8px;margin-right:-8px}
+  .pn{font-family:system-ui,sans-serif;font-weight:bold;color:var(--accent);font-size:13px;margin-right:4px}
+  .pey{background:#e7eef5;color:#33506e;font-family:system-ui,sans-serif;font-size:10px;padding:0 6px;border-radius:8px;margin-left:6px;vertical-align:middle}
+  .jump{display:inline-flex;gap:6px;margin-left:8px;vertical-align:middle}
+  .jump button{font-family:system-ui,sans-serif;font-size:11px;padding:1px 8px;border:1px solid var(--line);background:var(--btnbg);border-radius:10px;cursor:pointer;color:var(--accent)}
+  .jump button.sub{color:var(--accent2)}
+  .jump button.covered{opacity:.62;font-style:italic}
+  .jump button:hover{background:var(--navhover)}
+  .back{font-family:system-ui,sans-serif;font-size:11px;color:var(--accent);border:1px solid var(--line);background:var(--btnbg);border-radius:10px;padding:1px 8px;cursor:pointer;margin-left:8px}
+  sup.fnm{color:var(--accent);font-size:10px;font-family:system-ui,sans-serif;font-weight:bold}
+  .apparatus{margin:6px 0 2px 14px;padding:7px 12px;border-left:2px solid var(--line);background:var(--appbg);font-size:13px;line-height:1.5}
+  .apparatus .note{color:var(--fg)}
+  .apparatus .mk{font-family:system-ui,sans-serif;font-weight:bold;color:var(--accent);font-size:11px;margin-right:5px}
+  .apparatus abbr{text-decoration:none;border-bottom:1px dotted var(--mut);cursor:help;font-family:system-ui,sans-serif;font-size:11px;color:var(--mut)}
+  .apparatus .xref{font-family:system-ui,sans-serif;font-size:12px;color:var(--accent2)}
+  #status{color:var(--mut);font-size:14px;font-family:system-ui,sans-serif;padding:30px}
+  .hint{font-family:system-ui,sans-serif;font-size:12px;color:var(--mut);margin-top:6px}
+  .hamb{display:none;font-size:18px;background:var(--panel);border:1px solid var(--line);color:var(--fg);border-radius:6px;padding:2px 10px;cursor:pointer;line-height:1}
+  .backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:15}
+  @media(max-width:768px){
+    header{gap:8px;padding:8px 12px}
+    header h1{font-size:14px;white-space:normal}
+    .hint#loc{display:none}
+    header input[type=search]{width:130px;min-width:90px}
+    .ctrls #wtog{display:none}
+    .hamb{display:inline-flex}
+    nav{position:fixed;top:0;bottom:0;left:0;z-index:20;width:82%;max-width:320px;transform:translateX(-100%);transition:transform .22s;box-shadow:2px 0 16px rgba(0,0,0,.3)}
+    nav.open{transform:none}
+    aside#results{position:fixed;top:0;right:0;bottom:0;z-index:20;width:90%;max-width:360px;box-shadow:-2px 0 16px rgba(0,0,0,.3)}
+    main{padding:16px 16px 100px}
+    .reading{--rwidth:100%}
+    .backdrop.show{display:block}
+  }
+</style>
+</head>
+<body>
+<header>
+  <button class="hamb" id="hamb" data-i18n-title="r_volumes" title="Volumes">☰</button>
+  <a href="../index.html" class="homelink" title="Home">⌂</a>
+  <h1>Sixth Buddhist Council Tipiṭaka</h1>
+  <span class="hint" id="loc"></span>
+  <span class="sp"></span>
+  <input id="q" type="search" placeholder="Search all layers — diacritics optional" autocomplete="off">
+  <select id="qlayer" title="Scope">
+    <option value="">All</option><option value="pali-unicode">Tipiṭaka</option>
+    <option value="atthakatha-unicode">Aṭṭhakathā</option><option value="tika-unicode">Ṭīkā</option>
+  </select>
+  <span class="ctrls">
+    <button id="fdec" data-i18n-title="r_smaller" title="Smaller text">A−</button>
+    <button id="finc" data-i18n-title="r_larger" title="Larger text">A+</button>
+    <button id="wtog" data-i18n-title="r_width" title="Reading width">↔</button>
+  </span>
+  <button class="langbtn themebtn">ES</button>
+  <button class="themebtn" id="themebtn" data-i18n-title="theme_toggle" title="Toggle light/dark">◐</button>
+</header>
+<div class="wrap">
+  <nav id="nav"></nav>
+  <main id="main"><div id="status">Loading…</div></main>
+  <aside id="results" hidden><div id="rhead"></div><div id="rlist"></div></aside>
+</div>
+<div class="backdrop" id="backdrop"></div>
+<script>
+(function(){const s=localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  document.documentElement.setAttribute('data-theme',s);})();
+function toggleTheme(){const d=document.documentElement;const n=d.getAttribute('data-theme')==='dark'?'light':'dark';
+  d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n);}
+document.addEventListener('DOMContentLoaded',()=>{const b=document.getElementById('themebtn');if(b)b.onclick=toggleTheme;});
+// reading controls (font size + width), persisted
+(function(){
+  const root=document.documentElement;
+  let size=+localStorage.getItem('osbct-rsize')||17;
+  let wide=localStorage.getItem('osbct-rwide')==='1';
+  function apply(){root.style.setProperty('--rsize',size+'px');root.style.setProperty('--rwidth',wide?'1040px':'760px');}
+  apply();
+  document.addEventListener('DOMContentLoaded',apply);
+  window.__setSize=d=>{size=Math.max(13,Math.min(26,size+d));localStorage.setItem('osbct-rsize',size);apply();};
+  window.__togWidth=()=>{wide=!wide;localStorage.setItem('osbct-rwide',wide?'1':'0');apply();};
+  document.addEventListener('DOMContentLoaded',()=>{
+    const g=id=>document.getElementById(id);
+    if(g('finc'))g('finc').onclick=()=>__setSize(1);
+    if(g('fdec'))g('fdec').onclick=()=>__setSize(-1);
+    if(g('wtog'))g('wtog').onclick=__togWidth;
+    const hb=g('hamb'),nv=g('nav'),bd=g('backdrop');
+    if(hb)hb.onclick=()=>{const open=nv.classList.toggle('open');bd.classList.toggle('show',open);};
+    if(bd)bd.onclick=()=>{nv.classList.remove('open');bd.classList.remove('show');$('#results').hidden=true;};
+  });
+})();
+const LAYERS={canon:{tag:'t-canon',name:'Tipiṭaka'},commentary:{tag:'t-comm',name:'Aṭṭhakathā'},subcommentary:{tag:'t-sub',name:'Ṭīkā'}};
+const R2_BASE="https://pub-825764a1384f4cc8bb611b95a1a636ff.r2.dev";
+const FOLDER={canon:'pali-unicode',commentary:'atthakatha-unicode',subcommentary:'tika-unicode'};
+// cross-reference work-code → ordered volume files (clean codes only; noisy ones stay plain text)
+const XC_CANON={'Dī':['06Di01','07Di02','08Di03'],'Ma':['09Ma01','10Ma02','11Ma03'],
+  'Saṁ':['12Sam01','13Sam02','14Sam03'],'Aṁ':['15An01','16An02','17An03'],
+  'Khu':['18Khu01','19Khu02','20Khu03','21Khu04','22Khu05','23Khu06','24Khu07','25Khu08','26Khu09','27Khu10','28Khu11'],
+  'Vi':['01Vin01','02Vin02','03Vin03','04Vin04','05Vin05'],
+  'Abhi':['29Abhi01','30Abhi02','31Abhi03','32Abhi04','33Abhi05','34Abhi06','35Abhi07','36Abhi08','37Abhi09','38Abhi10','39Abhi11','40Abhi12']};
+const XC_COMM={'Dī':['07DiA01','08DiA02','09DiA03'],'Ma':['10MaA01','11MaA02','12MaA03','13MaA04'],
+  'Saṁ':['14SamA01','15SamA02','16SamA03'],'Aṁ':['17AnA01','18AnA02','19AnA03'],
+  'Vi':['01VinA01','02VinA02','03VinA03','04VinA04','05Kankha','06VinSg06'],
+  'Abhi':['48AbhiA01','49AbhiA02','50AbhiA03']};
+function resolveXref(work,vol){
+  if(work==='Upari'||work==='Heṭṭhā') return curVol;           // same volume
+  let base=work, map=XC_CANON;
+  if(work.endsWith('-Ṭṭha')){ base=work.slice(0,-5); map=XC_COMM; }
+  else if(work.endsWith('-Ṭī')||work.endsWith('-Anuṭī')) return null; // subcommentary map not wired
+  const arr=map[base]; if(!arr) return null;
+  const i=(vol||1)-1; return (i>=0&&i<arr.length)?arr[i]:null;
+}
+async function navPage(vol,page){ await openVol(vol); const el=document.querySelector('.para[data-page="'+page+'"]'); if(el){el.scrollIntoView({block:'center'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1400);} }
+window.navXref=async(work,vol,page)=>{ const v=resolveXref(work,vol); if(v) navPage(v,page); };
+window.citePara=btn=>{ const url=location.origin+location.pathname+'#'+btn.dataset.h; const txt=btn.dataset.c+'  '+url;
+  navigator.clipboard.writeText(txt).then(()=>{btn.textContent=t('r_copied');setTimeout(()=>btn.textContent=t('r_cite'),1400);}); };
+// highlight the searched term in a landed paragraph (diacritic-insensitive, length-preserving fold)
+let HLQ='', curQuery='';
+const HLFOLD={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
+const hfold=s=>s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>HLFOLD[c]||c);
+function markInEl(el,q){
+  if(!el||!q) return; const fq=hfold(q.trim()); if(!fq) return;
+  const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null);
+  const nodes=[]; while(walker.nextNode()){ if(walker.currentNode.parentNode.nodeName!=='MARK') nodes.push(walker.currentNode); }
+  for(const node of nodes){
+    const text=node.nodeValue, f=hfold(text); let idx=f.indexOf(fq); if(idx<0) continue;
+    const frag=document.createDocumentFragment(); let last=0;
+    while(idx>=0){ if(idx>last)frag.appendChild(document.createTextNode(text.slice(last,idx)));
+      const m=document.createElement('mark'); m.className='shl'; m.textContent=text.slice(idx,idx+fq.length);
+      frag.appendChild(m); last=idx+fq.length; idx=f.indexOf(fq,last); }
+    if(last<text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    node.parentNode.replaceChild(frag,node);
+  }
+}
+let MAN=null, cache={}, curVol=null;
+const $=s=>document.querySelector(s), main=()=>$('#main');
+const esc=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+async function boot(){
+  try{ MAN=await (await fetch('manifest.json')).json(); }
+  catch(e){ $('#status').textContent='Could not load manifest.json — serve this folder over http (python3 -m http.server).'; return; }
+  try{ CANONMAP=await (await fetch('links/_canonindex.json')).json(); }catch(e){ CANONMAP={}; }
+  renderNav();
+  HLQ=new URLSearchParams(location.search).get('q')||'';
+  const h=location.hash.slice(1);
+  if(h){ const [v,...r]=h.split('/'); openVol(v, decodeURIComponent(r.join('/'))); }
+  else $('#status').innerHTML=t('r_selectvol')+'<div class="hint">'+t('r_hint')+'</div>';
+}
+function workName(fb){ const v=MAN.volumes[fb]; return v? v.work : fb; }
+function renderNav(){
+  const groups={canon:t('grp_canon'),commentary:t('grp_comm'),subcommentary:t('grp_sub')};
+  let html='';
+  for(const layer of ['canon','commentary','subcommentary']){
+    html+=`<div class="grp">${groups[layer]}</div>`;
+    for(const fb of MAN.order[layer]){
+      html+=`<div class="v" data-v="${fb}" onclick="openVol('${fb}')"><span>${esc(shortWork(fb))}</span><span class="code">${fb}</span></div>`;
+    }
+  }
+  $('#nav').innerHTML=html;
+}
+function shortWork(fb){
+  const w=workName(fb); // trim leading "Layer: " and colon groups
+  return w.replace(/^[^:]*:\s*/,'').slice(0,46);
+}
+async function getVol(fb){
+  if(cache[fb]) return cache[fb];
+  const d=await (await fetch('../'+fb+'.json')).json();
+  let fwd=null,rev=null,app=null;
+  try{ fwd=await (await fetch('links/'+fb+'.fwd.json')).json(); }catch(e){}
+  try{ rev=await (await fetch('links/'+fb+'.rev.json')).json(); }catch(e){}
+  try{ app=await (await fetch('apparatus/'+fb+'.app.json')).json(); }catch(e){}
+  return cache[fb]={d,fwd,rev,app};
+}
+const SIGLA={'Sī':'Sīhaḷa (Sinhalese)','Syā':'Syāma (Thai)','Kaṁ':'Kamboja (Cambodian)','Kaṃ':'Kamboja (Cambodian)',
+  'I':'Iṅgalisa (English/PTS)','Ka':'Katthaci (some Burmese mss)','Ṭṭha':'Aṭṭhakathā','?':'conjectured old reading',
+  'Ka-Sī':'Ka + Sīhaḷa','katthaci':'in some copies','sabbattha':'in all copies','bahūsu':'in many copies'};
+function sigTip(s){return SIGLA[s]||s;}
+function renderApparatus(notes){
+  if(!notes||!notes.length) return '';
+  let rows='';
+  for(const n of notes){
+    let parts=[];
+    for(const v of n.variants||[]){
+      const sg=(v.sigla||[]).map(s=>`<abbr title="${esc(sigTip(s))}">${esc(s)}</abbr>`).join(', ');
+      parts.push(`<i>${esc(v.reading)}</i>${sg?' ('+sg+')':''}`);
+    }
+    for(const x of n.xrefs||[]){
+      const label=`${esc(x.work)}${x.vol?' '+x.vol:''}. ${x.page}${x.page_to?'–'+x.page_to:''}`;
+      const canJump=resolveXref(x.work,x.vol);
+      parts.push(canJump
+        ? `<button class="xref jump-x" title="Go to ${esc(x.work)} p.${x.page}" onclick="navXref('${esc(x.work)}',${x.vol||'null'},${x.page})">${label} →</button>`
+        : `<span class="xref">${label}</span>`);
+    }
+    if(!parts.length&&n.text) parts.push(esc(n.text));
+    rows+=`<div class="note"><span class="mk">${n.n}</span> ${parts.join('; ')}</div>`;
+  }
+  return `<div class="apparatus">${rows}</div>`;
+}
+function closeDrawers(){const n=$('#nav'),b=$('#backdrop');if(n)n.classList.remove('open');if(b)b.classList.remove('show');}
+async function openVol(fb,scrollId){
+  curVol=fb; closeDrawers();
+  document.querySelectorAll('nav .v').forEach(e=>e.classList.toggle('active',e.dataset.v===fb));
+  main().innerHTML='<div id="status">'+t('r_loading')+' '+fb+'…</div>';
+  const {d,fwd,rev,app}=await getVol(fb);
+  const layer=MAN.volumes[fb].layer;
+  const L=LAYERS[layer];
+  const folder=FOLDER[layer];
+  let html=`<div class="col-tag ${L.tag}">${L.name}</div>`+
+           `<div class="worktitle">${esc(shortWork(fb))}</div>`+
+           `<div class="crumb">${fb} · ${d.paragraphs.length} ${t('r_paras')}</div>`;
+  let lastPage=null,lastHead=null,lastVagga=null;
+  for(const p of d.paragraphs){
+    if(p.printed!==lastPage){ html+=`<a class="pagemark" target="_blank" rel="noopener" href="${R2_BASE}/${folder}/${fb}.pdf#page=${p.pdf_page}" title="${t('r_viewpage')} ${p.printed}">${t('r_page')} ${p.printed??'?'} ⧉</a>`; lastPage=p.printed; }
+    const vg=p.vagga&&p.vagga!=='X'?p.vagga:null, su=p.sutta&&p.sutta!=='X'?p.sutta:null;
+    if(vg&&vg!==lastVagga){ html+=`<div class="head vagga">${esc(vg)}</div>`; lastVagga=vg; }
+    if(su&&su!==lastHead){ html+=`<div class="head">${esc(su)}</div>`; lastHead=su; }
+    const bodyText=esc(p.text.replace(/^\s*\d+(-\d+)?\.\s*/,'')).replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})\b/g,'$1<sup class="fnm">$2</sup>');
+    const citeStr=[L.name,su,('§'+p.n)].filter(Boolean).join(', ')+' (p.'+(p.printed??'?')+')';
+    html+=`<div class="para" id="${esc(p.id)}" data-page="${p.printed}"><span class="pn">${p.n}${p.n_to&&p.n_to!==p.n?'–'+p.n_to:''}.</span>`+
+          bodyText+
+          (p.peyyala?' <span class="pey">peyyāla</span>':'')+
+          ` <button class="cite" data-c="${esc(citeStr)}" data-h="${esc(fb+'/'+p.id)}" onclick="citePara(this)" title="Copy citation + link">${t('r_cite')}</button>`;
+    // jumps
+    if(fwd&&fwd[p.n]){
+      const lk=fwd[p.n];
+      html+='<span class="jump">';
+      if(lk.commentary) html+=jbtn(lk.commentary,'Aṭṭhakathā','');
+      if(lk.subcommentary) html+=jbtn(lk.subcommentary,'Ṭīkā','sub');
+      html+='</span>';
+    }
+    if(rev&&rev[p.id]){
+      html+=`<button class="back" onclick="nav('${revTarget(rev[p.id])}')">↩ Canon</button>`;
+    }
+    if(app&&app[p.id]) html+=renderApparatus(app[p.id]);
+    html+='</div>';
+  }
+  main().innerHTML='<div class="reading">'+html+'</div>';
+  history.replaceState(null,'',location.pathname+'#'+fb+(scrollId?'/'+scrollId:''));
+  if(scrollId){ const el=document.getElementById(scrollId); if(el){ el.scrollIntoView({block:'center'}); if(HLQ){ markInEl(el,HLQ); HLQ=''; } } }
+  else main().scrollTop=0;
+  updLoc(fb);
+}
+function jbtn(tg,label,cls){
+  const st=tg.state==='covered'?'covered':'';
+  const tip=tg.state==='covered'?` title="${window.t('r_covered')} ¶${tg.n}"`:'';
+  return `<button class="${cls} ${st}"${tip} onclick="nav('${tg.vol}/${encodeURIComponent(tg.id)}')">→ ${label} ¶${tg.n}${tg.state==='covered'?'*':''}</button>`;
+}
+function revTarget(canonId){
+  // canonId belongs to some canon vol; find it via fwd shards is heavy — encode vol by lookup
+  return canonFindVol(canonId)+'/'+encodeURIComponent(canonId);
+}
+let CANONMAP=null;
+function canonFindVol(id){ return (CANONMAP&&CANONMAP[id])||MAN.order.canon[0]; }
+async function nav(target){
+  const [v,id]=target.split('/');
+  await openVol(v, decodeURIComponent(id||''));
+}
+function updLoc(fb){ $('#loc').textContent = workName(fb); }
+
+// ---- integrated search ----
+const FOLD={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
+const fold=s=>s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLD[c]||c);
+let TERMS=null, sIdxCache={};
+async function ensureTerms(){
+  if(TERMS) return TERMS;
+  $('#rhead').innerHTML='Loading search index…'; $('#results').hidden=false;
+  const j=await (await fetch('../index/terms.compact.json')).json();
+  TERMS={map:j.terms,vols:j.vols,layers:j.layers}; return TERMS;
+}
+async function sShard(vi){ if(sIdxCache[vi]) return sIdxCache[vi];
+  return sIdxCache[vi]=await (await fetch('../index/'+TERMS.vols[vi]+'.idx.json')).json(); }
+async function runSearch(){
+  const q=$('#q').value.trim(); if(!q) return;
+  curQuery=q;
+  const lf=$('#qlayer').value;
+  await ensureTerms();
+  const ft=fold(q), vis=TERMS.map[ft];
+  $('#results').hidden=false;
+  if(!vis){ $('#rhead').innerHTML=head(q,0); $('#rlist').innerHTML=''; return; }
+  let out=[],total=0;
+  for(const vi of vis){
+    if(lf && TERMS.layers[vi]!==lf) continue;
+    const sh=await sShard(vi);
+    for(const [pi,c] of (sh.inv[ft]||[])){ total+=c; if(out.length<150) out.push({vol:TERMS.vols[vi],lay:TERMS.layers[vi],p:sh.paras[pi]}); }
+  }
+  $('#rhead').innerHTML=head(q,total);
+  const layName={'pali-unicode':'Tip','atthakatha-unicode':'Aṭṭh','tika-unicode':'Ṭīkā'};
+  $('#rlist').innerHTML=out.map(h=>{
+    const p=h.p, loc=[p.book,p.vagga,p.sutta].filter(x=>x&&x!=='X').join(' › ');
+    const f=fold(p.text), i=f.indexOf(ft), a=Math.max(0,i-40),b=Math.min(p.text.length,i+ft.length+60);
+    const snip=(a>0?'…':'')+esc(p.text.slice(a,i))+'<mark>'+esc(p.text.slice(i,i+ft.length))+'</mark>'+esc(p.text.slice(i+ft.length,b))+'…';
+    return `<div class="rhit" onclick="HLQ=curQuery;nav('${h.vol}/${encodeURIComponent(p.id)}')"><div class="rloc"><span class="rlay">${layName[h.lay]}</span>${esc(loc||'')} ¶${p.n} · p.${p.page}</div>${snip}</div>`;
+  }).join('')||'<div class="rhit">No matches in that layer.</div>';
+}
+function head(q,total){ return `<span class="close" onclick="document.getElementById('results').hidden=true">✕</span>`+
+  `${total.toLocaleString()} occurrence(s) for “${esc(q)}”`; }
+$('#q').addEventListener('keydown',e=>{ if(e.key==='Enter') runSearch(); });
+
+window.addEventListener('hashchange',()=>{});
+boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+# Source and Unicode PDFs — public domain; the Unicode set is served from Cloudflare R2,
+# and both are archived on Zenodo. Kept out of git to stay lean.
+pali/
+atthakatha/
+tika/
+pali-unicode/
+atthakatha-unicode/
+tika-unicode/
+
+# Working directories that duplicate data now published under site/ and data/
+corpus/
+corpus-prototype/
+
+# Top-level report copies (the canonical copies live in docs/)
+/CONVERSION_REPORT.md
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+uploads/
+*.log

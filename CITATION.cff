@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+title: "Sixth Buddhist Council Tipiṭaka (Chaṭṭhasaṅgītipiṭaka) — Unicode corpus"
+message: "If you use this corpus, please cite it using these metadata."
+type: dataset
+abstract: >-
+  A searchable, cross-referenced Unicode corpus of the Sixth Buddhist Council recension of the
+  Pāḷi Tipiṭaka with its Aṭṭhakathā (commentaries) and Ṭīkā (subcommentaries), 118 volumes,
+  converted from the legacy-font edition published by the Ministry of Religious Affairs, Yangon.
+  Includes structural extraction, over 54,000 variant readings from the printed apparatus, and
+  cross-layer paragraph linking.
+authors:
+  - name: "Instituto de Estudios Buddhistas Hispano (IEBH)"
+  - name: "Buddhismo Theravāda México-Hispano AR (BTHAR)"
+keywords:
+  - Pāḷi
+  - Tipiṭaka
+  - Theravāda
+  - Aṭṭhakathā
+  - Ṭīkā
+  - Chaṭṭhasaṅgīti
+  - digital humanities
+url: "https://tipitaka.buddha-dhamma.net"
+license: CC-BY-4.0
+version: "1.0.0"
+date-released: "2026-07-22"

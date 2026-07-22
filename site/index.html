@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sixth Buddhist Council Tipiṭaka (Chaṭṭhasaṅgītipiṭaka)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--fg:#20201c;--mut:#7a736a;--line:#e6e1d8;--accent:#7a5b34;--bg:#faf8f4;--card:#fff}
+  html[data-theme=dark]{--fg:#e7e2d8;--mut:#9a9184;--line:#332f28;--accent:#cba976;--bg:#171511;--card:#211e18}
+  *{box-sizing:border-box}
+  body{font-family:'Gentium Plus',Georgia,'Times New Roman',serif;color:var(--fg);background:var(--bg);margin:0;
+       min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .themebtn,.langbtn{font-size:14px;background:none;border:1px solid var(--line);border-radius:6px;padding:5px 10px;cursor:pointer;color:var(--fg);font-family:system-ui,sans-serif}
+  a.btn.alt{background:var(--card)!important}
+  .card{max-width:640px;text-align:center}
+  h1{font-size:27px;margin:0 0 6px;letter-spacing:.02em}
+  .sub{color:var(--mut);font-size:15px;margin-bottom:4px}
+  .prov{color:var(--mut);font-size:12.5px;font-family:system-ui,sans-serif;margin:14px auto 26px;max-width:520px;line-height:1.6}
+  .stats{display:flex;gap:26px;justify-content:center;margin:22px 0 30px;flex-wrap:wrap}
+  .stat b{display:block;font-size:22px;color:var(--accent)}
+  .stat span{font-family:system-ui,sans-serif;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+  .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  a.btn{font-family:system-ui,sans-serif;font-size:15px;text-decoration:none;padding:11px 22px;border-radius:8px;
+        background:var(--accent);color:#fff;border:1px solid var(--accent)}
+  a.btn.alt{background:#fff;color:var(--accent)}
+  .foot{margin-top:30px;font-family:system-ui,sans-serif;font-size:11px;color:var(--mut);line-height:1.7}
+  .credits{margin:22px auto 0;max-width:560px;font-family:system-ui,sans-serif;font-size:9px;color:var(--mut);line-height:1.6;border-top:1px solid var(--line);padding-top:14px}
+  .credits a{color:var(--accent)}
+</style>
+</head>
+<body>
+  <div style="position:fixed;top:16px;right:18px;display:flex;gap:8px">
+    <button class="langbtn" title="Cambiar idioma">ES</button>
+    <button class="themebtn" onclick="var d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n)" title="Toggle light/dark">◐</button>
+  </div>
+  <script>document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));</script>
+  <script src="i18n.js"></script>
+  <div class="card">
+    <h1>Sixth Buddhist Council Tipiṭaka<br><span style="font-size:.62em;color:var(--mut)">(Chaṭṭhasaṅgītipiṭaka)</span></h1>
+    <div class="sub" data-i18n="land_sub">Chaṭṭha Saṅgāyana edition — Pāḷi Canon, Commentaries &amp; Subcommentaries</div>
+    <div class="prov" data-i18n="land_prov">Romanised from the edition published by the Ministry of Religious Affairs,
+      Yangon (Pāḷi Series, 2008). A searchable, cross-referenced Unicode corpus of all 118 volumes.</div>
+    <div class="stats">
+      <div class="stat"><b>118</b><span data-i18n="stat_volumes">volumes</span></div>
+      <div class="stat"><b>83,751</b><span data-i18n="stat_paragraphs">paragraphs</span></div>
+      <div class="stat"><b>54,036</b><span data-i18n="stat_variants">variant readings</span></div>
+      <div class="stat"><b data-i18n="land_layers3">3 layers</b><span data-i18n="stat_layers">linked</span></div>
+    </div>
+    <div class="btns">
+      <a class="btn" href="reader/reader.html" data-i18n="btn_read">Read &amp; browse</a>
+      <a class="btn alt" href="search.html" data-i18n="btn_search">Search</a>
+      <a class="btn alt" href="downloads.html" data-i18n="btn_download">Download PDFs</a>
+      <a class="btn alt" href="about.html" data-i18n="btn_about">About</a>
+    </div>
+    <div class="foot" data-i18n="land_foot">
+      Tipiṭaka · Aṭṭhakathā · Ṭīkā — navigate from any canon paragraph to its commentary and
+      subcommentary. Diacritic-insensitive search across the whole corpus.
+    </div>
+    <div class="credits" data-i18n="credits">
+      <b>Editorial Board and Staff.</b> This Tipiṭaka material has been sponsored by the
+      Venerable Aggasāmi, Mr. Tran Minh Loi, Mr. Tu Son, the Tathāgata Meditation Center,
+      the Paññārāma Meditation Center, and devotees from Myanmar and Vietnam. This material
+      is published by the Ministry of Religious Affairs of Myanmar for free distribution as
+      a Gift of the Dhamma. Permission is granted to duplicate this material for free,
+      non-commercial distribution. Comments and suggestions are welcome; please send them to
+      <a href="mailto:buddhasasanasociety@gmail.com">buddhasasanasociety@gmail.com</a>.
+      Version 01 — 10 November 2008.
+    </div>
+  </div>
+</body>
+</html>
