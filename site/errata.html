@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Errata — Sixth Buddhist Council Tipiṭaka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="i18n.js"></script>
+<style>
+  :root{--fg:#20201c;--mut:#7a736a;--line:#e6e1d8;--accent:#7a5b34;--accent2:#33506e;--bg:#faf8f4;--panel:#fff;--tag:#efe9df;--hl:#fbe7b8}
+  html[data-theme=dark]{--fg:#e7e2d8;--mut:#9a9184;--line:#332f28;--accent:#cba976;--accent2:#88add8;--bg:#171511;--panel:#211e18;--tag:#2e2a1e;--hl:#5c4a1c}
+  *{box-sizing:border-box}
+  body{font-family:'Gentium Plus',Georgia,'Times New Roman',serif;color:var(--fg);background:var(--bg);margin:0;line-height:1.6}
+  header{padding:16px 24px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .topnav{font-family:system-ui,sans-serif;font-size:13px}
+  .topnav a{color:var(--accent);text-decoration:none;margin-right:6px}
+  .topnav a:hover{text-decoration:underline}
+  .sp{flex:1}
+  .themebtn,.langbtn{font-size:14px;background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;color:var(--fg);font-family:system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto;padding:24px 22px 90px}
+  h1{font-size:25px;margin:0 0 4px}
+  .lead{color:var(--mut);font-size:15px;font-family:system-ui,sans-serif;line-height:1.6;max-width:720px}
+  .principle{background:var(--tag);border-radius:8px;padding:12px 16px;font-family:system-ui,sans-serif;font-size:13px;color:var(--mut);margin:16px 0 8px;max-width:720px}
+  .counts{display:flex;gap:22px;margin:18px 0 10px;flex-wrap:wrap}
+  .counts b{display:block;font-size:22px;color:var(--accent)}
+  .counts span{font-family:system-ui,sans-serif;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+  h2{font-size:17px;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:5px;margin:28px 0 4px}
+  table{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}
+  th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+  th{font-family:system-ui,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+  .loc{font-family:system-ui,sans-serif;font-size:12px;color:var(--accent2);white-space:nowrap}
+  .printed mark{background:var(--hl);border-radius:2px;padding:0 1px}
+  .arrow{color:var(--mut)}
+  .sug{font-style:italic}
+  .conf{font-family:system-ui,sans-serif;font-size:10px;border-radius:9px;padding:1px 7px}
+  .c-high{background:#e2efe0;color:#3a6b34}.c-review{background:#f5ecd8;color:#8a6a2a}.c-na{background:var(--tag);color:var(--mut)}
+  html[data-theme=dark] .c-high{background:#26331e;color:#a7d69a}html[data-theme=dark] .c-review{background:#3a301a;color:#e6c789}
+  .note{font-family:system-ui,sans-serif;font-size:12px;color:var(--mut)}
+  #status{color:var(--mut);font-family:system-ui,sans-serif;padding:20px 0}
+</style>
+</head>
+<body>
+<header>
+  <div class="topnav"><a href="index.html">←&nbsp;<span data-i18n="nav_home">Home</span></a><a href="reader/reader.html" data-i18n="nav_reader">Reader</a><a href="search.html" data-i18n="nav_search">Search</a><a href="about.html" data-i18n="nav_about">About</a></div>
+  <span class="sp"></span>
+  <button class="langbtn">ES</button>
+  <button class="themebtn" id="themebtn" title="Toggle light/dark">◐</button>
+</header>
+<script>
+document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+document.addEventListener('DOMContentLoaded',()=>{document.getElementById('themebtn').onclick=()=>{var d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n);};});
+const T={ // page-specific bilingual strings
+ h1:{en:'Errata register',es:'Registro de erratas'},
+ lead:{en:'Typographic errata detected in the printed edition, plus known conversion limitations. The base text is never altered — the printed reading is preserved, and any emendation is a candidate pending scholarly confirmation.',
+       es:'Erratas tipográficas detectadas en la edición impresa, más limitaciones conocidas de la conversión. El texto base nunca se altera — se conserva la lectura impresa, y cualquier enmienda es una candidata pendiente de confirmación erudita.'},
+ c_err:{en:'edition errata',es:'erratas de la edición'},
+ c_lim:{en:'conversion limitations',es:'limitaciones de conversión'},
+ c_hi:{en:'high-confidence',es:'de alta confianza'},
+ h_err:{en:'Edition errata (misprints in the printed text)',es:'Erratas de la edición (errores en el texto impreso)'},
+ h_lim:{en:'Conversion limitations (unmapped ligature glyphs)',es:'Limitaciones de conversión (glifos de ligadura sin mapear)'},
+ th_loc:{en:'Location',es:'Ubicación'},th_printed:{en:'Printed',es:'Impreso'},
+ th_sug:{en:'Suggested',es:'Sugerido'},th_conf:{en:'Confidence',es:'Confianza'},
+ note_lim:{en:'A composite ligature glyph in this volume has no Unicode mapping in the source PDF, so it extracts incorrectly. This is a limitation of our conversion, not an error in the edition. Fix pending.',
+           es:'Un glifo de ligadura compuesto en este volumen no tiene mapeo Unicode en el PDF de origen, por lo que se extrae incorrectamente. Es una limitación de nuestra conversión, no un error de la edición. Corrección pendiente.'}
+};
+function tt(k){return (T[k]&&T[k][osbctLang?osbctLang():'en'])||T[k].en;}
+</script>
+<main>
+  <h1 id="h1">Errata register</h1>
+  <div class="lead" id="lead"></div>
+  <div class="principle" id="principle"></div>
+  <div class="counts" id="counts"></div>
+  <div id="status">Loading…</div>
+  <div id="tables"></div>
+</main>
+<script>
+const esc=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function hl(printed,glyph){ // highlight the offending glyph in the printed reading
+  const i=printed.indexOf(glyph); if(i<0) return esc(printed);
+  return esc(printed.slice(0,i))+'<mark>'+esc(glyph)+'</mark>'+esc(printed.slice(i+glyph.length));
+}
+(async function(){
+  document.getElementById('h1').textContent=tt('h1');
+  document.getElementById('lead').textContent=tt('lead');
+  let data;
+  try{ data=await (await fetch('errata.json')).json(); }
+  catch(e){ document.getElementById('status').textContent='Could not load errata.json.'; return; }
+  document.getElementById('status').style.display='none';
+  document.getElementById('principle').textContent=data.principle;
+  const err=data.entries.filter(e=>e.category==='edition_erratum');
+  const lim=data.entries.filter(e=>e.category==='extraction_limitation');
+  const hi=err.filter(e=>e.confidence==='high').length;
+  document.getElementById('counts').innerHTML=
+    `<div><b>${err.length}</b><span>${tt('c_err')}</span></div>`+
+    `<div><b>${hi}</b><span>${tt('c_hi')}</span></div>`+
+    `<div><b>${lim.length}</b><span>${tt('c_lim')}</span></div>`;
+  function tbl(entries,withSug){
+    let r=`<table><tr><th>ID</th><th>${tt('th_loc')}</th><th>${tt('th_printed')}</th>`+
+      (withSug?`<th>${tt('th_sug')}</th><th>${tt('th_conf')}</th>`:`<th></th>`)+`</tr>`;
+    for(const e of entries){
+      const loc=`${e.volume} · p.${e.printed_page??'?'}`;
+      r+=`<tr><td class="loc">${e.id}</td><td class="loc">${esc(loc)}</td>`+
+         `<td class="printed">${hl(e.printed_reading,e.glyph)}</td>`;
+      if(withSug){
+        const cc=e.confidence==='high'?'c-high':(e.confidence==='review'?'c-review':'c-na');
+        r+=`<td class="sug">${e.suggested_reading?'<span class="arrow">→</span> '+esc(e.suggested_reading):'—'}</td>`+
+           `<td><span class="conf ${cc}">${e.confidence}</span></td>`;
+      } else r+=`<td class="note">${tt('note_lim')}</td>`;
+      r+=`</tr>`;
+    }
+    return r+`</table>`;
+  }
+  document.getElementById('tables').innerHTML=
+    `<h2>${tt('h_err')}</h2>`+tbl(err,true)+
+    `<h2>${tt('h_lim')}</h2>`+tbl(lim,false);
+})();
+</script>
+</body>
+</html>

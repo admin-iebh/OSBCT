@@ -6,6 +6,8 @@ window.I18N = {
   nav_search:{en:'Search',es:'Búsqueda'},
   nav_downloads:{en:'Downloads',es:'Descargas'},
   nav_about:{en:'About',es:'Acerca'},
+  nav_errata:{en:'Errata',es:'Erratas'},
+  btn_errata:{en:'Errata',es:'Erratas'},
   theme_toggle:{en:'Toggle light / dark',es:'Cambiar claro / oscuro'},
   lang_toggle:{en:'Cambiar a español',es:'Switch to English'},
 
