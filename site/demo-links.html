@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OSBCT — Demonstration links</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--fg:#20201c;--mut:#7a736a;--line:#e6e1d8;--accent:#7a5b34;--bg:#faf8f4;--panel:#fff;--tag:#efe9df;--tagt:#5a4a30}
+  *{box-sizing:border-box}
+  body{font-family:'Gentium Plus',Georgia,serif;color:var(--fg);background:var(--bg);margin:0;line-height:1.5}
+  main{max-width:820px;margin:0 auto;padding:26px 24px 80px}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:var(--mut);font-size:13.5px;font-family:system-ui,sans-serif;margin-bottom:22px}
+  h2{font-size:14px;font-variant:small-caps;letter-spacing:.04em;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:5px;margin:28px 0 6px}
+  .h2note{color:var(--mut);font-size:12.5px;font-family:system-ui,sans-serif;margin:0 0 12px}
+  .card{border:1px solid var(--line);border-radius:9px;background:var(--panel);padding:12px 15px;margin:10px 0}
+  .card .t{font-size:15px;margin-bottom:3px}
+  .card .loc{font-family:system-ui,sans-serif;font-size:12px;color:var(--mut);margin-bottom:8px}
+  .card .loc b{color:var(--tagt)}
+  .card a{font-family:system-ui,sans-serif;font-size:13px;text-decoration:none;color:#fff;background:var(--accent);padding:5px 13px;border-radius:6px;display:inline-block}
+  .card .exp{font-family:system-ui,sans-serif;font-size:12.5px;color:var(--mut);margin-top:9px;line-height:1.55}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--tag);color:var(--tagt);padding:1px 5px;border-radius:4px}
+  .foot{margin-top:30px;font-family:system-ui,sans-serif;font-size:12px;color:var(--mut)}
+</style>
+</head>
+<body>
+<main>
+  <h1>OSBCT — what changed, and where to see it</h1>
+  <div class="sub">Direct links into the live reader, one per improvement. Click each and it opens the exact paragraph.</div>
+
+  <h2>1 · Cross-layer linking</h2>
+  <p class="h2note">Each canon paragraph now carries <b>→ Aṭṭhakathā</b> and <b>→ Ṭīkā</b> jump buttons. Coverage is now ~98% overall; Saṁyutta and Aṅguttara improved most.</p>
+
+  <div class="card">
+    <div class="t">Saṁyutta — Oghataraṇasutta ¶1</div>
+    <div class="loc">Devatāsaṁyutta › Naḷavagga · <b>direct</b> link → Aṭṭhakathā 15SamA02 ¶1 · Ṭīkā 17SaT02</div>
+    <a href="https://buddha-dhamma.net/reader/reader.html#12Sam01/Devat%C4%81sa%E1%B9%81yutta%2FNa%E1%B8%B7avagga%2FOghatara%E1%B9%87asutta%2F1">Open in reader →</a>
+    <div class="exp">The very first sutta of the Saṁyutta. Use the jump buttons to move canon → commentary → subcommentary and <code>↩ Canon</code> back.</div>
+  </div>
+
+  <div class="card">
+    <div class="t">Aṅguttara — Rūpādivagga ¶7</div>
+    <div class="loc">Ekakanipātapāḷi › Rūpādivagga · <b>direct</b> link → Aṭṭhakathā 18AnA02 ¶7 · Ṭīkā 19AnT02</div>
+    <a href="https://buddha-dhamma.net/reader/reader.html#15An01/Ekakanip%C4%81tap%C4%81%E1%B8%B7i%2FR%C5%ABp%C4%81divagga%2FX%2F7">Open in reader →</a>
+    <div class="exp">Aṅguttara linking went from sparse to ~93% — this stretch of the Ekakanipāta now links all three layers.</div>
+  </div>
+
+  <h2>2 · Ligature-glyph fix</h2>
+  <p class="h2note">Four volumes had ligatures mis-extracted as control characters. The PDFs and text were corrected; these passages now read cleanly and are searchable. Each link opens with the word highlighted.</p>
+
+  <div class="card">
+    <div class="t">08DiA02 — «Ūhacca» ¶332</div>
+    <div class="loc">Sumaṅgalavilāsinī › Mahāvaggaṭṭhakathā › Mahāsamayasutta · p.272 · glyph <b>Ū</b> (was junk)</div>
+    <a href="https://buddha-dhamma.net/reader/reader.html?q=%C5%AAhacca#08DiA02/ItiSuma%E1%B9%85galavil%C4%81siniy%C4%81D%C4%ABghanik%C4%81ya%E1%B9%AD%E1%B9%ADhakat%2FMah%C4%81vagga%E1%B9%AD%E1%B9%ADhakath%C4%81%2FMah%C4%81samayasutta%2F332">Open in reader →</a>
+  </div>
+
+  <div class="card">
+    <div class="t">27Khu10 — «Ḍahantaṁ» ¶112</div>
+    <div class="loc">Nettipāḷi · p.139 · glyph <b>Ḍ</b> (was mis-read as <code>q</code>)</div>
+    <a href="https://buddha-dhamma.net/reader/reader.html?q=%E1%B8%8Cahanta%E1%B9%81#27Khu10/Nettip%C4%81%E1%B8%B7i%2FX%2FIda%E1%B9%81asekkhabh%C4%81giya%E1%B9%81sutta%E1%B9%81%2F112">Open in reader →</a>
+  </div>
+
+  <h2>3 · Errata register</h2>
+  <p class="h2note">49 catalogued misprints from the printed edition, recorded as an overlay (printed reading preserved; correction suggested).</p>
+  <div class="card">
+    <div class="t">The full register</div>
+    <div class="loc">e.g. E052 <b>Fevato → Revato</b> · E001 <b>Dêghanikāya → Dīghanikāya</b></div>
+    <a href="https://buddha-dhamma.net/errata.html">Open errata →</a>
+  </div>
+
+  <div class="foot">All links also work on the GitHub mirror by replacing <code>buddha-dhamma.net</code> with <code>osbct.buddha-dhamma.net</code>.</div>
+</main>
+</body>
+</html>
