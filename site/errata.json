@@ -4,9 +4,9 @@
  "generated": "2026-07-22",
  "method": "corpus-wide orthographic scan (characters outside the Pāḷi alphabet), adjudicated against rendered pages",
  "counts": {
-  "edition_erratum": 52,
-  "extraction_limitation": 6,
-  "total": 58
+  "edition_erratum": 49,
+  "extraction_limitation": 0,
+  "total": 49
  },
  "entries": [
   {
@@ -122,54 +122,6 @@
    "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
   },
   {
-   "id": "E008",
-   "volume": "08DiA02",
-   "layer": "Aṭṭhakathā",
-   "printed_page": 6,
-   "paragraph_id": "Pubbenivāsapaṭisaṁyuttakathā/Mahāvaggaṭṭhakathā/X/5",
-   "category": "extraction_limitation",
-   "glyph": "",
-   "codepoint": "U+008F",
-   "printed_reading": "āyuparimānṁ",
-   "suggested_reading": null,
-   "confidence": "n/a",
-   "context": "i, tesampi taṁ tadeva āyuparimānṁ hotīti veditabbaṁ.",
-   "status": "candidate",
-   "note": "Composite ligature glyph without Unicode mapping in the source PDF (ṇa-type ligature). Not an edition error; a conversion gap in this volume."
-  },
-  {
-   "id": "E009",
-   "volume": "08DiA02",
-   "layer": "Aṭṭhakathā",
-   "printed_page": 28,
-   "paragraph_id": "Sāvakasannipātaparicchedavaṇṇanā/Mahāvaggaṭṭhakathā/X/23",
-   "category": "extraction_limitation",
-   "glyph": "",
-   "codepoint": "U+008F",
-   "printed_reading": "cakkhuviññānṁ",
-   "suggested_reading": null,
-   "confidence": "n/a",
-   "context": "Na hi antokucchiyaṁ cakkhuviññānṁ uppajjati.",
-   "status": "candidate",
-   "note": "Composite ligature glyph without Unicode mapping in the source PDF (ṇa-type ligature). Not an edition error; a conversion gap in this volume."
-  },
-  {
-   "id": "E010",
-   "volume": "08DiA02",
-   "layer": "Aṭṭhakathā",
-   "printed_page": 72,
-   "paragraph_id": "ItiSumaṅgalavilāsiniyāDīghanikāyaṭṭhakat/X/Mahānidānasutta/95",
-   "category": "extraction_limitation",
-   "glyph": "",
-   "codepoint": "U+008F",
-   "printed_reading": "ñānṁ",
-   "suggested_reading": null,
-   "confidence": "n/a",
-   "context": "atvā gajjitaṁ mahantaṁ hoti, ñānṁ anupavisati, Buddhañāṇassa ma",
-   "status": "candidate",
-   "note": "Composite ligature glyph without Unicode mapping in the source PDF (ṇa-type ligature). Not an edition error; a conversion gap in this volume."
-  },
-  {
    "id": "E011",
    "volume": "08DiA02",
    "layer": "Aṭṭhakathā",
@@ -184,22 +136,6 @@
    "context": "ññesampi uttānoti na vattabbo. Rèhu-asurindo pana pādantato yāva",
    "status": "candidate",
    "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
-  },
-  {
-   "id": "E012",
-   "volume": "08DiA02",
-   "layer": "Aṭṭhakathā",
-   "printed_page": 90,
-   "paragraph_id": "ItiSumaṅgalavilāsiniyāDīghanikāyaṭṭhakat/Mahāvaggaṭṭhakathā/Mahānidānasutta/112",
-   "category": "extraction_limitation",
-   "glyph": "",
-   "codepoint": "U+008F",
-   "printed_reading": "sahajātasamosaranṁ",
-   "suggested_reading": null,
-   "confidence": "n/a",
-   "context": "araṇā”ti2 idaṁ sahajātasamosaranṁ nāma. “Dvayena vedanāya ekasa",
-   "status": "candidate",
-   "note": "Composite ligature glyph without Unicode mapping in the source PDF (ṇa-type ligature). Not an edition error; a conversion gap in this volume."
   },
   {
    "id": "E013",
@@ -232,38 +168,6 @@
    "context": "vatiṁsāsadisaṁ upasaṁharatha upaîetha allīyāpetha. Yatheva Tāvat",
    "status": "candidate",
    "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
-  },
-  {
-   "id": "E015",
-   "volume": "08DiA02",
-   "layer": "Aṭṭhakathā",
-   "printed_page": 139,
-   "paragraph_id": "ItiSumaṅgalavilāsiniyāDīghanikāyaṭṭhakat/Mahāvaggaṭṭhakathā/Mahāparinibbānasutta/166",
-   "category": "extraction_limitation",
-   "glyph": "",
-   "codepoint": "U+008F",
-   "printed_reading": "āyuppamānṁ",
-   "suggested_reading": null,
-   "confidence": "n/a",
-   "context": "iṁ kāle yaṁ manussānaṁ āyuppamānṁ hoti, taṁ paripuṇṇaṁ karonto ",
-   "status": "candidate",
-   "note": "Composite ligature glyph without Unicode mapping in the source PDF (ṇa-type ligature). Not an edition error; a conversion gap in this volume."
-  },
-  {
-   "id": "E016",
-   "volume": "08DiA02",
-   "layer": "Aṭṭhakathā",
-   "printed_page": 145,
-   "paragraph_id": "ItiSumaṅgalavilāsiniyāDīghanikāyaṭṭhakat/Mahāvaggaṭṭhakathā/Mahāparinibbānasutta/168",
-   "category": "extraction_limitation",
-   "glyph": "",
-   "codepoint": "U+008F",
-   "printed_reading": "sabbaññutaññānṁ",
-   "suggested_reading": null,
-   "confidence": "n/a",
-   "context": "atto, paṭividdhaṁ sabbaññutaññānṁ, kiṁ te lokavicāraṇenā”ti vat",
-   "status": "candidate",
-   "note": "Composite ligature glyph without Unicode mapping in the source PDF (ṇa-type ligature). Not an edition error; a conversion gap in this volume."
   },
   {
    "id": "E017",
@@ -390,22 +294,6 @@
    "suggested_reading": "vuttanayeneva",
    "confidence": "high",
    "context": "thitā. Tasmā etesupi vuttanayenefa sampajānakāritā veditabbā. Ti",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
-  },
-  {
-   "id": "E025",
-   "volume": "12DiT05",
-   "layer": "Ṭīkā",
-   "printed_page": 154,
-   "paragraph_id": "Sumaṅgalavilāsiniyādīghanikāyaṭṭhakathāy/Pāthikavaggaṭīkā/Āṭānāṭiyasutta/279",
-   "category": "edition_erratum",
-   "glyph": "q",
-   "codepoint": "U+0071",
-   "printed_reading": "qayhantu",
-   "suggested_reading": "aayhantu",
-   "confidence": "review",
-   "context": " nīharīyantūti vuccantī”ti āha. qayhantu vāti pete sandhāya vada",
    "status": "candidate",
    "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
   },
@@ -730,38 +618,6 @@
    "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
   },
   {
-   "id": "E046",
-   "volume": "27Khu10",
-   "layer": "Tipiṭaka",
-   "printed_page": 139,
-   "paragraph_id": "Nettipāḷi/X/Idaṁasekkhabhāgiyaṁsuttaṁ/112",
-   "category": "edition_erratum",
-   "glyph": "q",
-   "codepoint": "U+0071",
-   "printed_reading": "qahantaṁ1",
-   "suggested_reading": "aahantaṁ1",
-   "confidence": "review",
-   "context": " kammaṁ, sajjukhīraṁva muccati. qahantaṁ1 bālamanveti, bhasmacch",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
-  },
-  {
-   "id": "E047",
-   "volume": "27Khu10",
-   "layer": "Tipiṭaka",
-   "printed_page": 200,
-   "paragraph_id": "Peṭakopadesapāḷi/X/Saṁyuttakesuttaṁ/24",
-   "category": "edition_erratum",
-   "glyph": "q",
-   "codepoint": "U+0071",
-   "printed_reading": "qahantaṁ",
-   "suggested_reading": "aahantaṁ",
-   "confidence": "review",
-   "context": " kammaṁ, sajjukhīraṁva muccati. qahantaṁ bālamanveti, bhasmaccha",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
-  },
-  {
    "id": "E048",
    "volume": "32Abhi04",
    "layer": "Aṭṭhakathā",
@@ -937,5 +793,6 @@
    "status": "candidate",
    "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
   }
- ]
+ ],
+ "note_ligature_fix": "9 candidates were resolved by a subsequent ligature-glyph fix (6 ṇa/Ū ligatures in 08DiA02 mis-extracted as control chars, and 3 Ḍ glyphs in 27Khu10/12DiT05 mis-read as q). The affected PDFs and text were corrected; those entries were removed."
 }
