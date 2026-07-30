@@ -22,8 +22,8 @@ keywords:
 url: "https://buddha-dhamma.net"
 repository-code: "https://github.com/admin-iebh/OSBCT"
 license: CC-BY-4.0
-version: "1.0.0"
-date-released: "2026-07-22"
+version: "2.0.0"
+date-released: "2026-07-30"
 doi: "10.5281/zenodo.21495339"
 identifiers:
   - type: doi
