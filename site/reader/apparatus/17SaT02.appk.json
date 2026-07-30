@@ -452,6 +452,12 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Visuddhi",
+"vol": 2,
+"page": 170,
+"also": false
+},
+{
 "work": "Abhi-Ṭṭha",
 "vol": 3,
 "page": 350,
@@ -576,7 +582,14 @@
 "n": 1,
 "text": "Visuddhi 2. 163 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 163,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -1293,13 +1306,27 @@
 "n": 2,
 "text": "Visuddhi 2. 253 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 253,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Visuddhi 2. 261 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 261,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -1463,7 +1490,14 @@
 "n": 2,
 "text": "Dhammapada-Ṭṭha 1. 330 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 330,
+"also": false
+}
+]
 }
 ],
 "54": [
@@ -2577,6 +2611,12 @@
 "work": "Udāna-Ṭṭha",
 "vol": null,
 "page": 112,
+"also": false
+},
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 111,
 "also": false
 }
 ]
@@ -4124,7 +4164,14 @@
 "n": 2,
 "text": "Visuddhi 2. 344 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 344,
+"also": false
+}
+]
 }
 ],
 "443": [
@@ -5394,7 +5441,14 @@
 "n": 1,
 "text": "Visuddhi-Ṭī 1. 417 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi-Ṭī",
+"vol": 1,
+"page": 417,
+"also": false
+}
+]
 }
 ],
 "536": [
@@ -5753,6 +5807,12 @@
 "vol": 2,
 "page": 233,
 "also": false
+},
+{
+"work": "Ma",
+"vol": 1,
+"page": 72,
+"also": false
 }
 ]
 }
@@ -5846,7 +5906,14 @@
 "n": 2,
 "text": "Visuddhi-Ṭī 1. 282 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi-Ṭī",
+"vol": 1,
+"page": 282,
+"also": false
+}
+]
 }
 ],
 "631": [
@@ -6007,7 +6074,14 @@
 "n": 4,
 "text": "Visuddhi-Ṭī 1. 273 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi-Ṭī",
+"vol": 1,
+"page": 273,
+"also": false
+}
+]
 },
 {
 "n": 5,
@@ -6117,7 +6191,14 @@
 "n": 2,
 "text": "Khuddakapāṭha-Ṭṭha 26 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khuddakapāṭha-Ṭṭha",
+"vol": null,
+"page": 26,
+"also": false
+}
+]
 },
 {
 "n": 2,

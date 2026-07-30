@@ -89,6 +89,12 @@
 "vol": null,
 "page": 9,
 "also": false
+},
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 19,
+"also": false
 }
 ]
 },
@@ -356,7 +362,14 @@
 "n": 2,
 "text": "Buddhavaṁsa-Ṭṭha 86 piṭṭhādīsupi passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Buddhavaṁsa-Ṭṭha",
+"vol": null,
+"page": 86,
+"also": true
+}
+]
 },
 {
 "n": 3,
@@ -984,6 +997,12 @@
 "work": "Abhi-Ṭṭha",
 "vol": 1,
 "page": 138,
+"also": false
+},
+{
+"work": "Mahāniddesa-Ṭṭha",
+"vol": null,
+"page": 291,
 "also": false
 }
 ]
@@ -2104,6 +2123,12 @@
 "vol": 4,
 "page": 124,
 "also": false
+},
+{
+"work": "Abhi",
+"vol": 4,
+"page": 233,
+"also": false
 }
 ]
 }
@@ -2443,6 +2468,12 @@
 "text": "Visuddhi 1. 200; Vi-Ṭṭha 1. 91 piṭṭhesu.",
 "variants": [],
 "xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 200,
+"also": false
+},
 {
 "work": "Vi-Ṭṭha",
 "vol": 1,
@@ -4584,13 +4615,26 @@
 "n": 3,
 "text": "Visuddhi 2. 146 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 146,
+"also": false
+}
+]
 },
 {
 "n": 4,
 "text": "Visuddhi 2. 146; Abhi-Ṭṭha 2. 86 piṭṭhesu.",
 "variants": [],
 "xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 146,
+"also": false
+},
 {
 "work": "Abhi-Ṭṭha",
 "vol": 2,
@@ -5059,6 +5103,12 @@
 "vol": 1,
 "page": 212,
 "also": false
+},
+{
+"work": "Abhi-Ṭṭha",
+"vol": 3,
+"page": 361,
+"also": false
 }
 ]
 },
@@ -5338,7 +5388,14 @@
 "n": 1,
 "text": "Visuddhi 2. 34 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 34,
+"also": false
+}
+]
 },
 {
 "n": 1,

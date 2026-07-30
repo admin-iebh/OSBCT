@@ -1,0 +1,26 @@
+{
+ "long": ["Khuddakapāṭha","Dhammapada","Suttanipāta","Itivuttaka","Theragāthā","Therīgāthā",
+          "Buddhavaṁsa","Cariyāpiṭaka","Mahāniddesa","Cūḷaniddesa","Vinayasaṅgaha","Visuddhi",
+          "Sārattha","Vimati","Vajira","Abhinava"],
+ "comm": {
+  "Khuddakapāṭha":["20KhuA01"],"Dhammapada":["21KhuA02","22KhuA03"],"Udāna":["23KhuA04"],
+  "Itivuttaka":["24KhuA05"],"Suttanipāta":["25KhuA06","26KhuA07"],"Vimāna":["27KhuA08"],
+  "Peta":["28KhuA09"],"Thera":["29KhuA10","30KhuA11"],"Theragāthā":["29KhuA10","30KhuA11"],
+  "Therī":["31KhuA12"],"Therīgāthā":["31KhuA12"],
+  "Apadāna":["32KhuA13","33KhuA14"],"Apādāna":["32KhuA13","33KhuA14"],
+  "Buddhavaṁsa":["34KhuA15"],"Cariyā":["35KhuA16"],"Cariyāpiṭaka":["35KhuA16"],
+  "Jātaka":["36KhuA17","37KhuA18","38KhuA19","39KhuA20","40KhuA21","41KhuA22","42KhuA23"],
+  "Mahāniddesa":["43KhuA24"],"Cūḷaniddesa":["44KhuA25"],"Netti":["45KhuA26"],
+  "Paṭisaṁ":["46KhuA27","47KhuA28"],"Paṭisam":["46KhuA27","47KhuA28"],"Paṭīsaṁ":["46KhuA27","47KhuA28"],
+  "Kaṅkhā":["05Kankha"],"Vinayasaṅgaha":["06VinSg06"],"Visuddhi":["51Vism01","52Vism02"]
+ },
+ "tika": {
+  "Sārattha":["01ViT01","02ViT02","03ViT03"],"Vimati":["04ViT04","05ViT05"],
+  "Vajira":["06ViT06"],"Dī":["08DiT01","11DiT04","12DiT05"],
+  "Ma":["13MaT01","14MaT02","15MaT03"],"Saṁ":["16SaT01","17SaT02"],
+  "Aṁ":["18AnT01","19AnT02","20AnT03"],"Netti":["21KhuT01"],
+  "Visuddhi":["25VsmT01","26VsmT02"]
+ },
+ "bare": {"Visuddhi":["51Vism01","52Vism02"],"Abhinava":["09DiT02","10DiT03"],
+          "Mūlaṭī":["22AbhiT01","23AbhiT02","24AbhiT03"],"Anuṭī":["22AbhiT01","23AbhiT02","24AbhiT03"]}
+}

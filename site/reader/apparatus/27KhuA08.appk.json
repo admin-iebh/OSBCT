@@ -416,6 +416,12 @@
 "vol": 1,
 "page": 9,
 "also": false
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 18,
+"also": false
 }
 ]
 },
@@ -576,6 +582,12 @@
 "work": "Khu",
 "vol": 2,
 "page": 327,
+"also": false
+},
+{
+"work": "Abhi",
+"vol": 2,
+"page": 266,
 "also": false
 },
 {
@@ -1327,6 +1339,12 @@
 "also": false
 },
 {
+"work": "Ma",
+"vol": 1,
+"page": 161,
+"also": false
+},
+{
 "work": "Saṁ",
 "vol": 2,
 "page": 242,
@@ -1382,6 +1400,12 @@
 "vol": 3,
 "page": 13,
 "also": false
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 206,
+"also": false
 }
 ]
 },
@@ -1410,9 +1434,21 @@
 "also": false
 },
 {
+"work": "Dī",
+"vol": 2,
+"page": 13,
+"also": false
+},
+{
 "work": "Ma",
 "vol": 3,
 "page": 164,
+"also": false
+},
+{
+"work": "Da",
+"vol": 1,
+"page": 76,
 "also": false
 },
 {
@@ -1813,6 +1849,12 @@
 "work": "Vi",
 "vol": 4,
 "page": 418,
+"also": false
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 414,
 "also": false
 }
 ]
@@ -4919,7 +4961,14 @@
 "n": 3,
 "text": "Dhammapada-Ṭṭha 1. 222 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 222,
+"also": false
+}
+]
 }
 ],
 "598": [

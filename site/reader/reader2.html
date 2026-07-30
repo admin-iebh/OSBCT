@@ -138,7 +138,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 [data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%);background:var(--fg);color:var(--bg);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;line-height:1.3;white-space:normal;width:max-content;max-width:230px;text-align:center;padding:5px 9px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.26);z-index:200;pointer-events:none}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=40804c352a39"></script>
+<script src="../i18n.js?v=da667fb5cdf4"></script>
 </head>
 <body>
   <div class="topbar">
@@ -225,7 +225,7 @@ const FOLDER={canon:'pali-unicode',A:'atthakatha-unicode',T:'tika-unicode'};
 let toastT=null;
 function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),1500);}
 
-const BUILD='40804c352a39';
+const BUILD='da667fb5cdf4';
 async function jget(url,fallback){ try{const sep=url.includes('?')?'&':'?'; const r=await fetch(url+sep+'v='+BUILD); if(!r.ok) return fallback; return await r.json();}catch(e){return fallback;} }
 async function loadVol(vol){
   if(cache[vol]) return cache[vol];
@@ -712,28 +712,107 @@ function outlineHTML(text,spans){
     html+='<div class="unit"><span class="uhead" onclick="this.parentNode.classList.toggle(\'open\')"><span class="utw">▸</span><b class="lemma">'+esc(stripped.slice(s,le))+'</b></span><span class="ugloss">'+_boldRange(stripped,sp,le,end)+'</span></div>'; }
   return html+'<div class="uhint">'+heads.length+' lemmata · click to expand</div></div>';
 }
-const XC_CANON={'Dī':['06Di01','07Di02','08Di03'],'Ma':['09Ma01','10Ma02','11Ma03'],'Saṁ':['12Sam01','13Sam02','14Sam03'],'Aṁ':['15An01','16An02','17An03'],'Khu':['18Khu01','19Khu02','20Khu03','21Khu04','22Khu05','23Khu06','24Khu07','25Khu08','26Khu09','27Khu10','28Khu11'],'Vi':['01Vin01','02Vin02','03Vin03','04Vin04','05Vin05'],'Abhi':['29Abhi01','30Abhi02','31Abhi03','32Abhi04','33Abhi05','34Abhi06','35Abhi07','36Abhi08','37Abhi09','38Abhi10','39Abhi11','40Abhi12']};
-const XC_COMM={'Dī':['07DiA01','08DiA02','09DiA03'],'Ma':['10MaA01','11MaA02','12MaA03','13MaA04'],'Saṁ':['14SamA01','15SamA02','16SamA03'],'Aṁ':['17AnA01','18AnA02','19AnA03'],'Vi':['01VinA01','02VinA02','03VinA03','04VinA04','05Kankha','06VinSg06'],'Abhi':['48AbhiA01','49AbhiA02','50AbhiA03']};
-function resolveXref(work,vol,page){
-  let base=work,map=XC_CANON,kind='canon';
-  if(/-Ṭṭha$/.test(work||'')){ base=work.replace(/-Ṭṭha$/,''); map=XC_COMM; kind='A'; }
-  else if(/-Ṭī$|-Anuṭī$/.test(work||'')) return null;
+const XC_CANON={
+  'Dī':['06Di01','07Di02','08Di03'],'Ma':['09Ma01','10Ma02','11Ma03'],
+  'Saṁ':['12Sam01','13Sam02','14Sam03'],'Aṁ':['15An01','16An02','17An03'],
+  'Khu':['18Khu01','19Khu02','20Khu03','21Khu04','22Khu05','23Khu06','24Khu07','25Khu08','26Khu09','27Khu10','28Khu11'],
+  'Vi':['01Vin01','02Vin02','03Vin03','04Vin04','05Vin05'],
+  'Abhi':['29Abhi01','30Abhi02','31Abhi03','32Abhi04','33Abhi05','34Abhi06','35Abhi07','36Abhi08','37Abhi09','38Abhi10','39Abhi11','40Abhi12'],
+  // Khuddaka works the edition cites by their OWN name rather than as `Khu N`.
+  'Paṭisaṁ':['26Khu09'],'Jā':['22Khu05','23Khu06'],
+  'Mahāni':['24Khu07'],'Cūḷani':['25Khu08'],
+  // Sigla as the edition prints them in a handful of footnotes, missing a
+  // macron or a dot: `Di` for `Dī`, `Vī`/`Ku` for `Vi`/`Khu`.  The LABEL keeps
+  // the edition's spelling — only the target is normalised.  Each was admitted
+  // only after every one of its cited pages fell inside the target volume.
+  'Di':['06Di01','07Di02','08Di03'],
+  'Vī':['01Vin01','02Vin02','03Vin03','04Vin04','05Vin05'],
+  'Ku':['18Khu01','19Khu02','20Khu03','21Khu04','22Khu05','23Khu06','24Khu07','25Khu08','26Khu09','27Khu10','28Khu11']};
+// THE COMMENTARY TARGETS.  Volume numbers are the edition's own, read off
+// `concordanciatextos.pdf` (aṭṭhakathā column, 20-52) and confirmed against
+// each volume's title page, where the bhāga — Paṭhamo, Dutiyo, Tatiyo … — names
+// the part: Jātakaṭṭhakathā I-VII is 36KhuA17-42KhuA23, and so on.  Verified
+// twice more before landing: every cited page falls inside the target volume's
+// printed page range (100% on 14 of the 19 works, 97-99% on the rest, the
+// misses all parse artefacts that fail safe to a grey span), and the citing
+// note's lemma is found on the cited page 35% of the time against 1% for a
+// control volume — the control shows the test has power.
+const XC_COMM={
+  'Dī':['07DiA01','08DiA02','09DiA03'],'Ma':['10MaA01','11MaA02','12MaA03','13MaA04'],
+  'Saṁ':['14SamA01','15SamA02','16SamA03'],'Aṁ':['17AnA01','18AnA02','19AnA03'],
+  'Vi':['01VinA01','02VinA02','03VinA03','04VinA04','05Kankha','06VinSg06'],
+  'Abhi':['48AbhiA01','49AbhiA02','50AbhiA03'],
+  // Khuddaka — the edition cites these by their OWN work name, never as `Khu-Ṭṭha`
+  'Khuddakapāṭha':['20KhuA01'],'Dhammapada':['21KhuA02','22KhuA03'],'Udāna':['23KhuA04'],
+  'Itivuttaka':['24KhuA05'],'Suttanipāta':['25KhuA06','26KhuA07'],'Vimāna':['27KhuA08'],
+  'Peta':['28KhuA09'],'Thera':['29KhuA10','30KhuA11'],'Theragāthā':['29KhuA10','30KhuA11'],
+  'Therī':['31KhuA12'],'Therīgāthā':['31KhuA12'],
+  'Apadāna':['32KhuA13','33KhuA14'],'Apādāna':['32KhuA13','33KhuA14'],
+  'Buddhavaṁsa':['34KhuA15'],'Cariyā':['35KhuA16'],'Cariyāpiṭaka':['35KhuA16'],
+  'Jātaka':['36KhuA17','37KhuA18','38KhuA19','39KhuA20','40KhuA21','41KhuA22','42KhuA23'],
+  'Mahāniddesa':['43KhuA24'],'Cūḷaniddesa':['44KhuA25'],'Netti':['45KhuA26'],
+  'Paṭisaṁ':['46KhuA27','47KhuA28'],'Paṭisam':['46KhuA27','47KhuA28'],'Paṭīsaṁ':['46KhuA27','47KhuA28'],
+  // Vinaya commentaries the edition names in full, and the Visuddhimagga, which
+  // the concordance places in the aṭṭhakathā column as 51-52
+  'Kaṅkhā':['05Kankha'],'Vinayasaṅgaha':['06VinSg06'],'Visuddhi':['51Vism01','52Vism02']};
+// THE ṬĪKĀ TARGETS.  `concordanciatextos.pdf` ṭīkā column, 1-26.
+// `Dī-Ṭī 1/2/3` IS THE THREE VAGGA ṬĪKĀS, NOT THE SĪLAKKHANDHA ABHINAVAṬĪKĀ
+// PAIR.  Page-range fit cannot tell them apart — both score 100% — so it was
+// settled on content: over the 52 citations where the two readings differ, the
+// citing note's lemma is on the cited page of 08DiT01/11DiT04/12DiT05 in 25-31
+// cases and of 09DiT02/10DiT03 in ZERO.  The abhinavaṭīkā has its own siglum,
+// `Abhinava`, below — which is why it is not `Dī-Ṭī`.
+const XC_TIKA={
+  'Sārattha':['01ViT01','02ViT02','03ViT03'],'Vimati':['04ViT04','05ViT05'],
+  'Vajira':['06ViT06'],'Dī':['08DiT01','11DiT04','12DiT05'],
+  'Ma':['13MaT01','14MaT02','15MaT03'],'Saṁ':['16SaT01','17SaT02'],
+  'Aṁ':['18AnT01','19AnT02','20AnT03'],'Netti':['21KhuT01'],
+  'Visuddhi':['25VsmT01','26VsmT02']};
+// Sigla that name their work with no layer suffix at all.
+// Sigla that point INSIDE the volume they are printed in.
+const XC_SELF={'Heṭṭhā':1,'heṭṭhā':1,'Upari':1,'upari':1};
+const XC_BARE={
+  'Visuddhi':['51Vism01','52Vism02'],'Abhinava':['09DiT02','10DiT03'],
+  'Mūlaṭī':['22AbhiT01','23AbhiT02','24AbhiT03'],'Anuṭī':['22AbhiT01','23AbhiT02','24AbhiT03']};
+// `selfVol` is the volume the footnote is PRINTED IN — `Heṭṭhā` ("earlier")
+// and `Upari` ("further on") cite the same volume and name no work at all, so
+// they cannot be resolved from the siglum alone.  All 42 of them carry no
+// volume number and every one falls inside its own volume's printed page range.
+function resolveXref(work,vol,page,selfVol){
+  // `-Tṭha` and `-Tī` are the edition's own misprints for `-Ṭṭha` and `-Ṭī`,
+  // in 13 and 6 footnotes.  The
+  // stored siglum and the LABEL keep what the page prints; only resolution
+  // normalises it.  The edition is never corrected, here or in the data.
+  const w=(work||'').replace(/-Tṭha$/,'-Ṭṭha').replace(/-Tī$/,'-Ṭī');
+  if(XC_SELF[w]&&vol==null&&selfVol) return resolveIn(selfVol,page);
+  let base=w,map=XC_CANON;
+  if(/-Ṭṭha$/.test(w)){ base=w.replace(/-Ṭṭha$/,''); map=XC_COMM; }
+  else if(/-Anuṭī$/.test(w)){ base=w.replace(/-Anuṭī$/,''); map=XC_TIKA; }
+  else if(/-Ṭī$/.test(w)){ base=w.replace(/-Ṭī$/,''); map=XC_TIKA; }
+  else if(XC_BARE[w]){ map=XC_BARE; }
   const arr=map[base]; if(!arr) return null;
   const v=arr[(vol||1)-1]; if(!v) return null;
+  return resolveIn(v,page);
+}
+// printed page -> a paragraph key in that volume.  The band to open in is the
+// TARGET VOLUME'S own layer, not a guess from the siglum — the Visuddhimagga is
+// cited without a suffix but sits in the aṭṭhakathā layer, and
+// `Mūlaṭī`/`Abhinava` sit in the ṭīkā layer.
+function resolveIn(v,page){
   const pidx=PAGEIDX[v]; if(!pidx) return null;
   let ord=pidx[String(page)];
   if(ord==null){ let best=null; for(const p in pidx){ const pp=+p; if(pp<=page&&(best==null||pp>best)) best=pp; } if(best!=null) ord=pidx[String(best)]; }
   if(ord==null) return null;
-  return {key:v+'#'+ord, kind:kind};
+  return {key:v+'#'+ord, kind:LAYERKIND[VOLLAYER[v]]||'canon'};
 }
 window.navXref=function(key,kind){ const dd=document.getElementById('sdrop'); if(dd)dd.hidden=true; openKey(key,kind); };
-function appBlock(app){
+function appBlock(app,selfVol){
   if(!app||!app.length) return '';
   let rows='';
   for(const n of app){ let parts=[];
     for(const v of (n.variants||[])){ const sg=(v.sigla||[]).map(s=>'<abbr title="'+escA(window.sigla?window.sigla(s):(SIG[s]||s))+'">'+esc(s)+'</abbr>').join(', '); parts.push('<i>'+esc(v.reading)+'</i>'+(sg?' ('+sg+')':'')); }
     for(const x of (n.xrefs||[])){ const label=esc(x.work)+(x.vol?' '+x.vol:'')+'. '+x.page+(x.page_to?'–'+x.page_to:'');
-      const r=resolveXref(x.work,x.vol,x.page);
+      const r=resolveXref(x.work,x.vol,x.page,selfVol);
       parts.push(r?'<a class="xref" title="'+escA(TIP('tip_goto','Go to'))+' '+escA(x.work)+' p.'+x.page+'" onclick="navXref(\''+r.key+'\',\''+r.kind+'\')">'+label+' →</a>':'<span class="xref" style="opacity:.7">'+label+'</span>'); }
     if(!parts.length&&n.text) parts.push(esc(n.text));
     rows+='<div><span class="mk">'+(n.n||'*')+'</span>'+parts.join('; ')+'</div>'; }
@@ -1005,7 +1084,7 @@ function block(kind, key, opts){
    // each of them suppress the others' page turns.
    let rule='';
    if(pr.printed!=null && LASTPG[vol]!==pr.printed){ rule=pageRule(vol,kind,pr); LASTPG[vol]=pr.printed; }
-   return rule+'<div class="'+cls+'" id="p-'+key.replace('#','-')+'">'+toolsFor(kind,vol,pr,pr.sutta)+st+wt+num+body+appBlock(app)+'</div>';
+   return rule+'<div class="'+cls+'" id="p-'+key.replace('#','-')+'">'+toolsFor(kind,vol,pr,pr.sutta)+st+wt+num+body+appBlock(app,vol)+'</div>';
 }
 function targetsFor(ord,kind){ // kind 'A'|'T' -> list of {key,state,worktag?}
   const e=state.links[String(ord)]||{}; let arr=(kind==='A'?e.commentary:e.subcommentary)||[];

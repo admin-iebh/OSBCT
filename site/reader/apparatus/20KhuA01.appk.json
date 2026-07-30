@@ -1413,7 +1413,14 @@
 "n": 2,
 "text": "Visuddhi 1. 118 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 118,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -1986,6 +1993,12 @@
 "work": "Saṁ",
 "vol": 1,
 "page": 167,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 3,
+"page": 8,
 "also": false
 }
 ]
@@ -2846,6 +2859,24 @@
 "vol": 1,
 "page": 188,
 "also": false
+},
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 61,
+"also": false
+},
+{
+"work": "Vi",
+"vol": 2,
+"page": 155,
+"also": false
+},
+{
+"work": "Dī",
+"vol": 2,
+"page": 201,
+"also": false
 }
 ]
 },
@@ -3294,6 +3325,24 @@
 "work": "Ma",
 "vol": 2,
 "page": 102,
+"also": false
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 214,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 90,
+"also": false
+},
+{
+"work": "Ma",
+"vol": 1,
+"page": 15,
 "also": false
 }
 ]
@@ -4537,6 +4586,12 @@
 "work": "Aṁ",
 "vol": 2,
 "page": 17,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 16,
 "also": false
 }
 ]

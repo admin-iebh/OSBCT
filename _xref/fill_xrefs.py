@@ -33,6 +33,13 @@ def run(write=False):
         vol = os.path.basename(p)[:-10]
         d = json.load(open(p, encoding='utf-8'))
         before_sk = skeleton(d)
+        # COMPARE CONTENT, NOT COUNTS.  This used to gate the write on
+        # `after != before`, so a parser change that RE-READ a citation without
+        # changing how many there are wrote nothing — e.g. `Sārattha-Tī 3. 345`
+        # read as the siglum `Tī` and then correctly as `Sārattha-Tī`: same
+        # count, different work, silently not applied (found 2026-07-30i).
+        before_x = json.dumps([n.get('xrefs') for arr in d.values() for n in arr],
+                              sort_keys=True, ensure_ascii=False)
         before = sum(len(n.get('xrefs') or []) for arr in d.values() for n in arr)
         gained_notes = 0
         for arr in d.values():
@@ -41,11 +48,14 @@ def run(write=False):
                 if new and not (n.get('xrefs') or []): gained_notes += 1
                 n['xrefs'] = new
         after = sum(len(n.get('xrefs') or []) for arr in d.values() for n in arr)
+        after_x = json.dumps([n.get('xrefs') for arr in d.values() for n in arr],
+                             sort_keys=True, ensure_ascii=False)
         assert skeleton(d) == before_sk, vol      # nothing but xrefs may move
         tot_before += before; tot_after += after
-        if after != before:
+        dirty = after_x != before_x
+        if dirty:
             rows.append((vol, before, after, gained_notes))
-        if write and after != before:
+        if write and dirty:
             if not os.path.exists(p + '.prexref'): shutil.copy(p, p + '.prexref')
             json.dump({k: d[k] for k in sorted(d, key=int)},
                       open(p, 'w', encoding='utf-8'), ensure_ascii=False, indent=0)

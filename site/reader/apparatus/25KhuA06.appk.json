@@ -7312,7 +7312,20 @@
 "n": 1,
 "text": "Visuddhi 1. 252, 355 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 252,
+"also": false
+},
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 355,
+"also": false
+}
+]
 }
 ],
 "199": [
@@ -8312,6 +8325,12 @@
 "work": "Khu",
 "vol": 9,
 "page": 172,
+"also": false
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 176,
 "also": false
 }
 ]

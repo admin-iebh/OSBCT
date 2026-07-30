@@ -4330,6 +4330,18 @@
 "also": false
 },
 {
+"work": "Buddhavaṁsa-Ṭṭha",
+"vol": null,
+"page": 316,
+"also": false
+},
+{
+"work": "Cariyāpiṭaka-Ṭṭha",
+"vol": null,
+"page": 332,
+"also": false
+},
+{
 "work": "Jātaka-Ṭṭha",
 "vol": 1,
 "page": 53,
@@ -4969,9 +4981,21 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Visuddhi",
+"vol": 2,
+"page": 203,
+"also": false
+},
+{
 "work": "Abhi-Ṭṭha",
 "vol": 2,
 "page": 171,
+"also": false
+},
+{
+"work": "Mahāniddesa-Ṭṭha",
+"vol": null,
+"page": 198,
 "also": false
 }
 ]

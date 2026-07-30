@@ -5882,6 +5882,18 @@
 "vol": 3,
 "page": 130,
 "also": true
+},
+{
+"work": "Dī",
+"vol": null,
+"page": 2,
+"also": true
+},
+{
+"work": "Dī",
+"vol": null,
+"page": 88,
+"also": true
 }
 ]
 },
@@ -9635,6 +9647,18 @@
 "work": "Heṭṭhā",
 "vol": null,
 "page": 201,
+"also": true
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 130,
+"also": true
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 382,
 "also": true
 }
 ]

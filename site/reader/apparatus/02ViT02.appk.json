@@ -248,6 +248,12 @@
 },
 {
 "work": "Dī",
+"vol": 1,
+"page": 83,
+"also": false
+},
+{
+"work": "Dī",
 "vol": 2,
 "page": 14,
 "also": false
@@ -477,6 +483,12 @@
 "work": "Udāna-Ṭṭha",
 "vol": null,
 "page": 206,
+"also": true
+},
+{
+"work": "Mahāniddesa-Ṭṭha",
+"vol": null,
+"page": 286,
 "also": true
 }
 ]
@@ -1203,6 +1215,12 @@
 "vol": null,
 "page": 202,
 "also": true
+},
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 290,
+"also": true
 }
 ]
 },
@@ -1474,7 +1492,14 @@
 "n": 1,
 "text": "Visuddhi 1. 213 piṭṭhādīsupi passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 213,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -1571,7 +1596,14 @@
 "n": 2,
 "text": "Visuddhi 1. 206 piṭṭhādīsupi passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 206,
+"also": true
+}
+]
 },
 {
 "n": 3,
@@ -2030,6 +2062,24 @@
 "work": "Vi",
 "vol": 3,
 "page": 223,
+"also": false
+},
+{
+"work": "Vi-Ṭṭha",
+"vol": 3,
+"page": 349,
+"also": false
+},
+{
+"work": "Vi",
+"vol": 3,
+"page": 351,
+"also": false
+},
+{
+"work": "Vi",
+"vol": 5,
+"page": 308,
 "also": false
 }
 ]
@@ -2985,6 +3035,12 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Visuddhi",
+"vol": 1,
+"page": 242,
+"also": true
+},
+{
 "work": "Abhi-Ṭṭha",
 "vol": 2,
 "page": 222,
@@ -3100,7 +3156,14 @@
 "n": 2,
 "text": "Visuddhi 1. 141 piṭṭhādīsupi passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 141,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -3111,6 +3174,12 @@
 "work": "Paṭisaṁ-Ṭṭha",
 "vol": 2,
 "page": 76,
+"also": true
+},
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 144,
 "also": true
 }
 ]
@@ -3150,6 +3219,12 @@
 "work": "Ma-Ṭṭha",
 "vol": 1,
 "page": 325,
+"also": true
+},
+{
+"work": "Khuddakapāṭha-Ṭṭha",
+"vol": null,
+"page": 133,
 "also": true
 }
 ]
@@ -3341,7 +3416,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 90,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3411,7 +3493,14 @@
 "n": 1,
 "text": "Visuddhi 1. 115 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 115,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3430,7 +3519,14 @@
 "n": 1,
 "text": "Visuddhi 1. 118 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 118,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3488,7 +3584,14 @@
 "n": 1,
 "text": "Visuddhi 1. 273 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 273,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3558,7 +3661,14 @@
 "n": 1,
 "text": "Visuddhi 1. 123 piṭṭhādīsupi passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 123,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -3648,7 +3758,14 @@
 "n": 1,
 "text": "Visuddhi 1. 132 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 132,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3695,6 +3812,12 @@
 "text": "Visuddhi 2. 270; Paṭisaṁ-Ṭṭha 2. 191 piṭṭhādīsupi passitabbaṁ.",
 "variants": [],
 "xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 270,
+"also": true
+},
 {
 "work": "Paṭisaṁ-Ṭṭha",
 "vol": 2,
@@ -4121,7 +4244,14 @@
 "n": 3,
 "text": "Visuddhi 1. 87 piṭṭhādīsupi passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 87,
+"also": true
+}
+]
 },
 {
 "n": 3,
@@ -4246,7 +4376,20 @@
 "n": 1,
 "text": "Sārattha-Ṭī 1. 342; Itivuttaka-Ṭṭha 218 piṭṭhādīsupi passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Sārattha-Ṭī",
+"vol": 1,
+"page": 342,
+"also": true
+},
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 218,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -5591,6 +5734,12 @@
 "vol": 2,
 "page": 475,
 "also": true
+},
+{
+"work": "Mahāniddesa-Ṭṭha",
+"vol": null,
+"page": 371,
+"also": true
 }
 ]
 },
@@ -6749,7 +6898,14 @@
 "n": 1,
 "text": "Visuddhi 1. 70 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 70,
+"also": false
+}
+]
 },
 {
 "n": 1,

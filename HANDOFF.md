@@ -1,6 +1,72 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-07-30h)
+## START HERE (updated 2026-07-30i)
+
+* **!!!!! `site/reader/pageindex.json` WAS STALE AND 3,774 SHIPPED CROSS-REFERENCE
+  LINKS WERE LANDING ON THE WRONG PRINTED PAGE (2026-07-30i).** The file was
+  dated **2026-07-23 17:53**; the volume JSONs it indexes were rebuilt on the
+  **27th, 28th and 29th**, and the page audit of 2026-07-29t rewrote `printed`
+  across all 118. Nothing rebuilt the index. **65 of 118 volumes disagreed with
+  `site/*.json`, and in those the ORDINALS were wrong for essentially every
+  page** — `01VinA01` page 79 pointed at ord 0, whose printed page is 1.
+  Measured before the fix: of the 28,263 xrefs that resolved, **3,774 (13.4%)
+  landed on a paragraph that is not on the cited page — and NOT ONE of them
+  landed on the right one**; ~1,000 were more than ten printed pages off, the
+  worst 1,680. So yesterday's "23,386 cross-references restored" shipped with
+  one link in seven pointing at the wrong place.
+  **Fixed by `python3 pipeline/build_pageindex.py`** — 28,358 → 29,581 page
+  entries — and the rebuilt index is self-checked: **all 29,581 entries point at
+  a paragraph that really does carry that printed page (0 inconsistent).**
+  Old file kept as `pageindex.json.bak_20260730_stale`.
+  **THE LESSON: `pageindex.json` IS DERIVED FROM `site/*.json` AND NOTHING
+  REBUILDS IT AUTOMATICALLY. Any volume rebuild must be followed by
+  `build_pageindex.py`, or every citation into that volume silently mis-lands.**
+  It is not covered by `stamp_build.py`, by `regress check`, or by any gate.
+* **!!! THE XREF PARSER HAD A SEVEN-CHARACTER SIGLUM CAP, AND 1,995 CITATIONS
+  WERE NEVER PARSED AT ALL (2026-07-30i).** `XREF_SEG` matched the siglum as
+  `[A-ZĀĪŪṀ][a-zāīūṁṅñṭḍṇḷ]{0,6}`. Anything longer fell off the end — and
+  because the class `[A-ZĀĪŪṀ]` also excludes `Ṭ`, the leftover `Ṭṭha 94`
+  matched nothing either, so the citation **VANISHED rather than mislinking**.
+  These were invisible to the "1,810 unresolved" count because they were not in
+  the data. `Visuddhi` 577, `Sārattha-Ṭī` 291, `Suttanipāta-Ṭṭha` 128,
+  `Dhammapada-Ṭṭha` 115, `Visuddhi-Ṭī` 106, `Itivuttaka-Ṭṭha` 88,
+  `Cariyāpiṭaka-Ṭṭha` 58, `Theragāthā-Ṭṭha` 54, `Mahāniddesa-Ṭṭha` 52,
+  `Khuddakapāṭha-Ṭṭha` 45, `Abhinava` 47, `Buddhavaṁsa-Ṭṭha` 41,
+  `Vinayasaṅgaha-Ṭṭha` 27, `Cūḷaniddesa-Ṭṭha` 15, `Therīgāthā-Ṭṭha` 6.
+  **Restored by an explicit WHITELIST (`XREF_LONG`), not by widening the cap.**
+  A wider cap turns any ordinary Pāḷi word standing before a number into a
+  citation, and **a note that parses ANY xref stops displaying its own text** —
+  so a false positive does not merely add a bad link, it HIDES THE EDITION'S
+  WORDS. Do not add a name to `XREF_LONG` without a target volume and the page
+  range check.
+* **!!! `search()` MEANT ONE CITATION PER SEGMENT, AND FIXING THE CAP WOULD HAVE
+  DISPLACED 27 WORKING LINKS (2026-07-30i).** `parse_xrefs` took
+  `XREF_SEG.search(seg)` — the FIRST match only. A segment often carries two
+  citations: two footnotes run together (`… passitabbaṁ. 3. Khu 1. 55 piṭṭhe`)
+  or a parenthetical beside a plain one (`(Sī-Ṭī Abhinava 2. 146) Ma-Ṭṭha 2.
+  180`). Restoring the long sigla put a NEW match earlier in 27 such segments
+  and would have thrown the old one away. **Changed to `finditer`. Measured over
+  all 72,131 notes: loses 0, gains 359, of which 355 resolve and 4 do not.**
+* **!!! `_xref/fill_xrefs.py` GATED ITS WRITE ON THE XREF *COUNT* (2026-07-30i).**
+  `if write and after != before`. A parser change that RE-READS a citation
+  without changing how many there are wrote nothing — `Sārattha-Tī 3. 345` read
+  as the siglum `Tī`, then correctly as `Sārattha-Tī`: same count, different
+  work, silently not applied. **Now compares the serialised xrefs.**
+* **THE KHUDDAKA COMMENTARIES, THE ṬĪKĀ LAYER AND THE VISUDDHIMAGGA ARE IN THE
+  MAPS (2026-07-30i).** `XC_COMM` extended, and `XC_TIKA`, `XC_BARE`, `XC_SELF`
+  added — the ṭīkā layer used to `return null` by construction.
+  **32,259 stored xrefs, 32,175 resolve (99.74%), 84 grey**, up from 30,273 /
+  93.2%. Booted in the REAL reader over all 118 volumes: **29,146 live `→`
+  anchors, 0 volumes with no live link.** Volume numbers come from
+  `concordanciatextos.pdf` and were checked three ways — see the dated entry.
+* **`Dī-Ṭī 1/2/3` IS THE THREE VAGGA ṬĪKĀS (08DiT01, 11DiT04, 12DiT05), NOT THE
+  SĪLAKKHANDHA ABHINAVAṬĪKĀ PAIR.** Page-range fit CANNOT tell them apart —
+  both score 100%. Decided on content: over the 52 citations where the two
+  readings differ, the citing note's lemma is on the cited page of the vagga
+  ṭīkās **25-31 times and of the abhinavaṭīkās ZERO times**. The abhinavaṭīkā
+  has its own siglum, `Abhinava` (47 citations, → 09DiT02/10DiT03).
+
+## START HERE — earlier (2026-07-30h)
 
 * **!!! `data-i18n-title` EXISTED FOR MONTHS AND NOT ONE ELEMENT USED IT — EVERY
   TOOLTIP WAS ENGLISH IN SPANISH (2026-07-30g).** `applyI18n` has always
@@ -1687,6 +1753,98 @@ marker when the sweep is next touched; until then do not chase those two rows.
   Origin verified correct four ways (worktree, `HEAD`, `origin/main`, raw
   githubusercontent), and `index.html` from the SAME commit is live as the stub,
   so the deployment is sound and the edge object is stale.
+
+## THE PAGE INDEX WAS STALE, THE SIGLUM PARSER WAS CAPPED AT SEVEN CHARACTERS, AND THE COMMENTARY AND ṬĪKĀ MAPS ARE NOW COMPLETE (2026-07-30i)
+
+Full write-up in `claude/pageindex_stale_and_xc_maps_completed.md`.
+
+### What was asked, and what was actually in the way
+
+The task was to extend `XC_COMM` to the Khuddaka commentaries using
+`concordanciatextos.pdf`. Two things had to be fixed first, both defects in
+already-shipped work.
+
+**1. `site/reader/pageindex.json` predated the volume rebuilds.** Dated
+2026-07-23; the volumes were rebuilt on the 27th-29th and the page audit of
+2026-07-29t rewrote `printed` in all 118. 65 volumes disagreed. Of 28,263
+resolving xrefs, **3,774 landed on the wrong printed page and none on the
+right one.** The rebuilt index is self-checked: 29,581/29,581 entries point at
+a paragraph carrying that page. This also made the mapping verification usable
+at all — before the rebuild, `Jātaka-Ṭṭha` scored 59.6% on the page-range test
+and `Khuddakapāṭha-Ṭṭha` 40.9%, purely because the index was missing those
+volumes' front pages. After: 100% and 100%.
+
+**2. The parser dropped every siglum longer than seven characters** — 1,995
+citations, more than the entire 1,810 "unresolved" residue that this task was
+scoped against. See the START HERE block.
+
+### The mapping, and how it was checked
+
+Volume numbers are the edition's own: `concordanciatextos.pdf`, aṭṭhakathā
+column 20-52 and ṭīkā column 1-26, cross-checked against each volume's own
+title page, where the bhāga names the part (`Jātakaṭṭhakathā (Sattamo bhāgo)`
+= 42KhuA23). Then verified twice more, because a printed table can be misread:
+
+* **Page-range fit** — every cited page must fall inside the target volume's
+  printed page range. 100% on 14 of 19 commentary works; 99.4% Netti, 99.3%
+  Kaṅkhā, 99.8% Visuddhi, 97.5% Itivuttaka, 86% Cariyāpiṭaka. **Every miss is a
+  parse artefact** (`Cariyā-Ṭṭha 9, 324` read as vol 9) and every one of them
+  **fails safe to the grey span shown today**.
+* **Lemma on the cited page, against a control** — the citing note's own lemma
+  should occur on the cited page of the right volume and not of a wrong one.
+  **35% hit against 1% for a control volume of the same layer** (573 citations
+  with a usable lemma). The control near zero is what gives the test power.
+
+### The maps
+
+| map | what it holds |
+|---|---|
+| `XC_COMM` | + 22 Khuddaka works, `Kaṅkhā`, `Vinayasaṅgaha`, `Visuddhi` |
+| `XC_TIKA` | NEW — the ṭīkā layer used to `return null` by construction |
+| `XC_BARE` | NEW — `Visuddhi`, `Abhinava`, `Mūlaṭī`, `Anuṭī`: no layer suffix |
+| `XC_SELF` | NEW — `Heṭṭhā`/`Upari`, which cite THE SAME VOLUME (42 citations, all 42 inside their own volume's range, none carrying a volume number). `resolveXref` takes a fourth argument `selfVol`; `appBlock` passes it. |
+| `XC_CANON` | + `Paṭisaṁ`, `Jā`, `Mahāni`, `Cūḷani`, and the edition's own misspellings `Di`, `Vī`, `Ku` |
+
+`-Tṭha` and `-Tī` are the edition's misprints for `-Ṭṭha`/`-Ṭī` (13 and 6
+footnotes). **The stored siglum and the displayed label keep what the page
+prints; only resolution normalises.** The edition is not corrected.
+
+### Deliberately NOT mapped
+
+`Dhamma-Ṭṭha` (6). The citations read `Dhamma-Ṭṭha 18 **vagge**` and
+`Dhamma-Ṭṭha 12 **vatthumhi**` — a vagga and a vatthu number, not a page. The
+parser stored them as pages. Linking them would be a confident wrong link; they
+stay grey. **The parser's page/vagga confusion is unfixed and unmeasured
+elsewhere.**
+
+### Result, measured
+
+```
+stored xrefs   30,273 -> 32,259
+resolve         93.2% -> 99.74%   (32,175; 84 grey)
+land on the exactly cited printed page          24,727
+land on the nearest earlier indexed page         7,448   (that page starts no ¶)
+LAND PAST THE CITED PAGE                             0   (was 3,774)
+```
+
+Booted in the real reader over all 118 volumes: **29,146 live `a.xref` anchors,
+0 volumes with no live link.** `_xc/verify_resolver.js` re-checks every one of
+the 32,259 citations against the reader's own `resolveXref` in a single boot —
+use it in preference to counting anchors, it is exhaustive and it catches a
+resolver that has started pointing at the wrong paragraph.
+
+### Gates
+
+`_navdup` PASS 30,730 · `regress check` 53/55 + 2 exempt · `verify_tooltips`
+13 change / 1 identical, and `OSBCT_NO_I18N=1` still renders · `check_layout` 0
+issues on the sampled volumes · `verify_apparatus --all` **improved on every
+column and regressed on none**: clean 41→59 volumes, spliced 31→25, variants
+lost 773→457, xrefs lost 54→52. (Part of that gain is the earlier rebuilds
+finally being measured — the committed report was itself stale.)
+
+BUILD `40804c352a39` → **`da667fb5cdf4`**. NOT DEPLOYED.
+
+---
 
 ## THE STALENESS QUESTION IS CLOSED, AND THE READER HAS BEEN MISSING 23,386 CROSS-REFERENCES (2026-07-30f)
 

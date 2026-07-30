@@ -926,7 +926,14 @@
 "n": 6,
 "text": "Vīriyasamataṁ (Sī-Ṭī Abhinava 1. 76 piṭṭhe)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 1,
+"page": 76,
+"also": false
+}
+]
 },
 {
 "n": 6,
@@ -1675,6 +1682,12 @@
 "vol": 1,
 "page": 190,
 "also": false
+},
+{
+"work": "Dī-Ṭī",
+"vol": 1,
+"page": 36,
+"also": false
 }
 ]
 },
@@ -1945,7 +1958,14 @@
 "n": 3,
 "text": "Pañcamattā pamāṇāti (Sī-Ṭī Abhinava 1. 183 piṭṭhe.)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 1,
+"page": 183,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -2969,7 +2989,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 1,
+"page": 208,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -3171,6 +3198,12 @@
 "work": "Saṁ",
 "vol": 3,
 "page": 75,
+"also": false
+},
+{
+"work": "Ma",
+"vol": 3,
+"page": 66,
 "also": false
 }
 ]
@@ -3808,6 +3841,12 @@
 "vol": 1,
 "page": 384,
 "also": true
+},
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 78,
+"also": true
 }
 ]
 },
@@ -4148,7 +4187,14 @@
 "n": 2,
 "text": "Tirokuṭṭādīsu (Sī-Ṭī Abhinava 1. 337 piṭṭhe)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 1,
+"page": 337,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4202,6 +4248,12 @@
 }
 ],
 "xrefs": [
+{
+"work": "Abhinava",
+"vol": 1,
+"page": 328,
+"also": true
+},
 {
 "work": "Ma-Ṭṭha",
 "vol": 2,
@@ -4971,7 +5023,14 @@
 "n": 2,
 "text": "Visuddhi 1. 22 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 22,
+"also": false
+}
+]
 }
 ],
 "28": [
@@ -5069,6 +5128,12 @@
 "work": "Dī-Ṭī",
 "vol": 1,
 "page": 130,
+"also": false
+},
+{
+"work": "Abhinava",
+"vol": 1,
+"page": 371,
 "also": false
 }
 ]
@@ -5508,7 +5573,14 @@
 "n": 2,
 "text": "Visuddhi 2. 40 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 40,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -5787,7 +5859,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 1,
+"page": 410,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -6383,7 +6462,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 1,
+"page": 450,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -6430,6 +6516,12 @@
 "work": "Dī-Ṭī",
 "vol": 1,
 "page": 176,
+"also": false
+},
+{
+"work": "Abhinava",
+"vol": 1,
+"page": 452,
 "also": false
 }
 ]
@@ -7115,7 +7207,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 8,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -7167,7 +7266,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 14,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -7529,6 +7635,12 @@
 ],
 "xrefs": [
 {
+"work": "Abhinava",
+"vol": 2,
+"page": 17,
+"also": true
+},
+{
 "work": "Aṁ-Ṭṭha",
 "vol": 2,
 "page": 242,
@@ -7584,7 +7696,14 @@
 "n": 1,
 "text": "Visuddhi 1. 192 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 192,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -7597,7 +7716,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 21,
+"also": false
+}
+]
 }
 ],
 "95": [
@@ -8175,7 +8301,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 32,
+"also": false
+}
+]
 },
 {
 "n": 6,
@@ -8824,6 +8957,12 @@
 ],
 "xrefs": [
 {
+"work": "Abhinava",
+"vol": 2,
+"page": 54,
+"also": true
+},
+{
 "work": "Dī-Ṭī",
 "vol": 1,
 "page": 230,
@@ -8893,6 +9032,12 @@
 "text": "Assa (bahūsu, Sī-Ṭī Abhinava 2. 58 piṭṭhepi) Dī-Ṭī 1. 233 piṭṭhe oloketabbā.",
 "variants": [],
 "xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 58,
+"also": true
+},
 {
 "work": "Dī-Ṭī",
 "vol": 1,
@@ -9603,6 +9748,12 @@
 "vol": 2,
 "page": 292,
 "also": false
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 346,
+"also": false
 }
 ]
 },
@@ -10142,7 +10293,14 @@
 "n": 2,
 "text": "Kiriyāmayapavattāni (Sī-Ṭī Abhinava 2. 107 piṭṭhe)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 107,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -10338,6 +10496,12 @@
 "vol": 1,
 "page": 250,
 "also": false
+},
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 96,
+"also": false
 }
 ]
 },
@@ -10427,7 +10591,14 @@
 "n": 2,
 "text": "...madhukādīni (Sī-Ṭī Abhinava 2. 115 piṭṭhe.)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 115,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -10501,6 +10672,12 @@
 "vol": 1,
 "page": 254,
 "also": false
+},
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 114,
+"also": false
 }
 ]
 },
@@ -10551,6 +10728,12 @@
 "work": "Aṁ-Ṭṭha",
 "vol": 2,
 "page": 380,
+"also": true
+},
+{
+"work": "Mahāniddesa-Ṭṭha",
+"vol": null,
+"page": 409,
 "also": true
 }
 ]
@@ -10736,7 +10919,14 @@
 "n": 4,
 "text": "Visuddhi 1. 135 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 135,
+"also": false
+}
+]
 },
 {
 "n": 5,
@@ -11048,6 +11238,12 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Abhinava",
+"vol": 2,
+"page": 137,
+"also": false
+},
+{
 "work": "Ma-Ṭṭha",
 "vol": 2,
 "page": 222,
@@ -11068,6 +11264,12 @@
 "text": "Sītaṁ dhāraṁ uggantvā (Sī-Ṭī Abhinava 2. 139 piṭṭhe.) Aṁ-Ṭṭha 3. 10 piṭṭhe passitabbaṁ.",
 "variants": [],
 "xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 139,
+"also": false
+},
 {
 "work": "Aṁ-Ṭṭha",
 "vol": 3,
@@ -11116,7 +11318,14 @@
 "n": 2,
 "text": "Visuddhi 1. 134 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 134,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -11193,6 +11402,12 @@
 "text": "Vipassanāviññāṇasseva (Sī-Ṭī Abhinava 2. 146) Ma-Ṭṭha 2. 180 piṭṭhesu passitabbaṁ.",
 "variants": [],
 "xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 146,
+"also": false
+},
 {
 "work": "Ma-Ṭṭha",
 "vol": 2,
@@ -11678,6 +11893,12 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Abhinava",
+"vol": 2,
+"page": 194,
+"also": false
+},
+{
 "work": "Saṁ-Ṭṭha",
 "vol": 1,
 "page": 146,
@@ -11793,6 +12014,12 @@
 "work": "Ma-Ṭṭha",
 "vol": 1,
 "page": 136,
+"also": true
+},
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 213,
 "also": true
 }
 ]
@@ -12487,7 +12714,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 246,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -12719,6 +12953,12 @@
 "text": "Kathāsallāpaṁ (Sī-Ṭī Abhinava 2. 249; Dī-Ṭī 1. 297 piṭṭhesu.)",
 "variants": [],
 "xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 249,
+"also": false
+},
 {
 "work": "Dī-Ṭī",
 "vol": 1,
@@ -14522,7 +14762,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 49,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -16263,7 +16510,14 @@
 "n": 1,
 "text": "Visuddhi 2. 344 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 344,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -16396,6 +16650,12 @@
 }
 ],
 "xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 195,
+"also": true
+},
 {
 "work": "Jātaka-Ṭṭha",
 "vol": 1,
@@ -16682,7 +16942,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 415,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -16730,7 +16997,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 416,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -17184,7 +17458,14 @@
 "n": 3,
 "text": "Tameva vatthuṁ (Sī-Ṭī Abhinava 2. 427 piṭṭhe.)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhinava",
+"vol": 2,
+"page": 427,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -17487,6 +17768,12 @@
 "work": "Dī-Ṭī",
 "vol": 1,
 "page": 404,
+"also": false
+},
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 302,
 "also": false
 },
 {

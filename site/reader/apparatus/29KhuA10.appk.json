@@ -745,7 +745,14 @@
 "n": 3,
 "text": "Suttanipāta-Ṭṭha 1. 46 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Suttanipāta-Ṭṭha",
+"vol": 1,
+"page": 46,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -4189,6 +4196,12 @@
 "vol": 4,
 "page": 191,
 "also": false
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 25,
+"also": false
 }
 ]
 },
@@ -6352,7 +6365,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 375,
+"also": false
+}
+]
 },
 {
 "n": 5,
@@ -8115,6 +8135,12 @@
 "work": "Khu",
 "vol": 3,
 "page": 7,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 4,
+"page": 94,
 "also": false
 }
 ]
@@ -10515,6 +10541,12 @@
 "vol": 1,
 "page": 211,
 "also": false
+},
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 318,
+"also": false
 }
 ]
 },
@@ -10566,6 +10598,12 @@
 "work": "Saṁ",
 "vol": 1,
 "page": 211,
+"also": false
+},
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 319,
 "also": false
 }
 ]
@@ -11195,7 +11233,20 @@
 "n": 1,
 "text": "Khuddakapāṭha-Ṭṭha 135; Suttanipāta-Ṭṭha 1. 265 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khuddakapāṭha-Ṭṭha",
+"vol": null,
+"page": 135,
+"also": false
+},
+{
+"work": "Suttanipāta-Ṭṭha",
+"vol": 1,
+"page": 265,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -12817,7 +12868,14 @@
 "n": 2,
 "text": "Itivuttaka-Ṭṭha 123 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 123,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -13833,6 +13891,12 @@
 "vol": 2,
 "page": 377,
 "also": false
+},
+{
+"work": "Khu",
+"vol": 3,
+"page": 181,
+"also": false
 }
 ]
 },
@@ -14552,7 +14616,14 @@
 "n": 6,
 "text": "Itivuttaka-Ṭṭha 4 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 4,
+"also": false
+}
+]
 }
 ],
 "178": [
@@ -23983,7 +24054,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 81,
+"also": false
+}
+]
 }
 ],
 "338": [
@@ -28864,6 +28942,12 @@
 "work": "Vi",
 "vol": 1,
 "page": 49,
+"also": false
+},
+{
+"work": "Vi",
+"vol": 1,
+"page": 84,
 "also": false
 }
 ]

@@ -397,6 +397,12 @@
 "vol": 2,
 "page": 299,
 "also": false
+},
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 261,
+"also": false
 }
 ]
 }
@@ -477,7 +483,14 @@
 "n": 2,
 "text": "Visuddhi 2. 24 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 24,
+"also": false
+}
+]
 }
 ],
 "32": [
@@ -852,7 +865,14 @@
 "n": 2,
 "text": "Theragāthā-Ṭṭha 2. 541 piṭṭhe vitthāro.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Theragāthā-Ṭṭha",
+"vol": 2,
+"page": 541,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -1042,7 +1062,14 @@
 "n": 1,
 "text": "Visuddhi 2. 54 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 54,
+"also": false
+}
+]
 }
 ],
 "47": [
@@ -1077,7 +1104,14 @@
 "n": 1,
 "text": "Visuddhi 2. 57 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 57,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -1096,7 +1130,14 @@
 "n": 2,
 "text": "Visuddhi 2. 58 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 58,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -1118,7 +1159,14 @@
 "n": 1,
 "text": "Visuddhi 1. 147 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 147,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -1897,6 +1945,12 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Visuddhi",
+"vol": 2,
+"page": 74,
+"also": false
+},
+{
 "work": "Abhi-Ṭṭha",
 "vol": 1,
 "page": 349,
@@ -1922,6 +1976,12 @@
 "text": "Mahāniddesa-Ṭṭha 143; Abhi-Ṭṭha 2. 42 piṭṭhesu.",
 "variants": [],
 "xrefs": [
+{
+"work": "Mahāniddesa-Ṭṭha",
+"vol": null,
+"page": 143,
+"also": false
+},
 {
 "work": "Abhi-Ṭṭha",
 "vol": 2,
@@ -2361,6 +2421,18 @@
 "vol": 1,
 "page": 269,
 "also": false
+},
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 28,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 304,
+"also": false
 }
 ]
 },
@@ -2514,7 +2586,14 @@
 "n": 1,
 "text": "Visuddhi 2. 130 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 130,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -2721,7 +2800,14 @@
 "n": 1,
 "text": "Visuddhi 1. 320 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 320,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -2753,7 +2839,14 @@
 "n": 2,
 "text": "Visuddhi 1. 150 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 150,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -3028,7 +3121,14 @@
 "n": 1,
 "text": "Visuddhi 2. 180 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 180,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -3084,7 +3184,14 @@
 "n": 2,
 "text": "Visuddhi 2. 115 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 115,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -3131,7 +3238,14 @@
 "n": 1,
 "text": "Visuddhi 2. 87 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 87,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3322,6 +3436,12 @@
 "work": "Aṁ-Ṭṭha",
 "vol": 1,
 "page": 401,
+"also": false
+},
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 109,
 "also": false
 }
 ]
@@ -4061,7 +4181,14 @@
 "n": 3,
 "text": "Dhammapada-Ṭṭha 2. 150 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 150,
+"also": false
+}
+]
 }
 ],
 "138": [
@@ -4383,6 +4510,12 @@
 "vol": 1,
 "page": 349,
 "also": false
+},
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 74,
+"also": false
 }
 ]
 },
@@ -4556,7 +4689,14 @@
 "n": 1,
 "text": "Visuddhi 2. 103 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 103,
+"also": false
+}
+]
 }
 ],
 "153": [
@@ -4943,6 +5083,12 @@
 "work": "Abhi",
 "vol": 1,
 "page": 20,
+"also": false
+},
+{
+"work": "Ma",
+"vol": 1,
+"page": 367,
 "also": false
 }
 ]
@@ -5893,6 +6039,12 @@
 "vol": 3,
 "page": 8,
 "also": false
+},
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 535,
+"also": false
 }
 ]
 },
@@ -6423,6 +6575,12 @@
 "vol": 1,
 "page": 375,
 "also": false
+},
+{
+"work": "Khu",
+"vol": 9,
+"page": 51,
+"also": false
 }
 ]
 },
@@ -6818,6 +6976,12 @@
 "also": false
 },
 {
+"work": "Dī",
+"vol": 2,
+"page": 47,
+"also": false
+},
+{
 "work": "Saṁ",
 "vol": 1,
 "page": 318,
@@ -6872,7 +7036,14 @@
 "n": 1,
 "text": "Visuddhi 2. 173 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 173,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -7608,7 +7779,14 @@
 "n": 2,
 "text": "Visuddhi 2. 158 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 158,
+"also": false
+}
+]
 }
 ],
 "220": [
@@ -7617,6 +7795,12 @@
 "text": "Visuddhi 1. 348; Abhi-Ṭṭha 2. 54 piṭṭhādīsu.",
 "variants": [],
 "xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 348,
+"also": false
+},
 {
 "work": "Abhi-Ṭṭha",
 "vol": 2,
@@ -7840,6 +8024,24 @@
 "vol": 1,
 "page": 4,
 "also": false
+},
+{
+"work": "Vi",
+"vol": 4,
+"page": 84,
+"also": false
+},
+{
+"work": "Abhi",
+"vol": 1,
+"page": 5,
+"also": false
+},
+{
+"work": "Abhi",
+"vol": 1,
+"page": 9,
+"also": false
 }
 ]
 },
@@ -8032,6 +8234,18 @@
 "vol": 1,
 "page": 5,
 "also": false
+},
+{
+"work": "Abhi",
+"vol": 1,
+"page": 9,
+"also": false
+},
+{
+"work": "Dī",
+"vol": 2,
+"page": 196,
+"also": false
 }
 ]
 },
@@ -8135,6 +8349,12 @@
 "work": "Abhi",
 "vol": 1,
 "page": 3,
+"also": false
+},
+{
+"work": "Abhi",
+"vol": 1,
+"page": 2,
 "also": false
 }
 ]
@@ -8678,6 +8898,12 @@
 "vol": 8,
 "page": 159,
 "also": false
+},
+{
+"work": "Abhi",
+"vol": 3,
+"page": 2,
+"also": false
 }
 ]
 },
@@ -8954,7 +9180,14 @@
 "n": 1,
 "text": "Visuddhi 2. 82 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 82,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -9521,7 +9754,14 @@
 "n": 2,
 "text": "Visuddhi 2. 187 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 187,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -9610,9 +9850,21 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Visuddhi",
+"vol": 2,
+"page": 186,
+"also": false
+},
+{
 "work": "Abhi-Ṭṭha",
 "vol": 2,
 "page": 154,
+"also": false
+},
+{
+"work": "Mahāniddesa-Ṭṭha",
+"vol": null,
+"page": 196,
 "also": false
 },
 {
@@ -10658,6 +10910,12 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Visuddhi",
+"vol": 2,
+"page": 176,
+"also": false
+},
+{
 "work": "Dī-Ṭṭha",
 "vol": 2,
 "page": 86,
@@ -10688,15 +10946,57 @@
 "also": false
 },
 {
+"work": "Suttanipāta-Ṭṭha",
+"vol": 2,
+"page": 151,
+"also": false
+},
+{
 "work": "Udāna-Ṭṭha",
 "vol": null,
 "page": 245,
 "also": false
 },
 {
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 55,
+"also": false
+},
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 190,
+"also": false
+},
+{
+"work": "Theragāthā-Ṭṭha",
+"vol": 1,
+"page": 191,
+"also": false
+},
+{
+"work": "Theragāthā-Ṭṭha",
+"vol": 1,
+"page": 257,
+"also": false
+},
+{
 "work": "Paṭisaṁ-Ṭṭha",
 "vol": 2,
 "page": 18,
+"also": false
+},
+{
+"work": "Cūḷaniddesa-Ṭṭha",
+"vol": null,
+"page": 5,
+"also": false
+},
+{
+"work": "Buddhavaṁsa-Ṭṭha",
+"vol": null,
+"page": 115,
 "also": false
 }
 ]
@@ -10730,7 +11030,14 @@
 "n": 2,
 "text": "Visuddhi 2. 66 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 66,
+"also": false
+}
+]
 }
 ],
 "295": [
@@ -10738,13 +11045,27 @@
 "n": 1,
 "text": "Visuddhi-Ṭī 2. 86 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi-Ṭī",
+"vol": 2,
+"page": 86,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Visuddhi 1. 346 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 346,
+"also": false
+}
+]
 }
 ],
 "296": [
@@ -10766,7 +11087,14 @@
 "n": 1,
 "text": "Visuddhi 2. 224 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 224,
+"also": false
+}
+]
 }
 ],
 "301": [
@@ -10774,7 +11102,14 @@
 "n": 1,
 "text": "Visuddhi 1. 223 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 223,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -11319,6 +11654,12 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Visuddhi",
+"vol": 2,
+"page": 176,
+"also": false
+},
+{
 "work": "Dī-Ṭṭha",
 "vol": 2,
 "page": 86,
@@ -11349,9 +11690,51 @@
 "also": false
 },
 {
+"work": "Suttanipāta-Ṭṭha",
+"vol": 2,
+"page": 151,
+"also": false
+},
+{
 "work": "Udāna-Ṭṭha",
 "vol": null,
 "page": 245,
+"also": false
+},
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 55,
+"also": false
+},
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 190,
+"also": false
+},
+{
+"work": "Theragāthā-Ṭṭha",
+"vol": 1,
+"page": 191,
+"also": false
+},
+{
+"work": "Theragāthā-Ṭṭha",
+"vol": 1,
+"page": 257,
+"also": false
+},
+{
+"work": "Buddhavaṁsa-Ṭṭha",
+"vol": null,
+"page": 115,
+"also": false
+},
+{
+"work": "Cūḷaniddesa-Ṭṭha",
+"vol": null,
+"page": 5,
 "also": false
 },
 {
@@ -11379,7 +11762,14 @@
 "n": 2,
 "text": "Visuddhi 2. 237 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 237,
+"also": false
+}
+]
 }
 ],
 "322": [
@@ -11909,13 +12299,27 @@
 "n": 1,
 "text": "Visuddhi 2. 251 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 251,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Visuddhi 2. 252 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 252,
+"also": false
+}
+]
 }
 ],
 "334": [
@@ -12089,7 +12493,14 @@
 "n": 5,
 "text": "Visuddhi 2. 247 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 247,
+"also": false
+}
+]
 }
 ],
 "339": [
@@ -12715,7 +13126,14 @@
 "n": 1,
 "text": "Visuddhi 2. 263 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 263,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -13119,7 +13537,14 @@
 "n": 3,
 "text": "Visuddhi 2. 282 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 282,
+"also": false
+}
+]
 }
 ],
 "392": [
@@ -13766,6 +14191,12 @@
 "vol": 4,
 "page": 189,
 "also": false
+},
+{
+"work": "Ma",
+"vol": 3,
+"page": 263,
+"also": false
 }
 ]
 },
@@ -13810,7 +14241,14 @@
 "n": 1,
 "text": "Visuddhi 2. 248 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 248,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -13915,7 +14353,14 @@
 "n": 1,
 "text": "Visuddhi 2. 6 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 6,
+"also": false
+}
+]
 }
 ],
 "456": [
@@ -14261,7 +14706,14 @@
 "n": 1,
 "text": "Visuddhi-Ṭī 1. 257 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi-Ṭī",
+"vol": 1,
+"page": 257,
+"also": false
+}
+]
 }
 ],
 "473": [
@@ -14359,7 +14811,14 @@
 "n": 2,
 "text": "Visuddhi 2. 279 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 279,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -14682,7 +15141,14 @@
 "n": 1,
 "text": "Visuddhi 2. 350 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 350,
+"also": false
+}
+]
 }
 ],
 "504": [
@@ -14690,7 +15156,14 @@
 "n": 2,
 "text": "Visuddhi 2. 9 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 9,
+"also": false
+}
+]
 }
 ],
 "508": [

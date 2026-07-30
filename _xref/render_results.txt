@@ -1,1 +1,10 @@
-  ok   09DiT02     a.xref 1046   span.xref(unresolved) 146   appk ords carrying xrefs 58
+  ok   01ViT01     a.xref  564   span.xref(unresolved)   2   appk ords carrying xrefs 30
+  ok   09DiT02     a.xref 1323   span.xref(unresolved)  10   appk ords carrying xrefs 59
+  ok   36KhuA17    a.xref  132   span.xref(unresolved)   0   appk ords carrying xrefs 57
+  ok   45KhuA26    a.xref  466   span.xref(unresolved)   1   appk ords carrying xrefs 61
+  ok   51Vism01    a.xref  367   span.xref(unresolved)   3   appk ords carrying xrefs 132
+  ok   52Vism02    a.xref  508   span.xref(unresolved)  22   appk ords carrying xrefs 224
+  ok   15An01      a.xref  199   span.xref(unresolved)   0   appk ords carrying xrefs 109
+  ok   16An02      a.xref  146   span.xref(unresolved)   0   appk ords carrying xrefs 80
+  ok   17An03      a.xref  126   span.xref(unresolved)   0   appk ords carrying xrefs 56
+  ok   01VinA01    a.xref  233   span.xref(unresolved)   1   appk ords carrying xrefs 38

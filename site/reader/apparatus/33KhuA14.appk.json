@@ -4,7 +4,14 @@
 "n": 1,
 "text": "Vinatāya (Theragāthā-Ṭṭha 1. 351 piṭṭhe.)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Theragāthā-Ṭṭha",
+"vol": 1,
+"page": 351,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -995,7 +1002,14 @@
 "n": 2,
 "text": "Idaṁ vatthu Theragāthā-Ṭṭha 2. 264 piṭṭhepi āgataṁ, thokaṁ visadisaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Theragāthā-Ṭṭha",
+"vol": 2,
+"page": 264,
+"also": true
+}
+]
 }
 ],
 "139": [
@@ -1003,7 +1017,14 @@
 "n": 1,
 "text": "Theragāthā-Ṭṭha 2. 197 piṭṭhādīsu kappattherotināmena āgataṁ. Vatthupi thokaṁ vittāritaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Theragāthā-Ṭṭha",
+"vol": 2,
+"page": 197,
+"also": true
+}
+]
 }
 ],
 "147": [
@@ -2205,6 +2226,12 @@
 "vol": 1,
 "page": 183,
 "also": false
+},
+{
+"work": "Thera-Ṭṭha",
+"vol": 2,
+"page": 228,
+"also": false
 }
 ]
 }
@@ -2313,7 +2340,14 @@
 "n": 2,
 "text": "Dhammapada-Ṭṭha 2. 381 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 381,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -2358,7 +2392,14 @@
 "n": 4,
 "text": "Dhammapada-Ṭṭha 2. 382 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 382,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -2461,7 +2502,14 @@
 "n": 1,
 "text": "Balo, balavāhano, (Dhammapada-Ṭṭha 1. 353 piṭṭhe.)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 353,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -2652,6 +2700,12 @@
 "vol": 1,
 "page": 355,
 "also": false
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 84,
+"also": false
 }
 ]
 },
@@ -2695,7 +2749,14 @@
 "n": 1,
 "text": "Visuddhi 1. 190 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 190,
+"also": false
+}
+]
 }
 ],
 "633": [
@@ -3130,6 +3191,12 @@
 "text": "Visuddhi 1. 44; Paṭīsaṁ-Ṭṭha 1. 188 piṭṭhesu.",
 "variants": [],
 "xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 44,
+"also": false
+},
 {
 "work": "Paṭīsaṁ-Ṭṭha",
 "vol": 1,

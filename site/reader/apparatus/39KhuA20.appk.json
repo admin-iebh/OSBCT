@@ -4032,7 +4032,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Suttanipāta-Ṭṭha",
+"vol": 2,
+"page": 180,
+"also": false
+}
+]
 }
 ],
 "256": [
@@ -6191,7 +6198,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 117,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -6420,7 +6434,14 @@
 "n": 4,
 "text": "Saddahāpetvā (Dhammapada-Ṭṭha 2. 117 piṭṭhe)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 117,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -14538,7 +14559,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Itivuttaka-Ṭṭha",
+"vol": null,
+"page": 230,
+"also": true
+}
+]
 }
 ],
 "997": [

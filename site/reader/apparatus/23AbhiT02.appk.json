@@ -79,6 +79,12 @@
 "also": false
 },
 {
+"work": "Khu",
+"vol": 1,
+"page": 232,
+"also": false
+},
+{
 "work": "Dī",
 "vol": 3,
 "page": 181,
@@ -363,7 +369,14 @@
 "n": 2,
 "text": "Dhammapada-Ṭṭha 2. 150 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 150,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -1023,7 +1036,14 @@
 "n": 1,
 "text": "Visuddhi 2. 81 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 81,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -1991,6 +2011,12 @@
 "vol": 2,
 "page": 387,
 "also": false
+},
+{
+"work": "Abhi",
+"vol": 9,
+"page": 428,
+"also": false
 }
 ]
 }
@@ -2569,7 +2595,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi-Ṭī",
+"vol": 1,
+"page": 305,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -2601,13 +2634,27 @@
 "n": 1,
 "text": "So kirāyasmā (Visuddhi 1. 257 piṭṭhe)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 257,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Ānisadaṭṭhi-ādīni (Visuddhi-Ṭī 1. 306 piṭṭhe)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi-Ṭī",
+"vol": 1,
+"page": 306,
+"also": false
+}
+]
 }
 ],
 "85": [
@@ -2825,7 +2872,14 @@
 "n": 3,
 "text": "Dhammapada-Ṭṭha 2. 150 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 150,
+"also": false
+}
+]
 }
 ],
 "98": [
@@ -3916,6 +3970,12 @@
 "work": "Abhi",
 "vol": 1,
 "page": 146,
+"also": false
+},
+{
+"work": "Abhi-Ṭṭha",
+"vol": 1,
+"page": 335,
 "also": false
 }
 ]
@@ -5070,6 +5130,12 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Visuddhi",
+"vol": 2,
+"page": 203,
+"also": false
+},
+{
 "work": "Abhi-Ṭṭha",
 "vol": 2,
 "page": 171,
@@ -6084,7 +6150,14 @@
 "n": 3,
 "text": "Visuddhi-Ṭī 2. 332 piṭṭhepi.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi-Ṭī",
+"vol": 2,
+"page": 332,
+"also": true
+}
+]
 }
 ],
 "341": [
@@ -6399,7 +6472,14 @@
 "n": 2,
 "text": "Visuddhi-Ṭṭha 1. 189 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi-Ṭṭha",
+"vol": 1,
+"page": 189,
+"also": false
+}
+]
 }
 ],
 "362": [

@@ -11,31 +11,7 @@ DIVWORD  = re.compile(r'(vagga|vaggo|nipāta|saṁyutta|khandhaka|paṇṇāsaka
 SUTWORD = re.compile(r'(sutta|suttaṁ)', re.I)
 ENDWORD = re.compile(r'(niṭṭhit|samatt)', re.I)
 XREF_TAIL = re.compile(r'piṭṭh(?:e|esu|epi|esupi|ādīsu)', re.I)
-# SIGLA LONGER THAN SEVEN CHARACTERS WERE SILENTLY DROPPED (2026-07-30i).
-# The siglum used to be matched as `[A-ZĀĪŪṀ][a-zāīūṁṅñṭḍṇḷ]{0,6}` — a seven
-# character cap — so `Suttanipāta-Ṭṭha 94` matched nothing at that position,
-# and because the class `[A-ZĀĪŪṀ]` also excludes `Ṭ` the leftover `Ṭṭha 94`
-# matched nothing either: the citation VANISHED rather than mislinking.
-# 1,142 citations in the Khuddaka commentaries, the Visuddhimagga and the
-# Vinaya ṭīkā were lost this way.
-#
-# They are restored by an explicit WHITELIST, not by widening the cap.  A wider
-# cap turns any ordinary Pāḷi word standing before a number into a citation,
-# and a note that parses ANY xref stops displaying its own text — so a false
-# positive does not merely add a bad link, it hides the edition's words.  Every
-# name below is one whose target volume is in the reader's XC_ maps, checked
-# two ways: the cited pages fall inside the target volume's printed page range,
-# and the citing note's lemma is found on the cited page far more often than in
-# a control volume.  Do not add a name here without a target and that check.
-XREF_LONG = ('Khuddakapāṭha','Dhammapada','Suttanipāta','Itivuttaka','Theragāthā',
-             'Therīgāthā','Buddhavaṁsa','Cariyāpiṭaka','Mahāniddesa','Cūḷaniddesa',
-             'Vinayasaṅgaha','Visuddhi','Sārattha','Abhinava')
-# `-Tṭha` is the edition's own misprint for `-Ṭṭha`, in 13 places.  It is kept
-# in the parsed `work` so the label displays what the page says; only the
-# READER normalises it when resolving.  Never corrected in the data.
-XREF_SEG  = re.compile(r'\b((?:' + '|'.join(sorted(XREF_LONG, key=len, reverse=True)) +
-                       r'|[A-ZĀĪŪṀ][a-zāīūṁṅñṭḍṇḷ]{0,6})(?:-Ṭṭha|-Tṭha|-Ṭī|-Tī|-Anuṭī)?)'
-                       r'\.?\s*(?:(\d+)\s*\.\s*)?((?:\d+(?:-\d+)?)(?:\s*,\s*\d+(?:-\d+)?)*)')
+XREF_SEG  = re.compile(r'\b([A-ZĀĪŪṀ][a-zāīūṁṅñṭḍṇḷ]{0,6}(?:-Ṭṭha|-Ṭī)?)\.?\s*(?:(\d+)\s*\.\s*)?((?:\d+(?:-\d+)?)(?:\s*,\s*\d+(?:-\d+)?)*)')
 
 def parse_xrefs(txt):
     """Handles: 'Aṁ 1. 60 piṭṭhe', 'Khu 10. 144-5 piṭṭhesupi.',
@@ -44,15 +20,9 @@ def parse_xrefs(txt):
     if not (XREF_TAIL.search(txt) or re.search(r'\b[A-ZĀĪŪṀ][a-zāīūṁ]{0,6}\.?\s*\d+\s*\.\s*\d',txt)):
         return out
     also=bool(re.search(r'pi\b|pi\.',txt))
-    # finditer, NOT search: a segment often carries more than one citation —
-    # two footnotes run together (`… piṭṭhādīsupi passitabbaṁ. 3. Khu 1. 55
-    # piṭṭhe`) or a parenthetical beside a plain one (`(Sī-Ṭī Abhinava 2. 146)
-    # Ma-Ṭṭha 2. 180`).  With search() only the FIRST survived, so restoring the
-    # long sigla above would have DISPLACED 27 already-working citations rather
-    # than adding to them.  Measured over all 72,131 notes: finditer loses 0 and
-    # gains 359, of which 355 resolve to a volume and 4 do not.
     for seg in re.split(r'[;]',txt):
-      for m in XREF_SEG.finditer(seg):
+        m=XREF_SEG.search(seg)
+        if not m: continue
         work=m.group(1); vol=int(m.group(2)) if m.group(2) else None
         for chunk in m.group(3).split(','):
             chunk=chunk.strip()

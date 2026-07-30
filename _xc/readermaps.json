@@ -1,0 +1,286 @@
+{
+ "XC_CANON": {
+  "Dī": [
+   "06Di01",
+   "07Di02",
+   "08Di03"
+  ],
+  "Ma": [
+   "09Ma01",
+   "10Ma02",
+   "11Ma03"
+  ],
+  "Saṁ": [
+   "12Sam01",
+   "13Sam02",
+   "14Sam03"
+  ],
+  "Aṁ": [
+   "15An01",
+   "16An02",
+   "17An03"
+  ],
+  "Khu": [
+   "18Khu01",
+   "19Khu02",
+   "20Khu03",
+   "21Khu04",
+   "22Khu05",
+   "23Khu06",
+   "24Khu07",
+   "25Khu08",
+   "26Khu09",
+   "27Khu10",
+   "28Khu11"
+  ],
+  "Vi": [
+   "01Vin01",
+   "02Vin02",
+   "03Vin03",
+   "04Vin04",
+   "05Vin05"
+  ],
+  "Abhi": [
+   "29Abhi01",
+   "30Abhi02",
+   "31Abhi03",
+   "32Abhi04",
+   "33Abhi05",
+   "34Abhi06",
+   "35Abhi07",
+   "36Abhi08",
+   "37Abhi09",
+   "38Abhi10",
+   "39Abhi11",
+   "40Abhi12"
+  ],
+  "Paṭisaṁ": [
+   "26Khu09"
+  ],
+  "Jā": [
+   "22Khu05",
+   "23Khu06"
+  ],
+  "Mahāni": [
+   "24Khu07"
+  ],
+  "Cūḷani": [
+   "25Khu08"
+  ],
+  "Di": [
+   "06Di01",
+   "07Di02",
+   "08Di03"
+  ],
+  "Vī": [
+   "01Vin01",
+   "02Vin02",
+   "03Vin03",
+   "04Vin04",
+   "05Vin05"
+  ],
+  "Ku": [
+   "18Khu01",
+   "19Khu02",
+   "20Khu03",
+   "21Khu04",
+   "22Khu05",
+   "23Khu06",
+   "24Khu07",
+   "25Khu08",
+   "26Khu09",
+   "27Khu10",
+   "28Khu11"
+  ]
+ },
+ "XC_COMM": {
+  "Dī": [
+   "07DiA01",
+   "08DiA02",
+   "09DiA03"
+  ],
+  "Ma": [
+   "10MaA01",
+   "11MaA02",
+   "12MaA03",
+   "13MaA04"
+  ],
+  "Saṁ": [
+   "14SamA01",
+   "15SamA02",
+   "16SamA03"
+  ],
+  "Aṁ": [
+   "17AnA01",
+   "18AnA02",
+   "19AnA03"
+  ],
+  "Vi": [
+   "01VinA01",
+   "02VinA02",
+   "03VinA03",
+   "04VinA04",
+   "05Kankha",
+   "06VinSg06"
+  ],
+  "Abhi": [
+   "48AbhiA01",
+   "49AbhiA02",
+   "50AbhiA03"
+  ],
+  "Khuddakapāṭha": [
+   "20KhuA01"
+  ],
+  "Dhammapada": [
+   "21KhuA02",
+   "22KhuA03"
+  ],
+  "Udāna": [
+   "23KhuA04"
+  ],
+  "Itivuttaka": [
+   "24KhuA05"
+  ],
+  "Suttanipāta": [
+   "25KhuA06",
+   "26KhuA07"
+  ],
+  "Vimāna": [
+   "27KhuA08"
+  ],
+  "Peta": [
+   "28KhuA09"
+  ],
+  "Thera": [
+   "29KhuA10",
+   "30KhuA11"
+  ],
+  "Theragāthā": [
+   "29KhuA10",
+   "30KhuA11"
+  ],
+  "Therī": [
+   "31KhuA12"
+  ],
+  "Therīgāthā": [
+   "31KhuA12"
+  ],
+  "Apadāna": [
+   "32KhuA13",
+   "33KhuA14"
+  ],
+  "Apādāna": [
+   "32KhuA13",
+   "33KhuA14"
+  ],
+  "Buddhavaṁsa": [
+   "34KhuA15"
+  ],
+  "Cariyā": [
+   "35KhuA16"
+  ],
+  "Cariyāpiṭaka": [
+   "35KhuA16"
+  ],
+  "Jātaka": [
+   "36KhuA17",
+   "37KhuA18",
+   "38KhuA19",
+   "39KhuA20",
+   "40KhuA21",
+   "41KhuA22",
+   "42KhuA23"
+  ],
+  "Mahāniddesa": [
+   "43KhuA24"
+  ],
+  "Cūḷaniddesa": [
+   "44KhuA25"
+  ],
+  "Netti": [
+   "45KhuA26"
+  ],
+  "Paṭisaṁ": [
+   "46KhuA27",
+   "47KhuA28"
+  ],
+  "Paṭisam": [
+   "46KhuA27",
+   "47KhuA28"
+  ],
+  "Paṭīsaṁ": [
+   "46KhuA27",
+   "47KhuA28"
+  ],
+  "Kaṅkhā": [
+   "05Kankha"
+  ],
+  "Vinayasaṅgaha": [
+   "06VinSg06"
+  ],
+  "Visuddhi": [
+   "51Vism01",
+   "52Vism02"
+  ]
+ },
+ "XC_TIKA": {
+  "Sārattha": [
+   "01ViT01",
+   "02ViT02",
+   "03ViT03"
+  ],
+  "Vimati": [
+   "04ViT04",
+   "05ViT05"
+  ],
+  "Vajira": [
+   "06ViT06"
+  ],
+  "Dī": [
+   "08DiT01",
+   "11DiT04",
+   "12DiT05"
+  ],
+  "Ma": [
+   "13MaT01",
+   "14MaT02",
+   "15MaT03"
+  ],
+  "Saṁ": [
+   "16SaT01",
+   "17SaT02"
+  ],
+  "Aṁ": [
+   "18AnT01",
+   "19AnT02",
+   "20AnT03"
+  ],
+  "Netti": [
+   "21KhuT01"
+  ],
+  "Visuddhi": [
+   "25VsmT01",
+   "26VsmT02"
+  ]
+ },
+ "XC_BARE": {
+  "Visuddhi": [
+   "51Vism01",
+   "52Vism02"
+  ],
+  "Abhinava": [
+   "09DiT02",
+   "10DiT03"
+  ],
+  "Mūlaṭī": [
+   "22AbhiT01",
+   "23AbhiT02",
+   "24AbhiT03"
+  ],
+  "Anuṭī": [
+   "22AbhiT01",
+   "23AbhiT02",
+   "24AbhiT03"
+  ]
+ }
+}

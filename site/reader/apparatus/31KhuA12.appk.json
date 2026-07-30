@@ -3242,7 +3242,14 @@
 "n": 6,
 "text": "Dhammapada-Ṭṭha 1. 441 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 441,
+"also": false
+}
+]
 },
 {
 "n": 7,
@@ -5495,6 +5502,12 @@
 "text": "Chāvā (Suttanipāta-Ṭṭha 1. 248; Ma-Ṭṭha 2. 94 piṭṭhesu.)",
 "variants": [],
 "xrefs": [
+{
+"work": "Suttanipāta-Ṭṭha",
+"vol": 1,
+"page": 248,
+"also": false
+},
 {
 "work": "Ma-Ṭṭha",
 "vol": 2,

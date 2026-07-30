@@ -68,6 +68,12 @@
 "vol": 2,
 "page": 126,
 "also": false
+},
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 412,
+"also": false
 }
 ]
 },
@@ -1455,6 +1461,12 @@
 "vol": 2,
 "page": 155,
 "also": false
+},
+{
+"work": "Dī",
+"vol": 2,
+"page": 201,
+"also": false
 }
 ]
 },
@@ -1816,6 +1828,12 @@
 "vol": 2,
 "page": 102,
 "also": false
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 214,
+"also": false
 }
 ]
 },
@@ -1932,6 +1950,12 @@
 "work": "Saṁ",
 "vol": 1,
 "page": 90,
+"also": false
+},
+{
+"work": "Ma",
+"vol": 1,
+"page": 15,
 "also": false
 }
 ]
@@ -2161,6 +2185,12 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Visuddhi",
+"vol": 1,
+"page": 136,
+"also": false
+},
+{
 "work": "Abhi-Ṭṭha",
 "vol": 1,
 "page": 208,
@@ -2313,7 +2343,14 @@
 "n": 2,
 "text": "Visuddhi 1. 119 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 119,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -2619,7 +2656,14 @@
 "n": 1,
 "text": "Visuddhi 2. 42 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 42,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -2638,7 +2682,14 @@
 "n": 1,
 "text": "Visuddhi 2. 53 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 53,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -2670,7 +2721,14 @@
 "n": 2,
 "text": "Visuddhi 2. 44 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 44,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -2760,6 +2818,12 @@
 "work": "Ma",
 "vol": 1,
 "page": 102,
+"also": false
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 35,
 "also": false
 }
 ]

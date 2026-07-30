@@ -77,6 +77,12 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Mahāniddesa-Ṭṭha",
+"vol": null,
+"page": 7,
+"also": true
+},
+{
 "work": "Khu",
 "vol": 1,
 "page": 55,
@@ -271,6 +277,12 @@
 "vol": 9,
 "page": 375,
 "also": false
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 21,
+"also": false
 }
 ]
 },
@@ -390,6 +402,12 @@
 "work": "Ma",
 "vol": 1,
 "page": 335,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 346,
 "also": false
 }
 ]
@@ -877,6 +895,12 @@
 "vol": 1,
 "page": 88,
 "also": false
+},
+{
+"work": "Visuddhi-Ṭṭha",
+"vol": 1,
+"page": 196,
+"also": false
 }
 ]
 },
@@ -1276,6 +1300,12 @@
 "work": "Saṁ",
 "vol": 2,
 "page": 29,
+"also": false
+},
+{
+"work": "Vi",
+"vol": 3,
+"page": 16,
 "also": false
 }
 ]
@@ -1891,7 +1921,14 @@
 "n": 1,
 "text": "Visuddhi 2. 13 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 13,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -1988,7 +2025,14 @@
 "n": 4,
 "text": "Iminā kamena (Chaṭṭha-Ṭṭha) Visuddhi 2. 5 piṭṭhepi passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 5,
+"also": true
+}
+]
 }
 ],
 "12": [
@@ -2668,6 +2712,12 @@
 "vol": 1,
 "page": 294,
 "also": false
+},
+{
+"work": "Vi",
+"vol": 1,
+"page": 218,
+"also": false
 }
 ]
 }
@@ -3066,6 +3116,12 @@
 "work": "Vi",
 "vol": 5,
 "page": 334,
+"also": false
+},
+{
+"work": "Vi",
+"vol": 1,
+"page": 48,
 "also": false
 }
 ]
@@ -4807,7 +4863,14 @@
 "n": 2,
 "text": "Dhammapada-Ṭṭha 2. 15 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 15,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -4878,6 +4941,12 @@
 "work": "Abhi-Ṭṭha",
 "vol": 2,
 "page": 475,
+"also": false
+},
+{
+"work": "Mahāniddesa-Ṭṭha",
+"vol": null,
+"page": 371,
 "also": false
 }
 ]
@@ -5384,6 +5453,12 @@
 "text": "Visuddhi 1. 95; Vi-Ṭṭha 1. 199 piṭṭhe.",
 "variants": [],
 "xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 95,
+"also": false
+},
 {
 "work": "Vi-Ṭṭha",
 "vol": 1,
@@ -7762,7 +7837,14 @@
 "n": 1,
 "text": "Dhammapada-Ṭṭha 249 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": null,
+"page": 249,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -7796,7 +7878,14 @@
 "n": 1,
 "text": "Dhammapada-Ṭṭha 1. 2 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 2,
+"also": false
+}
+]
 },
 {
 "n": 1,

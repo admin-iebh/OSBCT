@@ -1115,6 +1115,12 @@
 "vol": 1,
 "page": 571,
 "also": false
+},
+{
+"work": "Ma",
+"vol": 1,
+"page": 15,
+"also": false
 }
 ]
 },
@@ -1177,9 +1183,21 @@
 "also": false
 },
 {
+"work": "Ma",
+"vol": 1,
+"page": 15,
+"also": false
+},
+{
 "work": "Saṁ",
 "vol": 1,
 "page": 322,
+"also": false
+},
+{
+"work": "Ma",
+"vol": 3,
+"page": 22,
 "also": false
 }
 ]
@@ -1418,6 +1436,12 @@
 "vol": 1,
 "page": 5,
 "also": false
+},
+{
+"work": "Dī",
+"vol": 1,
+"page": 166,
+"also": false
 }
 ]
 },
@@ -1604,6 +1628,12 @@
 "work": "Dī",
 "vol": 2,
 "page": 245,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 5,
+"page": 215,
 "also": false
 }
 ]
@@ -5676,6 +5706,12 @@
 "also": false
 },
 {
+"work": "Khu",
+"vol": 1,
+"page": 254,
+"also": false
+},
+{
 "work": "Aṁ",
 "vol": 1,
 "page": 343,
@@ -7217,6 +7253,12 @@
 "vol": 1,
 "page": 102,
 "also": false
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 35,
+"also": false
 }
 ]
 },
@@ -8549,7 +8591,14 @@
 "n": 3,
 "text": "Visuddhi 1. 196 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 196,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -8648,7 +8697,14 @@
 "n": 3,
 "text": "Visuddhi 2. 276 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 2,
+"page": 276,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -8945,6 +9001,12 @@
 "work": "Ma-Ṭṭha",
 "vol": 1,
 "page": 237,
+"also": true
+},
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 123,
 "also": true
 }
 ]
@@ -9311,7 +9373,14 @@
 "n": 2,
 "text": "Rañño sālikkhettaṁ rañño yavakkhettanti (Visuddhi 1. 214 piṭṭhe)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 214,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -11428,7 +11497,14 @@
 "n": 2,
 "text": "Visuddhi 1. 48 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 48,
+"also": false
+}
+]
 },
 {
 "n": 2,

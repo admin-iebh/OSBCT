@@ -3886,7 +3886,14 @@
 "n": 4,
 "text": "Visuddhi 1. 190 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi",
+"vol": 1,
+"page": 190,
+"also": false
+}
+]
 }
 ],
 "26": [
@@ -6844,7 +6851,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 204,
+"also": true
+}
+]
 },
 {
 "n": 3,

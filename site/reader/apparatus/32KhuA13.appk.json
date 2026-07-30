@@ -3198,6 +3198,12 @@
 "vol": 11,
 "page": 229,
 "also": true
+},
+{
+"work": "Ma-Ṭṭha",
+"vol": 2,
+"page": 92,
+"also": true
 }
 ]
 },
@@ -4126,6 +4132,12 @@
 "vol": 1,
 "page": 146,
 "also": false
+},
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 127,
+"also": false
 }
 ]
 }
@@ -4459,7 +4471,14 @@
 "n": 1,
 "text": "Dhammapada-Ṭṭha 2. 130 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 130,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4544,7 +4563,14 @@
 "n": 1,
 "text": "Dhammapada-Ṭṭha 1. 226 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 226,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -5317,7 +5343,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Suttanipāta-Ṭṭha",
+"vol": 1,
+"page": 72,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5439,7 +5472,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Suttanipāta-Ṭṭha",
+"vol": 1,
+"page": 79,
+"also": false
+}
+]
 }
 ],
 "90": [
@@ -5475,7 +5515,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Suttanipāta-Ṭṭha",
+"vol": 1,
+"page": 81,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -5895,13 +5942,27 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Suttanipāta-Ṭṭha",
+"vol": 1,
+"page": 108,
+"also": false
+}
+]
 },
 {
 "n": 5,
 "text": "Ettheva (Sī, Suttanipāta-Ṭṭha 1. 108 piṭṭhe.)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Suttanipāta-Ṭṭha",
+"vol": 1,
+"page": 108,
+"also": false
+}
+]
 }
 ],
 "114": [
@@ -5917,7 +5978,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Suttanipāta-Ṭṭha",
+"vol": 1,
+"page": 109,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -5962,7 +6030,14 @@
 "n": 2,
 "text": "Paramasaccaṁ sacchikaroti, paññāya ca naṁ ativijjha passatīti (Suttanipāta-Ṭṭha 1. 110 piṭṭhe.)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Suttanipāta-Ṭṭha",
+"vol": 1,
+"page": 110,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -6198,7 +6273,14 @@
 "n": 2,
 "text": "Dhammapada-Ṭṭha 2. 233 piṭṭhādīsu passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 233,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -6705,6 +6787,12 @@
 "vol": 1,
 "page": 116,
 "also": false
+},
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 67,
+"also": false
 }
 ]
 }
@@ -7171,7 +7259,14 @@
 "n": 3,
 "text": "Visuddhi-Ṭṭha 2. 27 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Visuddhi-Ṭṭha",
+"vol": 2,
+"page": 27,
+"also": false
+}
+]
 }
 ],
 "303": [
@@ -8336,7 +8431,14 @@
 "n": 3,
 "text": "Paccapādi (Theragāthā-Ṭṭha 1. 138 piṭṭhe.)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Theragāthā-Ṭṭha",
+"vol": 1,
+"page": 138,
+"also": false
+}
+]
 }
 ],
 "491": [

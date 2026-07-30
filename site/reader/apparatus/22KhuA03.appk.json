@@ -2007,6 +2007,12 @@
 "vol": 1,
 "page": 146,
 "also": true
+},
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 127,
+"also": true
 }
 ]
 },
@@ -3971,9 +3977,21 @@
 "variants": [],
 "xrefs": [
 {
+"work": "Visuddhi",
+"vol": 1,
+"page": 101,
+"also": true
+},
+{
 "work": "Aṁ-Ṭṭha",
 "vol": 1,
 "page": 335,
+"also": true
+},
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 129,
 "also": true
 }
 ]
@@ -7548,7 +7566,14 @@
 "n": 2,
 "text": "Dhammapada-Ṭṭha 1. 331 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 331,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -7640,6 +7665,12 @@
 "work": "Aṁ-Ṭṭha",
 "vol": 1,
 "page": 315,
+"also": true
+},
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 251,
 "also": true
 }
 ]
@@ -7896,7 +7927,14 @@
 "n": 1,
 "text": "Dhammapada-Ṭṭha 1. 135 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 135,
+"also": false
+}
+]
 }
 ],
 "224": [
@@ -8327,7 +8365,14 @@
 "n": 1,
 "text": "Dhammapada-Ṭṭha 1. 39 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 39,
+"also": false
+}
+]
 }
 ],
 "228": [
@@ -8909,7 +8954,14 @@
 "n": 1,
 "text": "Dhammapada-Ṭṭha 2. 143 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 143,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -10201,7 +10253,14 @@
 "n": 3,
 "text": "Dhammapada-Ṭṭha 1. 312 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 312,
+"also": false
+}
+]
 }
 ],
 "306": [
@@ -10510,7 +10569,14 @@
 "n": 2,
 "text": "Dhammapada-Ṭṭha 1. 403 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 1,
+"page": 403,
+"also": false
+}
+]
 }
 ],
 "317": [
@@ -11201,7 +11267,14 @@
 "n": 2,
 "text": "Dhammapada-Ṭṭha 2. 121 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dhammapada-Ṭṭha",
+"vol": 2,
+"page": 121,
+"also": false
+}
+]
 }
 ],
 "327": [
