@@ -1,6 +1,6 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-07-30g)
+## START HERE (updated 2026-07-30h)
 
 * **!!! `data-i18n-title` EXISTED FOR MONTHS AND NOT ONE ELEMENT USED IT — EVERY
   TOOLTIP WAS ENGLISH IN SPANISH (2026-07-30g).** `applyI18n` has always
@@ -27,9 +27,34 @@
   `i18n.js` too and rewrites `<script src="…i18n.js?v=BUILD">` on all six pages.
   Idempotent — a second run moves nothing.
 
-* **!!!!! THE HOST QUESTION IS SETTLED BY CONSTRUCTION, NOT BY ARGUMENT
-  (2026-07-30f). GITHUB PAGES SERVES THE DOMAIN. `git push` IS THE ENTIRE
-  PUBLISH STEP. NEVER RUN `npx wrangler deploy` AGAIN.**
+* **!!!!! CANONICAL HOST IS NOW `buddha-dhamma.net` (2026-07-30h).** GitHub Pages
+  serves it; `git push` is the entire publish step. `osbct.buddha-dhamma.net`
+  redirects to it (Pages does this itself — both hostnames CNAME to
+  `admin-iebh.github.io`, and Pages redirects any non-canonical hostname to the
+  configured custom domain). The custom domain was moved in the OSBCT repo's
+  Settings -> Pages, the apex was verified with a `_github-pages-challenge-admin-iebh`
+  TXT record, and `site/CNAME` records it in git.
+  **`wrangler.jsonc`, `site/_headers`, `site/_redirects`, `site/.assetsignore`
+  are DELETED** — they never did anything on Pages.
+* **!!! CLOUDFLARE IS `DNS only` FOR BOTH HOSTNAMES — IT IS NOT A PROXY AND NOT A
+  CACHE, AND TWO EARLIER DIAGNOSES OF MINE WERE WRONG BECAUSE OF IT
+  (2026-07-30h).** The DNS table shows `buddha-dhamma.net` and `osbct` both
+  CNAME to `admin-iebh.github.io` with a GREY cloud.
+  1. **The stale `/reader/reader.html` was NOT a pinned Cloudflare edge object.**
+     I said it was, and told the user to purge. With a DNS-only record Cloudflare
+     is never in the path, so the purge did nothing; what actually cleared it was
+     the next DEPLOY invalidating **GitHub Pages' own CDN**. The query-string
+     evidence was real; the layer I attributed it to was not.
+  2. **The Worker `dark-river-0f9b` was never serving anything.** A Worker route
+     can only intercept PROXIED traffic. It is not merely orphaned — it is
+     unreachable by construction. Do not "fix" a stale page by deploying it.
+  **So there is no cache to purge on this project.** The only cache between a
+  push and a visitor is GitHub Pages' CDN plus the browser's own — which is why
+  the last hour of 2026-07-30g went to a browser cache. **Test in a private
+  window.**
+  *(The proxied `c3`, `cetasika`, `citta`, `kac1`, `tabla` subdomains are separate
+  Cloudflare Pages projects — the Kaccāyana work. Nothing here touches them.)*
+* **~~THE HOST QUESTION IS SETTLED BY CONSTRUCTION~~ (2026-07-30f), still true:**
   The BUILD stamp `b6e4cfd8a037` -> `5796c322ad94` was committed and pushed from
   GitHub Desktop and **nothing else** — no wrangler, no upload of `site/` to
   Cloudflare — and
