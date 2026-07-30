@@ -1,0 +1,20 @@
+# Working files that live inside `site/` but must not be PUBLISHED.
+#
+# Measured before the first deploy of 2026-07-30: 1,075 such files, 348 MB —
+# 42% of the folder's weight — including 137 `nav.json.*` backups and
+# `nav.json.damaged_by_cminsweep`, the file a read-only probe destroyed twice.
+# They are kept on disk deliberately (they are how nav.json was recovered), but
+# publishing them wastes upload, doubles the file count and puts this project's
+# scratch history on the open web.
+#
+# Wrangler reads this from the directory being deployed.
+*.bak
+*.bak*
+*.pre*
+*.tmp
+*damaged*
+*.prepage
+*.preadj
+*.previnaya
+*.preshape
+*.preana

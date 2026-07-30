@@ -18,10 +18,11 @@
   body{font-family:'Gentium Plus',Georgia,'Times New Roman',serif;color:var(--fg);background:var(--bg);display:flex;flex-direction:column;height:100vh}
   header{padding:10px 18px;border-bottom:1px solid var(--line);background:var(--panel);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   header h1{font-size:16px;margin:0;letter-spacing:.02em;white-space:nowrap}
+  header #loc{max-width:22vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .homelink{font-size:18px;text-decoration:none;color:var(--accent);border:1px solid var(--line);border-radius:6px;padding:2px 9px;line-height:1}
   header .sp{flex:1}
   header a{color:var(--accent);font-size:13px;font-family:system-ui,sans-serif;text-decoration:none}
-  header input[type=search]{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;width:260px;background:var(--panel);color:var(--fg)}
+  header input[type=search]{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;flex:0 1 240px;min-width:130px;background:var(--panel);color:var(--fg)}
   header select{font-family:system-ui,sans-serif;font-size:12px;padding:6px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--fg)}
   .themebtn{font-size:15px;background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;color:var(--fg)}
   aside#results{width:340px;border-left:1px solid var(--line);background:var(--navbg);overflow:auto;padding:0 0 40px}
@@ -43,6 +44,8 @@
   .reading{max-width:var(--rwidth,760px);margin:0 auto;font-size:var(--rsize,17px);line-height:1.62}
   .ctrls{display:inline-flex;gap:2px;align-items:center}
   .ctrls button{font-family:system-ui,sans-serif;font-size:13px;background:var(--panel);border:1px solid var(--line);color:var(--fg);border-radius:6px;padding:4px 9px;cursor:pointer}
+  [data-tip]{position:relative}
+  [data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%);background:var(--fg);color:var(--bg);font-family:system-ui,sans-serif;font-size:13px;font-weight:500;line-height:1.35;white-space:normal;width:max-content;max-width:240px;text-align:center;padding:6px 10px;border-radius:7px;box-shadow:0 6px 20px rgba(0,0,0,.28);z-index:200;pointer-events:none}
   .col-tag{display:inline-block;font-family:system-ui,sans-serif;font-size:11px;padding:2px 9px;border-radius:11px;margin-bottom:4px}
   .t-canon{background:var(--tag-c);color:var(--tag-ct)}.t-comm{background:var(--tag-a);color:var(--tag-at)}.t-sub{background:var(--tag-s);color:var(--tag-st)}
   .worktitle{font-size:20px;margin:2px 0 2px}
@@ -159,6 +162,16 @@ const XC_COMM={'Dī':['07DiA01','08DiA02','09DiA03'],'Ma':['10MaA01','11MaA02','
   'Saṁ':['14SamA01','15SamA02','16SamA03'],'Aṁ':['17AnA01','18AnA02','19AnA03'],
   'Vi':['01VinA01','02VinA02','03VinA03','04VinA04','05Kankha','06VinSg06'],
   'Abhi':['48AbhiA01','49AbhiA02','50AbhiA03']};
+// !!! THIS READER HAD NO CACHE-BUSTER AT ALL — every fetch was a bare URL,
+// so a returning browser served the previous build's corpus indefinitely.
+// `pipeline/stamp_build.py` derives BUILD from the data and rewrites it.
+const BUILD='b6e4cfd8a037';
+function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
+function truePdfPage(vol,cp){
+  const b=(window.PDFBLANK||{})[vol]; if(!b||!b.length) return cp;
+  let t=cp; for(let i=0;i<b.length;i++){ if(b[i]<=t) t++; else break; }
+  return t;
+}
 function resolveXref(work,vol){
   if(work==='Upari'||work==='Heṭṭhā') return curVol;           // same volume
   let base=work, map=XC_CANON;
@@ -192,11 +205,14 @@ function markInEl(el,q){
 let MAN=null, cache={}, curVol=null;
 const $=s=>document.querySelector(s), main=()=>$('#main');
 const esc=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+// Replace tiny native `title` tooltips with our own larger, styled tooltips.
+function tipify(root){(root||document).querySelectorAll('[title]').forEach(function(el){var v=el.getAttribute('title');if(v){el.setAttribute('data-tip',v);el.removeAttribute('title');}});}
+document.addEventListener('DOMContentLoaded',function(){setTimeout(tipify,60);});
 
 async function boot(){
-  try{ MAN=await (await fetch('manifest.json')).json(); }
+  try{ MAN=await (await fetch(bust('manifest.json'))).json(); }
   catch(e){ $('#status').textContent='Could not load manifest.json — serve this folder over http (python3 -m http.server).'; return; }
-  try{ CANONMAP=await (await fetch('links/_canonindex.json')).json(); }catch(e){ CANONMAP={}; }
+  try{ CANONMAP=await (await fetch(bust('links/_canonindex.json'))).json(); }catch(e){ CANONMAP={}; }
   renderNav();
   HLQ=new URLSearchParams(location.search).get('q')||'';
   const h=location.hash.slice(1);
@@ -221,11 +237,11 @@ function shortWork(fb){
 }
 async function getVol(fb){
   if(cache[fb]) return cache[fb];
-  const d=await (await fetch('../'+fb+'.json')).json();
+  const d=await (await fetch(bust('../'+fb+'.json'))).json();
   let fwd=null,rev=null,app=null;
-  try{ fwd=await (await fetch('links/'+fb+'.fwd.json')).json(); }catch(e){}
-  try{ rev=await (await fetch('links/'+fb+'.rev.json')).json(); }catch(e){}
-  try{ app=await (await fetch('apparatus/'+fb+'.app.json')).json(); }catch(e){}
+  try{ fwd=await (await fetch(bust('links/'+fb+'.fwd.json'))).json(); }catch(e){}
+  try{ rev=await (await fetch(bust('links/'+fb+'.rev.json'))).json(); }catch(e){}
+  try{ app=await (await fetch(bust('apparatus/'+fb+'.app.json'))).json(); }catch(e){}
   return cache[fb]={d,fwd,rev,app};
 }
 const SIGLA={'Sī':'Sīhaḷa (Sinhalese)','Syā':'Syāma (Thai)','Kaṁ':'Kamboja (Cambodian)','Kaṃ':'Kamboja (Cambodian)',
@@ -259,6 +275,9 @@ async function openVol(fb,scrollId){
   document.querySelectorAll('nav .v').forEach(e=>e.classList.toggle('active',e.dataset.v===fb));
   main().innerHTML='<div id="status">'+t('r_loading')+' '+fb+'…</div>';
   const {d,fwd,rev,app}=await getVol(fb);
+  // `pdf_page` is the index among NON-BLANK pages, not the file's page index
+  // (2026-07-29p) — 40 volumes opened the wrong leaf until this was added.
+  if(!window.PDFBLANK) window.PDFBLANK=await fetch(bust('pdfblanks.json')).then(r=>r.ok?r.json():{}).catch(()=>({}));
   const layer=MAN.volumes[fb].layer;
   const L=LAYERS[layer];
   const folder=FOLDER[layer];
@@ -267,7 +286,7 @@ async function openVol(fb,scrollId){
            `<div class="crumb">${fb} · ${d.paragraphs.length} ${t('r_paras')}</div>`;
   let lastPage=null,lastHead=null,lastVagga=null;
   for(const p of d.paragraphs){
-    if(p.printed!==lastPage){ html+=`<a class="pagemark" target="_blank" rel="noopener" href="${R2_BASE}/${folder}/${fb}.pdf#page=${p.pdf_page}" title="${t('r_viewpage')} ${p.printed}">${t('r_page')} ${p.printed??'?'} ⧉</a>`; lastPage=p.printed; }
+    if(p.printed!==lastPage){ html+=`<a class="pagemark" target="_blank" rel="noopener" href="${R2_BASE}/${folder}/${fb}.pdf#page=${truePdfPage(fb,p.pdf_page)}" title="${t('r_viewpage')} ${p.printed}">${t('r_page')} ${p.printed??'?'} ⧉</a>`; lastPage=p.printed; }
     const vg=p.vagga&&p.vagga!=='X'?p.vagga:null, su=p.sutta&&p.sutta!=='X'?p.sutta:null;
     if(vg&&vg!==lastVagga){ html+=`<div class="head vagga">${esc(vg)}</div>`; lastVagga=vg; }
     if(su&&su!==lastHead){ html+=`<div class="head">${esc(su)}</div>`; lastHead=su; }
@@ -292,6 +311,7 @@ async function openVol(fb,scrollId){
     html+='</div>';
   }
   main().innerHTML='<div class="reading">'+html+'</div>';
+  tipify(main());
   history.replaceState(null,'',location.pathname+'#'+fb+(scrollId?'/'+scrollId:''));
   if(scrollId){ const el=document.getElementById(scrollId); if(el){ el.scrollIntoView({block:'center'}); if(HLQ){ markInEl(el,HLQ); HLQ=''; } } }
   else main().scrollTop=0;
@@ -321,11 +341,11 @@ let TERMS=null, sIdxCache={};
 async function ensureTerms(){
   if(TERMS) return TERMS;
   $('#rhead').innerHTML='Loading search index…'; $('#results').hidden=false;
-  const j=await (await fetch('../index/terms.compact.json')).json();
+  const j=await (await fetch(bust('../index/terms.compact.json'))).json();
   TERMS={map:j.terms,vols:j.vols,layers:j.layers}; return TERMS;
 }
 async function sShard(vi){ if(sIdxCache[vi]) return sIdxCache[vi];
-  return sIdxCache[vi]=await (await fetch('../index/'+TERMS.vols[vi]+'.idx.json')).json(); }
+  return sIdxCache[vi]=await (await fetch(bust('../index/'+TERMS.vols[vi]+'.idx.json'))).json(); }
 async function runSearch(){
   const q=$('#q').value.trim(); if(!q) return;
   curQuery=q;

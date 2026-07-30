@@ -1,0 +1,17 @@
+{
+ "work": "Apadānapāḷi — the whole work, across two physical volumes",
+ "decision": "The user chose the EDITION'S OWN DIVISION over the physical volumes: one Apadānapāḷi work -> Therāpadāna -> Therīapadāna -> individual apadānas, with Therāpadāna's vagga numbering continuous 1-56 across the volume seam.",
+ "structure": {
+  "Therāpadāna": {
+   "vaggas": 56,
+   "20Khu03": "vaggas 1-42, ords 0-4460",
+   "21Khu04": "vaggas 43-56, ords 0-2071",
+   "verified": "PDF vagga headings/colophons number 1-42 in 20Khu03 and 43-56 in 21Khu04, contiguous; the edition prints 'Yasavaggo chapaññāsamo' (=56th) at the close."
+  },
+  "Therīapadāna": {
+   "vaggas": 4,
+   "21Khu04": "ords 2072-3431"
+  }
+ },
+ "reader_gap": "BOOKSPAN slices `cv.paras` within ONE volume, so a book spanning two volumes is new machinery. Needed before this tree can be built."
+}

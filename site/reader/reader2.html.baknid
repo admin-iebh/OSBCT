@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reader — Sixth Buddhist Council Tipiṭaka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f5f1;--panel:#fffdf9;--fg:#211f1a;--mut:#8a8175;--faint:#b7afa0;--line:#ece7dd;--accent:#8a6a3b;
+  --canon:#b8862f;--comm:#2f8a7a;--tika:#7a5cc0;--hover:#f0ebe1;--active:#efe7d7;--chip:#efeae0;--chipfg:#6a5f4d;--app:#f5f1e8;--hl:#fbe7b8}
+html[data-theme=dark]{--bg:#141210;--panel:#1c1a16;--fg:#ece6da;--mut:#8f867a;--faint:#5c554a;--line:#2a2620;--accent:#cba976;
+  --canon:#d6a94e;--comm:#4fbfa8;--tika:#a487e6;--hover:#232019;--active:#2b2618;--chip:#282318;--chipfg:#d8c9a6;--app:#201d16;--hl:#5c4a1c}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--fg);
+  display:grid;grid-template-columns:300px 1fr;grid-template-rows:52px 1fr;grid-template-areas:"top top" "side main";height:100vh;overflow:hidden;transition:grid-template-columns .2s}
+body.nosb{grid-template-columns:0 1fr}body.nosb .side{display:none}
+.pali{font-family:'Gentium Plus',Georgia,serif}
+.topbar{grid-area:top;display:flex;align-items:center;gap:12px;padding:0 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+.brand{font-weight:600;font-size:14px}.brand .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px}
+.tb{font:inherit;font-size:13px;color:var(--mut);background:none;border:1px solid transparent;border-radius:8px;padding:6px 10px;cursor:pointer}
+.tb:hover{background:var(--hover);color:var(--fg)}.tb.on{background:var(--active);color:var(--fg)}
+.navlink{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--accent);text-decoration:none;padding:5px 7px;border-radius:7px;white-space:nowrap}.navlink:hover{background:var(--hover)}
+.search{position:relative;flex:0 1 420px;margin-left:4px}
+.search input{width:100%;font:inherit;font-size:13px;padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--fg)}
+.sdrop{position:absolute;top:40px;left:0;right:0;max-height:64vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.22);z-index:40;padding:4px}
+.sp{flex:1}
+.side{grid-area:side;background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:8px 8px 40px}
+.side::-webkit-scrollbar{width:9px}.side::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
+.seclabel{font-family:'Gentium Plus',Georgia,serif;font-size:16px;font-weight:700;letter-spacing:.01em;color:var(--fg);padding:13px 10px 7px;display:flex;align-items:center;gap:6px;cursor:pointer;border-radius:8px}
+.seclabel:hover{background:var(--hover)}
+.seclabel .gd{width:10px;height:10px;border-radius:50%;margin:0 4px 0 2px;box-shadow:0 0 0 3px color-mix(in srgb, currentColor 12%, transparent)}
+.row{display:flex;align-items:center;gap:7px;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:13px;position:relative;user-select:none}
+.row:hover{background:var(--hover)}.row.active{background:var(--active);font-weight:500}
+.chev{width:13px;height:13px;flex:none;color:var(--faint);transition:transform .15s}.row.open .chev,.seclabel.open .chev{transform:rotate(90deg)}
+.row .lf{width:13px;flex:none}.row .lbl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kids{display:none}.kids.open{display:block}
+.sr-head{font-family:'Inter',sans-serif;font-size:11px;color:var(--faint);padding:8px 12px 4px}
+.sresult{padding:7px 12px;border-radius:8px;cursor:pointer}.sresult:hover{background:var(--hover)}
+.sr-lay{font-size:10.5px;font-weight:600}.sr-snip{font-family:'Gentium Plus',serif;font-size:12.5px;margin-top:2px;line-height:1.4}
+.sr-snip mark{background:var(--hl);border-radius:2px}
+.main{grid-area:main;overflow:hidden;display:flex;flex-direction:column}
+.docbar{display:flex;align-items:center;gap:12px;padding:9px 18px;border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap}
+.doctitle{font-family:'Gentium Plus',serif;font-size:16px;font-weight:700;line-height:1.1}
+.doctitle small{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:400;color:var(--mut);margin-top:1px}
+.grouplabel{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--faint)}
+.tocwrap{position:relative}
+.tocdrop{position:absolute;top:36px;left:0;width:340px;max-height:62vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.22);z-index:45;padding:4px}
+.tocitem{padding:5px 12px;border-radius:7px;cursor:pointer;font-size:13.5px;font-family:'Gentium Plus',serif}.tocitem:hover{background:var(--hover)}
+.toc-sutta{font-weight:700}
+.toc-sec{padding-left:28px;font-size:12.5px;color:var(--mut)}
+.tochead{font-family:'Inter',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);padding:8px 12px 4px}
+.layerbar{display:flex;gap:5px}
+.lbtn{font:inherit;font-size:14px;font-weight:600;width:34px;height:32px;border:1px solid var(--line);background:var(--panel);color:var(--mut);border-radius:9px;cursor:pointer}
+.lbtn.on{color:#fff}.lbtn.on[data-k=canon]{background:var(--canon);border-color:var(--canon)}.lbtn.on[data-k=A]{background:var(--comm);border-color:var(--comm)}.lbtn.on[data-k=T]{background:var(--tika);border-color:var(--tika)}
+.viewtog,.rctrl{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.viewtog button,.rctrl button{font:inherit;font-size:12px;color:var(--mut);background:var(--panel);border:none;padding:6px 11px;cursor:pointer}
+.viewtog button.on{background:var(--active);color:var(--fg);font-weight:500}
+.rctrl button{border-right:1px solid var(--line)}.rctrl button:last-child{border-right:none}
+.scroll{overflow-y:auto;padding:20px 22px 130px;flex:1;--rsize:15.5px}
+.scroll::-webkit-scrollbar{width:11px}.scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
+.incipit{font-family:'Gentium Plus',serif;font-style:italic;color:var(--accent);text-align:center;font-size:15px;margin:2px 0 16px}
+.uddana{text-align:center;margin:14px auto 22px;max-width:640px;color:var(--mut)}
+.udd-label{font-weight:700;color:var(--accent);font-size:13px;letter-spacing:.02em;margin-bottom:5px}
+.udd-verse{font-family:'Gentium Plus',serif;font-style:italic;font-size:calc(var(--rsize,16px) - 1px);line-height:1.7;color:var(--fg)}
+.uddana .appx{text-align:left;display:inline-block;margin-top:8px}
+.head{font-family:'Gentium Plus',Georgia,serif;scroll-margin-top:14px}
+.head.bookseries{font-size:15px;font-weight:600;color:var(--mut);margin:30px 0 0;text-align:center;letter-spacing:.04em}
+.head.bookseries+.head.booktitle{margin-top:2px}
+.head.booktitle{font-size:27px;font-weight:700;color:var(--fg);margin:30px 0 6px;text-align:center;letter-spacing:.01em}
+.head.sutta{font-size:20px;font-weight:700;color:var(--fg);margin:26px 0 12px;text-align:center;border-bottom:1px solid var(--line);padding-bottom:8px}
+.head.vagga{font-size:17px;font-weight:700;color:var(--fg);margin:20px 0 8px;text-align:center}
+.head.section{font-size:14.5px;font-weight:600;color:var(--accent);margin:15px 0 5px;text-align:center;scroll-margin-top:14px}
+.head.vatthu{font-size:13px;font-weight:600;color:var(--mut);margin:14px 0 4px;text-align:center;scroll-margin-top:14px}
+.gatha{font-family:'Gentium Plus',serif;font-style:italic;line-height:1.7;margin:8px 0 4px 1.6em;color:var(--fg)}
+.gatha .pn{font-style:normal;margin-left:-1.6em;margin-right:.4em}
+.gatha-end{font-size:12px;color:var(--mut);margin-left:.6em}
+.gatha-count{font-size:12px;color:var(--mut);margin-left:1.6em;font-style:italic}
+.gatha-after{margin-top:10px}
+.flash{animation:flashkf 1.5s ease}
+.colhead{display:grid;gap:16px;position:sticky;top:-20px;background:var(--bg);padding:8px 0 6px;z-index:2}
+.colhead .ch{font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;display:flex;align-items:center;gap:7px;color:var(--mut)}
+.colhead .ch .cdot{width:7px;height:7px;border-radius:50%}
+.grid{display:grid;gap:14px 16px}.rowline{display:contents}.stack{max-width:820px;margin:0 auto}
+.para{font-family:'Gentium Plus',serif;font-size:var(--rsize);line-height:1.62;padding:9px 13px;border-radius:11px;border:1px solid transparent;position:relative;scroll-margin-top:14px}
+.para.canon{border-left:3px solid var(--canon)}.para.l-A{border-left:3px solid var(--comm)}.para.l-T{border-left:3px solid var(--tika)}
+.para.empty{color:var(--faint);text-align:center;font-size:18px;line-height:1;border:none;padding:14px 0;opacity:.5}
+.rowline.hot .para{background:var(--hover);border-color:var(--line)}.rowline.hot .para.canon{border-left-color:var(--canon)}
+.para.flash{animation:flashkf 1.5s ease}@keyframes flashkf{0%,20%{background:var(--active)}100%{background:transparent}}
+.para .pn{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--accent);margin-right:6px;vertical-align:1px}
+.para .pn.k-A{color:var(--comm)}.para .pn.k-T{color:var(--tika)}
+sup.fnm{color:var(--accent);font-size:9.5px;font-weight:700;vertical-align:super}
+.lemma{font-weight:700}
+.state{font-family:'Inter',sans-serif;font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:20px;background:var(--chip);color:var(--chipfg);margin-right:6px;vertical-align:2px}
+.state.covered{font-style:italic;opacity:.85}
+.worktag{font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;color:var(--mut);margin-right:6px}
+.lchip{display:inline-block;font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:1px 8px;border-radius:20px;margin:0 0 4px 2px}
+.lchip.a{background:var(--comm);color:#fff}.lchip.t{background:var(--tika);color:#fff}
+.subwrap.a{margin-left:20px}.subwrap.t{margin-left:40px}
+.cmt-outline{margin-top:3px}.unit{margin:1px 0;border-radius:8px}
+.unit .uhead{cursor:pointer;display:flex;align-items:baseline;gap:7px;padding:3px 6px;border-radius:7px}.unit .uhead:hover{background:var(--hover)}
+.unit .utw{font-size:9px;color:var(--faint);transition:transform .15s;flex:none}.unit.open .utw{transform:rotate(90deg)}
+.unit .ugloss{display:none;padding:2px 6px 6px 22px;color:var(--fg)}.unit.open .ugloss{display:block}
+.unit.lead{padding:3px 6px;color:var(--fg)}.uhint{font-family:'Inter',sans-serif;font-size:11px;color:var(--faint);padding:2px 6px}
+.tools{float:right;display:inline-flex;gap:3px;margin-left:8px;opacity:0;transition:opacity .12s}
+.para:hover .tools{opacity:1}
+.icn,.jbtn{border:1px solid var(--line);background:var(--panel);border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.icn{width:24px;height:22px;color:var(--mut)}.icn:hover{color:var(--fg);border-color:var(--faint)}.icn.ok{color:var(--comm);border-color:var(--comm)}
+.jbtn{font-family:'Inter',sans-serif;font-size:10.5px;font-weight:700;width:22px;height:22px}.jbtn:hover{background:var(--hover)}.jbtn.off{opacity:.28;cursor:default}
+.pgmk{font-family:'Inter',sans-serif;font-size:10px;color:var(--faint);text-decoration:none;border:1px solid var(--line);border-radius:7px;padding:1px 6px}.pgmk:hover{color:var(--accent)}
+.appx{margin:7px 0 0;padding:6px 11px;border-left:2px solid var(--line);background:var(--app);border-radius:0 8px 8px 0;font-family:'Inter',sans-serif;font-size:11.5px;line-height:1.5;color:var(--mut)}
+.appx .mk{font-weight:700;color:var(--accent);margin-right:5px}.appx i{font-family:'Gentium Plus',serif;font-style:italic;color:var(--fg)}
+.appx abbr{text-decoration:none;border-bottom:1px dotted var(--faint);cursor:help}
+.appx .xref{color:var(--accent);cursor:pointer;text-decoration:none;border-bottom:1px solid transparent}.appx a.xref:hover{border-bottom-color:var(--accent)}
+.pagemark{display:block;text-align:center;color:var(--faint);font-family:'Inter',sans-serif;font-size:10.5px;letter-spacing:.06em;margin:16px 0 8px;text-decoration:none}
+.pagemark::before,.pagemark::after{content:"";display:inline-block;width:30%;height:1px;background:var(--line);vertical-align:middle;margin:0 10px}.pagemark:hover{color:var(--accent)}
+.hint{color:var(--mut);font-size:12px;text-align:center;margin-top:26px;line-height:1.6}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--fg);color:var(--bg);font-size:12.5px;font-weight:500;padding:8px 16px;border-radius:20px;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:50}
+#toast.show{opacity:.96;transform:translateX(-50%) translateY(0)}
+[data-tip]{position:relative}
+[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%);background:var(--fg);color:var(--bg);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;line-height:1.3;white-space:normal;width:max-content;max-width:230px;text-align:center;padding:5px 9px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.26);z-index:200;pointer-events:none}
+@media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
+</style>
+<script src="../i18n.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <button class="tb" id="sidetog" title="Hide / show navigation">☰</button>
+    <span class="brand"><span class="dot"></span>Sixth Buddhist Council Tipiṭaka</span>
+    <div class="search"><input id="sq" type="search" data-i18n-ph="r2_search_ph" placeholder="Search all layers — diacritics optional" autocomplete="off"><div id="sdrop" class="sdrop" hidden></div></div>
+    <span class="sp"></span>
+    <a class="navlink" href="../index.html" data-i18n="nav_home">Home</a>
+    <a class="navlink" href="../downloads.html" data-i18n="nav_downloads">Downloads</a>
+    <a class="navlink" href="../about.html" data-i18n="nav_about">About</a>
+    <a class="navlink" href="../errata.html" data-i18n="nav_errata">Errata</a>
+    <button class="tb langbtn" title="Cambiar idioma">ES</button>
+    <button class="tb" id="themebtn" title="Toggle light / dark">◐</button>
+  </div>
+  <nav class="side" id="side"><div class="hint">Loading…</div></nav>
+  <div id="toast"></div>
+  <div class="main">
+    <div class="docbar">
+      <div class="doctitle" id="doctitle">Select a text</div>
+      <span class="tocwrap"><button class="tb" id="tocbtn" data-i18n="r2_contents" title="Table of contents">☰ Contents</button><div id="tocdrop" class="tocdrop" hidden></div></span>
+      <span class="sp"></span>
+      <span class="grouplabel" data-i18n="r2_layers">Layers</span>
+      <div class="layerbar" id="layerbar">
+        <button class="lbtn on" data-k="canon" title="Pāḷi — Tipiṭaka (canon)">P</button>
+        <button class="lbtn" data-k="A" title="Aṭṭhakathā — commentary">A</button>
+        <button class="lbtn" data-k="T" title="Ṭīkā — subcommentary">T</button>
+      </div>
+      <div class="viewtog" id="viewtog">
+        <button data-view="columns" data-i18n="r2_columns">Columns</button><button data-view="tabs" data-i18n="r2_tabs">Tabs</button><button data-view="single" class="on" data-i18n="r2_single">Single</button>
+      </div>
+      <button class="tb" id="readtog" data-i18n="r2_outline" title="Collapse long commentaries into a lemma outline">☰ Outline</button>
+      <div class="rctrl"><button id="fdec" title="Smaller text">A−</button><button id="finc" title="Larger text">A+</button></div>
+    </div>
+    <div class="scroll" id="scroll"><div class="hint">Pick a text from the tree to begin.</div></div>
+  </div>
+<script>
+const $=s=>document.querySelector(s);
+if(window.I18N) Object.assign(window.I18N,{
+  r2_search_ph:{en:'Search all layers — diacritics optional',es:'Buscar en todas las capas — diacríticos opcionales'},
+  r2_layers:{en:'Layers',es:'Capas'},
+  r2_columns:{en:'Columns',es:'Columnas'},
+  r2_tabs:{en:'Tabs',es:'Pestañas'},
+  r2_single:{en:'Single',es:'Simple'},
+  r2_outline:{en:'☰ Outline',es:'☰ Esquema'},
+  r2_contents:{en:'☰ Contents',es:'☰ Contenido'}
+});
+document.documentElement.setAttribute('data-theme', localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+$('#themebtn').onclick=()=>{const d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n)};
+$('#sidetog').onclick=()=>{document.body.classList.toggle('nosb');document.body.classList.toggle('showsb')};
+const META={canon:{letter:'P',name:'Pāḷi (Tipiṭaka)',col:'var(--canon)'},A:{letter:'A',name:'Aṭṭhakathā',col:'var(--comm)'},T:{letter:'T',name:'Ṭīkā',col:'var(--tika)'}};
+const LAYERKIND={canon:'canon',commentary:'A',subcommentary:'T'};
+const state={view:'single',active:{canon:true,A:false,T:false},tab:'canon',size:15.5,reading:'full',canonVol:null,scrollKey:null,filter:null,curvagga:null};
+let NAV=null, VOLLAYER={}, VOLWORK={}, PAGEIDX={}, VOLTITLE={}, VOLSECTIONS={}, VOLKIND={}, VOLTOC={}, VOLPDFTOC={}, VOLBOOK={}, VOLNESTED={}, VAGCONTENTS={}, SUTTASUBS={}, SUTTALABEL={}, HEADMAP={}, BOOKSPAN={}, VAGGASPAN={};
+const cache={}, linkCache={}, revCache={};
+const esc=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const escA=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const R2='https://pub-825764a1384f4cc8bb611b95a1a636ff.r2.dev';
+const FOLDER={canon:'pali-unicode',A:'atthakatha-unicode',T:'tika-unicode'};
+let toastT=null;
+function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),1500);}
+
+const BUILD='2026-07-25at-bookseries';
+async function jget(url,fallback){ try{const sep=url.includes('?')?'&':'?'; const r=await fetch(url+sep+'v='+BUILD); if(!r.ok) return fallback; return await r.json();}catch(e){return fallback;} }
+async function loadVol(vol){
+  if(cache[vol]) return cache[vol];
+  const [d,bold,app,udd,sec,hide,verse,inc,btl]=await Promise.all([
+    jget('../'+vol+'.json',{paragraphs:[]}),
+    jget('bold/'+vol+'.bold.json',{}),
+    jget('apparatus/'+vol+'.appk.json',{}),
+    jget('uddana/'+vol+'.json',{}),
+    jget('sections/'+vol+'.json',{}),
+    jget('hide/'+vol+'.json',{}),
+    jget('verse/'+vol+'.json',{}),
+    jget('incipit/'+vol+'.json',{}),
+    jget('booktitle/'+vol+'.json',{})]);
+  return cache[vol]={paras:d.paragraphs||[],headings:d.headings||[],bold,app,udd,sec,hide,verse,inc,btl};
+}
+async function loadLinks(vol){ if(!(vol in linkCache)) linkCache[vol]=await jget('linksk/'+vol+'.links.json',{}); return linkCache[vol]; }
+async function loadRev(vol){ if(!(vol in revCache)) revCache[vol]=await jget('linksk/'+vol+'.rev.json',{}); return revCache[vol]; }
+function parseKey(k){const j=k.lastIndexOf('#');return [k.slice(0,j),parseInt(k.slice(j+1))];}
+function paraOf(key){const a=parseKey(key); return cache[a[0]]&&cache[a[0]].paras[a[1]];}
+
+// ---------- sidebar ----------
+const CHEV='<svg class="chev" viewBox="0 0 16 16" width="13" height="13"><path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function node(label,depth,{open,leafKey,layerkind}={}){
+  const wrap=document.createElement('div');
+  const row=document.createElement('div'); row.className='row'+(open?' open':''); row.style.paddingLeft=(9+depth*12)+'px';
+  return {wrap,row};
+}
+async function buildSidebar(){ try{
+  console.log('OSBCT reader build: BOOKSERIES-2026-07-25at');
+  NAV=await jget('nav.json',{layers:[]});
+  console.log('OSBCT nav loaded: layers=',(NAV.layers||[]).length,'canon nikāyas=',(((NAV.layers||[]).find(l=>l.layer==='canon')||{}).nikayas||[]).map(n=>n.nikaya).join(', '));
+  PAGEIDX=await jget('pageindex.json',{});
+  const man=await jget('manifest.json',{volumes:{}});
+  for(const [code,m] of Object.entries(man.volumes||{})){ VOLLAYER[code]=m.layer; VOLWORK[code]=m.work; }
+  const side=$('#side'); side.innerHTML='';
+  const tree=document.createElement('div'); tree.id='tree'; side.appendChild(tree);
+  const COL={canon:'var(--canon)',commentary:'var(--comm)',subcommentary:'var(--tika)'};
+  for(const L of NAV.layers){
+    const lab=document.createElement('div'); lab.className='seclabel open';
+    lab.innerHTML=CHEV+'<span class="gd" style="background:'+COL[L.layer]+'"></span>'+L.label;
+    const lkids=document.createElement('div'); lkids.className='kids open';
+    lab.onclick=()=>{lab.classList.toggle('open');lkids.classList.toggle('open');};
+    tree.appendChild(lab); tree.appendChild(lkids);
+    for(const nk of L.nikayas){
+      const {wrap:nw,row:nr}=node(); nr.innerHTML=CHEV+'<span class="lbl">'+nk.nikaya+'</span>';
+      nr.style.paddingLeft='10px'; const nkids=document.createElement('div'); nkids.className='kids';
+      nr.onclick=()=>{nr.classList.toggle('open');nkids.classList.toggle('open');};
+      nw.appendChild(nr); nw.appendChild(nkids); lkids.appendChild(nw);
+      // book spans: when several books share one physical volume (Khuddaka = 21
+      // books in 11 vols), each book renders only its own paragraph range.
+      { const byVol={}; nk.volumes.forEach(v=>{ if(v.first) (byVol[v.vol]=byVol[v.vol]||[]).push(v); });
+        Object.values(byVol).forEach(list=>{ if(list.length<2) return;
+          list.sort((a,b)=>(+a.first.split('#')[1])-(+b.first.split('#')[1]));
+          list.forEach((v,i)=>{ BOOKSPAN[v.first]={vol:v.vol,start:+v.first.split('#')[1],
+            end: i+1<list.length? +list[i+1].first.split('#')[1] : null}; }); }); }
+      for(const v of nk.volumes){ try{
+        VOLSECTIONS[v.vol]=(VOLSECTIONS[v.vol]||[]).concat(v.suttas||[]); VOLKIND[v.vol]=LAYERKIND[L.layer]; if(!VOLTITLE[v.vol])VOLTITLE[v.vol]=v.title||v.vol;
+        // Books nested nipāta→vagga in the tree (Itivuttaka): book row expands to
+        // nipāta rows, each expands to its vaggas; a nipāta with no vaggas (Catukka)
+        // is itself a clickable leaf. curbook stays the book's first key (BOOKSPAN).
+        // GENERIC NESTED TREE (`tree`), any depth.  The `nipatas` branch below
+        // does exactly three levels (book -> middle -> leaf).  Vimānavatthu needs
+        // four — book -> division (Itthivimāna / Purisavimāna) -> vagga -> vimāna,
+        // with the VAGGA NUMBERING RUNNING CONTINUOUSLY 1-7 ACROSS the two
+        // divisions — and Theragāthā needs the same shape (nipāta -> vagga ->
+        // theragāthā).  A node with no `kids` is a clickable leaf at whatever
+        // depth it sits.  Every node gets a VAGGASPAN so clicking it shows just
+        // that division / vagga / vimāna; state.curbook stays the book's first
+        // key so BOOKSPAN still bounds the book.
+        if(v.tree){ VOLBOOK[v.first]=v.title;
+          const {wrap:bw,row:br}=node(); br.innerHTML=CHEV+'<span class="lbl">'+esc(v.title||v.vol)+'</span>';
+          br.title=v.vol+' — '+(v.work||''); br.style.paddingLeft='22px';
+          const bkids=document.createElement('div'); bkids.className='kids';
+          // Clicking the BOOK row opens the whole book (BOOKSPAN), not just an
+          // expand: with a four-level tree every child is a narrower slice, so
+          // without this there was no way to read a book end to end.
+          br.onclick=()=>{br.classList.toggle('open');bkids.classList.toggle('open');
+            document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));
+            br.classList.add('active');
+            state.curbook=v.first; state.curvagga=null; state.cursutta=v.first;
+            openKey(v.first, LAYERKIND[L.layer]);};
+          bw.appendChild(br); bw.appendChild(bkids); nkids.appendChild(bw);
+          SUTTALABEL[v.first]=v.title;
+          const _bend=(BOOKSPAN[v.first]&&BOOKSPAN[v.first].end)||null;
+          const flat=[];
+          const open=(k)=>{document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));
+                           state.curbook=v.first;state.curvagga=k;state.cursutta=k;openKey(k, LAYERKIND[L.layer]);};
+          const walk=(list,host,depth,endOf)=>{
+            list.forEach((nd,idx)=>{
+              const nv=nd.key.split('#')[0], st=+nd.key.split('#')[1];
+              // A node takes its VOLUME FROM ITS OWN KEY, not from the book node:
+              // Apadāna is one work spread over two physical volumes (Therāpadāna
+              // vaggas 1-42 in 20Khu03, 43-56 in 21Khu04), so siblings can differ.
+              // A span ends where the next sibling in the SAME volume starts;
+              // where the next sibling is in another volume it runs to that
+              // volume's end (end:null), and an explicit `end` on the node wins
+              // (Therīapadāna must stop before Buddhavaṁsa in the same volume).
+              const nxt = idx+1<list.length ? list[idx+1] : null;
+              let en = nd.end!=null ? nd.end
+                     : (nxt ? (nxt.key.split('#')[0]===nv ? +nxt.key.split('#')[1] : null) : endOf);
+              if(!VAGGASPAN[nd.key]||VAGGASPAN[nd.key].start!==st) VAGGASPAN[nd.key]={vol:nv,start:st,end:en};
+              VOLBOOK[nd.key]=nd.label; SUTTALABEL[nd.key]=nd.label;
+              const pad=(22+12*depth)+'px';
+              if(nd.kids&&nd.kids.length){
+                const {wrap:pw,row:pr}=node(); pr.innerHTML=CHEV+'<span class="lbl">'+esc(nd.label)+'</span>';
+                pr.style.paddingLeft=pad;
+                const pk=document.createElement('div'); pk.className='kids';
+                pr.onclick=()=>{pr.classList.toggle('open');pk.classList.toggle('open');pr.classList.add('active');open(nd.key);};
+                pw.appendChild(pr); pw.appendChild(pk); host.appendChild(pw);
+                walk(nd.kids,pk,depth+1,en);
+              } else {
+                flat.push({label:nd.label,key:nd.key});
+                const {row:gr}=node(); gr.innerHTML='<span class="lf"></span><span class="lbl">'+esc(nd.label)+'</span>';
+                gr.style.paddingLeft=pad;
+                gr.onclick=()=>{gr.classList.add('active');open(nd.key);};
+                host.appendChild(gr);
+              }
+            });
+          };
+          walk(v.tree,bkids,1,_bend);
+          VAGCONTENTS[v.first]=flat;
+          continue;
+        }
+        if(v.nipatas){ VOLBOOK[v.first]=v.title;
+          const {wrap:bw,row:br}=node(); br.innerHTML=CHEV+'<span class="lbl">'+esc(v.title||v.vol)+'</span>';
+          br.title=v.vol+' — '+(v.work||''); br.style.paddingLeft='22px';
+          const bkids=document.createElement('div'); bkids.className='kids';
+          // Clicking a BOOK row opens that book, as well as expanding it. It used
+          // only to expand, so a reader clicking a book name got no book — and
+          // never saw the title page the edition prints for it.
+          br.onclick=()=>{br.classList.toggle('open');bkids.classList.toggle('open');
+            document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));
+            br.classList.add('active');
+            state.curbook=v.first; state.curvagga=null; state.cursutta=v.first;
+            openKey(v.first, LAYERKIND[L.layer]);};
+          bw.appendChild(br); bw.appendChild(bkids); nkids.appendChild(bw);
+          SUTTALABEL[v.first]=v.title;
+          const allvag=[]; const _bend=(BOOKSPAN[v.first]&&BOOKSPAN[v.first].end)||null;
+          (v.nipatas||[]).forEach((nip,idx)=>{
+            const st=+nip.key.split('#')[1];
+            const en= idx+1<v.nipatas.length? +v.nipatas[idx+1].key.split('#')[1] : _bend;
+            VAGGASPAN[nip.key]={vol:v.vol,start:st,end:en};
+            VOLBOOK[nip.key]=nip.label; SUTTALABEL[nip.key]=nip.label;
+            const openVagga=(k)=>{document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));state.curbook=v.first;state.curvagga=nip.key;state.cursutta=k;openKey(k, LAYERKIND[L.layer]);};
+            if(nip.vaggas&&nip.vaggas.length){
+              (nip.vaggas||[]).forEach(vg=>allvag.push(vg));
+              const {wrap:pw,row:prr}=node(); prr.innerHTML=CHEV+'<span class="lbl">'+esc(nip.label)+'</span>';
+              prr.style.paddingLeft='34px';
+              const pkids=document.createElement('div'); pkids.className='kids';
+              prr.onclick=()=>{prr.classList.toggle('open');pkids.classList.toggle('open');prr.classList.add('active');openVagga(nip.key);};
+              pw.appendChild(prr); pw.appendChild(pkids); bkids.appendChild(pw);
+              for(const vg of nip.vaggas){
+                SUTTALABEL[vg.key]=vg.label; SUTTASUBS[vg.key]=vg.subs||[];
+                const {row:gr}=node(); gr.innerHTML='<span class="lf"></span><span class="lbl">'+esc(vg.label)+'</span>';
+                gr.style.paddingLeft='46px';
+                gr.onclick=()=>{gr.classList.add('active');openVagga(vg.key);};
+                pkids.appendChild(gr);
+              }
+            } else {
+              allvag.push({label:nip.label,key:nip.key}); SUTTASUBS[nip.key]=nip.subs||[];
+              const {row:gr}=node(); gr.innerHTML='<span class="lf"></span><span class="lbl">'+esc(nip.label)+'</span>';
+              gr.style.paddingLeft='34px';
+              gr.onclick=()=>{gr.classList.add('active');openVagga(nip.key);};
+              bkids.appendChild(gr);
+            }
+          });
+          VAGCONTENTS[v.first]=allvag;
+          continue;
+        }
+        // Nipāta nodes (Aṅguttara): the tree stops at nipāta (a clickable leaf);
+        // its vaggas and suttas live in the ☰ Contents (the vagga structure is not
+        // reliably extractable for every nipāta, so it is kept out of the tree).
+        if(v.nipata){ VAGCONTENTS[v.first]=v.vaggas||[]; VOLBOOK[v.first]=v.title;
+          const {wrap:vw,row:vr}=node(); vr.innerHTML=CHEV+'<span class="lbl">'+esc(v.title||v.vol)+'</span>';
+          vr.title=v.vol+' — '+(v.work||''); vr.style.paddingLeft='22px';
+          const vkids=document.createElement('div'); vkids.className='kids';
+          vr.onclick=()=>{vr.classList.toggle('open');vkids.classList.toggle('open');
+            document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));
+            vr.classList.add('active');
+            state.curbook=v.first; state.curvagga=null; state.cursutta=v.first;
+            openKey(v.first, LAYERKIND[L.layer]);};
+          vw.appendChild(vr); vw.appendChild(vkids); nkids.appendChild(vw);
+          SUTTALABEL[v.first]=v.title;
+          for(const vg of (v.vaggas||[])){
+            SUTTALABEL[vg.key]=vg.label;   // so the reading-pane title shows this chapter/vagga
+            const {row:gr}=node(); gr.innerHTML='<span class="lf"></span><span class="lbl">'+esc(vg.label)+'</span>';
+            gr.style.paddingLeft='34px';
+            gr.onclick=()=>{document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));gr.classList.add('active');state.curvagga=null;state.curbook=v.first;state.cursutta=vg.key;openKey(vg.key, LAYERKIND[L.layer]);};
+            vkids.appendChild(gr);
+          }
+          continue;
+        }
+        // Books with a PDF/authoritative table of contents: expandable in the tree,
+        // showing their numbered suttas/chapters; the deeper sub-sections live in ☰ Contents.
+        if(v.pdftoc){ VOLTOC[v.first]=v.suttas||[]; VOLPDFTOC[v.vol]=true; VOLBOOK[v.first]=v.title;
+          const {wrap:vw,row:vr}=node(); vr.innerHTML=CHEV+'<span class="lbl">'+esc(v.title||v.vol)+'</span>';
+          vr.title=v.vol+' — '+(v.work||''); vr.style.paddingLeft='22px';
+          const vkids=document.createElement('div'); vkids.className='kids';
+          // A book row OPENS its book as well as expanding it, in every nav shape —
+          // otherwise clicking a book name gives no book, and the reader never sees
+          // the title page the edition prints for it.
+          vr.onclick=()=>{vr.classList.toggle('open');vkids.classList.toggle('open');
+            document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));vr.classList.add('active');state.curbook=v.first; state.curvagga=null; state.cursutta=v.first;openKey(v.first, LAYERKIND[L.layer]);};
+          SUTTALABEL[v.first]=v.title;
+          vw.appendChild(vr); vw.appendChild(vkids); nkids.appendChild(vw);
+          for(const s of (v.suttas||[])){
+            SUTTASUBS[s.key]=s.subs||[]; SUTTALABEL[s.key]=s.label;
+            (HEADMAP[s.key]=HEADMAP[s.key]||[]).push({label:s.label,lv:'sutta'});
+            for(const sub of (s.subs||[])) (HEADMAP[sub.key]=HEADMAP[sub.key]||[]).push({label:sub.label,lv:'sub'});
+            const {row:sr}=node(); sr.innerHTML='<span class="lf"></span><span class="lbl">'+esc(s.label)+'</span>';
+            sr.style.paddingLeft='34px';
+            sr.onclick=()=>{document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));sr.classList.add('active');state.curvagga=null;state.curbook=v.first;state.cursutta=s.key;openKey(s.key, LAYERKIND[L.layer]);};
+            vkids.appendChild(sr);
+          }
+          continue;
+        }
+        const {wrap:vw,row:vr}=node(); vr.innerHTML=CHEV+'<span class="lbl">'+esc(v.title||v.vol)+'</span>'; vr.title=v.vol+' — '+(v.work||'');
+        vr.style.paddingLeft='22px'; const vkids=document.createElement('div'); vkids.className='kids';
+        // A book row OPENS its book as well as expanding it, in every nav shape —
+        // otherwise clicking a book name gives no book, and the reader never sees
+        // the title page the edition prints for it.
+        vr.onclick=()=>{vr.classList.toggle('open');vkids.classList.toggle('open');
+            document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));vr.classList.add('active');state.curbook=v.first; state.curvagga=null; state.cursutta=v.first;openKey(v.first, LAYERKIND[L.layer]);};
+        SUTTALABEL[v.first]=v.title;
+        vw.appendChild(vr); vw.appendChild(vkids); nkids.appendChild(vw);
+        // nested nikāyas (e.g. Majjhima: paṇṇāsa -> vagga -> sutta): expose the
+        // vagga/sutta list to the ☰ Contents drawer for the whole volume.
+        if((v.suttas||[]).some(s=>s.subs&&s.subs.length)){ VOLNESTED[v.vol]=v.suttas; VOLTITLE[v.vol]=v.title||v.vol; }
+        for(const s of (v.suttas||[])){
+          const hasSub=s.subs&&s.subs.length;
+          const {row:sr}=node();
+          sr.innerHTML=(hasSub?CHEV:'<span class="lf"></span>')+'<span class="lbl">'+esc(s.label)+'</span>';
+          sr.style.paddingLeft='34px';
+          const nav=()=>{document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));sr.classList.add('active');openKey(s.key, LAYERKIND[L.layer]);};
+          vkids.appendChild(sr);
+          if(hasSub){
+            const skids=document.createElement('div'); skids.className='kids';
+            sr.onclick=(e)=>{ if(e.target.closest('.chev')){sr.classList.toggle('open');skids.classList.toggle('open');} else { nav(); } };
+            const chev=sr.querySelector('.chev'); if(chev) chev.style.cursor='pointer';
+            for(const sub of s.subs){
+              const {row:br}=node(); br.innerHTML='<span class="lf"></span><span class="lbl">'+esc(sub.label)+'</span>';
+              br.style.paddingLeft='52px'; br.style.fontSize='12px';
+              br.onclick=()=>{document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));br.classList.add('active');openKey(sub.key, LAYERKIND[L.layer]);};
+              skids.appendChild(br);
+            }
+            vkids.appendChild(skids);
+          } else { sr.onclick=nav; }
+        }
+      } catch(_nverr){ console.warn('nav node skipped', v&&v.vol, _nverr&&_nverr.message); }
+      }
+    }
+  }
+} catch(_e){ const s=document.getElementById('side'); if(s) s.innerHTML='<div style="padding:16px;color:#b91c1c;font:13px/1.5 system-ui">Sidebar failed to build:<br>'+esc((_e&&_e.message)||String(_e))+'</div>'; console.error('OSBCT buildSidebar failed',_e); }
+}
+function shortWork(w){return (w||'').replace(/^[^:]*:\s*/,'').slice(0,52);}
+
+// ---------- open a text (canon-anchored) ----------
+async function openKey(key, layerkind){
+  const [vol,ord]=parseKey(key);
+  const layer=VOLLAYER[vol]||'canon';
+  let canonVol=vol, kind=layerkind; state.filter=null;
+  if(layer!=='canon'){
+    const rev=await loadRev(vol); const e=rev[String(ord)];
+    if(e&&e.canon){ canonVol=parseKey(e.canon)[0]; state.filter=vol; }   // show only this work
+    else { canonVol=vol; kind='canon'; }   // no canon counterpart: show this book standalone
+  }
+  // P/A/T yield to the tree: show ONLY the layer that was navigated to
+  if(kind==='A') state.active={canon:false,A:true,T:false};
+  else if(kind==='T') state.active={canon:false,A:false,T:true};
+  else state.active={canon:true,A:false,T:false};
+  if(state.view==='tabs') state.tab=(kind==='A'?'A':(kind==='T'?'T':'canon'));
+  state.titleVol=vol;
+  await openCanon(canonVol, key);   // scroll to the clicked paragraph itself
+}
+function buildOutline(vol){
+  const c=cache[vol]; if(!c) return {byOrd:{},toc:[]};
+  const junk=t=>{ t=(t||'').trim();
+    return !t || /^[_\s.·]+$/.test(t) || /^\[[^\]]*\]/.test(t)             // [A] [Ā-I-U] [O]…
+      || /\s{2,}\d+\.?$/.test(t) || /^\d+(-\d+)?\.?$/.test(t)        // index entry 'word   95', page-ref '530-5'
+      || /[ṁṃ]\d*\.\s*$/.test(t) || /niṭṭhit/i.test(t)              // section CLOSING marker 'Dvattiṁsākāraṁ.', 'Xvaggo niṭṭhito'
+      || /^[a-zāīūṁṅñṭḍṇḷ]/.test(t)                                     // lowercase fragment
+      || /\((Ka|Sī|Syā|I|Ka-Sī|Kaṁ)\)\s*$/.test(t); };               // siglum tail
+  // back-matter starts with an index/table-of-contents marker; everything after
+  // it (name index, verse index / Gāthāsūci, variant-reading lists) is not content.
+  const backmatter=t=>/anukkamaṇik|(gāthā|pada)sūci|nānāpāṭh/i.test(t||'');
+  const secs=[]; const byOrd={}; let pi=0, seq=0, bm=false, lastOrd=-1, lastKey='';
+  const nkey=t=>(t||'').trim().replace(/[ṁṃ]?\d*\.?\s*$/,'').toLowerCase();  // strip closing 'ṁ.'/'.'
+  for(const hd of (c.headings||[])){
+    if(hd.kind!=='section') continue;
+    if(bm) continue;
+    if(backmatter(hd.title)){ bm=true; continue; }
+    if(junk(hd.title)) continue;
+    const kk=nkey(hd.title); if(kk && kk===lastKey) continue;  // drop the closing echo ('Kumārapañhā' then 'Kumārapañhā.') and consecutive dups
+    lastKey=kk;
+    while(pi<c.paras.length && (c.paras[pi].pdf_page||0) < hd.pdf_page) pi++;
+    // several section headings often share one printed page; don't stack them on
+    // the same paragraph — advance so consecutive same-page headings spread out
+    let ord=Math.min(pi, c.paras.length-1);
+    if(ord<=lastOrd) ord=Math.min(lastOrd+1, c.paras.length-1);
+    lastOrd=ord;
+    const id='sec-'+vol+'-'+(seq++);
+    const title=hd.title.replace(/\s+/g,' ').trim();
+    (byOrd[ord]=byOrd[ord]||[]).push({title,id});
+    secs.push({title,id,page:hd.pdf_page});
+  }
+  // group sections under nav suttas by page range
+  const navs=(VOLSECTIONS[vol]||[]).map(s=>{const [v,o]=parseKey(s.key); return {label:s.label,key:s.key,page:(c.paras[o]||{}).pdf_page||0};});
+  const toc=navs.map((s,idx)=>{ const nextP=navs[idx+1]?navs[idx+1].page:1e9;
+    return {title:s.label, domid:'s-'+s.key.replace('#','-'), sections:secs.filter(x=>x.page>=s.page&&x.page<nextP).map(x=>({title:x.title,domid:x.id}))}; });
+  return {byOrd, toc};
+}
+window.tocGo=function(domid){
+  if(!state.active.canon){ state.active.canon=true; state.filter=null; render(); syncButtons(); }
+  const dd=document.getElementById('tocdrop'); if(dd) dd.hidden=true;
+  setTimeout(()=>{ const el=document.getElementById(domid); if(el){ el.scrollIntoView({block:'start'}); el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),1300);} },30);
+};
+async function openCanon(canonVol, scrollKey){
+  $('#scroll').innerHTML='<div class="hint">Loading '+canonVol+'…</div>';
+  const cv=await loadVol(canonVol); const links=await loadLinks(canonVol);
+  // gather target volumes referenced by links, load them
+  const tv=new Set();
+  for(const e of Object.values(links)) for(const lk of ['commentary','subcommentary']) for(const t of (e[lk]||[])) if(t&&t.key) tv.add(parseKey(t.key)[0]);
+  await Promise.all([...tv].map(loadVol));
+  state.canonVol=canonVol; state.scrollKey=scrollKey; state.links=links; state.opened=true;
+  const _ol=buildOutline(canonVol); state.outlineByOrd=_ol.byOrd; state.toc=_ol.toc;
+  const _sp=paraOf(scrollKey); state.currentSutta=(_sp&&_sp.sutta&&_sp.sutta!=='X')?foldName(_sp.sutta):null;
+  state.currentBook=(_sp&&_sp.book&&_sp.book!=='X'&&!/piṭaka$/.test(_sp.book)&&!/^Iti /.test(_sp.book))?_sp.book.replace(/\s+/g,' ').trim().replace(/\.$/,''):null;
+  render();
+  if(scrollKey){ setTimeout(()=>{const sid='s-'+scrollKey.replace('#','-'),pid='p-'+scrollKey.replace('#','-');
+    const el=document.getElementById(sid)||document.getElementById(pid); if(el) el.scrollIntoView({block:'start'});
+    const pel=document.getElementById(pid); if(pel){pel.classList.add('flash');setTimeout(()=>pel.classList.remove('flash'),1500);} },60); }
+}
+
+// ---------- rendering ----------
+const SIG={'Sī':'Sīhaḷa (Sinhalese)','Syā':'Syāma (Thai)','Kaṁ':'Kamboja (Cambodian)','I':'PTS / English','Ka':'some Burmese mss','Ka-Sī':'Ka + Sīhaḷa','katthaci':'in some copies','sabbattha':'in all copies','bahūsu':'in many copies'};
+function fmtText(t){return esc((t||'').replace(/^\s*\d+(-\d+)?\.\s*/,'')).replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');}
+function fmtBold(t,spans){
+  const text=t||''; const stripped=text.replace(/^\s*\d+(-\d+)?\.\s*/,''); const off=text.length-stripped.length;
+  let sp=(spans||[]).map(a=>[a[0]-off,a[1]-off]).filter(a=>a[1]>0&&a[0]<stripped.length).map(a=>[Math.max(0,a[0]),Math.min(stripped.length,a[1])]).sort((a,b)=>a[0]-b[0]);
+  let html='',cur=0; for(const s of sp){ if(s[0]<cur) continue; html+=esc(stripped.slice(cur,s[0]))+'<b class="lemma">'+esc(stripped.slice(s[0],s[1]))+'</b>'; cur=s[1]; }
+  html+=esc(stripped.slice(cur));
+  return html.replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');
+}
+function _boldRange(stripped,sp,a,b){
+  let seg=sp.filter(x=>x[1]>a&&x[0]<b).map(x=>[Math.max(a,x[0]),Math.min(b,x[1])]);
+  let html='',cur=a; for(const s of seg){ if(s[0]<cur) continue; html+=esc(stripped.slice(cur,s[0]))+'<b class="lemma">'+esc(stripped.slice(s[0],s[1]))+'</b>'; cur=s[1]; }
+  html+=esc(stripped.slice(cur,b));
+  return html.replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');
+}
+function _isHead(stripped,s){ if(s===0) return true; let i=s-1; while(i>=0 && ' “”"‘’'.indexOf(stripped[i])>=0) i--; return i>=0 && '.?!–'.indexOf(stripped[i])>=0; }
+function outlineHTML(text,spans){
+  const stripped=(text||'').replace(/^\s*\d+(-\d+)?\.\s*/,''); const off=(text||'').length-stripped.length;
+  const sp=(spans||[]).map(a=>[a[0]-off,a[1]-off]).filter(a=>a[1]>0&&a[0]<stripped.length).map(a=>[Math.max(0,a[0]),Math.min(stripped.length,a[1])]).sort((a,b)=>a[0]-b[0]);
+  const heads=sp.filter(x=>_isHead(stripped,x[0]));
+  if(heads.length<2) return '<div class="cmt-outline"><div class="unit lead">'+_boldRange(stripped,sp,0,stripped.length)+'</div></div>';
+  let html='<div class="cmt-outline">';
+  if(heads[0][0]>0) html+='<div class="unit lead">'+_boldRange(stripped,sp,0,heads[0][0])+'</div>';
+  for(let i=0;i<heads.length;i++){ const s=heads[i][0],le=heads[i][1]; const end=i+1<heads.length?heads[i+1][0]:stripped.length;
+    html+='<div class="unit"><span class="uhead" onclick="this.parentNode.classList.toggle(\'open\')"><span class="utw">▸</span><b class="lemma">'+esc(stripped.slice(s,le))+'</b></span><span class="ugloss">'+_boldRange(stripped,sp,le,end)+'</span></div>'; }
+  return html+'<div class="uhint">'+heads.length+' lemmata · click to expand</div></div>';
+}
+const XC_CANON={'Dī':['06Di01','07Di02','08Di03'],'Ma':['09Ma01','10Ma02','11Ma03'],'Saṁ':['12Sam01','13Sam02','14Sam03'],'Aṁ':['15An01','16An02','17An03'],'Khu':['18Khu01','19Khu02','20Khu03','21Khu04','22Khu05','23Khu06','24Khu07','25Khu08','26Khu09','27Khu10','28Khu11'],'Vi':['01Vin01','02Vin02','03Vin03','04Vin04','05Vin05'],'Abhi':['29Abhi01','30Abhi02','31Abhi03','32Abhi04','33Abhi05','34Abhi06','35Abhi07','36Abhi08','37Abhi09','38Abhi10','39Abhi11','40Abhi12']};
+const XC_COMM={'Dī':['07DiA01','08DiA02','09DiA03'],'Ma':['10MaA01','11MaA02','12MaA03','13MaA04'],'Saṁ':['14SamA01','15SamA02','16SamA03'],'Aṁ':['17AnA01','18AnA02','19AnA03'],'Vi':['01VinA01','02VinA02','03VinA03','04VinA04','05Kankha','06VinSg06'],'Abhi':['48AbhiA01','49AbhiA02','50AbhiA03']};
+function resolveXref(work,vol,page){
+  let base=work,map=XC_CANON,kind='canon';
+  if(/-Ṭṭha$/.test(work||'')){ base=work.replace(/-Ṭṭha$/,''); map=XC_COMM; kind='A'; }
+  else if(/-Ṭī$|-Anuṭī$/.test(work||'')) return null;
+  const arr=map[base]; if(!arr) return null;
+  const v=arr[(vol||1)-1]; if(!v) return null;
+  const pidx=PAGEIDX[v]; if(!pidx) return null;
+  let ord=pidx[String(page)];
+  if(ord==null){ let best=null; for(const p in pidx){ const pp=+p; if(pp<=page&&(best==null||pp>best)) best=pp; } if(best!=null) ord=pidx[String(best)]; }
+  if(ord==null) return null;
+  return {key:v+'#'+ord, kind:kind};
+}
+window.navXref=function(key,kind){ const dd=document.getElementById('sdrop'); if(dd)dd.hidden=true; openKey(key,kind); };
+function appBlock(app){
+  if(!app||!app.length) return '';
+  let rows='';
+  for(const n of app){ let parts=[];
+    for(const v of (n.variants||[])){ const sg=(v.sigla||[]).map(s=>'<abbr title="'+escA(SIG[s]||s)+'">'+esc(s)+'</abbr>').join(', '); parts.push('<i>'+esc(v.reading)+'</i>'+(sg?' ('+sg+')':'')); }
+    for(const x of (n.xrefs||[])){ const label=esc(x.work)+(x.vol?' '+x.vol:'')+'. '+x.page+(x.page_to?'–'+x.page_to:'');
+      const r=resolveXref(x.work,x.vol,x.page);
+      parts.push(r?'<a class="xref" title="Go to '+escA(x.work)+' p.'+x.page+'" onclick="navXref(\''+r.key+'\',\''+r.kind+'\')">'+label+' →</a>':'<span class="xref" style="opacity:.7">'+label+'</span>'); }
+    if(!parts.length&&n.text) parts.push(esc(n.text));
+    rows+='<div><span class="mk">'+(n.n||'*')+'</span>'+parts.join('; ')+'</div>'; }
+  return '<div class="appx">'+rows+'</div>';
+}
+// recovered uddāna mnemonic verses (side-map, keyed by the paragraph they follow)
+function uddanaHTML(blocks){
+  if(!blocks||!blocks.length) return '';
+  return blocks.map(b=> b.plain
+    ? (b.head?'<div class="head vatthu">'+esc(b.head)+'</div>':'')+'<div class="para canon pali">'+(b.n!=null?'<span class="pn k-canon">'+b.n+'.</span>':'')+fmtText((b.lines||[]).join(' '))+appBlock(b.app||[])+'</div>'
+    : '<div class="uddana pali">'
+    +(b.label?'<div class="udd-label">'+fmtText(b.label)+'</div>':'')
+    +'<div class="udd-verse">'+(b.lines||[]).map(l=>fmtText(l)).join('<br>')+'</div>'
+    +appBlock((b.app||[]).map(f=>({n:f.n,text:f.text})))+'</div>').join('');
+}
+const LAYERFOLDER={canon:'pali-unicode',commentary:'atthakatha-unicode',subcommentary:'tika-unicode'};
+function facs(vol,kind,pr){
+  const folder=LAYERFOLDER[VOLLAYER[vol]]||FOLDER[kind]||'pali-unicode';
+  if(pr.pdf_page) return '<a class="pgmk" target="_blank" rel="noopener" href="'+R2+'/'+folder+'/'+vol+'.pdf#page='+pr.pdf_page+'" title="View printed page '+pr.printed+'">p.'+pr.printed+' ⧉</a>';
+  return '<span class="pgmk">p.'+(pr.printed!=null?pr.printed:'?')+'</span>';
+}
+function toolsFor(kind,vol,pr,sutta){
+  const name=META[kind].name, cite=name+', '+(sutta||'')+' §'+(pr.n!=null?pr.n:'')+' (p.'+(pr.printed!=null?pr.printed:'?')+')';
+  const COPY='<svg viewBox="0 0 16 16" width="13" height="13"><rect x="5" y="5" width="8" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M3 10.5V3a1 1 0 0 1 1-1h6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
+  const CITE='<svg viewBox="0 0 16 16" width="13" height="13"><path d="M6 5H3.5A1.5 1.5 0 0 0 2 6.5V9A1.5 1.5 0 0 0 3.5 10.5H5V11a2 2 0 0 1-2 2M14 5h-2.5A1.5 1.5 0 0 0 10 6.5V9a1.5 1.5 0 0 0 1.5 1.5H13V11a2 2 0 0 1-2 2" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+  return '<span class="tools">'+jbtns(kind,pr._key)+facs(vol,kind,pr)
+    +'<button class="icn" title="Copy text" data-txt="'+escA((pr.text||'').replace(/^\s*\d+(-\d+)?\.\s*/,''))+'" onclick="copyText(this)">'+COPY+'</button>'
+    +'<button class="icn" title="Copy citation" data-cite="'+escA(cite)+'" onclick="copyCite(this)">'+CITE+'</button></span>';
+}
+window.copyText=b=>{navigator.clipboard&&navigator.clipboard.writeText(b.dataset.txt);flash(b);};
+window.copyCite=b=>{navigator.clipboard&&navigator.clipboard.writeText(b.dataset.cite);flash(b);};
+function flash(b){b.classList.add('ok');const h=b.innerHTML;b.innerHTML='✓';setTimeout(()=>{b.classList.remove('ok');b.innerHTML=h;},1000);}
+// cross-layer jump buttons: from canon -> A/T; from A/T -> P (canon)
+function jbtns(kind,key){
+  const targets = kind==='canon'?['A','T'] : (kind==='A'?['P','T'] : ['P','A']);
+  const COL={P:'var(--canon)',A:'var(--comm)',T:'var(--tika)'},NAME={P:'Pāḷi',A:'Aṭṭhakathā',T:'Ṭīkā'};
+  return targets.map(tg=>'<button class="jbtn" style="color:'+COL[tg]+';border-color:'+COL[tg]+'" title="Go to '+NAME[tg]+'" onclick="jumpFrom(\''+kind+'\',\''+key+'\',\''+tg+'\')">'+tg+'</button>').join('');
+}
+window.jumpFrom=async function(kind,key,tg){
+  const NAME={P:'Pāḷi',A:'Aṭṭhakathā',T:'Ṭīkā'}, LK={P:'canon',A:'A',T:'T'};
+  let targetKey=null;
+  if(kind==='canon'){
+    const ord=parseKey(key)[1]; const e=state.links[String(ord)]||{};
+    const arr=(tg==='A'?e.commentary:e.subcommentary)||[]; targetKey=arr[0]&&arr[0].key;
+  } else {
+    const [vol,ord]=parseKey(key); const rev=await loadRev(vol); const c=(rev[String(ord)]||{}).canon;
+    if(!c){ toast('No linked Pāḷi'); return; }
+    if(tg==='P'){ targetKey=c; }
+    else { const [cv,co]=parseKey(c); const links=await loadLinks(cv); const e=links[String(co)]||{}; const arr=(tg==='A'?e.commentary:e.subcommentary)||[]; targetKey=arr[0]&&arr[0].key; }
+  }
+  if(!targetKey){ toast('No '+NAME[tg]+' here'); return; }
+  state.active[LK[tg]]=true; state.filter=null;
+  if(state.view==='tabs') state.tab=LK[tg];
+  render(); syncButtons();
+  setTimeout(()=>{ const el=document.getElementById('p-'+targetKey.replace('#','-')); if(el){ el.scrollIntoView({block:'center'}); el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),1500);} },60);
+  toast(NAME[tg]);
+};
+// build one paragraph block from a source key
+function block(kind, key, opts){
+  const [vol,ord]=parseKey(key); const c=cache[vol]; if(!c) return '';
+  const pr=c.paras[ord]; if(!pr) return '<div class="para empty">·</div>';
+  pr._key=key;
+  const spans=c.bold[String(ord)]||[]; const app=c.app[String(ord)]||[];
+  const cls='para'+(kind==='canon'?' canon':' l-'+kind);
+  let num=(pr.n!=null)?'<span class="pn k-'+kind+'">'+pr.n+'.</span>':'';
+  const st=(opts&&opts.state==='covered')?'<span class="state covered" title="covers a range">covers</span>':'';
+  const wt=(opts&&opts.worktag)?'<span class="worktag">'+esc(opts.worktag)+'</span>':'';
+  const vmap=(c.verse||{})[String(ord)];
+  let body;
+  if(kind==='canon' && vmap && vmap.groups){
+    // a prose entry may also be {gatha:[lines]} — the page sets some suttas as
+    // verse -> prose -> verse (e.g. Udāna Lokasutta), which a flat groups list
+    // plus trailing prose cannot express on its own.
+    const proseOne=(p)=> (p&&typeof p==='object'&&p.gatha)
+        ? '<div class="gatha pali">'+p.gatha.map(l=>fmtText(l)).join('<br>')+'</div>'
+        : '<div class="gatha-after pali">'+fmtText(p)+'</div>';
+    const proseBlocks=(x)=> Array.isArray(x) ? x.map(proseOne).join('') : (x!=null?fmtText(x):'');
+    const hasBefore = vmap.before!=null && (!Array.isArray(vmap.before)||vmap.before.length);
+    let pre;
+    if(vmap.before!=null) pre=proseBlocks(vmap.before);
+    else { const mt=pr.text.match(/^([\s\S]*?udāna\S*\s+udānes[iī][–-])/); pre=mt?fmtText(mt[1]):''; }
+    const multi=vmap.groups.length>1;
+    const verseHtml=vmap.groups.map((g,gi)=>{
+      const cnt=(vmap.counts&&vmap.counts[gi]!=null)?vmap.counts[gi]:((gi===vmap.groups.length-1)?vmap.count:null);
+      let gn='';
+      if(multi && vmap.nums && vmap.nums[gi]!=null) gn='<span class="pn k-canon">'+vmap.nums[gi]+'.</span>';
+      // The paragraph number always hangs beside the verse's FIRST pāda, never on a
+      // line of its own above the block. (This used to depend on the paragraph
+      // having intro prose, so a verse's number moved depending on whether the
+      // sutta happened to open with a narrative — inconsistent down the page.)
+      else if(!multi && gi===0) gn=num;
+      return '<div class="gatha pali">'+gn+g.map(l=>fmtText(l)).join('<br>')+(cnt?'<span class="gatha-count">  ('+esc(cnt)+')</span>':'')+'</div>';
+    }).join('');
+    body=pre+verseHtml+(vmap.after?proseBlocks(vmap.after):'')+(vmap.tail?'<span class="gatha-end">'+esc(vmap.tail)+'</span>':'');
+    if(vmap.groups.length) num='';   // it is rendered inside the first .gatha
+  } else if(kind==='canon'){
+    // The homage that opens a book is rendered as an .incipit above this
+    // paragraph (see incHTML), so remove the copy the extraction swallowed into
+    // the body — otherwise it shows twice, and as prose.
+    let t=pr.text;
+    if((c.inc||{})[String(ord)]) t=t.replace(/Namo\s+tassa\s+\S+\s+[Aa]rahato\s+Sammāsambuddhassa\.?\s*/,'');
+    body=fmtText(t);
+  } else body = (state.reading==='outline'?outlineHTML(pr.text,spans):fmtBold(pr.text,spans));
+  return '<div class="'+cls+'" id="p-'+key.replace('#','-')+'">'+toolsFor(kind,vol,pr,pr.sutta)+st+wt+num+body+appBlock(app)+'</div>';
+}
+function targetsFor(ord,kind){ // kind 'A'|'T' -> list of {key,state,worktag?}
+  const e=state.links[String(ord)]||{}; let arr=(kind==='A'?e.commentary:e.subcommentary)||[];
+  if(state.filter) arr=arr.filter(t=>parseKey(t.key)[0]===state.filter);
+  const multi=arr.length>1;
+  return arr.map(t=>{const v=parseKey(t.key)[0]; return {key:t.key,state:t.state,worktag: multi? ((shortWork(VOLWORK[v])||'')+' · '+v) : null};});
+}
+function activeKeys(){return ['canon','A','T'].filter(k=>state.active[k]);}
+function render(){
+  if(!state.opened) return;
+  const cv=cache[state.canonVol]; const first=cv.paras[0];
+  const _tv=state.titleVol||state.canonVol;
+  const _sut=(state.cursutta&&SUTTALABEL[state.cursutta])?SUTTALABEL[state.cursutta].replace(/^\d+\.\s*/,''):null;
+  // Aṅguttara: the anchored paragraph's `book` field is a paṇṇāsaka sub-marker
+  // ("Paṭhamapaṇṇāsaka"), so title by the nipāta name instead when one is open.
+  const _nip=(state.curbook&&VAGCONTENTS[state.curbook]&&parseKey(state.curbook)[0]===state.canonVol)?VOLBOOK[state.curbook]:null;
+  $('#doctitle').innerHTML=esc(_sut||_nip||state.currentBook||VOLTITLE[_tv]||shortWork(VOLWORK[_tv])||_tv)+'<small>'+esc(_tv)+' · '+cv.paras.length+' ¶</small>';
+  $('#scroll').style.setProperty('--rsize',state.size+'px');
+  syncButtons();
+  let lastSutta=null,lastVagga=null;
+  const cH=s=>(s||'').replace(/\s*\(\d+\)\s*$/,'').replace(/([a-zāīūṁṃṅñṭḍṇḷ])\d+$/,'$1');  // strip "(33)" / trailing artifact digit for display
+  // Compare on the CLEANED title so a sutta whose running-header form carries the
+  // MN number (e.g. 'Kandarakasutta' then 'Kandarakasutta (51)') emits ONE heading.
+  const emitHead=(po,key)=>{ if(!po) return ''; const vg=(po.vagga&&po.vagga!=='X')?cH(po.vagga):null, su=(po.sutta&&po.sutta!=='X')?cH(po.sutta):null;
+    if(su&&su!==lastSutta){ lastSutta=su; lastVagga=vg; return '<div class="head sutta" id="s-'+key.replace('#','-')+'">'+esc(su)+'</div>'; }
+    if(vg&&vg!==lastVagga){ lastVagga=vg; return '<div class="head vagga">'+esc(vg)+'</div>'; }
+    return ''; };
+  const secHead=(i)=> VOLPDFTOC[state.canonVol] ? '' : ((state.outlineByOrd&&state.outlineByOrd[i])||[]).map(it=>'<div class="head section" id="'+it.id+'">'+esc(it.title)+'</div>').join('');
+  // authoritative inline headings (sutta title + printed sub-section titles) for pdftoc volumes
+  const hmap=(i)=>{ if(!VOLPDFTOC[state.canonVol]) return ''; const arr=HEADMAP[state.canonVol+'#'+i]; if(!arr||!arr.length) return '';
+    const key=state.canonVol+'-'+i;
+    return '<div id="h-'+key+'">'+arr.map(h=>'<div class="head '+(h.lv==='sutta'?'sutta':'section')+'">'+esc(h.lv==='sutta'?h.label.replace(/^\d+\.\s*/,''):h.label)+'</div>').join('')+'</div>'; };
+  // precisely-anchored inline headings (one clean title per section) for non-pdftoc
+  // volumes — replaces the raw buildOutline path
+  const hasSec = cv.sec && Object.keys(cv.sec).length>0;
+  const CLS={book:'sutta',vagga:'vagga',sutta:'section',vatthu:'vatthu'};
+  // k:'incipit' is the "Namo tassa…" homage the edition prints once at the head of
+  // EVERY book, not just at the start of a physical volume. It is data, not a
+  // constant: Suttanipāta prints "Bhagavatā" where the other books print "Bhagavato".
+  // A sections entry with k:'gatha' carries DISPLAY VERSE that the page prints
+  // above a paragraph's own verse and that the corpus does not hold at all —
+  // Theragāthā's opening Nidānagāthā is the case this was added for.  Its `l`
+  // holds the printed lines joined by \n.  It has to live here rather than in
+  // verse.before because the page interleaves it WITH the headings (title,
+  // Nidānagāthā, its verse, nipāta, vagga, sutta, verse 1) and only `sections`
+  // preserves that order.
+  // The BOOK'S OWN NAME as its title page prints it — above the homage and
+  // larger than any heading inside the book — so a volume holding several books
+  // announces each one instead of running them together.
+  // It lives in its OWN side-map, `booktitle/<VOL>.json` = {ord: "Name"}, for the
+  // same reason the incipit does: a volume that gains a `sections/` file switches
+  // canonHead to the secmap path and silently drops every inline heading it draws
+  // from its `headings` array.  Most volumes have no sections file, so putting
+  // titles there would have broken their headings to add a title.
+  // The value is the STACK the title page prints above the homage, in printed
+  // order — normally the nikāya or piṭaka and then the book ("Dīghanikāya" over
+  // "Sīlakkhandhavaggapāḷi"), occasionally three lines. The last is the book's
+  // own name and is set largest; the ones above it name the collection.
+  const titleHTML=(i)=>{ let t=(cv.btl||{})[String(i)]; if(!t) return '';
+    if(typeof t==='string') t=[t];
+    return t.map((l,j)=>'<div class="head '+(j<t.length-1?'bookseries':'booktitle')+'">'
+      +esc(l)+'</div>').join(''); };
+  const secmap=(i)=>{ const arr=((cv.sec||{})[String(i)]||[]).filter(h=>h.k!=='booktitle'); if(!arr.length) return '';
+    return '<div id="sec-'+state.canonVol+'-'+i+'">'+arr.map(h=> h.k==='gatha'
+      ? '<div class="gatha pali">'+String(h.l).split('\n').map(l=>fmtText(l)).join('<br>')+'</div>'
+      : '<div class="head '+(CLS[h.k]||'section')+'">'+esc(h.l)+'</div>').join('')+'</div>'; };
+  const incHTML=(i)=>{ const t=(cv.inc||{})[String(i)]; return t?'<div class="incipit pali">'+esc(t)+'</div>':''; };
+  const hasIncipit=(i)=>!!(cv.inc||{})[String(i)];
+  const canonHead=(i,p,key)=> VOLPDFTOC[state.canonVol] ? hmap(i) : (hasSec ? secmap(i) : (emitHead(p,key)+secHead(i)));
+  // book range: when several books share one physical volume, render only this book's slice
+  const _vg=(state.curvagga&&VAGGASPAN[state.curvagga]&&VAGGASPAN[state.curvagga].vol===state.canonVol)?VAGGASPAN[state.curvagga]:null;
+  const _span=_vg||((state.curbook&&BOOKSPAN[state.curbook]&&BOOKSPAN[state.curbook].vol===state.canonVol)?BOOKSPAN[state.curbook]:null);
+  const base=_span?_span.start:0;
+  const paras=_span?cv.paras.slice(_span.start, _span.end==null?cv.paras.length:_span.end):cv.paras;
+  // Fall back to the built-in homage only where the data does not supply one.
+  let html=(base===0 && !hasIncipit(base))?'<div class="incipit pali">namo tassa bhagavato arahato sammāsambuddhassa</div>':'';
+  const udd=(i)=> uddanaHTML((cv.udd||{})[String(i)]);
+  const HIDE=cv.hide||{};
+  if(state.view==='columns'){
+    const keys=activeKeys(); const tmpl='repeat('+keys.length+',minmax(0,1fr))';
+    html+='<div class="colhead" style="grid-template-columns:'+tmpl+'">'+keys.map(k=>'<div class="ch"><span class="cdot" style="background:'+META[k].col+'"></span>'+META[k].name+'</div>').join('')+'</div>';
+    html+='<div class="grid" style="grid-template-columns:'+tmpl+'">';
+    paras.forEach((p,li)=>{ const i=base+li; html+='<div class="rowline">';
+      keys.forEach(k=>{ if(k==='canon'){ html+=block('canon',state.canonVol+'#'+i); }
+        else{ const ts=targetsFor(i,k); html+= ts.length? ts.map(t=>block(k,t.key,t)).join('') : '<div class="para empty">·</div>'; } });
+      html+='</div>'; });
+    html+='</div>';
+  } else if(state.view==='tabs'){
+    const k=state.tab;
+    if(k==='canon'){ html+='<div class="stack">'+paras.map((p,li)=>{const i=base+li; if(HIDE[String(i)])return ''; return titleHTML(i)+incHTML(i)+canonHead(i,p,state.canonVol+'#'+i)+block('canon',state.canonVol+'#'+i)+udd(i);}).join('')+'</div>'; }
+    else { let buf='',last=null; paras.forEach((p,li)=>{ const i=base+li; targetsFor(i,k).forEach(t=>{ if(t.key===last)return; last=t.key; buf+=block(k,t.key,t); }); }); html+='<div class="stack">'+buf+'</div>'; }
+  } else { // single
+    const dedup=!state.active.canon; let lastA=null,lastT=null;
+    const spine=state.active.canon?'canon':(state.active.A?'A':'T');
+    html+='<div class="stack">'+paras.map((p,li)=>{ const i=base+li; if(HIDE[String(i)])return ''; let parts=[];
+      let head = spine==='canon'? (titleHTML(i)+incHTML(i)+canonHead(i,p,state.canonVol+'#'+i)) : (()=>{const ts=targetsFor(i,spine);return ts[0]?emitHead(paraOf(ts[0].key),ts[0].key):'';})();
+      if(state.active.canon) parts.push(block('canon',state.canonVol+'#'+i));
+      if(state.active.A) targetsFor(i,'A').forEach(t=>{ if(dedup&&t.key===lastA)return; lastA=t.key; parts.push((state.active.canon?'<div class="subwrap a"><span class="lchip a">Aṭṭhakathā</span>':'<div>')+block('A',t.key,t)+'</div>'); });
+      if(state.active.T) targetsFor(i,'T').forEach(t=>{ if(dedup&&t.key===lastT)return; lastT=t.key; parts.push((state.active.canon?'<div class="subwrap t"><span class="lchip t">Ṭīkā</span>':'<div>')+block('T',t.key,t)+'</div>'); });
+      return head+(parts.length?'<div style="margin-bottom:12px">'+parts.join('')+'</div>':'')+(spine==='canon'?udd(i):''); }).join('')+'</div>';
+  }
+  html+='<div class="hint">On-demand from the keyed corpus. Toggle P / A / T; Columns / Tabs / Single; hover a paragraph for cite, copy, facsimile and cross-layer jumps.</div>';
+  $('#scroll').innerHTML=html; tipify($('#scroll'));
+  if(state.view==='columns'){ $('#scroll').querySelectorAll('.rowline').forEach(r=>{r.onmouseenter=()=>r.classList.add('hot');r.onmouseleave=()=>r.classList.remove('hot');}); }
+}
+function syncButtons(){
+  document.querySelectorAll('.lbtn').forEach(b=>{const k=b.dataset.k; b.classList.toggle('on', state.view==='tabs'?state.tab===k:state.active[k]);});
+  document.querySelectorAll('#viewtog button').forEach(b=>b.classList.toggle('on',b.dataset.view===state.view));
+}
+document.querySelectorAll('.lbtn').forEach(b=>b.onclick=()=>{const k=b.dataset.k;
+  if(!state.opened){toast('Open a text first');return;}
+  state.filter=null;
+  if(state.view==='tabs'){state.tab=k;} else{const ak=activeKeys(); if(state.active[k]&&ak.length===1){toast('Keep one layer on');return;} state.active[k]=!state.active[k];}
+  render();});
+document.querySelectorAll('#viewtog button').forEach(b=>b.onclick=()=>{state.view=b.dataset.view; if(state.view==='tabs'&&!state.active[state.tab])state.tab='canon'; if(state.opened)render(); else syncButtons();});
+$('#readtog').onclick=()=>{state.reading=state.reading==='outline'?'full':'outline';$('#readtog').classList.toggle('on',state.reading==='outline');if(state.opened)render();};
+window.tocGoKey=function(key){ const dd=document.getElementById('tocdrop'); if(dd) dd.hidden=true;
+  const hid='h-'+key.replace('#','-'), pid='p-'+key.replace('#','-');
+  const el=document.getElementById(hid)||document.getElementById(pid);
+  if(el){ el.scrollIntoView({block:'start'}); const pe=document.getElementById(pid); if(pe){pe.classList.add('flash'); setTimeout(()=>pe.classList.remove('flash'),1300);} }
+  else { openKey(key,'canon'); } };
+$('#tocbtn').onclick=(e)=>{ e.stopPropagation(); const dd=document.getElementById('tocdrop'); if(!dd.hidden){dd.hidden=true;return;}
+  const tv=state.titleVol||state.canonVol;
+  const bk=state.curbook, su=state.cursutta;
+  // If a sutta is open, the Contents shows that sutta's sub-sections
+  if(su && SUTTASUBS[su] && SUTTASUBS[su].length){
+    let html='<div class="tochead">'+esc(SUTTALABEL[su]||'')+'</div>';
+    html+='<div class="tocitem toc-sutta" onclick="tocGoKey(\''+su+'\')">'+esc(SUTTALABEL[su]||'')+'</div>';
+    for(const sub of SUTTASUBS[su]) html+='<div class="tocitem toc-sec" onclick="tocGoKey(\''+sub.key+'\')">'+esc(sub.label)+'</div>';
+    dd.innerHTML=html; dd.hidden=false; return;
+  }
+  // nipāta (Aṅguttara): Contents lists this nipāta's vaggas and their suttas
+  if(state.curbook && VAGCONTENTS[state.curbook]){
+    let html='<div class="tochead">'+esc(VOLBOOK[state.curbook]||state.canonVol)+'</div>';
+    for(const vg of VAGCONTENTS[state.curbook]){
+      html+='<div class="tocitem toc-sutta" onclick="tocGoKey(\''+vg.key+'\')">'+esc(vg.label)+'</div>';
+      for(const su of (vg.subs||[])) html+='<div class="tocitem toc-sec" onclick="tocGoKey(\''+su.key+'\')">'+esc(su.label)+'</div>';
+    }
+    dd.innerHTML=html; dd.hidden=false; return;
+  }
+  // nested volume (paṇṇāsa -> vagga -> sutta): list every vagga and its suttas
+  if(VOLNESTED[state.canonVol]){
+    let html='<div class="tochead">'+esc(VOLTITLE[state.canonVol]||state.canonVol)+'</div>';
+    for(const vg of VOLNESTED[state.canonVol]){
+      html+='<div class="tocitem toc-sutta" onclick="tocGoKey(\''+vg.key+'\')">'+esc(vg.label)+'</div>';
+      for(const su of (vg.subs||[])) html+='<div class="tocitem toc-sec" onclick="tocGoKey(\''+su.key+'\')">'+esc(su.label)+'</div>';
+    }
+    dd.innerHTML=html; dd.hidden=false; return;
+  }
+  // otherwise the whole book's suttas (+ their sub-sections)
+  if(bk && VOLTOC[bk] && VOLTOC[bk].length){
+    let html='<div class="tochead">'+esc(VOLBOOK[bk]||state.currentBook||VOLTITLE[tv]||tv)+'</div>';
+    for(const ch of VOLTOC[bk]){
+      html+='<div class="tocitem toc-sutta" onclick="tocGoKey(\''+ch.key+'\')">'+esc(ch.label)+'</div>';
+      for(const sub of (ch.subs||[])) html+='<div class="tocitem toc-sec" onclick="tocGoKey(\''+sub.key+'\')">'+esc(sub.label)+'</div>';
+    }
+    dd.innerHTML=html; dd.hidden=false; return;
+  }
+  let toc=state.toc||[];
+  if(state.currentSutta){ const m=toc.filter(s=>foldName(s.title)===state.currentSutta); if(m.length) toc=m; }
+  let html='<div class="tochead">'+esc((toc.length===1?toc[0].title:VOLTITLE[tv]||tv))+'</div>';
+  for(const s of toc){
+    html+='<div class="tocitem toc-sutta" onclick="tocGo(\''+s.domid+'\')">'+esc(s.title)+'</div>';
+    for(const sec of (s.sections||[])) html+='<div class="tocitem toc-sec" onclick="tocGo(\''+sec.domid+'\')">'+esc(sec.title)+'</div>';
+  }
+  dd.innerHTML=html; dd.hidden=false; };
+document.addEventListener('click',e=>{ const w=document.querySelector('.tocwrap'); if(w&&!w.contains(e.target)){ const d=document.getElementById('tocdrop'); if(d)d.hidden=true; } });
+$('#finc').onclick=()=>{state.size=Math.min(22,state.size+1);if(state.opened)render();};
+$('#fdec').onclick=()=>{state.size=Math.max(12,state.size-1);if(state.opened)render();};
+function tipify(root){(root||document).querySelectorAll('[title]').forEach(el=>{const v=el.getAttribute('title');if(v){el.setAttribute('data-tip',v);el.removeAttribute('title');}});}
+
+// ---------- search (top bar, real index) ----------
+const FOLDM={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
+const foldS=s=>(s||'').toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLDM[c]||c);
+const foldName=s=>foldS(s).replace(/[^a-z]/g,'');
+let TERMS=null, shardCache={};
+async function ensureTerms(){ if(TERMS)return; const j=await jget('../index/terms.compact.json',{terms:{},vols:[],layers:[]}); TERMS=j; }
+async function shard(vi){ if(shardCache[vi])return shardCache[vi]; return shardCache[vi]=await jget('../index/'+TERMS.vols[vi]+'.idx.json',{paras:[],inv:{}}); }
+let sTimer=null;
+$('#sq').addEventListener('input',e=>{clearTimeout(sTimer);sTimer=setTimeout(()=>doSearch(e.target.value),180);});
+$('#sq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';$('#sdrop').hidden=true;}});
+document.addEventListener('click',e=>{const s=$('.search'); if(s&&!s.contains(e.target))$('#sdrop').hidden=true;});
+async function doSearch(q){
+  const dd=$('#sdrop'); const fq=foldS((q||'').trim());
+  if(fq.length<2){dd.hidden=true;dd.innerHTML='';return;}
+  await ensureTerms();
+  const vis=TERMS.terms[fq];
+  if(!vis){dd.hidden=false;dd.innerHTML='<div class="sr-head">No matches for “'+esc(q)+'”</div>';return;}
+  const LN={'pali-unicode':'Pāḷi','atthakatha-unicode':'Aṭṭhakathā','tika-unicode':'Ṭīkā'};
+  const COL={'pali-unicode':'var(--canon)','atthakatha-unicode':'var(--comm)','tika-unicode':'var(--tika)'};
+  let items=[],total=0;
+  for(const vi of vis){ const sh=await shard(vi); const post=sh.inv[fq]||[];
+    for(const [pi,c] of post){ total+=c; if(items.length<80){ const p=sh.paras[pi]; const lay=TERMS.layers[vi];
+      const f=foldS(p.text), i=f.indexOf(fq), a=Math.max(0,i-24), b=Math.min(p.text.length,i+fq.length+42);
+      const snip=(a>0?'…':'')+esc(p.text.slice(a,i))+'<mark>'+esc(p.text.slice(i,i+fq.length))+'</mark>'+esc(p.text.slice(i+fq.length,b))+'…';
+      items.push('<div class="sresult" onclick="openKey(\''+p.key+'\',\''+({'pali-unicode':'canon','atthakatha-unicode':'A','tika-unicode':'T'}[lay])+'\');document.getElementById(\'sdrop\').hidden=true"><span class="sr-lay" style="color:'+COL[lay]+'">'+LN[lay]+' ¶'+p.n+'</span><div class="sr-snip">'+snip+'</div></div>');
+    } } }
+  dd.hidden=false; dd.innerHTML='<div class="sr-head">'+total.toLocaleString()+' occurrence(s) for “'+esc(q)+'”</div>'+items.join('');
+}
+buildSidebar();
+</script>
+</body>
+</html>

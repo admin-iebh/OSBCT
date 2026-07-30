@@ -1,0 +1,23 @@
+const fs=require('fs'),path=require('path');const {JSDOM}=require('jsdom');const R='site/reader';
+const resolve=u=>{u=String(u).split('?')[0];if(u.startsWith('../'))return path.join('site',u.slice(3));if(u.startsWith('http')){try{u=new URL(u).pathname.replace(/^\//,'');}catch(e){}return path.join(R,u);}return path.join(R,u);};
+const dom=new JSDOM(fs.readFileSync(R+'/reader2.html','utf8'),{runScripts:'dangerously',pretendToBeVisual:true,url:'http://x/',beforeParse(w){w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=()=>{};w.fetch=u=>{const f=resolve(u);let t=null;try{t=fs.readFileSync(f,'utf8');}catch(e){}return Promise.resolve({ok:t!=null,status:t!=null?200:404,json:()=>Promise.resolve(t?JSON.parse(t):{}),text:()=>Promise.resolve(t||'')});};}});
+const w=dom.window;let err=null;w.addEventListener('error',e=>err=e.message);
+(async()=>{await new Promise(r=>setTimeout(r,900));const rows=()=>[...w.document.querySelectorAll('.row')];
+rows().find(r=>r.textContent.trim().startsWith('Khuddakanikāya'))?.click();await new Promise(r=>setTimeout(r,150));
+const sn=rows().find(r=>r.textContent.trim()==='Suttanipātapāḷi');sn?.click();await new Promise(r=>setTimeout(r,130));
+const vaggaRows=[...sn.parentElement.querySelectorAll('.row')].map(r=>r.textContent.trim()).filter(t=>/vagga$/.test(t));
+console.log('JS error:',err||'none');
+console.log('vagga rows in tree:',vaggaRows);
+const ura=[...w.document.querySelectorAll('.row')].find(r=>r.textContent.trim()==='1. Uragavagga');ura?.click();await new Promise(r=>setTimeout(r,120));
+const suttaRows=[...ura.parentElement.querySelectorAll('.row')].map(r=>r.textContent.trim()).filter(t=>/sutta$/.test(t));
+console.log('Uragavagga suttas:',suttaRows.slice(0,4),'...',suttaRows.length,'total');
+[...ura.parentElement.querySelectorAll('.row')].find(r=>/Uragasutta/.test(r.textContent))?.click();
+for(let k=0;k<80;k++){const s=w.document.querySelector('#scroll');if(s&&s.textContent.length>800)break;await new Promise(r=>setTimeout(r,100));}
+const txt=(w.document.querySelector('#scroll')||{}).textContent||'';
+console.log('gāthā blocks rendered:',[...w.document.querySelectorAll('#scroll .gatha')].length);
+const g=w.document.querySelector('#scroll .gatha');
+console.log('first gāthā <br> lines:',g?g.innerHTML.split('<br>').length:0,'| text:',g?g.textContent.slice(0,54):'');
+console.log('vagga heads:',[...w.document.querySelectorAll('#scroll .head.sutta')].length,'| sutta heads:',[...w.document.querySelectorAll('#scroll .head.section')].length);
+console.log('Uragavaggo paṭhamo.:',txt.includes('Uragavaggo paṭhamo.'),'| book-end:',txt.includes('Suttanipātapāḷi niṭṭhitā.'));
+console.log('Itivuttaka excluded:',!txt.includes('Vuttaṁ hetaṁ Bhagavatā'));
+})();

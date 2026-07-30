@@ -1,0 +1,2399 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Rebuild a Khuddaka volume's reader side-maps DIRECTLY FROM THE PRINTED PDF.
+
+19Khu02 = Vimānavatthu + Petavatthu + Theragāthā + Therīgāthā.
+
+THE GOVERNING LESSON (HANDOFF.md): side-maps built by SPLITTING THE CORPUS TEXT
+inherit every corpus defect.  This parses `pdftotext -layout` of the printed
+edition into an item stream (heading / numbered verse + its printed pāda lines /
+prose / colophon / uddāna) and maps it onto corpus ordinals BY VERSE NUMBER.
+The corpus (site/19Khu02.json) is never touched — the reader renders
+`before + groups + after` from the side-map whenever a verse entry exists, so the
+side-map alone controls what is shown.
+
+Corpus defects this repairs, all found by verify_render_vs_pdf.py:
+  * dropped printed pāda lines inside a verse (e.g. v1094 loses "Sukuṇḍalī
+    kappitakesamassu.", v1098 loses "Bahussute taṇhakkhayūpapanne.");
+  * vagga uddāna verses SPLICED onto the tail of the vagga's last paragraph
+    (ord155/269/482/631/692) while the same text also renders from uddana/ —
+    so it showed twice, once in the wrong role;
+  * every Tassuddānaṁ / Tatruddānaṁ and every sutta- and vagga-end colophon of
+    Petavatthu, Theragāthā and Therīgāthā missing outright;
+  * Theragāthā's opening Nidānagāthā missing outright;
+  * three printed section headings captured as corpus paragraphs (ord 388, 390,
+    857) — hidden here and re-placed as headings;
+  * no verse structure at all: every verse rendered as run-on prose.
+
+Writes: site/reader/{verse,uddana,sections,hide,incipit}/19Khu02.json
+Backups: *.pre19build
+"""
+import json, os, re, shutil, subprocess, sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+R    = os.path.join(ROOT, 'site/reader')
+
+# Per-volume spec: (title, pdf_first, pdf_last, ord_lo, ord_hi, last_verse).
+# pdf pages are REAL 1-based printed-PDF pages, taken from that volume's
+# structure doc in docs/ — never from the corpus `pdf_page` field, which drifts
+# where the PDF has blank separator pages.
+# `last_verse` is the edition's own final verse number for the book, used as a
+# cross-check; None where verse numbers reset below book level (Apadāna resets
+# per VAGGA, so the check does not apply there).
+SPEC = {
+ '19Khu02': {
+   'books': [('Vimānavatthupāḷi', 17, 141,    0, 1034, 1289),
+             ('Petavatthupāḷi',  143, 234, 1034, 1848,  814),
+             ('Theragāthāpāḷi',  235, 391, 1848, 3136, 1288),
+             ('Therīgāthāpāḷi',  393, 451, 3136, 3660,  524)],
+   'stems': r'vimānavatthu|petavatthu|theragāthā|therīgāthā|vatthu|vimāna|vagga|nipāta',
+   'n_scope': 'book',
+ },
+ '20Khu03': {
+   'books': [('Therāpadānapāḷi', 21, 465, 0, 4461, None)],
+   'stems': r'apadāna|vagga',
+   'n_scope': 'vagga',
+ },
+ '21Khu04': {
+   'books': [('Therāpadānapāḷi',   16, 200,    0, 2072, None),
+             ('Therī-apadānapāḷi', 202, 313, 2072, 3432, None),
+             ('Buddhavaṁsapāḷi',   314, 399, 3432, 4502, None),
+             ('Cariyāpiṭakapāḷi',  400, 435, 4502, 4858, None)],
+   'stems': r'apadāna|buddhavaṁsa|cariya|kaṇḍa|kathā|vagga',
+   'n_scope': 'vagga',
+ },
+ # --- Jātaka: ONE work across two physical volumes -------------------------
+ # `n` is the VERSE number and it resets at every NIPĀTA — not per book as in
+ # 19Khu02, and NOT per vagga as the handoff predicted.  Measured: 22 nipātas
+ # numbered continuously 1-22 across the two volumes (16 + 6), 547 jātakas
+ # numbered continuously 1-547 (520 + 27).
+ #
+ # WHY NOT n_scope 'vagga', which segments on any n-descent and so would have
+ # APPEARED to work: three separate things put a false descent into the stream.
+ #  (1) 17 jātaka HEADINGS leaked into 22Khu05's corpus carrying the JĀTAKA
+ #      number as `n` ("224. * Kumbhilajātaka (2-8-4)") — the same defect as
+ #      21Khu04's ord3138, which left 293 verses unmapped.  Hidden before the
+ #      map is built, exactly as there.
+ #  (2) The edition MISPRINTS three verse numbers (see ERRATA below), and the
+ #      corpus faithfully reproduces all three.
+ #  (3) 22Khu05 p304's misprint COLLIDES: it prints "24." for verse 29 while
+ #      verse 24 already exists in that nipāta, so an n-keyed map silently
+ #      drops one of them — no error, just a verse that loses its structure.
+ # So 'nipata' scope pairs PDF verse to corpus paragraph BY POSITION within
+ # each nipāta and uses `n` only as a cross-check.  That is immune to all
+ # three, and it self-verifies: all 22 nipātas pair 1:1, 0 mismatches.
+ #
+ # Vaggas exist ONLY in nipātas 1-7 (41 of them).  From the Aṭṭhakanipāta on,
+ # jātakas sit directly under their nipāta — which is why 22Khu05's corpus
+ # `vagga` field sticks on "Gandhāravaggo dutiyo." (a COLOPHON, carried
+ # forward for the rest of the volume) and why 23Khu06 has no vagga field at
+ # all.  The tree therefore has MIXED DEPTH, as the edition prints it.
+ '22Khu05': {
+   'books': [('Jātakapāḷi', 27, 426, 0, 2985, None)],
+   'stems': r'jātaka|jākaka|vagga|nipāta',
+   'n_scope': 'nipata',
+   'nipatas': 16,
+ },
+ '23Khu06': {
+   'books': [('Jātakapāḷi', 6, 383, 0, 3675, None)],
+   'stems': r'jātaka|jākaka|vagga|nipāta',
+   'n_scope': 'nipata',
+   'nipatas': 6,
+ },
+ # --- Niddesa: PROSE EXEGESIS, the first books here that are not verse -------
+ # A numbered unit is NOT a verse.  It is one Suttanipāta verse quoted as a
+ # LEMMA, followed by the whole niddesa commentary on it — frequently five or
+ # more printed pages of prose, with further gāthā quoted inside that prose,
+ # closing with "Tenāha Bhagavā–" and the lemma repeated.  The corpus holds all
+ # of that as ONE run-on paragraph, which is why these two volumes show 0.5 and
+ # 1.1 paragraphs per page against 4-7 for every other Khuddaka volume.
+ #
+ # THE HANDOFF ASKED WHETHER THAT LOW COUNT IS LEGITIMATE OR A MERGE DEFECT.
+ # It is LEGITIMATE, and shown by two independent inputs: the printed page sets
+ # exactly one numbered lemma per corpus paragraph (210 printed / 210 corpus,
+ # 161 / 161), and the Suttanipāta's own Aṭṭhakavagga has 210 verses against
+ # 24Khu07's n = 1..210 with no gap.  Nothing needs un-merging.
+ #
+ # So `mode: 'niddesa'` replaces the verse machinery for such a book:
+ #   * printed lemmas are paired with corpus paragraphs BY POSITION, 1:1, with
+ #     `n` kept only as a cross-check.  Position and not number, because the
+ #     edition MISPRINTS one of them (see ERRATA) exactly as the Jātaka does,
+ #     and a number-keyed map would desync silently from that point on.  The
+ #     two sides are independent — the printed lemma lines on one, the corpus
+ #     paragraph array on the other — so the 1:1 pairing is a real check;
+ #   * the commentary becomes `after`, split into the PRINTED PARAGRAPHS (a
+ #     paragraph opens at an indent and continues at the body column), with the
+ #     gāthā quoted inside it emitted as {"gatha": [...]} blocks, which the
+ #     reader's proseOne() and the harness's _plist() already understand.
+ #
+ # 25Khu08 IS TWO HALVES, and the edition's own mātikā prints them as two
+ # blocks: pages 1-21 set the Pārāyanavagga TEXT (Vatthugāthā, the 16
+ # māṇavapucchās, Pārāyanatthuti- and Pārāyanānugītigāthā) as plain verse with
+ # no commentary at all, and only from page 24 does the niddesa begin.  The
+ # first half is ordinary verse and uses the ordinary verse path.
+ '24Khu07': {
+   'books': [('Mahāniddesapāḷi', 5, 414, 0, 210, None, 'niddesa')],
+   'stems': r'niddesa|niddeso|niddesā|vagga|vaggo|gāthā|pucchā|pāḷi',
+   'n_scope': 'book',
+   # The corpus captured the printed word index "Saṁvaṇṇitapadānaṁ
+   # anukkamaṇikā" as two 15,000-character paragraphs (ord210, ord211).  Same
+   # class as the 14Sam03#598 back-matter paragraph an earlier session removed;
+   # HIDDEN here rather than removed, because the corpus is no longer edited.
+   'backmatter': [210, 211],
+ },
+ '25Khu08': {
+   'books': [('Cūḷaniddesapāḷi',   6,  28,   0, 174, 174),
+             ('Cūḷaniddesapāḷi',  29, 312, 174, 335, None, 'niddesa')],
+   'stems': r'niddesa|niddeso|niddesā|vagga|vaggo|gāthā|pucchā|pāḷi',
+   'n_scope': 'book',
+ },
+ # --- Paṭisambhidāmagga: prose again, but NOT the Niddesa's prose -----------
+ # `mode: 'katha'`.  The handoff predicted this volume would reuse the niddesa
+ # path and warned to check its geometry first.  BOTH of that path's
+ # assumptions fail here, so it is a separate reader of the page:
+ #
+ #  (1) THERE IS NO LEMMA.  A niddesa section opens with a display verse and
+ #      comments on it; here the number opens the PROSE ITSELF ("1. Kathaṁ
+ #      sotāvadhāne paññā sutamaye ñāṇaṁ–").  So a unit has no `groups`, and
+ #      the entry is written `{"groups": [], "after": [...]}`: `[]` is TRUTHY in
+ #      JS, so `block()` already renders `before + after` and suppresses the
+ #      corpus text, while `pr.n` still draws the number outside the block —
+ #      exactly the prose shape wanted, with no reader change.  (`render_parts`
+ #      DID need a fix: Python's `if e.get('groups')` reads `[]` as false and so
+ #      modelled the corpus text as rendered where the reader does not render
+ #      it.  A latent reader/harness divergence, now closed; no existing volume
+ #      has an empty groups list, so nothing else moves.)
+ #
+ #  (2) THE BODY COLUMN IS NOT ALWAYS THE PAGE'S LEFTMOST INDENT.  Three page
+ #      shapes are printed here and all three are measured rather than assumed:
+ #      ordinary prose (continuation at the left margin, paragraphs indented);
+ #      the HANGING LISTS that set the Mahāvagga mātikā and one or two other
+ #      mātikās, where the number is set to the LEFT of its own continuation;
+ #      and the closing Uddānagāthā page, which has no body column at all.
+ #
+ # Verse quoted inside the prose cannot be told from a prose paragraph opener
+ # by indent — measured over the volume, 1,258 non-numbered lines sit in the
+ # band 3-7 columns right of the body, of which 917 are short enough to look
+ # like verse and nearly all are prose openers.  What separates them is that a
+ # prose opener is followed by continuation at the BODY column while a verse
+ # line is followed by another line at ITS OWN indent: so verse is a RUN of two
+ # or more consecutive lines sharing an indent above the body column.  That
+ # yields 24 blocks / 117 lines in the whole volume, of which exactly one sits
+ # in the ambiguous band (p302's "Adhimokkhe ca paggāhe…"), and it is verse.
+ # Every block is listed by --show, because this is a judgement about the page.
+ '26Khu09': {
+   'books': [('Paṭisambhidāmaggapāḷi', 10, 428, 0, 405, None, 'katha')],
+   # `dasaka` is here because the NAV BUILDER'S MĀTIKĀ CHECK found it missing.
+   # The edition prints "Mūlamūlakādidasaka" as a heading on p312 and lists it
+   # in its own mātikā, but no other stem reaches it, so it was falling through
+   # to the body and rendering as an ordinary prose paragraph — present,
+   # contiguous, and in the wrong role, which the body gate reports as 0.
+   'stems': (r'niddesa|niddeso|niddesā|kathā|vagga|vaggo|vāra|vāro|gāthā|'
+             r'pāḷi|mātikā|chakka|catukka|samodhāna|dasaka'),
+   'n_scope': 'book',
+   'units_may_be_verse': False,
+   # Printed lines that ARE headings but that no stem can reach, listed so the
+   # exception is visible rather than absorbed into a looser regex.  The only
+   # one here is the edition's own misprint (see ERRATA); it is recognised, and
+   # its text is kept exactly as printed.
+   'headfix': {'5. Virāgatathā'},
+ },
+ # --- Netti + Peṭakopadesa: the kathā path, with numbered units that are
+ # --- SOMETIMES VERSE ------------------------------------------------------
+ # TWO BOOKS IN ONE PHYSICAL VOLUME, each with its own title page, its own
+ # mātikā and its own closing colophon ("Nettipakaraṇaṁ niṭṭhitaṁ." p166,
+ # "Peṭakopadesapakaraṇaṁ niṭṭhitaṁ." p341).  The standing rule applies: both
+ # need their own nav node or one bleeds into the other.
+ #
+ # The kathā path fits — a numbered unit's content is prose, the body column is
+ # the left margin — with ONE addition this volume forces.  `units_may_be_verse`:
+ # here a numbered unit is sometimes a GĀTHĀ and sometimes prose, and the two
+ # series interleave, which is why the corpus `n` descends twice inside the
+ # Netti (4 -> 1 at ord4 and 26 -> 5 at ord30: prose 1-4, then the sixteen
+ # hāra verses 1-26, then prose 5 onwards).  Pairing BY POSITION is blind to
+ # that; what it cannot be blind to is the SHAPE, because a verse unit rendered
+ # as prose loses its line breaks.  The discriminator is the printed geometry
+ # and needs no word list: **a numbered unit is verse when the line after it is
+ # set at a STRICTLY GREATER indent than the number**, since a prose unit's
+ # continuation returns to the body column and a gāthā's pādas do not.
+ #
+ # 271 printed numbered units against 271 corpus paragraphs, with `n` agreeing
+ # on every one — no errata in either book.
+ '27Khu10': {
+   'books': [('Nettipāḷi',           7, 172,   0, 151, None, 'katha'),
+             ('Peṭakopadesapāḷi',  173, 347, 151, 271, None, 'katha')],
+   'stems': (r'vāra|vāro|vibhaṅga|sampāta|bhūmi|paṭṭhāna|samuṭṭhāna|saṅkhepa|'
+             r'pada|padaṁ|pāḷi|niddesa|vebhaṅgiya|pakaraṇaṁ'),
+   'n_scope': 'book',
+   'units_may_be_verse': True,
+ },
+ # --- Milindapañha: the kathā path again, and the geometry was MEASURED ------
+ # ONE book in one physical volume, 261 corpus paragraphs against 259 printed
+ # numbered units plus the two leaked headings hidden below.  The page is the
+ # kathā shape: the body column is the left margin, a numbered unit IS prose
+ # and the number opens it, paragraph openers sit at base+4..6 and display
+ # material at base+8 and up.
+ #
+ # WHAT MEASURING CHANGED, and it is why the handoff says to measure: this
+ # volume looks like 27Khu10 — prose units with heavy quoted gāthā — so the
+ # obvious move was `units_may_be_verse: True`.  That is WRONG here.  Eleven
+ # units are followed by a line at a greater indent, and only ONE of them is a
+ # gāthā: the opening "1. Milindo nāma so rājā, …" whose ten pādas are the
+ # unit.  The other ten are PROSE that ends in the citation dash and then
+ # quotes a verse — "4. Bhante Nāgasena bhāsitampetaṁ Bhagavatā–" — and the
+ # flag as it stood would have rendered each of those questions as a verse
+ # line, with the quotation's first pāda glued to it and the rest of the
+ # quotation left as a separate block.
+ # `units_may_be_verse: 'hanging'` adds the one distinction the page does
+ # make: A DISPLAY QUOTATION'S FIRST LINE HANGS LEFT OF ITS OWN BODY, so a run
+ # followed by a FURTHER run at a still greater indent opens a block of its
+ # own and does not belong to the numbered unit.  Measured here: 1 verse unit,
+ # 10 prose — every one of the eleven decided correctly.
+ # !!! THE SAME SHAPE IS MIS-READ IN SHIPPED 27Khu10; see HANDOFF.md.  That is
+ # NOT fixed here, because there the printed page does not separate the two
+ # cases geometrically at all and 66 units need a judgement.  The flag is
+ # per-book, so 27Khu10 keeps `True` and its output is unchanged — proved by
+ # the 9-volume regression.
+ '28Khu11': {
+   'books': [('Milindapañhapāḷi', 15, 422, 0, 261, None, 'katha')],
+   # Deliberately narrow.  The odd heads this book prints are NAMED rather
+   # than reached by a loose stem, because `ṭhāna`, `guṇa`, `kāraṇa` and
+   # `puggala` are ordinary Pāḷi words and a stem that matched them would take
+   # quoted gāthā pādas out of the body — the defect `nid_is_colo` already had
+   # to be tightened against once.
+   'stems': (r'pañha|pañho|pañhā|vagga|vaggo|kathā|mātikā|pāḷi|'
+             r'pubbayogādi|pucchāvisajjanā|parivajjanīyaṭṭhāna|'
+             r'vināsakapuggala|guyhamantavidhaṁsaka|paññāpaṭilābhakāraṇa|'
+             r'ācariyaguṇa|upāsakaguṇa|nigamana'),
+   'n_scope': 'book',
+   'units_may_be_verse': 'hanging',
+   # A colophon here closes a pañha, a vagga or a kaṇḍa, so the section-word
+   # list needs `pañh`; added PER VOLUME rather than to KATSECT, or 26Khu09
+   # and 27Khu10 would both move.
+   'colo_sect': r'pañh',
+   # Four printed colophons that name no section word at all and are set at
+   # indent 17-19, below the centred threshold.  Named here so the exception
+   # is visible rather than absorbed into a looser test.
+   'display_prose': True,
+   'orphan_sections': True,
+   'colopat': r'^Imasmiṁ vagge \S+ pañhā\.$',
+   'colofix': {'Aṭṭha mantanassa parivajjanīyaṭṭhānāni.',
+               'Aṭṭha mantavināsakapuggalā.',
+               'Nava guyhamantavidhaṁsakā puggalā.',
+               'Aṭṭha paññāpaṭilābhakāraṇāni.'},
+ },
+ # --- Abhidhamma ----------------------------------------------------------
+ # THE FIRST VOLUME OF A NEW PIṬAKA, and the kathā path fits it with no
+ # argument: body column 0, the mātikās read as hanging lists by `_kat_cols`,
+ # and 1780 printed numbered units against 1780 corpus paragraphs with `n`
+ # agreeing on every one — first try, no errata.
+ #
+ # TWO THINGS ARE MEASURED HERE RATHER THAN CARRIED OVER, and both are
+ # per-volume so nothing shipped can move.
+ #
+ #  (1) `heads_by_form` — NO STEM LIST, and a stem list would be WORSE.  This
+ #      volume sets 247 distinct display lines and **not one of them carries a
+ #      comma, and none is longer than six words**; 99 have no terminal stop
+ #      and 148 do.  That is exactly the Netti's rule — A HEADING IS A TITLE
+ #      AND CARRIES NO TERMINAL STOP, and its colophon echoes it with one
+ #      (`Tika` / `Tikaṁ.`, `Hetugocchaka` / `Hetugocchakaṁ.`,
+ #      `Suddhikapaṭipadā` / `Suddhikapaṭipadā.`).  Enumerating stems would
+ #      mean silently dropping whichever of the 99 headings I failed to list,
+ #      into the body as prose — the wrong-role failure no gate can see.  The
+ #      form test cannot reach body text here because the body column is 0,
+ #      paragraph openers sit at 4-6, and display begins at 8.
+ #
+ #  (2) `no_verse` — THIS VOLUME HAS NO GĀTHĀ IN ITS TEXT EXTENT.  Shown, not
+ #      assumed: a pāda carries commas, and no display line here has one.  The
+ #      only gāthā the file contains are in the Nidānakathā front matter, which
+ #      the declared extent correctly excludes.  It matters because the
+ #      Rūpakaṇḍa sets its lists ONE ITEM PER PRINTED LINE at a paragraph
+ #      indent ("Atthi rūpaṁ upādā, atthi rūpaṁ no upādā."), which the verse-run
+ #      rule reads as a gāthā — and `display_prose`'s pāda-punctuation test does
+ #      NOT save it, because every one of those items is a complete sentence
+ #      ending in a full stop.  Three runs, 29 printed lines, would have been
+ #      drawn as italic verse.
+ '29Abhi01': {
+   'books': [('Dhammasaṅgaṇīpāḷi', 20, 317, 0, 1780, None, 'katha')],
+   'stems': r'kaṇḍa|mātikā|pāḷi',      # used only by the nav's head_kind()
+   'n_scope': 'book',
+   'heads_by_form': True,
+   'no_verse': True,
+   # THE RŪPAKAṆḌA SETS SECTIONS WITH NO NUMBERED UNIT OF THEIR OWN.  Its
+   # eleven divisions — Ekaka, Duka, Tika … Ekādasaka — are each a heading, a
+   # body-column opener ("Duvidhena rūpasaṅgaho–"), a list of one item per
+   # printed line, then a closing line and a colophon; the next "N." does not
+   # come until the division after it.  Without this the whole list landed in
+   # the NEXT unit's `before`, i.e. BELOW the colophons that close it and below
+   # the following division's heading — printed order destroyed, and the body
+   # gate reports 0/0/0/0 because every word is still there.
+   'orphan_sections': True,
+ },
+ # --- Paṭṭhāna I: the same kathā shape, MEASURED not carried over ----------
+ # 1091 corpus paragraphs of which 91 are LEAKED HEADINGS — the edition sets
+ # two centred headings on one line ("1. Kusalattika   1. Paṭiccavāra") and the
+ # corpus captured 91 of those lines whole, as paragraphs carrying the first
+ # heading's number.  Hidden before the pairing, as everywhere else.
+ # `heads_by_form` fits here too, but a numbered line needed the extra test
+ # documented in `kat_items`: this book's 69 numbered headings are all one or
+ # two words, carry no internal period and sit at indent 22-30, while its units
+ # do not — and two of its units sit flush at the left margin.
+ '36Abhi08': {
+   'books': [('Tikapaṭṭhānapāḷi', 30, 493, 0, 1091, None, 'katha')],
+   'stems': (r'vāra|vāro|paṭṭhāna|attika|duka|dukaṁ|tika|tikaṁ|mūlaka|'
+             r'mūlakaṁ|uddesa|niddesa|pada|padaṁ|anuloma|anulomaṁ|'
+             r'paccanīya|paccanīyaṁ'),
+   'n_scope': 'book',
+   'heads_by_form': True,
+   'no_verse': True,
+   'orphan_sections': True,
+   'head_order': True,
+   'split_unnumbered': True,
+   'kat_splices': [
+     {'n': 41, 'pg': 373, 'ord': 831, 'into': 40,
+      'mark': '41.Nevavipākanavipākadhammadhammaṁ paṭicca'},
+   ],
+ },
+'37Abhi09': {
+   'books': [('Tikapaṭṭhānapāḷi', 28, 520, 0, 1268, None, 'katha')],
+   'stems': (r'vāra|vāro|paṭṭhāna|attika|duka|dukaṁ|tika|tikaṁ|mūlaka|'
+             r'mūlakaṁ|uddesa|niddesa|pada|padaṁ|anuloma|anulomaṁ|'
+             r'paccanīya|paccanīyaṁ'),
+   'n_scope': 'book',
+   'heads_by_form': True,
+   'no_verse': True,
+   'orphan_sections': True,
+   'head_order': True,
+   'split_unnumbered': True,
+   # A CENSUS, not a discovery one at a time: over the volume's whole text
+   # extent exactly TWO display lines carry two numbered halves separated by
+   # one or two spaces.  36Abhi08 has none.  Both are here.
+   'split_literals': {
+     '2. Paccayapaccanīya 2. Saṅkhyāvāra':          # pdf p316
+         ['2. Paccayapaccanīya', '2. Saṅkhyāvāra'],
+     '19. Atītārammaṇattika 7. Pañhāvāra':          # pdf p449
+         ['19. Atītārammaṇattika', '7. Pañhāvāra'],
+   },
+ },
+'38Abhi10': {
+   'books': [('Dukapaṭṭhānapāḷi', 7, 611, 0, 2060, None, 'katha')],
+   'stems': (r'vāra|vāro|paṭṭhāna|attika|duka|dukaṁ|tika|tikaṁ|mūlaka|'
+             r'mūlakaṁ|uddesa|niddesa|pada|padaṁ|anuloma|anulomaṁ|'
+             r'paccanīya|paccanīyaṁ'),
+   'n_scope': 'book',
+   'heads_by_form': True,
+   'no_verse': True,
+   'orphan_sections': True,
+   'head_order': True,
+   'split_unnumbered': True,
+   # A census over the volume's text extent finds exactly ONE heading pair in
+   # which a half carries no space after its number: printed p87 sets
+   # "1. Paccayānuloma      1.Vibhaṅgavāra".  Read whole it starts with a
+   # number and became a UNIT.
+   # THE EDITION'S OWN MISSPELLING, preserved verbatim and named here only so
+   # the builder RECOGNISES the line: printed p159 sets "Saṅkhyāvara" with a
+   # short 'a' where every other occurrence in the piṭaka reads "Saṅkhyāvāra".
+   # It leaked into the corpus as ord517 and, unhidden, took a unit's ordinal.
+   # The corpus opens at unit 2: printed unit 1 is in NO corpus paragraph.
+   'kat_missing': [
+     {'n': 1, 'pg': 7,
+      'absent': 'Hetuṁ dhammaṁ paṭicca hetu dhammo uppajjati hetupaccayā'},
+   ],
+   'headfix': ('2. Paccayapaccanīya      2. Saṅkhyāvara',),
+   'split_literals': {
+     '1. Paccayānuloma 1.Vibhaṅgavāra':
+         ['1. Paccayānuloma', '1. Vibhaṅgavāra'],
+   },
+ },
+'39Abhi11': {
+   # THREE inner books, each with its own title page and homage, measured
+   # off the corpus `book` field and confirmed against those pages:
+   #   0-based 203 and 475 are the second and third title pages, 474 is blank.
+   'books': [('Dukapaṭṭhānapāḷi',      10, 203,    0,  658, None, 'katha'),
+             ('Dukatikapaṭṭhānapāḷi', 204, 474,  658, 2266, None, 'katha'),
+             ('Tikadukapaṭṭhānapāḷi', 476, 645, 2266, 2985, None, 'katha')],
+   'stems': (r'vāra|vāro|paṭṭhāna|attika|duka|dukaṁ|tika|tikaṁ|mūlaka|'
+             r'mūlakaṁ|uddesa|niddesa|pada|padaṁ|anuloma|anulomaṁ|'
+             r'paccanīya|paccanīyaṁ'),
+   'n_scope': 'book',
+   'heads_by_form': True,
+   'no_verse': True,
+   'orphan_sections': True,
+   'head_order': True,
+   'split_unnumbered': True,
+
+ },
+}
+
+# The edition's own misprints, RECORDED AND PRESERVED VERBATIM — never
+# corrected in the text.  They are listed here only so the builder can
+# RECOGNISE them: each puts a false descent into the verse-number stream, and
+# the first also collides with a real verse number in the same nipāta.
+#   22Khu05 p304  prints "24."   where the sequence requires 29
+#   23Khu06 p374  prints "2324." where the sequence requires 2342
+#   23Khu06 p383  prints "1440." where the sequence requires 2440
+# Two further irregularities are typographic rather than numeric, and must be
+# RECOGNISED or the line is read as a pāda instead of as a heading:
+#   22Khu05 p105  "271. Udapānadūsakajākaka (3-3-1)" — the edition sets
+#                 'jākaka' for 'jātaka'; hence the `jākaka` stem above.  It is
+#                 the ONLY heading in either volume outside the normal stems.
+#   22Khu05 p79   "6. Na taṁ daḷhavagga" — the vagga name is typeset with
+#                 internal spaces, though its own colophon closes it up as
+#                 "Nataṁdaḷhavaggo chaṭṭho.".  HEADTXT's `[^,]*` already spans
+#                 the spaces so this needs no special case, but it is recorded
+#                 because any tighter regex would silently drop the heading.
+#   25Khu08 p229 opens the Khaggavisāṇasuttaniddesa with "211." where the
+#                 sequence requires 121 — the previous lemma is 120 and the
+#                 next is 122.  The corpus reproduces the misprint faithfully
+#                 (ord294 carries n=211), so pairing BY POSITION places it
+#                 correctly and the mismatch is REPORTED rather than absorbed.
+#                 A number-keyed map would have read it as an ascent to 211
+#                 followed by a descent to 122, i.e. a false segment boundary.
+ERRATA = {
+ '22Khu05': [{'pdf_page': 304, 'printed': '24.',   'sequence_requires': 29,
+              'note': 'collides with the real verse 24 in the same nipāta'}],
+ '23Khu06': [{'pdf_page': 374, 'printed': '2324.', 'sequence_requires': 2342},
+             {'pdf_page': 383, 'printed': '1440.', 'sequence_requires': 2440}],
+ '25Khu08': [{'pdf_page': 233, 'printed': '211.', 'sequence_requires': 121,
+              'note': 'opens Khaggavisāṇasuttaniddesa; corpus ord294 keeps it'}],
+ # 26Khu09 p333 heads the fifth kathā of the Yuganaddhavagga "5. Virāgatathā"
+ # where its OWN mātikā (p8) sets "5. Virāgakathā" — 't' for 'k', the same
+ # class of typographic misprint as 22Khu05's 'jākaka' for 'jātaka'.  Kept
+ # verbatim on the page and listed in SPEC['26Khu09']['headfix'] so that it is
+ # still RECOGNISED as a heading; a stem loose enough to match it on its own
+ # would be `tathā`, which is among the commonest words in this very volume
+ # ("tathā avitathā anaññathā") and would swallow ordinary prose.
+ '26Khu09': [{'pdf_page': 333, 'printed': '5. Virāgatathā',
+              'matika_has': '5. Virāgakathā'}],
+ # 27Khu10's Netti mātikā (p ii) lists "13. Sodanahāravibhaṅga" where the body
+ # heads it "13. Sodhanahāravibhaṅga" — the mātikā drops the 'h'.  The SAME
+ # mātikā spells the matching sampāta "13. Sodhanahārasampāta" with it, so the
+ # two printed pages disagree with each other and one of them with itself.
+ # Both are kept exactly as each page sets them; only the nav check is told
+ # they are one section.
+ '27Khu10': [{'pdf_page': 4, 'printed': '13. Sodanahāravibhaṅga',
+              'body_has': '13. Sodhanahāravibhaṅga', 'where': 'Netti mātikā'}],
+ # 28Khu11's are unusually many, and two of them are the edition disagreeing
+ # with its own arithmetic rather than with its own spelling.  Every one is
+ # kept exactly as the page that carries it prints it; the nav check is told
+ # which pairs are one section (ERRATUM_SAME in build_milinda_nav.py).
+ '28Khu11': [
+   # --- structural -------------------------------------------------------
+   {'printed': 'the kaṇḍa heads run 1, 2, 4, 5, 6',
+    'note': 'there is no "3." anywhere in the body, although the text names '
+            'six divisions (p2 "pubbayogo Milindapañhaṁ lakkhaṇapañhaṁ '
+            'meṇḍakapañhaṁ anumānapañhaṁ opammakathāpañhan"ti) and the '
+            'Nigamana (p407) says "chasu kaṇḍesu"'},
+   {'where': 'front mātikā', 'printed': '5. Opammakathāpañha',
+    'body_has': '6. Opammakathāpañha',
+    'note': 'the mātikā gives "5." to both the fifth kaṇḍa and the sixth'},
+   {'where': 'Nigamana p407', 'printed': 'bāvīsativagga° (22 vaggas)',
+    'body_has': '23 vaggas', 'note': "the edition's own count of its own pages"},
+   {'pdf_page': 250, 'printed': '(3)',
+    'note': 'p236 numbers the third pañha of the Anumāna Buddhavagga in '
+            'PARENTHESES where every other unit opens "N. ", so it is not a '
+            'numbered unit; the corpus spliced its whole text onto ord164'},
+   {'pdf_page': 419, 'printed': 'Ito paraṁ rājaṅgapañhādikā aṭṭhatiṁsa pañhā '
+                                'vinaṭṭhā …',
+    'note': 'the edition records that 38 pañhas are lost; the Opammakathā '
+            'mātikā (p345-348) lists them although no body text follows'},
+   # --- spelling, body first, mātikā second ------------------------------
+   {'body': '6. Satapattaṅgapañhā',  'matika': '6. Satapattaṅgapañha'},
+   {'body': '10. Dīghaṭṭhipañha',    'matika': '10. Dhīghaṭṭhipañha'},
+   {'body': '15. Viññāṇanānatthapañha', 'matika': '15. Viññāṇanānātthapañha'},
+   {'body': '4. Paṭisandahanapuggalavediyanapañha',
+    'matika': '4. Paṭisandahanapuggalavediyapañha'},
+   {'body': '6. Apuññapañha',        'matika': '6. Apaññapañha'},
+   {'body': '7. Bhikkhusaṁghapariharaṇapañha',
+    'matika': '7. Bhikkhusaṁghaparihāraṇapañha'},
+   {'body': '10. Dhammadesanāya appossukkapañha',
+    'matika': '10. Dhammadesanāya appossukapañha'},
+   {'body': '5. Dvinnaṁ lokuppannānaṁ samakabhāvapañha',
+    'matika': '5. Dvannaṁ lokuppannānaṁ samakabhāvapañha'},
+   {'body': '3. Bījaṅgapañha',       'matika': '3. Vījaṅgapañha'},
+   {'body': '9. Bāḷisikaṅgapañha',   'matika': '9. Bhāḷisikaṅgapañha'},
+   {'body': '9. Vahāhaṅgapañha',     'matika': '9. Varāhaṅgapañha'},
+   {'body': 'Sīhavaggo pañcamo. (p392)',
+    'matika': 'Sīlavaggo pañcamo. (p345)'},
+   {'printed': 'Imasmiṁ vagge dvādassa pañhā. (p186)',
+    'note': "'dvādassa' for 'dvādasa'"},
+ ],
+}
+
+VOL = None; BOOKS = None; PDF = None; HEADTXT = None
+
+
+def use(vol):
+    """Bind the module to one volume's spec."""
+    global VOL, BOOKS, PDF, HEADTXT
+    VOL = vol
+    BOOKS = SPEC[vol]['books']
+    PDF = os.path.join(ROOT, 'pali-unicode', vol + '.pdf')
+    # The parenthesised tail after a heading is not always a single number.
+    # 20Khu03/21Khu04 set "(5)"; the Jātaka sets the jātaka's nipāta-vagga-
+    # position triple, "(2-8-4)", and one uddāna carries "(6652)".  Widened to
+    # digits/dots/spaces/hyphens, which is a strict superset of the old
+    # `(\d+)` — the 19Khu02 regression is what proves it changes nothing there.
+    HEADTXT = re.compile(r'^[A-ZĀĪŪṄÑṆṬḌḶ][^,]*(' + SPEC[vol]['stems']
+                         + r')\d*\s*(\([\d\s.–-]+\))?$')
+
+FNRULE = re.compile(r'^\s*_{20,}\s*$')
+DECOR  = re.compile(r'^\s*_{3,19}\s*$')
+VERSE  = re.compile(r'^(\d+)\.\s*(.*)$')
+# A heading's number is not always a plain "N.".  The Apadāna numbers the third
+# group of Buddhavagga as "3-1." … "3-10." (Sāriputta, Mahāmoggallāna,
+# Khadiravaniyarevata, Ānanda and six more).  Matching only "^N." dropped all ten
+# out of the headings and into the colophon stream, so they rendered as centred
+# uddāna lines and never reached the tree or the Contents.
+HEADNUM = re.compile(r'^\d+(?:-\d+)?\.\s')
+# THE EDITION CAPITALISES "Tassa" IN TWO VOLUMES — 38Abhi10 (its only homage)
+# and 31Abhi03 (one of its two).  Unrecognised, the line is not lifted into
+# `incipit` at all: it stays in the body AND the reader draws its built-in
+# fallback above it, so the page shows the homage twice.  Matched either way
+# here; the incipit keeps the printed capital verbatim.
+HOMAGE = re.compile(r'Namo [Tt]assa Bhagavato Arahato Sammāsambuddhassa')
+UDDLBL = re.compile(r'^(Tassuddānaṁ|Tatruddānaṁ|Atha vagguddānaṁ|Vagguddānaṁ|'
+                    r'[A-ZĀĪŪṄÑṆṬḌḶ]\S*uddānaṁ|Nidānagāthā)\d*$')
+# A body-column line that OPENS a prose run.  Indent cannot decide this: the
+# edition sets the closing formula "Itthaṁ sudaṁ … abhāsitthāti." flush with the
+# verse number on one page and flush with the pādas on the next (p235 vs p236),
+# so alignment is not authority.  Classify by form and render it consistently as
+# prose; the run then continues until the next verse number or centred line.
+# NOTE the edition's own spellings here are not uniform, and two are outright
+# printing errors which are preserved verbatim (never corrected) but must still
+# be RECOGNISED, or the closing formula is read as a pāda and lands inside the
+# verse: 20Khu03 prints "Ittaṁ sudaṁ" at ord2676 and "abhiāsitthāti" at ord3110.
+PROSEOPEN = re.compile(r'^(Itt[h]?h?aṁ sudaṁ|Ittaṁ sudaṁ|\(|“|Idha bhante|Evaṁ me sutaṁ)')
+DIVISION = re.compile(r'(itthivimāna|purisavimāna)$', re.I)
+NIPATA   = re.compile(r'nipāta\d*$', re.I)
+VAGGA    = re.compile(r'vagga\d*$', re.I)
+# A heading may carry the edition's `*`/`+` cross-reference marker between its
+# number and its name ("224. * Kumbhilajātaka (2-8-4)").  Strip it before the
+# heading test, or every starred jātaka heading is read as a verse.  This is
+# safe for ordinary verse text that also opens with `*` ("224. * Sace vo
+# vuyhamānānaṁ, sattannaṁ…") because HEADTXT's `[^,]*` cannot span the comma
+# and the pattern is anchored at both ends.
+STAR = re.compile(r'^[*+]\s*')
+
+
+def head_body(s):
+    """A heading's text with its cross-reference marker removed."""
+    return STAR.sub('', s.strip())
+
+
+def _add_line(lst, s):
+    """Append a printed line to a centred block, rejoining line-end hyphenation.
+
+    The uddāna verses hyphenate compounds across the line break — 22Khu05 p266
+    sets "Atha pāni yudhañcayako ca dasa-" / "Ratha saṁvara pāragatena navāti."
+    for *Dasaratha*.  The body path already rejoined on the hyphen; the centred
+    path did not, so those two printed lines were never matched as the one line
+    the edition means.  Rejoin ON THE HYPHEN AND NOTHING ELSE — every wider rule
+    also swallows ordinary wraps and fabricates words, and two such rules have
+    already been caught here by the 19Khu02 regression.
+    """
+    if lst and lst[-1].endswith('-'):
+        lst[-1] = lst[-1][:-1] + s
+    else:
+        lst.append(s)
+
+
+def _norm(s):
+    """Letters only, folded — for comparing printed text against corpus text."""
+    return re.sub(r'[^a-zāīūṁṃṅñṇṭḍḷ]', '', (s or '').lower())
+
+
+def _spliced(para, txt, words=4):
+    """Did the corpus merge this printed verse into `para`?
+
+    Tested by CONTENT: the verse's opening words must already be inside that
+    paragraph.  Deliberately not tested by the stray verse number left in the
+    text — a footnote marker ("…Yāmuno4. Catuppadoyaṁ…") can imitate a number
+    but cannot imitate the words.
+    """
+    head = _norm(' '.join(txt.split()[:words]))
+    return bool(head) and head in _norm(para.get('text'))
+
+
+def is_nipata_head(t):
+    """Is this centred line a NIPĀTA heading ('2. Dukanipāta')?"""
+    return bool(HEADNUM.match(t)) and head_kind(t) == 'book' \
+        and NIPATA.search(re.sub(r'^\d+(?:-\d+)?\.\s*', '', t).strip())
+
+
+def pdf_pages():
+    txt = subprocess.run(['pdftotext', '-layout', PDF, '-'],
+                         capture_output=True, text=True).stdout
+    return txt.split('\f')
+
+
+def page_lines(pages, i):
+    out = []
+    for l in (l.rstrip() for l in pages[i - 1].split('\n')):
+        if FNRULE.match(l):
+            break                                    # footnote block -> end of page
+        if l.strip() and not DECOR.match(l):
+            out.append(l)
+    if out and (re.match(r'^\s*\d+\s{2,}\D', out[0]) or re.search(r'\s{3,}\d+\s*$', out[0])):
+        out = out[1:]                                # running page-header
+    return [(len(l) - len(l.lstrip()), l.strip()) for l in out]
+
+
+def join_floating(lines):
+    """Join a verse number that is set ALONE on its line to the line below.
+
+    The edition sometimes prints the number on its own and starts the pādas on
+    the next line, at a different indent (22Khu05 p214 v18, p356 v188, p400
+    v125, p410 v228; 23Khu06 p165 v140).  Left alone, the verse item carries no
+    text, fails to map, and its pādas are then appended to the PREVIOUS verse —
+    so the words are all still present and no content gate can see anything
+    wrong, while the verse has silently lost its number and its frame.  This is
+    the same 'floating verse number' the Dhammapada work already had to handle.
+    """
+    out, i = [], 0
+    while i < len(lines):
+        ind, t = lines[i]
+        m = VERSE.match(t)
+        if (m and not m.group(2).strip() and i + 1 < len(lines)
+                and not VERSE.match(lines[i + 1][1])):
+            out.append((ind, t + ' ' + lines[i + 1][1]))
+            i += 2
+            continue
+        out.append((ind, t))
+        i += 1
+    return out
+
+
+def items_for(pages, p0, p1):
+    """('centre',txt,pg) | ('verse',n,txt,pg) | ('pada',txt,pg) | ('prose',txt,pg)"""
+    items = []
+    for pg in range(p0, p1 + 1):
+        lines = join_floating(page_lines(pages, pg))
+        if not lines:
+            continue
+        vind = [i for i, t in lines if VERSE.match(t) and i < 20]
+        if not vind:
+            # A page with no verse number on it is a colophon / uddāna page
+            # (p234, p391).  There is no body column to measure against, so the
+            # indent rule would call its uddāna lines body text — they are not.
+            for ind, t in lines:
+                items.append(('homage', t, pg) if HOMAGE.search(t) else ('centre', t, pg))
+            continue
+        body = min(vind)
+        centred = body + 12
+        prose_run = False
+        for ind, t in lines:
+            m = VERSE.match(t)
+            if HOMAGE.search(t):
+                items.append(('homage', t, pg)); prose_run = False
+            elif ind >= centred:
+                items.append(('centre', t, pg)); prose_run = False
+            elif m and HEADTXT.match(head_body(m.group(2))):
+                items.append(('centre', t, pg)); prose_run = False
+            elif m:
+                items.append(('verse', int(m.group(1)), m.group(2), pg)); prose_run = False
+            elif PROSEOPEN.match(t) or prose_run:
+                items.append(('prose', t, pg)); prose_run = True
+            else:
+                items.append(('pada', t, pg))
+    return items
+
+
+def split_centre(t):
+    """Two centred headings typeset on ONE line.
+
+    The Mañjiṭṭhakavagga head shares its line with the division head, so it
+    extracted as '1. Itthivimāna      4. Mañjiṭṭhakavagga'.  A run of 3+ spaces
+    between two heading-shaped halves is the separator.
+    """
+    # THE EDITION'S OWN TYPESETTING SLIPS, named one line at a time.  37Abhi09
+    # prints the pair "2. Paccayapaccanīya  2. Saṅkhyāvāra" 44 times, and on
+    # printed p289 exactly ONE of them is set with a SINGLE space.  The rule
+    # below wants three, so that line stayed whole and — starting with a
+    # number — was classified as a numbered UNIT, which is what put the volume
+    # one unit over.  Widening the rule to one space is not an option: it would
+    # split ordinary unit text at its first internal number.  So the line is
+    # NAMED, and `_is_double_head` sees the split through this same function.
+    lit = SPEC[VOL].get('split_literals') or {}
+    if lit:
+        # keyed on the line with its internal whitespace COLLAPSED, so a
+        # declaration does not have to reproduce the exact run of spaces
+        # `pdftotext -layout` happens to emit
+        _k = re.sub(r'\s+', ' ', t.strip())
+        if _k in lit:
+            return list(lit[_k])
+    # `\d+(?:-\d+)?\.` — the RANGE form the rest of this file already accepts
+    # (HEADNUM does).  38Abhi10 sets "27. Ganthaniyaduka    1-7. Vārasattaka",
+    # and the narrower pattern left that pair joined.
+    m = re.match(r'^(\d+(?:-\d+)?\.\s+\S[^\s].*?)\s{3,}'
+                 r'(\d+(?:-\d+)?\.\s+\S.*)$', t)
+    if m:
+        return [m.group(1).strip(), m.group(2).strip()]
+    # AN UNNUMBERED HEAD SHARING ITS LINE WITH A NUMBERED ONE.  36Abhi08
+    # printed p9 opens the Pucchāvāra with two such lines —
+    # "Pucchāvāra    1. Paccayānuloma" and "Ekamūlaka    1. Kusalapada" —
+    # a division and its first subdivision, exactly the shape above but with
+    # the outer name unnumbered, so the rule above could not see it and both
+    # pairs rendered as ONE heading with a run of spaces in the middle.  The
+    # volume's own front mātikā confirms the nesting (p2 sets "Pucchāvāra
+    # 1. Paccayānuloma" and centres "Ekamūlaka" beneath it).
+    # Gated per volume: the numbered form is what every shipped volume was
+    # measured against, and widening it for all of them is a change no
+    # regression here can justify.
+    if SPEC[VOL].get('split_unnumbered'):
+        m = re.match(r'^([A-ZĀĪŪṄÑṆṬḌḶ]\S*(?:\s+\S+){0,3}?)\s{3,}'
+                     r'(\d+(?:-\d+)?\.\s+\S.*)$', t)
+        if m:
+            return [m.group(1).strip(), m.group(2).strip()]
+    return [t]
+
+
+def head_kind(txt):
+    """sections `k`: 'book' (division / nipāta) > 'vagga' > 'sutta' (leaf)."""
+    core = re.sub(r'^\d+(?:-\d+)?\.\s*', '', txt).strip()
+    if DIVISION.search(core) or NIPATA.search(core):
+        return 'book'
+    if VAGGA.search(core):
+        return 'vagga'
+    return 'sutta'
+
+
+# ---------------------------------------------------------------------------
+# NIDDESA PATH.  Everything below is reached only from a book whose SPEC entry
+# carries mode='niddesa'; the verse path above is untouched, which is what the
+# 19Khu02 / 20Khu03 / 21Khu04 regression proves rather than assumes.
+# ---------------------------------------------------------------------------
+
+# A heading, tested BY CONTENT — indent alone cannot decide it here, because
+# the gāthā quoted inside the commentary is set at indents 8-23 and overlaps
+# the heading indents.  But content alone cannot decide it either: the prose
+# opener "Pucchāmi taṁ Bhagavā brūhi metanti pucchāti tisso pucchā" ends in
+# 'pucchā' and matches this pattern exactly.  So BOTH are required — content
+# AND a display indent — and each of the two false positives found in 25Khu08
+# is killed by the indent, each real heading by the content.
+NIDHEAD = re.compile(r'^[A-ZĀĪŪṄÑṆṬḌḶ][^,]*'
+                     r'(niddesa|niddeso|niddesā|vagga|vaggo|gāthā|pucchā|pāḷi)'
+                     r'\d*\s*$')
+# A colophon closes a section: "Kāmasuttaniddeso paṭhamo.", "Catuttho vaggo.",
+# "Vatthugāthā niṭṭhitā.", "Aṭṭhakavaggamhi soḷasa suttaniddesā samattā.",
+# "Mahāniddesapāḷi niṭṭhitā."  It is short, carries no comma, and names both a
+# SECTION and either that section's completion or its ordinal position.
+#
+# !!! BOTH HALVES ARE NEEDED, AND THE REPORT IS WHAT SHOWED IT.  The ordinal /
+# completion word alone pulled four gāthā PĀDAS out of the commentary and into
+# the colophon stream — 24Khu07 p227/228 "Diṭṭhī hi tesampi tathā samattā." and
+# p235 "Diṭṭhī hi sā tassa tathā samattā." — because 'samattā' is also ordinary
+# Pāḷi.  Every word of them would still have been present and contiguous in the
+# render, so the body harness would have reported 0 and the defect would have
+# shipped: content in the wrong role, the failure this project keeps meeting.
+# Requiring a section stem as well kills all four and loses no real colophon.
+# The `--show` listing stays, because this discriminator is a judgement about
+# the edition's wording and belongs under a human eye.
+NIDORD = (r'niṭṭhit|samatt|paṭham|dutiy|tatiy|catuttha|catutth|pañcam|chaṭṭh|'
+          r'sattam|aṭṭham|navam|dasam|ekādasam|dvādasam|terasam|cuddasam|'
+          r'pannarasam|soḷasam|sattarasam|aṭṭhārasam|ekūnavīsatim|vīsatim')
+NIDCOLO = re.compile(r'\b(?:' + NIDORD + r')', re.I)
+NIDSECT = re.compile(r'niddes|vagg|gāthā|pucchā|pāḷi', re.I)
+
+
+def nid_is_colo(t):
+    return (t.endswith('.') and ',' not in t and len(t.split()) <= 7
+            and bool(NIDCOLO.search(t)) and bool(NIDSECT.search(t)))
+
+
+def nid_items(pages, p0, p1, report):
+    """('head'|'colo'|'homage'|'popen'|'pcont'|'vline', txt, pg) and
+       ('lemma', n, txt, pg).
+
+    Geometry, measured over both volumes rather than assumed:
+      indent base+0..+2  prose CONTINUATION (the body column; 8,718 lines in
+                         24Khu07 and 5,672 in 25Khu08 sit here)
+      indent base+3..+7  prose PARAGRAPH OPENER, or the lemma's first line
+                         when it carries a number
+      indent base+8 and up
+                         display: the lemma's remaining pādas, gāthā quoted
+                         inside the commentary, headings and colophons
+    `base` is the page's own leftmost indent, so a page whose margin shifts is
+    read on its own terms.  A page with NO body column at all (25Khu08's last
+    page sets only the closing gāthā and "Catuttho vaggo.") has base > 2 and is
+    read as entirely display material — the same rule the verse path uses for a
+    page with no verse number on it.
+    """
+    items = []
+    for pg in range(p0, p1 + 1):
+        lines = join_floating(page_lines(pages, pg))
+        if not lines:
+            continue
+        base = min(i for i, _ in lines)
+        display_only = base > 2
+        for ind, t in lines:
+            if HOMAGE.search(t):
+                items.append(('homage', t, pg)); continue
+            core = head_body(re.sub(r'^\d+(?:-\d+)?\.\s*', '', t)).strip()
+            disp = display_only or ind >= base + 8
+            if disp and NIDHEAD.match(core):
+                items.append(('head', t, pg)); continue
+            if disp and nid_is_colo(t):
+                items.append(('colo', t, pg)); continue
+            if disp:
+                items.append(('vline', t, pg)); continue
+            m = VERSE.match(t)
+            if ind >= base + 3 and m:
+                items.append(('lemma', int(m.group(1)), m.group(2), pg)); continue
+            items.append(('popen' if ind >= base + 3 else 'pcont', t, pg))
+    return items
+
+
+def nid_build(pages, paras, title, p0, p1, o0, o1,
+              verse, sections, uddana, incipit, report):
+    """Map one niddesa book's printed stream onto its corpus paragraphs."""
+    items = nid_items(pages, p0, p1, report)
+    printed = [it for it in items if it[0] == 'lemma']
+    ords = list(range(o0, o1))
+    rec = {'book': title, 'mode': 'niddesa',
+           'printed_lemmas': len(printed), 'corpus_paras': len(ords),
+           'nmismatch': [], 'heads': [], 'colos': [],
+           'prose_paras': 0, 'gatha_blocks': 0}
+    report['books'].append(rec)
+    if len(printed) != len(ords):
+        # The whole method rests on this pairing, so a drift is fatal and named
+        # rather than absorbed into a partial build.
+        rec['FATAL'] = ('printed lemmas %d != corpus paragraphs %d'
+                        % (len(printed), len(ords)))
+        return
+    for k, it in enumerate(printed):
+        if it[1] != paras[ords[k]].get('n'):
+            rec['nmismatch'].append({'pos': k, 'printed': it[1], 'pg': it[3],
+                                     'ord': ords[k],
+                                     'corpus_n': paras[ords[k]].get('n')})
+
+    seq = iter(ords)
+    cur = None            # ord of the lemma being assembled
+    groups = []           # the lemma's own printed lines
+    after = []            # printed paragraphs / gāthā blocks of the commentary
+    pend_heads = []       # headings awaiting their lemma
+    pend_centre = []      # colophons awaiting the previous lemma
+    pend_before = []      # printed after a heading, before its lemma
+    open_prose = False    # a prose paragraph is currently accumulating
+    open_gatha = None     # a gāthā block is currently accumulating
+
+    def flush():
+        if cur is None:
+            return
+        e = {'groups': [g for g in groups if g]}
+        if pend_before_of.get(cur):
+            e['before'] = pend_before_of.pop(cur)
+        if after:
+            e['after'] = list(after)
+        verse[str(cur)] = e
+
+    pend_before_of = {}
+
+    def add_prose(t, new_para):
+        nonlocal open_prose, open_gatha
+        open_gatha = None
+        if new_para or not open_prose or not after or not isinstance(after[-1], str):
+            after.append(t)
+            rec['prose_paras'] += 1
+            open_prose = True
+            return
+        # LINE-END HYPHENATION, joined on the hyphen and nothing else — every
+        # wider rule also swallows ordinary wraps and fabricates words.
+        after[-1] = (after[-1][:-1] + t if after[-1].endswith('-')
+                     else after[-1] + ' ' + t)
+
+    for it in items:
+        kind = it[0]
+        if kind == 'homage':
+            incipit[str(o0)] = it[1].strip()
+            continue
+        # The title page's own stack — the collection name above the book name.
+        # Both are drawn by pipeline/build_booktitles.py into booktitle/<VOL>,
+        # so neither belongs in the body stream.  The book's own name matches
+        # NIDHEAD through the 'pāḷi' stem and so arrives as a heading, but
+        # "Khuddakanikāya" matches nothing and would otherwise fall through to
+        # the first lemma's `before` as a stray one-word paragraph.
+        if kind != 'lemma' and it[1].strip() in (title, 'Khuddakanikāya'):
+            continue
+        if kind == 'head':
+            t = it[1].strip()
+            pend_heads.append({'l': t, 'k': head_kind(t)})
+            rec['heads'].append({'pg': it[2], 'l': t})
+            open_prose = False; open_gatha = None
+            continue
+        if kind == 'colo':
+            pend_centre.append({'label': None, 'lines': [it[1].strip()],
+                                'app': []})
+            rec['colos'].append({'pg': it[2], 'l': it[1].strip()})
+            open_prose = False; open_gatha = None
+            continue
+        if kind == 'lemma':
+            flush()
+            prev = cur
+            cur = next(seq)
+            groups, after = [[it[2]]], []
+            open_prose = False; open_gatha = None
+            if pend_centre:
+                # A colophon closes the PREVIOUS section, so it renders after
+                # the previous paragraph — never above the new heading.  Anchor
+                # to that paragraph explicitly rather than to `cur - 1`: a
+                # hidden ordinal between two units would otherwise swallow the
+                # block, since a side-map anchored to a hidden paragraph never
+                # renders.  Neither Niddesa volume has one between units, so
+                # this changes nothing here; it is corrected because 26Khu09
+                # does and the two paths must not differ on it.
+                uddana.setdefault(str(prev if prev is not None else cur),
+                                  []).extend(pend_centre)
+                pend_centre = []
+            if pend_heads:
+                sections[str(cur)] = pend_heads
+                pend_heads = []
+            if pend_before:
+                pend_before_of[cur] = list(pend_before)
+                pend_before = []
+            continue
+        # popen / pcont / vline
+        if cur is None or pend_heads:
+            # printed after a heading and before its lemma: the section's own
+            # opener ("Atha Guhaṭṭhakasuttaniddesaṁ vakkhati–"), which belongs
+            # to the heading's paragraph and not to the previous one
+            pend_before.append(it[1])
+            continue
+        if kind == 'vline':
+            if not after and not open_prose:
+                groups[0].append(it[1])       # the lemma's remaining pādas
+                continue
+            if open_gatha is not None:
+                _add_line(open_gatha['gatha'], it[1])
+            else:
+                open_gatha = {'gatha': [it[1]]}
+                after.append(open_gatha)
+                rec['gatha_blocks'] += 1
+            open_prose = False
+            continue
+        add_prose(it[1], kind == 'popen')
+
+    flush()
+    if pend_centre:
+        uddana.setdefault(str(cur), []).extend(pend_centre)
+    if pend_heads:
+        report['unmapped'].append({'book': title, 'trailing_heads': pend_heads})
+    if pend_before:
+        report['unmapped'].append({'book': title, 'trailing_before': pend_before})
+
+
+# ---------------------------------------------------------------------------
+# KATHĀ PATH — prose whose numbered unit has no verse lemma, and whose body
+# column is not always the page's leftmost indent.  Reached only from a book
+# with mode='katha'; the verse and niddesa paths above are untouched.
+# ---------------------------------------------------------------------------
+
+# A colophon here names a section and its completion or position, as in the
+# niddesa path, but the sections are kathās, vāras and bhāṇavāras rather than
+# suttaniddesas — so the section-word list differs and is kept separate rather
+# than widened, which would loosen the niddesa test as a side effect.
+KATSECT = re.compile(r'niddes|vagg|kathā|vāra|vāro|gāthā|pāḷi|mātikā|chakka|'
+                     r'catukka|bhāṇavār|bhūmi|paṭṭhān|pakaraṇ|vibhaṅg|sampāt',
+                     re.I)
+
+
+def katsect():
+    """KATSECT plus this volume's own section words, if it declares any.
+
+    Kept per-volume: 28Khu11's colophons close a `pañha`, and adding that to
+    the shared pattern would move 26Khu09 and 27Khu10 as a side effect.  The
+    9-volume regression is what proves it does not.
+    """
+    extra = SPEC[VOL].get('colo_sect')
+    return re.compile(KATSECT.pattern + '|' + extra, re.I) if extra else KATSECT
+
+
+def kat_is_colo(t, ind=None, body=0):
+    """Is this display line a section-closing colophon?
+
+    Two printed forms, and they need different evidence.
+
+    (1) It names a section AND says either that it is finished or where it
+        stands ("Sutamayañāṇaniddeso paṭhamo.", "Mātikā niṭṭhitā.").  The words
+        are decisive on their own, so no indent is required — 26Khu09 sets
+        these at indent 13.
+
+    (2) It says NEITHER.  The Netti closes its vāras with the bare name in the
+        nominative — "Saṅgahavāro.", "Uddesavāro.", "Niddesavāro." — and its
+        hārasampātas with "Niyutto …".  `kat_is_head` matches those perfectly,
+        so without this they would OPEN their sections instead of closing them;
+        what separates them from the headings they echo ("1. Saṅgahavāra") is
+        that A HEADING IS A TITLE AND CARRIES NO TERMINAL STOP.  But that test
+        alone is far too weak, because a section word can fall INSIDE an
+        ordinary word: `vāra` inside "nivāraṇaṁ", `bhūmi` inside "Apāyabhūmiṁ",
+        `gāthā` inside "uddānagāthā".  It took six quoted verse pādas out of
+        27Khu10's body — "Sotānaṁ kiṁ nivāraṇaṁ.", "Apāyabhūmiṁ asubhena
+        kammunā.", "Imā dasa tesaṁ uddānagāthā." and three more.  So this form
+        must also be CENTRED: measured, the real ones sit at indent 22-35 and
+        every false one at 9-17.  Form (1) is deliberately left un-guarded, or
+        26Khu09's colophons at 13 would all be lost.
+    """
+    if SPEC[VOL].get('heads_by_form'):
+        # the other half of the same rule: a display line WITH a terminal stop
+        return (t.endswith('.') and ',' not in t and len(t.split()) <= 6
+                and ind is not None and ind >= body + 8)
+    if t in SPEC[VOL].get('colofix', ()):
+        return True
+    # A printed FORM this book uses that names no section and carries no
+    # ordinal: "Imasmiṁ vagge soḷasa pañhā." closes fifteen of 28Khu11's
+    # twenty-two vaggas with the count of its pañhas.  Thirteen are set at
+    # indent 20+ and the centred test already reached them; two (p78, p327)
+    # sit at 18 and were falling through to the body as ordinary prose —
+    # present, contiguous, and in the wrong role, which the body gate reports
+    # as 0.  Declared per volume as a pattern rather than as fifteen literals,
+    # since only the numeral differs.
+    pat = SPEC[VOL].get('colopat')
+    if pat and re.match(pat, t):
+        return True
+    if not (t.endswith('.') and ',' not in t and bool(katsect().search(t))):
+        return False
+    if len(t.split()) <= 7 and bool(NIDCOLO.search(t)):
+        return True
+    if len(t.split()) > 4:
+        return False
+    # (1b) The ordinal by its ENDING rather than by a word list.  NIDCOLO names
+    # the ordinals up to twenty, and 26Khu09 runs to seventy-three: its
+    # "Sallekhaṭṭhañāṇaniddeso sattatiṁsatimo.", "Āsayānusayañāṇaniddeso
+    # navasaṭṭhimo." and thirty more were not reached by any of those words.
+    # Every Pāḷi ordinal above the fourth ends in -ma, so the nominative ends
+    # -mo / -mā / -maṁ; none of the six false positives this test had to reject
+    # does ("nivāraṇaṁ", "kammunā", "padāni", "uddānagāthā").
+    if re.search(r'm[oāa]ṁ?\.$', t):
+        return True
+    return ind is not None and ind >= body + 20
+
+
+def kat_is_head(core, printed=True):
+    """A heading, tested more loosely than HEADTXT — and here is why.
+
+    HEADTXT is `^[A-Z…][^,]*(stem)…$`: the capital is consumed first, so the
+    stem has to be a PROPER suffix of the line.  Every niddesa heading is
+    "<Name>suttaniddesa" and satisfies that, but this volume sets headings that
+    ARE the bare stem — "1. Mātikā" and "2. Niddesa" head the two halves of the
+    Suññakathā — and for those the stem would have to match "ātikā" / "iddesa".
+    Both fell through to the numbered-unit test and were read as body text.
+    So: start with a capital, carry no comma, and END at the stem, matched
+    case-insensitively.  Kept local to this path rather than widened in
+    HEADTXT, which five shipped volumes depend on.
+    """
+    if ',' in core or not re.match(r'^[A-ZĀĪŪṄÑṆṬḌḶ]', core):
+        return False
+    # BY FORM, not by vocabulary — see SPEC['29Abhi01'].  A volume that sets
+    # every display line as a short comma-free title needs no stem list, and
+    # enumerating one would silently drop the headings the list missed.
+    # `printed=False` when the caller is testing a CORPUS PARAGRAPH rather than
+    # a centred printed line.  The form test rests entirely on the line being
+    # centred — without that evidence it takes ordinary short paragraphs: it
+    # claimed 36 of 29Abhi01's Dukamātikā paragraphs ("101. Vijjābhāgino
+    # dhammā. (1303) Avijjābhāgino dhammā. (1304)") as leaked headings, which
+    # would have hidden them from the render and broken the 1:1 pairing.
+    if SPEC[VOL].get('heads_by_form') and printed:
+        return len(core.split()) <= 6 and not core.endswith('.')
+    return bool(re.search(r'(?:' + SPEC[VOL]['stems'] + r')\d*\s*'
+                          r'(\([\d\s.–-]+\))?$', core, re.I))
+
+
+def kat_book_body(pages, p0, p1):
+    """The BOOK's body column, measured once over the pages that establish one.
+
+    Measuring it per page is not safe.  A page can be almost entirely quoted
+    gāthā — 27Khu10 p133 sets one numbered unit and eleven verse lines and has
+    no line at the left margin at all — and the per-page measurement then
+    returns the VERSE indent as the body column, after which the page's own
+    numbered unit sits to the LEFT of it and is read as prose continuation.
+    That lost exactly one of the Netti's 151 units, and the pairing check is
+    what refused to build on it.
+    """
+    from collections import Counter
+    c = Counter()
+    for pg in range(p0, p1 + 1):
+        lines = page_lines(pages, pg)
+        oth = [i for i, t in lines if i < 20 and not VERSE.match(t)]
+        if len(oth) < 6:
+            continue                      # too little evidence to vote
+        seen, twice = set(), set()
+        for i in oth:
+            (twice if i in seen else seen).add(i)
+        if twice:
+            c[min(twice)] += 1
+    return c.most_common(1)[0][0] if c else 0
+
+
+def _kat_cols(lines, body0):
+    """(number column, body column, is-hanging-list) for one page.
+
+    The book's column is used unless the page is a HANGING LIST, where the
+    number is set to the LEFT of its own continuation (26Khu09's mātikās).  A
+    page that merely happens to carry no left-margin line — an all-verse page —
+    is NOT one: what tells them apart is that a list has MANY numbered lines
+    and an all-verse page has one or two.
+    """
+    num = sorted(i for i, t in lines if i < 20 and VERSE.match(t))
+    oth = [i for i, t in lines if i < 20 and not VERSE.match(t)]
+    seen, twice = set(), set()
+    for i in oth:
+        (twice if i in seen else seen).add(i)
+    pbody = min(twice) if twice else (min(oth) if oth else (num[0] if num else 0))
+    numc = num[0] if num else None
+    hanging = numc is not None and numc < pbody and len(num) >= 3
+    body = pbody if hanging else (body0 if pbody > body0 + 2 else pbody)
+    return numc, body, hanging
+
+
+def it_text(t):
+    """A numbered line's text, without its number."""
+    m = VERSE.match(t)
+    return m.group(2).strip() if m else t.strip()
+
+
+def _is_double_head(t):
+    parts = split_centre(t.strip())
+    return len(parts) > 1 and all(
+        kat_is_head(head_body(re.sub(r'^\d+(?:-\d+)?\.\s*', '', x)).strip())
+        for x in parts)
+
+
+def _starts_double_head(t):
+    """A corpus paragraph that BEGINS with two centred headings and RUNS ON.
+
+    The extraction sometimes captures a heading pair together with the material
+    printed under it as ONE paragraph — 38Abhi10 ord640
+    ("1. Paccayānuloma  1. Vibhaṅgavāra (Pañhāvāre hetupaccayepi…)") and
+    ord1170, and 40Abhi12 ord190.  A census over the whole Paṭṭhāna finds
+    exactly those three and none elsewhere in the Abhidhamma.  Left visible
+    each takes a unit's ordinal AND carries the heading's number, so the
+    pairing desyncs from there to the end of the book.
+
+    Hiding is safe here in a way it is not for an ordinary paragraph: the kathā
+    path draws both the headings and the prose from the PRINTED stream, so
+    nothing leaves the body gate's sight — which is what that gate then proves.
+
+    `kat_is_head(..., printed=True)` is right for the two halves even though
+    the caller is a corpus paragraph: the 3+ space run BETWEEN them is itself
+    the centring evidence that the `printed` flag normally stands in for.
+    """
+    m = re.match(r'^(\d+(?:-\d+)?\.\s+\S+)\s{3,}(\d+(?:-\d+)?\.\s+\S+)\s+\S', t)
+    if not m:
+        return False
+    return all(kat_is_head(head_body(re.sub(r'^\d+(?:-\d+)?\.\s*', '', x)).strip())
+               for x in (m.group(1), m.group(2)))
+
+
+def kat_items(pages, p0, p1):
+    """('homage'|'head'|'colo'|'udd'|'vline'|'popen'|'pcont', txt, pg)
+       and ('unit', n, txt, pg)."""
+    items = []
+    body0 = kat_book_body(pages, p0, p1)
+    for pg in range(p0, p1 + 1):
+        lines = join_floating(page_lines(pages, pg))
+        if not lines:
+            continue
+        numcol, body, hanging = _kat_cols(lines, body0)
+        # A page with no numbered line and nothing at the body column is all
+        # display — the closing Uddānagāthā page is set that way.
+        disp_only = numcol is None and not [i for i, t in lines if i <= body + 2]
+        kinds = []
+        for ind, t in lines:
+            m = VERSE.match(t)
+            disp = disp_only or ind >= body + 8
+            core = head_body(re.sub(r'^\d+(?:-\d+)?\.\s*', '', t)).strip()
+            if HOMAGE.search(t):
+                kinds.append('homage')
+            elif disp and UDDLBL.match(t):
+                kinds.append('udd')
+            # COLOPHON BEFORE HEADING: the Netti closes a vāra with the bare
+            # name ("Saṅgahavāro.") which the heading test also matches, and
+            # only the terminal stop tells them apart.
+            elif disp and kat_is_colo(t, ind, body):
+                kinds.append('colo')
+            # A NUMBERED line is decided by the numbered rule below, not by the
+            # generic form test — that test knows nothing about the number and
+            # took 36Abhi08's unit 388 as a heading.
+            elif (disp and not (m and SPEC[VOL].get('heads_by_form'))
+                  and (kat_is_head(core)
+                       or t.strip() in SPEC[VOL].get('headfix', ()))):
+                kinds.append('head')
+            # TWO HEADINGS ON ONE LINE, SET IN THE BODY COLUMN.  28Khu11 p245
+            # sets "1. Buddhavagga        1. Dvinnaṁ Buddhānaṁ
+            # anuppajjamānapañha" at indent 5, not centred like the same shape
+            # on p38 and p117 — so the display test never saw it and it was
+            # read as the Anumānapañha's first NUMBERED UNIT.  That is worse
+            # than a wrong role: it took an ordinal, so every unit after it
+            # paired with the wrong paragraph, and the 1:1 count check is what
+            # refused to build on it.  The signal is the edition's own
+            # typography and does not depend on indent: a run of 3+ spaces
+            # separating two halves that are BOTH heading-shaped.  Requiring
+            # both halves is what keeps ordinary prose out.
+            elif m and _is_double_head(t):
+                kinds.append('head')
+            # A NUMBERED LINE, under `heads_by_form`.  The form test alone is
+            # ambiguous once a line carries a number: 36Abhi08 p142 sets the
+            # UNIT "388. Navipākapaccayā hetuyā tīṇi. (Saṁkhittaṁ.
+            # Paripuṇṇaṁ.) Avigate" whose core is six words with no terminal
+            # stop — indistinguishable by form from the heading "2.
+            # Paccayaniddesa".  Measured over the volume the two are entirely
+            # separate on three axes at once: its 69 numbered headings are ALL
+            # one or two words, carry NO internal period, and sit at indent
+            # 22-30, while every numbered unit is longer, or lower, or both.
+            # So a numbered line is a heading only when it is centred AND
+            # short AND unpunctuated within.
+            elif (m and SPEC[VOL].get('heads_by_form')
+                  and ind >= body + 14 and len(core.split()) <= 2
+                  and '.' not in core[:-1]):
+                kinds.append('head')
+            # …and otherwise it is a UNIT WHEREVER IT SITS.  The `body + 3`
+            # floor exists to stop a mid-paragraph number being read as one,
+            # but this edition sets a numbered unit flush at the left margin
+            # when the page is mostly display — 36Abhi08 p308 does it twice
+            # (units 652 and 653) — and those two were being read as prose
+            # continuation, which broke the 1:1 pairing.  Safe here because the
+            # heading cases above are already taken and `VERSE` anchors the
+            # number at the start of a line, which a wrapped continuation never
+            # does.  Measured: exactly two such units, no false positives.
+            elif m and (hanging or ind >= body + 3
+                        or SPEC[VOL].get('heads_by_form')):
+                kinds.append('unit')
+            elif disp_only or ind >= body + 3:
+                kinds.append('cand')       # verse or prose opener — decided below
+            else:
+                kinds.append('pcont')
+        # A NUMBERED UNIT THAT IS A GĀTHĀ.  Decided by the printed geometry: the
+        # line after the number is set at a STRICTLY GREATER indent, where a
+        # prose unit's continuation returns to the body column.  Its pādas are
+        # the following lines sharing that indent.  Run before the verse-run
+        # pass below, so those pādas are not first taken for prose openers.
+        umv = SPEC[VOL].get('units_may_be_verse')
+        if umv:
+            for i, k in enumerate(kinds):
+                if k != 'unit' or i + 1 >= len(kinds):
+                    continue
+                if kinds[i + 1] != 'cand' or lines[i + 1][0] <= lines[i][0]:
+                    continue
+                j, ind0 = i + 1, lines[i + 1][0]
+                while j < len(kinds) and kinds[j] == 'cand' and lines[j][0] == ind0:
+                    j += 1
+                # 'hanging' — TWO THINGS THE PAGE ITSELF SAYS, and both are
+                # needed.  28Khu11 has ELEVEN units followed by a line at a
+                # greater indent and only ONE of them is a gāthā; the other ten
+                # are prose that quotes one.
+                #  (a) THE CITATION DASH.  The edition ends a prose lead-in
+                #      with "–" where the quotation follows ("4. Bhante
+                #      Nāgasena bhāsitampetaṁ Bhagavatā–").  A pāda never ends
+                #      that way, so a unit whose own line ends in the dash is
+                #      prose whatever follows it.  This alone decides all
+                #      eleven correctly; it is the decisive test.
+                #  (b) A DISPLAY QUOTATION'S FIRST LINE HANGS LEFT of its own
+                #      body — the marker and the opening quote are set to the
+                #      left and the remaining pādas further right — so a run
+                #      followed by another candidate run at a STILL GREATER
+                #      indent opens a block of its own and is not a pāda of the
+                #      numbered unit.
+                # 27Khu10 keeps the unconditional test, so its output does not
+                # move here — see HANDOFF.md for the defect that leaves in it.
+                if umv == 'hanging':
+                    if re.search(r'[–—:]$', it_text(lines[i][1])):
+                        continue
+                    if (j < len(kinds) and kinds[j] == 'cand'
+                            and lines[j][0] > ind0):
+                        continue
+                kinds[i] = 'uverse'
+                for j2 in range(i + 1, j):
+                    kinds[j2] = 'upada'
+        # VERSE RUNS.  A prose opener is followed by continuation at the body
+        # column; a verse line is followed by another line at ITS OWN indent.
+        # So a maximal run of >=2 consecutive candidates sharing one indent is
+        # verse, and a run of one is a prose paragraph opener.
+        i = 0
+        while i < len(kinds):
+            if kinds[i] != 'cand':
+                i += 1
+                continue
+            j = i + 1
+            while j < len(kinds) and kinds[j] == 'cand' and lines[j][0] == lines[i][0]:
+                j += 1
+            run = (j - i) >= 2 or disp_only
+            if SPEC[VOL].get('no_verse'):
+                run = False        # measured: this book prints no gāthā
+            # A DISPLAY BLOCK IS NOT ALWAYS VERSE.  This edition also indents
+            # long PROSE quotations from the suttas, and they have the same
+            # geometry as a gāthā — a run of lines sharing one indent above the
+            # body column.  28Khu11 sets nine of them (p153, p154, p226, p374,
+            # p382, p400, p403 and two more), and every one was being emitted
+            # as a {"gatha": …} block, i.e. rendered as italic verse with the
+            # printed line breaks kept.  Present, contiguous, unique: 0/0/0/0
+            # from the body gate.
+            # What separates them is PĀDA PUNCTUATION, not indent: a gāthā
+            # breaks at the end of each pāda, so every line but the last ends
+            # in a comma or a full stop, while a prose quotation breaks
+            # wherever the measure runs out and its lines end mid-clause.
+            # Gated per volume: 26Khu09 and 27Khu10 print the same shape and
+            # are almost certainly affected too, but fixing them moves two
+            # shipped volumes and belongs with their own re-gating (HANDOFF).
+            if run and SPEC[VOL].get('display_prose'):
+                # A run of several: every line but the LAST must be a pāda.
+                # A run of one — only possible on a page with no body column
+                # at all, which is read as entirely display — must itself be a
+                # pāda: 28Khu11 p37 sets the lead-in "Tenāhu–" alone above the
+                # gāthā it introduces, on a page with nothing at the margin, so
+                # it was being drawn as the block's first verse line.
+                tail = j - 1 if (j - i) >= 2 else j
+                if not all(re.search(r'[,.]$', lines[k][1])
+                           for k in range(i, tail)):
+                    kinds[i] = 'popen'
+                    for k in range(i + 1, j):
+                        kinds[k] = 'pcont'
+                    i = j
+                    continue
+            for k in range(i, j):
+                kinds[k] = 'vline' if run else 'popen'
+            i = j
+        for (ind, t), k in zip(lines, kinds):
+            if k in ('unit', 'uverse'):
+                m = VERSE.match(t)
+                items.append((k, int(m.group(1)), m.group(2), pg))
+            else:
+                items.append((k, t, pg))
+    return items
+
+
+def kat_build(pages, paras, title, p0, p1, o0, o1,
+              verse, sections, uddana, hide, incipit, report):
+    """Map one kathā book's printed stream onto its corpus paragraphs."""
+    items = kat_items(pages, p0, p1)
+    # THE TITLE PAGE'S OWN STACK, taken from `booktitle/<VOL>.json` rather than
+    # from a constant.  It was `(title, 'Khuddakanikāya')`, which is the whole
+    # Khuddaka and nothing else; 29Abhi01's page sets "Abhidhammapiṭaka" above
+    # its book name, and that line was arriving as a heading of the body.  The
+    # booktitle map already holds the printed stack in order for all 40 canon
+    # volumes (build_booktitles.py), so it is the right source.
+    titlestack = {title, 'Khuddakanikāya'}
+    _bt = os.path.join(R, 'booktitle', VOL + '.json')
+    if os.path.exists(_bt):
+        for _v in json.load(open(_bt, encoding='utf-8')).values():
+            for _l in ([_v] if isinstance(_v, str) else _v):
+                titlestack.add(_l.strip())
+    printed = [it for it in items if it[0] in ('unit', 'uverse')]
+    # LEAKED HEADINGS, hidden BEFORE the pairing, exactly as in the verse path.
+    # 26Khu09 ord351 is the printed line "7. Dhammacakkakathā   1. Saccavāra" —
+    # two centred headings typeset on one line — captured whole as a corpus
+    # paragraph and carrying the KATHĀ's number as its `n`.  Left in, it takes
+    # up an ordinal and every unit after it pairs with the wrong paragraph.
+    # The headings themselves are not lost: the PDF stream supplies them.
+    # LEAKED HEADINGS RECOGNISED AGAINST THE PRINTED STREAM ITSELF.
+    #
+    # The stem test asks whether a corpus paragraph LOOKS like a heading.  That
+    # cannot see 39Abhi11's, because the extraction joined TWO CONSECUTIVE
+    # centred lines into one paragraph with a single space —
+    #
+    #     1-7. Paṭiccādivāra              (printed on its own line)
+    #     Paccayacatukka-hetu             (printed on the next)
+    #     -> corpus "1-7. Paṭiccādivāra Paccayacatukka-hetu"
+    #
+    # — and the result ends in "hetu", which is no heading stem, so 88 of them
+    # stayed visible and took 88 units' ordinals.  There is no need to GUESS:
+    # this book's own printed heading stream is already in hand, so a paragraph
+    # that reproduces a run of consecutive printed headings IS those headings.
+    _hs = [split_centre(it[1].strip()) for it in items if it[0] == 'head']
+    _hs = [x for parts in _hs for x in parts]
+    _runs = set()
+    for _a in range(len(_hs)):
+        _acc = ''
+        for _b in range(_a, min(_a + 3, len(_hs))):
+            _acc = (_acc + ' ' + _hs[_b]).strip()
+            _runs.add(re.sub(r'\s+', ' ', _acc))
+
+    for o in range(o0, o1):
+        raw = (paras[o].get('text') or '').strip()
+        t = head_body(re.sub(r'^\d+(?:-\d+)?\.\s*', '', raw))
+        _norm = re.sub(r'\s+', ' ', raw)
+        # FIVE WAYS TO BE A LEAKED HEADING, not one: the stem test; a DOUBLE
+        # heading (neither half is a suffix of the whole line); a double
+        # heading that RUNS ON into the material printed under it; a run of
+        # consecutive printed headings the extraction joined; and the
+        # edition's own misspellings, named in `headfix`.
+        if (kat_is_head(t, printed=False) or _is_double_head(raw)
+                or _starts_double_head(raw) or _norm in _runs
+                or raw in SPEC[VOL].get('headfix', ())):
+            hide[str(o)] = 1
+            report['leaked'].append({'ord': o, 'text': raw})
+    ords = [o for o in range(o0, o1) if str(o) not in hide]
+    rec = {'book': title, 'mode': 'katha',
+           'printed_units': len(printed), 'corpus_paras': len(ords),
+           'nmismatch': [], 'heads': [], 'colos': [], 'gathas': [],
+           'prose_paras': 0, 'splices': []}
+    report['books'].append(rec)
+    # PRINTED UNITS THE CORPUS DOES NOT HOLD AT ALL.  38Abhi10's printed unit 1
+    # is simply ABSENT — the corpus opens at unit 2 and no paragraph anywhere
+    # holds its words.  site/*.json is not edited: the unit is dropped from the
+    # pairing and RECORDED, and it is not lost from the page either, because
+    # the kathā path draws the body from the PRINTED stream and emits it into
+    # the FOLLOWING unit's `before`, above that paragraph, with its number.
+    #
+    # THE DECLARATION VERIFIES ITSELF, and its check is the MIRROR of a
+    # splice's: a splice requires the text to be PRESENT in the declared host,
+    # an absence requires it to be present NOWHERE.  Both must also match
+    # exactly one printed unit at that (number, page).
+    missing_lead = {}
+    for mp in SPEC[VOL].get('kat_missing', ()):
+        hit = [k for k, it in enumerate(printed)
+               if it[1] == mp['n'] and it[3] == mp['pg']]
+        cnt = sum(1 for o in range(o0, o1)
+                  if mp['absent'] in (paras[o].get('text') or ''))
+        if len(hit) != 1 or cnt:
+            rec['FATAL'] = (
+                'declared corpus ABSENCE (printed unit %s, p%s) does not hold: '
+                'the printed stream offers %d unit(s) at that number and page, '
+                'and the corpus holds %d paragraph(s) containing its opening '
+                'words (expected 1 and 0)' % (mp['n'], mp['pg'], len(hit), cnt))
+            return
+        it = printed.pop(hit[0])
+        missing_lead[(it[1], it[3])] = it[2]
+        rec.setdefault('absent', []).append(
+            {'n': it[1], 'pg': it[3], 'text': it[2][:60]})
+    # KNOWN CORPUS SPLICES — declared per volume, CHECKED AGAINST THE TEXT.
+    # 36Abhi08 sets unit 41 as "41.Nevavipāka…" with NO SPACE after the number,
+    # so the extraction saw no boundary and its whole text arrived inside the
+    # paragraph carrying n=40.  Unit numbers repeat across vāras, so the PAGE
+    # is part of the key.
+    splice_lead = {}
+    for sp in SPEC[VOL].get('kat_splices', ()):
+        if not (o0 <= sp['ord'] < o1):
+            continue
+        host = paras[sp['ord']]
+        htxt = (host.get('text') or '')
+        hit = [k for k, it in enumerate(printed)
+               if it[1] == sp['n'] and it[3] == sp['pg']]
+        if host.get('n') != sp['into'] or sp['mark'] not in htxt or len(hit) != 1:
+            rec['FATAL'] = (
+                'declared corpus splice (printed unit %s, p%s, inside ord%d) '
+                'does not hold: host n=%s (declared %s), marker %s, printed '
+                'stream offers %d unit(s) at that number and page'
+                % (sp['n'], sp['pg'], sp['ord'], host.get('n'), sp['into'],
+                   'present' if sp['mark'] in htxt else 'ABSENT', len(hit)))
+            return
+        it = printed.pop(hit[0])
+        splice_lead[(it[1], it[3])] = sp['mark']
+        rec['splices'].append({'n': it[1], 'pg': it[3], 'ord': sp['ord'],
+                               'into': sp['into'], 'text': it[2][:60]})
+    rec['printed_units'] = len(printed)
+    if len(printed) != len(ords):
+        rec['FATAL'] = ('printed numbered units %d != corpus paragraphs %d'
+                        % (len(printed), len(ords)))
+        return
+    for k, it in enumerate(printed):
+        if it[1] != paras[ords[k]].get('n'):
+            rec['nmismatch'].append({'pos': k, 'printed': it[1], 'pg': it[3],
+                                     'ord': ords[k],
+                                     'corpus_n': paras[ords[k]].get('n')})
+
+    seq = iter(ords)
+    units_done = 0
+    last = False                # the last numbered unit has been consumed
+    tail_open = False           # ...and a HEADING has been printed after it
+    tail_head = None            # that heading, awaiting the text it heads
+    tail_hk = None              # ...and its weight, so it is not drawn as a
+                                #    vatthu title under the sections it heads
+    cur = None
+    after = []
+    groups = []                 # a unit that is itself a gāthā
+    pend_heads, pend_centre, pend_before = [], [], []
+    pend_seq = []               # the same material, in PRINTED order
+    pend_open = []              # printed BEFORE the book's first unit
+    opened = False
+    open_prose = False
+    open_gatha = None
+    before_of = {}
+
+    def flush():
+        if cur is None:
+            return
+        e = {'groups': [g for g in groups if g]}
+        if before_of.get(cur):
+            e['before'] = before_of.pop(cur)
+        if after:
+            e['after'] = list(after)
+        verse[str(cur)] = e
+
+    def tail_add(kind, txt, pg):
+        """Append one printed item to the uddāna stream of the current unit.
+
+        Used for material the page sets AFTER a heading that has no numbered
+        unit, and for everything after the book's last unit.  Prose uses the
+        `plain` block shape (which already carries a `head`), verse the centred
+        block — the two shapes `uddanaHTML` and `render_parts` already know.
+        """
+        nonlocal tail_head, tail_hk
+        if kind == 'head':
+            if tail_head is not None:
+                pend_centre.append({'plain': True, 'head': tail_head,
+                                    'hk': tail_hk, 'lines': [], 'app': []})
+            tail_head = txt
+            tail_hk = head_kind(txt)
+            rec['heads'].append({'pg': pg, 'l': txt, 'tail': True})
+            return
+        if kind == 'vline':
+            if tail_head is not None:
+                pend_centre.append({'plain': True, 'head': tail_head,
+                                    'hk': tail_hk, 'lines': [], 'app': []})
+                tail_head = None
+            if (pend_centre and not pend_centre[-1].get('plain')
+                    and pend_centre[-1].get('label') is None
+                    and pend_centre[-1].get('_verse')):
+                _add_line(pend_centre[-1]['lines'], txt)
+            else:
+                pend_centre.append({'label': None, 'lines': [txt], 'app': [],
+                                    '_verse': True})
+                rec['gathas'].append({'pg': pg, 'l': txt, 'tail': True})
+            return
+        if (kind != 'popen' and pend_centre and pend_centre[-1].get('plain')
+                and pend_centre[-1]['lines'] and tail_head is None):
+            b = pend_centre[-1]['lines']
+            b[-1] = (b[-1][:-1] + txt if b[-1].endswith('-')
+                     else b[-1] + ' ' + txt)
+        else:
+            pend_centre.append({'plain': True, 'head': tail_head,
+                                'hk': tail_hk, 'lines': [txt], 'app': []})
+            rec['prose_paras'] += 1
+            tail_head = None
+
+    def add_prose(t, new_para, num=None):
+        nonlocal open_prose, open_gatha
+        open_gatha = None
+        if num is not None:
+            # A NUMBERED PROSE PARAGRAPH INSIDE ANOTHER UNIT'S BLOCK — a
+            # printed unit the corpus spliced or dropped.  It has no ordinal of
+            # its own, so it cannot carry the number the reader hangs beside a
+            # paragraph, and `fmtText` STRIPS a leading "NN." because that is
+            # how every other paragraph number reaches it.  This shape carries
+            # the number explicitly and `proseOne` draws it as a .pn.
+            after.append({'n': num, 't': t})
+            rec['prose_paras'] += 1
+            open_prose = True
+            return
+        tail = after[-1] if after else None
+        prev = (tail if isinstance(tail, str)
+                else tail.get('t') if isinstance(tail, dict) and 't' in tail
+                else None)
+        # A LINE-END HYPHEN IS NEVER A PARAGRAPH BOUNDARY.  39Abhi11 p76 sets a
+        # parenthetical whose every line is INDENTED, so each read as a new
+        # paragraph — including "…dassanenapahātabbahetukaduka-" and its
+        # continuation "sadisā." — and the compound came out as two words in
+        # two blocks.  The hyphen settles it: it is a word split across lines,
+        # the same reason the body gate rejoins them before comparing.
+        if prev is not None and prev.endswith('-'):
+            new_para = False
+        if new_para or not open_prose or prev is None:
+            after.append(t)
+            rec['prose_paras'] += 1
+            open_prose = True
+            return
+        joined = prev[:-1] + t if prev.endswith('-') else prev + ' ' + t
+        if isinstance(tail, str):
+            after[-1] = joined
+        else:
+            tail['t'] = joined
+
+    for it in items:
+        kind = it[0]
+        if kind == 'homage':
+            # ANCHOR THE HOMAGE TO THE FIRST VISIBLE ORDINAL, NOT TO o0.
+            # 37Abhi09's ord0 and ord1 are leaked headings and therefore HIDDEN,
+            # and a side-map anchored to a hidden paragraph is skipped by both
+            # block() and render_parts — so the volume's own homage silently
+            # never rendered.  Same shape as the uddāna anchoring bug that lost
+            # "Paṭisambhidākathā niṭṭhitā." on 26Khu09.
+            incipit[str(next((_o for _o in range(o0, o1)
+                              if str(_o) not in hide), o0))] = it[1].strip()
+            continue
+        if kind not in ('unit', 'uverse') and it[1].strip() in titlestack:
+            continue                       # the title page's own stack
+        # A HEADING WITH NO NUMBERED UNIT OF ITS OWN.  `pend_heads` /
+        # `pend_before` exist for the ordinary case — a heading, a line or two
+        # of intro prose, then that section's first unit — and they attach
+        # everything to the NEXT unit.  28Khu11 breaks that twice: the
+        # Dhutaṅgapañha (printed 330-347) and the Opammakathā mātikā
+        # (printed 348-353) are each headed, run for many pages, and carry no
+        # numbered unit at all, so 489 printed lines were piling up in ord194's
+        # `before` — rendered as 489 one-line paragraphs BELOW a stack of five
+        # headings that the page sets in two groups far apart.
+        # The tell that a heading has no unit is that a COLOPHON arrives while
+        # it is still pending: a colophon closes a section, so the section is
+        # over and no unit came.  At that point the heading and its text belong
+        # to the PREVIOUS unit's uddāna stream, which the reader draws after
+        # that paragraph — i.e. exactly where the page sets them — and which
+        # `render_parts` models in full, so nothing leaves the body gate's
+        # sight.  A later heading closes the stream again, because it may still
+        # be the heading of the next unit.
+        if (kind in ('colo', 'udd') and pend_heads and not tail_open
+                and SPEC[VOL].get('orphan_sections')):
+            # Replayed from `pend_seq`, which is the ONLY record of the printed
+            # ORDER between the two: 28Khu11 p115 sets "Ācariyaguṇa", its
+            # prose, then "Upāsakaguṇa" and its prose, and replaying
+            # pend_heads then pend_before put both headings above both
+            # paragraphs — so the first heading lost its own text to the
+            # second.
+            for k2, x in pend_seq:
+                tail_add(k2, x, it[2])
+            pend_heads, pend_before, pend_seq = [], [], []
+            tail_open = True
+        if tail_open and kind == 'head' and not last:
+            tail_open = False
+        if last and kind == 'head':
+            tail_open = True
+        # ONLY ONCE A HEADING HAS OPENED A TRAILING SECTION.  Plain prose after
+        # the last unit already belongs to that unit's `after` and renders
+        # correctly there — 26Khu09 and 27Khu10 both end that way, and
+        # diverting it would move two shipped volumes for nothing.  What had
+        # nowhere to go is material under a heading printed after the last
+        # unit, because a heading is only ever attached to the NEXT unit.
+        if tail_open and kind in ('head', 'vline', 'popen', 'pcont', 'cand'):
+            # Material the page sets after a heading that has no numbered unit,
+            # and everything after the book's last unit.  It goes into the
+            # uddāna stream anchored to the current unit, IN PRINTED ORDER,
+            # because `block()` draws uddāna blocks after `before`/`groups`/
+            # `after` — which is exactly where the page sets them.
+            if kind == 'head':
+                for part in split_centre(it[1].strip()):
+                    tail_add('head', part, it[2])
+            else:
+                tail_add(kind, it[1], it[2])
+            continue
+        if kind == 'head':
+            # TWO HEADINGS CAN SHARE ONE PRINTED LINE, as they do in 19Khu02.
+            # p351 sets "7. Dhammacakkakathā        1. Saccavāra" — the kathā
+            # and its first vāra — and the corpus captured that same line as a
+            # paragraph (hidden above).  Left joined, the tree would gain a
+            # kathā named after both.
+            for part in split_centre(it[1].strip()):
+                (pend_open if not opened else pend_heads).append(
+                    {'l': part, 'k': head_kind(part)})
+                if opened:
+                    pend_seq.append(('head', part))
+                rec['heads'].append({'pg': it[2], 'l': part})
+            open_prose = False; open_gatha = None
+            continue
+        if kind in ('colo', 'udd'):
+            if not opened:
+                # A colophon printed before the book's first unit closes a
+                # section that is itself before it, so it keeps its printed
+                # place in `sections` rather than being carried forward.  It is
+                # emitted as k:'gatha' — display material the corpus does not
+                # hold, the mechanism 19Khu02's Nidānagāthā already uses — and
+                # NOT as a heading class: the Netti's "Saṅgahavāro." closes its
+                # section and would otherwise both look like a heading and be
+                # picked up as a node by the nav builder.
+                pend_open.append({'l': it[1].strip(), 'k': 'gatha'})
+            elif kind == 'udd':
+                pend_centre.append({'label': it[1].strip(), 'lines': [], 'app': []})
+            else:
+                pend_centre.append({'label': None, 'lines': [it[1].strip()], 'app': []})
+            rec['colos'].append({'pg': it[2], 'l': it[1].strip()})
+            open_prose = False; open_gatha = None
+            continue
+        if kind in ('unit', 'uverse'):
+            if (it[1], it[3]) in missing_lead:
+                # A printed unit the corpus does not hold (declared and checked
+                # above).  It consumes no ordinal, and goes into the NEXT
+                # unit's `before` so the page keeps its printed order.
+                pend_before.append({'n': it[1], 't': it[2]})
+                pend_seq.append((kind, it[2]))
+                rec['prose_paras'] += 1
+                continue
+            if (it[1], it[3]) in splice_lead:
+                # A printed unit the corpus spliced into the preceding
+                # paragraph.  No ordinal to consume, but NOT dropped: its
+                # opening is emitted into the CURRENT unit's prose exactly as
+                # the page sets it, number and all.
+                add_prose(re.sub(r'^\d+\.\s*', '',
+                                 splice_lead[(it[1], it[3])]),
+                          True, num=it[1])
+                continue
+            flush()
+            prev = cur
+            cur = next(seq)
+            units_done += 1
+            last = units_done == len(ords)
+            after, groups = [], ([[it[2]]] if kind == 'uverse' else [])
+            open_prose = False; open_gatha = None
+            if not opened:
+                # EVERYTHING PRINTED BEFORE THE BOOK'S FIRST UNIT goes into
+                # `sections` in printed order, as the verse path already does.
+                # The Netti opens with a whole section — the Saṅgahavāra's ten
+                # gāthā between their heading and their colophon — before its
+                # first numbered unit.  Folded into that unit's `before` they
+                # would render as its intro prose, and the colophon that closes
+                # them would render AFTER it, i.e. below text it precedes.
+                opened = True
+                if pend_open:
+                    sections[str(cur)] = pend_open
+                    pend_open = []
+                pend_heads, pend_centre = [], []
+            elif SPEC[VOL].get('head_order') and pend_seq:
+                # PRINTED ORDER BETWEEN A HEADING, ITS PROSE, AND THE NEXT
+                # HEADING — at a UNIT boundary.  36Abhi08 p92 sets "Tika", its
+                # own text, "(Yathā hetumūlakaṁ…)", then "Adhipatiduka", then
+                # the unit; replaying `pend_heads` and `pend_before` as two
+                # lists put BOTH headings above BOTH paragraphs, so "Tika" lost
+                # its text to "Adhipatiduka".  Same defect `pend_seq` already
+                # fixed for 28Khu11, but that repair fires only on a COLOPHON
+                # and here none comes.  Everything up to the LAST RUN OF
+                # HEADINGS goes to the previous unit's uddāna stream, which
+                # `block()` draws after that paragraph; only the trailing
+                # headings stay in `sections`.  With the headings all at the
+                # front the split point is 0 and nothing moves.
+                j = len(pend_seq)
+                while j and pend_seq[j - 1][0] == 'head':
+                    j -= 1
+                if j:
+                    nh = len(rec['heads'])
+                    for k2, x in pend_seq[:j]:
+                        tail_add(k2, x, None)
+                    if tail_head is not None:
+                        pend_centre.append({'plain': True, 'head': tail_head,
+                                            'hk': tail_hk, 'lines': [],
+                                            'app': []})
+                        tail_head = tail_hk = None
+                    del rec['heads'][nh:]      # already recorded, not new
+                    # POSITIONAL, NOT BY VALUE.  The trailing head-run is the
+                    # LAST n entries of `pend_heads`; filtering by label kept
+                    # every copy of a label occurring on both sides of the
+                    # split.  38Abhi10 p341 sets "50. Parāmāsaduka
+                    # 5. Saṁsaṭṭhavāra", prose, then "50. Parāmāsaduka
+                    # 7. Pañhāvāra" — the value filter left the duka's name in
+                    # `sections` TWICE and dropped "5. Saṁsaṭṭhavāra" from the
+                    # page.  `check_layout.js` caught it; no content gate could.
+                    keep = sum(1 for k2, _ in pend_seq[j:] if k2 == 'head')
+                    pend_heads = pend_heads[len(pend_heads) - keep:] if keep else []
+                    pend_before = []
+                if pend_centre:
+                    uddana.setdefault(str(prev if prev is not None else cur),
+                                      []).extend(pend_centre)
+                    pend_centre = []
+            elif pend_centre:
+                # ANCHOR TO THE PREVIOUS UNIT, NOT TO `cur - 1`.  A hidden
+                # ordinal can sit between two units — 26Khu09's ord351 is the
+                # leaked "7. Dhammacakkakathā  1. Saccavāra" line — and a
+                # side-map block anchored to a hidden paragraph is skipped by
+                # both block() and render_parts, so it silently never renders.
+                # That is how "Paṭisambhidākathā niṭṭhitā." went missing.
+                uddana.setdefault(str(prev if prev is not None else cur),
+                                  []).extend(pend_centre)
+                pend_centre = []
+            if pend_heads:
+                sections.setdefault(str(cur), []).extend(pend_heads)
+                pend_heads = []
+            if pend_before:
+                for b in pend_before:
+                    if isinstance(b, dict):
+                        b.pop('_open', None)
+                before_of[cur] = list(pend_before)
+                pend_before = []
+            pend_seq = []
+            if kind == 'unit':
+                add_prose(it[2], True)     # the unit's own opening paragraph,
+            continue                       # already stripped of its number
+        if kind == 'upada':
+            # a pāda of a unit that is itself a gāthā
+            if groups:
+                _add_line(groups[0], it[1])
+            continue
+        if not opened:
+            # display verse printed before the book's first unit — the Netti's
+            # ten opening Saṅgahavāra gāthā.  `sections` entries may carry
+            # k:'gatha', which is how 19Khu02's Nidānagāthā is placed.
+            if pend_open and pend_open[-1]['k'] == 'gatha':
+                pend_open[-1]['l'] += '\n' + it[1]
+            else:
+                pend_open.append({'l': it[1], 'k': 'gatha'})
+            continue
+        if cur is None or pend_heads:
+            # ONE ENTRY PER PRINTED PARAGRAPH, not per printed LINE.  `before`
+            # entries each render as their own block, so appending line by line
+            # broke a section's intro prose into one-line paragraphs — and made
+            # each of those lines a render block that has to match the print on
+            # its own, which is why the reverse direction reported them.  The
+            # same popen/pcont rule `add_prose` uses.
+            if not SPEC[VOL].get('orphan_sections'):
+                pend_before.append(it[1])
+                continue
+            pend_seq.append((kind, it[1]))
+            if kind == 'vline':
+                if (pend_before and isinstance(pend_before[-1], dict)
+                        and pend_before[-1].get('_open')):
+                    _add_line(pend_before[-1]['gatha'], it[1])
+                else:
+                    pend_before.append({'gatha': [it[1]], '_open': True})
+                continue
+            for b in pend_before:
+                if isinstance(b, dict):
+                    b.pop('_open', None)
+            _tl = pend_before[-1] if pend_before else None
+            _pv = (_tl if isinstance(_tl, str)
+                   else _tl.get('t') if isinstance(_tl, dict) and 't' in _tl
+                   else None)
+            if (kind != 'popen' or (_pv is not None and _pv.endswith('-'))) \
+                    and _pv is not None:
+                _j = _pv[:-1] + it[1] if _pv.endswith('-') else _pv + ' ' + it[1]
+                if isinstance(_tl, str):
+                    pend_before[-1] = _j
+                else:
+                    _tl['t'] = _j
+            else:
+                pend_before.append(it[1])
+            continue
+        if (SPEC[VOL].get('head_order') and pend_centre and not tail_open
+                and kind in ('popen', 'pcont', 'cand', 'vline')):
+            # PROSE PRINTED BETWEEN TWO COLOPHONS.  36Abhi08 p110 closes the
+            # Nissayavāra as colophon / "(Paccayattaṁ nāma nissayattaṁ…)" /
+            # colophon.  `after` is drawn BEFORE the uddāna blocks that hold
+            # the colophons, so that line jumped above both — printed order
+            # lost though every word was present.  Once a colophon is queued
+            # the unit is closed, so what follows joins the same stream.
+            tail_add(kind, it[1], it[2])
+            continue
+        if kind == 'vline':
+            # a line of an open centred block (an uddāna's own verse) belongs to
+            # that block, not to the paragraph before it
+            if pend_centre and pend_centre[-1].get('label'):
+                _add_line(pend_centre[-1]['lines'], it[1])
+                continue
+            if open_gatha is not None:
+                _add_line(open_gatha['gatha'], it[1])
+            else:
+                open_gatha = {'gatha': [it[1]]}
+                after.append(open_gatha)
+                rec['gathas'].append({'pg': it[2], 'l': it[1]})
+            open_prose = False
+            continue
+        add_prose(it[1], kind == 'popen')
+
+    flush()
+    if tail_head is not None:
+        pend_centre.append({'plain': True, 'head': tail_head, 'hk': tail_hk,
+                            'lines': [], 'app': []})
+    for b in pend_centre:
+        b.pop('_verse', None)
+        if b.get('plain') and b.get('head') is None:
+            b.pop('head'); b.pop('hk', None)
+    if pend_centre:
+        uddana.setdefault(str(cur), []).extend(pend_centre)
+    if pend_heads:
+        report['unmapped'].append({'book': title, 'trailing_heads': pend_heads})
+    if pend_before:
+        report['unmapped'].append({'book': title, 'trailing_before': pend_before})
+
+
+def build():
+    pages = pdf_pages()
+    paras = json.load(open(os.path.join(ROOT, 'site', VOL + '.json')))['paragraphs']
+    verse, sections, uddana, hide, incipit = {}, {}, {}, {}, {}
+    open_before = {}
+    report = {'books': [], 'unmapped': [], 'leaked': []}
+
+    for bk in SPEC[VOL].get('backmatter', []):
+        # printed back matter the extraction captured as a corpus paragraph
+        hide[str(bk)] = 1
+
+    for bkspec in BOOKS:
+        title, p0, p1, o0, o1, lastv = bkspec[:6]
+        mode = bkspec[6] if len(bkspec) > 6 else 'verse'
+        if mode == 'niddesa':
+            nid_build(pages, paras, title, p0, p1, o0, o1,
+                      verse, sections, uddana, incipit, report)
+            continue
+        if mode == 'katha':
+            kat_build(pages, paras, title, p0, p1, o0, o1,
+                      verse, sections, uddana, hide, incipit, report)
+            continue
+        items = items_for(pages, p0, p1)
+        # Corpus paragraphs whose TEXT is a printed heading (leaked into the
+        # corpus).  This MUST run before the number map: a leaked heading carries
+        # the heading's own ordinal as `n`, so 21Khu04's ord3138 ("10. …") sits
+        # between verses 425 and 426 and fires a spurious vagga reset, desyncing
+        # the per-vagga counter against the PDF for the rest of the book — that
+        # alone left 293 verses unmapped.
+        for o in range(o0, o1):
+            t = head_body(re.sub(r'^\d+\.\s*', '',
+                                 (paras[o].get('text') or '').strip()))
+            if HEADTXT.match(t):
+                hide[str(o)] = 1
+                report['leaked'].append({'ord': o, 'text': (paras[o].get('text') or '').strip()})
+
+        # Corpus verse-number -> ordinal.  Where `n` runs continuously over the
+        # whole book a plain first-occurrence map is right.  In the Apadāna `n`
+        # RESETS AT EVERY VAGGA, so the same number occurs ~56 times per book and
+        # a plain map would collapse them all onto the first vagga; there the map
+        # is keyed by (reset-index, n) and the PDF walk tracks the same counter.
+        # In the JĀTAKA `n` resets per NIPĀTA, and the edition misprints three
+        # verse numbers (ERRATA), one of which collides with a real verse in
+        # the same nipāta.  So there the key is not the number at all: PDF
+        # verse and corpus paragraph are paired BY POSITION within each
+        # nipāta, and `n` is kept only as a cross-check (`ncheck`).  The
+        # corpus's nipāta run comes from its `book` field — which flip-flops
+        # with 'Jātakapāḷi', so only the '…nipāta' forms are read, the same
+        # rule this project already needed for Aṅguttara and 19Khu02.
+        scope = SPEC[VOL]['n_scope']
+        per_vagga  = scope == 'vagga'
+        per_nipata = scope == 'nipata'
+        n2ord, seg = {}, 0
+        prev = None
+        nip_i, lastb = -1, None
+        for o in range(o0, o1):
+            if per_nipata:
+                b = (paras[o].get('book') or '')
+                if b.endswith('nipāta'):
+                    if b != lastb:
+                        nip_i += 1
+                    lastb = b
+            n = paras[o].get('n')
+            if not isinstance(n, int) or str(o) in hide:
+                continue
+            if per_nipata:
+                # A LIST, not a single ordinal, and consumed in printed order.
+                # The edition misprints three verse numbers (ERRATA) and one of
+                # them — 22Khu05 p304's "24." for 29 — repeats a number that
+                # already occurs in the same nipāta.  Keeping every ordinal
+                # that claims a number, and consuming them in order, places
+                # both correctly; a single-value map silently dropped one.
+                n2ord.setdefault((nip_i, n), []).append(o)
+                continue
+            if per_vagga and prev is not None and n <= prev:
+                seg += 1
+            prev = n
+            key = (seg, n) if per_vagga else n
+            if key not in n2ord:
+                n2ord[key] = o
+
+        pend_heads, pend_centre = [], []      # headings / colophons awaiting placement
+        pend_open = []                        # printed-order material before verse 1
+        pend_before = []                      # printed AFTER a heading, before its verse
+        cur_ord, cur_groups, cur_after = None, [], []
+        cur_nums = []              # printed number of each group, when >1
+        cur_plain = None           # a spliced verse emitted as its own block
+        vseen = set()
+        opened = False
+        pseg, pprev = 0, None      # PDF-side mirror of the per-vagga reset counter
+        pnip = -1                  # PDF-side mirror of the per-nipāta counter
+        merged = []                # printed verses the corpus SPLICED together
+        paired_ct = 0              # printed verses placed on their own ordinal
+        # A vagga's closing material — "<Name>vimānaṁ ekādasamaṁ." then
+        # "Tassuddānaṁ" then the mnemonic verse — is set at the PĀDA indent, not
+        # the centred indent, once it shares a page with verses.  Without this
+        # flag those lines were appended to the last verse's groups, which is
+        # exactly the splice the corpus itself makes (ord155/269/482/...).  So:
+        # a centred COLOPHON or uddāna label opens a tail; everything in the body
+        # column after it belongs to that tail until the next verse number.
+        in_tail = False
+        items_extra = []
+
+        def flush():
+            """close the current verse: write its groups + trailing prose."""
+            if cur_ord is None:
+                return
+            e = {'groups': [g for g in cur_groups if g]}
+            # Only a corpus paragraph holding MORE THAN ONE printed verse needs
+            # per-group numbers; every other volume produces exactly one group,
+            # so this never fires for them and their output stays byte-identical.
+            if len(e['groups']) > 1 and len(cur_nums) == len(e['groups']):
+                e['nums'] = list(cur_nums)
+            if open_before.get(str(cur_ord)):
+                e['before'] = open_before.pop(str(cur_ord))
+            if cur_after:
+                e['after'] = list(cur_after)
+            verse[str(cur_ord)] = e
+
+        def place_centre(blocks, after_ord):
+            """colophons + uddāna verses render AFTER the previous paragraph."""
+            if after_ord is None or not blocks:
+                return
+            uddana.setdefault(str(after_ord), []).extend(blocks)
+
+        for it in items:
+            kind = it[0]
+            if kind in ('pada', 'prose', 'centre') and it[1].strip() == title:
+                # The book's own name, printed large above the homage.  It is set
+                # at its own indent and so is not reliably classified as centred:
+                # on 20Khu03 p21 it sits at indent 11 against a body column of 3
+                # and was being swept into the opening gāthā block, where it
+                # rendered small, italic and left-aligned instead of as a title.
+                # The name is emitted by pipeline/build_booktitles.py into its own
+                # side-map (booktitle/<VOL>.json), which every volume can have —
+                # a sections file cannot be added to a volume that lacks one
+                # without switching its heading path and losing its headings.
+                continue
+            if kind == 'verse':
+                n, txt = it[1], it[2]
+                if per_nipata:
+                    lst = n2ord.get((pnip, n))
+                    o_ = lst.pop(0) if lst else None
+                    if o_ is None:
+                        # No corpus paragraph claims this printed number.  The
+                        # usual cause is a CORPUS SPLICE: two printed verses
+                        # merged into one paragraph, with the second verse's
+                        # own number left sitting inside the text
+                        # ("…matoti. 109.Sobhati maccho Gaṅgeyyo…").  Confirm
+                        # by CONTENT, not by the stray number — a footnote
+                        # marker can imitate the number, but it cannot imitate
+                        # the verse's opening words.
+                        if cur_ord is not None and _spliced(paras[cur_ord], txt):
+                            if pend_heads or pend_centre:
+                                # The two spliced verses are NOT part of the
+                                # same section — the edition prints a colophon
+                                # and/or the next jātaka's heading between them
+                                # (22Khu05 p80: v108, "Vīrakajātakaṁ
+                                # catutthaṁ.", "205. Gaṅgeyyajātaka (2-6-5)",
+                                # v109).  Folding v109 into v108's paragraph
+                                # would render it ABOVE its own heading, so it
+                                # goes out as its own numbered block instead,
+                                # after the colophon and under its heading.
+                                if pend_centre:
+                                    place_centre(pend_centre, cur_ord)
+                                    pend_centre = []
+                                blk = {'plain': True, 'n': n, 'lines': [txt],
+                                       'app': []}
+                                if pend_heads:
+                                    blk['head'] = pend_heads[0]['l']
+                                    if len(pend_heads) > 1:
+                                        sections.setdefault(str(cur_ord), [])
+                                    pend_heads = []
+                                place_centre([blk], cur_ord)
+                                cur_plain = blk
+                                merged.append({'n': n, 'ord': cur_ord,
+                                               'pg': it[3], 'text': txt[:60],
+                                               'own_block': True})
+                                in_tail = False
+                                continue
+                            cur_groups.append([txt])
+                            cur_nums.append(n)
+                            cur_plain = None
+                            merged.append({'n': n, 'ord': cur_ord, 'pg': it[3],
+                                           'text': txt[:60]})
+                            in_tail = False
+                            continue
+                        report['unmapped'].append({'book': title, 'n': n,
+                                                   'pg': it[3], 'text': txt[:70]})
+                        continue
+                    flush()
+                    o = o_
+                    paired_ct += 1
+                    if not opened:
+                        opened = True
+                        if pend_open:
+                            sections[str(o)] = pend_open
+                            pend_open = []
+                        pend_heads, pend_centre = [], []
+                    else:
+                        if pend_centre:
+                            place_centre(pend_centre, cur_ord)
+                            pend_centre = []
+                        if pend_heads:
+                            sections[str(o)] = pend_heads
+                            pend_heads = []
+                    cur_ord, cur_groups, cur_after = o, [[txt]], []
+                    cur_nums = [n]
+                    cur_plain = None
+                    if pend_before:
+                        open_before[str(o)] = list(pend_before)
+                        pend_before = []
+                    in_tail = False
+                    continue
+                if per_vagga:
+                    if pprev is not None and n <= pprev:
+                        pseg += 1
+                    pprev = n
+                    vkey = (pseg, n)
+                else:
+                    vkey = n
+                o = n2ord.get(vkey)
+                if o is None or vkey in vseen:
+                    report['unmapped'].append({'book': title, 'n': n, 'pg': it[3],
+                                               'text': txt[:70]})
+                    continue
+                vseen.add(vkey)
+                flush()
+                if not opened:
+                    # Everything printed between the book's title page and its
+                    # first verse — title headings AND display verse such as
+                    # Theragāthā's Nidānagāthā — goes into `sections` in printed
+                    # order, so the page's own sequence survives.
+                    opened = True
+                    if pend_open:
+                        sections[str(o)] = pend_open
+                        pend_open = []
+                    pend_heads, pend_centre = [], []
+                else:
+                    if pend_centre:
+                        place_centre(pend_centre, cur_ord)
+                        pend_centre = []
+                    if pend_heads:
+                        sections[str(o)] = pend_heads
+                        pend_heads = []
+                cur_ord, cur_groups, cur_after = o, [[txt]], []
+                if pend_before:
+                    open_before[str(o)] = list(pend_before)
+                    pend_before = []
+                in_tail = False
+            elif kind in ('pada', 'prose'):
+                if not opened:
+                    if kind == 'pada' and pend_open and pend_open[-1]['k'] == 'gatha':
+                        pend_open[-1]['l'] += '\n' + it[1]
+                    else:
+                        pend_open.append({'l': it[1], 'k': 'gatha'})
+                elif pend_heads:
+                    # same precedence as in the centred branch: a heading is open,
+                    # so this is its opener and belongs to the heading's own verse,
+                    # not to the previous section's closing block
+                    pend_before.append(it[1])
+                elif in_tail and pend_centre:
+                    _add_line(pend_centre[-1]['lines'], it[1])
+                elif cur_plain is not None and kind == 'pada':
+                    # continuation pādas of a spliced verse that was emitted as
+                    # its own block rather than folded into the paragraph
+                    _add_line(cur_plain['lines'], it[1])
+                elif kind == 'pada':
+                    if cur_groups:
+                        cur_groups[-1].append(it[1])
+                elif cur_ord is not None:
+                    # LINE-END HYPHENATION.  20Khu03 p342 sets
+                    # "…imā gāthāyo abhi-" / "āsitthāti." — one word, hyphenated
+                    # across the break.  Rejoin on the hyphen and nothing else:
+                    # every wider rule also swallows ordinary wraps and then
+                    # FABRICATES words ("abhiṇhaṁ" + "ovadatīti." ->
+                    # "abhiṇhaṁovadatīti.").  The harness joins intra-word hyphens
+                    # the same way, so the two agree.
+                    prev = cur_after[-1] if cur_after else ''
+                    if prev.endswith('-'):
+                        cur_after[-1] = prev[:-1] + it[1]
+                    else:
+                        cur_after.append(it[1])
+            elif kind == 'homage':
+                incipit[str(o0)] = it[1].strip()
+            elif kind == 'centre' and len(split_centre(it[1])) > 1:
+                for part in split_centre(it[1]):
+                    items_extra.append(part)
+                for part in items_extra:
+                    if per_nipata and is_nipata_head(part):
+                        pnip += 1
+                        ppos = 0
+                    pend_heads.append({'l': part, 'k': head_kind(part)})
+                items_extra = []
+            else:                                     # centre
+                t = it[1]
+                if t.strip() == 'Khuddakanikāya':
+                    continue                          # series line above the title
+                # A NIPĀTA heading opens a new verse-numbering segment.  This
+                # is checked BEFORE the opened/not-opened split because the
+                # book's FIRST nipāta head is printed on the title page, i.e.
+                # while `opened` is still False — miss it there and every
+                # nipāta index is off by one for the whole volume.
+                if per_nipata and is_nipata_head(t):
+                    pnip += 1
+                    ppos = 0
+                # A HEADING IS NOT ALWAYS NUMBERED.  25Khu08 sets three of them
+                # bare — "Pārāyanavagga" over the whole book, and
+                # "Pārāyanatthutigāthā" / "Pārāyanānugītigāthā" over its last
+                # two sections, all three listed as sections in the edition's
+                # own mātikā.  Testing only HEADNUM sent them down the colophon
+                # path, where they rendered as centred closing material after
+                # the PREVIOUS section instead of as that section's own title —
+                # and, being present and contiguous, they passed the body gate
+                # untouched.  Recognise a heading by CONTENT as well, as every
+                # other part of this file already does.
+                headish = HEADNUM.match(t) or HEADTXT.match(head_body(t))
+                if not opened:
+                    if UDDLBL.match(t):
+                        pend_open.append({'l': t, 'k': 'vagga'})
+                    elif headish:
+                        pend_open.append({'l': t, 'k': head_kind(t)})
+                    elif pend_open and pend_open[-1]['k'] == 'gatha':
+                        pend_open[-1]['l'] += '\n' + t
+                    else:
+                        pend_open.append({'l': t, 'k': 'gatha'})
+                    continue
+                if UDDLBL.match(t):
+                    pend_centre.append({'label': t, 'lines': [], 'app': []})
+                    in_tail = True
+                elif headish:
+                    pend_heads.append({'l': t, 'k': head_kind(t)})   # heading: no tail
+                elif pend_heads:
+                    # A heading has been seen and its verse has not arrived yet, so
+                    # this line is the section's OPENER, not the previous section's
+                    # closing material: the page sets "Paccekabuddhāpadānaṁ
+                    # samattaṁ." / "3-1. Sāriputtatthera-apadāna" / "Atha
+                    # therāpadānaṁ suṇātha–".  Attaching it to the previous
+                    # paragraph's uddāna block rendered it ABOVE its own heading.
+                    pend_before.append(t)
+                elif pend_centre and pend_centre[-1].get('label'):
+                    _add_line(pend_centre[-1]['lines'], t)  # a line of the open uddāna
+                    in_tail = True
+                else:
+                    pend_centre.append({'label': None, 'lines': [t], 'app': []})
+                    in_tail = True
+        flush()
+        if pend_centre:
+            place_centre(pend_centre, cur_ord)
+        if pend_heads:
+            report['unmapped'].append({'book': title, 'trailing_heads': pend_heads})
+        rec = {'book': title, 'verses_mapped': len(vseen), 'expected': lastv}
+        if per_nipata:
+            # Self-verification, and the reason this scope is trustworthy: the
+            # PDF's own nipāta headings must produce the same number of
+            # segments as the corpus `book` field does, and every segment must
+            # pair 1:1.  Both counts are reported so a drift is visible rather
+            # than absorbed.
+            rec['pdf_nipatas']    = pnip + 1
+            rec['corpus_nipatas'] = nip_i + 1
+            rec['expect_nipatas'] = SPEC[VOL].get('nipatas')
+            rec['paired']         = paired_ct
+            rec['merged']         = merged
+            # Corpus paragraphs that claimed a verse number but that the PDF
+            # walk never consumed.  Should be empty: a leftover means a printed
+            # verse was missed, which is the failure this whole scope exists to
+            # make visible rather than absorb.
+            rec['unconsumed']     = sorted(o for v in n2ord.values() for o in v)
+        report['books'].append(rec)
+
+    # tidy: an uddāna block with a label but no lines is a stray label.  A
+    # block carrying a HEAD and no lines is not — that is a printed heading
+    # immediately followed by another heading, which is how 28Khu11 sets
+    # "Meṇḍakapañhārambhakathā / Aṭṭhamantaparivajjanīyaṭṭhāna" and
+    # "Ācariyaguṇa / Upāsakaguṇa".  This filter was silently deleting the
+    # first of each pair.
+    for k in list(uddana):
+        for b in uddana[k]:
+            # internal markers, and a null head/weight on an ordinary block
+            b.pop('_verse', None)
+            if b.get('plain') and b.get('head') is None:
+                b.pop('head', None); b.pop('hk', None)
+        uddana[k] = [b for b in uddana[k] if b.get('lines') or b.get('head')]
+        if not uddana[k]:
+            del uddana[k]
+    return verse, sections, uddana, hide, incipit, report
+
+
+def write(name, data):
+    p = os.path.join(R, name, VOL + '.json')
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    if os.path.exists(p) and not os.path.exists(p + '.pre19build'):
+        shutil.copy(p, p + '.pre19build')
+    json.dump(data, open(p, 'w'), ensure_ascii=False)
+    return p
+
+
+if __name__ == '__main__':
+    use(sys.argv[1])
+    v, s, u, h, inc, rep = build()
+    print('verse entries %d | sections %d | uddana anchors %d | hidden %d | incipits %d'
+          % (len(v), len(s), len(u), len(h), len(inc)))
+    for b in rep['books']:
+        if b.get('mode') == 'katha':
+            ok = not b.get('FATAL') and b['printed_units'] == b['corpus_paras']
+            print('   %-22s KATHĀ  printed units %d / corpus ¶ %d   headings %d   '
+                  'colophons %d   prose ¶ %d   gāthā blocks %d   [%s]'
+                  % (b['book'], b['printed_units'], b['corpus_paras'],
+                     len(b['heads']), len(b['colos']), b['prose_paras'],
+                     len(b['gathas']), 'OK' if ok else 'CHECK'))
+            if b.get('FATAL'):
+                print('        FATAL:', b['FATAL'])
+            for x in b.get('absent', ()):
+                print('        CORPUS ABSENCE (recorded, not corrected): printed '
+                      'unit %s at p%s is in NO corpus paragraph; rendered from '
+                      'the printed page above the next unit — %r'
+                      % (x['n'], x['pg'], x['text']))
+            for x in b.get('splices', ()):
+                print('        CORPUS SPLICE (recorded, not corrected): printed '
+                      'unit %s at p%s is inside corpus ord%s, the paragraph of '
+                      'unit %s — %r' % (x['n'], x['pg'], x['ord'], x['into'],
+                                        x['text']))
+            for x in b['nmismatch'][:20]:
+                print('        N MISMATCH: printed %r at p%s pairs with corpus '
+                      'ord%s whose n is %s' % (x['printed'], x['pg'], x['ord'],
+                                               x['corpus_n']))
+            if '--show' in sys.argv:
+                for x in b['heads']:  print('        HEAD  p%-4s %s' % (x['pg'], x['l']))
+                for x in b['colos']:  print('        COLO  p%-4s %s' % (x['pg'], x['l']))
+                for x in b['gathas']: print('        GĀTHĀ p%-4s %s' % (x['pg'], x['l']))
+            continue
+        if b.get('mode') == 'niddesa':
+            ok = (not b.get('FATAL')
+                  and b['printed_lemmas'] == b['corpus_paras'])
+            print('   %-18s NIDDESA  printed lemmas %d / corpus ¶ %d   '
+                  'headings %d   colophons %d   prose ¶ %d   gāthā blocks %d   [%s]'
+                  % (b['book'], b['printed_lemmas'], b['corpus_paras'],
+                     len(b['heads']), len(b['colos']), b['prose_paras'],
+                     b['gatha_blocks'], 'OK' if ok else 'CHECK'))
+            if b.get('FATAL'):
+                print('        FATAL:', b['FATAL'])
+            for x in b['nmismatch']:
+                print('        EDITION MISPRINT (preserved): printed %r at p%s '
+                      'pairs with corpus ord%s whose n is %s'
+                      % (x['printed'], x['pg'], x['ord'], x['corpus_n']))
+            if '--show' in sys.argv:
+                for x in b['heads']: print('        HEAD  p%-4s %s' % (x['pg'], x['l']))
+                for x in b['colos']: print('        COLO  p%-4s %s' % (x['pg'], x['l']))
+            continue
+        if 'pdf_nipatas' in b:
+            ok = (b['pdf_nipatas'] == b['corpus_nipatas'] == b['expect_nipatas']
+                  and not b['unconsumed'])
+            print('   %-12s nipātas pdf %d / corpus %d / expected %s   '
+                  'verses paired %d   corpus splices repaired %d   '
+                  'corpus ¶ never matched %d   [%s]'
+                  % (b['book'], b['pdf_nipatas'], b['corpus_nipatas'],
+                     b['expect_nipatas'], b['paired'], len(b['merged']),
+                     len(b['unconsumed']), 'OK' if ok else 'CHECK'))
+            for x in b['merged']:
+                print('        SPLICE: printed verse %s (p%s) was merged into corpus ord%s — %r'
+                      % (x['n'], x['pg'], x['ord'], x['text']))
+            if b['unconsumed']:
+                print('        UNCONSUMED corpus ordinals:', b['unconsumed'][:20])
+            continue
+        print('   %-20s verses mapped %d%s' % (b['book'], b['verses_mapped'],
+              (' / %d' % b['expected']) if b['expected'] else ' (n resets per vagga; no book-level total)'))
+    print('   leaked corpus headings hidden: %s' % [x['ord'] for x in rep['leaked']])
+    if rep['unmapped']:
+        print('   UNMAPPED (%d):' % len(rep['unmapped']))
+        for x in rep['unmapped'][:15]:
+            print('     ', x)
+    # A BOOK'S TITLE PAGE BELONGS ABOVE THAT BOOK'S FIRST PARAGRAPH.
+    #
+    # `build_booktitles.py` keys the stack by a page estimate, and that key can
+    # be BOTH misplaced and invisible: 39Abhi11's second title page was keyed
+    # to ord654 — six paragraphs before the book it heads even begins, and
+    # itself a hidden leaked heading — so the stack never rendered at all.
+    # This is the only place that knows both the book boundaries and what is
+    # hidden, so the map is aligned here and every move is REPORTED.
+    #
+    # It refuses unless there is exactly one entry per book, which is the only
+    # case where the i-th stack heads the i-th book without guessing.
+    _bt = os.path.join(R, 'booktitle', VOL + '.json')
+    _btd = None
+    if os.path.exists(_bt):
+        _old = json.load(open(_bt, encoding='utf-8'))
+        _firsts = [next((_o for _o in range(_bs[3], _bs[4])
+                         if str(_o) not in h), _bs[3]) for _bs in BOOKS]
+        _keys = sorted(_old, key=int)
+        if len(_keys) == len(_firsts):
+            _new = {}
+            for _k, _f in zip(_keys, _firsts):
+                if int(_k) != _f:
+                    print('   BOOKTITLE re-keyed: ord%s -> ord%d (that book\'s '
+                          'first visible paragraph)' % (_k, _f))
+                _new[str(_f)] = _old[_k]
+            if _new != _old:
+                _btd = _new
+        elif any(_k in h for _k in _keys):
+            print('   BOOKTITLE NOT re-keyed: %d entries for %d book(s), and at '
+                  'least one sits on a hidden ordinal — REPORTED, not guessed'
+                  % (len(_keys), len(_firsts)))
+    if '--write' in sys.argv:
+        for n, d in (('verse', v), ('sections', s), ('uddana', u), ('hide', h), ('incipit', inc)):
+            print('  wrote', write(n, d))
+        if _btd:
+            print('  wrote', write('booktitle', _btd))
+    else:
+        print('DRY RUN — pass --write to save')

@@ -1,0 +1,257 @@
+[
+ [
+  "03Vin03",
+  "canon",
+  "no book marker -> single node (Mahāvaggapāḷi)"
+ ],
+ [
+  "04Vin04",
+  "canon",
+  "no book marker -> single node (Cūḷavaggapāḷi)"
+ ],
+ [
+  "01VinA01",
+  "commentary",
+  "14 books: Pārājikakaṇḍa-aṭṭhakathā / Bhūmaṭṭhakathā / Thalaṭṭhakathā / Ākāsaṭṭhakathā / Vehāsaṭṭhakathā / Pārājikakaṇḍa-aṭṭhakathā / Nāvaṭṭhakathā / Yānaṭṭhakathā / Bhāraṭṭhakathā / Ārāmaṭṭhakathā / Vihāraṭṭhakathā / Khettaṭṭhakathā / Araññaṭṭhakathā / Pārājikakaṇḍa-aṭṭhakathā"
+ ],
+ [
+  "03ViT03",
+  "subcommentary",
+  "3 books: Sāratthadīpanīṭīkā / Vajirabuddhiṭīkā / Sāratthadīpanīṭīkā"
+ ],
+ [
+  "07ViT07",
+  "subcommentary",
+  "2 books: Kaṅkhāvitaraṇīpurāṇaṭīkā / Kaṅkhāvitaraṇī-abhinavaṭīkā"
+ ],
+ [
+  "06Di01",
+  "canon",
+  "no book marker -> single node (Sīlakkhandhavaggapāḷi)"
+ ],
+ [
+  "07DiA01",
+  "commentary",
+  "no book marker -> single node (Sīlakkhandhavaggaṭṭhakathā)"
+ ],
+ [
+  "08DiT01",
+  "subcommentary",
+  "no book marker -> single node (Sīlakkhandhavaggaṭīkā)"
+ ],
+ [
+  "09DiT02",
+  "subcommentary",
+  "no book marker -> single node (Sīlakkhandhavagga-abhinavaṭīkā)"
+ ],
+ [
+  "10DiT03",
+  "subcommentary",
+  "no book marker -> single node (Sīlakkhandhavagga-abhinavaṭīkā)"
+ ],
+ [
+  "07Di02",
+  "canon",
+  "no book marker -> single node (Mahāvaggapāḷi)"
+ ],
+ [
+  "08DiA02",
+  "commentary",
+  "no book marker -> single node (Mahāvaggaṭṭhakathā)"
+ ],
+ [
+  "11DiT04",
+  "subcommentary",
+  "no book marker -> single node (Mahāvaggaṭīkā)"
+ ],
+ [
+  "08Di03",
+  "canon",
+  "no book marker -> single node (Pāthikavaggapāḷi)"
+ ],
+ [
+  "09DiA03",
+  "commentary",
+  "no book marker -> single node (Pāthikavaggaṭṭhakathā)"
+ ],
+ [
+  "12DiT05",
+  "subcommentary",
+  "no book marker -> single node (Pāthikavaggaṭīkā)"
+ ],
+ [
+  "15MaT03",
+  "subcommentary",
+  "2 books: Majjhimapaṇṇāsaṭīkā / Uparipaṇṇāsaṭīkā"
+ ],
+ [
+  "12Sam01",
+  "canon",
+  "no book marker -> single node (Sagāthāvaggasaṁyuttapāḷi)"
+ ],
+ [
+  "13Sam02",
+  "canon",
+  "no book marker -> single node (Khandhavaggasaṁyuttapāḷi)"
+ ],
+ [
+  "14Sam03",
+  "canon",
+  "no book marker -> single node (Mahāvaggasaṁyuttapāḷi)"
+ ],
+ [
+  "14SamA01",
+  "commentary",
+  "no book marker -> single node (Sagāthāvaggaṭṭhakathā)"
+ ],
+ [
+  "15SamA02",
+  "commentary",
+  "no book marker -> single node (Nidānavaggaṭṭhakathā)"
+ ],
+ [
+  "16SamA03",
+  "commentary",
+  "no book marker -> single node (Saḷāyatanavaggasaṁyuttaṭṭhakathā)"
+ ],
+ [
+  "15An01",
+  "canon",
+  "17 books: Ekakanipātapāḷi / Aṭṭhānapāḷi / Ekakanipātapāḷi / Aṭṭhānapāḷi / Ekakanipātapāḷi / Ekadhammapāḷi / Ekakanipātapāḷi / Ekadhammapāḷi / Ekakanipātapāḷi / Ekadhammapāḷi / Ekakanipātapāḷi / Ekadhammapāḷi / Ekakanipātapāḷi / Dukakanipātapāḷi / Dukanipātapāḷi / Tikanipātapāḷi / Catukkanipātapāḷi"
+ ],
+ [
+  "16An02",
+  "canon",
+  "3 books: Pañcakanipātapāḷi / Chakkanipātapāḷi / Sattakanipātapāḷi"
+ ],
+ [
+  "17An03",
+  "canon",
+  "4 books: Aṭṭhakanipātapāḷi / Navakanipātapāḷi / Dasakanipātapāḷi / Ekādasakanipātapāḷi"
+ ],
+ [
+  "18AnA02",
+  "commentary",
+  "3 books: Dukanipātaṭṭhakathā / Tikanipātaṭṭhakathā / Catukkanipātaṭṭhakathā"
+ ],
+ [
+  "19AnA03",
+  "commentary",
+  "7 books: Pañcakanipātaṭṭhakathā / Chakkanipātaṭṭhakathā / Sattakanipātaṭṭhakathā / Aṭṭhakanipātaṭṭhakathā / Navakanipātaṭṭhakathā / Dasakanipātaṭṭhakathā / Ekādasakanipātaṭṭhakathā"
+ ],
+ [
+  "18AnT01",
+  "subcommentary",
+  "2 books: Aṅguttaraṭīkā / Ekakanipāta-aṅguttaraṭīkā"
+ ],
+ [
+  "19AnT02",
+  "subcommentary",
+  "4 books: Aṅguttaraṭīkā / Dukanipāta-aṅguttaraṭīkā / Tikanipāta-aṅguttaraṭīkā / Catukkanipāta-aṅguttaraṭīkā"
+ ],
+ [
+  "20AnT03",
+  "subcommentary",
+  "8 books: Aṅguttaraṭīkā / Pañcakanipāta-aṅguttaraṭīkā / Chakkanipāta-aṅguttaraṭīkā / Sattakanipāta-aṅguttaraṭīkā / Aṭṭhakanipāta-aṅguttaraṭīkā / Navakanipāta-aṅguttaraṭīkā / Dasakanipāta-aṅguttaraṭīkā / Ekādasakanipāta-aṅguttaraṭīkā"
+ ],
+ [
+  "18Khu01",
+  "canon",
+  "4 books: Khuddakapāṭhapāḷi / Dhammapadapāḷi / Udānapāḷi / Itivuttakapāḷi"
+ ],
+ [
+  "25KhuA06",
+  "commentary",
+  "no book marker -> single node (Khuddaka: Khuddakapāṭha-Dhammapada-Udāna-Itivuttaka-Suttanipāta)"
+ ],
+ [
+  "26KhuA07",
+  "commentary",
+  "no book marker -> single node (Khuddaka: Khuddakapāṭha-Dhammapada-Udāna-Itivuttaka-Suttanipāta)"
+ ],
+ [
+  "19Khu02",
+  "canon",
+  "4 books: Vimānavatthupāḷi / Petavatthupāḷi / Theragāthāpāḷi / Therīgāthāpāḷi"
+ ],
+ [
+  "21Khu04",
+  "canon",
+  "4 books: Therāpadānapāḷi / Therī-apadānapāḷi / Buddhavaṁsapāḷi / Cariyāpiṭakapāḷi"
+ ],
+ [
+  "27Khu10",
+  "canon",
+  "2 books: Nettipāḷi / Peṭakopadesapāḷi"
+ ],
+ [
+  "22AbhiT01",
+  "subcommentary",
+  "2 books: Dhammasaṅgaṇīmūlaṭīkā / Dhammasaṅgaṇī-anuṭīkā"
+ ],
+ [
+  "23AbhiT02",
+  "subcommentary",
+  "2 books: Vibhaṅgamūlaṭīkā / Vibhaṅga-anuṭīkā"
+ ],
+ [
+  "31Abhi03",
+  "canon",
+  "2 books: Dhātukathāpāḷi / Puggalapaññattipāḷi"
+ ],
+ [
+  "33Abhi05",
+  "canon",
+  "5 books: Mūlayamakapāḷi / Khandhayamakapāḷi / Āyatanayamakapāḷi / Dhātuyamakapāḷi / Saccayamakapāḷi"
+ ],
+ [
+  "34Abhi06",
+  "canon",
+  "3 books: Saṅkhārayamakapāḷi / Anusayayamakapāḷi / Cittayamakapāḷi"
+ ],
+ [
+  "35Abhi07",
+  "canon",
+  "2 books: Dhammayamakapāḷi / Indriyayamakapāḷi"
+ ],
+ [
+  "36Abhi08",
+  "canon",
+  "2 books: Tikapaṭṭhānapāḷi / Dhammānuloma Tikapaṭṭhānapāḷi"
+ ],
+ [
+  "37Abhi09",
+  "canon",
+  "2 books: Tikapaṭṭhānapāḷi / Dhammānuloma Tikapaṭṭhānapāḷi"
+ ],
+ [
+  "39Abhi11",
+  "canon",
+  "3 books: Dhammānuloma Dukapaṭṭhānapāḷi / Dhammānuloma Dukatikapaṭṭhānapāḷi / Dhammānuloma Tikadukapaṭṭhānapāḷi"
+ ],
+ [
+  "40Abhi12",
+  "canon",
+  "22 books: Dhammānuloma Tikatikapaṭṭhānapāḷi / Tikapaṭṭhānapāḷi / Dhammapaccanīya Tikapaṭṭhānapāḷi / Dhammapaccanīya Dukapaṭṭhānapāḷi / Dhammapaccanīya Dukatikapaṭṭhānapāḷi / Dhammapaccanīya Tikadukapaṭṭhānapāḷi / Dhammapaccanīya Tikatikapaṭṭhānapāḷi / Dhammapaccanīya Dukadukapaṭṭhānapāḷi / Tikapaṭṭhānapāḷi / Dhammānulomapaccanīya Tikapaṭṭhānapāḷi / Dhammānulomapaccanīya Dukapaṭṭhānapāḷi / Dhammānulomapaccanīya Dukatikapaṭṭhānapāḷi / Dhammānulomapaccanīya Tikadukapaṭṭhānapāḷi / Dhammānulomapaccanīya Tikatikapaṭṭhānapāḷi / Dhammānulomapaccanīya Dukadukapaṭṭhānapāḷi / Tikapaṭṭhānapāḷi / Dhammapaccanīyānuloma Tikapaṭṭhānapāḷi / Dhammapaccanīyānuloma Dukapaṭṭhānapāḷi / Dhammapaccanīyānuloma Dukatikapaṭṭhānapāḷi / Dhammapaccanīyānuloma Tikadukapaṭṭhānapāḷi / Dhammapaccanīyānuloma Tikatikapaṭṭhānapāḷi / Dhammapaccanīyānuloma Dukadukapaṭṭhānapāḷi"
+ ],
+ [
+  "50AbhiA03",
+  "commentary",
+  "6 books: Dhātukathā-aṭṭhakathā / Pañcapakaraṇa-aṭṭhakathā / Puggalapaññatti-aṭṭhakathā / Pañcapakaraṇa-aṭṭhakathā / Kathāvatthu-aṭṭhakathā / Pañcapakaraṇa-aṭṭhakathā"
+ ],
+ [
+  "24AbhiT03",
+  "subcommentary",
+  "10 books: Dhātukathāpakaraṇamūlaṭīkā / Puggalapaññattipakaraṇamūlaṭīkā / Kathāvatthupakaraṇamūlaṭīkā / Yamakapakaraṇamūlaṭīkā / Paṭṭhānapakaraṇamūlaṭīkā / Dhātukathāpakaraṇa-anuṭīkā / Puggalapaññattipakaraṇa-anuṭīkā / Kathāvatthupakaraṇa-anuṭīkā / Yamakapakaraṇa-anuṭīkā / Paṭṭhānapakaraṇa-anuṭīkā"
+ ],
+ [
+  "51Vism01",
+  "commentary",
+  "no book marker -> single node (Visuddhimagga)"
+ ],
+ [
+  "52Vism02",
+  "commentary",
+  "no book marker -> single node (Visuddhimagga)"
+ ]
+]

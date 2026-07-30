@@ -1,0 +1,5758 @@
+{
+"2": [
+{
+"n": 1,
+"text": "Paramaṁva (Syā)",
+"variants": [
+{
+"reading": "Paramaṁva",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"3": [
+{
+"n": 2,
+"text": "Sabbasattesu (Sī)",
+"variants": [
+{
+"reading": "Sabbasattesu",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"14": [
+{
+"n": 1,
+"text": "Abhi-Ṭṭha 1. 99 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Vedallanti (Sī, Sya)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Niruttipaṭisambhidāpatto hi (Syā, Ka)",
+"variants": [
+{
+"reading": "Niruttipaṭisambhidāpatto hi",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Vitthārato (Syā, Ka, Visuddhi 2. 72 piṭṭhe ca)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Atthesu ca (Syā, Ka)",
+"variants": [
+{
+"reading": "Atthesu ca",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Paṭipakkhapaṭisedhanaṁ (Sī, Syā)",
+"variants": [
+{
+"reading": "Paṭipakkhapaṭisedhanaṁ",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Saṁ 3. 124 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 2. 223 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 2. 70, 89, 128 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Atthadhammaniruttābhilāpe (Sī)",
+"variants": [
+{
+"reading": "Atthadhammaniruttābhilāpe",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṭṭhārasa bhāsā (Abhi-Ṭṭha 2. 371 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Visesena māgadhikakosallaṁ (Syā, Ka)",
+"variants": [
+{
+"reading": "Visesena māgadhikakosallaṁ",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "...siñcanasinehaparisekena (Sī)",
+"variants": [
+{
+"reading": "...siñcanasinehaparisekena",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 3. 116 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Dī 2. 124 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 1. 238 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Jinatrajesu (Sī)",
+"variants": [
+{
+"reading": "Jinatrajesu",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Abhi 2. 307 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Ariyaphaleneva (Syā, Ka, Visuddhi 2. 73 piṭṭhe ca)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Saṅgahaṁ (Syā, Ka)",
+"variants": [
+{
+"reading": "Saṅgahaṁ",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Sādhetuṁ (Syā, Ka)",
+"variants": [
+{
+"reading": "Sādhetuṁ",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Saṁ 3. 354; Dī 3. 190 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Dī 3. 240 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Paccayasambhūtaṁ (Visuddhi 2. 70 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Paṭipattiphalavisesāvahaṁ (Sī)",
+"variants": [
+{
+"reading": "Paṭipattiphalavisesāvahaṁ",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Khu 2. 347 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Ma 2. 145, 385 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Khu 8. 30 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Vidadhāti (Sī), dahati (Visuddhi 2. 70 piṭṭhe)",
+"variants": [
+{
+"reading": "Vidadhāti",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Dī 1. 58 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Saṁ 2. 386 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"15": [
+{
+"n": 1,
+"text": "Khu 1. 88; Vi 1. 4 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Vīriyañca (Sī, Syā)",
+"variants": [
+{
+"reading": "Vīriyañca",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Vi 2. 276 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 2. 255 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 1. 40 Dhammapade.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Dī 1. 66; Ma 1. 238; Saṁ 2. 384; Aṁ 1. 111 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Khu 1. 9; Khu 2. 130 piṭṭhesu. 5. Ma 1. 189 piṭṭhe. 6. Ma 1. 277 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Khu 8. 6; Khu 1. 434 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Ma 1. 12; Aṁ 1. 433 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Gavesitabbaṁ.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Ma 1. 13; Aṁ 1. 433 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Dī 3. 87 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Abhi 4. 1, 10 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Ma 1. 14; Aṁ 2. 342 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 8,
+"text": "Ma 1. 277 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 8,
+"text": "Khu 1. 7, 314 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 9,
+"text": "Paññānaṭṭhena (Sī)",
+"variants": [
+{
+"reading": "Paññānaṭṭhena",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 9,
+"text": "Dī 1. 50 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 10,
+"text": "Taṁyeva dhammaṁ (Sī, Ka)",
+"variants": [
+{
+"reading": "Taṁyeva dhammaṁ",
+"sigla": [
+"Sī",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 11,
+"text": "Saṁ 2. 303; Saṁ 3. 363 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"16": [
+{
+"n": 1,
+"text": "Saṁ 3. 8 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Dī 3. 184; Khu 1. 233 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ādhāraṭṭhena sīlaṭṭhena (Sī, Syā)",
+"variants": [
+{
+"reading": "Ādhāraṭṭhena sīlaṭṭhena",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Soceyyabhāvena (Syā, Ka)",
+"variants": [
+{
+"reading": "Soceyyabhāvena",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Avikkhippamānā (Sī, Syā)",
+"variants": [
+{
+"reading": "Avikkhippamānā",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"17": [
+{
+"n": 3,
+"text": "Khu 2. 272 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"18": [
+{
+"n": 1,
+"text": "Abhi 1. 1 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Nāmarūpassa vavatthānaṁ ñāṇanti (Sī), nāmarūpavavatthānaṁ ñāṇanti (Syā)",
+"variants": [
+{
+"reading": "Nāmarūpassa vavatthānaṁ ñāṇanti",
+"sigla": [
+"Sī"
+]
+},
+{
+"reading": "nāmarūpavavatthānaṁ ñāṇanti",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 1. 14 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Abhi 1. 13, 14 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Vi 1. 150 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Aṁ 2. 76 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Abhi 1. 35 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 8,
+"text": "Dī 2. 230; Ma 1. 76 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 9,
+"text": "Aṁ 3. 433 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 10,
+"text": "Khu 7. 111 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 11,
+"text": "Abhi 2. 307 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 12,
+"text": "Saṁ 1. 264; Aṁ 1. 289 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 13,
+"text": "Salakkhaṇe (Sī, Syā)",
+"variants": [
+{
+"reading": "Salakkhaṇe",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"19": [
+{
+"n": 1,
+"text": "Dūre vā (Sī, Syā)",
+"variants": [
+{
+"reading": "Dūre vā",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 9. 51 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"20": [
+{
+"n": 3,
+"text": "Ajjhattānaṁ (Syā)",
+"variants": [
+{
+"reading": "Ajjhattānaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Vināsadassane (Syā)",
+"variants": [
+{
+"reading": "Vināsadassane",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"22": [
+{
+"n": 1,
+"text": "Khu 9. 259 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Nīrasā (Sī)",
+"variants": [
+{
+"reading": "Nīrasā",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 9. 57 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"23": [
+{
+"n": 1,
+"text": "Pubbāparañāṇehi vuttehi (Sī, Syā)",
+"variants": [
+{
+"reading": "Pubbāparañāṇehi vuttehi",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 9. 411 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Muñcitukamyo, muñcitukamyassa bhāvo (Syā, Ka)",
+"variants": [
+{
+"reading": "Muñcitukamyo, muñcitukamyassa bhāvo",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 2. 385; Khu 9. 409 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 8. 138 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Ajjhupekkhanā paññā (Sī, Syā)",
+"variants": [
+{
+"reading": "Ajjhupekkhanā paññā",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Vattabbānaṁ (Sī)",
+"variants": [
+{
+"reading": "Vattabbānaṁ",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Khu 9. 259 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"24": [
+{
+"n": 1,
+"text": "Visuddhi 2. 321 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"25": [
+{
+"n": 1,
+"text": "Orimatīre tanubaddhaṁ (Sī)",
+"variants": [
+{
+"reading": "Orimatīre tanubaddhaṁ",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Orasaputtataṁ (Sī, Syā)",
+"variants": [
+{
+"reading": "Orasaputtataṁ",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Visuddhi 2. 321 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Pārāsanno (Sī, Syā)",
+"variants": [
+{
+"reading": "Pārāsanno",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 1. 5, 312 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Tadāsannagato (Sī, Syā, Ka)",
+"variants": [
+{
+"reading": "Tadāsannagato",
+"sigla": [
+"Sī",
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Aṁ 1. 467 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"27": [
+{
+"n": 1,
+"text": "Khu 10. 3 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Chinnamanupassane (Syā), chinnavaṭṭamanupassane (Sī)",
+"variants": [
+{
+"reading": "Chinnamanupassane",
+"sigla": [
+"Syā"
+]
+},
+{
+"reading": "chinnavaṭṭamanupassane",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Ma 1. 126 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Vi 3. 20; Dī 1. 79 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"28": [
+{
+"n": 1,
+"text": "Macchakhipaṁ (Sī, Syā)",
+"variants": [
+{
+"reading": "Macchakhipaṁ",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 1. 72, 89 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Uparimaggattayavajjhe (Visuddhi 2. 316 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Saṁ 1. 208 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Tassa hi paccavekkhaṇassa (Visuddhi 2. 316 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Abhi 1. 2 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Ma 1. 199 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Abhi 1. 12 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Ma 3. 33; Khu 7. 362; Khu 8. 75 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Vi 3. 27; Dī 1. 102; Dī 2. 38 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"29": [
+{
+"n": 1,
+"text": "Khu 1. 65 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Dī 1. 70; Abhi 1. 44 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Dī 2. 230 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Ma 3. 285 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Abhi 1. 3 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Ma 3. 153 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"32": [
+{
+"n": 7,
+"text": "Saṁ 1. 102 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 8,
+"text": "Khu 5. 141 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 9,
+"text": "Abhi 1. 205 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"34": [
+{
+"n": 1,
+"text": "Khu 9. 55 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Phusanaṭṭhe (Sī)",
+"variants": [
+{
+"reading": "Phusanaṭṭhe",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"40": [
+{
+"n": 1,
+"text": "Khu 9. 333 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"41": [
+{
+"n": 1,
+"text": "Abhi 3. 116 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Parisuddhabhāvo (Syā, Ka)",
+"variants": [
+{
+"reading": "Parisuddhabhāvo",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Samasīsantassa (Syā)",
+"variants": [
+{
+"reading": "Samasīsantassa",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Aṁ 1. 346 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Viharaṇaṁ vihāro (Sī, Syā)",
+"variants": [
+{
+"reading": "Viharaṇaṁ vihāro",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Samucchindati (Ka)",
+"variants": [
+{
+"reading": "Samucchindati",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Vissatthacitto (Sī, Syā)",
+"variants": [
+{
+"reading": "Vissatthacitto",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"42": [
+{
+"n": 1,
+"text": "Khu 9. 94 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 1. 24 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 3. 273 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"45": [
+{
+"n": 1,
+"text": "Tebhūmikadhammānaṁ (Sī, Syā)",
+"variants": [
+{
+"reading": "Tebhūmikadhammānaṁ",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 3. 116 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 1. 50 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi-Ṭṭha 3. 37 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Damayanti (Syā, Ka)",
+"variants": [
+{
+"reading": "Damayanti",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"47": [
+{
+"n": 1,
+"text": "Vi 2. 365 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Dī 1. 5; Ma 1. 237 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 1. 52 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Desanatāti ca pakāsanatā eva (Sī)",
+"variants": [
+{
+"reading": "Desanatāti ca pakāsanatā eva",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 1. 25 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Aṁ 1. 430 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Sā panesā (Syā, Ka)",
+"variants": [
+{
+"reading": "Sā panesā",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Khu 1. 394 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Ma 1. 375 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Aṁ 2. 146; Abhi 3. 173 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Aṁ 1. 351; Saṁ 1. 76 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Saṁ 1. 158 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 8,
+"text": "Ma 2. 32 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"49": [
+{
+"n": 1,
+"text": "Ma 1. 375 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Jātisambandhā (Sī, Syā)",
+"variants": [
+{
+"reading": "Jātisambandhā",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Abhi 4. 251 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"53": [
+{
+"n": 1,
+"text": "Anekādīnavehi (Syā, Ka)",
+"variants": [
+{
+"reading": "Anekādīnavehi",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Parammukhabhāvo (Syā, Ka)",
+"variants": [
+{
+"reading": "Parammukhabhāvo",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Kāraṇabhūtāya (Syā)",
+"variants": [
+{
+"reading": "Kāraṇabhūtāya",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"57": [
+{
+"n": 1,
+"text": "Vossagge (Bahūsu)",
+"variants": [],
+"xrefs": []
+}
+],
+"58": [
+{
+"n": 2,
+"text": "Vuttampi (Sī)",
+"variants": [
+{
+"reading": "Vuttampi",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"59": [
+{
+"n": 1,
+"text": "Santaṁ (Syā)",
+"variants": [
+{
+"reading": "Santaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 1. 399 piṭṭhe. 3. Khu 9. 404 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Saṁ 2. 491 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"61": [
+{
+"n": 1,
+"text": "Vi 3. 51 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"65": [
+{
+"n": 1,
+"text": "Tadanantaraṁ (Sī)",
+"variants": [
+{
+"reading": "Tadanantaraṁ",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 2. 105; Dī 2. 245 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+}
+],
+"66": [
+{
+"n": 1,
+"text": "Vi 3. 9; Ma 1. 225; Ma 2. 293 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Vi 1. 92; Khu 8. 271 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Tadabhimukhabhūtattā (Sī), tadabhimukhattā (Syā)",
+"variants": [
+{
+"reading": "Tadabhimukhabhūtattā",
+"sigla": [
+"Sī"
+]
+},
+{
+"reading": "tadabhimukhattā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Arahattamaggañāṇuppattikassa (Sī)",
+"variants": [
+{
+"reading": "Arahattamaggañāṇuppattikassa",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"68": [
+{
+"n": 1,
+"text": "Khu 1. 348 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"69": [
+{
+"n": 2,
+"text": "Saṁ 2. 155 pṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Sattisabbaññutte (Syā, Ka)",
+"variants": [
+{
+"reading": "Sattisabbaññutte",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"72": [
+{
+"n": 1,
+"text": "Pañcañeyyapathappabhedaṁ (Sī)",
+"variants": [
+{
+"reading": "Pañcañeyyapathappabhedaṁ",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 7. 280; Khu 8. 178; Khu 9. 227 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"73": [
+{
+"n": 1,
+"text": "Khu 7. 263; Khu 8. 50 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Pariññāya paricchindakapaññā (Ka) 2. Visuddhi 2. 158; Abhi-Ṭṭha 2. 134 piṭṭhesu.",
+"variants": [
+{
+"reading": "Pariññāya paricchindakapaññā",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Gave sitabbaṁ.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 1. 46 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Vi 3. 19; Saṁ 3. 368 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Saṁ 3. 381 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 6. 140 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Saṁ 3. 150 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Saṁ 1. 160, 398; Dī 2. 129. 161 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Saṁ 3. 379 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 1. 416 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Saṁ 1. 310 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Tathāni avitathāni (Visuddhi 2. 126 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Khu 1. 416; Khu 7. 226 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Saṁ 1. 110 piṭṭhe. 6. Ma 1. 376 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Saṁ 3. 377 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Abhi 2. 118 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"74": [
+{
+"n": 1,
+"text": "Abhi 2. 434 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 1. 139; Ma 3. 205 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 2. 88 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Dī 3. 181 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 2. 18; Dī 3. 200 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 2. 286 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 3. 125; Dī 3. 250 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 3. 125; Dī 3. 250 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 3. 209; Dī 3. 220, 254 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 3. 430; Dī 3. 259 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Saṁ 1. 253 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Dhammapuggalavasena (Sī, Syā)",
+"variants": [
+{
+"reading": "Dhammapuggalavasena",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 1. 253 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 2. 88, 89 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 2. 251, 286 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Na hotiyeva (Sī) Aṁ-Ṭṭha 3. 137 piṭṭhe passitabbaṁ.",
+"variants": [
+{
+"reading": "Na hotiyeva",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Micchādiṭṭhādiṁ (Syā, Ka)",
+"variants": [
+{
+"reading": "Micchādiṭṭhādiṁ",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 1. 225; Ma 2. 293; Vi 3. 9 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Aṁ 3. 346 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Aṁ 1. 4 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Vimuccanakāraṇāni honti dhammapaṭisaṁvedī ca (Ka)",
+"variants": [
+{
+"reading": "Vimuccanakāraṇāni honti dhammapaṭisaṁvedī ca",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Aṁ 2. 407 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Aṁ 3. 430; Dī 3. 259 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 8. 93, 178 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Dhī cittaṁ dhiratthu vata cittaṁ (Syā)",
+"variants": [
+{
+"reading": "Dhī cittaṁ dhiratthu vata cittaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Aṁ 1. 28 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Aṁ 2. 18; Dī 3. 200 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Abhibhūyamānāni (Sī)",
+"variants": [
+{
+"reading": "Abhibhūyamānāni",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Saṁ 3. 369; Vi 3. 15 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Aṁ 1. 21, 35 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Ma 1. 227 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Aṁ 1. 22 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Ma 2. 346 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+}
+],
+"75": [
+{
+"n": 1,
+"text": "Rasasāyanaṭṭhena (Ka)",
+"variants": [
+{
+"reading": "Rasasāyanaṭṭhena",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Apoti (Sī), āpoti (Syā)",
+"variants": [
+{
+"reading": "Apoti",
+"sigla": [
+"Sī"
+]
+},
+{
+"reading": "āpoti",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Upādiṇṇakarūpaṁ nāma (Abhi-Ṭṭha 1. 348 piṭṭhe.)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Sakalaṁ pharaṇavasena (Sī)",
+"variants": [
+{
+"reading": "Sakalaṁ pharaṇavasena",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Diṭṭhamaṇḍale (Syā, Ka)",
+"variants": [
+{
+"reading": "Diṭṭhamaṇḍale",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 8,
+"text": "Akkhipaṭalāni hadayaṅgatāni (Sī, Ka), Abhi-Ṭṭha 1. 345 piṭṭhe pana passitabbaṁ.",
+"variants": [
+{
+"reading": "Akkhipaṭalāni hadayaṅgatāni",
+"sigla": [
+"Sī",
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"76": [
+{
+"n": 1,
+"text": "Vaṇṇakammaṭṭhānaṁ (Sī)",
+"variants": [
+{
+"reading": "Vaṇṇakammaṭṭhānaṁ",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ekapattapūrappamāṇaṁ (Sī, Syā)",
+"variants": [
+{
+"reading": "Ekapattapūrappamāṇaṁ",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ghaṭenti (Sī)",
+"variants": [
+{
+"reading": "Ghaṭenti",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Kāraṇabhūtāhi (Sī, Syā, Ka), Abhi-Ṭṭha 2. 72; Visuddhi 2. 116 piṭṭhe pana passitabbaṁ.",
+"variants": [
+{
+"reading": "Kāraṇabhūtāhi",
+"sigla": [
+"Sī",
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi-Ṭṭha 1. 191 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Likhāmattaṁ (Syā, Ka)",
+"variants": [
+{
+"reading": "Likhāmattaṁ",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 2. 36 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 3. 282 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Aṁ 1. 256; Aṁ 2. 14 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"80": [
+{
+"n": 1,
+"text": "Khu 9. 26 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 1. 53; Khu 9. 36 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"81": [
+{
+"n": 2,
+"text": "Jarāmaraṇavante (Sī)",
+"variants": [
+{
+"reading": "Jarāmaraṇavante",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"82": [
+{
+"n": 1,
+"text": "Yā (Sī)",
+"variants": [
+{
+"reading": "Yā",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Paripūriṭṭho (Sī)",
+"variants": [
+{
+"reading": "Paripūriṭṭho",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 9. 81 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"83": [
+{
+"n": 1,
+"text": "Hetattho (Syā)",
+"variants": [
+{
+"reading": "Hetattho",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"84": [
+{
+"n": 1,
+"text": "Vicayaṭṭho (Sī)",
+"variants": [
+{
+"reading": "Vicayaṭṭho",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "(...) Sī-Syā-potthakesu natthi.",
+"variants": [],
+"xrefs": []
+}
+],
+"85": [
+{
+"n": 1,
+"text": "Yogānanti (Sī), Pāḷiyaṁ pana “maggānan”ti dissati.",
+"variants": [
+{
+"reading": "Yogānanti",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"86": [
+{
+"n": 1,
+"text": "Nimittapavattito (Sī)",
+"variants": [
+{
+"reading": "Nimittapavattito",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 9. 26, 207 piṭṭhe (tannissitapāḷi)",
+"variants": [],
+"xrefs": []
+}
+],
+"88": [
+{
+"n": 1,
+"text": "Pakāsanaṭṭhādīni (Sī)",
+"variants": [
+{
+"reading": "Pakāsanaṭṭhādīni",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 1. 15; Aṁ 2. 215; Aṁ 1. 133 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+}
+],
+"89": [
+{
+"n": 1,
+"text": "Saṁ 1. 90 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"90": [
+{
+"n": 1,
+"text": "Khu 9. 259 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 9. 207 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Rūpasattakādivasena (Visuddhi 2. 336 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 9. 80 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"92": [
+{
+"n": 1,
+"text": "Pāmukkhaṭṭhenātipi (Syā)",
+"variants": [
+{
+"reading": "Pāmukkhaṭṭhenātipi",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"93": [
+{
+"n": 1,
+"text": "Ārammaṇa-ārammaṇādhipatipaccayatāya (Sī)",
+"variants": [
+{
+"reading": "Ārammaṇa-ārammaṇādhipatipaccayatāya",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 2. 427; Dī 3. 209 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 2. 427; Dī 3. 209 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 1. 116 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 3. 7 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 3. 201; Dī 3. 218 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Pakāsanaṭṭhādīnaṁ (Sī)",
+"variants": [
+{
+"reading": "Pakāsanaṭṭhādīnaṁ",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Uttaramātā (Dī-Ṭṭha 2. 100; Aṁ-Ṭṭha 3. 163 piṭṭhesu)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 3. 201; Dī 3. 218 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Tīraṇapariññatā (Ka), tīraṇā (Syā)",
+"variants": [
+{
+"reading": "Tīraṇapariññatā",
+"sigla": [
+"Ka"
+]
+},
+{
+"reading": "tīraṇā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Vematikā (Gaṇṭhipade)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Damdhavipassanūpagānaṁ (Sī)",
+"variants": [
+{
+"reading": "Damdhavipassanūpagānaṁ",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"95": [
+{
+"n": 1,
+"text": "Abhi 1. 222; Abhi 2. 142. piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Dī 3. 181; Abhi 2. 380 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Āsīsatopi (Sī)",
+"variants": [
+{
+"reading": "Āsīsatopi",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 3. 273 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Nissaraṇattā (Sī, Ka)",
+"variants": [
+{
+"reading": "Nissaraṇattā",
+"sigla": [
+"Sī",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 2. 372 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Dī 2. 50; Dī 3. 253 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 7. 205 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Abhi 2. 379, 380 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Dī 2. 221 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Kataṁ (Syā)",
+"variants": [
+{
+"reading": "Kataṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"96": [
+{
+"n": 1,
+"text": "Visuddhi 2. 331 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Pahānassa (Ka)",
+"variants": [
+{
+"reading": "Pahānassa",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 3. 130 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 3. 181 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 2. 106 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Gantabbabhāvato (Sī, Syā), gandhabbattābhāvato (Gaṇṭhipade)",
+"variants": [
+{
+"reading": "Gantabbabhāvato",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Saṁ 3. 244 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Asanivisattābhihatassa (Gaṇṭhipade), Visuddhi 2. 337 piṭṭhe pana passitabbaṁ.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Abhi 3. 114 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"97": [
+{
+"n": 1,
+"text": "Dī 3. 184 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Dī 3. 207 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Dī 3. 252 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 3. 293; Dī 3. 257 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 2. 346 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Yopesa (Ka), yo cesa (Syā)",
+"variants": [
+{
+"reading": "Yopesa",
+"sigla": [
+"Ka"
+]
+},
+{
+"reading": "yo cesa",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Dussīlamalaṁ (Syā)",
+"variants": [
+{
+"reading": "Dussīlamalaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 5. 327; Khu 6. 77 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 9. 302 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Pārisuddhibhāvassa (Syā, Ka)",
+"variants": [
+{
+"reading": "Pārisuddhibhāvassa",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Ma 2. 318 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Aṁ 3. 293; Dī 3. 257 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Dī 3. 84 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Saṁ 3. 113 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Abhi 2. 268 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Sāte saṁsaṭṭhā (Syā)",
+"variants": [
+{
+"reading": "Sāte saṁsaṭṭhā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"98": [
+{
+"n": 1,
+"text": "Ma 2. 58 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Lokiyabhāvanā (Sī)",
+"variants": [
+{
+"reading": "Lokiyabhāvanā",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 6. 156 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Dī 3. 48 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Abhi 1. 104 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Mutiṁ (Sī)",
+"variants": [
+{
+"reading": "Mutiṁ",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Abhi 2. 337 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"99": [
+{
+"n": 1,
+"text": "Vimuttirasavaseneva (Sī)",
+"variants": [
+{
+"reading": "Vimuttirasavaseneva",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"100": [
+{
+"n": 1,
+"text": "Saṁ 1. 265 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Dī 2. 96; Aṁ 3. 126; Abhi 1. 65 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Paṭisaṁ-Ṭṭha 2. 21 piṭṭhe passitabbaṁ.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Dī 2. 92; Aṁ 3. 126; Abhi 1. 64 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"101": [
+{
+"n": 1,
+"text": "Dī-Ṭṭha 3. 167 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 3. 397; Dī 3. 242; Khu 9. 356 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Dī 2. 94; Dī 3. 251; Aṁ 3. 126 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Dī 3. 225, 260 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 3. 208; Dī 3. 221, 255 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Dī-Ṭṭha 3. 235 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Phussitā (Syā)",
+"variants": [
+{
+"reading": "Phussitā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"102": [
+{
+"n": 1,
+"text": "Vi 3. 20; Saṁ 2. 56 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Saṁ 2. 70 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"103": [
+{
+"n": 2,
+"text": "Jātijarābyādhimaraṇaṁ bhayaṭṭhena (Sī)",
+"variants": [
+{
+"reading": "Jātijarābyādhimaraṇaṁ bhayaṭṭhena",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Vi 3. 18 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"104": [
+{
+"n": 1,
+"text": "Vi 1. 5; Ma 2. 202 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 2. 104 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Tapantassa (Ka)",
+"variants": [
+{
+"reading": "Tapantassa",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Jātivirahena yato (Visuddhi 2. 132 piṭṭhe).",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Dukkhañca (Sī, Visuddhi 2. 134 piṭṭhe ca)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Piyavippayogoti (Sī, Ka, Visuddhi 2. 136 piṭṭhe ca)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Tāva (Sī)",
+"variants": [
+{
+"reading": "Tāva",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Nibbhayayogassa (Sī)",
+"variants": [
+{
+"reading": "Nibbhayayogassa",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ponobbhavikāti (Syā)",
+"variants": [
+{
+"reading": "Ponobbhavikāti",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Dī 1. 122. piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 3. 203 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 3. 13 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Paṭipiṁsanti (Sī, Syā)",
+"variants": [
+{
+"reading": "Paṭipiṁsanti",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Byasatīti (Sī)",
+"variants": [
+{
+"reading": "Byasatīti",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Punobhavaṁ (Sī)",
+"variants": [
+{
+"reading": "Punobhavaṁ",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Aṁ 1. 206 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khārāpaṭicchakādi... (Syā, Ka)",
+"variants": [
+{
+"reading": "Khārāpaṭicchakādi...",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 1. 371 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Bhavaṁ (Syā, Ka)",
+"variants": [
+{
+"reading": "Bhavaṁ",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Ma 2. 306. piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Aṁ 2. 210 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Abhi 3. 13 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Ma 3. 164 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 8,
+"text": "Abhi 2. 198 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 9,
+"text": "Khu 9. 36; Abhi 2. 105 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"105": [
+{
+"n": 1,
+"text": "Samudayanirodhena (Syā)",
+"variants": [
+{
+"reading": "Samudayanirodhena",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 1. 62 piṭṭhe Dhammapade.",
+"variants": [],
+"xrefs": []
+}
+],
+"106": [
+{
+"n": 1,
+"text": "Ma 1. 192; Saṁ 2. 18, 56; Vi 3. 20 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Paṭipakkhaniyamanaṁ (Syā, Gaṇṭhipade ca) Abhi-Ṭṭha 2. 107 piṭṭhe pana passitabbaṁ.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Anuppatti (Sī, Syā)",
+"variants": [
+{
+"reading": "Anuppatti",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Apavattiṁ (Sī)",
+"variants": [
+{
+"reading": "Apavattiṁ",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"107": [
+{
+"n": 1,
+"text": "Abhi 1. 20, 22 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 1. 376 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Sattadhā (Syā)",
+"variants": [
+{
+"reading": "Sattadhā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Padapacchedaṁ (Syā) evamaññatthāpi.",
+"variants": [
+{
+"reading": "Padapacchedaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aññena (Syā)",
+"variants": [
+{
+"reading": "Aññena",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Jīvitaṁ (Syā)",
+"variants": [
+{
+"reading": "Jīvitaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "( ) Pāḷiyaṁ natthi.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Āvattantassa (Syā)",
+"variants": [
+{
+"reading": "Āvattantassa",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Bhutvāvigatuppannaṁ (Sī, Abhi-Ṭṭha 2. 285; Ma-Ṭṭha 3. 173 piṭṭhesu ca)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Sandhārayamāne (Sī, Ka)",
+"variants": [
+{
+"reading": "Sandhārayamāne",
+"sigla": [
+"Sī",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Yā cassa (Syā, Abhi-Ṭṭha 2. 287; Ma-Ṭṭha 3. 176 piṭṭhesu ca)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Kāyeyeva (Sī)",
+"variants": [
+{
+"reading": "Kāyeyeva",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Dī 2. 231; Ma 1. 70 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Saṁ 3. 100 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Yadidaṁ (Syā, Abhi-Ṭṭha 2. 210; Ma-Ṭṭha 1. 249 piṭṭhesu ca) Gaṇṭhipade pana passitabbaṁ.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Saṁ 2. 409 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Nanvimassa (Sī)",
+"variants": [
+{
+"reading": "Nanvimassa",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 7. 1 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 2. 266 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Gāhāpetvā (Sī)",
+"variants": [
+{
+"reading": "Gāhāpetvā",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Nanu (Sī)",
+"variants": [
+{
+"reading": "Nanu",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 1. 258 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Bhavanti cāti (Sī)",
+"variants": [
+{
+"reading": "Bhavanti cāti",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Apanītaṁ (Sabbattha) Vi-Ṭṭha 1. 121 piṭṭhe pana passitabbaṁ.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 2. 128 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Nirujjhati (Sī)",
+"variants": [
+{
+"reading": "Nirujjhati",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Vuṭṭhāya (Sī)",
+"variants": [
+{
+"reading": "Vuṭṭhāya",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Sammāsamādhīti (Sī, Ka)",
+"variants": [
+{
+"reading": "Sammāsamādhīti",
+"sigla": [
+"Sī",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Nayidaṁ (Syā, Ka)",
+"variants": [
+{
+"reading": "Nayidaṁ",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Akatvā (Abhi-Ṭṭha 2. 109 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Saṁ 1. 401 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 9. 406 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 3. 203 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 9. 406 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Sampayogañca (Syā)",
+"variants": [
+{
+"reading": "Sampayogañca",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Dī 2. 238; Ma 1. 76 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Saṁ 2. 417 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 1. 237 Itivuttake.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 7. 2; Abhi 2. 266 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Gavesitabbo.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Vijjupātasadisā (Sī)",
+"variants": [
+{
+"reading": "Vijjupātasadisā",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Dī 1. 148; Ma 2. 99; Saṁ 3. 63; Aṁ 1. 235 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Samādhivasena (Sabbattha)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Sukhe cāpi (Sī, Ka)",
+"variants": [
+{
+"reading": "Sukhe cāpi",
+"sigla": [
+"Sī",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Saṁ 3. 188 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 1. 370 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ahamidaṁ (Syā, Ka)",
+"variants": [
+{
+"reading": "Ahamidaṁ",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Samannesitvā (Ka)",
+"variants": [
+{
+"reading": "Samannesitvā",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Dvāsīti khuddakavattāni (Abhi-Ṭṭha 2. 283; Aṁ-Ṭṭha 1. 23 piṭṭhesu), Vi 4. 239 piṭṭhe pana passitabbaṁ.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 9. 24, 25 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Lujjanaṭṭhena (Syā)",
+"variants": [
+{
+"reading": "Lujjanaṭṭhena",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Ma 1. 377 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Ma 1. 92; Aṁ 1. 560 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Abhi 2. 266 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Aṁ 2. 247. piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 9. 62 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Gavesitabbaṁ.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Vi 4. 373 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Abhi 2. 202 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Dī 1. 234; Ma 1. 47 piṭṭhādīsu. 5. Ma 2. 204 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Abhi 1. 40 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Saṁ 3. 375 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Abhi 2. 261 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Ma 3. 51; Aṁ 2. 450 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Saṁyuttaṅguttaresu (Sī)",
+"variants": [
+{
+"reading": "Saṁyuttaṅguttaresu",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Abhi 1. 45; Dī 1. 71 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Abhi 1. 45; Dī 1. 71 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+}
+],
+"108": [
+{
+"n": 1,
+"text": "Ca (Sī)",
+"variants": [
+{
+"reading": "Ca",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Hetuphalasamavāyavādīnaṁ (Sī, Abhi-Ṭṭha 2. 84 piṭṭhe ca)",
+"variants": [],
+"xrefs": []
+}
+],
+"109": [
+{
+"n": 1,
+"text": "Satadhā (Sī, Ka)",
+"variants": [
+{
+"reading": "Satadhā",
+"sigla": [
+"Sī",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 1. 375 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Saṁ 2. 70; Aṁ 1. 342 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Saṁ 3. 395 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"111": [
+{
+"n": 1,
+"text": "Khu 5. 327; Khu 6. 77 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Buddhacariyāya (Syā, Ka)",
+"variants": [
+{
+"reading": "Buddhacariyāya",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Saṁ 3. 377 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 1. 333 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 1. 332 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 1. 331 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Keci (Syā, Ka, Vi-Ṭṭha 1. 87 piṭṭhepi)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 2. 318 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 3. 164; Dī 2. 13 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 1. 162 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Tiṇṇaṁ (Sī, Aṁ-Ṭṭha 1. 85; Ma-Ṭṭha 1. 52; Dī-Ṭṭha 1. 65 piṭṭhesupi) Gaṇṭhipade pana passitabbaṁ.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Tulo (Syā)",
+"variants": [
+{
+"reading": "Tulo",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 2. 352; Khu 1. 368 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Dī 3. 84 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 1. 386 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Dī 3. 111 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Ma 2. 58 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Khu 6. 156 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Dī 3. 48 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Abhi 1. 104 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+}
+],
+"112": [
+{
+"n": 1,
+"text": "Na saṁvattantīti (Syā, Ka)",
+"variants": [
+{
+"reading": "Na saṁvattantīti",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"113": [
+{
+"n": 1,
+"text": "Dī 1. 67 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 2. 255 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Dī 1. 66; Ma 1. 238; Saṁ 2. 384; Aṁ 1. 111 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Khu 1. 434 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Ma 1. 13; Aṁ 2. 433; Aṁ 3. 341 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Ma 1. 14; Aṁ 2. 432; Aṁ 3. 342 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Akusalaṁ sīlampi (Syā), akusalaṁ sīlantipi (Ka)",
+"variants": [
+{
+"reading": "Akusalaṁ sīlampi",
+"sigla": [
+"Syā"
+]
+},
+{
+"reading": "akusalaṁ sīlantipi",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 8,
+"text": "Khu 9. 1, 41 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"114": [
+{
+"n": 1,
+"text": "Parassa haraṇaṁ (Sī, Syā, Ka) Dī-Ṭṭha 1. 70 piṭṭhe pana passitabbaṁ.",
+"variants": [
+{
+"reading": "Parassa haraṇaṁ",
+"sigla": [
+"Sī",
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Parasantakavatthuke (Sī)",
+"variants": [
+{
+"reading": "Parasantakavatthuke",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aññesaṁ purisānaṁ (Sī), aññapurisānaṁ (Syā)",
+"variants": [
+{
+"reading": "Aññesaṁ purisānaṁ",
+"sigla": [
+"Sī"
+]
+},
+{
+"reading": "aññapurisānaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"116": [
+{
+"n": 1,
+"text": "Vī 5. 288 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Vi 5. 288 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 3. 257, 515 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 2. 18; Saṁ 3. 135; Dī 3. 201 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 9. 83 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Ye cime (Sī, Syā), ye kecime (Ka)",
+"variants": [
+{
+"reading": "Ye cime",
+"sigla": [
+"Sī",
+"Syā"
+]
+},
+{
+"reading": "ye kecime",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Aṁ 2. 18; Saṁ 3. 135; Dī 3. 201 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Ma 1. 150 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Saṁ 3. 5 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Aṁ 2. 478 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 7,
+"text": "Khu 9. 83; Dī 3. 252 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"118": [
+{
+"n": 1,
+"text": "Uddhaccamiddhaṁ (Visuddhi 1. 147 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 1. 253 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Pubbasannicitaṭṭhānesu (Sī, Syā)",
+"variants": [
+{
+"reading": "Pubbasannicitaṭṭhānesu",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Hatthā (Sī, Syā)",
+"variants": [
+{
+"reading": "Hatthā",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 5. 221 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 5. 17 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Pādā (Sī, Syā)",
+"variants": [
+{
+"reading": "Pādā",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Vi 1. 78 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Puḷavehi (Ka)",
+"variants": [
+{
+"reading": "Puḷavehi",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Ma 1. 29, 43 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Abhi 1. 233 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Dī 1. 102; Ma 2. 346; Vi 3. 22 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+}
+],
+"119": [
+{
+"n": 1,
+"text": "Vīriyabalapariggahena (Sabbattha)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 2. 59 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Gahitapariggahaṭṭha... (Sabbattha)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Dī 1. 47 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Saṁ 2. 414, 416 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"120": [
+{
+"n": 1,
+"text": "Palibujjhati (Sī)",
+"variants": [
+{
+"reading": "Palibujjhati",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ganthatīti (Ka)",
+"variants": [
+{
+"reading": "Ganthatīti",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"122": [
+{
+"n": 1,
+"text": "Sukhīti (Syā)",
+"variants": [
+{
+"reading": "Sukhīti",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Hetuyo (Syā)",
+"variants": [
+{
+"reading": "Hetuyo",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Saṁ 1. 264 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 1. 9 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"123": [
+{
+"n": 1,
+"text": "Ekasmiṁ vā (Sī)",
+"variants": [
+{
+"reading": "Ekasmiṁ vā",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 9. 51 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ekavīthivisaya... (Visuddhi 2. 104 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 2. 4 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 2. 4 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Apunappunaruppattivasena (Sī), apunappunappattivasena (Syā)",
+"variants": [
+{
+"reading": "Apunappunaruppattivasena",
+"sigla": [
+"Sī"
+]
+},
+{
+"reading": "apunappunappattivasena",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 1. 342; Saṁ 2. 70 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Oḷārikasukhumabhedo (Visuddhi 2. 104 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Jarāmaraṇanti-ādīsu (Sī, Ka)",
+"variants": [
+{
+"reading": "Jarāmaraṇanti-ādīsu",
+"sigla": [
+"Sī",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Taṁ attanopi (Visuddhi 2. 245 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Abhi 2. 4 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Vipassanāvasena (Sī, Syā)",
+"variants": [
+{
+"reading": "Vipassanāvasena",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Vi 2. 18; Saṁ 2. 55 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"124": [
+{
+"n": 1,
+"text": "Paṭiventīti passati (Sabbattha) Visuddhi 2. 266 piṭṭhe pana passitabbaṁ.",
+"variants": [],
+"xrefs": []
+}
+],
+"125": [
+{
+"n": 1,
+"text": "Lakkhaṇato (Sī, Syā)",
+"variants": [
+{
+"reading": "Lakkhaṇato",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 1. 329; Saṁ 1. 266; Khu 1. 77 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Nāmarūpavavatthānena (Sī)",
+"variants": [
+{
+"reading": "Nāmarūpavavatthānena",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Sampayuttaṁ cittaṁ (Sī), sampayuttacittaṁ (Syā)",
+"variants": [
+{
+"reading": "Sampayuttaṁ cittaṁ",
+"sigla": [
+"Sī"
+]
+},
+{
+"reading": "sampayuttacittaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 1. 331; Saṁ 1. 266; Khu 1. 78 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+}
+],
+"127": [
+{
+"n": 1,
+"text": "Ekavavatthānāti (Sī, Syā)",
+"variants": [
+{
+"reading": "Ekavavatthānāti",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 1. 39 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Catūsu (Syā)",
+"variants": [
+{
+"reading": "Catūsu",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Visuddhājīvatā (Syā, Ka)",
+"variants": [
+{
+"reading": "Visuddhājīvatā",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"128": [
+{
+"n": 1,
+"text": "Khu 1. 41 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 1. 4 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Abhi 1. 253 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Uppādādimuñcanassa (Sī), uppādādīni muñcanañāṇassa (Syā)",
+"variants": [
+{
+"reading": "Uppādādimuñcanassa",
+"sigla": [
+"Sī"
+]
+},
+{
+"reading": "uppādādīni muñcanañāṇassa",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"130": [
+{
+"n": 1,
+"text": "Ajjhopannā (Ka)",
+"variants": [
+{
+"reading": "Ajjhopannā",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 7. 192 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 9. 65 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 1. 371 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Sukhaṁ (Syā)",
+"variants": [
+{
+"reading": "Sukhaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 1. 370 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 8. 138 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhinivesaṁ (Gaṇṭhipade)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 9. 89 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"131": [
+{
+"n": 1,
+"text": "Vi 3. 168 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aññataro (Ka)",
+"variants": [
+{
+"reading": "Aññataro",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Hoti (Sī, Syā)",
+"variants": [
+{
+"reading": "Hoti",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"132": [
+{
+"n": 1,
+"text": "Saṁ 1. 13, 167 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"133": [
+{
+"n": 1,
+"text": "Vipassanāto (Syā), vipassanato (Ka)",
+"variants": [
+{
+"reading": "Vipassanāto",
+"sigla": [
+"Syā"
+]
+},
+{
+"reading": "vipassanato",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Saṁ 3. 128 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"134": [
+{
+"n": 1,
+"text": "Vattati, pakaraṇe (Sī)",
+"variants": [
+{
+"reading": "Vattati, pakaraṇe",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Paripanthehi (Sī)",
+"variants": [
+{
+"reading": "Paripanthehi",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Visuddhi 2. 342 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Idhāniddiṭṭhānaṁ ariyamaggānaṁ vasena (Sī)",
+"variants": [
+{
+"reading": "Idhāniddiṭṭhānaṁ ariyamaggānaṁ vasena",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"136": [
+{
+"n": 1,
+"text": "Tesaṭṭhibhedato (Sabbattha)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Tesaṭṭhiyā (Syā, Ka)",
+"variants": [
+{
+"reading": "Tesaṭṭhiyā",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"137": [
+{
+"n": 1,
+"text": "Khu 9. 231 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Parāmāso (Sī, Syā)",
+"variants": [
+{
+"reading": "Parāmāso",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"139": [
+{
+"n": 1,
+"text": "Dī 1. 79 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"140": [
+{
+"n": 1,
+"text": "Heṭṭhā (Gaṇṭhipade)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 2. 349 piṭṭhe Theragāthāyaṁ.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Phalavasena (Sī, Syā)",
+"variants": [
+{
+"reading": "Phalavasena",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"141": [
+{
+"n": 1,
+"text": "Khu 1. 53 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"142": [
+{
+"n": 2,
+"text": "Visuddhi 2. 300 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"143": [
+{
+"n": 1,
+"text": "Khu 9. 79 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"144": [
+{
+"n": 1,
+"text": "Manāpikesūti (Sī, Syā, Ka)",
+"variants": [
+{
+"reading": "Manāpikesūti",
+"sigla": [
+"Sī",
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aññāṇameva cariyā (Ka)",
+"variants": [
+{
+"reading": "Aññāṇameva cariyā",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"146": [
+{
+"n": 1,
+"text": "Kālānantarajā (Sī)",
+"variants": [
+{
+"reading": "Kālānantarajā",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"147": [
+{
+"n": 1,
+"text": "Okkantitvā (Sī)",
+"variants": [
+{
+"reading": "Okkantitvā",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Dī 3. 191 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 1. 110 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 1. 51 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 5. 264 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Ārammaṇehi ārammaṇavantāni (Sī, Syā)",
+"variants": [
+{
+"reading": "Ārammaṇehi ārammaṇavantāni",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Khu 1. 368 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Saṁ 1. 15 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Sappurisāpassayo (Sī, Syā, Ka)",
+"variants": [
+{
+"reading": "Sappurisāpassayo",
+"sigla": [
+"Sī",
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 6,
+"text": "Aṁ 1. 341 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"148": [
+{
+"n": 1,
+"text": "Abhi 8. 133, 134 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Khu 1. 67 piṭṭhe Dhammapade.",
+"variants": [],
+"xrefs": []
+}
+],
+"151": [
+{
+"n": 1,
+"text": "Saṁ 2. 72 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Dī 3. 77 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"154": [
+{
+"n": 1,
+"text": "Ma 1. 45; Aṁ 1. 208, 209; Aṁ 3. 206 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Dī 2. 231; Ma 1. 70; Ma 3. 125 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+}
+],
+"157": [
+{
+"n": 1,
+"text": "Ma 1. 376 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 1. 375 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Yasmā kho āvuso Visākha cetasikā (Ka)",
+"variants": [
+{
+"reading": "Yasmā kho āvuso Visākha cetasikā",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Ma 1. 376 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"158": [
+{
+"n": 4,
+"text": "Anupassanāvasena (Sī, Syā)",
+"variants": [
+{
+"reading": "Anupassanāvasena",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"159": [
+{
+"n": 1,
+"text": "Khu 1. 42 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Tathā (Sī), atha vā (Syā)",
+"variants": [
+{
+"reading": "Tathā",
+"sigla": [
+"Sī"
+]
+},
+{
+"reading": "atha vā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Samāpattivaseneva (Visuddhi 2. 348 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Paṭhamameva (Syā)",
+"variants": [
+{
+"reading": "Paṭhamameva",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 1. 370 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ñattikammādīsu (Visuddhi 2. 349 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Sukusalena (Visuddhi 2. 349 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Paṭhamameva (Syā)",
+"variants": [
+{
+"reading": "Paṭhamameva",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Samāpannassa panassa (Sī, Syā)",
+"variants": [
+{
+"reading": "Samāpannassa panassa",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Ma 1. 377 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 5,
+"text": "Khu 9. 3 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"161": [
+{
+"n": 1,
+"text": "Samucchedavacanasambhavato (Syā, Ka)",
+"variants": [
+{
+"reading": "Samucchedavacanasambhavato",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"162": [
+{
+"n": 1,
+"text": "Aṁ 1. 555; Di 3. 192; Ma 2. 52 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+}
+],
+"163": [
+{
+"n": 1,
+"text": "Abhi-Ṭṭha 2. 287 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"165": [
+{
+"n": 1,
+"text": "Saṁ 2. 258 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"168": [
+{
+"n": 1,
+"text": "Uppajjanti (Syā) 2. Ārammaṇādhipati (Sī,Syā)",
+"variants": [
+{
+"reading": "Uppajjanti",
+"sigla": [
+"Syā"
+]
+},
+{
+"reading": "Ārammaṇādhipati",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Āsavanti (Sī) Pāḷiyampi āsavantveva dissati.",
+"variants": [
+{
+"reading": "Āsavanti",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Āsāvantipi (Sī)",
+"variants": [
+{
+"reading": "Āsāvantipi",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Sotāpattiphalakkhaṇe (Sī, Syā)",
+"variants": [
+{
+"reading": "Sotāpattiphalakkhaṇe",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"172": [
+{
+"n": 1,
+"text": "Attano sabhāveneva attano santakassa kassaci abhāvā (Sī)",
+"variants": [
+{
+"reading": "Attano sabhāveneva attano santakassa kassaci abhāvā",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Sabbathāpi (Ka)",
+"variants": [
+{
+"reading": "Sabbathāpi",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"174": [
+{
+"n": 1,
+"text": "Cittavasena (Sī)",
+"variants": [
+{
+"reading": "Cittavasena",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Tasmā eva (Ka)",
+"variants": [
+{
+"reading": "Tasmā eva",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"175": [
+{
+"n": 1,
+"text": "Abhi 2. 226 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 2. 225 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 2. 230 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Abhi 2. 225 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"176": [
+{
+"n": 1,
+"text": "Vaṇṇanāvasena (Sī)",
+"variants": [
+{
+"reading": "Vaṇṇanāvasena",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Saha adhiṭṭhānacittena (Visuddhi 2. 18 piṭṭhe), saha adhiṭṭhānāya (Syā, Ka)",
+"variants": [
+{
+"reading": "Saha adhiṭṭhānacittena (Visuddhi 2. 18 piṭṭhe), saha adhiṭṭhānāya",
+"sigla": [
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Saṁ 2. 480 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Ma 1. 401 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"177": [
+{
+"n": 1,
+"text": "Gaṇḍisaddo (Sī)",
+"variants": [
+{
+"reading": "Gaṇḍisaddo",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"178": [
+{
+"n": 1,
+"text": "Visuddhi 2. 39 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"179": [
+{
+"n": 1,
+"text": "Tassa (Syā, Ka, Abhi-Ṭṭha 2. 138 piṭṭhe ca.)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Kiñcettha (Abhi-Ṭṭha 2. 139 piṭṭhe)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Saṁ 1. 311 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhi 1. 10 piṭṭhādīsu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 3. 244 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 1. 460 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Puññaphalūpajīviniyo (Sī, Syā), Gaṇṭhipade pana passitabbaṁ.",
+"variants": [
+{
+"reading": "Puññaphalūpajīviniyo",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Nirassāsaṁ (Syā, Visuddhi 2. 47 piṭṭhe ca)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Pubbulakā (Sī)",
+"variants": [
+{
+"reading": "Pubbulakā",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "...cakkavāḷaṁ (Sī)",
+"variants": [
+{
+"reading": "...cakkavāḷaṁ",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Samāhatā (Sī, Syā)",
+"variants": [
+{
+"reading": "Samāhatā",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Yāvadicchakaṁ (Visuddhi 2. 53; Vi-Ṭṭha 1. 129 piṭṭhesu.)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Nūpapajjati (Sī), na uppajjati (Syā)",
+"variants": [
+{
+"reading": "Nūpapajjati",
+"sigla": [
+"Sī"
+]
+},
+{
+"reading": "na uppajjati",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Ma 1. 68 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 1. 229 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Dī 3. 70 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Badālatā (Sī)",
+"variants": [
+{
+"reading": "Badālatā",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Tividhānaṁ sayaṁ (Syā), tividhānampi yaṁ (Abhi-Ṭṭha 2. 141 piṭṭhe)",
+"variants": [
+{
+"reading": "Tividhānaṁ sayaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Dī 3. 75 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 4,
+"text": "Sāmaṁ (Gaṇṭhipade) Abhi-Ṭṭha 2. 142; Visuddhi 2. 177 piṭṭhesu pana passitabbaṁ.",
+"variants": [],
+"xrefs": []
+}
+],
+"180": [
+{
+"n": 1,
+"text": "Rūpadassanaṁ viya (Syā), rūpadassanampissa (Ka)",
+"variants": [
+{
+"reading": "Rūpadassanaṁ viya",
+"sigla": [
+"Syā"
+]
+},
+{
+"reading": "rūpadassanampissa",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Sampatinibbattā (Sī), sampatinibbattāva (Visuddhi 2. 54 piṭṭhe)",
+"variants": [
+{
+"reading": "Sampatinibbattā",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Ma 1. 102 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Abhinibbattikhandhakkhaṇe (Sī)",
+"variants": [
+{
+"reading": "Abhinibbattikhandhakkhaṇe",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Khu 9. 17 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Aṁ 1. 35 piṭṭhe.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Avinipātattā (Ka)",
+"variants": [
+{
+"reading": "Avinipātattā",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Abhi 2. 128 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"181": [
+{
+"n": 1,
+"text": "Saṁ 3. 382 piṭṭhe.",
+"variants": [],
+"xrefs": []
+}
+],
+"182": [
+{
+"n": 1,
+"text": "Vibhāvanabhāvavasena (Gaṇṭhipade)",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Aṁ 1. 456, 457 piṭṭhesu.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Sattahitapaṭipattiyaṁ (Sī, Syā, Ka) Abhi-Ṭṭha 1. 192 piṭṭhe pana passitabbaṁ.",
+"variants": [
+{
+"reading": "Sattahitapaṭipattiyaṁ",
+"sigla": [
+"Sī",
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 3,
+"text": "Pariṇāmetīti (Sabbattha) Abhi-Ṭṭha 1. 192 piṭṭhe pana passitabbaṁ.",
+"variants": [],
+"xrefs": []
+}
+]
+}

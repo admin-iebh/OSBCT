@@ -1,0 +1,24 @@
+# Cloudflare Pages caching rules.
+#
+# WHY THIS FILE EXISTS.  `stamp_build.py` derives a cache-buster from the DATA
+# and appends it to every JSON fetch as `?v=<BUILD>`, so a rebuilt corpus can
+# never be served stale.  But the HTML that CONTAINS that stamp is fetched at a
+# plain URL with no version on it — so a returning browser can hold yesterday's
+# reader, complete with yesterday's BUILD, and go on requesting yesterday's
+# data quite correctly.  Fixes made in `reader2.html` or `search.html` reach
+# nobody until the page itself revalidates.
+#
+# So: HTML always revalidates (it is small), and the versioned data is
+# immutable (it is large, and its URL changes whenever it does).
+
+/*.html
+  Cache-Control: no-cache
+
+/
+  Cache-Control: no-cache
+
+/*.json
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  Cache-Control: public, max-age=3600

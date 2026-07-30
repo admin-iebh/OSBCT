@@ -1,0 +1,23 @@
+const fs=require('fs'),path=require('path');const {JSDOM}=require('jsdom');const R='site/reader';
+const resolve=u=>{u=String(u).split('?')[0];if(u.startsWith('../'))return path.join('site',u.slice(3));if(u.startsWith('http')){try{u=new URL(u).pathname.replace(/^\//,'');}catch(e){}return path.join(R,u);}return path.join(R,u);};
+const dom=new JSDOM(fs.readFileSync(R+'/reader2.html','utf8'),{runScripts:'dangerously',pretendToBeVisual:true,url:'http://x/',beforeParse(w){w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=()=>{};w.fetch=u=>{const f=resolve(u);let t=null;try{t=fs.readFileSync(f,'utf8');}catch(e){}return Promise.resolve({ok:t!=null,status:t!=null?200:404,json:()=>Promise.resolve(t?JSON.parse(t):{}),text:()=>Promise.resolve(t||'')});};}});
+const w=dom.window;let err=null;w.addEventListener('error',e=>err=e.message);
+(async()=>{await new Promise(r=>setTimeout(r,900));const rows=()=>[...w.document.querySelectorAll('.row')];
+rows().find(r=>r.textContent.trim().startsWith('Khuddakanikāya'))?.click();await new Promise(r=>setTimeout(r,150));
+const it=rows().find(r=>r.textContent.trim().startsWith('Itivuttaka'));it?.click();await new Promise(r=>setTimeout(r,150));
+console.log('Itivuttaka child rows:', it? [...it.parentElement.querySelectorAll('.row .lbl')].slice(0,4).map(x=>x.textContent):'none');
+const kid=it&&[...it.parentElement.querySelectorAll('.row')].find(r=>/vagga|Lobha|Paṭhama/i.test(r.textContent));
+kid?.click();
+for(let k=0;k<70;k++){const s=w.document.querySelector('#scroll');if(s&&s.textContent.length>800)break;await new Promise(r=>setTimeout(r,100));}
+console.log('JS error:',err||'none');
+const txt=(w.document.querySelector('#scroll')||{}).textContent||'';
+const heads=[...w.document.querySelectorAll('#scroll .head')].map(h=>h.textContent);
+console.log('nipāta heads:',heads.filter(h=>/nipāta$/.test(h)));
+console.log('vagga heads count:',heads.filter(h=>/vagga$/.test(h)).length,'| sutta heads:',heads.filter(h=>/sutta$/.test(h)).length);
+console.log('Lobhasutta head:',heads.includes('1. Lobhasutta'),'| gāthā blocks:',[...w.document.querySelectorAll('#scroll .gatha')].length);
+console.log('verse line-broken (Yena lobhena luddhāse):',txt.includes('Yena lobhena luddhāse'));
+console.log('closing formula after verse (Ayampi attho vutto):',txt.includes('Ayampi attho vutto Bhagavatā'));
+console.log('colophons:',['Pāṭibhogavaggo paṭhamo.','Ekakanipāto niṭṭhito.','Tikanipāto niṭṭhito.','Catukkanipāto niṭṭhito.'].filter(c=>txt.includes(c)).length,'/4');
+console.log('Suttasaṅgaho + book-end:',txt.includes('Sattavisekanipātaṁ')&&txt.includes('Itivuttakapāḷi niṭṭhitā.'));
+console.log('Udāna excluded:',!txt.includes('Yadā have pātubhavanti'),'| Suttanipāta excluded:',!txt.includes('Uragasutta')&&!txt.includes('Uraga'));
+})();

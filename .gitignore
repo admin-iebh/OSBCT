@@ -19,3 +19,53 @@ corpus-prototype/
 Thumbs.db
 uploads/
 *.log
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
+
+# Working directories — probes, sweeps, logs and pre-images from the build
+# sessions.  1,587 MB untracked before the 2026-07-30 deploy, almost none of it
+# publishable: `_to_delete/` alone held 288 MB (a half-finished copy of site/),
+# `_tika/` 264 MB of probe output.  These are how findings were measured and are
+# worth keeping ON DISK; they are not worth carrying in the repository.
+_abhia/
+_ana/
+_appcache*/
+_charcensus/
+_codepage/
+_diaA/
+_entry*/
+_fnprobe/
+_hyphen/
+_kankha/
+_khua/
+_maa0*/
+_navprobe/
+_pre7/
+_pre8/
+_regress/
+_revbak_*/
+_sama/
+_screen/
+_seam/
+_tika/
+_to_delete/
+_vcache*/
+_vism/
+node_modules/
+
+# Byte-code and pre-images.  A pre-image is how this project recovers from a bad
+# build (nav.json was restored from one twice), so they are kept ON DISK — but
+# there are ~70 HANDOFF.md.bak_*, 137 nav.json.bak*, and a .pre* beside most
+# builders, and none of them belongs in the history.
+__pycache__/
+*.pyc
+*.bak
+*.bak_*
+*.bak[0-9]*
+*.pre[0-9a-z_]*
+*damaged_by*

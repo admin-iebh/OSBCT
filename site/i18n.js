@@ -47,6 +47,7 @@ window.I18N = {
   s_open:{en:'open in reader →',es:'abrir en el lector →'},
   s_nomatch:{en:'No matches',es:'Sin resultados'},
   s_occ:{en:'occurrence(s)',es:'aparición(es)'},
+  s_sections:{en:'Sections',es:'Secciones'},
 
   // reader
   r_selectvol:{en:'Select a volume at left.',es:'Seleccione un volumen a la izquierda.'},

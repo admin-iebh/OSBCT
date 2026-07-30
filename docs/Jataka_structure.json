@@ -1,0 +1,580 @@
+{
+ "work": "Jātakapāḷi",
+ "note": "ONE work across two physical volumes, as the edition numbers it: nipātas 1-22 and jātakas 1-547 both run continuously across the 22Khu05/23Khu06 break. Vaggas exist ONLY in nipātas 1-7; from the Atthakanipata on the jatakas sit directly under their nipata, so the tree has MIXED DEPTH, as printed.",
+ "volumes": {
+  "22Khu05": {
+   "pdf_text_pages": [
+    27,
+    426
+   ],
+   "ords": [
+    0,
+    2985
+   ],
+   "nipatas": [
+    1,
+    16
+   ],
+   "jatakas": [
+    1,
+    520
+   ]
+  },
+  "23Khu06": {
+   "pdf_text_pages": [
+    6,
+    383
+   ],
+   "ords": [
+    0,
+    3675
+   ],
+   "nipatas": [
+    17,
+    22
+   ],
+   "jatakas": [
+    521,
+    547
+   ]
+  }
+ },
+ "totals": {
+  "nipatas": 22,
+  "vaggas": 42,
+  "jatakas": 547
+ },
+ "nipatas": [
+  {
+   "n": 1,
+   "label": "1. Ekakanipāta",
+   "key": "22Khu05#0",
+   "vaggas": [
+    {
+     "label": "1. Apaṇṇakavagga",
+     "key": "22Khu05#0",
+     "jatakas": 10
+    },
+    {
+     "label": "2. Sīlavagga",
+     "key": "22Khu05#10",
+     "jatakas": 10
+    },
+    {
+     "label": "3. Kuruṅgavagga",
+     "key": "22Khu05#20",
+     "jatakas": 10
+    },
+    {
+     "label": "4. Kulāvakavagga",
+     "key": "22Khu05#30",
+     "jatakas": 10
+    },
+    {
+     "label": "5. Atthakāmavagga",
+     "key": "22Khu05#40",
+     "jatakas": 10
+    },
+    {
+     "label": "6. Āsīsavagga",
+     "key": "22Khu05#50",
+     "jatakas": 10
+    },
+    {
+     "label": "7. Itthivagga",
+     "key": "22Khu05#60",
+     "jatakas": 10
+    },
+    {
+     "label": "8. Varuṇavagga",
+     "key": "22Khu05#70",
+     "jatakas": 10
+    },
+    {
+     "label": "9. Apāyimhavagga",
+     "key": "22Khu05#80",
+     "jatakas": 10
+    },
+    {
+     "label": "10. Littavagga",
+     "key": "22Khu05#90",
+     "jatakas": 10
+    },
+    {
+     "label": "11. Parosatavagga",
+     "key": "22Khu05#100",
+     "jatakas": 10
+    },
+    {
+     "label": "12. Haṁcivagga",
+     "key": "22Khu05#110",
+     "jatakas": 10
+    },
+    {
+     "label": "13. Kusanāḷivagga",
+     "key": "22Khu05#120",
+     "jatakas": 10
+    },
+    {
+     "label": "14. Asampadānavagga",
+     "key": "22Khu05#130",
+     "jatakas": 10
+    },
+    {
+     "label": "15. Kakaṇṭakavagga",
+     "key": "22Khu05#140",
+     "jatakas": 10
+    }
+   ],
+   "jatakas": 150
+  },
+  {
+   "n": 2,
+   "label": "2. Dukanipāta",
+   "key": "22Khu05#150",
+   "vaggas": [
+    {
+     "label": "1. Daḷhavagga",
+     "key": "22Khu05#150",
+     "jatakas": 10
+    },
+    {
+     "label": "2. Santhavavagga",
+     "key": "22Khu05#170",
+     "jatakas": 10
+    },
+    {
+     "label": "3. Kalyāṇavagga",
+     "key": "22Khu05#190",
+     "jatakas": 10
+    },
+    {
+     "label": "4. Asadisavagga",
+     "key": "22Khu05#210",
+     "jatakas": 10
+    },
+    {
+     "label": "5. Ruhakavagga",
+     "key": "22Khu05#230",
+     "jatakas": 10
+    },
+    {
+     "label": "6. Na taṁ daḷhavagga",
+     "key": "22Khu05#250",
+     "jatakas": 10
+    },
+    {
+     "label": "7. Bīraṇathambhavagga",
+     "key": "22Khu05#269",
+     "jatakas": 10
+    },
+    {
+     "label": "8. Kāsāvavagga",
+     "key": "22Khu05#289",
+     "jatakas": 10
+    },
+    {
+     "label": "9. Upāhanavagga",
+     "key": "22Khu05#309",
+     "jatakas": 10
+    },
+    {
+     "label": "10. Siṅgālavagga",
+     "key": "22Khu05#330",
+     "jatakas": 10
+    }
+   ],
+   "jatakas": 100
+  },
+  {
+   "n": 3,
+   "label": "3. Tikanipāta",
+   "key": "22Khu05#350",
+   "vaggas": [
+    {
+     "label": "1. Saṅkappavagga",
+     "key": "22Khu05#350",
+     "jatakas": 10
+    },
+    {
+     "label": "2. Padumavagga",
+     "key": "22Khu05#380",
+     "jatakas": 10
+    },
+    {
+     "label": "3. Udapānavagga",
+     "key": "22Khu05#410",
+     "jatakas": 10
+    },
+    {
+     "label": "4. Abbhantaravagga",
+     "key": "22Khu05#440",
+     "jatakas": 10
+    },
+    {
+     "label": "5. Kumbhavagga",
+     "key": "22Khu05#470",
+     "jatakas": 10
+    }
+   ],
+   "jatakas": 50
+  },
+  {
+   "n": 4,
+   "label": "4. Catukkanipāta",
+   "key": "22Khu05#500",
+   "vaggas": [
+    {
+     "label": "1. Kāliṅgavagga",
+     "key": "22Khu05#500",
+     "jatakas": 10
+    },
+    {
+     "label": "2. Pucimandavagga",
+     "key": "22Khu05#541",
+     "jatakas": 10
+    },
+    {
+     "label": "3. Kuṭidūsakavagga",
+     "key": "22Khu05#581",
+     "jatakas": 10
+    },
+    {
+     "label": "4. Kokilavagga",
+     "key": "22Khu05#621",
+     "jatakas": 10
+    },
+    {
+     "label": "5. Cūḷakuṇālavagga",
+     "key": "22Khu05#661",
+     "jatakas": 10
+    }
+   ],
+   "jatakas": 50
+  },
+  {
+   "n": 5,
+   "label": "5. Pañcakanipāta",
+   "key": "22Khu05#701",
+   "vaggas": [
+    {
+     "label": "1. Maṇikuṇḍalavagga",
+     "key": "22Khu05#701",
+     "jatakas": 10
+    },
+    {
+     "label": "2. Vaṇṇārohavagga",
+     "key": "22Khu05#760",
+     "jatakas": 10
+    },
+    {
+     "label": "3. Aḍḍhavagga",
+     "key": "22Khu05#810",
+     "jatakas": 5
+    }
+   ],
+   "jatakas": 25
+  },
+  {
+   "n": 6,
+   "label": "6. Chakkanipāta",
+   "key": "22Khu05#841",
+   "vaggas": [
+    {
+     "label": "1. Avāriyavagga",
+     "key": "22Khu05#841",
+     "jatakas": 10
+    },
+    {
+     "label": "2. Kharaputtavagga",
+     "key": "22Khu05#918",
+     "jatakas": 10
+    }
+   ],
+   "jatakas": 20
+  },
+  {
+   "n": 7,
+   "label": "7. Sattakanipāta",
+   "key": "22Khu05#982",
+   "vaggas": [
+    {
+     "label": "1. Kukkuvagga",
+     "key": "22Khu05#982",
+     "jatakas": 10
+    },
+    {
+     "label": "2. Gandhāravagga",
+     "key": "22Khu05#1056",
+     "jatakas": 11
+    }
+   ],
+   "jatakas": 21
+  },
+  {
+   "n": 8,
+   "label": "8. Aṭṭhakanipāta",
+   "key": "22Khu05#1141",
+   "vaggas": [],
+   "jatakas": 10
+  },
+  {
+   "n": 9,
+   "label": "9. Navakanipāta",
+   "key": "22Khu05#1236",
+   "vaggas": [],
+   "jatakas": 12
+  },
+  {
+   "n": 10,
+   "label": "10. Dasakanipāta",
+   "key": "22Khu05#1348",
+   "vaggas": [],
+   "jatakas": 16
+  },
+  {
+   "n": 11,
+   "label": "11. Ekādasakanipāta",
+   "key": "22Khu05#1530",
+   "vaggas": [],
+   "jatakas": 9
+  },
+  {
+   "n": 12,
+   "label": "12. Dvādasakanipāta",
+   "key": "22Khu05#1652",
+   "vaggas": [],
+   "jatakas": 10
+  },
+  {
+   "n": 13,
+   "label": "13. Terasakanipāta",
+   "key": "22Khu05#1784",
+   "vaggas": [],
+   "jatakas": 10
+  },
+  {
+   "n": 14,
+   "label": "14. Pakiṇṇakanipāta",
+   "key": "22Khu05#1937",
+   "vaggas": [],
+   "jatakas": 13
+  },
+  {
+   "n": 15,
+   "label": "15. Vīsatinipāta",
+   "key": "22Khu05#2228",
+   "vaggas": [],
+   "jatakas": 14
+  },
+  {
+   "n": 16,
+   "label": "16. Tiṁsanipāta",
+   "key": "22Khu05#2616",
+   "vaggas": [],
+   "jatakas": 10
+  },
+  {
+   "n": 17,
+   "label": "17. Cattālīsanipāta",
+   "key": "23Khu06#0",
+   "vaggas": [],
+   "jatakas": 5
+  },
+  {
+   "n": 18,
+   "label": "18. Paṇṇāsanipāta",
+   "key": "23Khu06#245",
+   "vaggas": [],
+   "jatakas": 3
+  },
+  {
+   "n": 19,
+   "label": "19. Saṭṭhinipāta",
+   "key": "23Khu06#427",
+   "vaggas": [],
+   "jatakas": 2
+  },
+  {
+   "n": 20,
+   "label": "20. Sattatinipāta",
+   "key": "23Khu06#560",
+   "vaggas": [],
+   "jatakas": 2
+  },
+  {
+   "n": 21,
+   "label": "21. Asītinipāta",
+   "key": "23Khu06#743",
+   "vaggas": [],
+   "jatakas": 5
+  },
+  {
+   "n": 22,
+   "label": "22. Mahānipāta",
+   "key": "23Khu06#1237",
+   "vaggas": [],
+   "jatakas": 10
+  }
+ ],
+ "errata": [
+  {
+   "vol": "22Khu05",
+   "pdf_page": 304,
+   "printed": "24.",
+   "sequence_requires": 29,
+   "kind": "verse number",
+   "note": "collides with the real verse 24 in the same nipata"
+  },
+  {
+   "vol": "23Khu06",
+   "pdf_page": 374,
+   "printed": "2324.",
+   "sequence_requires": 2342,
+   "kind": "verse number"
+  },
+  {
+   "vol": "23Khu06",
+   "pdf_page": 383,
+   "printed": "1440.",
+   "sequence_requires": 2440,
+   "kind": "verse number"
+  },
+  {
+   "vol": "22Khu05",
+   "pdf_page": 105,
+   "printed": "271. Udapanadusakajakaka (3-3-1)",
+   "kind": "heading",
+   "note": "the edition sets 'jakaka' for 'jataka'; preserved verbatim"
+  },
+  {
+   "vol": "22Khu05",
+   "pdf_page": 79,
+   "printed": "6. Na tam dalhavagga",
+   "kind": "heading",
+   "note": "typeset with internal spaces; its own colophon closes it as 'Natamdalhavaggo chattho.'"
+  }
+ ],
+ "corpus_splices": {
+  "22Khu05": [
+   [
+    257,
+    109
+   ],
+   [
+    292,
+    145
+   ],
+   [
+    1037,
+    57
+   ],
+   [
+    1252,
+    18
+   ],
+   [
+    2414,
+    188
+   ],
+   [
+    2740,
+    125
+   ],
+   [
+    2843,
+    228
+   ]
+  ],
+  "23Khu06": [
+   [
+    515,
+    90
+   ],
+   [
+    1375,
+    140
+   ]
+  ],
+  "note": "two printed verses merged into one corpus paragraph; repaired by side-map only, the corpus is untouched"
+ },
+ "flagged_not_guessed": [
+  {
+   "vol": "22Khu05",
+   "real_pdf_page": 423,
+   "note": 9,
+   "reading": "Samappito (Si, I)",
+   "why": "the marker is printed with a space before the digit; MARK requires it to abut its word"
+  },
+  {
+   "vol": "23Khu06",
+   "real_pdf_page": 59,
+   "note": 13,
+   "reading": "Bahupi bhadra etesam (Ka), bahupi bhadraka ete (I)",
+   "why": "the edition prints the note but sets no marker 13 in the body"
+  }
+ ],
+ "gates": {
+  "body": {
+   "22Khu05": "0/0/0/0 at minw 4,2,1",
+   "23Khu06": "0/0/0/0 at minw 4,2,1"
+  },
+  "apparatus": {
+   "22Khu05": "0 spliced / 1 variant / 0 xrefs",
+   "23Khu06": "0 / 1 / 0"
+  },
+  "presentation": {
+   "check_layout": "ok both",
+   "_jatakaverify.js": "82/82"
+  }
+ },
+ "division": {
+  "shape": "TWO BHĀGAS, as the Sixth Council prints them",
+  "evidence": "each volume's own front title page sets 'JĀTAKAPĀḶI (Paṭhamo bhāgo)' / '(Dutiyo bhāgo)', and each carries its OWN matika whose every page is headed 'Jatakapali pathamabhaga' / 'Jatakapali dutiyabhaga'",
+  "break": "between 16. Timsanipata (jataka 520) and 17. Cattalisanipata (jataka 521)",
+  "cuts_no_unit": true,
+  "renumbering": "NONE — nipatas run 1-22 and jatakas 1-547 continuously across the two books; the edition divides but does not renumber, and the nav builder refuses to write unless the two trees join up",
+  "contrast_apadana": "the Apadana is also printed in two bhagas, but ITS break falls mid-Theraapadana between vaggas 42 and 43 of a series numbered 1-56 straight through, so those two volumes stay under one row",
+  "correction": "an earlier build of this nav grouped both Jataka volumes under a single row on the stated ground that 'the edition does not make this division'. That was wrong: the edition makes it explicitly on its title pages and in both matikas."
+ },
+ "nav_nodes": [
+  {
+   "vol": "22Khu05",
+   "title": "Jātakapāḷi (Paṭhamo bhāgo)",
+   "first": "22Khu05#0",
+   "nipatas": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+   ],
+   "opens_reading_pane": true
+  },
+  {
+   "vol": "23Khu06",
+   "title": "Jātakapāḷi (Dutiyo bhāgo)",
+   "first": "23Khu06#0",
+   "nipatas": [
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+   ],
+   "opens_reading_pane": true
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+{
+ "method": "Boundaries derived from the PRINTED PDF (title pages carrying the homage, and the book-end colophons), then matched to corpus ordinals by the opening verse text. The corpus `book` field was NOT used to set any boundary: it is a running header and lands LATE at every seam in this volume too (Therī-apadāna field first appears at ord 2077, real start 2072; Buddhavaṁsa at 3436, real start 3432). This is the same defect that made 19Khu02's recorded boundaries wrong.",
+ "page_offset_warning": "The corpus `pdf_page` DRIFTS within 21Khu04 because blank separator pages between books are not counted (real p201 and p416 area). A single measured offset for the volume is therefore an approximation — drive page ranges from the PDF's own title pages and colophons, as here.",
+ "volume": "21Khu04",
+ "work": "Apadānapāḷi (concluded) + Buddhavaṁsapāḷi + Cariyāpiṭakapāḷi",
+ "books": [
+  {
+   "book": "Therāpadāna (part 2 of 2)",
+   "first_ord": 0,
+   "last_ord": 2071,
+   "paras": 2072,
+   "vaggas": "43-56 (Sakiṁsammajjakavagga … Yasavagga)",
+   "pdf_first": 16,
+   "pdf_last": 200,
+   "colophon": "Therāpadānaṁ samattaṁ. (real p200)"
+  },
+  {
+   "book": "Therī-apadāna",
+   "first_ord": 2072,
+   "last_ord": 3431,
+   "paras": 1360,
+   "vaggas": "1-4 (Sumedhāvagga … Khattiyāvagga)",
+   "pdf_first": 202,
+   "pdf_last": 313,
+   "colophon": "Apadānapāḷi samattā. (real p313)"
+  },
+  {
+   "book": "Buddhavaṁsapāḷi",
+   "first_ord": 3432,
+   "last_ord": 4501,
+   "paras": 1070,
+   "pdf_first": 314,
+   "pdf_last": 399,
+   "colophon": "Buddhavaṁso niṭṭhito. (real p399)",
+   "cross_check": "1070 paragraphs, and the book's last paragraph carries the edition's own running total (1070) — exact."
+  },
+  {
+   "book": "Cariyāpiṭakapāḷi",
+   "first_ord": 4502,
+   "last_ord": 4857,
+   "paras": 356,
+   "vaggas": "1-3 (Akittivagga, Hatthināgavagga, Yudhañjayavagga)",
+   "pdf_first": 400,
+   "pdf_last": 435,
+   "colophon": "Cariyāpiṭakaṁ niṭṭhitaṁ. (real p435)"
+  }
+ ],
+ "stuck_fields": "After the Apadāna ends, the `vagga` field STICKS at 'Khattiyāvaggo catuttho.' through all of Buddhavaṁsa, so Buddhavaṁsa's and Cariyāpiṭaka's structure must come from the PDF, never from that field."
+}

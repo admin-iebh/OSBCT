@@ -8,7 +8,7 @@ no server — every file is a static asset.
 | | |
 |---|---|
 | `index.html` | landing page |
-| `reader/reader.html` | reader with search, cross-layer navigation, variant apparatus |
+|  `reader/reader2.html` | reader with search, cross-layer navigation, variant apparatus |
 | `search.html` | standalone search page |
 | `<vol>.json` × 118 | paragraph text + structure, one per volume |
 | `index/` | search shards + `terms.compact.json` |

@@ -30,6 +30,12 @@
   a.hit:hover{background:var(--panel)}
   .open{color:var(--mut);font-size:11px;margin-left:6px;opacity:0;transition:opacity .12s}
   a.hit:hover .open{opacity:1}
+  .secgrp{margin:0 0 18px}
+  .secgrp h3{font:600 12px system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 6px;padding:0 8px}
+  a.sechit{display:block;padding:7px 8px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--fg);border-radius:6px}
+  a.sechit:hover{background:var(--tag)}
+  .secname{font-size:15.5px}
+  .secwhere{font-size:11.5px;color:var(--accent);font-family:system-ui,sans-serif;margin-left:8px}
   .loc{font-size:12px;color:var(--accent);font-family:system-ui,sans-serif;letter-spacing:.01em}
   .loc .lay{display:inline-block;background:var(--tag);color:var(--tagt);padding:1px 7px;border-radius:10px;margin-right:7px;font-size:11px}
   .pey{background:var(--tag);color:var(--tagt);padding:0 6px;border-radius:9px;font-size:11px;margin-left:6px}
@@ -42,7 +48,7 @@
 </head>
 <body>
 <header>
-  <div class="topnav"><a href="index.html">←&nbsp;<span data-i18n="nav_home">Home</span></a> · <a href="reader/reader.html" data-i18n="nav_reader">Reader</a> · <a href="downloads.html" data-i18n="nav_downloads">Downloads</a> · <a href="about.html" data-i18n="nav_about">About</a> · <a href="errata.html" data-i18n="nav_errata">Errata</a> · <button class="langbtn linklike">ES</button></div>
+  <div class="topnav"><a href="index.html">←&nbsp;<span data-i18n="nav_home">Home</span></a> · <a href="reader/reader2.html" data-i18n="nav_reader">Reader</a> · <a href="downloads.html" data-i18n="nav_downloads">Downloads</a> · <a href="about.html" data-i18n="nav_about">About</a> · <a href="errata.html" data-i18n="nav_errata">Errata</a> · <button class="langbtn linklike">ES</button></div>
   <h1>Sixth Buddhist Council Tipiṭaka <span class="pali">(Chaṭṭhasaṅgītipiṭaka)</span></h1>
   <div class="sub" data-i18n="search_sub">Full-text search across 118 volumes — Tipiṭaka, Aṭṭhakathā, Ṭīkā · 83,751 paragraphs</div>
   <div class="bar">
@@ -58,6 +64,11 @@
   </div>
 </header>
 <script>
+// cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
+// rewrites it, so a rebuild can never be invisible to a returning browser.
+const BUILD='b6e4cfd8a037';
+function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
+
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
 document.addEventListener('DOMContentLoaded',()=>{document.getElementById('themebtn').onclick=()=>{var d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n);};});
 </script>
@@ -75,18 +86,44 @@ const FOLD={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','�
 const fold=s=>s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLD[c]||c);
 const el=id=>document.getElementById(id);
 let TERMS=null, VOLS=null, LAYERS=null, shardCache={};
+let NAMES=null, NFOLD=null, TERMKEYS=null;
+// !!! THE LOOKUP WAS EXACT-TOKEN WHILE THE PAGE PROMISED SUBSTRING
+// (2026-07-30m, user-reported).  `TERMS[ft]` is a key lookup, so `saṅgītisutta`
+// found nothing although `saṅgītisuttaṁ` is indexed in two volumes and thirteen
+// paragraphs carry the string — the edition inflects, so a bare stem is exactly
+// what a reader types and exactly what failed.  The footer has claimed
+// "exact / substring" all along.
+// Exact still wins outright; otherwise the term list is scanned once, cached,
+// and every term CONTAINING the query contributes its postings.
+function matchTerms(ft){
+  if(!TERMS) return [];
+  if(TERMS[ft]) return [ft];
+  if(ft.length<3) return [];   // a 1-2 letter substring sweep is noise
+  if(!TERMKEYS) TERMKEYS=Object.keys(TERMS);
+  const out=[];
+  for(let i=0;i<TERMKEYS.length;i++){ if(TERMKEYS[i].indexOf(ft)>=0){ out.push(TERMKEYS[i]); if(out.length>=500) break; } }
+  return out;
+}
 const status=m=>el('status').textContent=m;
 
 async function boot(){
   try{
-    const r=await fetch('index/terms.compact.json'); if(!r.ok) throw 0;
+    const r=await fetch(bust('index/terms.compact.json')); if(!r.ok) throw 0;
     const j=await r.json(); TERMS=j.terms; VOLS=j.vols; LAYERS=j.layers;
+    // !!! A PRINTED HEADING IS NOT IN THE TEXT INDEX, because that index is
+    // built from `paragraphs[].text` and a heading lives in `sections/`.  So
+    // section names were unsearchable outright — `Oghataraṇasutta`,
+    // `Ovādavagga`, `Maṅgalasuttavaṇṇanā` all returned nothing.  `names.json`
+    // carries every printed heading with its VOLUME AND ORDINAL, which is what
+    // reader2 accepts as `#VOL#ORD`, so a name hit opens the section itself.
+    try{ const nr=await fetch(bust('index/names.json'));
+         if(nr.ok){ NAMES=await nr.json(); NFOLD=NAMES.labels.map(fold); } }catch(e){}
     status(`Ready — ${Object.keys(TERMS).length.toLocaleString()} indexed terms across ${VOLS.length} volumes.`);
   }catch(e){ status('Could not load index/terms.compact.json — serve this folder over http (e.g. `python3 -m http.server`) rather than opening the file directly.'); }
 }
 async function shard(vi){
   if(shardCache[vi]) return shardCache[vi];
-  const r=await fetch('index/'+VOLS[vi]+'.idx.json');
+  const r=await fetch(bust('index/'+VOLS[vi]+'.idx.json'));
   const j=await r.json(); shardCache[vi]=j; return j;
 }
 function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
@@ -95,18 +132,68 @@ function snippet(text,ft){
   const a=Math.max(0,i-60), b=Math.min(text.length,i+ft.length+90);
   return (a>0?'… ':'')+esc(text.slice(a,i))+'<mark>'+esc(text.slice(i,i+ft.length))+'</mark>'+esc(text.slice(i+ft.length,b))+(b<text.length?' …':'');
 }
+// SECTION NAMES, MATCHED ON THE FOLDED LABEL.  Substring, so a partial name
+// still lands (`ovada` -> *Ovādavagga*), and diacritic-insensitive by the same
+// fold the text index uses.  Exact and opening matches are ranked first, then
+// shorter labels, so the sutta itself beats a compound that contains its name.
+function sectionHits(ft,lf){
+  if(!NAMES||!ft) return '';
+  const LAYFOLD={'canon':'pali-unicode','commentary':'atthakatha-unicode','subcommentary':'tika-unicode'};
+  const idx=[];
+  for(let i=0;i<NFOLD.length;i++){ const p=NFOLD[i].indexOf(ft); if(p>=0) idx.push([i,p]); }
+  if(!idx.length) return '';
+  const keep=new Set(idx.map(x=>x[0])), pos={};
+  idx.forEach(([i,p])=>{pos[i]=p;});
+  let rows=NAMES.rows.filter(r=>keep.has(r[0]));
+  if(lf) rows=rows.filter(r=>LAYFOLD[NAMES.layers[r[3]]]===lf);
+  if(!rows.length) return '';
+  rows.sort((a,b)=>{
+    const la=NAMES.labels[a[0]], lb=NAMES.labels[b[0]];
+    const ea=(NFOLD[a[0]]===ft)?0:(pos[a[0]]===0?1:2), eb=(NFOLD[b[0]]===ft)?0:(pos[b[0]]===0?1:2);
+    return ea-eb || la.length-lb.length || la.localeCompare(lb);
+  });
+  const shown=rows.slice(0,40);
+  const layName={'canon':'Tipiṭaka','commentary':'Aṭṭhakathā','subcommentary':'Ṭīkā'};
+  const body=shown.map(r=>{
+    const lab=NAMES.labels[r[0]], vol=NAMES.vols[r[1]];
+    const href='reader/reader2.html?q='+encodeURIComponent(el('q').value.trim())+'#'+vol+'#'+r[2];
+    return `<a class="sechit" href="${href}"><span class="secname">${esc(lab)}</span>`+
+           `<span class="secwhere">${layName[NAMES.layers[r[3]]]} · ${vol}</span></a>`;
+  }).join('');
+  return `<div class="secgrp"><h3>${(window.t?t('s_sections'):'Sections')} — ${rows.length}`+
+         `${rows.length>shown.length?', showing '+shown.length:''}</h3>${body}</div>`;
+}
+let runSeq=0;
 async function run(){
+  // The reader's box lost a race between keystrokes (2026-07-30n); this one is
+  // only triggered by click or Enter, but two Enters over changed text are the
+  // same shape, and the guard is three lines.
+  const my=++runSeq;
   if(!TERMS){status('Index not loaded.');return;}
   const q=el('q').value.trim(); if(!q){status('Type a query.');return;}
   const ft=fold(q); const lf=el('layer').value;
-  const vis=TERMS[ft];
-  if(!vis){status(`No matches for “${q}”.`);el('results').innerHTML='';return;}
+  const secHTML=sectionHits(ft,lf);
+  const mts=matchTerms(ft);
+  const vis=mts.length?[...new Set(mts.flatMap(k=>TERMS[k]||[]))].sort((a,b)=>a-b):null;
+  if(!vis){
+    // A NAME MATCH IS STILL A MATCH.  `Oghataraṇasutta` occurs in no running
+    // text at all, so the old "no matches" was wrong as well as unhelpful.
+    // ...AND SAY IT AS A RESULT, NOT A FAILURE.  2,229 of the corpus's 2,593
+    // sutta names occur in NO running text — the name is printed in the heading
+    // and nowhere else — so "no text matches" is the normal case for a sutta
+    // and led with the word "No".
+    if(my!==runSeq) return;
+    if(secHTML){ status(`Found in the section titles. “${q}” does not occur in the running text.`);
+                 el('results').innerHTML=secHTML; return; }
+    status(`No matches for “${q}”.`);el('results').innerHTML='';return;}
   status(`Searching ${vis.length} volume(s)…`);
   let out=[], total=0;
   for(const vi of vis){
     if(lf && LAYERS[vi]!==lf) continue;
     const sh=await shard(vi);
-    const postings=sh.inv[ft]||[];
+    const seenP=new Map();
+    for(const k of mts) for(const [pi,c] of (sh.inv[k]||[])) seenP.set(pi,(seenP.get(pi)||0)+c);
+    const postings=[...seenP.entries()].sort((a,b)=>a[0]-b[0]);
     for(const [pi,c] of postings){
       total+=c;
       if(out.length<200){ const p=sh.paras[pi]; out.push({lay:LAYERS[vi],vol:VOLS[vi],p}); }
@@ -115,9 +202,16 @@ async function run(){
   if(!out.length){status(`No matches in that layer for “${q}”.`);el('results').innerHTML='';return;}
   status(`${total.toLocaleString()} ${(window.t?t('s_occ'):'occurrence(s)')}`+(total>out.length?`, +${out.length}`:'')+`.`);
   const layName={'pali-unicode':'Tipiṭaka','atthakatha-unicode':'Aṭṭhakathā','tika-unicode':'Ṭīkā'};
-  el('results').innerHTML=out.map(h=>{
+  if(my!==runSeq) return;
+  el('results').innerHTML=secHTML+out.map(h=>{
     const p=h.p, loc=[p.book,p.vagga,p.sutta].filter(x=>x&&x!=='X').join(' › ');
-    const href='reader/reader.html?q='+encodeURIComponent(q)+'#'+h.vol+'/'+encodeURIComponent(p.id);
+    // THE ORDINAL, NOT THE `id`.  `p.id` is not unique — 12,110 collisions
+    // across 65 volumes — so an id-keyed jump lands on the FIRST paragraph
+    // that answers to it.  The rebuilt index carries `ord`; older shards do
+    // not, so the id form is still emitted as a fallback and reader2 resolves
+    // both.
+    const tgt=(p.ord!=null)?('#'+h.vol+'#'+p.ord):('#'+h.vol+'/'+encodeURIComponent(p.id));
+    const href='reader/reader2.html?q='+encodeURIComponent(q)+tgt;
     return `<a class="hit" href="${href}"><div class="loc"><span class="lay">${layName[h.lay]||h.lay}</span>`+
       `${esc(loc||'—')} · ¶${esc(String(p.n))} · p.${p.page??'?'} <span class="open">${(window.t?t('s_open'):'open in reader →')}</span>`+
       (p.peyyala?' <span class="pey">peyyāla</span>':'')+`</div>`+

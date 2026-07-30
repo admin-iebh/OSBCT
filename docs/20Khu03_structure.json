@@ -1,0 +1,18 @@
+{
+ "method": "Boundaries derived from the PRINTED PDF (title pages carrying the homage, and the book-end colophons), then matched to corpus ordinals by the opening verse text. The corpus `book` field was NOT used to set any boundary: it is a running header and lands LATE at every seam in this volume too (Therī-apadāna field first appears at ord 2077, real start 2072; Buddhavaṁsa at 3436, real start 3432). This is the same defect that made 19Khu02's recorded boundaries wrong.",
+ "page_offset_warning": "The corpus `pdf_page` DRIFTS within 21Khu04 because blank separator pages between books are not counted (real p201 and p416 area). A single measured offset for the volume is therefore an approximation — drive page ranges from the PDF's own title pages and colophons, as here.",
+ "volume": "20Khu03",
+ "work": "Apadānapāḷi — Therāpadāna, vaggas 1-42 (the work CONTINUES into 21Khu04)",
+ "books": [
+  {
+   "book": "Therāpadāna (part 1 of 2)",
+   "first_ord": 0,
+   "last_ord": 4460,
+   "paras": 4461,
+   "vaggas": "1-42 (Buddhavagga … Bhaddālivagga)",
+   "pdf_first": 21,
+   "pdf_last": 465
+  }
+ ],
+ "note": "ONE book span for the whole volume, but NOT a whole work. Therāpadāna's 56 vaggas run 1-42 here and 43-56 in 21Khu04; the edition closes it with 'Therāpadānaṁ samattaṁ.' on 21Khu04 real p200. Verse numbers `n` reset PER VAGGA, not per apadāna and not per book, so an n-reset is a VAGGA boundary here — do not reuse 19Khu02's n-reset rule for book boundaries in this volume."
+}

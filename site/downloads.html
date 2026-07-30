@@ -33,13 +33,18 @@
 <body>
 <header>
   <h1 data-i18n="dl_h1">Unicode PDF downloads</h1>
-  <a href="index.html">←&nbsp;<span data-i18n="nav_home">Home</span></a> <a href="reader/reader.html" data-i18n="nav_reader">Reader</a> <a href="search.html" data-i18n="nav_search">Search</a> <a href="about.html" data-i18n="nav_about">About</a> <a href="errata.html" data-i18n="nav_errata">Errata</a>
+  <a href="index.html">←&nbsp;<span data-i18n="nav_home">Home</span></a> <a href="reader/reader2.html" data-i18n="nav_reader">Reader</a> <a href="search.html" data-i18n="nav_search">Search</a> <a href="about.html" data-i18n="nav_about">About</a> <a href="errata.html" data-i18n="nav_errata">Errata</a>
   <span class="sp"></span>
   <button class="langbtn" title="Cambiar idioma">ES</button>
   <button class="themebtn" id="themebtn" title="Toggle light/dark">◐</button>
 </header>
 <script src="i18n.js"></script>
 <script>
+// cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
+// rewrites it, so a rebuild can never be invisible to a returning browser.
+const BUILD='b6e4cfd8a037';
+function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
+
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
 </script>
 <main>
@@ -61,7 +66,7 @@ function shortWork(w){return w.replace(/^[^:]*:\s*/,'');}
 (async function(){
   document.getElementById('themebtn').onclick=()=>{var d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n);};
   if(!R2_BASE) document.getElementById('warn').style.display='block';
-  const data=await (await fetch('downloads.data.json')).json();
+  const data=await (await fetch(bust('downloads.data.json'))).json();
   let html='';
   for(const layer of ['pali','atthakatha','tika']){
     html+=`<h2>${LAYNAME[layer]}</h2>`;

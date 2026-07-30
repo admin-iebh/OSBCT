@@ -1,0 +1,468 @@
+{
+"48": [
+{
+"n": 1,
+"text": "Samuṭṭhānāhārārammaṇaṁ (Ka)",
+"variants": [
+{
+"reading": "Samuṭṭhānāhārārammaṇaṁ",
+"sigla": [
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"124": [
+{
+"n": 1,
+"text": "Avasesā saṅkhārā saṅkhārā (Syā)",
+"variants": [
+{
+"reading": "Avasesā saṅkhārā saṅkhārā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"126": [
+{
+"n": 2,
+"text": "Avasesā khandhā khandhā (Syā) evamuparipi.",
+"variants": [
+{
+"reading": "Avasesā khandhā khandhā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"186": [
+{
+"n": 1,
+"text": "Pacchimabhavikānaṁ pañcavokāraṁ upapajjantānaṁ (Sī, Syā)",
+"variants": [
+{
+"reading": "Pacchimabhavikānaṁ pañcavokāraṁ upapajjantānaṁ",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"322": [
+{
+"n": 1,
+"text": "Avasesā (Syā, I)",
+"variants": [
+{
+"reading": "Avasesā",
+"sigla": [
+"Syā",
+"I"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Avaseso (Syā)",
+"variants": [
+{
+"reading": "Avaseso",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Avasesā (Syā)",
+"variants": [
+{
+"reading": "Avasesā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"338": [
+{
+"n": 1,
+"text": "Uparivāre saṅkhepo (Syā), uparivāre saṅkhepaṁ (Sī, Ka)",
+"variants": [
+{
+"reading": "Uparivāre saṅkhepo",
+"sigla": [
+"Syā"
+]
+},
+{
+"reading": "uparivāre saṅkhepaṁ",
+"sigla": [
+"Sī",
+"Ka"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 1,
+"text": "Yassakampi sadisaṁ (Sī), yassekasadisaṁ (Syā)",
+"variants": [
+{
+"reading": "Yassakampi sadisaṁ",
+"sigla": [
+"Sī"
+]
+},
+{
+"reading": "yassekasadisaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"445": [
+{
+"n": 1,
+"text": "Paccaniyampi (Sī, Syā, Ka)",
+"variants": [
+{
+"reading": "Paccaniyampi",
+"sigla": [
+"Sī",
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"543": [
+{
+"n": 1,
+"text": "Vibhajitabbaṁ (Sī, Syā, Ka)",
+"variants": [
+{
+"reading": "Vibhajitabbaṁ",
+"sigla": [
+"Sī",
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"562": [
+{
+"n": 1,
+"text": "Atītenānāgatā (Syā)",
+"variants": [
+{
+"reading": "Atītenānāgatā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"572": [
+{
+"n": 1,
+"text": "Dhātu (Sī, Ka) aññehi yamakehi saṁsanditabbaṁ.",
+"variants": [
+{
+"reading": "Dhātu",
+"sigla": [
+"Sī",
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"578": [
+{
+"n": 1,
+"text": "Avaseso kāyo kāyo (Syā)",
+"variants": [
+{
+"reading": "Avaseso kāyo kāyo",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"579": [
+{
+"n": 1,
+"text": "Yaṁ saṁkhittaṁ (Syā)",
+"variants": [
+{
+"reading": "Yaṁ saṁkhittaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Avaseso kāyo (Syā)",
+"variants": [
+{
+"reading": "Avaseso kāyo",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"580": [
+{
+"n": 1,
+"text": "Avasesā dhātū dhātū (Syā)",
+"variants": [
+{
+"reading": "Avasesā dhātū dhātū",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"598": [
+{
+"n": 1,
+"text": "Avasesaṁ dukkhasaccaṁ dukkhasaccaṁ (Syā) evamuparipi.",
+"variants": [
+{
+"reading": "Avasesaṁ dukkhasaccaṁ dukkhasaccaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"599": [
+{
+"n": 2,
+"text": "Avasesaṁ dukkhasaccaṁ na dukkhaṁ (Sī, Syā, Ka) evaṁ avasesesu tīsu saccesu.",
+"variants": [
+{
+"reading": "Avasesaṁ dukkhasaccaṁ na dukkhaṁ",
+"sigla": [
+"Sī",
+"Syā",
+"Ka"
+]
+}
+],
+"xrefs": []
+}
+],
+"600": [
+{
+"n": 1,
+"text": "Avasesā saccā saccā (Syā)",
+"variants": [
+{
+"reading": "Avasesā saccā saccā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"622": [
+{
+"n": 1,
+"text": "Taṇhāvippayuttamaggavippayuttacittassa (Sī) evaṁ puggalokāsepi nirodhavārepi.",
+"variants": [
+{
+"reading": "Taṇhāvippayuttamaggavippayuttacittassa",
+"sigla": [
+"Sī"
+]
+}
+],
+"xrefs": []
+}
+],
+"650": [
+{
+"n": 1,
+"text": "Uppatticittassa (Syā)",
+"variants": [
+{
+"reading": "Uppatticittassa",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"658": [
+{
+"n": 1,
+"text": "Paṭilabhissanti tassa cittassa uppādakkhaṇe ye (Sī, Syā) puggalokāsavārepi.",
+"variants": [
+{
+"reading": "Paṭilabhissanti tassa cittassa uppādakkhaṇe ye",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"685": [
+{
+"n": 1,
+"text": "Yassakampi yatthakampi (Sī, Syā)",
+"variants": [
+{
+"reading": "Yassakampi yatthakampi",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"687": [
+{
+"n": 1,
+"text": "Paṭilabhissanti tassa cittassa uppādakkhaṇe (Sī, Syā) uppādavāre pana pāṭhantaraṁ natthi.",
+"variants": [
+{
+"reading": "Paṭilabhissanti tassa cittassa uppādakkhaṇe",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"712": [
+{
+"n": 1,
+"text": "Vattamāne, nirodhasamāpannānaṁ asaññasattānaṁ (Sī, Syā)",
+"variants": [
+{
+"reading": "Vattamāne, nirodhasamāpannānaṁ asaññasattānaṁ",
+"sigla": [
+"Sī",
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"744": [
+{
+"n": 1,
+"text": "Paccuppannenātītā (Syā)",
+"variants": [
+{
+"reading": "Paccuppannenātītā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"753": [
+{
+"n": 1,
+"text": "Apāyā asaññasattā (Syā)",
+"variants": [
+{
+"reading": "Apāyā asaññasattā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+},
+{
+"n": 2,
+"text": "Apāyaṁ asaññasattaṁ (Syā)",
+"variants": [
+{
+"reading": "Apāyaṁ asaññasattaṁ",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+],
+"755": [
+{
+"n": 1,
+"text": "Atītenānāgatā (Syā)",
+"variants": [
+{
+"reading": "Atītenānāgatā",
+"sigla": [
+"Syā"
+]
+}
+],
+"xrefs": []
+}
+]
+}

@@ -1,0 +1,101 @@
+{
+ "volume": "19Khu02",
+ "note": "Book boundaries CORRECTED 2026-07-25 (see erratum below). The reliable signal is the verse number resetting to 1, cross-checked against the edition's own verse totals and the printed book-end colophons. The `book` field is a running header and prints the NIPĀTA name on a new book's first page(s), so a first-'…pāḷi'-occurrence rule lands late.",
+ "books": [
+  {
+   "book": "Vimānavatthupāḷi",
+   "first_ord": 0,
+   "last_ord": 1033,
+   "paras": 1034,
+   "verses": "1-1289",
+   "pdf_first": 17,
+   "pdf_last": 141,
+   "colophon_page": 141
+  },
+  {
+   "book": "Petavatthupāḷi",
+   "first_ord": 1034,
+   "last_ord": 1847,
+   "paras": 814,
+   "verses": "1-814",
+   "pdf_first": 143,
+   "pdf_last": 234,
+   "colophon_page": 234
+  },
+  {
+   "book": "Theragāthāpāḷi",
+   "first_ord": 1848,
+   "last_ord": 3135,
+   "paras": 1288,
+   "verses": "1-1288",
+   "pdf_first": 235,
+   "pdf_last": 391,
+   "colophon_page": 391
+  },
+  {
+   "book": "Therīgāthāpāḷi",
+   "first_ord": 3136,
+   "last_ord": 3659,
+   "paras": 524,
+   "verses": "1-524",
+   "pdf_first": 393,
+   "pdf_last": 451,
+   "colophon_page": 451
+  }
+ ],
+ "vimanavatthu_tree_requested_by_user": {
+  "levels": [
+   "book",
+   "division",
+   "vagga",
+   "vimanavatthu"
+  ],
+  "divisions": [
+   {
+    "n": 1,
+    "name": "Itthivimāna",
+    "vaggas": [
+     1,
+     2,
+     3,
+     4
+    ]
+   },
+   {
+    "n": 2,
+    "name": "Purisavimāna",
+    "vaggas": [
+     5,
+     6,
+     7
+    ]
+   }
+  ],
+  "vagga_pages": {
+   "Cittalatāvagga": 36,
+   "Pāricchattakavagga": 48,
+   "Mahārathavagga": 88,
+   "Pāyāsivagga": 110,
+   "Sunikkhittavagga": 118
+  },
+  "unverified": [
+   "1. Itthivimāna, Pīṭhavagga and vagga 4 were not matched by the first-pass regex",
+   "84 vimānavatthu headings found; standard count is 85 - reconcile"
+  ],
+  "reader_gap": "four levels; the nipatas branch renders three"
+ },
+ "erratum": {
+  "reported": "2026-07-25",
+  "what": "The previously recorded boundaries for Theragāthā (first_ord 1849) and Therīgāthā (first_ord 3140) were LATE by 1 and 4 paragraphs. They were called 'confirmed two independent ways', but both ways shared one dependency: the corpus `book` field.",
+  "why": "On a new book's first page the running header prints 'Ekakanipāta', not the book title, so book_of()'s carry-forward kept those paragraphs in the previous book. The book-end colophon check confirmed only the PREVIOUS book's end page, not the new book's first ordinal.",
+  "effect_if_unfixed": "Petavatthu rendered Theragāthā verse 1 ('Channā me kuṭikā'); Theragāthā rendered Therīgāthā verses 1-4; Therīgāthā LOST its own first four verses. Demonstrated by running _19bleed.js against nav.json.bak19: 3 of 4 books fail.",
+  "how_verified_now": [
+   "verse number resets to 1 at the boundary",
+   "paragraph count per book equals the edition's own verse total exactly (Peta 814, Thera 1288, Therī 524)",
+   "the '…pāḷi' book-field form first occurs INSIDE the span, never before it",
+   "jsdom bleed check: each book renders its own opening and end and none of the other three books' openings"
+  ]
+ },
+ "pdf_page_note": "PDF pages 142 and 392 are BLANK separators which the corpus `pdf_page` anchor does not count, so the corpus page anchor runs 1 low after p142 and 2 low after p392 (ord1848 says 234, is 235; ord3136 says 391, is 393). The earlier pdf ranges in this file inherited that drift. Volume text = pdf 17-451; pages 452-547 are back matter (word/name/verse indices + Sodhanapattaṁ errata).",
+ "cover_note": "The 79% 'cover' in docs/verify_report.md is NOT lost extraction: the PDF is 547 pages and the text ends at 451, so 435/547 = 79.5%. Coverage over the real text range 17-451 is complete."
+}

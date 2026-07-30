@@ -1,0 +1,20 @@
+const fs=require('fs'),path=require('path');const {JSDOM}=require('jsdom');const R='site/reader';
+const resolve=u=>{u=String(u).split('?')[0];if(u.startsWith('../'))return path.join('site',u.slice(3));if(u.startsWith('http')){try{u=new URL(u).pathname.replace(/^\//,'');}catch(e){}return path.join(R,u);}return path.join(R,u);};
+const dom=new JSDOM(fs.readFileSync(R+'/reader2.html','utf8'),{runScripts:'dangerously',pretendToBeVisual:true,url:'http://x/',beforeParse(w){w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=()=>{};w.fetch=u=>{const f=resolve(u);let t=null;try{t=fs.readFileSync(f,'utf8');}catch(e){}return Promise.resolve({ok:t!=null,status:t!=null?200:404,json:()=>Promise.resolve(t?JSON.parse(t):{}),text:()=>Promise.resolve(t||'')});};}});
+const w=dom.window;let err=null;w.addEventListener('error',e=>err=e.message);
+(async()=>{await new Promise(r=>setTimeout(r,1000));const rows=()=>[...w.document.querySelectorAll('.row')];
+rows().find(r=>r.textContent.trim().startsWith('Khuddakanikāya'))?.click();await new Promise(r=>setTimeout(r,180));
+rows().find(r=>r.textContent.trim()==='Suttanipātapāḷi')?.click();await new Promise(r=>setTimeout(r,180));
+const mv=[...w.document.querySelectorAll('.row')].find(r=>r.textContent.trim()==='3. Mahāvagga');
+console.log('Mahāvagga row found:',!!mv); mv?.click();
+await new Promise(r=>setTimeout(r,600));
+console.log('JS error:',err||'none');
+const heads=[...w.document.querySelectorAll('#scroll .head.section')].map(h=>h.textContent);
+console.log('Mahā sutta heads rendered:',heads.length);
+console.log('  incl Pūraḷāsa:',heads.some(h=>/Pūraḷāsa/.test(h)),'| Māgha:',heads.some(h=>/Māgha/.test(h)));
+const txt=(w.document.querySelector('#scroll')||{}).textContent||'';
+console.log('scroll length:',txt.length,'| Subhāsitasuttaṁ tatiyaṁ before Pūraḷāsa:',txt.indexOf('Subhāsitasuttaṁ tatiyaṁ.')>0 && txt.indexOf('Subhāsitasuttaṁ tatiyaṁ.')<txt.indexOf('Pūraḷāsa'));
+// number in gatha (Sundarika intro sutta uses before -> num on verse)
+const p=w.document.querySelector('#p-18Khu01-1158');
+console.log('Sundarika ord1158 first .gatha starts with 457.:',p?/^457\./.test((p.querySelector('.gatha')||{}).textContent||''):'no para');
+})();

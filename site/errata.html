@@ -41,12 +41,17 @@
 </head>
 <body>
 <header>
-  <div class="topnav"><a href="index.html">←&nbsp;<span data-i18n="nav_home">Home</span></a><a href="reader/reader.html" data-i18n="nav_reader">Reader</a><a href="search.html" data-i18n="nav_search">Search</a><a href="about.html" data-i18n="nav_about">About</a></div>
+  <div class="topnav"><a href="index.html">←&nbsp;<span data-i18n="nav_home">Home</span></a><a href="reader/reader2.html" data-i18n="nav_reader">Reader</a><a href="search.html" data-i18n="nav_search">Search</a><a href="about.html" data-i18n="nav_about">About</a></div>
   <span class="sp"></span>
   <button class="langbtn">ES</button>
   <button class="themebtn" id="themebtn" title="Toggle light/dark">◐</button>
 </header>
 <script>
+// cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
+// rewrites it, so a rebuild can never be invisible to a returning browser.
+const BUILD='b6e4cfd8a037';
+function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
+
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
 document.addEventListener('DOMContentLoaded',()=>{document.getElementById('themebtn').onclick=()=>{var d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n);};});
 const T={ // page-specific bilingual strings
@@ -83,7 +88,7 @@ function hl(printed,glyph){ // highlight the offending glyph in the printed read
   document.getElementById('h1').textContent=tt('h1');
   document.getElementById('lead').textContent=tt('lead');
   let data;
-  try{ data=await (await fetch('errata.json')).json(); }
+  try{ data=await (await fetch(bust('errata.json'))).json(); }
   catch(e){ document.getElementById('status').textContent='Could not load errata.json.'; return; }
   document.getElementById('status').style.display='none';
   document.getElementById('principle').textContent=data.principle;
