@@ -29,9 +29,24 @@
 
 * **!!!!! CANONICAL HOST IS NOW `buddha-dhamma.net` (2026-07-30h).** GitHub Pages
   serves it; `git push` is the entire publish step. `osbct.buddha-dhamma.net`
-  redirects to it (Pages does this itself — both hostnames CNAME to
-  `admin-iebh.github.io`, and Pages redirects any non-canonical hostname to the
-  configured custom domain). The custom domain was moved in the OSBCT repo's
+  redirects to it — **but NOT by GitHub's doing.** I claimed Pages would redirect
+  the old hostname automatically; **it does not. It returns its own 404**
+  (`HTTP/2 404, server: GitHub.com`), because no repo claims that name any more,
+  and there is no certificate for it either. Checked, not assumed — and it is the
+  worse failure, a cited URL broken rather than moved.
+  **The redirect is a Cloudflare Single Redirect**: the `osbct` DNS record is
+  **Proxied** (orange — the ONE proxied hostname of this site; the apex stays
+  DNS-only), and a wildcard rule sends
+  `https://osbct.buddha-dhamma.net/*` -> `https://buddha-dhamma.net/${1}`, 301,
+  preserve query string. Verified: `301`, `server: cloudflare`,
+  `location: https://buddha-dhamma.net/reader/reader2.html`.
+  **DO NOT DELETE the `osbct` record.** It is in the Zenodo record and
+  `CITATION.cff`; the redirect is what keeps those citations alive.
+  *(Two DNS lessons: the Cloudflare proxy toggle SILENTLY FAILED TO SAVE the
+  first time — the list still read `DNS only` — so re-read the row after saving.
+  And macOS caches the old answer for minutes: check with
+  `curl -s -H 'accept: application/dns-json' 'https://cloudflare-dns.com/dns-query?name=NAME&type=A'`,
+  which bypasses the local resolver, before concluding anything.)* The custom domain was moved in the OSBCT repo's
   Settings -> Pages, the apex was verified with a `_github-pages-challenge-admin-iebh`
   TXT record, and `site/CNAME` records it in git.
   **`wrangler.jsonc`, `site/_headers`, `site/_redirects`, `site/.assetsignore`
@@ -45,9 +60,15 @@
      is never in the path, so the purge did nothing; what actually cleared it was
      the next DEPLOY invalidating **GitHub Pages' own CDN**. The query-string
      evidence was real; the layer I attributed it to was not.
-  2. **The Worker `dark-river-0f9b` was never serving anything.** A Worker route
-     can only intercept PROXIED traffic. It is not merely orphaned — it is
-     unreachable by construction. Do not "fix" a stale page by deploying it.
+  2. **The Worker `dark-river-0f9b` DOES NOT EXIST.** Checked in the Cloudflare
+     account on 2026-07-30h: there is no such Worker. So it was not "deployed but
+     orphaned", as this file claimed from 2026-07-30 onward — that claim was
+     inferred from `wrangler.jsonc` existing, never verified against the account.
+     Even had it existed it could not have served these hostnames: a Worker route
+     can only intercept PROXIED traffic and both records are DNS-only. **Every
+     `npx wrangler deploy` this project believed it ran either never landed or
+     went somewhere nobody has found.** Do not "fix" a stale page by deploying
+     a Worker; there is nothing to deploy to.
   **So there is no cache to purge on this project.** The only cache between a
   push and a visitor is GitHub Pages' CDN plus the browser's own — which is why
   the last hour of 2026-07-30g went to a browser cache. **Test in a private
