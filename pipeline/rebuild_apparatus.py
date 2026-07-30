@@ -28,6 +28,20 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _spec = _ilu.spec_from_file_location('vr', f'{ROOT}/pipeline/verify_render_vs_pdf.py')
 vr = _ilu.module_from_spec(_spec); _spec.loader.exec_module(vr)
 
+# !!! THE XREFS USED TO BE WRITTEN EMPTY HERE AND THE READER IS THE ONLY THING
+# THAT READS THIS FILE (2026-07-30f).  This script anchored every note with
+# `'xrefs': []` hardcoded and sent the citation LINES to `site/reader/xrefs/`
+# as raw strings, which `loadVol()` never loads — so in 80 of 118 volumes
+# `resolveXref()` was never called and a printed citation rendered as dead text
+# where a `->` link belongs.  23,386 parsed cross-references, invisible as links.
+# `verify_apparatus.py` could not see it either: it counts `xrefs/<VOL>.json`
+# toward stored notes, so the gate scored them present.
+# `extract.py`'s parser is the one that produced the section-keyed `app.json`,
+# and it reproduces all 66,841 of those notes EXACTLY — checked before use.
+_xsp = _ilu.spec_from_file_location('exx', f'{ROOT}/pipeline/extract.py')
+_ex = _ilu.module_from_spec(_xsp); _xsp.loader.exec_module(_ex)
+parse_xrefs = _ex.parse_xrefs
+
 # A marker is the digit(s) attached to the END of a Pāḷi word: "nhāru2",
 # "osadhehi2.", "samāyutā3ti", "Byūhāni11". The lookbehind (a word char, not a
 # digit) is what keeps paragraph numbers like "3. Abrahmacariyā" out — those
@@ -235,7 +249,8 @@ def main():
             if hit is None:
                 unanchored.append((pi, n, text[:60])); continue
             new.setdefault(str(hit), []).append(
-                {'n': n, 'text': text, 'variants': parse_variants(text), 'xrefs': []})
+                {'n': n, 'text': text, 'variants': parse_variants(text),
+                 'xrefs': parse_xrefs(text)})
         if xrefs and cands:
             xref_by_ord.setdefault(str(cands[0]), []).extend(xrefs)
 

@@ -5598,7 +5598,20 @@
 "n": 5,
 "text": "Pharitvā (Aṁ 1. 140; Khu 2. 135 piṭṭhe)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 140,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 2,
+"page": 135,
+"also": false
+}
+]
 }
 ],
 "516": [
@@ -8036,7 +8049,20 @@
 "n": 4,
 "text": "Saṅgahe (Dī 3. 156; Aṁ 1. 341 piṭṭhe) tadaṭṭhakathāyo oloketabbā.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 3,
+"page": 156,
+"also": false
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 341,
+"also": false
+}
+]
 },
 {
 "n": 5,
@@ -8051,7 +8077,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 341,
+"also": false
+}
+]
 }
 ],
 "740": [
@@ -8081,7 +8114,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 382,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 269,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -9036,7 +9082,14 @@
 "n": 5,
 "text": "“Dukkhapareto”ti (Khu 5. 326 piṭṭhe) Aṭṭhakathāyo oloketabbā.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 326,
+"also": false
+}
+]
 },
 {
 "n": 6,
@@ -14210,7 +14263,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 147,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -15819,7 +15879,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 3,
+"page": 2,
+"also": false
+},
+{
+"work": "Ma",
+"vol": 3,
+"page": 6,
+"also": false
+}
+]
 }
 ],
 "1359": [
@@ -16836,7 +16909,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 312,
+"also": false
+}
+]
 }
 ],
 "1515": [

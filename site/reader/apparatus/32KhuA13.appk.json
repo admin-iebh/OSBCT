@@ -120,7 +120,14 @@
 "n": 1,
 "text": "Khu 4. 306 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 306,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -207,7 +214,14 @@
 "n": 1,
 "text": "(Tesu tassa) Abhi-Ṭṭha 1. 39 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi-Ṭṭha",
+"vol": 1,
+"page": 39,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -339,49 +353,105 @@
 "n": 1,
 "text": "Khu 4. 312 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 312,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 4. 315 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 315,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 4. 315 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 315,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 4. 316 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 316,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 4. 316 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 316,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 4. 317 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 317,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 4. 318 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 318,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 4. 318 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 318,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -406,7 +476,14 @@
 "n": 1,
 "text": "Khu 4. 320 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 320,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -425,7 +502,14 @@
 "n": 2,
 "text": "Khu 4. 306 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 306,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -606,7 +690,14 @@
 "n": 2,
 "text": "Khu 4. 311 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 311,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -645,7 +736,14 @@
 "n": 2,
 "text": "Khu 4. 317 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 317,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -676,7 +774,14 @@
 "n": 2,
 "text": "Khu 4. 319 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 319,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -723,7 +828,14 @@
 "n": 3,
 "text": "Amataṁ (Khu 4. 307 Buddhavaṁse)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 307,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -867,13 +979,27 @@
 "n": 3,
 "text": "Khu 4. 316 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 316,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Khu 4. 319 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 319,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -990,7 +1116,14 @@
 "n": 4,
 "text": "Khu 4. 319 Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 319,
+"also": false
+}
+]
 },
 {
 "n": 5,
@@ -1009,7 +1142,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 2,
+"page": 121,
+"also": false
+}
+]
 },
 {
 "n": 5,
@@ -1210,13 +1350,27 @@
 "n": 1,
 "text": "Khu 4. 329 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 329,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 4. 334 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 334,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -1254,7 +1408,14 @@
 "n": 1,
 "text": "Khu 4. 351 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 351,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -1332,19 +1493,40 @@
 "n": 1,
 "text": "Khu 4. 311 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 311,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 4. 398 piṭṭhe Cariyāpiṭake.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 398,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Attā me na ca dessiyo (Khu 4. 413 piṭṭhe Cariyāpiṭake)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 413,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -1411,7 +1593,20 @@
 "n": 2,
 "text": "Khu 2. 272; Khu 5. 215 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 272,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 5,
+"page": 215,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -1443,7 +1638,14 @@
 "n": 2,
 "text": "Khu 4. 326 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 326,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -1462,13 +1664,27 @@
 "n": 2,
 "text": "Khu 4. 336 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 336,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Khu 4. 338 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 338,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -1488,7 +1704,14 @@
 "n": 2,
 "text": "Khu 4. 348 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 348,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -1553,13 +1776,27 @@
 "n": 2,
 "text": "Khu 4. 371 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 371,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Khu 4. 375 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 375,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -1593,13 +1830,27 @@
 "n": 2,
 "text": "Khu 4. 418 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 418,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Khu 4. 419 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 419,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -1705,7 +1956,14 @@
 "n": 3,
 "text": "Khu 4. 331 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 331,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -1725,7 +1983,14 @@
 "n": 3,
 "text": "Khu 4. 341 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 341,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -1773,19 +2038,40 @@
 "n": 3,
 "text": "Khu 4. 357 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 357,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Khu 4. 361 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 361,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Khu 4. 366 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 366,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -1804,13 +2090,27 @@
 "n": 3,
 "text": "Khu 4. 407 piṭṭhe Cariyāpiṭake thokaṁ visadisaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 407,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Khu 4. 396 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 396,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -1876,7 +2176,14 @@
 "n": 4,
 "text": "Khu 4. 343 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 343,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -1895,7 +2202,14 @@
 "n": 4,
 "text": "Khu 4. 353 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 353,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -1907,7 +2221,14 @@
 "n": 4,
 "text": "Khu 4. 363 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 363,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -1973,7 +2294,14 @@
 "n": 5,
 "text": "Khu 4. 321 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 321,
+"also": false
+}
+]
 },
 {
 "n": 5,
@@ -2111,7 +2439,14 @@
 "n": 7,
 "text": "Khu 4. 346 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 346,
+"also": false
+}
+]
 },
 {
 "n": 7,
@@ -2130,7 +2465,14 @@
 "n": 8,
 "text": "Khu 4. 355 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 355,
+"also": false
+}
+]
 }
 ],
 "7": [
@@ -2409,7 +2751,14 @@
 "n": 1,
 "text": "Khu 1. 340 piṭṭhe Suttanipāte.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 340,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -2469,7 +2818,20 @@
 "n": 1,
 "text": "Aṁ 1. 52; Ma 2. 146 piṭṭhādīsu thokaṁ visadisaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 52,
+"also": false
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 146,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -2677,7 +3039,14 @@
 "n": 2,
 "text": "Ma-Ṭṭha 2. 1 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma-Ṭṭha",
+"vol": 2,
+"page": 1,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -2711,7 +3080,14 @@
 "n": 2,
 "text": "Aṁ 2. 209 piṭṭhe vitthāro.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 2,
+"page": 209,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -2776,7 +3152,14 @@
 "n": 3,
 "text": "Vi 3. 287 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 287,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -2809,7 +3192,14 @@
 "n": 3,
 "text": "Khu 11. 229 piṭṭhe Milindapañhepi, Ma-Ṭṭha 2. 92 piṭṭhepi passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 11,
+"page": 229,
+"also": true
+}
+]
 },
 {
 "n": 3,
@@ -2947,13 +3337,33 @@
 "n": 3,
 "text": "Khu 1. 36 piṭṭhe Dhammapade.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 36,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Vi 3. 1 piṭṭhe; Khu 1. 77 piṭṭhe ca.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 1,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 77,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -3080,13 +3490,27 @@
 "n": 5,
 "text": "Dī 2. 19 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 2,
+"page": 19,
+"also": false
+}
+]
 },
 {
 "n": 5,
 "text": "Abhi-Ṭṭha 1. 76 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi-Ṭṭha",
+"vol": 1,
+"page": 76,
+"also": false
+}
+]
 },
 {
 "n": 5,
@@ -3169,13 +3593,27 @@
 "n": 1,
 "text": "Saṁ 1. 125 piṭṭhe vitthāro.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 125,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 1. 40 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 40,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3195,25 +3633,65 @@
 "n": 1,
 "text": "Vi 3. 18; Saṁ 2. 55 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 18,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 55,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Vi 3. 46 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 46,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Vi 3. 48. 49 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 48,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Vi 3. 51; Khu 3. 27 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 51,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 3,
+"page": 27,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3241,19 +3719,40 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 300,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Aṁ 1. 25 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 25,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 6. 312 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 6,
+"page": 312,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3272,7 +3771,14 @@
 "n": 2,
 "text": "Saṁ 1. 126 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 126,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -3292,19 +3798,40 @@
 "n": 2,
 "text": "Vi 3. 44 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 44,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Khu 6. 257 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 6,
+"page": 257,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Vi 3. 49 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 49,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -3338,7 +3865,20 @@
 "n": 3,
 "text": "Vi 3. 14; Saṁ 3. 368 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 14,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 3,
+"page": 368,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -3359,7 +3899,14 @@
 "n": 1,
 "text": "Khu 1. 38 piṭṭhe Dhammapade.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 38,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3407,7 +3954,14 @@
 "n": 2,
 "text": "Khu 1. 39 piṭṭhe Dhammapade.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 39,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -3427,13 +3981,33 @@
 "n": 2,
 "text": "Khu 1. 3, 319 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 3,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 319,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Khu 5. 214 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 214,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -3453,13 +4027,27 @@
 "n": 4,
 "text": "Khu 5. 277 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 277,
+"also": false
+}
+]
 },
 {
 "n": 4,
 "text": "Vi 4. 291. 292 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 291,
+"also": false
+}
+]
 }
 ],
 "11": [
@@ -3526,7 +4114,20 @@
 "n": 3,
 "text": "Dī-Ṭṭha 2. 82; Aṁ-Ṭṭha 1. 146; Dhammapada-Ṭṭha 1. 127 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī-Ṭṭha",
+"vol": 2,
+"page": 82,
+"also": false
+},
+{
+"work": "Aṁ-Ṭṭha",
+"vol": 1,
+"page": 146,
+"also": false
+}
+]
 }
 ],
 "12": [
@@ -3832,7 +4433,14 @@
 "n": 1,
 "text": "Khu 1. 341 piṭṭhe Suttanipāte.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 341,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3870,7 +4478,14 @@
 "n": 1,
 "text": "Khu 3. 347 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 3,
+"page": 347,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3890,7 +4505,14 @@
 "n": 1,
 "text": "Khu 3. 348 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 3,
+"page": 348,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3928,37 +4550,79 @@
 "n": 1,
 "text": "Khu 3. 349 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 3,
+"page": 349,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 3. 349 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 3,
+"page": 349,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Aṁ 1. 25 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 25,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Khu 3. 349 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 3,
+"page": 349,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Vi 4. 247 piṭṭhe thokaṁ visadisaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 247,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Khu 3. 347 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 3,
+"page": 347,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -3977,7 +4641,14 @@
 "n": 2,
 "text": "Khu 3. 347 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 3,
+"page": 347,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -3996,7 +4667,14 @@
 "n": 2,
 "text": "Khu 3. 348 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 3,
+"page": 348,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4111,7 +4789,14 @@
 "n": 3,
 "text": "Khu 3. 349 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 3,
+"page": 349,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -4168,7 +4853,14 @@
 "n": 6,
 "text": "Khu 3. 349 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 3,
+"page": 349,
+"also": false
+}
+]
 }
 ],
 "79": [
@@ -4239,25 +4931,59 @@
 "n": 1,
 "text": "Khu 1. 201. 268; Khu 7. 362 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 201,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 7,
+"page": 362,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 8. 232 piṭṭhepi.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 232,
+"also": true
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 4. 311 piṭṭhe Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 311,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 4. 310 piṭṭhe Buddhavaṁse.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 310,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4297,13 +5023,45 @@
 "n": 1,
 "text": "Khu 1. 201, 268; Khu 7. 362; Khu 8. 211 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 201,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 268,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 7,
+"page": 362,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 211,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 9. 215. 400 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 9,
+"page": 215,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4322,7 +5080,20 @@
 "n": 2,
 "text": "Saṁ 3. 146; Khu 7. 362 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 3,
+"page": 146,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 7,
+"page": 362,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4341,19 +5112,46 @@
 "n": 2,
 "text": "Khu 9. 216. 401 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 9,
+"page": 216,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Khu 7. 362; Khu 8. 231 piṭṭhesu vitthāro.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 362,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 231,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Ma 1. 205 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 205,
+"also": false
+}
+]
 }
 ],
 "83": [
@@ -4389,7 +5187,14 @@
 "n": 1,
 "text": "Dī 3. 152 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 3,
+"page": 152,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4409,7 +5214,14 @@
 "n": 2,
 "text": "Dī 3. 153 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 3,
+"page": 153,
+"also": false
+}
+]
 }
 ],
 "85": [
@@ -4479,7 +5291,20 @@
 "n": 1,
 "text": "Ma 1. 231; Khu 8. 243 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 231,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 243,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4683,7 +5508,26 @@
 "n": 3,
 "text": "Ma 2. 146; Aṁ 1. 52; Khu 7. 379 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 2,
+"page": 146,
+"also": false
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 52,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 7,
+"page": 379,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -4769,13 +5613,33 @@
 "n": 1,
 "text": "Khu 1. 4, 319 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 4,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 319,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Abhi 1. 22 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 1,
+"page": 22,
+"also": false
+}
+]
 }
 ],
 "101": [
@@ -4850,7 +5714,14 @@
 "n": 4,
 "text": "Abhi 2. 383 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 2,
+"page": 383,
+"also": false
+}
+]
 }
 ],
 "104": [
@@ -4884,7 +5755,20 @@
 "n": 3,
 "text": "Ma 1. 10; Saṁ 1. 265 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 10,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 265,
+"also": false
+}
+]
 }
 ],
 "105": [
@@ -4892,7 +5776,14 @@
 "n": 1,
 "text": "Saṁ 2. 57 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 57,
+"also": false
+}
+]
 }
 ],
 "107": [
@@ -4900,7 +5791,14 @@
 "n": 1,
 "text": "Ma 1. 120 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 120,
+"also": false
+}
+]
 }
 ],
 "110": [
@@ -4923,7 +5821,14 @@
 "n": 1,
 "text": "Khu 1. 279 piṭṭhe Suttanipāte.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 279,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4942,13 +5847,27 @@
 "n": 2,
 "text": "Ma 1. 43 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 43,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Saṁ 3. 188 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 3,
+"page": 188,
+"also": false
+}
+]
 }
 ],
 "113": [
@@ -4956,7 +5875,14 @@
 "n": 3,
 "text": "Abhi-Ṭṭha 1. 221 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi-Ṭṭha",
+"vol": 1,
+"page": 221,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -4997,7 +5923,26 @@
 "n": 1,
 "text": "Ma 2. 146; Aṁ 1. 52; Khu 7. 379 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 2,
+"page": 146,
+"also": false
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 52,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 7,
+"page": 379,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -5039,7 +5984,20 @@
 "n": 1,
 "text": "Khu 1. 434; Khu 8. 34 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 434,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 34,
+"also": false
+}
+]
 }
 ],
 "116": [
@@ -5104,7 +6062,14 @@
 "n": 2,
 "text": "Abhi-Ṭṭha 1. 237 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi-Ṭṭha",
+"vol": 1,
+"page": 237,
+"also": false
+}
+]
 }
 ],
 "121": [
@@ -5125,7 +6090,14 @@
 "n": 1,
 "text": "Dī 3. 153 piṭṭhe atthato samānaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 3,
+"page": 153,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5232,7 +6204,14 @@
 "n": 3,
 "text": "Jātaka-Ṭṭha 1. 243 piṭṭhādīsu passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Jātaka-Ṭṭha",
+"vol": 1,
+"page": 243,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -5280,7 +6259,20 @@
 "n": 1,
 "text": "Dī 2. 236; Ma 1. 74 piṭṭhesu “terovassikānī”ti dissati.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 2,
+"page": 236,
+"also": false
+},
+{
+"work": "Ma",
+"vol": 1,
+"page": 74,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -5338,13 +6330,27 @@
 "n": 1,
 "text": "Aṁ 2. 461 piṭṭhādīsu pacalāyamānasutte passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 2,
+"page": 461,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Ma 2. 165 piṭṭhādīsu Dīghanakhasutte passitabbaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 2,
+"page": 165,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5377,13 +6383,33 @@
 "n": 2,
 "text": "Dutiyattavāre (Aṁ-Ṭṭha 1. 121 piṭṭhe.)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ-Ṭṭha",
+"vol": 1,
+"page": 121,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Vi 3. 51; Khu 3. 27 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 51,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 3,
+"page": 27,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5416,7 +6442,14 @@
 "n": 3,
 "text": "Sotāpattimagge (Aṁ-Ṭṭha 1. 124 piṭṭhe.)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ-Ṭṭha",
+"vol": 1,
+"page": 124,
+"also": false
+}
+]
 }
 ],
 "136": [
@@ -5589,7 +6622,14 @@
 "n": 2,
 "text": "Khu 9. 107 Paṭisambhidāmagge.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 9,
+"page": 107,
+"also": false
+}
+]
 }
 ],
 "182": [
@@ -5659,7 +6699,14 @@
 "n": 3,
 "text": "Aṁ-Ṭṭha 1. 116; Dhammapada-Ṭṭha 1. 67 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ-Ṭṭha",
+"vol": 1,
+"page": 116,
+"also": false
+}
+]
 }
 ],
 "217": [
@@ -5810,25 +6857,65 @@
 "n": 1,
 "text": "Vi 3. 17; Saṁ 3.371 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 17,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 3,
+"page": 371,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Khu 5. 173 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 173,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Khu 5. 24. 132 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 24,
+"also": false
+}
+]
 },
 {
 "n": 4,
 "text": "Khu 1. 205; Dī 1. 83 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 205,
+"also": false
+},
+{
+"work": "Dī",
+"vol": 1,
+"page": 83,
+"also": false
+}
+]
 }
 ],
 "285": [
@@ -5836,13 +6923,33 @@
 "n": 1,
 "text": "Khu 9. 85; Abhi 2. 307 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 9,
+"page": 85,
+"also": false
+},
+{
+"work": "Abhi",
+"vol": 2,
+"page": 307,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Aṁ 2. 461 Capalāyamānasutte.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 2,
+"page": 461,
+"also": false
+}
+]
 }
 ],
 "293": [
@@ -5906,13 +7013,27 @@
 "n": 1,
 "text": "Khu 1. 33 piṭṭhe Dhammapade.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 33,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Aṁ 1. 23 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 23,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5931,7 +7052,14 @@
 "n": 2,
 "text": "Ma 1. 414 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 414,
+"also": false
+}
+]
 }
 ],
 "299": [
@@ -5939,49 +7067,105 @@
 "n": 1,
 "text": "Ma 1. 414 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 414,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Ma 1. 414 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 414,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Saṁ 1. 146 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 146,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Ma 1. 318 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 318,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Saṁ 1. 144 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 144,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Ma 1. 414 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 414,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Api vāsava jānāsi, Ma 1. 414 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 414,
+"also": true
+}
+]
 },
 {
 "n": 3,
 "text": "Saṁ 1. 146 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 146,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -6091,7 +7275,14 @@
 "n": 1,
 "text": "Saṁ 1. 402 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 402,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -6151,13 +7342,27 @@
 "n": 2,
 "text": "Saṁ 1. 419 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 419,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Aṁ 1. 23 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 23,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -6204,7 +7409,14 @@
 "n": 3,
 "text": "Saṁ 1. 420 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 420,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -6356,7 +7568,14 @@
 "n": 1,
 "text": "Aṁ 3. 62 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 62,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -6390,7 +7609,14 @@
 "n": 2,
 "text": "Vi 4. 336 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 336,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -6404,19 +7630,40 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 68,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Khu 2. 336 piṭṭhe Bheragāthāyaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 336,
+"also": false
+}
+]
 },
 {
 "n": 4,
 "text": "Aṁ 1. 23 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 23,
+"also": false
+}
+]
 }
 ],
 "320": [
@@ -6460,13 +7707,27 @@
 "n": 1,
 "text": "Ma 1. 199 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 199,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Ma 1. 201 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 201,
+"also": false
+}
+]
 }
 ],
 "325": [
@@ -6474,7 +7735,14 @@
 "n": 3,
 "text": "Aṁ 1. 24 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 24,
+"also": false
+}
+]
 }
 ],
 "326": [
@@ -6498,7 +7766,14 @@
 "n": 2,
 "text": "Vi 4. 336 piṭṭhādīsu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 336,
+"also": false
+}
+]
 }
 ],
 "339": [
@@ -6578,7 +7853,26 @@
 "n": 2,
 "text": "Ma 1. 10; Saṁ 1. 265; Khu 7. 329 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 10,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 265,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 7,
+"page": 329,
+"also": false
+}
+]
 }
 ],
 "385": [
@@ -6636,7 +7930,20 @@
 "n": 1,
 "text": "Dī 1. 73; Khu 9. 107 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 1,
+"page": 73,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 9,
+"page": 107,
+"also": false
+}
+]
 }
 ],
 "406": [
@@ -6644,7 +7951,14 @@
 "n": 1,
 "text": "Aṁ 1. 25 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 25,
+"also": false
+}
+]
 }
 ],
 "411": [
@@ -6770,13 +8084,39 @@
 "n": 1,
 "text": "Vi 3. 18; Saṁ 2. 55 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 18,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 55,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Vi 3. 14; Saṁ 3. 368 piṭṭhesu.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 14,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 3,
+"page": 368,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -6818,7 +8158,14 @@
 "n": 1,
 "text": "Aṁ 1. 23 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 23,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -6850,7 +8197,14 @@
 "n": 3,
 "text": "Khu 2. 317 piṭṭhe Theragāthāyaṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 317,
+"also": false
+}
+]
 }
 ],
 "467": [
@@ -6872,7 +8226,14 @@
 "n": 2,
 "text": "Aṁ 1. 24 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 24,
+"also": false
+}
+]
 }
 ],
 "480": [
@@ -6880,7 +8241,14 @@
 "n": 1,
 "text": "Aṁ 1. 24 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 24,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -6976,7 +8344,14 @@
 "n": 1,
 "text": "Aṁ 1. 226 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 226,
+"also": false
+}
+]
 },
 {
 "n": 1,

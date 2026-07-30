@@ -217,7 +217,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 2,
+"page": 262,
+"also": true
+}
+]
 }
 ],
 "10": [
@@ -1060,7 +1067,14 @@
 "n": 1,
 "text": "Samūhatā (Sī, Syā, I, Khu 1. 332)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 332,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -3883,7 +3897,14 @@
 "n": 2,
 "text": "Ahaṁ te saraṇaṁ homi (Khu 2. 39 Vimāna)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 39,
+"also": false
+}
+]
 }
 ],
 "337": [
@@ -7350,7 +7371,14 @@
 "n": 5,
 "text": "Sabbā tā ujuṁ gacchanti (I, Aṁ 1. 387)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 387,
+"also": false
+}
+]
 }
 ],
 "638": [
@@ -8960,7 +8988,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 2,
+"page": 49,
+"also": false
+}
+]
 }
 ],
 "797": [
@@ -11128,7 +11163,14 @@
 "n": 1,
 "text": "Mupanamaṁ (Sī, I, Aṁ 1. 123)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 123,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -11776,7 +11818,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 145,
+"also": false
+}
+]
 }
 ],
 "1050": [
@@ -11860,7 +11909,14 @@
 "n": 4,
 "text": "Tyāyaṁ (Saṁ 1. 146)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 146,
+"also": false
+}
+]
 },
 {
 "n": 5,
@@ -13360,7 +13416,14 @@
 "n": 1,
 "text": "Pubbe ca hi pubbatare ca santo (Saṁ 1. 21)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 21,
+"also": false
+}
+]
 }
 ],
 "1218": [
@@ -15708,7 +15771,20 @@
 "n": 4,
 "text": "Ācikkha me bhaddamāṇava (Khu 2. 113, 146)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 113,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 2,
+"page": 146,
+"also": false
+}
+]
 }
 ],
 "1467": [
@@ -15742,7 +15818,20 @@
 "n": 7,
 "text": "Dissare (Khu 2. 113, 147)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 113,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 2,
+"page": 147,
+"also": false
+}
+]
 }
 ],
 "1469": [
@@ -15750,7 +15839,20 @@
 "n": 8,
 "text": "Ko nidha (Khu 2. 114, 147)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 114,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 2,
+"page": 147,
+"also": false
+}
+]
 }
 ],
 "1472": [
@@ -15777,7 +15879,14 @@
 "n": 2,
 "text": "Sokaṁ hadayanissitaṁ (Khu 2. 114)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 114,
+"also": false
+}
+]
 }
 ],
 "1479": [
@@ -15832,7 +15941,14 @@
 "n": 3,
 "text": "Mahaggato (Saṁ 1. 19)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 19,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -16263,7 +16379,14 @@
 "n": 3,
 "text": "Pana (Khu 2. 149)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 149,
+"also": false
+}
+]
 }
 ],
 "1527": [
@@ -16271,7 +16394,14 @@
 "n": 4,
 "text": "Bhātika (Khu 2. 150)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 150,
+"also": false
+}
+]
 }
 ],
 "1530": [
@@ -17234,7 +17364,14 @@
 "n": 2,
 "text": "Mattanā (Sī-Ṭṭhā, Khu 1. 371)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 371,
+"also": false
+}
+]
 }
 ],
 "1623": [
@@ -21085,7 +21222,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 290,
+"also": true
+}
+]
 },
 {
 "n": 4,

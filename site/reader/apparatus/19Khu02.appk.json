@@ -5018,7 +5018,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 8,
+"also": false
+}
+]
 }
 ],
 "1060": [
@@ -5814,7 +5821,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 137,
+"also": false
+}
+]
 }
 ],
 "1287": [
@@ -11318,7 +11332,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 271,
+"also": false
+},
+{
+"work": "Aṁ",
+"vol": 2,
+"page": 333,
+"also": false
+}
+]
 },
 {
 "n": 5,
@@ -11563,7 +11590,14 @@
 "n": 4,
 "text": "Duddiṭṭhiṁ (Sī, Khu 1. 62)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 62,
+"also": false
+}
+]
 }
 ],
 "2614": [
@@ -11700,7 +11734,20 @@
 "n": 2,
 "text": "Vasī (Syā, Ka, Ma 2. 352; Khu 1. 369)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 2,
+"page": 352,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 369,
+"also": false
+}
+]
 }
 ],
 "2685": [
@@ -11786,7 +11833,14 @@
 "n": 3,
 "text": "Disā hi (Syā, Ka, Ma 2. 307)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 2,
+"page": 307,
+"also": false
+}
+]
 }
 ],
 "2723": [
@@ -11831,7 +11885,14 @@
 "n": 1,
 "text": "Akiri (Ma 2. 303)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 2,
+"page": 303,
+"also": false
+}
+]
 }
 ],
 "2731": [
@@ -12154,7 +12215,14 @@
 "n": 2,
 "text": "Abhi 4. 194 piṭṭhepi.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 4,
+"page": 194,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -12569,7 +12637,14 @@
 "n": 1,
 "text": "Sudhammāyā’bhito (Syā, Ma 2. 414)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 2,
+"page": 414,
+"also": false
+}
+]
 }
 ],
 "3064": [
@@ -12600,7 +12675,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 415,
+"also": false
+}
+]
 }
 ],
 "3067": [
@@ -12650,7 +12732,14 @@
 "n": 6,
 "text": "Nibbanatho arato sahi (Saṁ 1. 188)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 188,
+"also": false
+}
+]
 }
 ],
 "3072": [
@@ -12671,7 +12760,14 @@
 "n": 8,
 "text": "Taṁ Munimāhu (Saṁ 1. 188)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 188,
+"also": false
+}
+]
 }
 ],
 "3073": [
@@ -12692,7 +12788,14 @@
 "n": 2,
 "text": "Etato (Saṁ 1. 187)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 187,
+"also": false
+}
+]
 }
 ],
 "3078": [
@@ -12720,7 +12823,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 189,
+"also": false
+}
+]
 }
 ],
 "3080": [
@@ -12728,7 +12838,14 @@
 "n": 1,
 "text": "Puthū janatāya (Saṁ 1. 188)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 188,
+"also": false
+}
+]
 }
 ],
 "3088": [
@@ -12736,7 +12853,14 @@
 "n": 2,
 "text": "Duṭṭhullabhāṇī (Saṁ 1. 188)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 188,
+"also": false
+}
+]
 }
 ],
 "3100": [
@@ -12744,7 +12868,14 @@
 "n": 1,
 "text": "(Saṅkhāre parato passa, dukkhato mā ca attato. nibbāpehi mahārāgaṁ, mā dayhittho punappunaṁ.) (Sī, Saṁ 1. 189) Uddānagāthāyaṁ ekasattatītisaṅkhyā ca, Theragāthāṭṭhakathā ca passitabbā.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 189,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -12821,7 +12952,14 @@
 "n": 1,
 "text": "Te cetasā (Saṁ 1. 196)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 196,
+"also": false
+}
+]
 }
 ],
 "3121": [
@@ -12829,7 +12967,14 @@
 "n": 2,
 "text": "Samannesaṁ (Saṁ 1. 196)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 196,
+"also": false
+}
+]
 }
 ],
 "3124": [
@@ -12851,7 +12996,14 @@
 "n": 1,
 "text": "Na jotimantopi narā tapeyyuṁ (Khu 1. 330)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 330,
+"also": true
+}
+]
 }
 ],
 "3127": [

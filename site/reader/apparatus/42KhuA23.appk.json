@@ -3065,7 +3065,14 @@
 "n": 2,
 "text": "Vi 3. 46 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 46,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4138,7 +4145,14 @@
 "n": 1,
 "text": "Khu 5. 203 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 203,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4163,19 +4177,40 @@
 "n": 1,
 "text": "Khu 5. 203 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 203,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 5. 204 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 204,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 5. 204 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 204,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4194,7 +4229,14 @@
 "n": 2,
 "text": "Khu 5. 203 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 203,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4230,7 +4272,14 @@
 "n": 2,
 "text": "Khu 5. 204 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 204,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -4869,7 +4918,14 @@
 "n": 1,
 "text": "Khu 6. 123 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 6,
+"page": 123,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5261,7 +5317,14 @@
 "n": 2,
 "text": "Khu 5. 100 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 100,
+"also": false
+}
+]
 }
 ],
 "754": [
@@ -6182,7 +6245,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ-Ṭṭha",
+"vol": 1,
+"page": 311,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -6302,13 +6372,27 @@
 "n": 1,
 "text": "Khu 4. 392 piṭṭhe Cariyāpiṭake.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 392,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 4. 392 piṭṭhe Cariyāpiṭake.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 392,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -6329,7 +6413,14 @@
 "n": 1,
 "text": "Khu 4. 392 piṭṭhe Cariyāpiṭake.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 392,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -7017,7 +7108,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Jātaka-Ṭṭha",
+"vol": 4,
+"page": 186,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -7113,7 +7211,14 @@
 "n": 3,
 "text": "Khu 4. 393 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 393,
+"also": false
+}
+]
 }
 ],
 "1099": [
@@ -9300,7 +9405,14 @@
 "n": 1,
 "text": "Khu 4. 395 piṭṭhe Cariyāpiṭake.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 4,
+"page": 395,
+"also": false
+}
+]
 }
 ],
 "1531": [

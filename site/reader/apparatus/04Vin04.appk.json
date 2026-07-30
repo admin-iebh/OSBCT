@@ -1266,7 +1266,14 @@
 "n": 1,
 "text": "Uddisāti (Vi 1. 244 piṭṭhe.)",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 244,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4535,7 +4542,14 @@
 "n": 1,
 "text": "Aṁ 3. 103 piṭṭhe pana “atha kho āyasmato Ānandassa etadahosī”ti āgataṁ.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 103,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5379,31 +5393,66 @@
 "n": 1,
 "text": "Vi 2. 114 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 114,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Vi 2. 109 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 109,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Vi 3. 146 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 146,
+"also": false
+}
+]
 },
 {
 "n": 4,
 "text": "Vi 3. 435 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 435,
+"also": false
+}
+]
 },
 {
 "n": 4,
 "text": "Vi 1. 344 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 344,
+"also": false
+}
+]
 }
 ],
 "457": [
@@ -5411,7 +5460,14 @@
 "n": 1,
 "text": "Vi 2. 109 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 109,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -5430,7 +5486,14 @@
 "n": 2,
 "text": "Vi 2. 145 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 145,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5449,7 +5512,14 @@
 "n": 3,
 "text": "Vi 2. 221 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 221,
+"also": false
+}
+]
 },
 {
 "n": 3,

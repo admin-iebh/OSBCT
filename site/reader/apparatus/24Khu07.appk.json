@@ -12,7 +12,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 36,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -25,7 +32,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 37,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -318,7 +332,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 43,
+"also": true
+}
+]
 }
 ],
 "5": [
@@ -367,7 +388,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 148,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -725,7 +753,26 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 277,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 234,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 73,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -784,7 +831,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 122,
+"also": true
+}
+]
 }
 ],
 "16": [
@@ -812,7 +866,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 286,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 297,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -1007,7 +1074,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 357,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -1175,7 +1249,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 2,
+"page": 215,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -1265,7 +1346,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 360,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 64,
+"also": true
+}
+]
 }
 ],
 "28": [
@@ -1373,7 +1467,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 44,
+"also": true
+}
+]
 }
 ],
 "37": [
@@ -1516,7 +1617,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 2,
+"page": 119,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -1543,7 +1651,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 371,
+"also": false
+}
+]
 }
 ],
 "39": [
@@ -1573,7 +1688,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 1,
+"page": 256,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -1614,7 +1736,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 270,
+"also": false
+}
+]
 }
 ],
 "41": [
@@ -2237,7 +2366,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 175,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 9,
+"page": 375,
+"also": true
+}
+]
 }
 ],
 "71": [
@@ -2284,7 +2426,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 1,
+"page": 241,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -2342,7 +2491,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 410,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -2460,7 +2616,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 411,
+"also": true
+}
+]
 }
 ],
 "81": [
@@ -2476,7 +2639,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 411,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -2505,7 +2675,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 3,
+"page": 236,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -2534,7 +2711,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 61,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -2560,7 +2744,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 68,
+"also": true
+}
+]
 }
 ],
 "86": [
@@ -2588,7 +2779,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 274,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -2795,7 +2993,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 1,
+"page": 167,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -2856,7 +3061,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 59,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 66,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -2902,7 +3120,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 358,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 67,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -3384,7 +3615,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 416,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -3397,7 +3635,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 416,
+"also": true
+}
+]
 }
 ],
 "116": [
@@ -3413,7 +3658,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 416,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -3596,7 +3848,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 417,
+"also": true
+}
+]
 },
 {
 "n": 3,
@@ -3658,7 +3917,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 418,
+"also": false
+}
+]
 }
 ],
 "132": [
@@ -3687,7 +3953,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 418,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -3927,7 +4200,26 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 277,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 234,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 73,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4040,7 +4332,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 77,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -4053,7 +4352,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 421,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -4152,7 +4458,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 421,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4165,7 +4478,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 422,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -4322,7 +4642,26 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 2,
+"page": 471,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 252,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 251,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -4362,7 +4701,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 175,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 9,
+"page": 375,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -4402,7 +4754,26 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 2,
+"page": 471,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 252,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 251,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -4417,7 +4788,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 1,
+"page": 6,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 285,
+"also": true
+}
+]
 },
 {
 "n": 3,
@@ -4514,7 +4898,44 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 1,
+"page": 7,
+"also": false
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 181,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 3,
+"page": 368,
+"also": false
+},
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 358,
+"also": false
+},
+{
+"work": "Vi",
+"vol": 2,
+"page": 213,
+"also": false
+},
+{
+"work": "Ma-Ṭṭha",
+"vol": 3,
+"page": 156,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4558,7 +4979,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 258,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -4737,7 +5165,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 2,
+"page": 372,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -4848,7 +5283,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 423,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -4919,7 +5361,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 423,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -5076,7 +5525,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 235,
+"also": true
+}
+]
 }
 ],
 "169": [
@@ -5104,7 +5560,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 3,
+"page": 221,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 237,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -5315,7 +5784,32 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 1,
+"page": 157,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 1,
+"page": 111,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 5,
+"also": true
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 300,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -5631,7 +6125,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 425,
+"also": true
+}
+]
 }
 ],
 "183": [
@@ -5646,7 +6147,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 3,
+"page": 182,
+"also": false
+}
+]
 }
 ],
 "184": [
@@ -5680,7 +6188,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 448,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 7,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5725,7 +6246,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 120,
+"also": false
+}
+]
 }
 ],
 "185": [
@@ -5741,7 +6269,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 28,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -5786,7 +6321,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 137,
+"also": true
+}
+]
 },
 {
 "n": 4,
@@ -5814,7 +6356,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 425,
+"also": true
+}
+]
 }
 ],
 "187": [
@@ -5855,7 +6404,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 425,
+"also": true
+}
+]
 }
 ],
 "189": [
@@ -5939,7 +6495,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 56,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -5952,7 +6515,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 174,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -6004,7 +6574,32 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 201,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 1,
+"page": 268,
+"also": false
+},
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 316,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 211,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -6023,7 +6618,14 @@
 "n": 2,
 "text": "Ayaṁ gāthā Saṁ 1. 79 piṭṭhe dissati.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 79,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -6049,7 +6651,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 197,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 9,
+"page": 172,
+"also": true
+}
+]
 },
 {
 "n": 3,
@@ -6303,7 +6918,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 252,
+"also": true
+},
+{
+"work": "Aṁ",
+"vol": 2,
+"page": 471,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -6332,7 +6960,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 2,
+"page": 256,
+"also": true
+}
+]
 },
 {
 "n": 1,
@@ -6502,7 +7137,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 1,
+"page": 215,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -6552,7 +7194,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 2,
+"page": 365,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -6754,7 +7403,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 24,
+"also": false
+}
+]
 }
 ],
 "207": [

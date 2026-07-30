@@ -45,7 +45,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 1,
+"page": 157,
+"also": true
+}
+]
 }
 ],
 "161": [
@@ -669,7 +676,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 1,
+"page": 18,
+"also": true
+}
+]
 }
 ],
 "507": [
@@ -951,7 +965,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 3,
+"page": 188,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -964,7 +985,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 3,
+"page": 188,
+"also": true
+}
+]
 }
 ],
 "759": [
@@ -979,7 +1007,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 100,
+"also": true
+}
+]
 }
 ],
 "776": [
@@ -1185,7 +1220,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 1,
+"page": 225,
+"also": true
+}
+]
 }
 ],
 "860": [
@@ -1264,7 +1306,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 1,
+"page": 226,
+"also": true
+}
+]
 }
 ],
 "893": [
@@ -1295,7 +1344,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 1,
+"page": 206,
+"also": true
+}
+]
 }
 ],
 "903": [
@@ -1326,7 +1382,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 1,
+"page": 229,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -1409,7 +1472,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 3,
+"page": 182,
+"also": true
+}
+]
 }
 ],
 "930": [
@@ -1478,7 +1548,14 @@
 "n": 1,
 "text": "Gilānavuṭṭhito (Saddanībhi). Aṁ 2. 263 piṭṭhe Pāḷiyā Ṭīkā passitabbā.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 2,
+"page": 263,
+"also": false
+}
+]
 }
 ],
 "956": [
@@ -1494,7 +1571,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 34,
+"also": true
+}
+]
 },
 {
 "n": 2,
@@ -1507,7 +1591,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 35,
+"also": true
+}
+]
 },
 {
 "n": 3,
@@ -1520,7 +1611,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 36,
+"also": true
+}
+]
 }
 ],
 "973": [
@@ -1687,7 +1785,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Dī",
+"vol": 2,
+"page": 3,
+"also": true
+}
+]
 }
 ],
 "1023": [

@@ -86,7 +86,14 @@
 "n": 2,
 "text": "Khu 6. 66 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 6,
+"page": 66,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -369,7 +376,14 @@
 "n": 1,
 "text": "Khu 1. 31 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 31,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -395,7 +409,14 @@
 "n": 2,
 "text": "Khu 5. 50 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 50,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -429,7 +450,14 @@
 "n": 4,
 "text": "Khu 1. 23 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 23,
+"also": false
+}
+]
 }
 ],
 "35": [
@@ -1792,7 +1820,20 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Ma-Ṭṭha",
+"vol": 2,
+"page": 191,
+"also": false
+},
+{
+"work": "Aṁ-Ṭṭha",
+"vol": 3,
+"page": 240,
+"also": false
+}
+]
 }
 ],
 "283": [
@@ -1819,7 +1860,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Vi-Ṭṭha",
+"vol": 1,
+"page": 249,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -1963,13 +2011,27 @@
 "n": 1,
 "text": "Saṁ 1. 183 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 183,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 6. 149 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 6,
+"page": 149,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -2433,7 +2495,14 @@
 "n": 1,
 "text": "Khu 5. 328 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 328,
+"also": false
+}
+]
 }
 ],
 "350": [
@@ -2627,7 +2696,14 @@
 "n": 1,
 "text": "Khu 6. 4 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 6,
+"page": 4,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -3436,7 +3512,14 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Saṁ-Ṭṭha",
+"vol": 1,
+"page": 281,
+"also": true
+}
+]
 }
 ],
 "539": [
@@ -3577,7 +3660,14 @@
 "n": 2,
 "text": "Khu 5. 8 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 8,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -3843,7 +3933,14 @@
 "n": 2,
 "text": "Khu 5. 26 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 26,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4083,7 +4180,14 @@
 "n": 2,
 "text": "Khu 5. 26 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 26,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -4164,7 +4268,14 @@
 "n": 1,
 "text": "Khu 5. 42 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 42,
+"also": false
+}
+]
 }
 ],
 "596": [
@@ -4213,7 +4324,14 @@
 "n": 2,
 "text": "Khu 5. 50 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 50,
+"also": false
+}
+]
 }
 ],
 "597": [
@@ -4221,13 +4339,27 @@
 "n": 1,
 "text": "Khu 5. 50 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 50,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 5. 251 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 251,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4247,7 +4379,14 @@
 "n": 2,
 "text": "Khu 5. 252 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 252,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -4315,7 +4454,14 @@
 "n": 1,
 "text": "Khu 5. 252 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 252,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4337,13 +4483,27 @@
 "n": 1,
 "text": "Khu 5. 252 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 252,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Khu 5. 252 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 252,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4424,7 +4584,14 @@
 "n": 4,
 "text": "Khu 5. 253 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 253,
+"also": false
+}
+]
 }
 ],
 "599": [
@@ -4446,7 +4613,14 @@
 "n": 1,
 "text": "Khu 5. 319 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 319,
+"also": false
+}
+]
 }
 ],
 "600": [
@@ -4454,7 +4628,14 @@
 "n": 1,
 "text": "Khu 5. 319 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 319,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4475,7 +4656,14 @@
 "n": 1,
 "text": "Khu 5. 320 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 320,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4515,13 +4703,27 @@
 "n": 1,
 "text": "Khu 5. 322 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 322,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 5. 322 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 322,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4541,7 +4743,14 @@
 "n": 2,
 "text": "Khu 5. 320 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 320,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4561,7 +4770,14 @@
 "n": 2,
 "text": "Khu 5. 321 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 321,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -4600,13 +4816,27 @@
 "n": 2,
 "text": "Khu 5. 180 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 180,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Khu 5. 253 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 253,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -4627,7 +4857,14 @@
 "n": 3,
 "text": "Khu 5. 320 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 320,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -4646,7 +4883,14 @@
 "n": 3,
 "text": "Khu 5. 321 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 321,
+"also": false
+}
+]
 },
 {
 "n": 4,
@@ -4762,13 +5006,27 @@
 "n": 1,
 "text": "Khu 5. 323 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 323,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Khu 5. 285 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 285,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -4790,7 +5048,14 @@
 "n": 1,
 "text": "Khu 5. 323 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 323,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -4936,7 +5201,14 @@
 "n": 2,
 "text": "Khu 5. 26 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 26,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -5080,13 +5352,27 @@
 ]
 }
 ],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 118,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 5. 129 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 129,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5123,7 +5409,14 @@
 "n": 1,
 "text": "Khu 5. 220 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 220,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -5148,7 +5441,14 @@
 "n": 1,
 "text": "Khu 5. 221 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 221,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5169,7 +5469,14 @@
 "n": 2,
 "text": "Khu 5. 221 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 221,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5206,7 +5513,14 @@
 "n": 1,
 "text": "Khu 5. 221 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 221,
+"also": false
+}
+]
 }
 ],
 "608": [
@@ -5214,7 +5528,14 @@
 "n": 1,
 "text": "Khu 5. 118 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 118,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -5285,7 +5606,14 @@
 "n": 3,
 "text": "Khu 5. 118 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 118,
+"also": false
+}
+]
 }
 ],
 "609": [
@@ -5293,7 +5621,14 @@
 "n": 1,
 "text": "Khu 5. 118 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 118,
+"also": false
+}
+]
 }
 ],
 "611": [
@@ -5331,7 +5666,14 @@
 "n": 2,
 "text": "Khu 5. 347 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 347,
+"also": false
+}
+]
 }
 ],
 "614": [
@@ -5402,13 +5744,27 @@
 "n": 1,
 "text": "Khu 5. 347 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 347,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 5. 348 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 348,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -5461,19 +5817,40 @@
 "n": 1,
 "text": "Khu 5. 349 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 349,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 5. 349 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 349,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 5. 349 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 349,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5519,7 +5896,14 @@
 "n": 2,
 "text": "Khu 5. 348 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 348,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -5564,7 +5948,14 @@
 "n": 3,
 "text": "Khu 5. 348 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 348,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -7953,13 +8344,27 @@
 "n": 1,
 "text": "Khu 5. 384 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 384,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 5. 384 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 384,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -7985,13 +8390,27 @@
 "n": 1,
 "text": "Khu 5. 384 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 384,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 5. 385 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 385,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -8017,7 +8436,14 @@
 "n": 1,
 "text": "Khu 5. 385 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 385,
+"also": false
+}
+]
 },
 {
 "n": 1,
@@ -8037,13 +8463,27 @@
 "n": 1,
 "text": "Khu 5. 386 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 386,
+"also": false
+}
+]
 },
 {
 "n": 1,
 "text": "Khu 5. 387 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 387,
+"also": false
+}
+]
 },
 {
 "n": 2,
@@ -8111,13 +8551,27 @@
 "n": 2,
 "text": "Khu 5. 386 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 386,
+"also": false
+}
+]
 },
 {
 "n": 2,
 "text": "Khu 5. 387 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 387,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -8137,13 +8591,27 @@
 "n": 3,
 "text": "Khu 5. 385 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 385,
+"also": false
+}
+]
 },
 {
 "n": 3,
 "text": "Khu 5. 385 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 385,
+"also": false
+}
+]
 },
 {
 "n": 3,
@@ -8205,7 +8673,14 @@
 "n": 5,
 "text": "Khu 5. 386 piṭṭhe.",
 "variants": [],
-"xrefs": []
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 386,
+"also": false
+}
+]
 }
 ],
 "813": [

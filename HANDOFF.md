@@ -1,6 +1,6 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-07-30e)
+## START HERE (updated 2026-07-30f)
 
 **Three gates, three scopes. Quote the scope whenever you call anything verified.**
 
@@ -1540,6 +1540,199 @@ marker when the sweep is next touched; until then do not chase those two rows.
 **Read the dated entries below before touching anything** — they are newest-first and record several wrong diagnoses and the parser settings that actually fixed them (marker regex, ±3 page window, derived running headers).
 
 ---
+
+* **~~23,386 PARSED CROSS-REFERENCES NEVER REACH THE READER~~ — FIXED
+  2026-07-30f, 81 VOLUMES, VERIFIED IN THE REAL READER.** The citations ARE parsed to `{work, vol, page}`, and
+  `reader2.html` ALREADY has `resolveXref()` turning that triple into a
+  `VOL#ord` key via `XC_CANON` + `PAGEIDX`. It is fed nothing.
+  `rebuild_apparatus.py:238` writes every note it anchors with **`'xrefs': []`
+  hardcoded** and diverts the citation lines to `xrefs/<VOL>.json` as RAW
+  STRINGS; `loadVol()` reads `apparatus/<VOL>.appk.json` and nothing else.
+  `app.json` **27,153** xrefs in 107 vols (read by nothing) | `appk.json`
+  **3,798** in 34 (read by the reader) | `xrefs/` **1,298 strings** in 18.
+  The citation still DISPLAYS — `appBlock` falls back to `n.text` — so it reads
+  as dead text where a `→` link belongs. **AND THE GATE CANNOT SEE IT:**
+  `verify_apparatus.py:109` counts `xrefs/<VOL>.json` toward stored notes, so
+  the gate scores them present while the reader has nothing to click. NOT age —
+  `appk` is NEWER than `app` in all 80; `rekey_apparatus.py` preserved xrefs and
+  `rebuild_apparatus.py` supersedes it and empties them.
+  **FIXED:** `_xref/fill_xrefs.py --write` filled the field on the notes already
+  there — ADDITIVE, one field, with a skeleton assert that `n`/`text`/`variants`
+  cannot move — and `rebuild_apparatus.py` now calls `parse_xrefs(text)` at the
+  anchor site so a future rebuild cannot re-empty it. The parser was verified
+  first: it reproduces **66,841 of 66,841** stored notes EXACTLY.
+  **appk 3,798 -> 30,273 xrefs; 93.2% resolve to a live target.** Verified by
+  BOOTING THE READER over all 81 volumes (`_xref/verify_xref_links.js`, JSDOM,
+  resumable): **81 ok, 0 FAIL, 22,947 `a.xref` anchors rendered**, against 18
+  xrefs in total across the 81 `.prexref` pre-images. **`check_layout` reports 0
+  issues EITHER WAY** — it grades roles, not apparatus links, which is why it was
+  blind to the whole defect. **Still open:** `verify_apparatus.py` is still
+  satisfied by `xrefs/<VOL>.json` and can go blind again; `XC_COMM` has no
+  Khuddaka commentaries, which is most of the 1,810 unresolved; and the 1,298 raw
+  citation LINES in `xrefs/<VOL>.json` are loaded by nothing. NOT DEPLOYED.
+* **THE PRE-30a STALENESS CHECK IS RUN AND CLEAN (2026-07-30f).** Dry-run
+  `build_khu_volume` per volume — it is already a dry run without `--write` —
+  diffed byte-for-byte against disk, one subprocess per volume (the builder
+  memoises page reads in module globals and `use()` only rebinds some).
+  **116 of 117 BYTE-IDENTICAL on all five side-maps.** Negative control run
+  first: 05Kankha's build against 07ViT07's files reports `sections:+332-357~13`,
+  so the harness can fail. `_stale/`.
+* **!!! `build_khu_volume 19Khu02 --write` IS NOT IDEMPOTENT — IT REVERTS 36
+  HEADINGS.** The one non-identical volume. `build_19khu02_nav.py:282` writes
+  BACK into `sections/19Khu02.json`, demoting 36 of Guttilavimāna's minor
+  vimānas from `sutta` to the subordinate `vatthu` class. The generic builder is
+  **not the last writer of that map** — always follow 19Khu02 with
+  `build_19khu02_nav.py`.
+* **THE DIRECT-LINK LEAD HAS A CEILING OF ~12% (2026-07-30f).** The residue is
+  **9,164** numbered ¶ with NO rev entry (27.4% of 33,398); only **1,120
+  (12.2%)** carry a printed CANON xref. The edition's own citations cannot close
+  the hole. Rev maps hold only `direct` 24,159 + `covered` 2,257 — **the residue
+  is ABSENT from them, not present with a weak state**, which is what my first
+  measurement (0.6%) got wrong.
+* **THE `?cb=` CACHE INFERENCE IS REFUTED (2026-07-30f).** A query string DOES
+  miss the Cloudflare cache: `/reader/reader.html` served the retired page while
+  `/reader/reader.html?osbctcachetest=20260730` served the stub, same minute.
+  Origin verified correct four ways (worktree, `HEAD`, `origin/main`, raw
+  githubusercontent), and `index.html` from the SAME commit is live as the stub,
+  so the deployment is sound and the edge object is stale.
+
+## THE STALENESS QUESTION IS CLOSED, AND THE READER HAS BEEN MISSING 23,386 CROSS-REFERENCES (2026-07-30f)
+
+**Nothing was modified this session.** Every probe is read-only; `nav.json` was backed up before
+any of it and is untouched. Full write-up in
+`claude/staleness_clean_and_xrefs_not_reaching_reader.md`.
+
+### THE CACHE LOOSE END — THE PURGE DID NOT TAKE, BUT THE CAUSE *IS* CACHING
+
+```
+/reader/reader.html                          -> the OLD reader   (☰ ⌂ … All … A− A+ ↔ ES ◐)
+/reader/reader.html?osbctcachetest=20260730  -> the STUB
+```
+
+`⌂`, `↔` and `All` occur ONLY in `reader.html.bak_retired_20260730` — not in `reader2.html`, not
+in the stub — so the first response is the genuine retired page, not a redirect being followed.
+Origin verified four ways; `index.html` from the same commit `b8de7aa` is live as the stub. One
+commit, one Pages deploy, one file right and one wrong: the deployment is sound.
+
+**Refuted:** the earlier `?cb=` reading that a cache rule ignores query strings. It does not.
+Remaining action is **Purge Everything**, then re-test in a private window. Response headers could
+not be read — the Chrome extension is not connected — so this is evidence from bodies, not headers.
+
+### THE PRE-30a STALENESS CHECK — 116 OF 117 BYTE-IDENTICAL
+
+`_stale/dryrun_one.py` + `_stale/sweep.sh` (resumable, budget-capped for the 45 s shell), results
+in `_stale/results.txt`. Serialised exactly as the builder's own `write()` does, so the comparison
+is byte-for-byte. **Negative control first**, because a sweep of "SAME" proves nothing until it can
+fail: 05Kankha built against 07ViT07's shipped files reports differences on all five maps
+(`sections:+332-357~13`). The maps are not vacuously equal either — 05Kankha builds 3/345/350/3/4.
+
+**Nothing shipped carries a pre-30a side-map.**
+
+The one difference is **19Khu02 `sections`, 36 keys, 0 added, 0 removed, role field only** —
+`vatthu` on disk against `sutta` from the builder. `build_19khu02_nav.py:282` writes back into that
+map deliberately, demoting Guttilavimāna's minor vimānas so the reading pane shows the hierarchy
+the tree already had. **So the generic builder would REVERT them: 19Khu02 must always be followed
+by its nav builder.**
+
+### THE DIRECT-LINK LEAD, MEASURED BEFORE IT WAS BUILT ON
+
+```
+numbered ¶ in linked volumes                33,398
+no rev entry (the residue)                   9,164   (27.4%)
+   carrying a printed CANON xref             1,120   (12.2%)
+```
+
+Worst: 24AbhiT03 611, 06ViT06 541, 26KhuA07 528, 05ViT05 514, 27KhuA08 437, 05Kankha 433,
+17SaT02 399. **12.2% is a ceiling, not a yield** — an xref says a passage also stands at
+`Aṁ 2. 409`, which is usually but not always the same claim as "this paragraph comments on that".
+
+**My own false start, recorded:** I first measured non-`direct` states inside the rev maps and got
+0.6%. Wrong set — the residue has no rev entry at all.
+
+### !!! AND THE DEFECT FOUND ON THE WAY
+
+| file | keyed by | structured xrefs | who reads it |
+|---|---|---|---|
+| `apparatus/<VOL>.app.json` | section id | **27,153** in 107 vols | nothing |
+| `apparatus/<VOL>.appk.json` | ordinal | 3,798 in 34 vols | **the reader** |
+| `xrefs/<VOL>.json` | ordinal | 1,298 raw **strings** in 18 vols | the gate only |
+
+`rebuild_apparatus.py:238` emits `{'n':…, 'text':…, 'variants': parse_variants(text), 'xrefs': []}`
+— the xrefs hardcoded empty — and sends the citation lines to `xrefs/<VOL>.json` as raw text.
+`loadVol()` loads `appk.json` alone. So in the **80 volumes** rebuilt with that script
+`resolveXref()` is never called, and `appBlock`'s `if(!parts.length&&n.text)` fallback renders the
+citation as ordinary text where a `→` link belongs.
+
+**The gate scores them as present** (`verify_apparatus.py:109` counts `xrefs/<VOL>.json` toward
+stored notes) — gate and reader disagree about where xrefs live. Same shape as "no gate tests what
+the live site actually serves".
+
+**The one change worth making first:** parse xrefs onto the anchored note in
+`rebuild_apparatus.py` instead of emptying them. It repairs 80 volumes AND is the prerequisite for
+even the 12% above — the structured xrefs are section-keyed today and the residue is ordinal-keyed,
+so nothing can join them as things stand.
+
+### THE FIX, APPLIED THE SAME SESSION
+
+**The parser was verified before it was trusted.** `pipeline/extract.py`'s `parse_xrefs` re-run
+over every note in the section-keyed files reproduces **66,841 of 66,841 EXACTLY** — 0 differ, 0
+found-more, 0 found-fewer — so it is demonstrably the function that made them.
+
+`_xref/fill_xrefs.py` then set `xrefs = parse_xrefs(note['text'])` on the notes already in
+`appk.json`. **Additive, one field**: a `skeleton()` assert per volume proves `n`, `text` and
+`variants` cannot move, and no note is added, removed or reordered. `.prexref` backups per file.
+
+```
+appk xrefs   3,798 -> 30,273   (+26,475 across 81 volumes)
+   of the added, resolving to a live target   24,665  (93.2%)
+   from notes with no "piṭṭh" in the text        294  (1.1%, all genuine —
+                                                 "Khu 1. 36 Dhammapade.")
+```
+
+`rebuild_apparatus.py` now calls `parse_xrefs(text)` at the anchor site instead of writing `[]`,
+so a future rebuild cannot undo this.
+
+**Verified by booting the real reader, not by counting the file.** `_xref/verify_xref_links.js`
+(JSDOM, the same harness `check_layout.js` uses; resumable and budgeted for the 45 s shell) opens
+each volume and counts `a.xref` anchors in the rendered apparatus:
+
+```
+81 volumes   81 ok   0 FAIL   22,947 live -> links rendered   1,501 unresolved spans
+pre-image control: the 81 .prexref files carry 18 xrefs in TOTAL
+```
+
+Gates after: `regress check` **53/55 + 2 exempt [OK]**, `check_layout` on five rebuilt volumes
+**0 layout issues, 0 not driveable**, `_navdup` **PASS 30,730 rows**, `nav.json` byte-identical to
+the pre-session backup.
+
+**!!! AND NOTE WHAT THE GATES DID NOT DO.** `check_layout` reported 0 issues *before* the fix too.
+It grades roles, not apparatus links. A citation rendered as dead text is not a layout fault, so
+the presentation gate was structurally blind to a defect in 80 volumes — which is why the
+render-level check above exists as a file rather than as a one-off.
+
+### STILL OPEN
+
+* `verify_apparatus.py` still counts `xrefs/<VOL>.json` toward stored notes, so **the apparatus
+  gate can go blind the same way again.** The render check is not wired into any gate run.
+* **`XC_COMM` has no Khuddaka commentaries**, which is most of the 1,810 unresolved:
+  `Jātaka-Ṭṭha`, `Netti-Ṭṭha`, `Udāna-Ṭṭha`, `Kaṅkhā-Ṭṭha`, `Paṭisaṁ-Ṭṭha`, `Apadāna-Ṭṭha`.
+  Extending it needs the concordancia's volume mapping read properly — **not guessed**, since a
+  wrong entry makes a confident wrong link.
+* The **1,298 raw citation LINES** in `xrefs/<VOL>.json` (18 volumes) — the edition's unmarked
+  `*`/`+` cross-references — are still loaded by nothing.
+* `Upari` / `Heṭṭhā` are RELATIVE references ("above"/"below", same volume), not works, so
+  `resolveXref` cannot resolve them. 14 of them.
+* **STAMPED, NOT PUSHED.** `stamp_build.py --write` run over 1,690 JSON files: BUILD
+  **`b6e4cfd8a037` -> `5796c322ad94`** in `reader2.html`, `search.html`, `errata.html`,
+  `downloads.html`. **The stamp is not cosmetic here** — `jget(url)` fetches `url + '?v=' + BUILD`,
+  so without it a returning visitor's cached `appk.json` would stand and the new links would not
+  appear at all. Render check re-run after stamping: 09DiT02 and 26VsmT02 still ok. **Re-stamp if
+  anything under `site/` changes again before the push.** Commit and push from a networked
+  terminal; the device shell has none.
+
+**Paragraph alignment across canon / aṭṭhakathā / ṭīkā is still untested** — open question #1.
+Not opened this session rather than opened and left half-answered.
+
 
 ## THE CENTRED GATE WAS PARTLY BLIND IN SIX VOLUMES — AND I DESTROYED nav.json FINDING OUT (2026-07-30e)
 

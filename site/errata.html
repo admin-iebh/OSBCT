@@ -49,7 +49,7 @@
 <script>
 // cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
 // rewrites it, so a rebuild can never be invisible to a returning browser.
-const BUILD='b6e4cfd8a037';
+const BUILD='5796c322ad94';
 function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
 
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));

@@ -220,7 +220,7 @@ const FOLDER={canon:'pali-unicode',A:'atthakatha-unicode',T:'tika-unicode'};
 let toastT=null;
 function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),1500);}
 
-const BUILD='b6e4cfd8a037';
+const BUILD='5796c322ad94';
 async function jget(url,fallback){ try{const sep=url.includes('?')?'&':'?'; const r=await fetch(url+sep+'v='+BUILD); if(!r.ok) return fallback; return await r.json();}catch(e){return fallback;} }
 async function loadVol(vol){
   if(cache[vol]) return cache[vol];
