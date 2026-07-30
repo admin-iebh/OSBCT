@@ -9,6 +9,26 @@ window.I18N = {
   nav_errata:{en:'Errata',es:'Erratas'},
   btn_errata:{en:'Errata',es:'Erratas'},
   theme_toggle:{en:'Toggle light / dark',es:'Cambiar claro / oscuro'},
+
+  // TOOLTIPS.  These were the last English strings left in the Spanish
+  // interface (2026-07-30f): `applyI18n` has always supported
+  // `data-i18n-title`, and NOT ONE element in the site used it, so every
+  // tooltip stayed English whatever the language.  The reader also builds
+  // tooltips in JS, and those go through `t()` at the call site.
+  // The Pāḷi is never translated — only the gloss beside it.
+  tip_nav:{en:'Hide / show navigation',es:'Ocultar / mostrar la navegación'},
+  tip_toc:{en:'Table of contents',es:'Índice'},
+  tip_layer_canon:{en:'Pāḷi — Tipiṭaka (canon)',es:'Pāḷi — Tipiṭaka (canon)'},
+  tip_layer_comm:{en:'Aṭṭhakathā — commentary',es:'Aṭṭhakathā — comentario'},
+  tip_layer_tika:{en:'Ṭīkā — subcommentary',es:'Ṭīkā — subcomentario'},
+  tip_outline:{en:'Collapse long commentaries into a lemma outline',
+               es:'Contraer los comentarios largos en un esquema de lemas'},
+  tip_smaller:{en:'Smaller text',es:'Reducir el texto'},
+  tip_larger:{en:'Larger text',es:'Agrandar el texto'},
+  tip_copy_text:{en:'Copy text',es:'Copiar el texto'},
+  tip_copy_cit:{en:'Copy citation',es:'Copiar la cita'},
+  tip_view_page:{en:'View printed page',es:'Ver la página impresa'},
+  tip_goto:{en:'Go to',es:'Ir a'},
   lang_toggle:{en:'Cambiar a español',es:'Switch to English'},
 
   // landing
@@ -79,6 +99,21 @@ window.I18N = {
   dl_comm:{en:'Aṭṭhakathā (Commentary)',es:'Aṭṭhakathā (Comentario)'},
   dl_sub:{en:'Ṭīkā (Subcommentary)',es:'Ṭīkā (Subcomentario)'}
 };
+// The variant sigla of the printed apparatus.  The siglum itself is the
+// edition's and never changes; only the gloss beside it is interface text.
+window.SIGLA={
+  'Sī':{en:'Sīhaḷa (Sinhalese)',es:'Sīhaḷa (cingalés)'},
+  'Syā':{en:'Syāma (Thai)',es:'Syāma (tailandés)'},
+  'Kaṁ':{en:'Kamboja (Cambodian)',es:'Kamboja (camboyano)'},
+  'I':{en:'PTS / English',es:'PTS / inglés'},
+  'Ka':{en:'some Burmese mss',es:'algunos mss. birmanos'},
+  'Ka-Sī':{en:'Ka + Sīhaḷa',es:'Ka + Sīhaḷa'},
+  'katthaci':{en:'in some copies',es:'en algunas copias'},
+  'sabbattha':{en:'in all copies',es:'en todas las copias'},
+  'bahūsu':{en:'in many copies',es:'en muchas copias'}
+};
+window.sigla=function(s){ const e=window.SIGLA[s]; return e? (e[window.osbctLang()]||e.en) : s; };
+
 window.osbctLang=function(){ let l=localStorage.getItem('osbct-lang'); if(!l){ l=(navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en'; } return l; };
 window.t=function(k){ const e=window.I18N[k]; if(!e) return k; return e[osbctLang()]||e.en; };
 window.osbctSetLang=function(l){ localStorage.setItem('osbct-lang',l); location.reload(); };

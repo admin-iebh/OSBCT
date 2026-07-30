@@ -138,11 +138,11 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 [data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%);background:var(--fg);color:var(--bg);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;line-height:1.3;white-space:normal;width:max-content;max-width:230px;text-align:center;padding:5px 9px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.26);z-index:200;pointer-events:none}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js"></script>
+<script src="../i18n.js?v=40804c352a39"></script>
 </head>
 <body>
   <div class="topbar">
-    <button class="tb" id="sidetog" title="Hide / show navigation">☰</button>
+    <button class="tb" id="sidetog" data-i18n-title="tip_nav" title="Hide / show navigation">☰</button>
     <span class="brand"><span class="dot"></span>Sixth Buddhist Council Tipiṭaka</span>
     <div class="search"><input id="sq" type="search" data-i18n-ph="r2_search_ph" placeholder="Search all layers — diacritics optional" autocomplete="off"><div id="sdrop" class="sdrop" hidden></div></div>
     <span class="sp"></span>
@@ -150,32 +150,37 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
     <a class="navlink" href="../downloads.html" data-i18n="nav_downloads">Downloads</a>
     <a class="navlink" href="../about.html" data-i18n="nav_about">About</a>
     <a class="navlink" href="../errata.html" data-i18n="nav_errata">Errata</a>
-    <button class="tb langbtn" title="Cambiar idioma">ES</button>
-    <button class="tb" id="themebtn" title="Toggle light / dark">◐</button>
+    <button class="tb langbtn" data-i18n-title="lang_toggle" title="Cambiar idioma">ES</button>
+    <button class="tb" id="themebtn" data-i18n-title="theme_toggle" title="Toggle light / dark">◐</button>
   </div>
   <nav class="side" id="side"><div class="hint">Loading…</div></nav>
   <div id="toast"></div>
   <div class="main">
     <div class="docbar">
       <div class="doctitle" id="doctitle">Select a text</div>
-      <span class="tocwrap"><button class="tb" id="tocbtn" data-i18n="r2_contents" title="Table of contents">☰ Contents</button><div id="tocdrop" class="tocdrop" hidden></div></span>
+      <span class="tocwrap"><button class="tb" id="tocbtn" data-i18n="r2_contents" data-i18n-title="tip_toc" title="Table of contents">☰ Contents</button><div id="tocdrop" class="tocdrop" hidden></div></span>
       <span class="sp"></span>
       <span class="grouplabel" data-i18n="r2_layers">Layers</span>
       <div class="layerbar" id="layerbar">
-        <button class="lbtn on" data-k="canon" title="Pāḷi — Tipiṭaka (canon)">P</button>
-        <button class="lbtn" data-k="A" title="Aṭṭhakathā — commentary">A</button>
-        <button class="lbtn" data-k="T" title="Ṭīkā — subcommentary">T</button>
+        <button class="lbtn on" data-k="canon" data-i18n-title="tip_layer_canon" title="Pāḷi — Tipiṭaka (canon)">P</button>
+        <button class="lbtn" data-k="A" data-i18n-title="tip_layer_comm" title="Aṭṭhakathā — commentary">A</button>
+        <button class="lbtn" data-k="T" data-i18n-title="tip_layer_tika" title="Ṭīkā — subcommentary">T</button>
       </div>
       <div class="viewtog" id="viewtog">
         <button data-view="columns" data-i18n="r2_columns">Columns</button><button data-view="tabs" data-i18n="r2_tabs">Tabs</button><button data-view="single" class="on" data-i18n="r2_single">Single</button>
       </div>
-      <button class="tb" id="readtog" data-i18n="r2_outline" title="Collapse long commentaries into a lemma outline">☰ Outline</button>
-      <div class="rctrl"><button id="fdec" title="Smaller text">A−</button><button id="finc" title="Larger text">A+</button></div>
+      <button class="tb" id="readtog" data-i18n="r2_outline" data-i18n-title="tip_outline" title="Collapse long commentaries into a lemma outline">☰ Outline</button>
+      <div class="rctrl"><button id="fdec" data-i18n-title="tip_smaller" title="Smaller text">A−</button><button id="finc" data-i18n-title="tip_larger" title="Larger text">A+</button></div>
     </div>
     <div class="scroll" id="scroll"><div class="hint">Pick a text from the tree to begin.</div></div>
   </div>
 <script>
 const $=s=>document.querySelector(s);
+// A LOCAL HELPER WITH AN ENGLISH FALLBACK.  `t()` lives in i18n.js, a separate
+// <script src>; if it has not loaded, a bare `t(...)` in a render path throws
+// and takes the whole page down with it — which is what happened the first time
+// these call sites were wired (2026-07-30f).  TIP() degrades to English.
+const TIP=(k,en)=>(window.t&&window.I18N&&window.I18N[k])?window.t(k):en;
 if(window.I18N) Object.assign(window.I18N,{
   r2_search_ph:{en:'Search all layers — diacritics optional',es:'Buscar en todas las capas — diacríticos opcionales'},
   r2_layers:{en:'Layers',es:'Capas'},
@@ -220,7 +225,7 @@ const FOLDER={canon:'pali-unicode',A:'atthakatha-unicode',T:'tika-unicode'};
 let toastT=null;
 function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),1500);}
 
-const BUILD='5796c322ad94';
+const BUILD='40804c352a39';
 async function jget(url,fallback){ try{const sep=url.includes('?')?'&':'?'; const r=await fetch(url+sep+'v='+BUILD); if(!r.ok) return fallback; return await r.json();}catch(e){return fallback;} }
 async function loadVol(vol){
   if(cache[vol]) return cache[vol];
@@ -726,10 +731,10 @@ function appBlock(app){
   if(!app||!app.length) return '';
   let rows='';
   for(const n of app){ let parts=[];
-    for(const v of (n.variants||[])){ const sg=(v.sigla||[]).map(s=>'<abbr title="'+escA(SIG[s]||s)+'">'+esc(s)+'</abbr>').join(', '); parts.push('<i>'+esc(v.reading)+'</i>'+(sg?' ('+sg+')':'')); }
+    for(const v of (n.variants||[])){ const sg=(v.sigla||[]).map(s=>'<abbr title="'+escA(window.sigla?window.sigla(s):(SIG[s]||s))+'">'+esc(s)+'</abbr>').join(', '); parts.push('<i>'+esc(v.reading)+'</i>'+(sg?' ('+sg+')':'')); }
     for(const x of (n.xrefs||[])){ const label=esc(x.work)+(x.vol?' '+x.vol:'')+'. '+x.page+(x.page_to?'–'+x.page_to:'');
       const r=resolveXref(x.work,x.vol,x.page);
-      parts.push(r?'<a class="xref" title="Go to '+escA(x.work)+' p.'+x.page+'" onclick="navXref(\''+r.key+'\',\''+r.kind+'\')">'+label+' →</a>':'<span class="xref" style="opacity:.7">'+label+'</span>'); }
+      parts.push(r?'<a class="xref" title="'+escA(TIP('tip_goto','Go to'))+' '+escA(x.work)+' p.'+x.page+'" onclick="navXref(\''+r.key+'\',\''+r.kind+'\')">'+label+' →</a>':'<span class="xref" style="opacity:.7">'+label+'</span>'); }
     if(!parts.length&&n.text) parts.push(esc(n.text));
     rows+='<div><span class="mk">'+(n.n||'*')+'</span>'+parts.join('; ')+'</div>'; }
   return '<div class="appx">'+rows+'</div>';
@@ -780,7 +785,7 @@ function facs(vol,kind,pr){
   const folder=LAYERFOLDER[VOLLAYER[vol]]||FOLDER[kind]||'pali-unicode';
   const to=(pr.printed!=null&&pr._ord!=null)?lastPrinted(vol,pr._ord,pr.printed):null;
   const lbl=(pr.printed!=null?pr.printed:'?')+(to!=null?'–'+to:'');
-  if(pr.pdf_page) return '<a class="pgmk" target="_blank" rel="noopener" href="'+R2+'/'+folder+'/'+vol+'.pdf#page='+truePdfPage(vol,pr.pdf_page)+'" title="View printed page '+lbl+'">p.'+lbl+' ⧉</a>';
+  if(pr.pdf_page) return '<a class="pgmk" target="_blank" rel="noopener" href="'+R2+'/'+folder+'/'+vol+'.pdf#page='+truePdfPage(vol,pr.pdf_page)+'" title="'+escA(TIP('tip_view_page','View printed page'))+' '+lbl+'">p.'+lbl+' ⧉</a>';
   return '<span class="pgmk">p.'+lbl+'</span>';
 }
 // THE PAGE RULE — a horizontal line carrying the printed page number, drawn
@@ -792,7 +797,7 @@ function pageRule(vol,kind,pr){
   const href=pr.pdf_page?(R2+'/'+folder+'/'+vol+'.pdf#page='+truePdfPage(vol,pr.pdf_page)):null;
   const inner='page '+n+(href?' ⧉':'');
   return '<div class="pgrule"><span>'+(href
-    ? '<a target="_blank" rel="noopener" href="'+href+'" title="View printed page '+n+'">'+inner+'</a>'
+    ? '<a target="_blank" rel="noopener" href="'+href+'" title="'+escA(TIP('tip_view_page','View printed page'))+' '+n+'">'+inner+'</a>'
     : inner)+'</span></div>';
 }
 function toolsFor(kind,vol,pr,sutta){
@@ -800,8 +805,8 @@ function toolsFor(kind,vol,pr,sutta){
   const COPY='<svg viewBox="0 0 16 16" width="13" height="13"><rect x="5" y="5" width="8" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M3 10.5V3a1 1 0 0 1 1-1h6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
   const CITE='<svg viewBox="0 0 16 16" width="13" height="13"><path d="M6 5H3.5A1.5 1.5 0 0 0 2 6.5V9A1.5 1.5 0 0 0 3.5 10.5H5V11a2 2 0 0 1-2 2M14 5h-2.5A1.5 1.5 0 0 0 10 6.5V9a1.5 1.5 0 0 0 1.5 1.5H13V11a2 2 0 0 1-2 2" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
   return '<span class="tools">'+jbtns(kind,pr._key)+facs(vol,kind,pr)
-    +'<button class="icn" title="Copy text" data-txt="'+escA((pr.text||'').replace(/^\s*\d+(-\d+)?\.\s*/,''))+'" onclick="copyText(this)">'+COPY+'</button>'
-    +'<button class="icn" title="Copy citation" data-cite="'+escA(cite)+'" onclick="copyCite(this)">'+CITE+'</button></span>';
+    +'<button class="icn" title="'+escA(TIP('tip_copy_text','Copy text'))+'" data-txt="'+escA((pr.text||'').replace(/^\s*\d+(-\d+)?\.\s*/,''))+'" onclick="copyText(this)">'+COPY+'</button>'
+    +'<button class="icn" title="'+escA(TIP('tip_copy_cit','Copy citation'))+'" data-cite="'+escA(cite)+'" onclick="copyCite(this)">'+CITE+'</button></span>';
 }
 window.copyText=b=>{navigator.clipboard&&navigator.clipboard.writeText(b.dataset.txt);flash(b);};
 window.copyCite=b=>{navigator.clipboard&&navigator.clipboard.writeText(b.dataset.cite);flash(b);};
@@ -821,7 +826,7 @@ function jbtns(kind,key){
   const vol=parseKey(key)[0]; const {mine,bands}=bandsFor(vol);
   const targets=bands.filter(b=>b!==mine);
   const COL={P:'var(--canon)',A:'var(--comm)',T:'var(--tika)'},NAME={P:'Pāḷi',A:'Aṭṭhakathā',T:'Ṭīkā'};
-  return targets.map(tg=>'<button class="jbtn" style="color:'+COL[tg]+';border-color:'+COL[tg]+'" title="Go to '+NAME[tg]+'" onclick="jumpFrom(\''+key+'\',\''+tg+'\')">'+tg+'</button>').join('');
+  return targets.map(tg=>'<button class="jbtn" style="color:'+COL[tg]+';border-color:'+COL[tg]+'" title="'+escA(TIP('tip_goto','Go to'))+' '+NAME[tg]+'" onclick="jumpFrom(\''+key+'\',\''+tg+'\')">'+tg+'</button>').join('');
 }
 window.jumpFrom=async function(key,tg){
   const NAME={P:'Pāḷi',A:'Aṭṭhakathā',T:'Ṭīkā'}, LK={P:'canon',A:'A',T:'T'},

@@ -39,7 +39,14 @@ n = 0
 for base, dirs, files in os.walk(SITE):
     dirs[:] = sorted(d for d in dirs if d not in ('.git',))
     for f in sorted(files):
-        if not f.endswith('.json'):
+        # !!! i18n.js MUST BE IN THE HASH AND MUST CARRY A BUSTER (2026-07-30f).
+        # The stamp used to cover JSON only.  When the tooltip keys were added,
+        # BUILD did not move, so a returning visitor would have kept a CACHED
+        # i18n.js while loading the NEW html — and `t()` returns the KEY when a
+        # key is missing, so every wired tooltip would have read `tip_toc`,
+        # `tip_nav`, `tip_larger` on screen.  Hashing it and versioning the
+        # <script src> is what stops that.
+        if not (f.endswith('.json') or f == 'i18n.js'):
             continue
         p = os.path.join(base, f)
         st = os.stat(p)
@@ -47,7 +54,7 @@ for base, dirs, files in os.walk(SITE):
                                   int(st.st_mtime))).encode())
         n += 1
 stamp = h.hexdigest()[:12]
-print('%d JSON file(s) under site/  ->  BUILD %s' % (n, stamp))
+print('%d JSON + i18n file(s) under site/  ->  BUILD %s' % (n, stamp))
 
 for rp in READERS:
     if not os.path.exists(rp):
@@ -61,5 +68,22 @@ for rp in READERS:
     if '--write' in sys.argv:
         open(rp, 'w', encoding='utf-8').write(
             s[:m.start(1)] + stamp + s[m.end(1):])
+# Version every <script src="…i18n.js"> so a new stamp forces a re-fetch.
+I18N_SRC = re.compile(r'(<script src="[^"]*i18n\.js)(\?v=[^"]*)?(")')
+pages = [os.path.join(b, f) for b, d, fs in os.walk(SITE) for f in fs
+         if f.endswith('.html')]
+touched = 0
+for pp in sorted(pages):
+    s = open(pp, encoding='utf-8').read()
+    if not I18N_SRC.search(s):
+        continue
+    out = I18N_SRC.sub(lambda m: m.group(1) + '?v=' + stamp + m.group(3), s)
+    if out != s:
+        touched += 1
+        if '--write' in sys.argv:
+            open(pp, 'w', encoding='utf-8').write(out)
+print('   i18n.js cache-buster: %d page(s) %s'
+      % (touched, 'updated' if '--write' in sys.argv else 'would be updated'))
+
 if '--write' not in sys.argv:
     print('DRY RUN — pass --write')

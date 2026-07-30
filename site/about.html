@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About — Sixth Buddhist Council Tipiṭaka</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<script src="i18n.js"></script>
+<script src="i18n.js?v=40804c352a39"></script>
 <style>
   :root{--fg:#20201c;--mut:#7a736a;--line:#e6e1d8;--accent:#7a5b34;--bg:#faf8f4;--panel:#fff;--tag:#efe9df}
   html[data-theme=dark]{--fg:#e7e2d8;--mut:#9a9184;--line:#332f28;--accent:#cba976;--bg:#171511;--panel:#211e18;--tag:#2e2a1e}
@@ -34,7 +34,7 @@
   <div class="topnav"><a href="index.html">←&nbsp;<span data-i18n="nav_home">Home</span></a><a href="reader/reader2.html" data-i18n="nav_reader">Reader</a><a href="search.html" data-i18n="nav_search">Search</a><a href="downloads.html" data-i18n="nav_downloads">Downloads</a><a href="errata.html" data-i18n="nav_errata">Errata</a></div>
   <span class="sp"></span>
   <button class="langbtn">ES</button>
-  <button class="themebtn" id="themebtn" title="Toggle light/dark">◐</button>
+  <button class="themebtn" id="themebtn" data-i18n-title="theme_toggle" title="Toggle light/dark">◐</button>
 </header>
 <script>
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));

@@ -1,6 +1,52 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-07-30f)
+## START HERE (updated 2026-07-30g)
+
+* **!!! `data-i18n-title` EXISTED FOR MONTHS AND NOT ONE ELEMENT USED IT — EVERY
+  TOOLTIP WAS ENGLISH IN SPANISH (2026-07-30g).** `applyI18n` has always
+  translated `[data-i18n]`, `[data-i18n-ph]` and `[data-i18n-title]`; the count
+  of `data-i18n-title` across the whole site was **0**. Wired on 15 controls
+  plus 6 JS-built tooltips (copy text / copy citation / page badge / xref link /
+  jump button / variant sigla). `window.SIGLA` + `window.sigla()` replace the
+  English-only `SIG` map — **the siglum is the edition's and never changes, only
+  the gloss beside it**. Verified by booting the reader TWICE, `osbct-lang` en
+  vs es, and diffing every tooltip: **13 change, 1 identical** — and that one is
+  `Pāḷi — Tipiṭaka (canon)`, which must not change.
+  `_xref/verify_tooltips.js`.
+* **!!! A BARE `t(...)` IN A RENDER PATH TAKES THE PAGE DOWN.** `t()` lives in
+  `i18n.js`, a separate `<script src>`. The first wiring used it directly and
+  the reader died with `ReferenceError: t is not defined` the moment i18n.js was
+  not present. Use **`TIP(key, englishFallback)`** in reader2, and prove it:
+  `OSBCT_NO_I18N=1 node _xref/verify_tooltips.js` renders everything in English
+  and throws nothing.
+* **!!! THE BUILD STAMP HASHED JSON ONLY, AND THAT WAS A TRAP FOR i18n.js.**
+  Adding tooltip keys changed no JSON, so BUILD did not move — a returning
+  visitor would have kept a CACHED `i18n.js` against the NEW html, and
+  **`t()` RETURNS THE KEY when a key is missing**, so the tooltips would have
+  read `tip_toc`, `tip_nav`, `tip_larger` on screen. `stamp_build.py` now hashes
+  `i18n.js` too and rewrites `<script src="…i18n.js?v=BUILD">` on all six pages.
+  Idempotent — a second run moves nothing.
+
+* **!!!!! THE HOST QUESTION IS SETTLED BY CONSTRUCTION, NOT BY ARGUMENT
+  (2026-07-30f). GITHUB PAGES SERVES THE DOMAIN. `git push` IS THE ENTIRE
+  PUBLISH STEP. NEVER RUN `npx wrangler deploy` AGAIN.**
+  The BUILD stamp `b6e4cfd8a037` -> `5796c322ad94` was committed and pushed from
+  GitHub Desktop and **nothing else** — no wrangler, no upload of `site/` to
+  Cloudflare — and
+  `curl -s https://osbct.buddha-dhamma.net/reader/reader2.html` then returns
+  `const BUILD='5796c322ad94'`. Bytes that only ever went to GitHub arrived at
+  visitors. This had already been inferred on 2026-07-30 from `reader/index.html`
+  being live while never uploaded; it is now a positive experiment.
+  **Cloudflare is DNS + a PULL-THROUGH cache for `buddha-dhamma.net` only** — it
+  fetches from Pages on demand, so nothing is ever uploaded to it. The only
+  content action there is a purge. The Worker `dark-river-0f9b` is orphaned;
+  every `wrangler deploy` this project ever ran published where no visitor
+  reaches, and `wrangler.jsonc`'s `assets.directory: site` is why that looked
+  like publishing. `site/_redirects`, `site/_headers`, `site/.assetsignore` do
+  NOTHING on Pages.
+  **The open decision is unchanged:** delete the Worker and those four files, or
+  move DNS to the Worker and gain real cache control — the project currently
+  carries the cost of both and the benefit of neither.
 
 **Three gates, three scopes. Quote the scope whenever you call anything verified.**
 
