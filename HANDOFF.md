@@ -1,6 +1,46 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-07-30j)
+## START HERE (updated 2026-07-31a)
+
+* **THERE IS NO SECOND COPY OF THE SITE. THERE NEVER WAS (2026-07-31a).** This
+  file has carried "find the other copy — probably a user-site repo" since
+  2026-07-30h. **The account has exactly ONE repository: `OSBCT`.** Checked in
+  the account's own repositories tab; it joined last week. `admin-iebh.github.io/`
+  404s, `admin-iebh.github.io/OSBCT/` 302s here correctly, and OSBCT carries no
+  `gh-pages`/`master`/`site`/`pages` branch. Nothing else could serve the apex
+  either: it CNAMEs to `admin-iebh.github.io` and is verified to this account by
+  the `_github-pages-challenge-admin-iebh` TXT record.
+  **What served the "older copy" was GitHub Pages' own CDN handing out stale
+  objects from THIS repo** — the same thing 30i established when the purge did
+  nothing and the next deploy fixed it. A caching symptom was attributed to a
+  second origin, which is the identical error shape to the Worker
+  `dark-river-0f9b` that did not exist either. **When a stale page appears,
+  suspect the CDN before inventing a second site.** `verify_live.py`'s
+  bare-vs-cache-busted comparison is what detects it now.
+* **ZENODO IS CORRECT, AND THE DEFECT WAS NOT THE ONE THIS FILE RECORDED
+  (2026-07-31a).** It said "Zenodo and `CITATION.cff` cite the old URL". Both
+  wrong: `CITATION.cff` already named the apex, and **the Zenodo records cite no
+  website at all**, old or new. The real defect was worse — **there are THREE
+  DOIs**, and the repo pointed at the superseded one:
+  | | DOI | |
+  |---|---|---|
+  | concept, all versions | `10.5281/zenodo.21495338` | resolves to newest |
+  | v2.0.0, 30 Jul | `10.5281/zenodo.21708525` | current deposit |
+  | v1.0.0, 22 Jul | `10.5281/zenodo.21495339` | superseded |
+  `README.md` and `CITATION.cff` both cited **v1.0.0** while declaring version
+  2.0.0, so every citation sent the reader to the 22-July archive. Both now cite
+  the **concept DOI**, which cannot go stale. Both records are now typed
+  **Dataset** (was Software). **`.zenodo.json` is new**: the GitHub-Zenodo
+  integration reads it in preference to everything else, so the next release
+  deposits as Dataset with the site URL, `language: pli` and current figures —
+  no hand-editing.
+  **The v2.0.0 deposit is TEN COMMITS BEHIND `main`** (tag `e66ee36`, before the
+  restored xrefs, the Khuddaka/ṭīkā maps, the page-index fix and the 1,294
+  footnotes: 18Khu01 holds 1,112 apparatus notes there against 1,295 now). Its
+  description still says "over 54,000 variant readings"; the count is 55,240.
+  **A `v2.1.0` release would archive the real corpus and fix both automatically.**
+
+## START HERE — earlier (2026-07-30j)
 
 * **!!! 1,294 OF THE EDITION'S FOOTNOTES WERE IN THE CORPUS AND ON NO PAGE OF
   THE SITE (2026-07-30j).** `rebuild_apparatus.py` diverted the footnotes the
