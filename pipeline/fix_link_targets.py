@@ -43,14 +43,18 @@ Where the edition assigns nothing — the Khuddaka ṭīkā outside the Netti, t
 whole Milindapañha — the slot is left EMPTY.  That is the truth, and an empty
 band is honest where a wrong one is not.
 
-Writes to `site/reader/linksk_fixed/`, never over the live maps.
+Writes to `_xc/linksk_fixed/` — outside `site/`, so it is neither published
+nor hashed into BUILD — and never over the live maps.
 Usage: python3 pipeline/fix_link_targets.py [VOL…]
 """
 import json, os, re, sys, collections
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, 'site/reader/linksk')
-OUT = os.path.join(ROOT, 'site/reader/linksk_fixed')
+# NOT under site/ — anything there is hashed into BUILD and PUBLISHED.
+# The first run put it in site/reader/, which added 40 dead files to the
+# live site and moved the cache-buster for every visitor.
+OUT = os.path.join(ROOT, '_xc/linksk_fixed')
 _cache = {}
 
 
@@ -230,4 +234,4 @@ if __name__ == '__main__':
             print('%-12s %8d %8d %8d   %8d %8d %8d' % (v, o[0], o[1], o[2], n[0], n[1], n[2]))
     print('\n%-12s %8d %8d %8d   %8d %8d %8d'
           % ('TOTAL', T['ot'], T['ob'], T['od'], T['nt'], T['nb'], T['nd']))
-    print('\nwritten to site/reader/linksk_fixed/ — the live maps are untouched')
+    print('\nwritten to _xc/linksk_fixed/ — outside site/, the live maps are untouched')

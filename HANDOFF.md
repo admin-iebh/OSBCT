@@ -4,7 +4,7 @@
 
 * **THE WRONG-COMMENTARY REPAIR IS PREPARED AND VERIFIED BUT *NOT APPLIED*
   (2026-07-31c).** `pipeline/fix_link_targets.py` writes to
-  `site/reader/linksk_fixed/`; **the live maps are untouched.** Do not swap it in
+  `_xc/linksk_fixed/`; **the live maps are untouched.** Do not swap it in
   without reading the two reasons below.
   **The 36,997 violations split into two classes that must be treated
   differently:**

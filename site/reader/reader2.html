@@ -14,7 +14,18 @@ html[data-theme=dark]{--bg:#141210;--panel:#1c1a16;--fg:#ece6da;--mut:#8f867a;--
 *{box-sizing:border-box}html,body{height:100%}
 body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--fg);
   display:grid;grid-template-columns:300px 1fr;grid-template-rows:52px 1fr;grid-template-areas:"top top" "side main";height:100vh;overflow:hidden;transition:grid-template-columns .2s}
-body.nosb{grid-template-columns:0 1fr}body.nosb .side{display:none}
+/* !!! `nosb` MUST NOT APPLY ON A PHONE (2026-07-31c, user-reported: the
+   left pane never appeared on an iPhone while an iPad was fine).
+   Two rules disagreed. Below 860px the pane starts hidden by
+   `body:not(.showsb) .side{display:none}`, and the ☰ button toggles BOTH
+   classes at once — so `showsb` released that rule and `nosb` instantly
+   re-hid it through the unconditional rule that used to live here. The
+   pane was unreachable at any width <=860px; above it only `nosb` has a
+   rule, which is why a landscape iPad worked.
+   `nosb` means "the user hid a pane that is shown by default" and belongs
+   to WIDE screens only; `showsb` means "the user revealed a pane that is
+   hidden by default" and belongs to narrow ones. */
+@media(min-width:861px){body.nosb{grid-template-columns:0 1fr}body.nosb .side{display:none}}
 .pali{font-family:'Gentium Plus',Georgia,serif}
 .topbar{grid-area:top;display:flex;align-items:center;gap:12px;padding:0 16px;background:var(--panel);border-bottom:1px solid var(--line)}
 .brand{font-weight:600;font-size:14px}.brand .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px}
@@ -574,6 +585,11 @@ function shortWork(w){return (w||'').replace(/^[^:]*:\s*/,'').slice(0,52);}
 
 // ---------- open a text (canon-anchored) ----------
 async function openKey(key, layerkind){
+  // ON A PHONE THE PANE COVERS 84% OF THE SCREEN, so leaving it open after a
+  // tap hides the very text that was just opened. Close it on selection at
+  // narrow widths only — on a wide screen the pane is permanent furniture.
+  try{ if(window.matchMedia && window.matchMedia('(max-width:860px)').matches)
+         document.body.classList.remove('showsb'); }catch(e){}
   const [vol,ord]=parseKey(key);
   const layer=VOLLAYER[vol]||'canon';
   let canonVol=vol, kind=layerkind; state.filter=null;
