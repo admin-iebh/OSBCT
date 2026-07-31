@@ -1,0 +1,25 @@
+{
+  "upload_type": "dataset",
+  "access_right": "open",
+  "license": "cc-by-4.0",
+  "language": "pli",
+  "title": "Sixth Buddhist Council Tipiṭaka (Chaṭṭhasaṅgītipiṭaka) — Unicode corpus",
+  "description": "<p>A searchable, cross-referenced Unicode corpus of the <strong>official</strong> Sixth Buddhist Council (Chaṭṭha Saṅgāyana) recension of the Pāḷi Tipiṭaka with its Aṭṭhakathā (commentaries) and Ṭīkā (subcommentaries) — 118 volumes, 86,365 paragraphs — converted from the legacy VZTimes-font edition published by the Ministry of Religious Affairs, Yangon (Pāḷi Series, romanised 2008 from the Myanmar version of 2001).</p><p>Includes structural extraction (printed pages, paragraphs, suttas), <strong>55,240 variant readings</strong> transcribed from the printed apparatus with their sigla, <strong>34,047 cross-references</strong> resolved from the edition's own footnote citations, and cross-layer paragraph linking.</p><p>This is <em>not</em> the VRI / Igatpuri (CST) digital edition, which is a different recension with its own editorial layer. Where the two differ, this corpus follows the official printed edition.</p><p>Browse the corpus at <a href=\"https://buddha-dhamma.net\">https://buddha-dhamma.net</a>.</p>",
+  "creators": [
+    { "name": "Instituto de Estudios Buddhistas Hispano (IEBH)" },
+    { "name": "Buddhismo Theravāda México-Hispano AR (BTHAR)" }
+  ],
+  "keywords": [
+    "Pāḷi", "Tipiṭaka", "Theravāda", "Aṭṭhakathā", "Ṭīkā",
+    "Chaṭṭhasaṅgīti", "Sixth Buddhist Council", "digital humanities",
+    "text corpus", "textual criticism"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://buddha-dhamma.net",
+      "relation": "isVariantFormOf",
+      "scheme": "url",
+      "resource_type": "other"
+    }
+  ]
+}

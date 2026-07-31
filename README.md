@@ -1,6 +1,6 @@
 # Sixth Buddhist Council Tipiṭaka (Chaṭṭhasaṅgītipiṭaka)
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21495339.svg)](https://doi.org/10.5281/zenodo.21495339)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21495338.svg)](https://doi.org/10.5281/zenodo.21495338)
 
 A searchable, cross-referenced **Unicode** corpus of the Sixth Buddhist Council recension of the
 Pāḷi Tipiṭaka, together with its **Aṭṭhakathā** (commentaries) and **Ṭīkā** (subcommentaries) —
@@ -62,8 +62,10 @@ apparatus) are released under the licence in [`LICENSE.md`](LICENSE.md).
 
 ## How to cite
 
-See [`CITATION.cff`](CITATION.cff). A versioned snapshot is archived on Zenodo with DOI
-[10.5281/zenodo.21495339](https://doi.org/10.5281/zenodo.21495339).
+See [`CITATION.cff`](CITATION.cff). Each release is archived on Zenodo. Cite the **concept DOI**
+[10.5281/zenodo.21495338](https://doi.org/10.5281/zenodo.21495338), which always resolves to the
+newest version; individual versions have their own DOIs
+([v2.0.0](https://doi.org/10.5281/zenodo.21708525), [v1.0.0](https://doi.org/10.5281/zenodo.21495339)).
 
 ## Contact
 
