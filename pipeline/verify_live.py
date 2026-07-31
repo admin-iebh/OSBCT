@@ -141,9 +141,21 @@ def run(origin, redirect_host, quiet=False):
                 if os.path.exists(lp):
                     h_live = hashlib.sha1(body_a).hexdigest()
                     h_loc = hashlib.sha1(open(lp, 'rb').read()).hexdigest()
-                    if kind == 'bytes' and h_live != h_loc:
-                        notes.append('CONTENT DIFFERS from the local file '
-                                     '(live %s… local %s…)' % (h_live[:8], h_loc[:8]))
+                    # !!! THE HTML MUST BE COMPARED BYTE-FOR-BYTE TOO
+                    # (2026-07-31c).  `stamp_build.py` hashes JSON and i18n.js
+                    # only, so **an HTML-ONLY CHANGE MOVES NO BUILD** — and this
+                    # gate checked only the BUILD constant, so it reported a
+                    # page "ok" while the origin served an older copy of it.
+                    # Three rounds of a mobile bug went into chasing that: the
+                    # fix was in the repository, the gate was green, and the
+                    # page being served was not the page in the working copy.
+                    if h_live != h_loc:
+                        notes.append('%s DIFFERS from the local file '
+                                     '(live %s… local %s…)%s'
+                                     % ('CONTENT' if kind == 'bytes' else 'HTML',
+                                        h_live[:8], h_loc[:8],
+                                        '' if kind == 'bytes'
+                                        else ' — BUILD cannot detect this'))
         bad += bool(notes)
         if notes or not quiet:
             print('  %-24s %s  %s' % (path, 'ok  ' if not notes else 'FAIL',
