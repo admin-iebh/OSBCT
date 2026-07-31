@@ -22,8 +22,8 @@ keywords:
 url: "https://buddha-dhamma.net"
 repository-code: "https://github.com/admin-iebh/OSBCT"
 license: CC-BY-4.0
-version: "2.0.0"
-date-released: "2026-07-30"
+version: "2.1.0"
+date-released: "2026-07-31"
 # THE CONCEPT DOI, which always resolves to the newest deposited version.
 # It used to name 10.5281/zenodo.21495339 — the version DOI of v1.0.0, dated
 # 22 July — while this file declared version 2.0.0, so every citation sent the
@@ -33,6 +33,9 @@ identifiers:
   - type: doi
     value: "10.5281/zenodo.21495338"
     description: "Zenodo concept DOI — all versions; resolves to the latest"
+  - type: doi
+    value: "10.5281/zenodo.21727002"
+    description: "Zenodo archive of v2.1.0 (31 July 2026)"
   - type: doi
     value: "10.5281/zenodo.21708525"
     description: "Zenodo archive of v2.0.0 (30 July 2026)"

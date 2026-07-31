@@ -1,6 +1,51 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-07-31b)
+## START HERE (updated 2026-07-31c)
+
+* **THE WRONG-COMMENTARY REPAIR IS PREPARED AND VERIFIED BUT *NOT APPLIED*
+  (2026-07-31c).** `pipeline/fix_link_targets.py` writes to
+  `site/reader/linksk_fixed/`; **the live maps are untouched.** Do not swap it in
+  without reading the two reasons below.
+  **The 36,997 violations split into two classes that must be treated
+  differently:**
+  - **Class A — 22,719 (61%): the edition assigns NO volume for that slot.**
+    The Khuddaka ṭīkā (the edition gives one only to the Netti: 21Khu04 4,841 ·
+    20Khu03 4,428 · 19Khu02 3,650 · 23Khu06 3,621 · 22Khu05 2,957 · 18Khu01
+    1,835) and the whole Milindapañha. **Impossible, no judgement involved.**
+    The default prune removes exactly these: **22,719 removed, 78,438 preserved
+    BYTE-EXACT, 0 removed from an assigned slot, 0 invented.**
+  - **Class C — 14,278 (39%): NOT cleanly wrong, and I could not separate them.**
+    A commentary volume can straddle two canon volumes — the Jātaka commentary
+    runs continuously across 22Khu05 and 23Khu06 — so `20Khu03 -> 33KhuA14` may
+    be a real seam while `39Abhi11 -> 48AbhiA01` (Paṭṭhāna IV pointing at the
+    **Dhammasaṅgaṇī** commentary) plainly is not. **Any grouping coarse enough to
+    call the first legitimate calls the second legitimate too.** Left alone.
+    `--all-violations` prunes them; do not run it without deciding first.
+  **AND THE REV MAPS ARE NOT READY, WHICH IS WHY NOTHING WAS SWAPPED.** Pruning
+  the forward maps alone would leave `linksk/<VOL>.rev.json` still saying those
+  ṭīkā paragraphs belong to those canon volumes, so opening 21KhuT01 would still
+  jump into the Apadāna. The rev maps have 2,408 apparent violations (9.1%) —
+  **but the top two are FALSE POSITIVES of my own check**: `26VsmT02 ->
+  52Vism02` and `25VsmT01 -> 51Vism01` are the Visuddhimagga mahāṭīkā pointing
+  at the Visuddhimagga, which the concordance places in the **commentary**
+  column, not the canon. My check assumed a rev target is always a canon volume.
+  **Fix the check before trusting its rev numbers.**
+* **`build_links_bynum.py` HAS A LATENT BUG THAT ATE EVERY LINK ON MY FIRST
+  ATTEMPT.** Its cursor advances with
+  `cn[cursor+1] is not None and cn[cursor+1] <= N`, so **if the target volume's
+  first paragraph is UNNUMBERED the walk can never start and the whole range
+  emits nothing.** Ṭīkā volumes open with an unnumbered title line
+  (`08DiT01#0` = "Sīlakkhandhavaggaṭīkā"). It does not bite today only because
+  the existing ranges happen to begin elsewhere; constraining the ranges exposed
+  it instantly. `fix_link_targets.py` walks a list of the NUMBERED paragraphs
+  instead. **Fix this in `build_links_bynum.py` before any future relink.**
+* **THE ROOT CAUSE, worth stating plainly:** `carry_vol()` takes the target
+  volume from the PREVIOUS links and forward- **and backward-fills** it across
+  the volume. **One stray link propagates over everything around it.** That is
+  how the Apadāna acquired 4,841 links into the Nettiṭīkā. The real repair is to
+  teach `build_links_bynum.py` the concordance and rebuild — not to patch maps.
+
+## START HERE — earlier (2026-07-31b)
 
 * **!!!!! THE LINK LAYER SENDS 36,997 PARAGRAPHS TO COMMENTARY THE EDITION DOES
   NOT ASSIGN THEM (2026-07-31b). THE BIGGEST OPEN DEFECT IN THE PROJECT.**
