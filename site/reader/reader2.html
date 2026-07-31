@@ -242,6 +242,7 @@ $('#sidetog').onclick=()=>{
 const META={canon:{letter:'P',name:'Pāḷi (Tipiṭaka)',col:'var(--canon)'},A:{letter:'A',name:'Aṭṭhakathā',col:'var(--comm)'},T:{letter:'T',name:'Ṭīkā',col:'var(--tika)'}};
 const LAYERKIND={canon:'canon',commentary:'A',subcommentary:'T'};
 const state={view:'single',active:{canon:true,A:false,T:false},tab:'canon',size:15.5,reading:'full',canonVol:null,scrollKey:null,filter:null,curvagga:null};
+let NAVBUILD={};   // vol -> thunk that builds its nikāya's rows (lazy nav)
 let NAV=null, VOLLAYER={}, VOLWORK={}, VOLGROUP={}, VOLBAND={}, GROUPHAS={}, PAGEIDX={}, PDFBLANK={}, PAGESPAN={}, VOLTITLE={}, VOLSECTIONS={}, VOLKIND={}, VOLTOC={}, VOLPDFTOC={}, VOLBOOK={}, VOLNESTED={}, VAGCONTENTS={}, SUTTASUBS={}, SUTTALABEL={}, HEADMAP={}, BOOKSPAN={}, VAGGASPAN={};
 const cache={}, linkCache={}, revCache={};
 // THE VOLUME PART-NUMBER, AS A ROMAN NUMERAL IN THE SIDEBAR.
@@ -351,7 +352,7 @@ async function buildSidebar(){ try{
     for(const nk of L.nikayas){
       const {wrap:nw,row:nr}=node(); nr.innerHTML=CHEV+'<span class="lbl">'+nk.nikaya+'</span>';
       nr.style.paddingLeft='10px'; const nkids=document.createElement('div'); nkids.className='kids';
-      nr.onclick=()=>{nr.classList.toggle('open');nkids.classList.toggle('open');};
+      nr.onclick=()=>{buildVols();nr.classList.toggle('open');nkids.classList.toggle('open');};
       nw.appendChild(nr); nw.appendChild(nkids); lkids.appendChild(nw);
       // book spans: when several books share one physical volume (Khuddaka = 21
       // books in 11 vols), each book renders only its own paragraph range.
@@ -360,6 +361,19 @@ async function buildSidebar(){ try{
           list.sort((a,b)=>(+a.first.split('#')[1])-(+b.first.split('#')[1]));
           list.forEach((v,i)=>{ BOOKSPAN[v.first]={vol:v.vol,start:+v.first.split('#')[1],
             end: i+1<list.length? +list[i+1].first.split('#')[1] : null}; }); }); }
+      // !!! THE WHOLE TREE WAS BUILT AT BOOT — 30,730 NESTED ROWS, 203,629 DOM
+      // NODES AND 31,036 EVENT LISTENERS BEFORE ANY TEXT WAS OPENED
+      // (2026-07-31c, user-reported: the reader worked on Android and an iPad
+      // but was UNRESPONSIVE on an iPhone, with no error thrown).  The JS heap
+      // was only 24 MB, so this was never JavaScript objects — it is the DOM
+      // itself, which iOS charges against a hard per-tab ceiling.  99% of those
+      // rows are inside collapsed branches nobody has opened.
+      //   layers 3 · nikāyas 23 · volumes 138 · nested rows 30,730
+      // Deferring the nested build to first expansion leaves 164 rows at boot.
+      // The unit is the NIKĀYA because its volume loop is one contiguous block:
+      // nothing inside it changed, which is what makes this safe to do.
+      let _volsBuilt=false;
+      const buildVols=()=>{ if(_volsBuilt) return; _volsBuilt=true;
       for(const v of nk.volumes){ try{
         v.title=bhagaRoman(v.title);
         VOLSECTIONS[v.vol]=(VOLSECTIONS[v.vol]||[]).concat(v.suttas||[]); VOLKIND[v.vol]=LAYERKIND[L.layer]; if(!VOLTITLE[v.vol])VOLTITLE[v.vol]=v.title||v.vol;
@@ -618,6 +632,12 @@ async function buildSidebar(){ try{
         }
       } catch(_nverr){ console.warn('nav node skipped', v&&v.vol, _nverr&&_nverr.message); }
       }
+      };
+      // A volume can be OPENED without its branch ever being expanded — a direct
+      // link, a search hit, a cross-reference.  The maps this loop fills would
+      // then be missing, so every volume records the thunk that builds it and
+      // `openKey` forces it first.  Without this the deferral would be a trap.
+      nk.volumes.forEach(v=>{ if(v&&v.vol) NAVBUILD[v.vol]=buildVols; });
     }
   }
 } catch(_e){ const s=document.getElementById('side'); if(s) s.innerHTML='<div style="padding:16px;color:#b91c1c;font:13px/1.5 system-ui">Sidebar failed to build:<br>'+esc((_e&&_e.message)||String(_e))+'</div>'; console.error('OSBCT buildSidebar failed',_e); }
@@ -626,6 +646,7 @@ function shortWork(w){return (w||'').replace(/^[^:]*:\s*/,'').slice(0,52);}
 
 // ---------- open a text (canon-anchored) ----------
 async function openKey(key, layerkind){
+  try{ const _v=parseKey(key)[0]; if(NAVBUILD[_v]) NAVBUILD[_v](); }catch(e){}
   // ON A PHONE THE PANE COVERS 84% OF THE SCREEN, so leaving it open after a
   // tap hides the very text that was just opened. Close it on selection at
   // narrow widths only — on a wide screen the pane is permanent furniture.
