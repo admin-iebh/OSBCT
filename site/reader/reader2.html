@@ -203,7 +203,19 @@ if(window.I18N) Object.assign(window.I18N,{
 });
 document.documentElement.setAttribute('data-theme', localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
 $('#themebtn').onclick=()=>{const d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n)};
-$('#sidetog').onclick=()=>{document.body.classList.toggle('nosb');document.body.classList.toggle('showsb')};
+$('#sidetog').onclick=()=>{
+  // ONE CLASS PER BREAKPOINT (2026-07-31c).  This used to toggle BOTH, leaving
+  // the body carrying `nosb` AND `showsb` — contradictory flags.  On a phone
+  // that tap did nothing (the display:none bug above), but it still set
+  // `nosb`, so ROTATING TO LANDSCAPE then hid the pane there too: one dead tap
+  // in portrait broke the orientation that had been working, which is exactly
+  // what the user's screenshot showed (932x430, no pane, after tapping in
+  // portrait).  `nosb` means "hidden although wide", `showsb` means "shown
+  // although narrow"; neither is meaningful at the other width.
+  // Verified in Chromium at 390 / 932 / 1024 and across rotation.
+  const narrow = window.matchMedia && window.matchMedia('(max-width:860px)').matches;
+  document.body.classList.toggle(narrow ? 'showsb' : 'nosb');
+};
 const META={canon:{letter:'P',name:'Pāḷi (Tipiṭaka)',col:'var(--canon)'},A:{letter:'A',name:'Aṭṭhakathā',col:'var(--comm)'},T:{letter:'T',name:'Ṭīkā',col:'var(--tika)'}};
 const LAYERKIND={canon:'canon',commentary:'A',subcommentary:'T'};
 const state={view:'single',active:{canon:true,A:false,T:false},tab:'canon',size:15.5,reading:'full',canonVol:null,scrollKey:null,filter:null,curvagga:null};
