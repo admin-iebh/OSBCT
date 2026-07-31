@@ -174,6 +174,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 <script src="../i18n.js?v=cad37d3bd974"></script>
 </head>
 <body>
+  <div id="errbar" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:999;background:#7f1d1d;color:#fff;font:12px/1.4 ui-monospace,monospace;padding:8px 10px;white-space:pre-wrap"></div>
   <div class="topbar">
     <button class="tb" id="sidetog" data-i18n-title="tip_nav" title="Hide / show navigation">☰</button>
     <span class="brand"><span class="dot"></span>Sixth Buddhist Council Tipiṭaka</span>
@@ -270,6 +271,12 @@ const FOLDER={canon:'pali-unicode',A:'atthakatha-unicode',T:'tika-unicode'};
 let toastT=null;
 function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),1500);}
 
+// Surface any uncaught error on screen: a phone has no console, and a silent
+// failure is indistinguishable from a slow network.
+window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
+  if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
+window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
+  if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
 const BUILD='cad37d3bd974';
 async function jget(url,fallback){ try{const sep=url.includes('?')?'&':'?'; const r=await fetch(url+sep+'v='+BUILD); if(!r.ok) return fallback; return await r.json();}catch(e){return fallback;} }
 async function loadVol(vol){
@@ -716,7 +723,24 @@ async function ensureBandVols(){
   if(!todo.length) return;
   await Promise.all(todo.map(loadVol));
 }
+// !!! A THROW ANYWHERE BELOW USED TO LEAVE "Loading <VOL>…" ON SCREEN FOR EVER
+// (2026-07-31c, user-reported on an iPhone).  `jget` swallows fetch failures
+// and returns its fallback, so the load itself cannot hang — which means the
+// stuck placeholder was an EXCEPTION in the render path with nothing to catch
+// it.  The reader then sits there looking like a slow network, and on a phone
+// there is no console to tell you otherwise.  Now the error is put on the page.
 async function openCanon(canonVol, scrollKey){
+  try{ return await _openCanon(canonVol, scrollKey); }
+  catch(e){
+    const m=(e&&(e.stack||e.message))||String(e);
+    $('#scroll').innerHTML='<div class="hint" style="text-align:left;white-space:pre-wrap;'
+      +'font:12px/1.45 ui-monospace,monospace;color:var(--fg);padding:14px">'
+      +'Could not open '+esc(canonVol)+'\n\n'+esc(String(m).slice(0,1200))
+      +'\n\nPlease send this text — it names the fault exactly.</div>';
+    throw e;
+  }
+}
+async function _openCanon(canonVol, scrollKey){
   $('#scroll').innerHTML='<div class="hint">Loading '+canonVol+'…</div>';
   const cv=await loadVol(canonVol); const links=await loadLinks(canonVol);
   state.canonVol=canonVol; state.scrollKey=scrollKey; state.links=links; state.opened=true;
