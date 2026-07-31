@@ -142,14 +142,27 @@ def _pdfblanks_content():
     because two volumes had been rewritten an hour after it was built, and the
     content was IDENTICAL.  A gate that cries wolf is a gate that gets ignored.
     """
+    # !!! sys.argv IS INHERITED BY AN EXEC'D MODULE (fixed 2026-07-31b).
+    # `build_pdfblanks.py` decides whether to write by `'--write' in sys.argv`,
+    # and exec'ing it here handed it the PARENT's argv — so
+    # `stamp_build.py --write` turned this read-only check into a real write.
+    # The file's content never changed, but its MTIME did, and `stamp_build.py`
+    # hashes name|size|mtime: **BUILD moved on every single run**, so every
+    # deploy busted every visitor's cache of all 1,691 JSON files even when not
+    # one byte had changed. On a phone that is the difference between a warm
+    # cache and re-downloading megabytes. A check must have no side effects.
     import contextlib, importlib.util as il, io as _io
     sp = il.spec_from_file_location('bp', os.path.join(ROOT, 'pipeline/build_pdfblanks.py'))
     m = il.module_from_spec(sp)
+    _argv = sys.argv
+    sys.argv = [os.path.join(ROOT, 'pipeline/build_pdfblanks.py')]     # no --write
     try:
         with contextlib.redirect_stdout(_io.StringIO()):
             sp.loader.exec_module(m)
     except SystemExit:
         pass
+    finally:
+        sys.argv = _argv
     new = next((v for k, v in vars(m).items()
                 if isinstance(v, dict) and v and all(isinstance(x, list) for x in v.values())), None)
     if new is None:
@@ -172,6 +185,29 @@ DERIVED = [
      'python3 pipeline/build_pdfblanks.py --write', 'deep:%s' % '_pdfblanks_content'),
     ('search index', 'site/index', ['site/*.json'],
      'python3 pipeline/build_search_index.py', None),
+]
+
+# ADVISORY, NOT BLOCKING (added 2026-07-31b).  These are derived from the corpus
+# too, and the same silent staleness is possible — but they are reported rather
+# than enforced, for two reasons.  `linksk/` and `links/` are ALREADY older than
+# the newest volume JSON (13:18 against 13:49 on 30 July), so blocking on them
+# would stop every deploy until a rebuild nobody has scheduled; and the apparatus
+# is rebuilt by a different pipeline whose inputs are the PDFs, so an mtime
+# screen against `site/*.json` would misjudge it.  Wire any of these into
+# DERIVED once its rebuild is routine — a blocking check nobody can satisfy gets
+# answered with --force, which is worse than an advisory nobody reads.
+ADVISORY = [
+    ('apparatus', 'site/reader/apparatus',
+     ['site/*.json', 'pipeline/extract.py', 'pipeline/rebuild_apparatus.py'],
+     'python3 pipeline/rebuild_apparatus.py  (then _xref/fill_xrefs.py --write)'),
+    ('linksk (reader)', 'site/reader/linksk', ['site/*.json'],
+     'the link builders — see HANDOFF; never run pipeline/build_links.py'),
+    ('links (legacy)', 'site/reader/links', ['site/*.json'],
+     'loaded by nothing in reader2.html; retire or rebuild'),
+    ('sections', 'site/reader/sections', ['site/*.json'],
+     'the per-volume nav builders'),
+    ('nav.json', 'site/reader/nav.json', ['site/reader/sections/*'],
+     'the nav builders — NEVER import one; run as a subprocess'),
 ]
 
 
@@ -206,6 +242,15 @@ def run(quiet=False, deep=False):
         rows.append((label, kind, good, why, cmd))
         if not good:
             stale += 1
+    adv = []
+    for label, art, srcs, cmd in ADVISORY:
+        ap = os.path.join(ROOT, art)
+        files = glob.glob(os.path.join(ap, '*')) if os.path.isdir(ap) else ([ap] if os.path.exists(ap) else [])
+        amt = max((os.path.getmtime(f) for f in files), default=0.0)
+        smt, who = _newest(srcs)
+        if amt and smt and amt < smt:
+            adv.append((label, os.path.relpath(who, ROOT) if who else '?', cmd))
+
     ok, why = _pageindex_selfcheck()
     rows.append(('pageindex self-check', 'corpus', ok, why,
                  'python3 pipeline/build_pageindex.py'))
@@ -218,6 +263,11 @@ def run(quiet=False, deep=False):
                 print('  %-22s %-8s        rebuild with: %s' % ('', '', cmd))
         print('\n%s' % ('%d DERIVED ARTEFACT(S) STALE — do not deploy' % stale if stale
                         else 'all derived artefacts fresh'))
+        if adv:
+            print('\nADVISORY — derived, older than their sources, NOT blocking:')
+            for label, who, cmd in adv:
+                print('  %-18s older than %s' % (label, who))
+                print('  %-18s rebuild: %s' % ('', cmd))
     return stale
 
 

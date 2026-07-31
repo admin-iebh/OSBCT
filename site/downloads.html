@@ -38,11 +38,11 @@
   <button class="langbtn" data-i18n-title="lang_toggle" title="Cambiar idioma">ES</button>
   <button class="themebtn" id="themebtn" data-i18n-title="theme_toggle" title="Toggle light/dark">◐</button>
 </header>
-<script src="i18n.js?v=cedb34504f2b"></script>
+<script src="i18n.js?v=cad37d3bd974"></script>
 <script>
 // cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
 // rewrites it, so a rebuild can never be invisible to a returning browser.
-const BUILD='cedb34504f2b';
+const BUILD='cad37d3bd974';
 function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
 
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));

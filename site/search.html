@@ -66,21 +66,21 @@
 <script>
 // cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
 // rewrites it, so a rebuild can never be invisible to a returning browser.
-const BUILD='cedb34504f2b';
+const BUILD='cad37d3bd974';
 function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
 
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
 document.addEventListener('DOMContentLoaded',()=>{document.getElementById('themebtn').onclick=()=>{var d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n);};});
 </script>
 <main>
-  <div class="status" id="status">Loading term index…</div>
+  <div class="status" id="status">Ready — type a query.</div>
   <div id="results"></div>
 </main>
 <footer data-i18n="search_foot">
   Diacritic-insensitive exact/substring search. Type with or without diacritics.
   Results show location and printed page; click a result to open it in the reader.
 </footer>
-<script src="i18n.js?v=cedb34504f2b"></script>
+<script src="i18n.js?v=cad37d3bd974"></script>
 <script>
 const FOLD={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
 const fold=s=>s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLD[c]||c);
@@ -106,8 +106,22 @@ function matchTerms(ft){
 }
 const status=m=>el('status').textContent=m;
 
+// !!! 22 MB WAS DOWNLOADED AND PARSED BEFORE THIS PAGE COULD BE USED
+// (2026-07-31b, user-reported: "very slow to load and became unresponsive" on
+// an iPhone and iPad).  `boot()` ran on load and fetched
+// `index/terms.compact.json` — **21.0 MB raw, 5.3 MB gzipped, 643,965 terms** —
+// plus `index/names.json`.  Parsing 21 MB of JSON into 643,965 strings and
+// 643,965 arrays is a large heap on a laptop and past what iOS Safari will give
+// a tab; the page loaded, then froze, before the reader had typed anything.
+//
+// It is now LAZY: nothing is fetched until the first actual query.  The page is
+// usable immediately, and a reader who arrives and leaves without searching
+// pays nothing at all.
+let indexPromise=null;
+function ensureIndex(){ if(indexPromise) return indexPromise; return indexPromise=boot(); }
 async function boot(){
   try{
+    status('Loading term index (5 MB) — first search only…');
     const r=await fetch(bust('index/terms.compact.json')); if(!r.ok) throw 0;
     const j=await r.json(); TERMS=j.terms; VOLS=j.vols; LAYERS=j.layers;
     // !!! A PRINTED HEADING IS NOT IN THE TEXT INDEX, because that index is
@@ -169,8 +183,10 @@ async function run(){
   // only triggered by click or Enter, but two Enters over changed text are the
   // same shape, and the guard is three lines.
   const my=++runSeq;
-  if(!TERMS){status('Index not loaded.');return;}
   const q=el('q').value.trim(); if(!q){status('Type a query.');return;}
+  // the index is fetched HERE, on the first query, not on page load
+  if(!TERMS){ await ensureIndex(); if(my!==runSeq) return; }
+  if(!TERMS){status('Could not load the term index.');return;}
   const ft=fold(q); const lf=el('layer').value;
   const secHTML=sectionHits(ft,lf);
   const mts=matchTerms(ft);
@@ -220,7 +236,10 @@ async function run(){
 }
 el('go').onclick=run;
 el('q').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
-boot();
+// warm the index on FOCUS, so the common case (click the box, type, Enter) has
+// the download already in flight without costing a visitor who never searches
+el('q').addEventListener('focus',()=>{ensureIndex();},{once:true});
+status('Ready — type a query.');
 </script>
 </body>
 </html>

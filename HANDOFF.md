@@ -1,6 +1,76 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-07-31a)
+## START HERE (updated 2026-07-31b)
+
+* **!!!!! THE LINK LAYER SENDS 36,997 PARAGRAPHS TO COMMENTARY THE EDITION DOES
+  NOT ASSIGN THEM (2026-07-31b). THE BIGGEST OPEN DEFECT IN THE PROJECT.**
+  Of 101,157 link targets, **36,997 (36.6%) point into a volume the concordance
+  does not give that canon volume.** `build_links_bynum.py` "keeps each canon
+  paragraph's existing TARGET VOLUME and fixes the ORDINAL by a number match" —
+  it never consults `concordance.json`, so a wrong target volume survives every
+  rebuild. Worst: 20Khu03 8,180 · 21Khu04 7,654 · 19Khu02 3,699 · 23Khu06 3,625
+  · 22Khu05 3,404 · 18Khu01 1,912 · 39Abhi11 1,471. **The Milindapañha, which
+  the edition gives NO commentary at all, carries a target on essentially every
+  numbered paragraph** (520), drawn from the Nettiṭīkā, Mahāniddesa, Udāna,
+  Buddhavaṁsa and Khuddakapāṭha commentaries. **`21KhuT01` (the Nettiṭīkā) alone
+  is claimed by nine Khuddaka canon volumes it has nothing to do with.**
+  **NOT staleness, and not a misreading of the concordance — tested:** the
+  citing layer paragraph's bolded lemma occurs in the canon paragraph it claims
+  **50.0% of the time for links the concordance allows (19,511 pairs) and 10.4%
+  for links it does not (4,494 pairs)**. A five-fold contrast. The reader draws
+  these as that paragraph's commentary, so a reader of the Milindapañha is shown
+  the Nettiṭīkā and told it is the commentary. **A confident wrong link is worse
+  than the grey span.** `_xc/check_link_targets.py` — new, exits 1 on any
+  violation. **NOT FIXED: 37,000 data edits was not something to do unattended.**
+* **!!! THE SITE WAS UNUSABLE ON A PHONE, AND THE REASON WAS IN THE CODE
+  (2026-07-31b, user-reported: iPhone and iPad "very slow to load and became
+  unresponsive").** Three independent causes, all measured:
+  1. **Opening ONE volume fetched every volume its links point into, in full,
+     before the first render.** `openCanon` gathered every target and awaited
+     `loadVol` on all of them; `loadVol` fetches TEN files per volume.
+     **18Khu01: 190 files, 31.4 MB.** 39Abhi11: 14.7 MB. The `verse/` maps alone
+     were 10.6 MB. **And none of it was on screen** — opening a canon paragraph
+     sets `{canon:true,A:false,T:false}`, so every megabyte drew bands nobody had
+     asked for. **FIXED: `ensureBandVols()` loads only what an ACTIVE band needs.
+     18Khu01 31.43 MB -> 1.91 MB, 190 files -> 10, identical render** (same 1,871
+     ¶ blocks, same 358 anchors). Every render path already guarded on
+     `cache[vol]`, which is why it was safe — and why every place that turns a
+     band ON must `await ensureBandVols()` before `render()`.
+  2. **`search.html` downloaded 22 MB before it could be used.** `boot()` ran on
+     load and fetched `index/terms.compact.json` — **21.0 MB raw, 5.3 MB gzipped,
+     643,965 terms** — plus `names.json`. **FIXED: lazy. 0 fetches on load**
+     (verified), warmed on focus, loaded on first query.
+  3. **`stamp_build.py` was NOT idempotent, so every deploy busted every
+     visitor's cache of all 1,691 JSON files.** BUILD moved on every run:
+     `cedb34504f2b -> bce8ca27329f -> 07749a194d0b`. Cause was mine, from
+     2026-07-30j: `check_derived.py` exec's `build_pdfblanks.py` to compare its
+     output, and **an exec'd module inherits `sys.argv`** — so
+     `stamp_build.py --write` handed it `--write` and the read-only check wrote
+     the file, changing its mtime, which the stamp hashes. **FIXED** (argv
+     swapped during the exec); BUILD now stable across three runs. **A CHECK
+     MUST HAVE NO SIDE EFFECTS.**
+  **STILL SLOW, NOT FIXED — both need a design decision, see the dated entry:**
+  the reader boots **110,469 DOM elements** from `nav.json` (2.2 MB) before a
+  volume is open, because the sidebar builds all 30,730 rows eagerly with the
+  side-effect maps woven through it; and **one search still costs ~61 MB**
+  (the 21 MB term list plus a shard per matching volume).
+* **THE DIRECT-LINK RESIDUE IS NOT 9,164. IT IS 16 (2026-07-31b).** The recorded
+  figure ("9,164 numbered ¶ with no rev entry, 27.4% of 33,398", ceiling ~12%)
+  is obsolete, and a rival quick check gave 1,034 — **because the two read
+  different files.** `linksk/<VOL>.links.json` is what `loadLinks()` fetches;
+  `links/<VOL>.fwd.json` is loaded by NOTHING in the reader. Measured from the
+  reader's own file: of **49,190** numbered canon ¶ (excluding Milindapañha),
+  **26,760 (54.4%) have a direct target, 22,414 (45.6%) are covered by an earlier
+  block, and 16 (0.0%) have no target at all.** The coverage gap is closed; what
+  remains is precision — `covered` versus `direct` — not absence. Method stated
+  in `_xc/residue.py` so the number stops drifting.
+* **`check_derived.py` now also reports `apparatus/`, `linksk/`, `links/`,
+  `sections/` and `nav.json` — as ADVISORY, not blocking.** `linksk/` and
+  `links/` are already older than the newest volume JSON (13:18 against 13:49 on
+  30 July). Blocking on them would stop every deploy until a rebuild nobody has
+  scheduled, and a check nobody can satisfy gets answered with `--force`.
+
+## START HERE — earlier (2026-07-31a)
 
 * **THERE IS NO SECOND COPY OF THE SITE. THERE NEVER WAS (2026-07-31a).** This
   file has carried "find the other copy — probably a user-site repo" since

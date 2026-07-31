@@ -138,7 +138,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 [data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%);background:var(--fg);color:var(--bg);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;line-height:1.3;white-space:normal;width:max-content;max-width:230px;text-align:center;padding:5px 9px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.26);z-index:200;pointer-events:none}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=cedb34504f2b"></script>
+<script src="../i18n.js?v=cad37d3bd974"></script>
 </head>
 <body>
   <div class="topbar">
@@ -225,7 +225,7 @@ const FOLDER={canon:'pali-unicode',A:'atthakatha-unicode',T:'tika-unicode'};
 let toastT=null;
 function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),1500);}
 
-const BUILD='cedb34504f2b';
+const BUILD='cad37d3bd974';
 async function jget(url,fallback){ try{const sep=url.includes('?')?'&':'?'; const r=await fetch(url+sep+'v='+BUILD); if(!r.ok) return fallback; return await r.json();}catch(e){return fallback;} }
 async function loadVol(vol){
   if(cache[vol]) return cache[vol];
@@ -632,14 +632,45 @@ window.tocGo=function(domid){
   const dd=document.getElementById('tocdrop'); if(dd) dd.hidden=true;
   setTimeout(()=>{ const el=document.getElementById(domid); if(el){ el.scrollIntoView({block:'start'}); el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),1300);} },30);
 };
+// !!! OPENING ONE VOLUME USED TO FETCH EVERY VOLUME ITS LINKS POINT INTO, IN
+// FULL, BEFORE THE FIRST RENDER (2026-07-31b, user-reported: the site was
+// "very slow to load and became unresponsive" on an iPhone and iPad).
+// `openCanon` gathered every target of every link and awaited `loadVol` on all
+// of them — and `loadVol` fetches TEN files per volume (the volume, bold, sect,
+// apparatus, uddāna, sections, hide, verse, incipit, booktitle).
+//
+// Measured on 18Khu01, whose commentary runs to seven KhuA volumes plus ṭīkā:
+// **190 files, 31.4 MB, before a single word was drawn.** 39Abhi11: 14.7 MB.
+// The `verse/` maps alone were 10.6 MB of it.
+//
+// And **none of it was on screen.** Opening a canon paragraph sets
+// `state.active={canon:true,A:false,T:false}` — the Aṭṭhakathā and Ṭīkā bands
+// are OFF — so every one of those megabytes was fetched and parsed to draw
+// bands the reader had not asked for. Desktop broadband hides this; a phone on
+// cellular cannot, and iOS Safari's memory ceiling is far lower than a laptop's.
+//
+// Now: load only what an ACTIVE band needs, and load the rest when a band is
+// switched on. Every render path already guards with `const c=cache[vol]; if(!c)
+// return '';` so an unloaded volume draws nothing rather than throwing — which
+// is why this is safe, and also why every place that turns a band ON must await
+// this and then re-render, or the band would come up empty.
+async function ensureBandVols(){
+  const links=state.links; if(!links) return;
+  const want=new Set();
+  const on=(k)=> state.view==='tabs' ? state.tab===k : state.active[k];
+  const slots=[]; if(on('A')) slots.push('commentary'); if(on('T')) slots.push('subcommentary');
+  if(!slots.length) return;
+  for(const e of Object.values(links)) for(const lk of slots)
+    for(const t of (e[lk]||[])) if(t&&t.key) want.add(parseKey(t.key)[0]);
+  const todo=[...want].filter(v=>!cache[v]);
+  if(!todo.length) return;
+  await Promise.all(todo.map(loadVol));
+}
 async function openCanon(canonVol, scrollKey){
   $('#scroll').innerHTML='<div class="hint">Loading '+canonVol+'…</div>';
   const cv=await loadVol(canonVol); const links=await loadLinks(canonVol);
-  // gather target volumes referenced by links, load them
-  const tv=new Set();
-  for(const e of Object.values(links)) for(const lk of ['commentary','subcommentary']) for(const t of (e[lk]||[])) if(t&&t.key) tv.add(parseKey(t.key)[0]);
-  await Promise.all([...tv].map(loadVol));
   state.canonVol=canonVol; state.scrollKey=scrollKey; state.links=links; state.opened=true;
+  await ensureBandVols();
   const _ol=buildOutline(canonVol); state.outlineByOrd=_ol.byOrd; state.toc=_ol.toc;
   const _sp=paraOf(scrollKey); state.currentSutta=(_sp&&_sp.sutta&&_sp.sutta!=='X')?foldName(_sp.sutta):null;
   state.currentBook=(_sp&&_sp.book&&_sp.book!=='X'&&!/piṭaka$/.test(_sp.book)&&!/^Iti /.test(_sp.book))?_sp.book.replace(/\s+/g,' ').trim().replace(/\.$/,''):null;
@@ -986,6 +1017,7 @@ window.jumpFrom=async function(key,tg){
   if(!targetKey){ toast('No '+NAME[tg]+' here'); return; }
   state.active[LK[tg]]=true; state.filter=null;
   if(state.view==='tabs') state.tab=LK[tg];
+  await ensureBandVols();
   render(); syncButtons();
   // ...AND IF THE TARGET IS NOT ON THE PAGE, OPEN IT.  Enabling a layer only
   // reveals blocks the CURRENT spine already draws, so a jump that leaves the
@@ -1387,12 +1419,14 @@ function syncButtons(){
   document.querySelectorAll('.lbtn').forEach(b=>{const k=b.dataset.k; b.classList.toggle('on', state.view==='tabs'?state.tab===k:state.active[k]);});
   document.querySelectorAll('#viewtog button').forEach(b=>b.classList.toggle('on',b.dataset.view===state.view));
 }
-document.querySelectorAll('.lbtn').forEach(b=>b.onclick=()=>{const k=b.dataset.k;
+document.querySelectorAll('.lbtn').forEach(b=>b.onclick=async()=>{const k=b.dataset.k;
   if(!state.opened){toast('Open a text first');return;}
   state.filter=null;
   if(state.view==='tabs'){state.tab=k;} else{const ak=activeKeys(); if(state.active[k]&&ak.length===1){toast('Keep one layer on');return;} state.active[k]=!state.active[k];}
-  render();});
-document.querySelectorAll('#viewtog button').forEach(b=>b.onclick=()=>{state.view=b.dataset.view; if(state.view==='tabs'&&!state.active[state.tab])state.tab='canon'; if(state.opened)render(); else syncButtons();});
+  // the band's volumes are no longer preloaded — fetch them before drawing, or
+  // the band opens empty (every block() guards on `cache[vol]`)
+  syncButtons(); await ensureBandVols(); render();});
+document.querySelectorAll('#viewtog button').forEach(b=>b.onclick=async()=>{state.view=b.dataset.view; if(state.view==='tabs'&&!state.active[state.tab])state.tab='canon'; if(state.opened){await ensureBandVols(); render();} else syncButtons();});
 $('#readtog').onclick=()=>{state.reading=state.reading==='outline'?'full':'outline';$('#readtog').classList.toggle('on',state.reading==='outline');if(state.opened)render();};
 window.tocGoKey=function(key){ const dd=document.getElementById('tocdrop'); if(dd) dd.hidden=true;
   const hid='h-'+key.replace('#','-'), pid='p-'+key.replace('#','-');
