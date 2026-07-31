@@ -1,6 +1,86 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-07-30i)
+## START HERE (updated 2026-07-30j)
+
+* **!!! 1,294 OF THE EDITION'S FOOTNOTES WERE IN THE CORPUS AND ON NO PAGE OF
+  THE SITE (2026-07-30j).** `rebuild_apparatus.py` diverted the footnotes the
+  edition marks `*` or `+` into `site/reader/xrefs/<VOL>.json`, **which the
+  reader loads nowhere.** This file has called them "1,298 raw citation lines
+  loaded by nothing" since 2026-07-30f, and that undersold it twice: only **4**
+  were duplicated anywhere else, and **41 are not citations at all** but
+  editorial prose — `Iminā lakkhaṇena sakavādīpucchā dassitā.` (32Abhi04, on the
+  mātikā notation), `Catusaṭṭhimattā imā gāthāyo porāṇatālapaṇṇapotthakesu
+  dissanti…` (34KhuA15, on sixty-four verses in old palm-leaf manuscripts).
+  18 volumes; worst 24Khu07 313, 18Khu01 183, 27Khu10 163, 28Khu11 132,
+  07DiA01 111. **AND `verify_apparatus.py` COUNTED THEM AS STORED**, which is
+  exactly why it never said so — the same blindness that hid the whole link
+  layer on 2026-07-30f. Moved into `appk` by `_xref/merge_raw_xrefs.py`
+  (additive, asserts every existing note unchanged); the gate no longer reads
+  `xrefs/`. **THE RULE: `verify_apparatus.py` may only count what `loadVol()`
+  fetches.** 1,282 of the 1,298 (98.8%) are on ordinals the reader can reach;
+  17 of 18 volumes verified rendering by booting.
+* **!!! A NOTE THAT PARSED ANY CITATION STOPPED SHOWING ITS OWN WORDS
+  (2026-07-30j).** `appBlock` used `n.text` ONLY when it had no other parts, so
+  one parsed citation deleted everything the edition wrote around it.
+  `Khu 1. 177 piṭṭhe Udāne.` drew as `Khu 1. 177` and lost *piṭṭhe Udāne* — the
+  part naming the work. **23,191 notes affected; ~244,862 characters of the
+  edition on no page of the site.** The citation is now linked WHERE IT STANDS,
+  inside the note's sentence: **23,188 of 23,191 (100.0%)**, 3 fall back to the
+  old rendering and lose nothing. Handles `Khu 2. 224, 334.`, where the second
+  citation is a bare number sharing the first's siglum. `_xc/verify_apptext.js`.
+* **`stamp_build.py` NOW REFUSES TO STAMP STALE DATA (2026-07-30j).** It used to
+  hash the stale `pageindex.json` quite happily and hand every visitor a fresh
+  URL for wrong data. `pipeline/check_derived.py` runs first — **deep by
+  default**, because the mtime screen raised a false alarm on its very first run
+  and a gate that cries wolf teaches you to reach for `--force`. Two strengths:
+  `content` rebuilds the artefact and compares (a proof), `mtime` only screens.
+  Negative control run: one wrong ordinal in `pageindex.json` → exit 2, both the
+  content check and the corpus self-check name it, file restored byte-identical.
+* **A DEPLOYMENT GATE EXISTS AT LAST: `pipeline/verify_live.py` (2026-07-30j).**
+  Fetches every published URL **twice — bare, and with a unique query string** —
+  and compares. Bare is what a visitor gets; the query string misses the edge.
+  **If they differ, the edge is serving something the origin no longer has**,
+  which is the 2026-07-30f failure and is invisible to any check that fetches
+  once. Also: BUILD on every page, `i18n.js` versioned to it, `/reader/reader.html`
+  is still the stub, key JSON byte-identical, and the `osbct.` 301.
+  **`device_bash` HAS NO NETWORK — RUN IT IN YOUR OWN TERMINAL.** Proven
+  end-to-end against `raw.githubusercontent.com/.../main/site` (pass and
+  negative control); only the `osbct.` redirect check is unexercised.
+  *(Two of its own bugs were found by running it: `OpenerDirector.open()` takes
+  no `context` argument, and it demanded a BUILD constant of `index.html`, which
+  has none. The first reported itself as `HTTP 0` — a gate blaming the site for
+  its own defect.)*
+* **!!!!! OPEN QUESTION #1 IS ANSWERED, AND MY FIRST TEST OF IT WAS CIRCULAR
+  (2026-07-30j).** Comparing paragraph numbers across `links/<VOL>.rev.json`
+  gave **100.0% on 24,159 pairs** against a 0-0.2% control — and meant nothing:
+  `build_links_bynum.py` CREATES the `direct` state BY matching that number. The
+  test measured the builder's compliance with its own docstring. **If a result
+  is perfect, suspect the question.**
+  Re-tested on the BOLDED LEMMA, which comes from the edition's typography and
+  never from a number: **the numbering is a CHAIN, not one shared spine.**
+  - commentary lemma in the numbered CANON ¶: **67.2%** (control 14.8% / 9.0% /
+    5.3% / 2.7% at 1, 2, 5, 25 ¶ away)
+  - ṭīkā lemma in the numbered CANON ¶: 34.7% (control 5.4%)
+  - **ṭīkā lemma in the numbered COMMENTARY ¶: 70.2%** (control 4.3%)
+  **The ṭīkā numbers against the aṭṭhakathā, not the canon.** A join on the
+  integer works three ways, but anything treating a ṭīkā number as a direct
+  index into the canon is right about a third of the time. Canon ← aṭṭhakathā ←
+  ṭīkā, each keyed to the layer above it.
+  Crude stemming (drop the last 2 characters) raises commentary recall
+  67.2% → 77.4% but the control rises 14.7% → 21.3%, so the lift FALLS 4.6x →
+  3.6x — precision bought with recall, which is the argument for a real
+  Kaccāyana analyser over truncation. `_xc/para_alignment{,2,3}.py`.
+* **THE OTHER COPY OF THE SITE: NARROWED, NOT FOUND (2026-07-30j).**
+  `admin-iebh.github.io/` returns **404** — no user site is publishing.
+  `admin-iebh.github.io/OSBCT/` **302s to buddha-dhamma.net**, correct. And the
+  OSBCT repo has **no `gh-pages`, `master`, `site` or `pages` branch** carrying a
+  site (probed via raw.githubusercontent with a 200 control). So nothing is
+  serving a second copy today. **What remains unchecked needs your GitHub
+  account view:** which repo held the `buddha-dhamma.net` claim before 30h, and
+  whether it still has that domain typed into Settings → Pages — because if
+  OSBCT's custom domain is ever cleared, that repo takes the apex back.
+
+## START HERE — earlier (2026-07-30i)
 
 * **!!!!! `site/reader/pageindex.json` WAS STALE AND 3,774 SHIPPED CROSS-REFERENCE
   LINKS WERE LANDING ON THE WRONG PRINTED PAGE (2026-07-30i).** The file was

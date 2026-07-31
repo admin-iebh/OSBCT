@@ -106,11 +106,16 @@ def stored_notes(vol):
             for a in arr:
                 if a.get('text'):
                     out.append((o, a.get('n'), a['text']))
-    x = f'{ROOT}/site/reader/xrefs/{vol}.json'
-    if os.path.exists(x):
-        for o, lines in json.load(open(x, encoding='utf-8')).items():
-            for l in lines:
-                out.append((o, None, l))
+    # !!! `site/reader/xrefs/<VOL>.json` USED TO BE COUNTED HERE, AND THE READER
+    # LOADS IT NOWHERE (removed 2026-07-30j).  Counting it meant a printed
+    # footnote could match a string that appears on no page of the site, so this
+    # gate scored 18 volumes clean while 1,294 of the edition's footnotes were
+    # invisible to a reader — including editorial prose, not only citations.
+    # It is the same blindness that let the whole link layer go missing on
+    # 2026-07-30f, when the gate was satisfied by this file while `resolveXref`
+    # was never called.  THE RULE: this gate may only count what `loadVol()`
+    # fetches. The stranded notes were moved into `appk` by
+    # `_xref/merge_raw_xrefs.py`, which is why removing this loses nothing.
     u = f'{ROOT}/site/reader/uddana/{vol}.json'
     if os.path.exists(u):
         for o, blocks in json.load(open(u, encoding='utf-8')).items():

@@ -56,6 +56,21 @@
 "xrefs": []
 }
 ],
+"13": [
+{
+"n": "*",
+"text": "Khu 5. 7 piṭṭhe Nandivisālajātakepi, tattha pana manuññasaddo dissati.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 7,
+"also": true
+}
+]
+}
+],
 "15": [
 {
 "n": 1,
@@ -138,6 +153,21 @@
 "xrefs": []
 }
 ],
+"65": [
+{
+"n": "*",
+"text": "Vi 1. 112 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 112,
+"also": true
+}
+]
+}
+],
 "66": [
 {
 "n": 1,
@@ -152,6 +182,27 @@
 }
 ],
 "xrefs": []
+}
+],
+"68": [
+{
+"n": "*",
+"text": "Vi 1. 117, 118 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 117,
+"also": true
+},
+{
+"work": "Vi",
+"vol": 1,
+"page": 118,
+"also": true
+}
+]
 }
 ],
 "69": [
@@ -201,6 +252,32 @@
 ]
 }
 ],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 119,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Vi 1. 118 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 118,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Vi 1. 119 piṭṭhepi.",
+"variants": [],
 "xrefs": [
 {
 "work": "Vi",
@@ -530,6 +607,19 @@
 "text": "Taññeva (Itipi)",
 "variants": [],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 1. 128 piṭṭhe Udānepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 128,
+"also": true
+}
+]
 }
 ],
 "158": [
@@ -691,6 +781,27 @@
 }
 ],
 "xrefs": []
+}
+],
+"199": [
+{
+"n": "*",
+"text": "129, 131 piṭṭhesupi; Vi 1. 287, 291 piṭṭhesupi ca.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 287,
+"also": true
+},
+{
+"work": "Vi",
+"vol": 1,
+"page": 291,
+"also": true
+}
+]
 }
 ],
 "218": [
@@ -984,6 +1095,40 @@
 "xrefs": []
 }
 ],
+"285": [
+{
+"n": "*",
+"text": "94, 131 piṭṭhesupi, Vi 1. 287, 291 piṭṭhesupi ca.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 287,
+"also": true
+},
+{
+"work": "Vi",
+"vol": 1,
+"page": 291,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Vi 1. 287 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 287,
+"also": true
+}
+]
+}
+],
 "286": [
 {
 "n": 1,
@@ -1033,6 +1178,40 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "94, 129 piṭṭhesupi; Vi 1. 287, 291 piṭṭhesupi ca.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 287,
+"also": true
+},
+{
+"work": "Vi",
+"vol": 1,
+"page": 291,
+"also": true
+}
+]
+}
+],
+"295": [
+{
+"n": "*",
+"text": "Vi 3. 307 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 307,
+"also": true
+}
+]
 }
 ],
 "300": [
@@ -1381,6 +1560,21 @@
 "xrefs": []
 }
 ],
+"403": [
+{
+"n": "*",
+"text": "Idaṁ vatthu Vi 3. 108 piṭṭhādīsupi āgataṁ.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 108,
+"also": true
+}
+]
+}
+],
 "405": [
 {
 "n": 1,
@@ -1426,6 +1620,27 @@
 }
 ],
 "xrefs": []
+}
+],
+"417": [
+{
+"n": "*",
+"text": "Idaṁ vatthu Vi 4. 68; Ma 1. 182 piṭṭhādīsupi āgataṁ.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 68,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 1,
+"page": 182,
+"also": true
+}
+]
 }
 ],
 "418": [
@@ -1532,6 +1747,21 @@
 "xrefs": []
 }
 ],
+"439": [
+{
+"n": "*",
+"text": "Idaṁ vatthu Vi 4. 319 piṭṭhepi āgataṁ.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 319,
+"also": true
+}
+]
+}
+],
 "441": [
 {
 "n": 1,
@@ -1623,6 +1853,21 @@
 "xrefs": []
 }
 ],
+"493": [
+{
+"n": "*",
+"text": "Idaṁ vatthu Vi 1. 379 piṭṭhepi āgataṁ.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 379,
+"also": true
+}
+]
+}
+],
 "494": [
 {
 "n": 1,
@@ -1657,6 +1902,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"501": [
+{
+"n": "*",
+"text": "Aṁ 3. 320 piṭṭhādīsupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 320,
+"also": true
+}
+]
 }
 ],
 "502": [
@@ -1702,6 +1962,39 @@
 }
 ],
 "xrefs": []
+}
+],
+"512": [
+{
+"n": "*",
+"text": "Imā tiracchānakathāyo Dī 1. 7; Ma 2. 181; Saṁ 3. 368; Aṁ 3. 358 piṭṭhādīsupi āgatā.",
+"variants": [],
+"xrefs": [
+{
+"work": "Dī",
+"vol": 1,
+"page": 7,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 181,
+"also": true
+},
+{
+"work": "Saṁ",
+"vol": 3,
+"page": 368,
+"also": true
+},
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 358,
+"also": true
+}
+]
 }
 ],
 "513": [
@@ -2089,6 +2382,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"653": [
+{
+"n": "*",
+"text": "Imā gāthāyo Khu 5. 97 piṭṭhe Jātake aññathā dissanti.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 97,
+"also": false
+}
+]
 }
 ],
 "661": [
@@ -2704,6 +3012,21 @@
 "xrefs": []
 }
 ],
+"799": [
+{
+"n": "*",
+"text": "Khu 5. 32 piṭṭhe suvaṇṇahaṁsajātakepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 32,
+"also": true
+}
+]
+}
+],
 "811": [
 {
 "n": 1,
@@ -2837,6 +3160,21 @@
 "xrefs": []
 }
 ],
+"885": [
+{
+"n": "*",
+"text": "Vi 3. 407 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 407,
+"also": true
+}
+]
+}
+],
 "888": [
 {
 "n": 1,
@@ -2850,6 +3188,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"889": [
+{
+"n": "*",
+"text": "Vi 3. 408 piṭṭhe.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 408,
+"also": false
+}
+]
 }
 ],
 "892": [

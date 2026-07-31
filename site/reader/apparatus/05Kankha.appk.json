@@ -1,4 +1,44 @@
 {
+"5": [
+{
+"n": "*",
+"text": "Iminā lakkhaṇena dassitasikkhāpadāni Bhikkhunivibhaṅge natthi.",
+"variants": [],
+"xrefs": []
+}
+],
+"163": [
+{
+"n": "*",
+"text": "Sekhiyasikkhāpadesu iminā lakkhaṇena chabbīsati sāruppasikkhāpadāni dassitāni.",
+"variants": [],
+"xrefs": []
+}
+],
+"185": [
+{
+"n": "+",
+"text": "Iminā lakkhaṇena tiṁsa bhojanappaṭisaṁyuttasikkhāpadāni dassitāni.",
+"variants": [],
+"xrefs": []
+}
+],
+"223": [
+{
+"n": "+",
+"text": "+ Iminā lakkhaṇena ekūnavīsa dhammadesanāpaṭisaṁyuttasikkhāpadāni dassitāni.",
+"variants": [],
+"xrefs": []
+}
+],
+"257": [
+{
+"n": "*",
+"text": "Iminā lakkhaṇena dassitasikkhāpadāni Bhikkhuvibhaṅge n’atthi.",
+"variants": [],
+"xrefs": []
+}
+],
 "478": [
 {
 "n": 1,
@@ -14,6 +54,22 @@
 "xrefs": []
 }
 ],
+"505": [
+{
+"n": "*",
+"text": "Sekhiyasikkhāpadesu iminā lakkhaṇena chabbīsati sāruppasikkhāpadāni dassitāni.",
+"variants": [],
+"xrefs": []
+}
+],
+"533": [
+{
+"n": "+",
+"text": "Iminā lakkhaṇena tiṁsa bhojanappaṭisaṁyuttasikkhāpadāni dassitāni.",
+"variants": [],
+"xrefs": []
+}
+],
 "538": [
 {
 "n": 1,
@@ -26,6 +82,14 @@
 ]
 }
 ],
+"xrefs": []
+}
+],
+"558": [
+{
+"n": "+",
+"text": "+ Iminā lakkhaṇena ekūnavīsa dammadesanāpaṭisaṁyuttasikkhāpadāni dassitāni.",
+"variants": [],
 "xrefs": []
 }
 ],

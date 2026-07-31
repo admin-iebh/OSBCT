@@ -138,7 +138,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 [data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%);background:var(--fg);color:var(--bg);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;line-height:1.3;white-space:normal;width:max-content;max-width:230px;text-align:center;padding:5px 9px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.26);z-index:200;pointer-events:none}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=da667fb5cdf4"></script>
+<script src="../i18n.js?v=cedb34504f2b"></script>
 </head>
 <body>
   <div class="topbar">
@@ -225,7 +225,7 @@ const FOLDER={canon:'pali-unicode',A:'atthakatha-unicode',T:'tika-unicode'};
 let toastT=null;
 function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),1500);}
 
-const BUILD='da667fb5cdf4';
+const BUILD='cedb34504f2b';
 async function jget(url,fallback){ try{const sep=url.includes('?')?'&':'?'; const r=await fetch(url+sep+'v='+BUILD); if(!r.ok) return fallback; return await r.json();}catch(e){return fallback;} }
 async function loadVol(vol){
   if(cache[vol]) return cache[vol];
@@ -806,14 +806,69 @@ function resolveIn(v,page){
   return {key:v+'#'+ord, kind:LAYERKIND[VOLLAYER[v]]||'canon'};
 }
 window.navXref=function(key,kind){ const dd=document.getElementById('sdrop'); if(dd)dd.hidden=true; openKey(key,kind); };
+// ONE ANCHOR, BUILT ONCE, so the in-place and appended paths cannot drift.
+function xrefHTML(x,selfVol,label){
+  const r=resolveXref(x.work,x.vol,x.page,selfVol);
+  return r ? '<a class="xref" title="'+escA(TIP('tip_goto','Go to'))+' '+escA(x.work)+' p.'+x.page+'" onclick="navXref(\''+r.key+'\',\''+r.kind+'\')">'+esc(label)+' →</a>'
+           : '<span class="xref" style="opacity:.7">'+esc(label)+'</span>';
+}
+// !!! A NOTE THAT PARSED ANY CITATION USED TO STOP SHOWING ITS OWN WORDS
+// (2026-07-30j).  `parts` was built from the variants and the xrefs, and
+// `n.text` was used ONLY when `parts` came out empty — so the moment a footnote
+// yielded one citation, everything the edition had written around it vanished.
+// `Khu 1. 177 piṭṭhe Udāne.` drew as `Khu 1. 177` and lost *piṭṭhe Udāne*,
+// which is the part that says WHERE and IN WHICH WORK.  Measured over the whole
+// apparatus: 3,208 notes, about 80,500 characters of the edition, on no page of
+// the site.
+//
+// So the citation is now linked WHERE IT STANDS, inside the note's own
+// sentence.  Each xref is located by its page number scanning forward, and the
+// siglum immediately before it is drawn into the anchor when it is there — that
+// handles `Khu 2. 224, 334.`, where the second citation is printed as a bare
+// number and shares the siglum of the first.  If ANY xref cannot be located the
+// function returns null and the caller keeps the old behaviour: never guess a
+// span, and never silently move the edition's words.
+function appTextLinked(text,xrefs,selfVol){
+  if(!text||!xrefs||!xrefs.length) return null;
+  let out='',pos=0;
+  for(const x of xrefs){
+    const pg=String(x.page);
+    let i=-1;
+    // a page number is a whole token, not a digit inside a longer number
+    for(let k=pos;k<=text.length-pg.length;k++){
+      if(text.substr(k,pg.length)!==pg) continue;
+      const b=text[k-1], a=text[k+pg.length];
+      if(b>='0'&&b<='9') continue;
+      if(a>='0'&&a<='9') continue;
+      i=k; break;
+    }
+    if(i<0) return null;
+    let end=i+pg.length;
+    if(x.page_to!=null){
+      const m=/^\s*[-–]\s*\d+/.exec(text.slice(end));
+      if(m) end+=m[0].length;
+    }
+    // reach back over `Work 2. ` when the edition printed it here
+    let start=i;
+    const before=text.slice(Math.max(0,i-40),i);
+    const m2=/([A-ZĀĪŪṀ][A-Za-zāīūṁṅñṭḍṇḷĀĪŪṀ]*(?:-(?:Ṭṭha|Tṭha|Ṭī|Tī|Anuṭī))?\.?\s*(?:\d+\s*\.\s*)?)$/.exec(before);
+    if(m2) start=i-m2[1].length;
+    if(start<pos) return null;                 // overlapping citations — bail out
+    out+=esc(text.slice(pos,start))+xrefHTML(x,selfVol,text.slice(start,end));
+    pos=end;
+  }
+  return out+esc(text.slice(pos));
+}
 function appBlock(app,selfVol){
   if(!app||!app.length) return '';
   let rows='';
   for(const n of app){ let parts=[];
     for(const v of (n.variants||[])){ const sg=(v.sigla||[]).map(s=>'<abbr title="'+escA(window.sigla?window.sigla(s):(SIG[s]||s))+'">'+esc(s)+'</abbr>').join(', '); parts.push('<i>'+esc(v.reading)+'</i>'+(sg?' ('+sg+')':'')); }
-    for(const x of (n.xrefs||[])){ const label=esc(x.work)+(x.vol?' '+x.vol:'')+'. '+x.page+(x.page_to?'–'+x.page_to:'');
-      const r=resolveXref(x.work,x.vol,x.page,selfVol);
-      parts.push(r?'<a class="xref" title="'+escA(TIP('tip_goto','Go to'))+' '+escA(x.work)+' p.'+x.page+'" onclick="navXref(\''+r.key+'\',\''+r.kind+'\')">'+label+' →</a>':'<span class="xref" style="opacity:.7">'+label+'</span>'); }
+    // no variants to show, but citations and words of its own: link in place
+    const inline=parts.length?null:appTextLinked(n.text,n.xrefs,selfVol);
+    if(inline!=null){ rows+='<div><span class="mk">'+(n.n||'*')+'</span>'+inline+'</div>'; continue; }
+    for(const x of (n.xrefs||[])){ const label=x.work+(x.vol?' '+x.vol:'')+'. '+x.page+(x.page_to?'–'+x.page_to:'');
+      parts.push(xrefHTML(x,selfVol,label)); }
     if(!parts.length&&n.text) parts.push(esc(n.text));
     rows+='<div><span class="mk">'+(n.n||'*')+'</span>'+parts.join('; ')+'</div>'; }
   return '<div class="appx">'+rows+'</div>';

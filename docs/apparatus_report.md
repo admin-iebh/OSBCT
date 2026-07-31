@@ -1,6 +1,6 @@
 # Apparatus (variant-reading) verification report
 
-`pipeline/verify_apparatus.py`, 118 volumes, 73,443 stored footnotes.
+`pipeline/verify_apparatus.py`, 118 volumes, 73,442 stored footnotes.
 
 `spliced` = a stored note that is NOT contiguous on the printed page (merged from two notes, or fabricated). `not-stored` = a printed variant the reader does not show.
 
@@ -121,7 +121,7 @@
 | 45KhuA26 | commentary | 361 | 0 | 0 | 0 |
 | 46KhuA27 | commentary | 645 | 0 | 0 | 0 |
 | 47KhuA28 | commentary | 529 | 0 | 0 | 0 |
-| 48AbhiA01 | commentary | 1146 | 0 | 1 | 0 |
+| 48AbhiA01 | commentary | 1145 | 0 | 1 | 0 |
 | 49AbhiA02 | commentary | 534 | 0 | 1 | 0 |
 | 50AbhiA03 | commentary | 485 | 0 | 0 | 0 |
 | 51Vism01 | commentary | 833 | 0 | 0 | 0 |
@@ -197,7 +197,7 @@
 - variant lost: p251 `1. Bojjhaṅgapabbaṁ niṭṭhitaṁ. Paṭhamabhāṇavāraṁ (Syā)`
 
 ### 07DiA01
-- spliced: ord147 note None diverges at word 4/5: `viṭṭha maṭṭha saṁṭṭha aṁṭṭha khuddakapāṭha`
+- spliced: ord147 note + diverges at word 4/5: `viṭṭha maṭṭha saṁṭṭha aṁṭṭha khuddakapāṭha`
 - variant lost: p74 `Theragāthā-Ṭṭha 1. 42; Buddhavaṁsa-Ṭṭha 18; Mahāniddesa-Ṭṭha 153 piṭṭhesupi.`
 - variant lost: p272 `Buddhavaṁsa-Ṭṭha 163; Apadāna-Ṭṭha 2. 91 piṭṭhesu.`
 

@@ -1,4 +1,19 @@
 {
+"0": [
+{
+"n": "*",
+"text": "Ito paraṁ yāva 7 piṭṭhe padakkhiṇaṁ katvā pakkāmīti pāṭho Aṁ 3. 18 piṭṭhādīsupi",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 18,
+"also": true
+}
+]
+}
+],
 "2": [
 {
 "n": 1,
@@ -564,6 +579,34 @@
 "xrefs": []
 }
 ],
+"43": [
+{
+"n": "*",
+"text": "Abhi 2. 254 piṭṭhe Jhānavibhaṅgepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 2,
+"page": 254,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Dī 3. 183 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Dī",
+"vol": 3,
+"page": 183,
+"also": true
+}
+]
+}
+],
 "53": [
 {
 "n": 1,
@@ -584,6 +627,33 @@
 }
 ],
 "xrefs": []
+}
+],
+"54": [
+{
+"n": "*",
+"text": "Khu 7. 107, 110, 112 piṭṭhe Mahāniddesepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 107,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 7,
+"page": 110,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 7,
+"page": 112,
+"also": true
+}
+]
 }
 ],
 "57": [
@@ -1070,6 +1140,34 @@
 "xrefs": []
 }
 ],
+"156": [
+{
+"n": "*",
+"text": "Vi 4. 327 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 327,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Vi 4. 328 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 328,
+"also": true
+}
+]
+}
+],
 "157": [
 {
 "n": 1,
@@ -1162,6 +1260,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Idaṁ vatthu Saṁ 3. 278 piṭṭhepi āgataṁ.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 3,
+"page": 278,
+"also": true
+}
+]
 }
 ],
 "164": [
@@ -1309,6 +1420,21 @@
 "xrefs": []
 }
 ],
+"192": [
+{
+"n": "*",
+"text": "Idaṁ vatthu Vi 2. 35 piṭṭhepi āgataṁ.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 35,
+"also": true
+}
+]
+}
+],
 "194": [
 {
 "n": 1,
@@ -1372,6 +1498,47 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Saṁ 1. 22 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 22,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 1. 57 piṭṭhe dhammapadepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 1,
+"page": 57,
+"also": true
+}
+]
+}
+],
+"196": [
+{
+"n": "*",
+"text": "Vi 2. 37 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 37,
+"also": true
+}
+]
 }
 ],
 "197": [
@@ -1403,6 +1570,34 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Vi 2. 38 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 38,
+"also": true
+}
+]
+}
+],
+"199": [
+{
+"n": "*",
+"text": "Vi 2. 38 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 38,
+"also": true
+}
+]
 }
 ],
 "212": [
@@ -1476,6 +1671,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Imāni vatthūni Saṁ 1. 446 piṭṭhādīsupi āgatāni.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 446,
+"also": true
+}
+]
 }
 ],
 "227": [
@@ -1903,6 +2111,50 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 5. 71-72 piṭṭhesu Maṇikaṇṭhajātakepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 71,
+"page_to": 72,
+"also": true
+}
+]
+}
+],
+"343": [
+{
+"n": "*",
+"text": "Khu 5. 72 piṭṭhe Maṇikaṇṭhajātakepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 72,
+"also": true
+}
+]
+}
+],
+"344": [
+{
+"n": "*",
+"text": "Khu 5. 161 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 161,
+"also": true
+}
+]
 }
 ],
 "346": [
@@ -2023,6 +2275,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"376": [
+{
+"n": "*",
+"text": "Idaṁ vatthu Vi 4. 191 piṭṭhādīsupi āgataṁ.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 191,
+"also": true
+}
+]
 }
 ],
 "378": [
@@ -2227,6 +2494,34 @@
 "xrefs": []
 }
 ],
+"428": [
+{
+"n": "*",
+"text": "Idaṁ vatthu Vi 4. 22 piṭṭhādīsupi āgataṁ.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 22,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Vi 4. 284 piṭṭhādīsupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 284,
+"also": true
+}
+]
+}
+],
 "429": [
 {
 "n": 1,
@@ -2313,6 +2608,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"457": [
+{
+"n": "*",
+"text": "Vi 3 . 402 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 402,
+"also": true
+}
+]
 }
 ],
 "461": [
@@ -2634,6 +2944,21 @@
 "xrefs": []
 }
 ],
+"617": [
+{
+"n": "*",
+"text": "Idaṁ vatthu Vi 3. 299 piṭṭhādīsupi āgataṁ.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 299,
+"also": true
+}
+]
+}
+],
 "618": [
 {
 "n": 1,
@@ -2779,6 +3104,36 @@
 "xrefs": []
 }
 ],
+"652": [
+{
+"n": "*",
+"text": "Vi 2. 236 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 236,
+"also": true
+}
+]
+}
+],
+"654": [
+{
+"n": "*",
+"text": "Vi 2. 236 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 236,
+"also": true
+}
+]
+}
+],
 "656": [
 {
 "n": 1,
@@ -2792,6 +3147,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"657": [
+{
+"n": "*",
+"text": "Vi 2. 204 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 204,
+"also": true
+}
+]
 }
 ]
 }

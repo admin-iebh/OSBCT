@@ -5534,6 +5534,27 @@
 "xrefs": []
 }
 ],
+"505": [
+{
+"n": "*",
+"text": "Khu 2. 134, 152 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 134,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 2,
+"page": 152,
+"also": true
+}
+]
+}
+],
 "509": [
 {
 "n": 1,
@@ -12852,6 +12873,21 @@
 "xrefs": []
 }
 ],
+"1077": [
+{
+"n": "*",
+"text": "Khu 5. 15 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 15,
+"also": true
+}
+]
+}
+],
 "1079": [
 {
 "n": 1,
@@ -15940,6 +15976,27 @@
 }
 ],
 "xrefs": []
+}
+],
+"1366": [
+{
+"n": "*",
+"text": "Khu 5. 13, 272 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 13,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 5,
+"page": 272,
+"also": true
+}
+]
 }
 ],
 "1367": [
@@ -23647,6 +23704,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 5. 330 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 330,
+"also": true
+}
+]
 }
 ],
 "2485": [
@@ -26013,6 +26083,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 5. 221, 299 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 221,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 5,
+"page": 299,
+"also": true
+}
+]
 }
 ],
 "2801": [

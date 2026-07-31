@@ -28,6 +28,20 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Iminā lakkhaṇena sakavādīpucchā dassitā.",
+"variants": [],
+"xrefs": []
+}
+],
+"1": [
+{
+"n": "+",
+"text": "Iminā lakkhaṇena paravādīpucchā dassitā.",
+"variants": [],
+"xrefs": []
 }
 ],
 "2": [
@@ -2045,6 +2059,20 @@
 "xrefs": []
 }
 ],
+"344": [
+{
+"n": "+",
+"text": "Paravādīpucchālakkhaṇaṁ.",
+"variants": [],
+"xrefs": []
+},
+{
+"n": "*",
+"text": "Sakavādīpucchālakkhaṇaṁ.",
+"variants": [],
+"xrefs": []
+}
+],
 "345": [
 {
 "n": 1,
@@ -3683,6 +3711,14 @@
 ]
 }
 ],
+"xrefs": []
+}
+],
+"651": [
+{
+"n": "+",
+"text": "Aṭṭhakathānulomaṁ paravādīpucchālakkhaṇaṁ. Tathāpāyaṁ pucchā sakavādissa,",
+"variants": [],
 "xrefs": []
 }
 ],

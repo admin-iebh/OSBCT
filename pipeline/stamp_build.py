@@ -20,8 +20,21 @@ file the reader can fetch, so any rebuild moves it and no rebuild can fail to.
 A fresh git checkout moves the mtimes and so moves the stamp once, which costs
 one cache miss and is the safe direction to err in.
 
+!!! IT ALSO HASHED A STALE FILE QUITE HAPPILY (2026-07-30j).  On 2026-07-30i
+`pageindex.json` was found eight days behind the volumes it indexes, and this
+script had been dutifully hashing it and handing every visitor a fresh URL for
+the wrong data.  3,774 cross-references — 13.4% of everything that resolved —
+were landing on a paragraph that is not on the cited page, and none on the right
+one.  Being newly distributed is not the same as being right.
+
+So it now REFUSES TO STAMP when `pipeline/check_derived.py` reports a derived
+artefact older than its sources.  Staleness has to block the publishing step,
+because no other gate can see it: `check_layout` grades roles, `verify_apparatus`
+counts notes, `regress check` compares side-maps to their own baseline.
+`--force` overrides, and says so loudly.
+
 Run it LAST, after every builder and before deploying.
-Usage: python3 pipeline/stamp_build.py [--write]
+Usage: python3 pipeline/stamp_build.py [--write] [--force] [--fast]
 """
 import hashlib, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,6 +46,26 @@ READERS = [os.path.join(SITE, 'reader', 'reader2.html'),
            os.path.join(SITE, 'search.html'),
            os.path.join(SITE, 'errata.html'),
            os.path.join(SITE, 'downloads.html')]
+
+sys.path.insert(0, os.path.join(ROOT, 'pipeline'))
+import check_derived
+
+# DEEP BY DEFAULT.  The mtime screen alone raised a false alarm the first time
+# it ran — `pdfblanks.json` was older than two volumes that had been rewritten
+# without changing anything it reads — and a gate that cries wolf teaches the
+# operator to reach for --force, which is worse than no gate.  This step runs
+# once per deploy; twenty seconds buys a proof instead of a guess.  `--fast`
+# skips the rebuilds when you are only checking the wiring.
+print('checking derived artefacts before stamping:')
+_stale = check_derived.run(deep='--fast' not in sys.argv)
+if _stale:
+    if '--force' not in sys.argv:
+        print('\nREFUSING TO STAMP. A derived artefact is older than its sources, so the\n'
+              'stamp would publish stale data under a fresh cache-buster — exactly the\n'
+              'failure of 2026-07-30i. Rebuild as shown above, or pass --force.')
+        sys.exit(2)
+    print('\n--force: STAMPING OVER %d STALE ARTEFACT(S). The site will serve them.' % _stale)
+print()
 
 h = hashlib.sha1()
 n = 0

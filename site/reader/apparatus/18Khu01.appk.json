@@ -64,6 +64,21 @@
 "xrefs": []
 }
 ],
+"3": [
+{
+"n": "*",
+"text": "Upari 318 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 318,
+"also": true
+}
+]
+}
+],
 "10": [
 {
 "n": 1,
@@ -151,6 +166,21 @@
 "xrefs": []
 }
 ],
+"12": [
+{
+"n": "*",
+"text": "Upari 312 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 312,
+"also": true
+}
+]
+}
+],
 "24": [
 {
 "n": 1,
@@ -179,6 +209,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 2. 62 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 62,
+"also": true
+}
+]
 }
 ],
 "30": [
@@ -210,6 +253,22 @@
 }
 ],
 "xrefs": []
+}
+],
+"36": [
+{
+"n": "*",
+"text": "Khu 10. 144-5 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 144,
+"page_to": 145,
+"also": true
+}
+]
 }
 ],
 "41": [
@@ -405,6 +464,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 2. 129 piṭṭhe Petavatthumhipi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 129,
+"also": true
+}
+]
 }
 ],
 "57": [
@@ -462,6 +534,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Upari 300 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 300,
+"also": true
+}
+]
 }
 ],
 "62": [
@@ -682,6 +767,21 @@
 "xrefs": []
 }
 ],
+"89": [
+{
+"n": "*",
+"text": "Khu 10. 112 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 112,
+"also": true
+}
+]
+}
+],
 "90": [
 {
 "n": 1,
@@ -703,6 +803,74 @@
 }
 ],
 "xrefs": []
+}
+],
+"93": [
+{
+"n": "*",
+"text": "Khu 2. 269 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 269,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 2. 342; Khu 5. 60, 374 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 342,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 5,
+"page": 60,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 5,
+"page": 374,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "+ Khu 2. 248 piṭṭhepi",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 248,
+"also": true
+}
+]
+}
+],
+"102": [
+{
+"n": "*",
+"text": "Khu 10. 172 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 172,
+"also": true
+}
+]
 }
 ],
 "105": [
@@ -765,6 +933,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 30 piṭṭhe Nettiyampi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 30,
+"also": true
+}
+]
 }
 ],
 "109": [
@@ -874,6 +1055,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 177 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 177,
+"also": true
+}
+]
 }
 ],
 "124": [
@@ -955,6 +1149,32 @@
 "text": "Sapupphakāni (Ṭīkā)",
 "variants": [],
 "xrefs": []
+},
+{
+"n": "+",
+"text": "Khu 10. 159 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 159,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Khu 2. 275 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 275,
+"also": true
+}
+]
 }
 ],
 "134": [
@@ -1029,6 +1249,21 @@
 "xrefs": []
 }
 ],
+"139": [
+{
+"n": "*",
+"text": "Aṁ 1. 227 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 227,
+"also": true
+}
+]
+}
+],
 "140": [
 {
 "n": 1,
@@ -1089,6 +1324,21 @@
 "xrefs": []
 }
 ],
+"146": [
+{
+"n": "*",
+"text": "Khu 10. 110 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 110,
+"also": true
+}
+]
+}
+],
 "147": [
 {
 "n": 1,
@@ -1130,6 +1380,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"153": [
+{
+"n": "*",
+"text": "Khu 10. 140 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 140,
+"also": true
+}
+]
 }
 ],
 "155": [
@@ -1232,6 +1497,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 2. 224, 334.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 224,
+"also": false
+},
+{
+"work": "Khu",
+"vol": 2,
+"page": 334,
+"also": false
+}
+]
 }
 ],
 "167": [
@@ -1285,6 +1569,28 @@
 "xrefs": []
 }
 ],
+"173": [
+{
+"n": "*",
+"text": "Aṁ 3. 446, 463-4 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 446,
+"also": true
+},
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 463,
+"page_to": 464,
+"also": true
+}
+]
+}
+],
 "174": [
 {
 "n": 1,
@@ -1313,6 +1619,40 @@
 }
 ],
 "xrefs": []
+}
+],
+"179": [
+{
+"n": "*",
+"text": "Khu 2. 260; Khu 10. 140 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 260,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 140,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 2. 344 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 344,
+"also": true
+}
+]
 }
 ],
 "180": [
@@ -1549,6 +1889,21 @@
 "xrefs": []
 }
 ],
+"211": [
+{
+"n": "*",
+"text": "Upari 382 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 382,
+"also": true
+}
+]
+}
+],
 "213": [
 {
 "n": 1,
@@ -1605,6 +1960,33 @@
 }
 ],
 "xrefs": []
+}
+],
+"216": [
+{
+"n": "*",
+"text": "Upari 89 piṭṭhe; Khu 10. 29, 108 Nettiyampi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 89,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 29,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 108,
+"also": true
+}
+]
 }
 ],
 "219": [
@@ -1798,6 +2180,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 2. 224, 334 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 224,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 2,
+"page": 334,
+"also": true
+}
+]
 }
 ],
 "233": [
@@ -1871,6 +2272,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 171 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 171,
+"also": true
+}
+]
 }
 ],
 "239": [
@@ -2091,6 +2505,33 @@
 "xrefs": []
 }
 ],
+"269": [
+{
+"n": "*",
+"text": "Dī 2. 42; Upari 127; Khu 10. 37 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Dī",
+"vol": 2,
+"page": 42,
+"also": true
+},
+{
+"work": "Upari",
+"vol": null,
+"page": 127,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 37,
+"also": true
+}
+]
+}
+],
 "270": [
 {
 "n": 1,
@@ -2283,6 +2724,21 @@
 "xrefs": []
 }
 ],
+"300": [
+{
+"n": "*",
+"text": "Khu 2. 73 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 73,
+"also": true
+}
+]
+}
+],
 "303": [
 {
 "n": 1,
@@ -2439,6 +2895,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 108, 173 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 108,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 173,
+"also": true
+}
+]
 }
 ],
 "324": [
@@ -2617,6 +3092,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 8. 74 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 74,
+"also": true
+}
+]
 }
 ],
 "348": [
@@ -2648,6 +3136,27 @@
 }
 ],
 "xrefs": []
+}
+],
+"356": [
+{
+"n": "*",
+"text": "Abhi 4. 433; Khu 10. 162 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 4,
+"page": 433,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 162,
+"also": true
+}
+]
 }
 ],
 "361": [
@@ -2702,6 +3211,46 @@
 "xrefs": []
 }
 ],
+"364": [
+{
+"n": "*",
+"text": "Khu 2. 317; Khu 10. 7, 53 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 317,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 7,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 53,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 10. 158 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 158,
+"also": true
+}
+]
+}
+],
 "367": [
 {
 "n": 1,
@@ -2750,6 +3299,21 @@
 "xrefs": []
 }
 ],
+"370": [
+{
+"n": "*",
+"text": "Khu 10. 32 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 32,
+"also": true
+}
+]
+}
+],
 "371": [
 {
 "n": 1,
@@ -2776,6 +3340,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"377": [
+{
+"n": "*",
+"text": "Khu 10. 27 piṭṭhe Nettiyampi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 27,
+"also": true
+}
+]
 }
 ],
 "378": [
@@ -2809,6 +3388,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"386": [
+{
+"n": "*",
+"text": "Khu 10. 12 piṭṭhe Nettiyampi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 12,
+"also": true
+}
+]
 }
 ],
 "390": [
@@ -2858,6 +3452,44 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "+",
+"text": "Upari 130, 224, 382 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 130,
+"also": true
+},
+{
+"work": "Upari",
+"vol": null,
+"page": 224,
+"also": true
+},
+{
+"work": "Upari",
+"vol": null,
+"page": 382,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Vi 1. 116 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 116,
+"also": true
+}
+]
 }
 ],
 "401": [
@@ -2890,6 +3522,46 @@
 }
 ],
 "xrefs": []
+}
+],
+"408": [
+{
+"n": "*",
+"text": "Khu 7.187; Khu 8. 66 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 187,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 66,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 10. 30, 109 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 30,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 109,
+"also": true
+}
+]
 }
 ],
 "410": [
@@ -2966,6 +3638,27 @@
 "xrefs": []
 }
 ],
+"414": [
+{
+"n": "*",
+"text": "Vi 3. 496; Ma 3. 192; upari 286 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 496,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 3,
+"page": 192,
+"also": true
+}
+]
+}
+],
 "415": [
 {
 "n": 1,
@@ -3035,6 +3728,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"426": [
+{
+"n": "*",
+"text": "Khu 10. 37 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 37,
+"also": true
+}
+]
 }
 ],
 "427": [
@@ -3122,6 +3830,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 31, 185 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 31,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 185,
+"also": true
+}
+]
 }
 ],
 "437": [
@@ -3165,6 +3892,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Vi 3. 12; Abhi 4. 218 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 12,
+"also": true
+},
+{
+"work": "Abhi",
+"vol": 4,
+"page": 218,
+"also": true
+}
+]
 }
 ],
 "447": [
@@ -3410,6 +4156,27 @@
 "xrefs": []
 }
 ],
+"482": [
+{
+"n": "*",
+"text": "Upari 376; Ma 2. 410 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 376,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 410,
+"also": true
+}
+]
+}
+],
 "486": [
 {
 "n": 1,
@@ -3458,6 +4225,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Upari 376; Ma 2. 410 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 376,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 410,
+"also": true
+}
+]
 }
 ],
 "495": [
@@ -3488,6 +4274,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Upari 377; Ma 2. 411 piṭṭhapi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 377,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 411,
+"also": true
+}
+]
 }
 ],
 "497": [
@@ -3576,6 +4381,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Upari 377; Ma 2. 411 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 377,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 411,
+"also": true
+}
+]
 }
 ],
 "504": [
@@ -3666,6 +4490,34 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Vi 3. 1 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 1,
+"also": true
+}
+]
+}
+],
+"514": [
+{
+"n": "*",
+"text": "Vi 3. 2 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 2,
+"also": true
+}
+]
 }
 ],
 "515": [
@@ -3744,6 +4596,32 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Vi 3. 3 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 3,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 10. 129 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 129,
+"also": true
+}
+]
 }
 ],
 "517": [
@@ -3814,6 +4692,19 @@
 "work": "Saṁ",
 "vol": 3,
 "page": 71,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Khu 10. 129 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 129,
 "also": true
 }
 ]
@@ -3905,6 +4796,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 130 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 130,
+"also": true
+}
+]
 }
 ],
 "522": [
@@ -4002,6 +4906,20 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10-130-piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": null,
+"page": 10,
+"page_to": 130,
+"also": true
+}
+]
 }
 ],
 "523": [
@@ -4020,6 +4938,81 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 129 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 129,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Vi 3. 3 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 3,
+"also": true
+}
+]
+}
+],
+"524": [
+{
+"n": "*",
+"text": "Vi 3. 4; Abhi 4. 163 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 4,
+"also": true
+},
+{
+"work": "Abhi",
+"vol": 4,
+"page": 163,
+"also": true
+}
+]
+}
+],
+"525": [
+{
+"n": "*",
+"text": "Heṭṭhā 33 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 33,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Upari 128 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 128,
+"also": true
+}
+]
 }
 ],
 "526": [
@@ -4407,6 +5400,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Vi 4. 399 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 399,
+"also": true
+}
+]
 }
 ],
 "534": [
@@ -4581,6 +5587,34 @@
 }
 ],
 "xrefs": []
+}
+],
+"536": [
+{
+"n": "*",
+"text": "Khu 2. 345 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 345,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 10. 179 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 179,
+"also": true
+}
+]
 }
 ],
 "538": [
@@ -4819,6 +5853,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 135, 186 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 135,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 186,
+"also": true
+}
+]
 }
 ],
 "543": [
@@ -5049,6 +6102,32 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "+",
+"text": "Khu 10. 71 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 71,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Khu 10. 41 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 41,
+"also": true
+}
+]
 }
 ],
 "545": [
@@ -5192,6 +6271,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 2. 257; Khu 10. 129 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 257,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 129,
+"also": true
+}
+]
 }
 ],
 "548": [
@@ -5209,6 +6307,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Dī 2. 42; heṭṭhā 41.",
+"variants": [],
+"xrefs": [
+{
+"work": "Dī",
+"vol": 2,
+"page": 42,
+"also": false
+}
+]
 }
 ],
 "550": [
@@ -5307,6 +6418,53 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Vi 2. 77; Khu 2. 234 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 2,
+"page": 77,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 2,
+"page": 234,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Heṭṭhā 89 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 89,
+"also": true
+}
+]
+}
+],
+"553": [
+{
+"n": "*",
+"text": "Khu 10. 142 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 142,
+"also": true
+}
+]
 }
 ],
 "554": [
@@ -5411,6 +6569,19 @@
 "also": true
 }
 ]
+},
+{
+"n": "*",
+"text": "Khu 10. 142 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 142,
+"also": true
+}
+]
 }
 ],
 "555": [
@@ -5460,6 +6631,32 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 7 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 7,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 10. 109 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 109,
+"also": true
+}
+]
 }
 ],
 "557": [
@@ -5712,6 +6909,58 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 2. 289; Vi 4. 424; Vi 5. 263; Khu 10. 132, 144 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 289,
+"also": true
+},
+{
+"work": "Vi",
+"vol": 4,
+"page": 424,
+"also": true
+},
+{
+"work": "Vi",
+"vol": 5,
+"page": 263,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 132,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 144,
+"also": true
+}
+]
+}
+],
+"559": [
+{
+"n": "*",
+"text": "Upari 399 piṭṭhādīsu.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 399,
+"also": false
+}
+]
 }
 ],
 "560": [
@@ -5937,6 +7186,31 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Dī 2. 90; Saṁ 3. 230; Aṁ 3. 129 piṭṭhesu.",
+"variants": [],
+"xrefs": [
+{
+"work": "Dī",
+"vol": 2,
+"page": 90,
+"also": false
+},
+{
+"work": "Saṁ",
+"vol": 3,
+"page": 230,
+"also": false
+},
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 129,
+"also": false
+}
+]
 }
 ],
 "564": [
@@ -6488,6 +7762,31 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 54, 123, 184 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 54,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 123,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 184,
+"also": true
+}
+]
 }
 ],
 "574": [
@@ -6550,6 +7849,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 174 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 174,
+"also": true
+}
+]
 }
 ],
 "576": [
@@ -6593,6 +7905,31 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 32, 107, 184 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 32,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 107,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 184,
+"also": true
+}
+]
 }
 ],
 "578": [
@@ -6608,6 +7945,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"580": [
+{
+"n": "*",
+"text": "Khu 10. 32 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 32,
+"also": true
+}
+]
 }
 ],
 "581": [
@@ -6728,6 +8080,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 53 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 53,
+"also": true
+}
+]
 }
 ],
 "583": [
@@ -6897,6 +8262,38 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "+",
+"text": "Khu 10. 55, 180 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 55,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 180,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Dī 2. 105 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Dī",
+"vol": 2,
+"page": 105,
+"also": true
+}
+]
 }
 ],
 "588": [
@@ -7089,6 +8486,69 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "+",
+"text": "Dī 2. 113; Khu 10. 187 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Dī",
+"vol": 2,
+"page": 113,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 187,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Vi 3. 321; Ma 2. 16; Saṁ 2. 389 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 321,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 16,
+"also": true
+},
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 389,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Aṁ 2. 221; Dī 3.196 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 2,
+"page": 221,
+"also": true
+},
+{
+"work": "Dī",
+"vol": 3,
+"page": 196,
+"also": true
+}
+]
 }
 ],
 "589": [
@@ -7276,6 +8736,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10. 57, 178 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 57,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 178,
+"also": true
+}
+]
 }
 ],
 "592": [
@@ -7474,6 +8953,33 @@
 "xrefs": []
 }
 ],
+"609": [
+{
+"n": "*",
+"text": "Upari 268; Khu 7. 362; Khu 8. 211 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 268,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 7,
+"page": 362,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 211,
+"also": true
+}
+]
+}
+],
 "610": [
 {
 "n": 1,
@@ -7518,6 +9024,27 @@
 }
 ],
 "xrefs": []
+}
+],
+"613": [
+{
+"n": "*",
+"text": "Aṁ 1. 8; Khu 10.109 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 8,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 109,
+"also": true
+}
+]
 }
 ],
 "614": [
@@ -7597,6 +9124,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Aṁ 1. 8; Khu 10. 118 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 8,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 118,
+"also": true
+}
+]
 }
 ],
 "617": [
@@ -7612,6 +9158,31 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Saṁ 1. 87, 90; Aṁ 2. 42 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 87,
+"also": true
+},
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 90,
+"also": true
+},
+{
+"work": "Aṁ",
+"vol": 2,
+"page": 42,
+"also": true
+}
+]
 }
 ],
 "618": [
@@ -8076,6 +9647,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Aṁ 1. 334 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 334,
+"also": true
+}
+]
 }
 ],
 "631": [
@@ -8098,6 +9682,43 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Vi 3. 6; Dī 2. 33; Ma 1. 225; Ma 2. 292; Saṁ 1. 139 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 3,
+"page": 6,
+"also": true
+},
+{
+"work": "Dī",
+"vol": 2,
+"page": 33,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 1,
+"page": 225,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 2,
+"page": 292,
+"also": true
+},
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 139,
+"also": true
+}
+]
 }
 ],
 "633": [
@@ -8228,6 +9849,32 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "+",
+"text": "Khu 10. 143 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 143,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Aṁ 1. 53 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 53,
+"also": true
+}
+]
 }
 ],
 "637": [
@@ -8333,6 +9980,38 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "+",
+"text": "Heṭṭhā 57 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 57,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Heṭṭhā 57, upari 256; Vi 1. 116 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 57,
+"also": true
+},
+{
+"work": "Vi",
+"vol": 1,
+"page": 116,
+"also": true
+}
+]
 }
 ],
 "643": [
@@ -8364,6 +10043,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"644": [
+{
+"n": "*",
+"text": "Khu 8. 252 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 252,
+"also": true
+}
+]
 }
 ],
 "645": [
@@ -8468,6 +10162,27 @@
 "xrefs": []
 }
 ],
+"646": [
+{
+"n": "*",
+"text": "Saṁ 2. 409; Khu 2. 344 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 409,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 2,
+"page": 344,
+"also": true
+}
+]
+}
+],
 "650": [
 {
 "n": 2,
@@ -8528,6 +10243,21 @@
 "xrefs": []
 }
 ],
+"653": [
+{
+"n": "*",
+"text": "Aṁ 3. 72 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 72,
+"also": true
+}
+]
+}
+],
 "654": [
 {
 "n": 1,
@@ -8557,6 +10287,21 @@
 "work": "Aṁ",
 "vol": 2,
 "page": 296,
+"also": true
+}
+]
+}
+],
+"657": [
+{
+"n": "*",
+"text": "Aṁ 1. 232 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 232,
 "also": true
 }
 ]
@@ -8953,6 +10698,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 5. 329 Jātakepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 5,
+"page": 329,
+"also": true
+}
+]
 }
 ],
 "671": [
@@ -8984,6 +10742,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Saṁ 1. 369 Piṭṭhe.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 369,
+"also": false
+}
+]
 }
 ],
 "672": [
@@ -9295,6 +11066,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Aṁ 2. 471 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 2,
+"page": 471,
+"also": true
+}
+]
 }
 ],
 "682": [
@@ -9316,6 +11100,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Vi 4. 366 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 4,
+"page": 366,
+"also": true
+}
+]
 }
 ],
 "683": [
@@ -9331,6 +11128,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Aṁ 1. 343; Khu 10. 162 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 343,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 162,
+"also": true
+}
+]
 }
 ],
 "684": [
@@ -9372,6 +11188,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"685": [
+{
+"n": "*",
+"text": "Vi 1. 116; heṭṭhā 224 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Vi",
+"vol": 1,
+"page": 116,
+"also": true
+}
+]
 }
 ],
 "688": [
@@ -9594,6 +11425,52 @@
 "work": "Saṁ",
 "vol": 3,
 "page": 380,
+"also": true
+}
+]
+}
+],
+"695": [
+{
+"n": "+",
+"text": "Ma 1. 9; Saṁ 1. 267; Saṁ 2. 124; Saṁ 3. 380 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Ma",
+"vol": 1,
+"page": 9,
+"also": true
+},
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 267,
+"also": true
+},
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 124,
+"also": true
+},
+{
+"work": "Saṁ",
+"vol": 3,
+"page": 380,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Aṁ 1. 232 piṭṭhepi",
+"variants": [],
+"xrefs": [
+{
+"work": "Aṁ",
+"vol": 1,
+"page": 232,
 "also": true
 }
 ]
@@ -10076,6 +11953,19 @@
 "also": false
 }
 ]
+},
+{
+"n": "*",
+"text": "Dī 3. 111 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Dī",
+"vol": 3,
+"page": 111,
+"also": true
+}
+]
 }
 ],
 "709": [
@@ -10310,6 +12200,27 @@
 "xrefs": []
 }
 ],
+"746": [
+{
+"n": "*",
+"text": "Khu 3. 9; Khu 8. 229 piṭṭhādīsupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 3,
+"page": 9,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 229,
+"also": true
+}
+]
+}
+],
 "748": [
 {
 "n": 1,
@@ -10416,6 +12327,44 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Heṭṭhā 60; Vi 3. 496; Ma 3. 192 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 60,
+"also": true
+},
+{
+"work": "Vi",
+"vol": 3,
+"page": 496,
+"also": true
+},
+{
+"work": "Ma",
+"vol": 3,
+"page": 192,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 8. 259 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 259,
+"also": true
+}
+]
 }
 ],
 "764": [
@@ -10715,6 +12664,19 @@
 "also": true
 }
 ]
+},
+{
+"n": "*",
+"text": "Saṁ 1. 175 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 175,
+"also": true
+}
+]
 }
 ],
 "788": [
@@ -10734,6 +12696,19 @@
 "work": "Saṁ",
 "vol": 1,
 "page": 175,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Upari 349 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Upari",
+"vol": null,
+"page": 349,
 "also": true
 }
 ]
@@ -11358,6 +13333,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Heṭṭhā 10 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 10,
+"also": true
+}
+]
 }
 ],
 "854": [
@@ -11535,6 +13523,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"889": [
+{
+"n": "*",
+"text": "Saṁ 1. 216 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 216,
+"also": true
+}
+]
 }
 ],
 "890": [
@@ -11978,6 +13981,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Heṭṭhā 4 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 4,
+"also": true
+}
+]
 }
 ],
 "937": [
@@ -12385,6 +14401,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Heṭṭhā 3 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 3,
+"also": true
+}
+]
 }
 ],
 "985": [
@@ -12429,6 +14458,32 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "+",
+"text": "Saṁ 1. 208 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 208,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Khu 8. 252; khu 10.126 piṭṭhesupi",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 252,
+"also": true
+}
+]
 }
 ],
 "987": [
@@ -13431,6 +15486,27 @@
 "xrefs": []
 }
 ],
+"1153": [
+{
+"n": "*",
+"text": "Khu 7. 73; Khu 8. 114 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 73,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 114,
+"also": true
+}
+]
+}
+],
 "1159": [
 {
 "n": 1,
@@ -13444,6 +15520,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Saṁ 1. 190 piṭṭhādīsu.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 190,
+"also": false
+}
+]
 }
 ],
 "1162": [
@@ -13522,6 +15611,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Saṁ 1. 170 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 170,
+"also": true
+}
+]
 }
 ],
 "1182": [
@@ -13635,6 +15737,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Heṭṭhā 292; Saṁ 1. 175 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 292,
+"also": true
+},
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 175,
+"also": true
+}
+]
 }
 ],
 "1195": [
@@ -13804,6 +15925,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Dī 1. 48 piṭṭhādīsu vitthāro.",
+"variants": [],
+"xrefs": [
+{
+"work": "Dī",
+"vol": 1,
+"page": 48,
+"also": false
+}
+]
 }
 ],
 "1223": [
@@ -13858,6 +15992,34 @@
 "xrefs": []
 }
 ],
+"1232": [
+{
+"n": "+",
+"text": "Khu 10. 147 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 147,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Khu 8. 84 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 84,
+"also": true
+}
+]
+}
+],
 "1234": [
 {
 "n": 1,
@@ -13890,6 +16052,21 @@
 "work": "Khu",
 "vol": 8,
 "page": 254,
+"also": true
+}
+]
+}
+],
+"1237": [
+{
+"n": "*",
+"text": "Khu 8. 83 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 83,
 "also": true
 }
 ]
@@ -13953,6 +16130,45 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 8. 74 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 74,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 8. 64 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 64,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 8. 254 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 254,
+"also": true
+}
+]
 }
 ],
 "1243": [
@@ -14037,6 +16253,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Ma 2. 347 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Ma",
+"vol": 2,
+"page": 347,
+"also": true
+}
+]
 }
 ],
 "1252": [
@@ -14135,6 +16364,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 2. 330 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 2,
+"page": 330,
+"also": true
+}
+]
 }
 ],
 "1269": [
@@ -14368,6 +16610,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Ma 2. 406 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Ma",
+"vol": 2,
+"page": 406,
+"also": true
+}
+]
 }
 ],
 "1301": [
@@ -14506,6 +16761,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Heṭṭhā 70 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 70,
+"also": true
+}
+]
 }
 ],
 "1353": [
@@ -14522,6 +16790,40 @@
 }
 ],
 "xrefs": []
+}
+],
+"1356": [
+{
+"n": "*",
+"text": "Heṭṭhā 71, 72 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 71,
+"also": true
+},
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 72,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Heṭṭhā 73 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 73,
+"also": true
+}
+]
 }
 ],
 "1359": [
@@ -14608,6 +16910,25 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Saṁ 1. 152; Aṁ 3. 394 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 1,
+"page": 152,
+"also": true
+},
+{
+"work": "Aṁ",
+"vol": 3,
+"page": 394,
+"also": true
+}
+]
 }
 ],
 "1370": [
@@ -14640,6 +16961,47 @@
 }
 ],
 "xrefs": []
+}
+],
+"1374": [
+{
+"n": "*",
+"text": "Heṭṭhā 57 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 57,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Heṭṭhā 32 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Heṭṭhā",
+"vol": null,
+"page": 32,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 10. 111piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 111,
+"also": true
+}
+]
 }
 ],
 "1377": [
@@ -15202,6 +17564,21 @@
 "xrefs": []
 }
 ],
+"1430": [
+{
+"n": "*",
+"text": "Abhi 4. 77 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Abhi",
+"vol": 4,
+"page": 77,
+"also": true
+}
+]
+}
+],
 "1432": [
 {
 "n": 1,
@@ -15320,6 +17697,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 10.177 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 177,
+"also": true
+}
+]
 }
 ],
 "1457": [
@@ -15464,6 +17854,33 @@
 "xrefs": []
 }
 ],
+"1483": [
+{
+"n": "*",
+"text": "Khu 7. 1; Khu 10. 6, 59 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 1,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 6,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 59,
+"also": true
+}
+]
+}
+],
 "1485": [
 {
 "n": 1,
@@ -15508,6 +17925,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"1489": [
+{
+"n": "*",
+"text": "Khu 10. 172 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 172,
+"also": true
+}
+]
 }
 ],
 "1490": [
@@ -15603,6 +18035,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"1500": [
+{
+"n": "*",
+"text": "Khu 7. 64 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 64,
+"also": true
+}
+]
 }
 ],
 "1502": [
@@ -15787,6 +18234,34 @@
 "xrefs": []
 }
 ],
+"1517": [
+{
+"n": "*",
+"text": "Khu 7. 90 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 90,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 10. 173 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 173,
+"also": true
+}
+]
+}
+],
 "1521": [
 {
 "n": 1,
@@ -15861,6 +18336,21 @@
 "xrefs": []
 }
 ],
+"1526": [
+{
+"n": "*",
+"text": "Khu 7. 107 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 107,
+"also": true
+}
+]
+}
+],
 "1530": [
 {
 "n": 1,
@@ -15887,6 +18377,32 @@
 "work": "Niddese",
 "vol": null,
 "page": 119,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 10. 173 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 173,
+"also": true
+}
+]
+},
+{
+"n": "*",
+"text": "Khu 7. 124 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 124,
 "also": true
 }
 ]
@@ -15989,6 +18505,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 7. 140 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 140,
+"also": true
+}
+]
 }
 ],
 "1546": [
@@ -16087,6 +18616,34 @@
 }
 ],
 "xrefs": []
+}
+],
+"1563": [
+{
+"n": "*",
+"text": "Saṁ 2. 8 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Saṁ",
+"vol": 2,
+"page": 8,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 7. 161 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 161,
+"also": true
+}
+]
 }
 ],
 "1565": [
@@ -16250,6 +18807,19 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 7. 196 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 196,
+"also": true
+}
+]
 }
 ],
 "1580": [
@@ -16348,6 +18918,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"1588": [
+{
+"n": "*",
+"text": "Khu 7. 220 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 220,
+"also": true
+}
+]
 }
 ],
 "1592": [
@@ -16490,6 +19075,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"1607": [
+{
+"n": "*",
+"text": "Khu 7. 236 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 236,
+"also": true
+}
+]
 }
 ],
 "1609": [
@@ -16704,6 +19304,21 @@
 "xrefs": []
 }
 ],
+"1627": [
+{
+"n": "*",
+"text": "Khu 7. 263 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 263,
+"also": true
+}
+]
+}
+],
 "1632": [
 {
 "n": 1,
@@ -16748,6 +19363,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"1654": [
+{
+"n": "*",
+"text": "Khu 7. 315 piṭṭhe.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 315,
+"also": false
+}
+]
 }
 ],
 "1664": [
@@ -16795,6 +19425,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"1670": [
+{
+"n": "*",
+"text": "Khu 7. 352 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 7,
+"page": 352,
+"also": true
+}
+]
 }
 ],
 "1675": [
@@ -16891,6 +19536,21 @@
 }
 ],
 "xrefs": []
+}
+],
+"1695": [
+{
+"n": "*",
+"text": "Khu 8. 1 piṭṭhe Cūḷaniddesepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 1,
+"also": true
+}
+]
 }
 ],
 "1698": [
@@ -17194,6 +19854,45 @@
 "xrefs": []
 }
 ],
+"1743": [
+{
+"n": "*",
+"text": "Khu 8. 6, 24; Khu 10. 10, 13, 177 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 6,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 24,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 10,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 13,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 10,
+"page": 177,
+"also": true
+}
+]
+}
+],
 "1746": [
 {
 "n": 1,
@@ -17223,6 +19922,46 @@
 "xrefs": []
 }
 ],
+"1748": [
+{
+"n": "*",
+"text": "Khu 8. 7, 40 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 7,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 40,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 8. 7, 46 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 7,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 46,
+"also": true
+}
+]
+}
+],
 "1750": [
 {
 "n": 1,
@@ -17236,6 +19975,27 @@
 }
 ],
 "xrefs": []
+}
+],
+"1755": [
+{
+"n": "*",
+"text": "Khu 8. 8, 62 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 8,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 62,
+"also": true
+}
+]
 }
 ],
 "1758": [
@@ -17285,6 +20045,31 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 8, 10, 89 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": null,
+"page": 8,
+"also": true
+},
+{
+"work": "Khu",
+"vol": null,
+"page": 10,
+"also": true
+},
+{
+"work": "Khu",
+"vol": null,
+"page": 89,
+"also": true
+}
+]
 }
 ],
 "1772": [
@@ -17306,6 +20091,40 @@
 }
 ],
 "xrefs": []
+}
+],
+"1774": [
+{
+"n": "*",
+"text": "Khu 10. 143 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 143,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 8. 11, 101 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 11,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 101,
+"also": true
+}
+]
 }
 ],
 "1775": [
@@ -17430,6 +20249,27 @@
 "xrefs": []
 }
 ],
+"1782": [
+{
+"n": "*",
+"text": "Khu 8. 13, 112 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 13,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 112,
+"also": true
+}
+]
+}
+],
 "1792": [
 {
 "n": 1,
@@ -17467,6 +20307,107 @@
 "xrefs": []
 }
 ],
+"1795": [
+{
+"n": "*",
+"text": "Khu 8. 14, 125 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 14,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 125,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 8. 14, 130 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 14,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 130,
+"also": true
+}
+]
+}
+],
+"1802": [
+{
+"n": "*",
+"text": "Khu 8. 15, 134 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 15,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 134,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 8. 15, 141 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 15,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 141,
+"also": true
+}
+]
+}
+],
+"1810": [
+{
+"n": "*",
+"text": "Khu 8. 17, 148 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 17,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 148,
+"also": true
+}
+]
+}
+],
 "1813": [
 {
 "n": 1,
@@ -17480,6 +20421,27 @@
 }
 ],
 "xrefs": []
+}
+],
+"1817": [
+{
+"n": "*",
+"text": "Khu 8. 17, 154 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 17,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 154,
+"also": true
+}
+]
 }
 ],
 "1822": [
@@ -17546,6 +20508,112 @@
 }
 ],
 "xrefs": []
+},
+{
+"n": "*",
+"text": "Khu 8. 18, 163 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 18,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 163,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 8. 19, 172 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 19,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 172,
+"also": true
+}
+]
+}
+],
+"1830": [
+{
+"n": "*",
+"text": "Khu 10. 7 piṭṭhe Nettiyaṁpi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 10,
+"page": 7,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 8. 19, 188 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 19,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 188,
+"also": true
+}
+]
+}
+],
+"1840": [
+{
+"n": "*",
+"text": "Khu 8. 21, 195 piṭṭhesupi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 21,
+"also": true
+},
+{
+"work": "Khu",
+"vol": 8,
+"page": 195,
+"also": true
+}
+]
+},
+{
+"n": "+",
+"text": "Khu 8. 202 piṭṭhepi.",
+"variants": [],
+"xrefs": [
+{
+"work": "Khu",
+"vol": 8,
+"page": 202,
+"also": true
+}
+]
 }
 ],
 "1842": [
