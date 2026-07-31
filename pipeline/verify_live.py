@@ -159,7 +159,43 @@ def run(origin, redirect_host, quiet=False):
                                       'HTTP %s -> %s' % (st, loc or '(no Location)')))
     print('\n%s' % ('LIVE SITE MATCHES the working copy' if not bad else
                     '%d CHECK(S) FAILED — the live site is not what this copy says' % bad))
+    if bad:
+        print(diagnose())
     return bad
+
+
+def diagnose():
+    """Say WHY the site is behind: unpushed, or pushed and still deploying.
+
+    On its first real run (2026-07-30j) this gate correctly reported the live
+    site one build behind, and could not say whether the answer was `push` or
+    `wait` — the operator had in fact pushed thirty seconds earlier.  Those need
+    different actions, and the repository already knows which it is.
+    """
+    import subprocess
+
+    def git(*a):
+        try:
+            return subprocess.run(('git', '--no-optional-locks') + a, cwd=ROOT,
+                                  capture_output=True, text=True, timeout=15).stdout.strip()
+        except Exception:
+            return ''
+    head, origin = git('rev-parse', 'HEAD'), git('rev-parse', 'origin/main')
+    dirty = git('status', '--porcelain')
+    if not head:
+        return '\n(not a git checkout — cannot say whether this is unpushed or undeployed)'
+    if dirty:
+        n = len(dirty.split('\n'))
+        return ('\nWHY: %d file(s) are still uncommitted. Commit and push them, then re-run.'
+                % n)
+    if origin and head != origin:
+        return ('\nWHY: HEAD (%s) is ahead of origin/main (%s) — the work is committed but '
+                'NOT PUSHED.\n     Push, wait a minute, then re-run.' % (head[:7], origin[:7]))
+    return ('\nWHY: the working copy is committed and pushed (HEAD == origin/main == %s), and\n'
+            '     bare and cache-busted fetches AGREE, so this is not a stale edge object —\n'
+            '     GitHub Pages has not finished deploying. Wait a minute and re-run.\n'
+            '     (A differing pair would have printed EDGE STALE above; that is the other\n'
+            '      failure, and it needs a deploy, not patience.)' % head[:7])
 
 
 if __name__ == '__main__':
