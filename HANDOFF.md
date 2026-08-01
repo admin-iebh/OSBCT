@@ -1,6 +1,89 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-07-31c)
+## START HERE (updated 2026-08-01)
+
+* **THE CLASS-A PRUNE IS APPLIED. 22,719 impossible commentary targets and 157
+  impossible rev entries are gone from the live maps (2026-08-01).** Both
+  cautions from 07-31c were satisfied first; both were real, and one of them was
+  worse than recorded. **The working tree is NOT committed — git cannot write
+  through the desktop bridge (see the last bullet). One `git add -A && git
+  commit && git push` from your own terminal is the whole remaining step.**
+  BUILD `cad37d3bd974` -> **`1486c085f105`**, stamped and idempotent on re-run.
+
+  | | before | after |
+  |---|---:|---:|
+  | forward targets | 102,027 | 79,308 |
+  | forward Class A (impossible) | 22,719 | **0** |
+  | forward Class C (not adjudicable) | 14,278 | 14,278 |
+  | rev entries | 26,416 | 26,259 |
+  | rev Class A | 157 | **0** |
+  | rev Class C | 1,381 | 1,381 |
+
+  **Preservation audited target by target, not inferred from the totals:
+  79,308 preserved BYTE-EXACT, 0 invented, 0 altered, 0 removed from a slot the
+  edition assigns.** `_xc/linksk_prePrune/` holds all 120 pre-prune files.
+* **THE REV CHECKER'S FALSE POSITIVE WAS NOT ONE BUG BUT TWO, AND THE SECOND
+  ALMOST DESTROYED 870 GOOD LINKS (2026-08-01).** 07-31c recorded that
+  `26VsmT02 -> 52Vism02` and `25VsmT01 -> 51Vism01` were false positives. The
+  cause generalises: **the link layer is organised by SPINE, not by canon.** A
+  group's spine is its topmost present band, and the Visuddhimagga group has no
+  canon, so its *aṭṭhakathā* is the spine — it holds the forward map, and its
+  ṭīkā's rev map points its `canon` field back at it. `reader2.html` has said so
+  at `jumpFrom` since the Vism work; the checker had not been told.
+  - **Rev violations are 1,538 (5.8%), not 2,408 (9.1%)** — the two Vism entries
+    were 870 of them, i.e. 36% of the reported total.
+  - **The checker also filtered on `manifest.layer == 'canon'`, so it never
+    opened the two Vism forward maps at all.** They hold 870 targets, checked
+    now for the first time: **0 violations.** Forward total is **102,027**, not
+    the 101,157 recorded on 07-31b; the violation count is unchanged at 36,997.
+  - **AND `fix_link_targets.allowed_by_slot()` HAD THE SAME CANON ASSUMPTION.**
+    It keyed the allow-list on `g['canon']['files']`, so the Vism spine volumes
+    got **no entry — which is an EMPTY allow-set, which means prune everything.**
+    Extending the run to all forward maps emptied both files: **870 links with
+    zero violations, deleted in silence.** It was caught only because the audit
+    counts *preserved* targets rather than trusting the removal count. **A repair
+    script must be checked for what it destroys, not only for what it fixes.**
+* **AN EMPTY BAND NOW SAYS WHY IT IS EMPTY (2026-08-01).** The prune puts the
+  honest answer — nothing — where a confident wrong one used to be, and
+  `render()` appends the same generic hint whatever it drew. Measured in
+  Chromium at 390x844: tapping **A** on the Milindapañha left **`.para` 0 and 142
+  characters of text** on screen — "On-demand from the keyed corpus…" — which is
+  indistinguishable from a page that failed to load. `bandNote()` states the
+  edition's own answer, which the reader already holds as `GROUPHAS`:
+  *"The edition assigns no Aṭṭhakathā to this work."* / *"No Ṭīkā is linked to
+  the passages on screen."* EN and ES (`band_none`, `band_here` in `i18n.js`).
+* **!!! THE READER'S TOP BAR IS UNUSABLE IN PORTRAIT ON EVERY PHONE WIDTH, AND
+  THE JULY 31 SESSION COULD NOT HAVE SEEN IT (2026-08-01, not fixed).** Measured
+  in Chromium at six viewports. The nav overflows the right edge, and **the
+  language button and the dark-mode toggle sit entirely off screen — they cannot
+  be tapped at all:**
+  | viewport | first element past the right edge | ES button | ◐ button |
+  |---|---|---:|---:|
+  | 320x568 | `Downloads` at 333px | 464–503 | 515–548 |
+  | 375x667 | `About` at 392px | 464–503 | 515–548 |
+  | 390x844 | `About` at 392px | 464–503 | 515–548 |
+  | 430x932 | `Errata` at 452px | 464–503 | 515–548 |
+  | 932x430 (landscape) | — none — | on screen | on screen |
+  The brand also overflows the 52px header by 6px, clipping "Tipiṭaka".
+  **Landscape is clean, and the 07-31c screenshot was 932x430** — which is
+  exactly why this survived a session that fixed the sidebar at these widths.
+  The fix is a design choice (wrap, collapse into the ☰ menu, or drop the
+  labels), so it is left for you rather than guessed at.
+* **GIT CANNOT WRITE THROUGH THE DESKTOP BRIDGE — DO THE COMMIT YOURSELF.**
+  `git add` fails with `unable to unlink .git/objects/…/tmp_obj_…: Operation not
+  permitted`; the bridge refuses deletes, and git needs them. The repo is
+  **intact**: HEAD is still `58a6771`, `git fsck` reports only dangling blobs,
+  and the stale `index.lock` and 6 stray `tmp_obj_*` files were moved to
+  `_to_delete/gitlocks_20260801/` so the next `git add` starts clean. Nothing
+  else in the working tree was touched by the attempt.
+* **STILL OPEN, unchanged by this session:** Class C — 14,278 forward and 1,381
+  rev — is **not adjudicable by volume identity** and was deliberately left
+  alone. The real repair is still to teach `build_links_bynum.py` the
+  concordance and rebuild, **and to fix its latent cursor bug first** (07-31c):
+  the walk cannot start when the target volume's first paragraph is unnumbered,
+  which is every ṭīkā volume.
+
+## START HERE — earlier (2026-07-31c)
 
 * **THE WRONG-COMMENTARY REPAIR IS PREPARED AND VERIFIED BUT *NOT APPLIED*
   (2026-07-31c).** `pipeline/fix_link_targets.py` writes to

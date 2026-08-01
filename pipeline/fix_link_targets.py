@@ -71,13 +71,29 @@ def num(x):
 
 
 def allowed_by_slot():
-    """canon volume -> {'commentary': {...}, 'subcommentary': {...}}, per the edition."""
+    """SPINE volume -> {'commentary': {...}, 'subcommentary': {...}}, per the edition.
+
+    !!! KEYED ON THE GROUP'S SPINE, NOT ON THE CANON (fixed 2026-08-01).  The
+    first version keyed on `g['canon']['files']`, so the Visuddhimagga group —
+    which HAS no canon, and whose aṭṭhakathā 51Vism01/52Vism02 is therefore the
+    spine that holds the forward map — got no entry at all.  An absent entry is
+    an EMPTY allow-set, and an empty allow-set means `prune()` removes
+    everything: extending the run to all forward maps emptied both Vism files,
+    **destroying 870 links that had 0 violations.**  Caught by the preservation
+    audit, which is the whole reason for counting preserved targets rather than
+    trusting the removal count.
+    """
     conc = json.load(open(os.path.join(ROOT, 'site/concordance.json'), encoding='utf-8'))
     ok = collections.defaultdict(lambda: {'commentary': set(), 'subcommentary': set()})
     for g in conc['groups']:
-        for f in g['canon']['files']:
-            ok[f]['commentary'].update(g['commentary']['files'])
-            ok[f]['subcommentary'].update(g['subcommentary']['files'])
+        f = {s: list(g[s]['files']) for s in ('canon', 'commentary', 'subcommentary')}
+        present = [s for s in ('canon', 'commentary', 'subcommentary') if f[s]]
+        if not present:
+            continue
+        spine, below = present[0], present[1:]
+        for v in f[spine]:
+            for s in below:
+                ok[v][s].update(f[s])
     return ok
 
 
@@ -202,6 +218,82 @@ def count(links, allow):
     return tot, bad, direct
 
 
+
+
+# ---------------------------------------------------------------------------
+# THE REVERSE MAPS — added 2026-08-01, and the reason nothing was swapped in on
+# 07-31c.  Pruning the forward maps alone leaves `linksk/<VOL>.rev.json` still
+# asserting that those ṭīkā paragraphs belong to those canon volumes, so a
+# reader who opened 21KhuT01 and pressed P would still land in the Apadāna.
+# The two maps are separately derived and must be pruned together.
+#
+# `rev.json` is `{layer_ordinal: {"canon": "<SPINE>#<ord>", "state": ...}}`.
+# **The `canon` field does not always name a canon volume.**  A group's SPINE is
+# its topmost present band, and the Visuddhimagga group has no canon, so
+# 25VsmT01/26VsmT02 point back at 51Vism01/52Vism02 — the aṭṭhakathā standing in
+# the spine's place.  `reader2.html` routes on "is this its group's spine?" at
+# `jumpFrom`; the first version of `check_link_targets.py` did not, and reported
+# those 870 legitimate entries as violations.  See that file's header.
+
+SLOTS3 = ('canon', 'commentary', 'subcommentary')
+
+
+def rev_model():
+    """(allow_rev, assigns, slots_of) — spine-aware, the way the reader routes."""
+    conc = json.load(open(os.path.join(ROOT, 'site/concordance.json'), encoding='utf-8'))
+    allow_rev = collections.defaultdict(set)
+    assigns = collections.defaultdict(lambda: {'commentary': set(), 'subcommentary': set()})
+    slots_of = collections.defaultdict(set)
+    for g in conc['groups']:
+        f = {s: list(g[s]['files']) for s in SLOTS3}
+        present = [s for s in SLOTS3 if f[s]]
+        if not present:
+            continue
+        spine, below = present[0], present[1:]
+        for s in below:
+            for v in f[spine]:
+                assigns[v][s].update(f[s])
+            for v in f[s]:
+                slots_of[v].add(s)
+                allow_rev[v].update(f[spine])
+    return allow_rev, assigns, slots_of
+
+
+def prune_rev(vol, allow_rev, assigns, slots_of, all_violations=False):
+    """Class A only by default: drop entries naming a spine volume that assigns
+    NOTHING in this volume's own slot, so no target in that direction can be
+    right.  Everything kept is byte-identical."""
+    old = json.load(open(os.path.join(SRC, vol + '.rev.json'), encoding='utf-8'))
+    al = allow_rev.get(vol, set())
+    mine = slots_of.get(vol, set())
+    out = {}
+    for o, e in old.items():
+        sv = (e.get('canon') or '').split('#')[0]
+        if sv not in al:
+            possible = any(assigns.get(sv, {}).get(s) for s in mine)
+            if all_violations or not possible:
+                continue
+        out[o] = e
+    return old, out
+
+
+def run_rev(all_violations=False):
+    allow_rev, assigns, slots_of = rev_model()
+    files = sorted(f for f in os.listdir(SRC) if f.endswith('.rev.json'))
+    ot = nt = 0
+    print('\n%-12s %10s %10s %10s' % ('vol', 'entries', 'removed', 'kept'))
+    for fn in files:
+        v = fn[:-len('.rev.json')]
+        old, new = prune_rev(v, allow_rev, assigns, slots_of, all_violations)
+        json.dump(new, open(os.path.join(OUT, fn), 'w', encoding='utf-8'),
+                  ensure_ascii=False)
+        ot += len(old); nt += len(new)
+        if len(old) != len(new):
+            print('%-12s %10d %10d %10d' % (v, len(old), len(old) - len(new), len(new)))
+    print('%-12s %10d %10d %10d' % ('TOTAL', ot, ot - nt, nt))
+    print('%d rev maps written to _xc/linksk_fixed/' % len(files))
+
+
 if __name__ == '__main__':
     os.makedirs(OUT, exist_ok=True)
     ok = allowed_by_slot()
@@ -214,8 +306,15 @@ if __name__ == '__main__':
                           ('PRUNE ALL VIOLATIONS — includes 14,278 the concordance cannot adjudicate'
                            if ALLV else
                            'PRUNE CLASS A (default) — only slots the edition assigns nothing at all')))
+    # EVERY volume that HAS a forward map, not every canon volume.  Selecting on
+    # `manifest.layer == 'canon'` skipped 51Vism01 and 52Vism02 — the
+    # Visuddhimagga group has no canon, so its aṭṭhakathā is the spine and holds
+    # the forward map.  They carry 870 targets and 0 violations, but omitting
+    # them left `_xc/linksk_fixed/` an INCOMPLETE mirror, which is a trap at
+    # apply time: copying the directory over `linksk/` would have deleted them.
     vols = [v for v in sys.argv[1:] if not v.startswith('-')] or \
-           sorted(c for c, m in man.items() if m['layer'] == 'canon')
+           sorted(f[:-len('.links.json')] for f in os.listdir(SRC)
+                  if f.endswith('.links.json'))
     T = collections.Counter()
     print('%-12s %26s   %26s' % ('', 'BEFORE', 'AFTER'))
     print('%-12s %8s %8s %8s   %8s %8s %8s'
@@ -234,4 +333,5 @@ if __name__ == '__main__':
             print('%-12s %8d %8d %8d   %8d %8d %8d' % (v, o[0], o[1], o[2], n[0], n[1], n[2]))
     print('\n%-12s %8d %8d %8d   %8d %8d %8d'
           % ('TOTAL', T['ot'], T['ob'], T['od'], T['nt'], T['nb'], T['nd']))
+    run_rev(all_violations=ALLV)
     print('\nwritten to _xc/linksk_fixed/ — outside site/, the live maps are untouched')

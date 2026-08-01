@@ -29,6 +29,15 @@ window.I18N = {
   tip_copy_cit:{en:'Copy citation',es:'Copiar la cita'},
   tip_view_page:{en:'View printed page',es:'Ver la página impresa'},
   tip_goto:{en:'Go to',es:'Ir a'},
+
+  // AN EMPTY BAND SAYS WHY IT IS EMPTY (2026-08-01).  Added with the prune of
+  // the 22,719 commentary targets the edition does not assign: where the reader
+  // used to be shown the wrong Aṭṭhakathā it is now shown nothing, and nothing
+  // has to be explained.  The placeholder is the band name, Pāḷi in both languages.
+  band_none:{en:'The edition assigns no %s to this work.',
+             es:'La edición no asigna ningún %s a esta obra.'},
+  band_here:{en:'No %s is linked to the passages on screen.',
+             es:'Ningún %s está enlazado con los pasajes en pantalla.'},
   lang_toggle:{en:'Cambiar a español',es:'Switch to English'},
 
   // landing
