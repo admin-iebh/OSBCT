@@ -27,6 +27,40 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
    hidden by default" and belongs to narrow ones. */
 @media(min-width:861px){body.nosb{grid-template-columns:0 1fr}body.nosb .side{display:none}}
 .pali{font-family:'Gentium Plus',Georgia,serif}
+/* !!! THE TOP BAR WAS UNUSABLE IN PORTRAIT ON EVERY PHONE (2026-08-01).  It is
+   one non-wrapping flex row with no narrow-screen rule at all, so nothing
+   shrank and the right-hand controls simply left the viewport.  Measured in
+   Chromium by sweeping the viewport from 900px down in 10px steps:
+
+     <=790px   the brand wraps and is clipped by the 52px header  (iPad portrait)
+     <=540px   the theme button leaves the viewport
+     <=500px   the language button leaves too
+     <=440px   Errata,  <=380px About,  <=320px Downloads
+
+   So there are TWO faults with different thresholds, and one blanket rule at
+   the sidebar's 860px would have relocated links at 768px where they still fit.
+   Each breakpoint is set from the width its own symptom starts at.
+
+   `ES` and `◐` are READING controls — dark mode gets toggled mid-session — so
+   they keep their place in the bar.  Home/Downloads/About/Errata are
+   navigate-away actions used rarely, and on a narrow screen the ☰ panel is
+   already the navigation surface, so that is where they go. */
+#sidelinks{display:none;border-top:1px solid var(--line);margin:14px 4px 0;padding:10px 0 0}
+@media(max-width:800px){
+  .topbar{gap:9px;padding:0 12px}
+  .brand{flex:0 1 auto;min-width:64px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+@media(max-width:560px){
+  .topbar{gap:8px;padding:0 10px}
+  .topbar > .navlink{display:none}
+  .search{flex:1 1 90px;min-width:90px;margin-left:0}
+  .sp{display:none}
+  .tb{padding:6px 8px}
+  #sidelinks{display:block}
+}
+@media(max-width:369px){.topbar > .brand{display:none}}
+#sidelinks a{display:inline-block;font-size:13px;color:var(--accent);text-decoration:none;padding:7px 9px;border-radius:8px}
+#sidelinks a:hover{background:var(--hover)}
 .topbar{grid-area:top;display:flex;align-items:center;gap:12px;padding:0 16px;background:var(--panel);border-bottom:1px solid var(--line)}
 .brand{font-weight:600;font-size:14px}.brand .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px}
 .tb{font:inherit;font-size:13px;color:var(--mut);background:none;border:1px solid transparent;border-radius:8px;padding:6px 10px;cursor:pointer}
@@ -189,6 +223,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
     <button class="tb" id="themebtn" data-i18n-title="theme_toggle" title="Toggle light / dark">◐</button>
   </div>
   <nav class="side" id="side"><div class="hint">Loading…</div></nav>
+  <template id="sidelinkstpl"><div id="sidelinks"><a href="../index.html" data-i18n="nav_home">Home</a><a href="../downloads.html" data-i18n="nav_downloads">Downloads</a><a href="../about.html" data-i18n="nav_about">About</a><a href="../errata.html" data-i18n="nav_errata">Errata</a></div></template>
   <div id="toast"></div>
   <div class="main">
     <div class="docbar">
@@ -641,7 +676,17 @@ async function buildSidebar(){ try{
       nk.volumes.forEach(v=>{ if(v&&v.vol) NAVBUILD[v.vol]=buildVols; });
     }
   }
+  // the site links live at the foot of the pane on narrow screens.  This must
+  // run INSIDE buildSidebar and after the tree: the builder starts with
+  // `side.innerHTML=''`, so anything appended earlier is discarded.
+  addSideLinks();
 } catch(_e){ const s=document.getElementById('side'); if(s) s.innerHTML='<div style="padding:16px;color:#b91c1c;font:13px/1.5 system-ui">Sidebar failed to build:<br>'+esc((_e&&_e.message)||String(_e))+'</div>'; console.error('OSBCT buildSidebar failed',_e); }
+}
+function addSideLinks(){
+  const side=document.getElementById('side'), t=document.getElementById('sidelinkstpl');
+  if(!side||!t||document.getElementById('sidelinks')) return;
+  side.appendChild(t.content.cloneNode(true));
+  if(window.applyI18n) window.applyI18n();          // the links carry data-i18n
 }
 function shortWork(w){return (w||'').replace(/^[^:]*:\s*/,'').slice(0,52);}
 
