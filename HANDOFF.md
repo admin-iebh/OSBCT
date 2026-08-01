@@ -1,6 +1,51 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-08-01d)
+## START HERE (updated 2026-08-01e)
+
+* **!!!!! THE BUILDER REBUILD THIS FILE HAS RECOMMENDED SINCE 07-31b IS A
+  REGRESSION. DO NOT DO IT (measured 2026-08-01e).** The standing advice was
+  "teach `build_links_bynum.py` the concordance and rebuild — not patch maps."
+  That was done, with all three of its defects fixed, and measured. **The live
+  maps were NOT touched**; the rebuild is in `_xc/linksk_rebuild/`.
+
+  | | targets | direct | reachable ¶ | lemma rate | shift-1 |
+  |---|---:|---:|---:|---:|---:|
+  | LIVE (pruned) | 68,193 | 31,046 | **26,243 (71.1%)** | **48.6%** | 15.7% |
+  | REBUILD | 76,751 | 25,301 | 19,675 (53.3%) | 44.4% | 12.5% |
+
+  **It loses on BOTH axes** — 6,568 fewer layer paragraphs reachable AND weaker
+  evidence per link — so there is no coverage/precision trade to weigh. 52
+  volumes lose, 12 gain. Worst: 40KhuA21 1,562 -> 461 · 39KhuA20 1,138 -> 173 ·
+  34KhuA15 867 -> 185 · 05Kankha 478 -> 102 · **07ViT07 383 -> 1, which is the
+  exact defect 07-30c repaired.**
+  **THE MECHANISM IS IN THE COUNTS:** the rebuild emits MORE targets onto FEWER
+  distinct paragraphs. Constraining `carry_vol` to assigned volumes makes each
+  range LONGER, and over a long range the monotonic number match keeps falling
+  back to `covered` on the nearest earlier paragraph — **collapsing many canon
+  paragraphs onto one, which is the precise failure `build_links_bynum.py`'s own
+  docstring says the OLD interval-join linker had.** Removing the wrong VOLUME
+  does not make the ORDINAL right. **The prune is the better repair.**
+* **WHAT WOULD ACTUALLY RAISE THE 71% CEILING** is the design sketched on
+  2026-07-27ah and never built: **number PROPOSES, content CONFIRMS.** The
+  confirmer now exists — `_xc/classc_lemma.py` scores a proposed link by whether
+  the target quotes the canon paragraph, with a shift control that separates
+  alignment from vocabulary (48.7% -> 16.0% at one paragraph's displacement).
+  That is the direction. A number-carry rebuild is not.
+* **THREE DEFECTS IN `build_links_bynum.py` ARE FIXED AND WORTH KEEPING**, whatever
+  is done with the rebuild: (1) the cursor could never start when the target
+  volume's first paragraph is unnumbered — `08DiT01` ord0 is unnumbered and its
+  first numbered paragraph is ord6 — so the whole range emitted nothing;
+  (2) `carry_vol()` never consulted the concordance; (3) **it wrote to
+  `site/reader/linksk_new/`, inside the published tree**, so a dry run added dead
+  files to the live site and moved BUILD for every visitor. Output is now
+  `_xc/linksk_rebuild/`.
+* **THE TWO PRUNES COST ALMOST NO COVERAGE — MEASURED, not assumed.** Removing
+  33,834 wrong targets moved reachability **71.6% -> 71.1%**, i.e. 173
+  paragraphs. The wrong links were nearly all redundant: they pointed into
+  paragraphs correct links already reach. **So the 71% ceiling was never caused
+  by the wrong links**, and no prune will lift it.
+
+## START HERE — earlier (2026-08-01d)
 
 * **CLASS C IS ADJUDICABLE, AND THE NOISE IS PRUNED. 11,115 forward targets and
   592 rev entries removed; the four measured seams kept (2026-08-01d).**
