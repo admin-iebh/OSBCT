@@ -1,6 +1,66 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-08-01b)
+## START HERE (updated 2026-08-01d)
+
+* **CLASS C IS ADJUDICABLE, AND THE NOISE IS PRUNED. 11,115 forward targets and
+  592 rev entries removed; the four measured seams kept (2026-08-01d).**
+  Applied to the live maps. BUILD `1486c085f105` -> **`3a1dcc26249e`**, stable on
+  re-run. **Not committed — `git add -u && git commit && git push`.**
+  07-31c said "any grouping coarse enough to call the first legitimate calls the
+  second legitimate too." **That is true of VOLUME IDENTITY, which is what was
+  tried. It is not true of the bolded lemma.** `_xc/classc_lemma.py` scores every
+  `(canon -> target)` pair; `pipeline/prune_class_c.py` applies the verdicts.
+
+  | | shift 0 | 1 | 25 |
+  |---|---:|---:|---:|
+  | ALLOWED (21,651 pairs) | 48.7% | 16.0% | 3.7% |
+  | CLASS C (3,796 pairs) | 12.0% | 2.1% | 1.2% |
+
+  Per pair the distribution is **bimodal with nothing between 15.8% and 27.8%**:
+  | pair | scored | rate | shift 1 | verdict |
+  |---|---:|---:|---:|---|
+  | `20Khu03 -> 33KhuA14` | 355 | **82.0%** | 9.6% | SEAM — better than the allowed mean |
+  | `22Khu05 -> 40KhuA21` | 104 | **48.1%** | 3.9% | SEAM — the Jātaka commentary |
+  | `21Khu04 -> 32KhuA13` | 10 | 40.0% | 0.0% | seam, n=10 |
+  | `20Khu03 -> 35KhuA16` | 36 | 27.8% | 0.0% | probable seam |
+  | `33Abhi05 -> 48AbhiA01` | 19 | 15.8% | 5.3% | **NOT a seam — the control never falls** |
+  | `39Abhi11 -> 48AbhiA01` | 159 | 1.9% | 1.3% | noise, as 07-31c predicted |
+
+  **!!! THE CONTROL IS THE ARGUMENT, NOT THE RATE.** A real alignment collapses
+  when the lemma is scored against a canon paragraph one place away.
+  `33Abhi05 -> 48AbhiA01` looks like a weak seam at 15.8% and **its control
+  refuses to fall** — shared vocabulary, not alignment. On the rate alone it
+  would have been kept. And the method agrees with the human judgement of 07-31c
+  on **both** its predicted cases, positive and negative.
+  **Audited: 68,193 forward targets preserved BYTE-EXACT, 0 invented, 0 altered,
+  all 1,351 seam targets kept.** Rev pruned with the SAME per-pair verdicts, so
+  the two directions cannot disagree. `_xc/linksk_preC/` holds the pre-prune maps.
+  Live now: forward 68,193 targets / 3,163 violations (4.6%), rev 25,667 / 789
+  (3.1%) — **Class A 0 in both**. `verify_resolver` 34,047 xrefs, 33,962 resolve,
+  **0 landing past the cited page**; `_navdup` PASS 30,730 rows.
+  Verified in Chromium at 390x844: **39Abhi11 now targets only 50AbhiA03 and
+  24AbhiT03** — the two the edition assigns — where it carried 595 links into the
+  Dhammasaṅgaṇī commentary; 20Khu03 keeps 32KhuA13 (728) and its 33KhuA14 seam
+  (784); 06Di01 unchanged at A 565 / T 922; 0 page errors.
+* **1,812 FORWARD AND 217 REV TARGETS WERE DELIBERATELY NOT JUDGED.** Their pairs
+  carry fewer than 10 scored links, so this method cannot rule on them and they
+  are left standing. **They are the residue and they are honest; do not sweep
+  them in with the measured ones.** To shrink it, extend scoring to `covered`
+  links and to lemmas below the 6-character floor.
+* **What a prune still cannot do:** recover the RIGHT links that `carry_vol()`
+  displaced. The real repair remains teaching `build_links_bynum.py` the
+  concordance and rebuilding — **after fixing its cursor bug**, which cannot start
+  a walk when the target volume's first paragraph is unnumbered.
+* **AN OPEN-ITEMS INVENTORY EXISTS NOW** — `claude/open_items_inventory_2026-08-01.md`.
+  77 marker lines in 56 sections, extracted and then **checked against the current
+  data rather than trusted**. Much of what this file calls open is already fixed:
+  hidden-ordinal link targets 2,422 -> **0**; five pages linking the obsolete
+  reader -> **none**; 24Khu07's word-index paragraphs -> the volume ends before
+  them; Abhidhamma nav "flat, no tree" -> every volume has a tree; verify_report
+  clean 11/118 -> **52/118**. **Correct those bullets when this file is tidied —
+  a stale "still open" costs the next session a full re-verification.**
+
+## START HERE — earlier (2026-08-01b)
 
 * **THE TOP BAR IS FIXED, AND THE BREAKPOINTS CAME FROM A MEASUREMENT, NOT A
   GUESS (2026-08-01b).** Committed and pushed, `f0aa8a8`; user-confirmed on the

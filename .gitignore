@@ -73,7 +73,9 @@ __pycache__/
 # Session scratch under _xc/ — staging copies and pre-images from the
 # 2026-08-01 prune. The verification scripts and linksk_fixed/ maps in the
 # same directory ARE tracked; only these are not.
-_xc/sitemin.tgz
 _xc/linksk_prePrune/
 _xc/reader2_*.html
 _xc/i18n_v*.js
+_xc/sitemin*.tgz
+_xc/linksk_classc/
+_xc/linksk_preC/
