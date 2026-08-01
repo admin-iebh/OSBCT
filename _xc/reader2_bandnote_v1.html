@@ -1,0 +1,1762 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reader — Sixth Buddhist Council Tipiṭaka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f5f1;--panel:#fffdf9;--fg:#211f1a;--mut:#8a8175;--faint:#b7afa0;--line:#ece7dd;--accent:#8a6a3b;
+  --canon:#b8862f;--comm:#2f8a7a;--tika:#7a5cc0;--hover:#f0ebe1;--active:#efe7d7;--chip:#efeae0;--chipfg:#6a5f4d;--app:#f5f1e8;--hl:#fbe7b8}
+html[data-theme=dark]{--bg:#141210;--panel:#1c1a16;--fg:#ece6da;--mut:#8f867a;--faint:#5c554a;--line:#2a2620;--accent:#cba976;
+  --canon:#d6a94e;--comm:#4fbfa8;--tika:#a487e6;--hover:#232019;--active:#2b2618;--chip:#282318;--chipfg:#d8c9a6;--app:#201d16;--hl:#5c4a1c}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--fg);
+  display:grid;grid-template-columns:300px 1fr;grid-template-rows:52px 1fr;grid-template-areas:"top top" "side main";height:100vh;overflow:hidden;transition:grid-template-columns .2s}
+/* !!! `nosb` MUST NOT APPLY ON A PHONE (2026-07-31c, user-reported: the
+   left pane never appeared on an iPhone while an iPad was fine).
+   Two rules disagreed. Below 860px the pane starts hidden by
+   `body:not(.showsb) .side{display:none}`, and the ☰ button toggles BOTH
+   classes at once — so `showsb` released that rule and `nosb` instantly
+   re-hid it through the unconditional rule that used to live here. The
+   pane was unreachable at any width <=860px; above it only `nosb` has a
+   rule, which is why a landscape iPad worked.
+   `nosb` means "the user hid a pane that is shown by default" and belongs
+   to WIDE screens only; `showsb` means "the user revealed a pane that is
+   hidden by default" and belongs to narrow ones. */
+@media(min-width:861px){body.nosb{grid-template-columns:0 1fr}body.nosb .side{display:none}}
+.pali{font-family:'Gentium Plus',Georgia,serif}
+.topbar{grid-area:top;display:flex;align-items:center;gap:12px;padding:0 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+.brand{font-weight:600;font-size:14px}.brand .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px}
+.tb{font:inherit;font-size:13px;color:var(--mut);background:none;border:1px solid transparent;border-radius:8px;padding:6px 10px;cursor:pointer}
+.tb:hover{background:var(--hover);color:var(--fg)}.tb.on{background:var(--active);color:var(--fg)}
+.navlink{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--accent);text-decoration:none;padding:5px 7px;border-radius:7px;white-space:nowrap}.navlink:hover{background:var(--hover)}
+.search{position:relative;flex:0 1 420px;margin-left:4px}
+.search input{width:100%;font:inherit;font-size:13px;padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--fg)}
+.sdrop{position:absolute;top:40px;left:0;right:0;max-height:64vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.22);z-index:40;padding:4px}
+.sp{flex:1}
+.side{grid-area:side;background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:8px 8px 40px}
+.side::-webkit-scrollbar{width:9px}.side::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
+.seclabel{font-family:'Gentium Plus',Georgia,serif;font-size:16px;font-weight:700;letter-spacing:.01em;color:var(--fg);padding:13px 10px 7px;display:flex;align-items:center;gap:6px;cursor:pointer;border-radius:8px}
+.seclabel:hover{background:var(--hover)}
+.seclabel .gd{width:10px;height:10px;border-radius:50%;margin:0 4px 0 2px;box-shadow:0 0 0 3px color-mix(in srgb, currentColor 12%, transparent)}
+.row{display:flex;align-items:center;gap:7px;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:13px;position:relative;user-select:none}
+.row:hover{background:var(--hover)}.row.active{background:var(--active);font-weight:500}
+.chev{width:13px;height:13px;flex:none;color:var(--faint);transition:transform .15s}.row.open .chev,.seclabel.open .chev{transform:rotate(90deg)}
+.row .lf{width:13px;flex:none}.row .lbl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kids{display:none}.kids.open{display:block}
+.sr-head{font-family:'Inter',sans-serif;font-size:11px;color:var(--faint);padding:8px 12px 4px}
+.sresult{padding:7px 12px;border-radius:8px;cursor:pointer}.sresult:hover{background:var(--hover)}
+.sr-lay{font-size:10.5px;font-weight:600}.sr-snip{font-family:'Gentium Plus',serif;font-size:12.5px;margin-top:2px;line-height:1.4}
+.sr-snip mark{background:var(--hl);border-radius:2px}
+/* !!! THE SECTION ROWS HAD NO STYLES AT ALL (2026-07-30o, user-reported): they
+   inherited the body serif at full size and carried no cursor and no hover, so
+   they read as a heading rather than as the links they are, and dwarfed the
+   occurrence rows beneath them.  Same padding, radius, cursor and hover as
+   `.sresult`, so the dropdown has ONE idiom; the name a little larger than a
+   snippet because it is the thing being chosen, and the location as the same
+   small coloured chip `.sr-lay` uses. */
+.sr-hit{padding:7px 12px;border-radius:8px;cursor:pointer;display:flex;
+        align-items:baseline;gap:8px}
+.sr-hit:hover{background:var(--hover)}
+.sr-hit .sr-name{font-family:'Gentium Plus',serif;font-size:14px;line-height:1.3}
+.sr-loc{font-family:'Inter',sans-serif;font-size:10.5px;font-weight:600;
+        white-space:nowrap;margin-left:auto}
+.main{grid-area:main;overflow:hidden;display:flex;flex-direction:column}
+.docbar{display:flex;align-items:center;gap:12px;padding:9px 18px;border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap}
+.doctitle{font-family:'Gentium Plus',serif;font-size:16px;font-weight:700;line-height:1.1}
+.doctitle small{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:400;color:var(--mut);margin-top:1px}
+.grouplabel{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--faint)}
+.tocwrap{position:relative}
+.tocdrop{position:absolute;top:36px;left:0;width:340px;max-height:62vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.22);z-index:45;padding:4px}
+.tocitem{padding:5px 12px;border-radius:7px;cursor:pointer;font-size:13.5px;font-family:'Gentium Plus',serif}.tocitem:hover{background:var(--hover)}
+.toc-sutta{font-weight:700}
+.toc-sec{padding-left:28px;font-size:12.5px;color:var(--mut)}
+.tochead{font-family:'Inter',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);padding:8px 12px 4px}
+.layerbar{display:flex;gap:5px}
+.lbtn{font:inherit;font-size:14px;font-weight:600;width:34px;height:32px;border:1px solid var(--line);background:var(--panel);color:var(--mut);border-radius:9px;cursor:pointer}
+.lbtn.on{color:#fff}.lbtn.on[data-k=canon]{background:var(--canon);border-color:var(--canon)}.lbtn.on[data-k=A]{background:var(--comm);border-color:var(--comm)}.lbtn.on[data-k=T]{background:var(--tika);border-color:var(--tika)}
+.viewtog,.rctrl{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.viewtog button,.rctrl button{font:inherit;font-size:12px;color:var(--mut);background:var(--panel);border:none;padding:6px 11px;cursor:pointer}
+.viewtog button.on{background:var(--active);color:var(--fg);font-weight:500}
+.rctrl button{border-right:1px solid var(--line)}.rctrl button:last-child{border-right:none}
+.scroll{overflow-y:auto;padding:20px 22px 130px;flex:1;--rsize:15.5px}
+.scroll::-webkit-scrollbar{width:11px}.scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
+.incipit{font-family:'Gentium Plus',serif;font-style:italic;color:var(--accent);text-align:center;font-size:15px;margin:2px 0 16px}
+.uddana{text-align:center;margin:14px auto 22px;max-width:640px;color:var(--mut)}
+.udd-label{font-weight:700;color:var(--accent);font-size:13px;letter-spacing:.02em;margin-bottom:5px}
+.udd-verse{font-family:'Gentium Plus',serif;font-style:italic;font-size:calc(var(--rsize,16px) - 1px);line-height:1.7;color:var(--fg)}
+.uddana .appx{text-align:left;display:inline-block;margin-top:8px}
+.head{font-family:'Gentium Plus',Georgia,serif;scroll-margin-top:14px}
+.head.bookseries{font-size:15px;font-weight:600;color:var(--mut);margin:30px 0 0;text-align:center;letter-spacing:.04em}
+.head.bookseries+.head.booktitle{margin-top:2px}
+.head.booktitle{font-size:27px;font-weight:700;color:var(--fg);margin:30px 0 6px;text-align:center;letter-spacing:.01em}
+.head.sutta{font-size:20px;font-weight:700;color:var(--fg);margin:26px 0 12px;text-align:center;border-bottom:1px solid var(--line);padding-bottom:8px}
+.head.vagga{font-size:17px;font-weight:700;color:var(--fg);margin:20px 0 8px;text-align:center}
+.head.section{font-size:14.5px;font-weight:600;color:var(--accent);margin:15px 0 5px;text-align:center;scroll-margin-top:14px}
+.head.vatthu{font-size:13px;font-weight:600;color:var(--mut);margin:14px 0 4px;text-align:center;scroll-margin-top:14px}
+.gatha{font-family:'Gentium Plus',serif;font-style:italic;line-height:1.7;margin:8px 0 4px 1.6em;color:var(--fg)}
+.gatha .pn{font-style:normal;margin-left:-1.6em;margin-right:.4em}
+.gatha-end{font-size:12px;color:var(--mut);margin-left:.6em}
+.gatha-count{font-size:12px;color:var(--mut);margin-left:1.6em;font-style:italic}
+.gatha-after{margin-top:10px}
+.flash{animation:flashkf 1.5s ease}
+.colhead{display:grid;gap:16px;position:sticky;top:-20px;background:var(--bg);padding:8px 0 6px;z-index:2}
+.colhead .ch{font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;display:flex;align-items:center;gap:7px;color:var(--mut)}
+.colhead .ch .cdot{width:7px;height:7px;border-radius:50%}
+.grid{display:grid;gap:14px 16px}.rowline{display:contents}.stack{max-width:820px;margin:0 auto}
+.para{font-family:'Gentium Plus',serif;font-size:var(--rsize);line-height:1.62;padding:9px 13px;border-radius:11px;border:1px solid transparent;position:relative;scroll-margin-top:14px}
+.para.canon{border-left:3px solid var(--canon)}.para.l-A{border-left:3px solid var(--comm)}.para.l-T{border-left:3px solid var(--tika)}
+.para.empty{color:var(--faint);text-align:center;font-size:18px;line-height:1;border:none;padding:14px 0;opacity:.5}
+.rowline.hot .para{background:var(--hover);border-color:var(--line)}.rowline.hot .para.canon{border-left-color:var(--canon)}.rowline.hot .para.l-A{border-left-color:var(--comm)}.rowline.hot .para.l-T{border-left-color:var(--tika)}
+.para.flash{animation:flashkf 1.5s ease}@keyframes flashkf{0%,20%{background:var(--active)}100%{background:transparent}}
+.para .pn{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--accent);margin-right:6px;vertical-align:1px}
+.para .pn.k-A{color:var(--comm)}.para .pn.k-T{color:var(--tika)}
+sup.fnm{color:var(--accent);font-size:9.5px;font-weight:700;vertical-align:super}
+.lemma{font-weight:700}
+.state{font-family:'Inter',sans-serif;font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:20px;background:var(--chip);color:var(--chipfg);margin-right:6px;vertical-align:2px}
+.state.covered{font-style:italic;opacity:.85}
+.worktag{font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;color:var(--mut);margin-right:6px}
+.lchip{display:inline-block;font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:1px 8px;border-radius:20px;margin:0 0 4px 2px}
+.lchip.a{background:var(--comm);color:#fff}.lchip.t{background:var(--tika);color:#fff}
+.subwrap.a{margin-left:20px}.subwrap.t{margin-left:40px}
+.cmt-outline{margin-top:3px}.unit{margin:1px 0;border-radius:8px}
+.unit .uhead{cursor:pointer;display:flex;align-items:baseline;gap:7px;padding:3px 6px;border-radius:7px}.unit .uhead:hover{background:var(--hover)}
+.unit .utw{font-size:9px;color:var(--faint);transition:transform .15s;flex:none}.unit.open .utw{transform:rotate(90deg)}
+.unit .ugloss{display:none;padding:2px 6px 6px 22px;color:var(--fg)}.unit.open .ugloss{display:block}
+.unit.lead{padding:3px 6px;color:var(--fg)}.uhint{font-family:'Inter',sans-serif;font-size:11px;color:var(--faint);padding:2px 6px}
+.tools{float:right;display:inline-flex;gap:3px;margin-left:8px;opacity:0;transition:opacity .12s}
+.para:hover .tools{opacity:1}
+.icn,.jbtn{border:1px solid var(--line);background:var(--panel);border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.icn{width:24px;height:22px;color:var(--mut)}.icn:hover{color:var(--fg);border-color:var(--faint)}.icn.ok{color:var(--comm);border-color:var(--comm)}
+.jbtn{font-family:'Inter',sans-serif;font-size:10.5px;font-weight:700;width:22px;height:22px}.jbtn:hover{background:var(--hover)}.jbtn.off{opacity:.28;cursor:default}
+.pgrule{display:flex;align-items:center;gap:10px;margin:16px 0 12px;font-family:'Inter',sans-serif;font-size:10.5px;letter-spacing:.06em;color:var(--faint);text-transform:lowercase}
+.pgrule:before,.pgrule:after{content:'';flex:1;height:1px;background:var(--line)}
+.pgrule a{color:inherit;text-decoration:none}.pgrule a:hover{color:var(--accent)}
+.pgmk{font-family:'Inter',sans-serif;font-size:10px;color:var(--faint);text-decoration:none;border:1px solid var(--line);border-radius:7px;padding:1px 6px}.pgmk:hover{color:var(--accent)}
+.appx{margin:7px 0 0;padding:6px 11px;border-left:2px solid var(--line);background:var(--app);border-radius:0 8px 8px 0;font-family:'Inter',sans-serif;font-size:11.5px;line-height:1.5;color:var(--mut)}
+.appx .mk{font-weight:700;color:var(--accent);margin-right:5px}.appx i{font-family:'Gentium Plus',serif;font-style:italic;color:var(--fg)}
+.appx abbr{text-decoration:none;border-bottom:1px dotted var(--faint);cursor:help}
+.appx .xref{color:var(--accent);cursor:pointer;text-decoration:none;border-bottom:1px solid transparent}.appx a.xref:hover{border-bottom-color:var(--accent)}
+.pagemark{display:block;text-align:center;color:var(--faint);font-family:'Inter',sans-serif;font-size:10.5px;letter-spacing:.06em;margin:16px 0 8px;text-decoration:none}
+.pagemark::before,.pagemark::after{content:"";display:inline-block;width:30%;height:1px;background:var(--line);vertical-align:middle;margin:0 10px}.pagemark:hover{color:var(--accent)}
+.hint{color:var(--mut);font-size:12px;text-align:center;margin-top:26px;line-height:1.6}
+.bandnote{max-width:46ch;margin:34px auto;padding:15px 18px;border:1px dashed var(--line);border-radius:10px;color:var(--mut);font-size:13.5px;line-height:1.6;text-align:center}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--fg);color:var(--bg);font-size:12.5px;font-weight:500;padding:8px 16px;border-radius:20px;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:50}
+#toast.show{opacity:.96;transform:translateX(-50%) translateY(0)}
+mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1px}
+[data-tip]{position:relative}
+[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%);background:var(--fg);color:var(--bg);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;line-height:1.3;white-space:normal;width:max-content;max-width:230px;text-align:center;padding:5px 9px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.26);z-index:200;pointer-events:none}
+/* !!! OPENING A SUTTA TOOK EIGHT SECONDS ON A PHONE (2026-07-31c,
+   user-reported: "sluggish or unresponsive when one clicks the links").
+   Measured in Chromium at 390x844 with the CPU throttled 4x, opening 18Khu01:
+
+       markup generated        3,783 KB      41,232 elements
+       innerHTML assignment    1,269 ms
+       through to paint        6,319 ms
+
+   The cost is not the JavaScript and not the fetch — it is styling, laying out
+   and painting forty-one thousand elements at once, almost none of which are on
+   screen.  `content-visibility:auto` lets the browser skip all three for blocks
+   outside the viewport until they approach it:
+
+       innerHTML assignment    1,269 -> 394 ms
+       through to paint        6,319 -> 1,205 ms      (5.2x)
+
+   `contain-intrinsic-size` supplies a placeholder height so the scrollbar does
+   not lurch as blocks are realised; measured document height stays within 0.6%
+   across the volume.  VERIFIED that this does NOT break the reader's core
+   move — scrolling to a specific paragraph — at ords 0, 300, 900, 1500 and
+   1860, every one landing in view.  Browsers without support ignore it. */
+.para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
+@media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
+</style>
+<script src="../i18n.js?v=cad37d3bd974"></script>
+</head>
+<body>
+  <div id="errbar" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:999;background:#7f1d1d;color:#fff;font:12px/1.4 ui-monospace,monospace;padding:8px 10px;white-space:pre-wrap"></div>
+  <div class="topbar">
+    <button class="tb" id="sidetog" data-i18n-title="tip_nav" title="Hide / show navigation">☰</button>
+    <span class="brand"><span class="dot"></span>Sixth Buddhist Council Tipiṭaka</span>
+    <div class="search"><input id="sq" type="search" data-i18n-ph="r2_search_ph" placeholder="Search all layers — diacritics optional" autocomplete="off"><div id="sdrop" class="sdrop" hidden></div></div>
+    <span class="sp"></span>
+    <a class="navlink" href="../index.html" data-i18n="nav_home">Home</a>
+    <a class="navlink" href="../downloads.html" data-i18n="nav_downloads">Downloads</a>
+    <a class="navlink" href="../about.html" data-i18n="nav_about">About</a>
+    <a class="navlink" href="../errata.html" data-i18n="nav_errata">Errata</a>
+    <button class="tb langbtn" data-i18n-title="lang_toggle" title="Cambiar idioma">ES</button>
+    <button class="tb" id="themebtn" data-i18n-title="theme_toggle" title="Toggle light / dark">◐</button>
+  </div>
+  <nav class="side" id="side"><div class="hint">Loading…</div></nav>
+  <div id="toast"></div>
+  <div class="main">
+    <div class="docbar">
+      <div class="doctitle" id="doctitle">Select a text</div>
+      <span class="tocwrap"><button class="tb" id="tocbtn" data-i18n="r2_contents" data-i18n-title="tip_toc" title="Table of contents">☰ Contents</button><div id="tocdrop" class="tocdrop" hidden></div></span>
+      <span class="sp"></span>
+      <span class="grouplabel" data-i18n="r2_layers">Layers</span>
+      <div class="layerbar" id="layerbar">
+        <button class="lbtn on" data-k="canon" data-i18n-title="tip_layer_canon" title="Pāḷi — Tipiṭaka (canon)">P</button>
+        <button class="lbtn" data-k="A" data-i18n-title="tip_layer_comm" title="Aṭṭhakathā — commentary">A</button>
+        <button class="lbtn" data-k="T" data-i18n-title="tip_layer_tika" title="Ṭīkā — subcommentary">T</button>
+      </div>
+      <div class="viewtog" id="viewtog">
+        <button data-view="columns" data-i18n="r2_columns">Columns</button><button data-view="tabs" data-i18n="r2_tabs">Tabs</button><button data-view="single" class="on" data-i18n="r2_single">Single</button>
+      </div>
+      <button class="tb" id="readtog" data-i18n="r2_outline" data-i18n-title="tip_outline" title="Collapse long commentaries into a lemma outline">☰ Outline</button>
+      <div class="rctrl"><button id="fdec" data-i18n-title="tip_smaller" title="Smaller text">A−</button><button id="finc" data-i18n-title="tip_larger" title="Larger text">A+</button></div>
+    </div>
+    <div class="scroll" id="scroll"><div class="hint">Pick a text from the tree to begin.</div></div>
+  </div>
+<script>
+const $=s=>document.querySelector(s);
+// A LOCAL HELPER WITH AN ENGLISH FALLBACK.  `t()` lives in i18n.js, a separate
+// <script src>; if it has not loaded, a bare `t(...)` in a render path throws
+// and takes the whole page down with it — which is what happened the first time
+// these call sites were wired (2026-07-30f).  TIP() degrades to English.
+const TIP=(k,en)=>(window.t&&window.I18N&&window.I18N[k])?window.t(k):en;
+if(window.I18N) Object.assign(window.I18N,{
+  r2_search_ph:{en:'Search all layers — diacritics optional',es:'Buscar en todas las capas — diacríticos opcionales'},
+  r2_layers:{en:'Layers',es:'Capas'},
+  r2_columns:{en:'Columns',es:'Columnas'},
+  r2_tabs:{en:'Tabs',es:'Pestañas'},
+  r2_single:{en:'Single',es:'Simple'},
+  r2_outline:{en:'☰ Outline',es:'☰ Esquema'},
+  r2_contents:{en:'☰ Contents',es:'☰ Contenido'}
+});
+document.documentElement.setAttribute('data-theme', localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+$('#themebtn').onclick=()=>{const d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n)};
+$('#sidetog').onclick=()=>{
+  // ONE CLASS PER BREAKPOINT (2026-07-31c).  This used to toggle BOTH, leaving
+  // the body carrying `nosb` AND `showsb` — contradictory flags.  On a phone
+  // that tap did nothing (the display:none bug above), but it still set
+  // `nosb`, so ROTATING TO LANDSCAPE then hid the pane there too: one dead tap
+  // in portrait broke the orientation that had been working, which is exactly
+  // what the user's screenshot showed (932x430, no pane, after tapping in
+  // portrait).  `nosb` means "hidden although wide", `showsb` means "shown
+  // although narrow"; neither is meaningful at the other width.
+  // Verified in Chromium at 390 / 932 / 1024 and across rotation.
+  const narrow = window.matchMedia && window.matchMedia('(max-width:860px)').matches;
+  document.body.classList.toggle(narrow ? 'showsb' : 'nosb');
+};
+const META={canon:{letter:'P',name:'Pāḷi (Tipiṭaka)',col:'var(--canon)'},A:{letter:'A',name:'Aṭṭhakathā',col:'var(--comm)'},T:{letter:'T',name:'Ṭīkā',col:'var(--tika)'}};
+const LAYERKIND={canon:'canon',commentary:'A',subcommentary:'T'};
+const state={view:'single',active:{canon:true,A:false,T:false},tab:'canon',size:15.5,reading:'full',canonVol:null,scrollKey:null,filter:null,curvagga:null};
+let NAVBUILD={};   // vol -> thunk that builds its nikāya's rows (lazy nav)
+let NAV=null, VOLLAYER={}, VOLWORK={}, VOLGROUP={}, VOLBAND={}, GROUPHAS={}, PAGEIDX={}, PDFBLANK={}, PAGESPAN={}, VOLTITLE={}, VOLSECTIONS={}, VOLKIND={}, VOLTOC={}, VOLPDFTOC={}, VOLBOOK={}, VOLNESTED={}, VAGCONTENTS={}, SUTTASUBS={}, SUTTALABEL={}, HEADMAP={}, BOOKSPAN={}, VAGGASPAN={};
+const cache={}, linkCache={}, revCache={};
+// THE VOLUME PART-NUMBER, AS A ROMAN NUMERAL IN THE SIDEBAR.
+// The edition names a multi-volume work's parts in Pāḷi on the title page —
+// "Jātakapāḷi (Paṭhamo bhāgo)", "Paṭṭhānapāḷi (Pañcamo bhāgo)" — and nav.json
+// records that, because it is what the page says.  In the left pane it is long
+// and it buries the part number at the end of the line, so the pane shows
+// "Jātakapāḷi I" and "Paṭṭhānapāḷi V" instead.  The Ṭīkā layer was already
+// written that way ("Mūlapaṇṇāsaṭīkā I"), so this makes the pane consistent.
+// DISPLAY ONLY: nav.json keeps the edition's own wording.
+// AN UNRECOGNISED ORDINAL IS LEFT ALONE rather than guessed at — a title that
+// silently loses its part number would be worse than a long one.
+const BHAGA={'paṭhamo':'I','dutiyo':'II','tatiyo':'III','catuttho':'IV','pañcamo':'V',
+             'chaṭṭho':'VI','sattamo':'VII','aṭṭhamo':'VIII','navamo':'IX','dasamo':'X',
+             'ekādasamo':'XI','dvādasamo':'XII','terasamo':'XIII','cuddasamo':'XIV'};
+function bhagaRoman(t){
+  if(!t) return t;
+  return t.replace(/\s*\(\s*(\S+)\s+bhāg\S*\s*\)\s*$/i, (m,ord)=>{
+    const r=BHAGA[ord.toLowerCase()];
+    return r? ' '+r : m;            // unrecognised: keep the printed wording
+  });
+}
+const esc=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const escA=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const R2='https://pub-825764a1384f4cc8bb611b95a1a636ff.r2.dev';
+const FOLDER={canon:'pali-unicode',A:'atthakatha-unicode',T:'tika-unicode'};
+let toastT=null;
+function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),1500);}
+
+// Surface any uncaught error on screen: a phone has no console, and a silent
+// failure is indistinguishable from a slow network.
+window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
+  if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
+window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
+  if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
+const BUILD='cad37d3bd974';
+async function jget(url,fallback){ try{const sep=url.includes('?')?'&':'?'; const r=await fetch(url+sep+'v='+BUILD); if(!r.ok) return fallback; return await r.json();}catch(e){return fallback;} }
+async function loadVol(vol){
+  if(cache[vol]) return cache[vol];
+  const [d,bold,sbold,app,udd,sec,hide,verse,inc,btl]=await Promise.all([
+    jget('../'+vol+'.json',{paragraphs:[]}),
+    jget('bold/'+vol+'.bold.json',{}),
+    jget('bold/'+vol+'.sect.json',{}),
+    jget('apparatus/'+vol+'.appk.json',{}),
+    jget('uddana/'+vol+'.json',{}),
+    jget('sections/'+vol+'.json',{}),
+    jget('hide/'+vol+'.json',{}),
+    jget('verse/'+vol+'.json',{}),
+    jget('incipit/'+vol+'.json',{}),
+    jget('booktitle/'+vol+'.json',{})]);
+  return cache[vol]={paras:d.paragraphs||[],headings:d.headings||[],bold,sbold,app,udd,sec,hide,verse,inc,btl};
+}
+async function loadLinks(vol){ if(!(vol in linkCache)) linkCache[vol]=await jget('linksk/'+vol+'.links.json',{}); return linkCache[vol]; }
+async function loadRev(vol){ if(!(vol in revCache)) revCache[vol]=await jget('linksk/'+vol+'.rev.json',{}); return revCache[vol]; }
+function parseKey(k){const j=k.lastIndexOf('#');return [k.slice(0,j),parseInt(k.slice(j+1))];}
+function paraOf(key){const a=parseKey(key); return cache[a[0]]&&cache[a[0]].paras[a[1]];}
+
+// ---------- sidebar ----------
+const CHEV='<svg class="chev" viewBox="0 0 16 16" width="13" height="13"><path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function node(label,depth,{open,leafKey,layerkind}={}){
+  const wrap=document.createElement('div');
+  const row=document.createElement('div'); row.className='row'+(open?' open':''); row.style.paddingLeft=(9+depth*12)+'px';
+  return {wrap,row};
+}
+async function buildSidebar(){ try{
+  console.log('OSBCT reader build: '+BUILD);
+  NAV=await jget('nav.json',{layers:[]});
+  console.log('OSBCT nav loaded: layers=',(NAV.layers||[]).length,'canon nikāyas=',(((NAV.layers||[]).find(l=>l.layer==='canon')||{}).nikayas||[]).map(n=>n.nikaya).join(', '));
+  PAGEIDX=await jget('pageindex.json',{});
+  // the blank pages `extract.py` dropped before numbering `pdf_page`, and each
+  // paragraph's LAST printed page — see `truePdfPage` and `facs` below
+  PDFBLANK=await jget('pdfblanks.json',{});
+  PAGESPAN=await jget('pagespan.json',{});
+  const man=await jget('manifest.json',{volumes:{}});
+  for(const [code,m] of Object.entries(man.volumes||{})){ VOLLAYER[code]=m.layer; VOLWORK[code]=m.work; }
+  // !!! WHICH CROSS-LAYER BUTTONS A PARAGRAPH MAY OFFER IS A FACT ABOUT THE
+  // WORK, NOT ABOUT THE STREAM IT HAPPENS TO BE DRAWN IN (2026-07-30g).
+  // `jbtns` used to read the stream `kind`, and a commentary or ṭīkā volume
+  // opened DIRECTLY becomes the reader's spine — so every paragraph in it was
+  // drawn as `kind='canon'` and offered A and T whatever the volume was.  That
+  // is why 51Vism01, which IS the aṭṭhakathā, offered a jump to an aṭṭhakathā,
+  // and 25VsmT01 offered a jump to a ṭīkā that was never composed.
+  //
+  // `concordance.json` — the edition's own printed volume concordance, the
+  // same file the whole project treats as the authority on canon -> commentary
+  // -> subcommentary — states exactly which bands each work has.  Measured
+  // over all 118 volumes before it was applied: **41 of them offered at least
+  // one button that could not land anywhere**, 27 of those Khuddaka
+  // commentaries offering a Ṭīkā that does not exist, and the Milindapañha
+  // offering both although the concordance gives it neither.
+  const CONC=await jget('../concordance.json',{groups:[]});
+  for(const g of (CONC.groups||[])){
+    const F=k=>((g[k]||{}).files||[]);
+    GROUPHAS[g.group]={P:!!F('canon').length,A:!!F('commentary').length,T:!!F('subcommentary').length};
+    [['canon','P'],['commentary','A'],['subcommentary','T']].forEach(([k,b])=>{
+      for(const f of F(k)){ VOLGROUP[f]=g.group; VOLBAND[f]=b; } });
+  }
+  const side=$('#side'); side.innerHTML='';
+  const tree=document.createElement('div'); tree.id='tree'; side.appendChild(tree);
+  const COL={canon:'var(--canon)',commentary:'var(--comm)',subcommentary:'var(--tika)'};
+  for(const L of NAV.layers){
+    const lab=document.createElement('div'); lab.className='seclabel open';
+    lab.innerHTML=CHEV+'<span class="gd" style="background:'+COL[L.layer]+'"></span>'+L.label;
+    const lkids=document.createElement('div'); lkids.className='kids open';
+    lab.onclick=()=>{lab.classList.toggle('open');lkids.classList.toggle('open');};
+    tree.appendChild(lab); tree.appendChild(lkids);
+    for(const nk of L.nikayas){
+      const {wrap:nw,row:nr}=node(); nr.innerHTML=CHEV+'<span class="lbl">'+nk.nikaya+'</span>';
+      nr.style.paddingLeft='10px'; const nkids=document.createElement('div'); nkids.className='kids';
+      nr.onclick=()=>{buildVols();nr.classList.toggle('open');nkids.classList.toggle('open');};
+      nw.appendChild(nr); nw.appendChild(nkids); lkids.appendChild(nw);
+      // book spans: when several books share one physical volume (Khuddaka = 21
+      // books in 11 vols), each book renders only its own paragraph range.
+      { const byVol={}; nk.volumes.forEach(v=>{ if(v.first) (byVol[v.vol]=byVol[v.vol]||[]).push(v); });
+        Object.values(byVol).forEach(list=>{ if(list.length<2) return;
+          list.sort((a,b)=>(+a.first.split('#')[1])-(+b.first.split('#')[1]));
+          list.forEach((v,i)=>{ BOOKSPAN[v.first]={vol:v.vol,start:+v.first.split('#')[1],
+            end: i+1<list.length? +list[i+1].first.split('#')[1] : null}; }); }); }
+      // !!! THE WHOLE TREE WAS BUILT AT BOOT — 30,730 NESTED ROWS, 203,629 DOM
+      // NODES AND 31,036 EVENT LISTENERS BEFORE ANY TEXT WAS OPENED
+      // (2026-07-31c, user-reported: the reader worked on Android and an iPad
+      // but was UNRESPONSIVE on an iPhone, with no error thrown).  The JS heap
+      // was only 24 MB, so this was never JavaScript objects — it is the DOM
+      // itself, which iOS charges against a hard per-tab ceiling.  99% of those
+      // rows are inside collapsed branches nobody has opened.
+      //   layers 3 · nikāyas 23 · volumes 138 · nested rows 30,730
+      // Deferring the nested build to first expansion leaves 164 rows at boot.
+      // The unit is the NIKĀYA because its volume loop is one contiguous block:
+      // nothing inside it changed, which is what makes this safe to do.
+      let _volsBuilt=false;
+      const buildVols=()=>{ if(_volsBuilt) return; _volsBuilt=true;
+      for(const v of nk.volumes){ try{
+        v.title=bhagaRoman(v.title);
+        VOLSECTIONS[v.vol]=(VOLSECTIONS[v.vol]||[]).concat(v.suttas||[]); VOLKIND[v.vol]=LAYERKIND[L.layer]; if(!VOLTITLE[v.vol])VOLTITLE[v.vol]=v.title||v.vol;
+        // Books nested nipāta→vagga in the tree (Itivuttaka): book row expands to
+        // nipāta rows, each expands to its vaggas; a nipāta with no vaggas (Catukka)
+        // is itself a clickable leaf. curbook stays the book's first key (BOOKSPAN).
+        // GENERIC NESTED TREE (`tree`), any depth.  The `nipatas` branch below
+        // does exactly three levels (book -> middle -> leaf).  Vimānavatthu needs
+        // four — book -> division (Itthivimāna / Purisavimāna) -> vagga -> vimāna,
+        // with the VAGGA NUMBERING RUNNING CONTINUOUSLY 1-7 ACROSS the two
+        // divisions — and Theragāthā needs the same shape (nipāta -> vagga ->
+        // theragāthā).  A node with no `kids` is a clickable leaf at whatever
+        // depth it sits.  Every node gets a VAGGASPAN so clicking it shows just
+        // that division / vagga / vimāna; state.curbook stays the book's first
+        // key so BOOKSPAN still bounds the book.
+        if(v.tree){ VOLBOOK[v.first]=v.title;
+          const {wrap:bw,row:br}=node(); br.innerHTML=CHEV+'<span class="lbl">'+esc(v.title||v.vol)+'</span>';
+          br.title=v.vol+' — '+(v.work||''); br.style.paddingLeft='22px';
+          const bkids=document.createElement('div'); bkids.className='kids';
+          // Clicking the BOOK row opens the whole book (BOOKSPAN), not just an
+          // expand: with a four-level tree every child is a narrower slice, so
+          // without this there was no way to read a book end to end.
+          br.onclick=()=>{br.classList.toggle('open');bkids.classList.toggle('open');
+            document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));
+            br.classList.add('active');
+            state.curbook=v.first; state.curvagga=null; state.cursutta=v.first;
+            openKey(v.first, LAYERKIND[L.layer]);};
+          bw.appendChild(br); bw.appendChild(bkids); nkids.appendChild(bw);
+          SUTTALABEL[v.first]=v.title;
+          const _bend=(BOOKSPAN[v.first]&&BOOKSPAN[v.first].end)||null;
+          const flat=[];
+          // `curvagga` is a SPAN ID, not the node's key.  Two nodes can share a
+          // key — a parent and its first child begin at the same paragraph
+          // (27Khu10's Paṭiniddesavāra and its Desanāhāravibhaṅga both at #30),
+          // and so can two siblings (the Netti's Saṅgahavāra and Uddesavāra
+          // both at #0, because the Saṅgahavāra has no numbered unit at all).
+          // VAGGASPAN was keyed by that shared key, so the second node could
+          // not record its own span: clicking Desanāhāravibhaṅga opened the
+          // whole 121-paragraph Paṭiniddesavāra.  The id is the node's PATH in
+          // the tree, which is unique by construction; `cursutta` keeps the
+          // real key, which is what openKey() needs.
+          const open=(sid,k)=>{document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));
+                           state.curbook=v.first;state.curvagga=sid;state.cursutta=k;openKey(k, LAYERKIND[L.layer]);};
+          const walk=(list,host,depth,endOf,pid)=>{
+            list.forEach((nd,idx)=>{
+              const nv=nd.key.split('#')[0], st=+nd.key.split('#')[1];
+              const sid=pid+'/'+idx;
+              // A node takes its VOLUME FROM ITS OWN KEY, not from the book node:
+              // Apadāna is one work spread over two physical volumes (Therāpadāna
+              // vaggas 1-42 in 20Khu03, 43-56 in 21Khu04), so siblings can differ.
+              // A span ends where the next sibling in the SAME volume starts;
+              // where the next sibling is in another volume it runs to that
+              // volume's end (end:null), and an explicit `end` on the node wins
+              // (Therīapadāna must stop before Buddhavaṁsa in the same volume).
+              // The next sibling that actually STARTS LATER.  Taking the
+              // immediate one gave a node whose neighbour shares its ordinal a
+              // span of zero length, and it rendered nothing at all — the
+              // Netti's "1. Saṅgahavāra" and "2. Uddesavāra" were both blank.
+              let nxt=null, other=false;
+              for(let q=idx+1;q<list.length;q++){
+                if(list[q].key.split('#')[0]!==nv){ other=true; break; }
+                if(+list[q].key.split('#')[1]>st){ nxt=list[q]; break; }
+              }
+              let en = nd.end!=null ? nd.end
+                     : (nxt ? +nxt.key.split('#')[1] : (other ? null : endOf));
+              // A ZERO-LENGTH SPAN INHERITED FROM THE PARENT.  The sibling scan
+              // above fixed the case where a node's NEIGHBOUR shares its
+              // ordinal; a LAST child inherits its parent's end instead, and
+              // that can equal its own start.  28Khu11: the Arūpadhamma-
+              // vavatthānavagga's sixteenth pañha begins at #110 and the next
+              // section its parent knows about — Milindapañhapucchāvisajjanā,
+              // whose material is printed AFTER paragraph 110 and so is
+              // anchored to it — begins at #110 too, so the vagga ends where
+              // its own last child starts and that child rendered nothing.
+              // A node anchored at an ordinal always shows at least that
+              // paragraph, so the span can never be empty.  Found by the
+              // click-every-row sweep, invisible to every content gate.
+              if(en!=null && en<=st) en=st+1;
+              VAGGASPAN[sid]={vol:nv,start:st,end:en};
+              SUTTALABEL[sid]=nd.label;
+              VOLBOOK[nd.key]=nd.label; SUTTALABEL[nd.key]=nd.label;
+              const pad=(22+12*depth)+'px';
+              if(nd.kids&&nd.kids.length){
+                const {wrap:pw,row:pr}=node(); pr.innerHTML=CHEV+'<span class="lbl">'+esc(nd.label)+'</span>';
+                pr.style.paddingLeft=pad;
+                const pk=document.createElement('div'); pk.className='kids';
+                pr.onclick=()=>{pr.classList.toggle('open');pk.classList.toggle('open');pr.classList.add('active');open(sid,nd.key);};
+                pw.appendChild(pr); pw.appendChild(pk); host.appendChild(pw);
+                walk(nd.kids,pk,depth+1,en,sid);
+              } else {
+                flat.push({label:nd.label,key:nd.key});
+                const {row:gr}=node(); gr.innerHTML='<span class="lf"></span><span class="lbl">'+esc(nd.label)+'</span>';
+                gr.style.paddingLeft=pad;
+                gr.onclick=()=>{gr.classList.add('active');open(sid,nd.key);};
+                host.appendChild(gr);
+              }
+            });
+          };
+          // the path id must be rooted at THIS BOOK, not at a constant: two
+          // books of one physical volume both start their tree at index 0,
+          // so a bare root made 27Khu10's Netti rows collide with the
+          // Peṭakopadesa's and show its text.
+          // !!! A SINGLE TREE TOP THAT REPEATS THE VOLUME'S OWN LABEL IS NOT A
+          // BOOK, IT IS THE VOLUME AGAIN.  `build_abhidhamma_nav` wraps a
+          // volume's tops in a book node so that a BHĀGA can carry its work's
+          // plain name under the bhāga label ("Mūlapaṇṇāsaṭīkā" under
+          // "Mūlapaṇṇāsaṭīkā (Dutiyo bhāgo)") — but where the two names are
+          // the SAME the sidebar drew the name twice, one nested under the
+          // other.  Four volumes did it: 14Sam03, 08DiT01, 11DiT04, 12DiT05.
+          // Collapsed HERE rather than in the nav data because it is a display
+          // question, and it is safe to collapse only because the wrapper's
+          // key is the node's own `first` in every one of the four — checked
+          // before landing, so nothing becomes unreachable.
+          // ...AND A BHĀGA QUALIFIER DOES NOT MAKE IT A DIFFERENT NAME EITHER.
+          // The wrapper exists so that `Mūlapaṇṇāsaṭīkā` can sit under
+          // `Mūlapaṇṇāsaṭīkā (Paṭhamo bhāgo)` — but the qualifier is already on
+          // the parent, so the child row carries nothing the reader does not
+          // have.  User-reported 2026-07-29t.  Collapsed whenever the node's
+          // own label BEGINS with the wrapper's, which covers both the
+          // identical case and the bhāga case, and never a volume whose inner
+          // book is genuinely a different work.  Ten nodes: 14Sam03, 01VinA01,
+          // 02VinA02, 08DiT01, 09DiT02, 10DiT03, 11DiT04, 12DiT05, 13MaT01,
+          // 14MaT02 — the wrapper's key is the node's own `first` in ALL TEN,
+          // checked before landing, so nothing becomes unreachable.
+          let _tree=v.tree;
+          if(_tree.length===1 && _tree[0].key===v.first && _tree[0].kids && _tree[0].kids.length
+             && (v.title||'').indexOf(_tree[0].label)===0) _tree=_tree[0].kids;
+          walk(_tree,bkids,1,_bend,v.first);
+          VAGCONTENTS[v.first]=flat;
+          continue;
+        }
+        if(v.nipatas){ VOLBOOK[v.first]=v.title;
+          const {wrap:bw,row:br}=node(); br.innerHTML=CHEV+'<span class="lbl">'+esc(v.title||v.vol)+'</span>';
+          br.title=v.vol+' — '+(v.work||''); br.style.paddingLeft='22px';
+          const bkids=document.createElement('div'); bkids.className='kids';
+          // Clicking a BOOK row opens that book, as well as expanding it. It used
+          // only to expand, so a reader clicking a book name got no book — and
+          // never saw the title page the edition prints for it.
+          br.onclick=()=>{br.classList.toggle('open');bkids.classList.toggle('open');
+            document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));
+            br.classList.add('active');
+            state.curbook=v.first; state.curvagga=null; state.cursutta=v.first;
+            openKey(v.first, LAYERKIND[L.layer]);};
+          bw.appendChild(br); bw.appendChild(bkids); nkids.appendChild(bw);
+          SUTTALABEL[v.first]=v.title;
+          const allvag=[]; const _bend=(BOOKSPAN[v.first]&&BOOKSPAN[v.first].end)||null;
+          (v.nipatas||[]).forEach((nip,idx)=>{
+            const st=+nip.key.split('#')[1];
+            const en= idx+1<v.nipatas.length? +v.nipatas[idx+1].key.split('#')[1] : _bend;
+            VAGGASPAN[nip.key]={vol:v.vol,start:st,end:en};
+            VOLBOOK[nip.key]=nip.label; SUTTALABEL[nip.key]=nip.label;
+            const openVagga=(k)=>{document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));state.curbook=v.first;state.curvagga=nip.key;state.cursutta=k;openKey(k, LAYERKIND[L.layer]);};
+            if(nip.vaggas&&nip.vaggas.length){
+              (nip.vaggas||[]).forEach(vg=>allvag.push(vg));
+              const {wrap:pw,row:prr}=node(); prr.innerHTML=CHEV+'<span class="lbl">'+esc(nip.label)+'</span>';
+              prr.style.paddingLeft='34px';
+              const pkids=document.createElement('div'); pkids.className='kids';
+              prr.onclick=()=>{prr.classList.toggle('open');pkids.classList.toggle('open');prr.classList.add('active');openVagga(nip.key);};
+              pw.appendChild(prr); pw.appendChild(pkids); bkids.appendChild(pw);
+              for(const vg of nip.vaggas){
+                SUTTALABEL[vg.key]=vg.label; SUTTASUBS[vg.key]=vg.subs||[];
+                const {row:gr}=node(); gr.innerHTML='<span class="lf"></span><span class="lbl">'+esc(vg.label)+'</span>';
+                gr.style.paddingLeft='46px';
+                gr.onclick=()=>{gr.classList.add('active');openVagga(vg.key);};
+                pkids.appendChild(gr);
+              }
+            } else {
+              allvag.push({label:nip.label,key:nip.key}); SUTTASUBS[nip.key]=nip.subs||[];
+              const {row:gr}=node(); gr.innerHTML='<span class="lf"></span><span class="lbl">'+esc(nip.label)+'</span>';
+              gr.style.paddingLeft='34px';
+              gr.onclick=()=>{gr.classList.add('active');openVagga(nip.key);};
+              bkids.appendChild(gr);
+            }
+          });
+          VAGCONTENTS[v.first]=allvag;
+          continue;
+        }
+        // Nipāta nodes (Aṅguttara): the tree stops at nipāta (a clickable leaf);
+        // its vaggas and suttas live in the ☰ Contents (the vagga structure is not
+        // reliably extractable for every nipāta, so it is kept out of the tree).
+        if(v.nipata){ VAGCONTENTS[v.first]=v.vaggas||[]; VOLBOOK[v.first]=v.title;
+          const {wrap:vw,row:vr}=node(); vr.innerHTML=CHEV+'<span class="lbl">'+esc(v.title||v.vol)+'</span>';
+          vr.title=v.vol+' — '+(v.work||''); vr.style.paddingLeft='22px';
+          const vkids=document.createElement('div'); vkids.className='kids';
+          vr.onclick=()=>{vr.classList.toggle('open');vkids.classList.toggle('open');
+            document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));
+            vr.classList.add('active');
+            state.curbook=v.first; state.curvagga=null; state.cursutta=v.first;
+            openKey(v.first, LAYERKIND[L.layer]);};
+          vw.appendChild(vr); vw.appendChild(vkids); nkids.appendChild(vw);
+          SUTTALABEL[v.first]=v.title;
+          for(const vg of (v.vaggas||[])){
+            SUTTALABEL[vg.key]=vg.label;   // so the reading-pane title shows this chapter/vagga
+            const {row:gr}=node(); gr.innerHTML='<span class="lf"></span><span class="lbl">'+esc(vg.label)+'</span>';
+            gr.style.paddingLeft='34px';
+            gr.onclick=()=>{document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));gr.classList.add('active');state.curvagga=null;state.curbook=v.first;state.cursutta=vg.key;openKey(vg.key, LAYERKIND[L.layer]);};
+            vkids.appendChild(gr);
+          }
+          continue;
+        }
+        // Books with a PDF/authoritative table of contents: expandable in the tree,
+        // showing their numbered suttas/chapters; the deeper sub-sections live in ☰ Contents.
+        if(v.pdftoc){ VOLTOC[v.first]=v.suttas||[]; VOLPDFTOC[v.vol]=true; VOLBOOK[v.first]=v.title;
+          const {wrap:vw,row:vr}=node(); vr.innerHTML=CHEV+'<span class="lbl">'+esc(v.title||v.vol)+'</span>';
+          vr.title=v.vol+' — '+(v.work||''); vr.style.paddingLeft='22px';
+          const vkids=document.createElement('div'); vkids.className='kids';
+          // A book row OPENS its book as well as expanding it, in every nav shape —
+          // otherwise clicking a book name gives no book, and the reader never sees
+          // the title page the edition prints for it.
+          vr.onclick=()=>{vr.classList.toggle('open');vkids.classList.toggle('open');
+            document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));vr.classList.add('active');state.curbook=v.first; state.curvagga=null; state.cursutta=v.first;openKey(v.first, LAYERKIND[L.layer]);};
+          SUTTALABEL[v.first]=v.title;
+          vw.appendChild(vr); vw.appendChild(vkids); nkids.appendChild(vw);
+          for(const s of (v.suttas||[])){
+            SUTTASUBS[s.key]=s.subs||[]; SUTTALABEL[s.key]=s.label;
+            (HEADMAP[s.key]=HEADMAP[s.key]||[]).push({label:s.label,lv:'sutta'});
+            for(const sub of (s.subs||[])) (HEADMAP[sub.key]=HEADMAP[sub.key]||[]).push({label:sub.label,lv:'sub'});
+            const {row:sr}=node(); sr.innerHTML='<span class="lf"></span><span class="lbl">'+esc(s.label)+'</span>';
+            sr.style.paddingLeft='34px';
+            sr.onclick=()=>{document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));sr.classList.add('active');state.curvagga=null;state.curbook=v.first;state.cursutta=s.key;openKey(s.key, LAYERKIND[L.layer]);};
+            vkids.appendChild(sr);
+          }
+          continue;
+        }
+        const {wrap:vw,row:vr}=node(); vr.innerHTML=CHEV+'<span class="lbl">'+esc(v.title||v.vol)+'</span>'; vr.title=v.vol+' — '+(v.work||'');
+        vr.style.paddingLeft='22px'; const vkids=document.createElement('div'); vkids.className='kids';
+        // A book row OPENS its book as well as expanding it, in every nav shape —
+        // otherwise clicking a book name gives no book, and the reader never sees
+        // the title page the edition prints for it.
+        vr.onclick=()=>{vr.classList.toggle('open');vkids.classList.toggle('open');
+            document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));vr.classList.add('active');state.curbook=v.first; state.curvagga=null; state.cursutta=v.first;openKey(v.first, LAYERKIND[L.layer]);};
+        SUTTALABEL[v.first]=v.title;
+        vw.appendChild(vr); vw.appendChild(vkids); nkids.appendChild(vw);
+        // nested nikāyas (e.g. Majjhima: paṇṇāsa -> vagga -> sutta): expose the
+        // vagga/sutta list to the ☰ Contents drawer for the whole volume.
+        if((v.suttas||[]).some(s=>s.subs&&s.subs.length)){ VOLNESTED[v.vol]=v.suttas; VOLTITLE[v.vol]=v.title||v.vol; }
+        for(const s of (v.suttas||[])){
+          const hasSub=s.subs&&s.subs.length;
+          const {row:sr}=node();
+          sr.innerHTML=(hasSub?CHEV:'<span class="lf"></span>')+'<span class="lbl">'+esc(s.label)+'</span>';
+          sr.style.paddingLeft='34px';
+          const nav=()=>{document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));sr.classList.add('active');openKey(s.key, LAYERKIND[L.layer]);};
+          vkids.appendChild(sr);
+          if(hasSub){
+            const skids=document.createElement('div'); skids.className='kids';
+            sr.onclick=(e)=>{ if(e.target.closest('.chev')){sr.classList.toggle('open');skids.classList.toggle('open');} else { nav(); } };
+            const chev=sr.querySelector('.chev'); if(chev) chev.style.cursor='pointer';
+            for(const sub of s.subs){
+              const {row:br}=node(); br.innerHTML='<span class="lf"></span><span class="lbl">'+esc(sub.label)+'</span>';
+              br.style.paddingLeft='52px'; br.style.fontSize='12px';
+              br.onclick=()=>{document.querySelectorAll('.row.active').forEach(r=>r.classList.remove('active'));br.classList.add('active');openKey(sub.key, LAYERKIND[L.layer]);};
+              skids.appendChild(br);
+            }
+            vkids.appendChild(skids);
+          } else { sr.onclick=nav; }
+        }
+      } catch(_nverr){ console.warn('nav node skipped', v&&v.vol, _nverr&&_nverr.message); }
+      }
+      };
+      // A volume can be OPENED without its branch ever being expanded — a direct
+      // link, a search hit, a cross-reference.  The maps this loop fills would
+      // then be missing, so every volume records the thunk that builds it and
+      // `openKey` forces it first.  Without this the deferral would be a trap.
+      nk.volumes.forEach(v=>{ if(v&&v.vol) NAVBUILD[v.vol]=buildVols; });
+    }
+  }
+} catch(_e){ const s=document.getElementById('side'); if(s) s.innerHTML='<div style="padding:16px;color:#b91c1c;font:13px/1.5 system-ui">Sidebar failed to build:<br>'+esc((_e&&_e.message)||String(_e))+'</div>'; console.error('OSBCT buildSidebar failed',_e); }
+}
+function shortWork(w){return (w||'').replace(/^[^:]*:\s*/,'').slice(0,52);}
+
+// ---------- open a text (canon-anchored) ----------
+async function openKey(key, layerkind){
+  try{ const _v=parseKey(key)[0]; if(NAVBUILD[_v]) NAVBUILD[_v](); }catch(e){}
+  // ON A PHONE THE PANE COVERS 84% OF THE SCREEN, so leaving it open after a
+  // tap hides the very text that was just opened. Close it on selection at
+  // narrow widths only — on a wide screen the pane is permanent furniture.
+  try{ if(window.matchMedia && window.matchMedia('(max-width:860px)').matches)
+         document.body.classList.remove('showsb'); }catch(e){}
+  const [vol,ord]=parseKey(key);
+  const layer=VOLLAYER[vol]||'canon';
+  let canonVol=vol, kind=layerkind; state.filter=null;
+  if(layer!=='canon'){
+    const rev=await loadRev(vol); const e=rev[String(ord)];
+    if(e&&e.canon){ canonVol=parseKey(e.canon)[0]; state.filter=vol; }   // show only this work
+    else { canonVol=vol; kind='canon'; }   // no canon counterpart: show this book standalone
+  }
+  // P/A/T yield to the tree: show ONLY the layer that was navigated to
+  if(kind==='A') state.active={canon:false,A:true,T:false};
+  else if(kind==='T') state.active={canon:false,A:false,T:true};
+  else state.active={canon:true,A:false,T:false};
+  if(state.view==='tabs') state.tab=(kind==='A'?'A':(kind==='T'?'T':'canon'));
+  state.titleVol=vol;
+  await openCanon(canonVol, key);   // scroll to the clicked paragraph itself
+}
+function buildOutline(vol){
+  const c=cache[vol]; if(!c) return {byOrd:{},toc:[]};
+  const junk=t=>{ t=(t||'').trim();
+    return !t || /^[_\s.·]+$/.test(t) || /^\[[^\]]*\]/.test(t)             // [A] [Ā-I-U] [O]…
+      || /\s{2,}\d+\.?$/.test(t) || /^\d+(-\d+)?\.?$/.test(t)        // index entry 'word   95', page-ref '530-5'
+      || /[ṁṃ]\d*\.\s*$/.test(t) || /niṭṭhit/i.test(t)              // section CLOSING marker 'Dvattiṁsākāraṁ.', 'Xvaggo niṭṭhito'
+      || /^[a-zāīūṁṅñṭḍṇḷ]/.test(t)                                     // lowercase fragment
+      || /\((Ka|Sī|Syā|I|Ka-Sī|Kaṁ)\)\s*$/.test(t); };               // siglum tail
+  // back-matter starts with an index/table-of-contents marker; everything after
+  // it (name index, verse index / Gāthāsūci, variant-reading lists) is not content.
+  const backmatter=t=>/anukkamaṇik|(gāthā|pada)sūci|nānāpāṭh/i.test(t||'');
+  const secs=[]; const byOrd={}; let pi=0, seq=0, bm=false, lastOrd=-1, lastKey='';
+  const nkey=t=>(t||'').trim().replace(/[ṁṃ]?\d*\.?\s*$/,'').toLowerCase();  // strip closing 'ṁ.'/'.'
+  for(const hd of (c.headings||[])){
+    if(hd.kind!=='section') continue;
+    if(bm) continue;
+    if(backmatter(hd.title)){ bm=true; continue; }
+    if(junk(hd.title)) continue;
+    const kk=nkey(hd.title); if(kk && kk===lastKey) continue;  // drop the closing echo ('Kumārapañhā' then 'Kumārapañhā.') and consecutive dups
+    lastKey=kk;
+    while(pi<c.paras.length && (c.paras[pi].pdf_page||0) < hd.pdf_page) pi++;
+    // several section headings often share one printed page; don't stack them on
+    // the same paragraph — advance so consecutive same-page headings spread out
+    let ord=Math.min(pi, c.paras.length-1);
+    if(ord<=lastOrd) ord=Math.min(lastOrd+1, c.paras.length-1);
+    lastOrd=ord;
+    const id='sec-'+vol+'-'+(seq++);
+    const title=hd.title.replace(/\s+/g,' ').trim();
+    (byOrd[ord]=byOrd[ord]||[]).push({title,id});
+    secs.push({title,id,page:hd.pdf_page});
+  }
+  // group sections under nav suttas by page range
+  const navs=(VOLSECTIONS[vol]||[]).map(s=>{const [v,o]=parseKey(s.key); return {label:s.label,key:s.key,page:(c.paras[o]||{}).pdf_page||0};});
+  const toc=navs.map((s,idx)=>{ const nextP=navs[idx+1]?navs[idx+1].page:1e9;
+    return {title:s.label, domid:'s-'+s.key.replace('#','-'), sections:secs.filter(x=>x.page>=s.page&&x.page<nextP).map(x=>({title:x.title,domid:x.id}))}; });
+  return {byOrd, toc};
+}
+window.tocGo=function(domid){
+  if(!state.active.canon){ state.active.canon=true; state.filter=null; render(); syncButtons(); }
+  const dd=document.getElementById('tocdrop'); if(dd) dd.hidden=true;
+  setTimeout(()=>{ const el=document.getElementById(domid); if(el){ el.scrollIntoView({block:'start'}); el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),1300);} },30);
+};
+// !!! OPENING ONE VOLUME USED TO FETCH EVERY VOLUME ITS LINKS POINT INTO, IN
+// FULL, BEFORE THE FIRST RENDER (2026-07-31b, user-reported: the site was
+// "very slow to load and became unresponsive" on an iPhone and iPad).
+// `openCanon` gathered every target of every link and awaited `loadVol` on all
+// of them — and `loadVol` fetches TEN files per volume (the volume, bold, sect,
+// apparatus, uddāna, sections, hide, verse, incipit, booktitle).
+//
+// Measured on 18Khu01, whose commentary runs to seven KhuA volumes plus ṭīkā:
+// **190 files, 31.4 MB, before a single word was drawn.** 39Abhi11: 14.7 MB.
+// The `verse/` maps alone were 10.6 MB of it.
+//
+// And **none of it was on screen.** Opening a canon paragraph sets
+// `state.active={canon:true,A:false,T:false}` — the Aṭṭhakathā and Ṭīkā bands
+// are OFF — so every one of those megabytes was fetched and parsed to draw
+// bands the reader had not asked for. Desktop broadband hides this; a phone on
+// cellular cannot, and iOS Safari's memory ceiling is far lower than a laptop's.
+//
+// Now: load only what an ACTIVE band needs, and load the rest when a band is
+// switched on. Every render path already guards with `const c=cache[vol]; if(!c)
+// return '';` so an unloaded volume draws nothing rather than throwing — which
+// is why this is safe, and also why every place that turns a band ON must await
+// this and then re-render, or the band would come up empty.
+async function ensureBandVols(){
+  const links=state.links; if(!links) return;
+  const want=new Set();
+  const on=(k)=> state.view==='tabs' ? state.tab===k : state.active[k];
+  const slots=[]; if(on('A')) slots.push('commentary'); if(on('T')) slots.push('subcommentary');
+  if(!slots.length) return;
+  for(const e of Object.values(links)) for(const lk of slots)
+    for(const t of (e[lk]||[])) if(t&&t.key) want.add(parseKey(t.key)[0]);
+  const todo=[...want].filter(v=>!cache[v]);
+  if(!todo.length) return;
+  await Promise.all(todo.map(loadVol));
+}
+// !!! A THROW ANYWHERE BELOW USED TO LEAVE "Loading <VOL>…" ON SCREEN FOR EVER
+// (2026-07-31c, user-reported on an iPhone).  `jget` swallows fetch failures
+// and returns its fallback, so the load itself cannot hang — which means the
+// stuck placeholder was an EXCEPTION in the render path with nothing to catch
+// it.  The reader then sits there looking like a slow network, and on a phone
+// there is no console to tell you otherwise.  Now the error is put on the page.
+async function openCanon(canonVol, scrollKey){
+  try{ return await _openCanon(canonVol, scrollKey); }
+  catch(e){
+    const m=(e&&(e.stack||e.message))||String(e);
+    $('#scroll').innerHTML='<div class="hint" style="text-align:left;white-space:pre-wrap;'
+      +'font:12px/1.45 ui-monospace,monospace;color:var(--fg);padding:14px">'
+      +'Could not open '+esc(canonVol)+'\n\n'+esc(String(m).slice(0,1200))
+      +'\n\nPlease send this text — it names the fault exactly.</div>';
+    throw e;
+  }
+}
+async function _openCanon(canonVol, scrollKey){
+  $('#scroll').innerHTML='<div class="hint">Loading '+canonVol+'…</div>';
+  const cv=await loadVol(canonVol); const links=await loadLinks(canonVol);
+  state.canonVol=canonVol; state.scrollKey=scrollKey; state.links=links; state.opened=true;
+  await ensureBandVols();
+  const _ol=buildOutline(canonVol); state.outlineByOrd=_ol.byOrd; state.toc=_ol.toc;
+  const _sp=paraOf(scrollKey); state.currentSutta=(_sp&&_sp.sutta&&_sp.sutta!=='X')?foldName(_sp.sutta):null;
+  state.currentBook=(_sp&&_sp.book&&_sp.book!=='X'&&!/piṭaka$/.test(_sp.book)&&!/^Iti /.test(_sp.book))?_sp.book.replace(/\s+/g,' ').trim().replace(/\.$/,''):null;
+  render();
+  // CLICKING A BOOK LANDS ON ITS TITLE PAGE, NOT ON THE PARAGRAPH BELOW IT.
+  // `front-<vol>-<ord>` exists only where that ordinal carries a title stack or
+  // a homage — i.e. exactly where the click IS a book rather than a passage —
+  // so preferring it changes nothing for an ordinary paragraph click.
+  if(scrollKey){ setTimeout(()=>{const fid='front-'+scrollKey.replace('#','-'),sid='s-'+scrollKey.replace('#','-'),pid='p-'+scrollKey.replace('#','-');
+    let el=document.getElementById(fid)||document.getElementById(sid)||document.getElementById(pid);
+    // ...AND THE BOOK NODE DOES NOT ALWAYS NAME THE ANCHOR.  A nav node's
+    // `first` is ord0, but a volume whose opening paragraphs are leaked
+    // headings carries its title stack further in (21KhuA02 at ord2), and ord0
+    // is HIDDEN — so nothing resolved and the click scrolled nowhere at all.
+    // Where the clicked ordinal is at or before the book's own anchor, land on
+    // the book's front matter wherever the stream put it.
+    if(!el){ const _k=parseKey(scrollKey), _c=cache[_k[0]];
+      const _ks=_c?Object.keys(_c.btl||{}).concat(Object.keys(_c.inc||{})).map(Number):[];
+      if(_ks.length && _k[1]<=Math.min.apply(null,_ks))
+        el=document.querySelector('#scroll .frontmatter[id^="front-'+_k[0]+'-"]'); }
+    if(el) el.scrollIntoView({block:'start'});
+    const pel=document.getElementById(pid); if(pel){pel.classList.add('flash');setTimeout(()=>pel.classList.remove('flash'),1500);} },60); }
+}
+
+// ---------- rendering ----------
+const SIG={'Sī':'Sīhaḷa (Sinhalese)','Syā':'Syāma (Thai)','Kaṁ':'Kamboja (Cambodian)','I':'PTS / English','Ka':'some Burmese mss','Ka-Sī':'Ka + Sīhaḷa','katthaci':'in some copies','sabbattha':'in all copies','bahūsu':'in many copies'};
+function fmtText(t){return esc((t||'').replace(/^\s*\d+(-\d+)?\.\s*/,'')).replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');}
+function fmtBold(t,spans){
+  const text=t||''; const stripped=text.replace(/^\s*\d+(-\d+)?\.\s*/,''); const off=text.length-stripped.length;
+  let sp=(spans||[]).map(a=>[a[0]-off,a[1]-off]).filter(a=>a[1]>0&&a[0]<stripped.length).map(a=>[Math.max(0,a[0]),Math.min(stripped.length,a[1])]).sort((a,b)=>a[0]-b[0]);
+  let html='',cur=0; for(const s of sp){ if(s[0]<cur) continue; html+=esc(stripped.slice(cur,s[0]))+'<b class="lemma">'+esc(stripped.slice(s[0],s[1]))+'</b>'; cur=s[1]; }
+  html+=esc(stripped.slice(cur));
+  return html.replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');
+}
+function _boldRange(stripped,sp,a,b){
+  let seg=sp.filter(x=>x[1]>a&&x[0]<b).map(x=>[Math.max(a,x[0]),Math.min(b,x[1])]);
+  let html='',cur=a; for(const s of seg){ if(s[0]<cur) continue; html+=esc(stripped.slice(cur,s[0]))+'<b class="lemma">'+esc(stripped.slice(s[0],s[1]))+'</b>'; cur=s[1]; }
+  html+=esc(stripped.slice(cur,b));
+  return html.replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');
+}
+// A `sections` k:'gatha' block, drawn with its lemma spans.  This path used
+// `fmtText`, which takes no spans at all -- it was written for a four-pada
+// opening gatha and never asked to carry a lemma -- so the whole sections path
+// rendered unbolded.  The spans come from bold/<VOL>.sect.json, aligned
+// against the PDF's own render-mode signature (extract_bold --sections-only),
+// because a sections entry's text is the PRINTED stream and the ordinal-keyed
+// corpus spans cannot address it.  Keyed "<ord>:<index>".
+// `fmtBold` strips a leading "NN. " -- right for a numbered paragraph, wrong
+// for a gatha -- so the offsets are used as they stand.
+function gathaHTML(l,spans){
+  const text=String(l==null?'':l);
+  if(!spans||!spans.length) return text.split('\n').map(x=>fmtText(x)).join('<br>');
+  const sp=spans.map(a=>[Math.max(0,a[0]),Math.min(text.length,a[1])]).filter(a=>a[1]>a[0]).sort((a,b)=>a[0]-b[0]);
+  let html='',cur=0;
+  for(const x of sp){ if(x[0]<cur) continue;
+    html+=esc(text.slice(cur,x[0]))+'<b class="lemma">'+esc(text.slice(x[0],x[1]))+'</b>'; cur=x[1]; }
+  html+=esc(text.slice(cur));
+  return html.replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>')
+             .replace(/\n/g,'<br>');
+}
+function _isHead(stripped,s){ if(s===0) return true; let i=s-1; while(i>=0 && ' “”"‘’'.indexOf(stripped[i])>=0) i--; return i>=0 && '.?!–'.indexOf(stripped[i])>=0; }
+function outlineHTML(text,spans){
+  const stripped=(text||'').replace(/^\s*\d+(-\d+)?\.\s*/,''); const off=(text||'').length-stripped.length;
+  const sp=(spans||[]).map(a=>[a[0]-off,a[1]-off]).filter(a=>a[1]>0&&a[0]<stripped.length).map(a=>[Math.max(0,a[0]),Math.min(stripped.length,a[1])]).sort((a,b)=>a[0]-b[0]);
+  const heads=sp.filter(x=>_isHead(stripped,x[0]));
+  if(heads.length<2) return '<div class="cmt-outline"><div class="unit lead">'+_boldRange(stripped,sp,0,stripped.length)+'</div></div>';
+  let html='<div class="cmt-outline">';
+  if(heads[0][0]>0) html+='<div class="unit lead">'+_boldRange(stripped,sp,0,heads[0][0])+'</div>';
+  for(let i=0;i<heads.length;i++){ const s=heads[i][0],le=heads[i][1]; const end=i+1<heads.length?heads[i+1][0]:stripped.length;
+    html+='<div class="unit"><span class="uhead" onclick="this.parentNode.classList.toggle(\'open\')"><span class="utw">▸</span><b class="lemma">'+esc(stripped.slice(s,le))+'</b></span><span class="ugloss">'+_boldRange(stripped,sp,le,end)+'</span></div>'; }
+  return html+'<div class="uhint">'+heads.length+' lemmata · click to expand</div></div>';
+}
+const XC_CANON={
+  'Dī':['06Di01','07Di02','08Di03'],'Ma':['09Ma01','10Ma02','11Ma03'],
+  'Saṁ':['12Sam01','13Sam02','14Sam03'],'Aṁ':['15An01','16An02','17An03'],
+  'Khu':['18Khu01','19Khu02','20Khu03','21Khu04','22Khu05','23Khu06','24Khu07','25Khu08','26Khu09','27Khu10','28Khu11'],
+  'Vi':['01Vin01','02Vin02','03Vin03','04Vin04','05Vin05'],
+  'Abhi':['29Abhi01','30Abhi02','31Abhi03','32Abhi04','33Abhi05','34Abhi06','35Abhi07','36Abhi08','37Abhi09','38Abhi10','39Abhi11','40Abhi12'],
+  // Khuddaka works the edition cites by their OWN name rather than as `Khu N`.
+  'Paṭisaṁ':['26Khu09'],'Jā':['22Khu05','23Khu06'],
+  'Mahāni':['24Khu07'],'Cūḷani':['25Khu08'],
+  // Sigla as the edition prints them in a handful of footnotes, missing a
+  // macron or a dot: `Di` for `Dī`, `Vī`/`Ku` for `Vi`/`Khu`.  The LABEL keeps
+  // the edition's spelling — only the target is normalised.  Each was admitted
+  // only after every one of its cited pages fell inside the target volume.
+  'Di':['06Di01','07Di02','08Di03'],
+  'Vī':['01Vin01','02Vin02','03Vin03','04Vin04','05Vin05'],
+  'Ku':['18Khu01','19Khu02','20Khu03','21Khu04','22Khu05','23Khu06','24Khu07','25Khu08','26Khu09','27Khu10','28Khu11']};
+// THE COMMENTARY TARGETS.  Volume numbers are the edition's own, read off
+// `concordanciatextos.pdf` (aṭṭhakathā column, 20-52) and confirmed against
+// each volume's title page, where the bhāga — Paṭhamo, Dutiyo, Tatiyo … — names
+// the part: Jātakaṭṭhakathā I-VII is 36KhuA17-42KhuA23, and so on.  Verified
+// twice more before landing: every cited page falls inside the target volume's
+// printed page range (100% on 14 of the 19 works, 97-99% on the rest, the
+// misses all parse artefacts that fail safe to a grey span), and the citing
+// note's lemma is found on the cited page 35% of the time against 1% for a
+// control volume — the control shows the test has power.
+const XC_COMM={
+  'Dī':['07DiA01','08DiA02','09DiA03'],'Ma':['10MaA01','11MaA02','12MaA03','13MaA04'],
+  'Saṁ':['14SamA01','15SamA02','16SamA03'],'Aṁ':['17AnA01','18AnA02','19AnA03'],
+  'Vi':['01VinA01','02VinA02','03VinA03','04VinA04','05Kankha','06VinSg06'],
+  'Abhi':['48AbhiA01','49AbhiA02','50AbhiA03'],
+  // Khuddaka — the edition cites these by their OWN work name, never as `Khu-Ṭṭha`
+  'Khuddakapāṭha':['20KhuA01'],'Dhammapada':['21KhuA02','22KhuA03'],'Udāna':['23KhuA04'],
+  'Itivuttaka':['24KhuA05'],'Suttanipāta':['25KhuA06','26KhuA07'],'Vimāna':['27KhuA08'],
+  'Peta':['28KhuA09'],'Thera':['29KhuA10','30KhuA11'],'Theragāthā':['29KhuA10','30KhuA11'],
+  'Therī':['31KhuA12'],'Therīgāthā':['31KhuA12'],
+  'Apadāna':['32KhuA13','33KhuA14'],'Apādāna':['32KhuA13','33KhuA14'],
+  'Buddhavaṁsa':['34KhuA15'],'Cariyā':['35KhuA16'],'Cariyāpiṭaka':['35KhuA16'],
+  'Jātaka':['36KhuA17','37KhuA18','38KhuA19','39KhuA20','40KhuA21','41KhuA22','42KhuA23'],
+  'Mahāniddesa':['43KhuA24'],'Cūḷaniddesa':['44KhuA25'],'Netti':['45KhuA26'],
+  'Paṭisaṁ':['46KhuA27','47KhuA28'],'Paṭisam':['46KhuA27','47KhuA28'],'Paṭīsaṁ':['46KhuA27','47KhuA28'],
+  // Vinaya commentaries the edition names in full, and the Visuddhimagga, which
+  // the concordance places in the aṭṭhakathā column as 51-52
+  'Kaṅkhā':['05Kankha'],'Vinayasaṅgaha':['06VinSg06'],'Visuddhi':['51Vism01','52Vism02']};
+// THE ṬĪKĀ TARGETS.  `concordanciatextos.pdf` ṭīkā column, 1-26.
+// `Dī-Ṭī 1/2/3` IS THE THREE VAGGA ṬĪKĀS, NOT THE SĪLAKKHANDHA ABHINAVAṬĪKĀ
+// PAIR.  Page-range fit cannot tell them apart — both score 100% — so it was
+// settled on content: over the 52 citations where the two readings differ, the
+// citing note's lemma is on the cited page of 08DiT01/11DiT04/12DiT05 in 25-31
+// cases and of 09DiT02/10DiT03 in ZERO.  The abhinavaṭīkā has its own siglum,
+// `Abhinava`, below — which is why it is not `Dī-Ṭī`.
+const XC_TIKA={
+  'Sārattha':['01ViT01','02ViT02','03ViT03'],'Vimati':['04ViT04','05ViT05'],
+  'Vajira':['06ViT06'],'Dī':['08DiT01','11DiT04','12DiT05'],
+  'Ma':['13MaT01','14MaT02','15MaT03'],'Saṁ':['16SaT01','17SaT02'],
+  'Aṁ':['18AnT01','19AnT02','20AnT03'],'Netti':['21KhuT01'],
+  'Visuddhi':['25VsmT01','26VsmT02']};
+// Sigla that name their work with no layer suffix at all.
+// Sigla that point INSIDE the volume they are printed in.
+const XC_SELF={'Heṭṭhā':1,'heṭṭhā':1,'Upari':1,'upari':1};
+const XC_BARE={
+  'Visuddhi':['51Vism01','52Vism02'],'Abhinava':['09DiT02','10DiT03'],
+  'Mūlaṭī':['22AbhiT01','23AbhiT02','24AbhiT03'],'Anuṭī':['22AbhiT01','23AbhiT02','24AbhiT03']};
+// `selfVol` is the volume the footnote is PRINTED IN — `Heṭṭhā` ("earlier")
+// and `Upari` ("further on") cite the same volume and name no work at all, so
+// they cannot be resolved from the siglum alone.  All 42 of them carry no
+// volume number and every one falls inside its own volume's printed page range.
+function resolveXref(work,vol,page,selfVol){
+  // `-Tṭha` and `-Tī` are the edition's own misprints for `-Ṭṭha` and `-Ṭī`,
+  // in 13 and 6 footnotes.  The
+  // stored siglum and the LABEL keep what the page prints; only resolution
+  // normalises it.  The edition is never corrected, here or in the data.
+  const w=(work||'').replace(/-Tṭha$/,'-Ṭṭha').replace(/-Tī$/,'-Ṭī');
+  if(XC_SELF[w]&&vol==null&&selfVol) return resolveIn(selfVol,page);
+  let base=w,map=XC_CANON;
+  if(/-Ṭṭha$/.test(w)){ base=w.replace(/-Ṭṭha$/,''); map=XC_COMM; }
+  else if(/-Anuṭī$/.test(w)){ base=w.replace(/-Anuṭī$/,''); map=XC_TIKA; }
+  else if(/-Ṭī$/.test(w)){ base=w.replace(/-Ṭī$/,''); map=XC_TIKA; }
+  else if(XC_BARE[w]){ map=XC_BARE; }
+  const arr=map[base]; if(!arr) return null;
+  const v=arr[(vol||1)-1]; if(!v) return null;
+  return resolveIn(v,page);
+}
+// printed page -> a paragraph key in that volume.  The band to open in is the
+// TARGET VOLUME'S own layer, not a guess from the siglum — the Visuddhimagga is
+// cited without a suffix but sits in the aṭṭhakathā layer, and
+// `Mūlaṭī`/`Abhinava` sit in the ṭīkā layer.
+function resolveIn(v,page){
+  const pidx=PAGEIDX[v]; if(!pidx) return null;
+  let ord=pidx[String(page)];
+  if(ord==null){ let best=null; for(const p in pidx){ const pp=+p; if(pp<=page&&(best==null||pp>best)) best=pp; } if(best!=null) ord=pidx[String(best)]; }
+  if(ord==null) return null;
+  return {key:v+'#'+ord, kind:LAYERKIND[VOLLAYER[v]]||'canon'};
+}
+window.navXref=function(key,kind){ const dd=document.getElementById('sdrop'); if(dd)dd.hidden=true; openKey(key,kind); };
+// ONE ANCHOR, BUILT ONCE, so the in-place and appended paths cannot drift.
+function xrefHTML(x,selfVol,label){
+  const r=resolveXref(x.work,x.vol,x.page,selfVol);
+  return r ? '<a class="xref" title="'+escA(TIP('tip_goto','Go to'))+' '+escA(x.work)+' p.'+x.page+'" onclick="navXref(\''+r.key+'\',\''+r.kind+'\')">'+esc(label)+' →</a>'
+           : '<span class="xref" style="opacity:.7">'+esc(label)+'</span>';
+}
+// !!! A NOTE THAT PARSED ANY CITATION USED TO STOP SHOWING ITS OWN WORDS
+// (2026-07-30j).  `parts` was built from the variants and the xrefs, and
+// `n.text` was used ONLY when `parts` came out empty — so the moment a footnote
+// yielded one citation, everything the edition had written around it vanished.
+// `Khu 1. 177 piṭṭhe Udāne.` drew as `Khu 1. 177` and lost *piṭṭhe Udāne*,
+// which is the part that says WHERE and IN WHICH WORK.  Measured over the whole
+// apparatus: 3,208 notes, about 80,500 characters of the edition, on no page of
+// the site.
+//
+// So the citation is now linked WHERE IT STANDS, inside the note's own
+// sentence.  Each xref is located by its page number scanning forward, and the
+// siglum immediately before it is drawn into the anchor when it is there — that
+// handles `Khu 2. 224, 334.`, where the second citation is printed as a bare
+// number and shares the siglum of the first.  If ANY xref cannot be located the
+// function returns null and the caller keeps the old behaviour: never guess a
+// span, and never silently move the edition's words.
+function appTextLinked(text,xrefs,selfVol){
+  if(!text||!xrefs||!xrefs.length) return null;
+  let out='',pos=0;
+  for(const x of xrefs){
+    const pg=String(x.page);
+    let i=-1;
+    // a page number is a whole token, not a digit inside a longer number
+    for(let k=pos;k<=text.length-pg.length;k++){
+      if(text.substr(k,pg.length)!==pg) continue;
+      const b=text[k-1], a=text[k+pg.length];
+      if(b>='0'&&b<='9') continue;
+      if(a>='0'&&a<='9') continue;
+      i=k; break;
+    }
+    if(i<0) return null;
+    let end=i+pg.length;
+    if(x.page_to!=null){
+      const m=/^\s*[-–]\s*\d+/.exec(text.slice(end));
+      if(m) end+=m[0].length;
+    }
+    // reach back over `Work 2. ` when the edition printed it here
+    let start=i;
+    const before=text.slice(Math.max(0,i-40),i);
+    const m2=/([A-ZĀĪŪṀ][A-Za-zāīūṁṅñṭḍṇḷĀĪŪṀ]*(?:-(?:Ṭṭha|Tṭha|Ṭī|Tī|Anuṭī))?\.?\s*(?:\d+\s*\.\s*)?)$/.exec(before);
+    if(m2) start=i-m2[1].length;
+    if(start<pos) return null;                 // overlapping citations — bail out
+    out+=esc(text.slice(pos,start))+xrefHTML(x,selfVol,text.slice(start,end));
+    pos=end;
+  }
+  return out+esc(text.slice(pos));
+}
+function appBlock(app,selfVol){
+  if(!app||!app.length) return '';
+  let rows='';
+  for(const n of app){ let parts=[];
+    for(const v of (n.variants||[])){ const sg=(v.sigla||[]).map(s=>'<abbr title="'+escA(window.sigla?window.sigla(s):(SIG[s]||s))+'">'+esc(s)+'</abbr>').join(', '); parts.push('<i>'+esc(v.reading)+'</i>'+(sg?' ('+sg+')':'')); }
+    // no variants to show, but citations and words of its own: link in place
+    const inline=parts.length?null:appTextLinked(n.text,n.xrefs,selfVol);
+    if(inline!=null){ rows+='<div><span class="mk">'+(n.n||'*')+'</span>'+inline+'</div>'; continue; }
+    for(const x of (n.xrefs||[])){ const label=x.work+(x.vol?' '+x.vol:'')+'. '+x.page+(x.page_to?'–'+x.page_to:'');
+      parts.push(xrefHTML(x,selfVol,label)); }
+    if(!parts.length&&n.text) parts.push(esc(n.text));
+    rows+='<div><span class="mk">'+(n.n||'*')+'</span>'+parts.join('; ')+'</div>'; }
+  return '<div class="appx">'+rows+'</div>';
+}
+// recovered uddāna mnemonic verses (side-map, keyed by the paragraph they follow)
+function uddanaHTML(blocks, lk){
+  lk=lk||'canon';
+  if(!blocks||!blocks.length) return '';
+  // A `plain` block's head was drawn at ONE weight, `vatthu` (13px), because
+  // until now the only thing that carried one was a Dhammapada vatthu title
+  // above a restored verse.  28Khu11 puts real SECTION heads here — every
+  // heading of a section that has no numbered unit of its own — and drawing
+  // "Meṇḍakapañhārambhakathā" or "Nigamana" smaller than the pañha headings
+  // under them inverts the page's own hierarchy.  `hk` names the weight, using
+  // the same CLS map the sections path uses; absent, it stays `vatthu`.
+  const HCLS={book:'sutta',vagga:'vagga',sutta:'section',vatthu:'vatthu'};
+  return blocks.map(b=> b.plain
+    ? (b.head?'<div class="head '+(HCLS[b.hk]||'vatthu')+'">'+esc(b.head)+'</div>':'')+'<div class="para '+(lk==='canon'?'canon':'l-'+lk)+' pali">'+(b.n!=null?'<span class="pn k-'+lk+'">'+b.n+'.</span>':'')+fmtText((b.lines||[]).join(' '))+appBlock(b.app||[])+'</div>'
+    : '<div class="uddana pali">'
+    +(b.label?'<div class="udd-label">'+fmtText(b.label)+'</div>':'')
+    // an uddāna LABEL whose verses are not centred lines — a numbered unit
+    // (05Vin05 p171) or an uddāna the edition sets as prose (32Abhi04) —
+    // has no lines of its own.  Drawing an empty verse div left a blank
+    // band under the label.
+    +((b.lines||[]).length?'<div class="udd-verse">'+b.lines.map(l=>fmtText(l)).join('<br>')+'</div>':'')
+    +appBlock((b.app||[]).map(f=>({n:f.n,text:f.text})))+'</div>').join('');
+}
+const LAYERFOLDER={canon:'pali-unicode',commentary:'atthakatha-unicode',subcommentary:'tika-unicode'};
+// !!! `pdf_page` IS NOT THE PAGE INDEX OF THE FILE.  `extract.py` numbers it
+// AFTER dropping blank pages, so it is the index among NON-BLANK pages
+// (2026-07-29p).  Audited over all 118 volumes 2026-07-29t: the `printed`
+// LABEL is right everywhere, but the LINK opened the wrong leaf on **40
+// volumes, by up to 11 pages** (40Abhi12) — user-reported.  The corpus is left
+// alone (the decision of 2026-07-29q); the blanks are added back here.
+function truePdfPage(vol,cp){
+  const b=PDFBLANK[vol]; if(!b||!b.length) return cp;
+  let t=cp; for(let i=0;i<b.length;i++){ if(b[i]<=t) t++; else break; }
+  return t;
+}
+// A paragraph's LAST printed page, where it spans more than one.  08DiT01 holds
+// one that runs across 50 printed pages; a badge reading `p.62` on it hides
+// pages 63-111.  `pagespan.json` carries the end only where it differs.
+function lastPrinted(vol,ord,pr){
+  const m=PAGESPAN[vol]; const e=m&&m[String(ord)];
+  return (e!=null&&e>pr)?e:null;
+}
+function facs(vol,kind,pr){
+  const folder=LAYERFOLDER[VOLLAYER[vol]]||FOLDER[kind]||'pali-unicode';
+  const to=(pr.printed!=null&&pr._ord!=null)?lastPrinted(vol,pr._ord,pr.printed):null;
+  const lbl=(pr.printed!=null?pr.printed:'?')+(to!=null?'–'+to:'');
+  if(pr.pdf_page) return '<a class="pgmk" target="_blank" rel="noopener" href="'+R2+'/'+folder+'/'+vol+'.pdf#page='+truePdfPage(vol,pr.pdf_page)+'" title="'+escA(TIP('tip_view_page','View printed page'))+' '+lbl+'">p.'+lbl+' ⧉</a>';
+  return '<span class="pgmk">p.'+lbl+'</span>';
+}
+// THE PAGE RULE — a horizontal line carrying the printed page number, drawn
+// where the edition turns the leaf, as `reader.html` and buddha-dhamma.net do.
+// User-requested 2026-07-29t.  It opens the PDF at the corrected leaf.
+function pageRule(vol,kind,pr){
+  const folder=LAYERFOLDER[VOLLAYER[vol]]||FOLDER[kind]||'pali-unicode';
+  const n=(pr.printed!=null?pr.printed:'?');
+  const href=pr.pdf_page?(R2+'/'+folder+'/'+vol+'.pdf#page='+truePdfPage(vol,pr.pdf_page)):null;
+  const inner='page '+n+(href?' ⧉':'');
+  return '<div class="pgrule"><span>'+(href
+    ? '<a target="_blank" rel="noopener" href="'+href+'" title="'+escA(TIP('tip_view_page','View printed page'))+' '+n+'">'+inner+'</a>'
+    : inner)+'</span></div>';
+}
+function toolsFor(kind,vol,pr,sutta){
+  const name=META[kind].name, cite=name+', '+(sutta||'')+' §'+(pr.n!=null?pr.n:'')+' (p.'+(pr.printed!=null?pr.printed:'?')+')';
+  const COPY='<svg viewBox="0 0 16 16" width="13" height="13"><rect x="5" y="5" width="8" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M3 10.5V3a1 1 0 0 1 1-1h6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
+  const CITE='<svg viewBox="0 0 16 16" width="13" height="13"><path d="M6 5H3.5A1.5 1.5 0 0 0 2 6.5V9A1.5 1.5 0 0 0 3.5 10.5H5V11a2 2 0 0 1-2 2M14 5h-2.5A1.5 1.5 0 0 0 10 6.5V9a1.5 1.5 0 0 0 1.5 1.5H13V11a2 2 0 0 1-2 2" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+  return '<span class="tools">'+jbtns(kind,pr._key)+facs(vol,kind,pr)
+    +'<button class="icn" title="'+escA(TIP('tip_copy_text','Copy text'))+'" data-txt="'+escA((pr.text||'').replace(/^\s*\d+(-\d+)?\.\s*/,''))+'" onclick="copyText(this)">'+COPY+'</button>'
+    +'<button class="icn" title="'+escA(TIP('tip_copy_cit','Copy citation'))+'" data-cite="'+escA(cite)+'" onclick="copyCite(this)">'+CITE+'</button></span>';
+}
+window.copyText=b=>{navigator.clipboard&&navigator.clipboard.writeText(b.dataset.txt);flash(b);};
+window.copyCite=b=>{navigator.clipboard&&navigator.clipboard.writeText(b.dataset.cite);flash(b);};
+function flash(b){b.classList.add('ok');const h=b.innerHTML;b.innerHTML='✓';setTimeout(()=>{b.classList.remove('ok');b.innerHTML=h;},1000);}
+// WHICH BANDS A WORK HAS, AND WHICH ONE THIS VOLUME IS.  Read off the printed
+// concordance; falls back to the volume's nav layer with all three bands only
+// if the concordance does not name the file, so an unlisted volume is never
+// silently stripped of its buttons.
+const BAND={canon:'P',commentary:'A',subcommentary:'T'};
+function bandsFor(vol){
+  const mine=VOLBAND[vol]||BAND[VOLLAYER[vol]]||'P';
+  const has=GROUPHAS[VOLGROUP[vol]];
+  return {mine, bands: has? ['P','A','T'].filter(b=>has[b]) : ['P','A','T']};
+}
+// cross-layer jump buttons — only for bands this work actually has
+function jbtns(kind,key){
+  const vol=parseKey(key)[0]; const {mine,bands}=bandsFor(vol);
+  const targets=bands.filter(b=>b!==mine);
+  const COL={P:'var(--canon)',A:'var(--comm)',T:'var(--tika)'},NAME={P:'Pāḷi',A:'Aṭṭhakathā',T:'Ṭīkā'};
+  return targets.map(tg=>'<button class="jbtn" style="color:'+COL[tg]+';border-color:'+COL[tg]+'" title="'+escA(TIP('tip_goto','Go to'))+' '+NAME[tg]+'" onclick="jumpFrom(\''+key+'\',\''+tg+'\')">'+tg+'</button>').join('');
+}
+window.jumpFrom=async function(key,tg){
+  const NAME={P:'Pāḷi',A:'Aṭṭhakathā',T:'Ṭīkā'}, LK={P:'canon',A:'A',T:'T'},
+        SLOT={A:'commentary',T:'subcommentary'};
+  // !!! THE LINK LAYER'S `canon` SLOT IS THE GROUP'S TOPMOST BAND, AND THAT IS
+  // NOT ALWAYS THE CANON.  The Visuddhimagga group has no canon at all, so
+  // `linksk/51Vism01.links.json` carries the SUBCOMMENTARY targets and
+  // `25VsmT01.rev.json` points its `canon` field back at 51Vism01 — the
+  // aṭṭhakathā standing in the spine's place.  So the routing question is
+  // "is this volume its group's SPINE?", never "is this canon?".
+  const [vol,ord]=parseKey(key); const {mine,bands}=bandsFor(vol); const spine=bands[0];
+  let targetKey=null;
+  if(mine===spine){
+    const links=(vol===state.canonVol&&state.links)?state.links:await loadLinks(vol);
+    const arr=((links[String(ord)]||{})[SLOT[tg]])||[]; targetKey=arr[0]&&arr[0].key;
+  } else {
+    const rev=await loadRev(vol); const c=(rev[String(ord)]||{}).canon;
+    if(!c){ toast('No linked '+NAME[spine]); return; }
+    if(tg===spine){ targetKey=c; }
+    else { const [cv,co]=parseKey(c); const links=await loadLinks(cv);
+           const arr=((links[String(co)]||{})[SLOT[tg]])||[]; targetKey=arr[0]&&arr[0].key; }
+  }
+  if(!targetKey){ toast('No '+NAME[tg]+' here'); return; }
+  state.active[LK[tg]]=true; state.filter=null;
+  if(state.view==='tabs') state.tab=LK[tg];
+  await ensureBandVols();
+  render(); syncButtons();
+  // ...AND IF THE TARGET IS NOT ON THE PAGE, OPEN IT.  Enabling a layer only
+  // reveals blocks the CURRENT spine already draws, so a jump that leaves the
+  // spine's own group had nothing to scroll to and FAILED SILENTLY — which is
+  // what 25VsmT01's buttons have been doing, since it has no links map of its
+  // own and its rev map points into a volume the spine never draws.
+  setTimeout(async ()=>{ const el=document.getElementById('p-'+targetKey.replace('#','-'));
+    if(el){ el.scrollIntoView({block:'center'}); el.classList.add('flash');
+            setTimeout(()=>el.classList.remove('flash'),1500); }
+    else { await openKey(targetKey, LK[tg]); } },60);
+  toast(NAME[tg]);
+};
+// build one paragraph block from a source key
+let LASTPG={};                 // per volume: the last printed page a rule was drawn for
+function block(kind, key, opts){
+  const [vol,ord]=parseKey(key); const c=cache[vol]; if(!c) return '';
+  const pr=c.paras[ord]; if(!pr) return '<div class="para empty">·</div>';
+  pr._key=key; pr._ord=ord;
+  const spans=c.bold[String(ord)]||[]; const app=c.app[String(ord)]||[];
+  const lk=LAYERKIND[VOLLAYER[vol]]||kind;
+  const cls='para'+(lk==='canon'?' canon':' l-'+lk);
+  // !!! THE PARAGRAPH'S PROVENANCE BELONGS IN A TOOLTIP, NOT IN FRONT OF THE
+  // TEXT (2026-07-30g, user-reported).  Two labels used to be printed inline
+  // ahead of the first word: a `covers` chip, and a `worktag` naming the work
+  // and the volume.  The worktag was set by `targetsFor` only where a canon
+  // paragraph has SEVERAL targets in one band — real work when several works
+  // comment on one passage, and pure noise when a volume is read straight
+  // through, which is every case a reader actually meets.  Both are gone from
+  // the page and the information they carried is now on the PARAGRAPH NUMBER,
+  // where it can be asked for instead of being in the way.
+  // !!! THE CORPUS'S `book` FIELD IS NOT THE BOOK, IN 61 OF 118 VOLUMES
+  // (2026-07-30k, user-reported).  07Di02 carries `Pubbenivāsapaṭisaṁyuttakathā`
+  // as the `book` of all 335 paragraphs of the Mahāparinibbānasutta — a kathā,
+  // one level too deep — while the actual book, `Mahāvaggapāḷi`, sits in
+  // `vagga`.  The first version of this tooltip read `book` and so named the
+  // wrong thing; the reader's own title bar never did, because it prefers the
+  // SUTTA and filters `book` heavily.
+  //
+  // `booktitle/` is the sound source: the stack the edition prints on the book's
+  // own TITLE PAGE, keyed by the ordinal that book opens at — derived from the
+  // page and checked (17SaT02 forced it to be, 2026-07-29u).  So the book is the
+  // last line of the nearest title stack at or above this ordinal, and the
+  // volume's own title is the fallback where a volume has no stack.
+  const _bt=c.btl||{};
+  let _bk='', _bo=-1;
+  for(const _k in _bt){ const _kk=+_k; if(_kk<=ord && _kk>_bo) _bo=_kk; }
+  if(_bo>=0){ const _st=_bt[String(_bo)]; const _a=Array.isArray(_st)?_st:[_st];
+              _bk=String(_a[_a.length-1]||'').trim(); }
+  if(!_bk) _bk=VOLTITLE[vol]||shortWork(VOLWORK[vol])||'';
+  const _su=(pr.sutta&&pr.sutta!=='X')?String(pr.sutta).replace(/\s+/g,' ').trim():'';
+  const _tip=[_bk, (_su&&_su!==_bk)?_su:'', vol,
+              (pr.printed!=null?'p.'+pr.printed:'')].filter(Boolean).join(' · ');
+  // ...AND ON EVERY PATH THAT DRAWS A NUMBER, not just this one.  A verse or
+  // spliced-prose unit emits its own `.pn` inside `proseOne`/`groups`, and a
+  // tooltip on only the plain path would be absent on exactly the volumes that
+  // carry the most numbers (1,242 `.pn` in one 02Vin02 render, none titled).
+  const PNT=' title="'+escA(_tip)+'"';
+  let num=(pr.n!=null)?'<span class="pn k-'+lk+'"'+PNT+'>'+pr.n+'.</span>':'';
+  const st='', wt='';
+  const vmap=(c.verse||{})[String(ord)];
+  let body;
+  if(kind==='canon' && vmap && vmap.groups){
+    // a prose entry may also be {gatha:[lines]} — the page sets some suttas as
+    // verse -> prose -> verse (e.g. Udāna Lokasutta), which a flat groups list
+    // plus trailing prose cannot express on its own.
+    // A PROSE UNIT — an entry with an EMPTY `groups`, which is how the
+    // Paṭisambhidāmagga stores a numbered section whose content is prose — has
+    // no gāthā to hang its number beside.  The number is emitted before `body`,
+    // and `body` for such a unit is a <div>, so the number STACKED ON ITS OWN
+    // LINE above the text.  The printed page never does that: it sets
+    // " 1. Sotāvadhāne paññā sutamaye ñāṇaṁ." with the number opening the
+    // paragraph.  So hand it to the first block, exactly as a verse hands it to
+    // its first .gatha.  `before` material is printed ABOVE the number, so it
+    // is rendered first and `lead` is only armed afterwards — it never takes it.
+    let lead=null;
+    const proseOne=(p)=>{
+      let gn=''; if(lead!==null){ gn=lead; lead=null; }
+      if(p&&typeof p==='object'&&p.gatha)
+        return '<div class="gatha pali">'+gn+p.gatha.map(l=>fmtText(l)).join('<br>')+'</div>';
+      // A NUMBERED PROSE PARAGRAPH INSIDE ANOTHER UNIT'S BLOCK — a printed
+      // unit the corpus spliced into the preceding paragraph, so it has no
+      // ordinal of its own to hang a number beside.  `fmtText` strips a
+      // leading "NN." (that is how ordinary paragraph numbers reach it), so
+      // the number is carried on the entry and drawn here instead of vanishing.
+      if(p&&typeof p==='object'&&p.t!=null)
+        return '<div class="gatha-after pali">'+gn
+          +'<span class="pn k-'+lk+'"'+PNT+'>'+esc(String(p.n))+'.</span>'+fmtText(p.t)+'</div>';
+      return '<div class="gatha-after pali">'+gn+fmtText(p)+'</div>';
+    };
+    const proseBlocks=(x)=> Array.isArray(x) ? x.map(proseOne).join('') : (x!=null?fmtText(x):'');
+    const hasBefore = vmap.before!=null && (!Array.isArray(vmap.before)||vmap.before.length);
+    let pre;
+    if(vmap.before!=null) pre=proseBlocks(vmap.before);
+    // THE UDĀNA FALLBACK IS FOR A VERSE, AND ONLY FOR A VERSE.  With no
+    // `before`, this lifts the narrative lead-in ("...imaṁ udānaṁ udānesi–")
+    // out of the CORPUS paragraph so it stands above the gāthā the side-map
+    // supplies.  A PROSE unit (`groups` empty) has no gāthā to introduce and
+    // its whole body already comes from `after`, drawn from the printed
+    // stream — so the fallback printed that lead-in a SECOND time, inside the
+    // paragraph that already contained it.  03Vin03 has seven such units in
+    // the Mahākhandhaka's opening; the body gate saw two of them as
+    // `rendered-too-often` and the rest were hidden inside the volume's own
+    // formulaic repetitions.
+    // MEASURED over every volume with a verse map: seven paragraphs in all
+    // are affected, all in 03Vin03, and NONE anywhere has an empty `after`
+    // that this fallback was the only source of — so nothing can be blanked
+    // by requiring a verse.
+    // AND ONLY WHEN THE GROUPS DO NOT ALREADY CARRY THE LEAD-IN.  A Jātaka
+    // unit whose whole printed paragraph — gāthā, gloss and lead-in together
+    // — is ONE group needs nothing lifted; the fallback would draw it twice.
+    // MEASURED over every volume's verse map: the fallback fires on 76
+    // entries corpus-wide and the group already contains the lead-in in 2,
+    // both in 41KhuA22 (ord143, ord804).  Nothing else moves.
+    else if(vmap.groups.length){
+      const mt=pr.text.match(/^([\s\S]*?udāna\S*\s+udānes[iī][–-])/);
+      const bare=t=>(t||'').toLowerCase().replace(/[^0-9a-zāīūṁṃṅñṇṭḍḷ]/g,'');
+      const gAll=bare(vmap.groups.map(g=>g.join(' ')).join(' '));
+      pre=(mt && !gAll.includes(bare(mt[1]))) ? fmtText(mt[1]) : '';
+    }
+    else pre='';
+    const isProse=vmap.groups.length===0;
+    if(isProse) lead=num;
+    const multi=vmap.groups.length>1;
+    const verseHtml=vmap.groups.map((g,gi)=>{
+      const cnt=(vmap.counts&&vmap.counts[gi]!=null)?vmap.counts[gi]:((gi===vmap.groups.length-1)?vmap.count:null);
+      let gn='';
+      if(multi && vmap.nums && vmap.nums[gi]!=null) gn='<span class="pn k-'+lk+'"'+PNT+'>'+vmap.nums[gi]+'.</span>';
+      // The paragraph number always hangs beside the verse's FIRST pāda, never on a
+      // line of its own above the block. (This used to depend on the paragraph
+      // having intro prose, so a verse's number moved depending on whether the
+      // sutta happened to open with a narrative — inconsistent down the page.)
+      else if(!multi && gi===0) gn=num;
+      return '<div class="gatha pali">'+gn+g.map(l=>fmtText(l)).join('<br>')+(cnt?'<span class="gatha-count">  ('+esc(cnt)+')</span>':'')+'</div>';
+    }).join('');
+    body=pre+verseHtml+(vmap.after?proseBlocks(vmap.after):'')+(vmap.tail?'<span class="gatha-end">'+esc(vmap.tail)+'</span>':'');
+    // suppressed outside once it has been placed inside a block — in the first
+    // .gatha for a verse, in the first prose block for a prose unit
+    if(vmap.groups.length || (isProse && lead===null)) num='';
+  } else if(kind==='canon'){
+    // The homage that opens a book is rendered as an .incipit above this
+    // paragraph (see incHTML), so remove the copy the extraction swallowed into
+    // the body — otherwise it shows twice, and as prose.
+    let t=pr.text;
+    if((c.inc||{})[String(ord)]) t=t.replace(/Namo\s+tassa\s+\S+\s+[Aa]rahato\s+Sammāsambuddhassa\.?\s*/,'');
+    body=fmtText(t);
+  } else body = (state.reading==='outline'?outlineHTML(pr.text,spans):fmtBold(pr.text,spans));
+   // THE PAGE RULE, emitted HERE so that every render path gets it — columns,
+   // single and tabs each assemble blocks differently, and `block()` is the one
+   // place all three go through.  Tracked PER VOLUME, because in the columns
+   // view three volumes' blocks interleave and one shared counter would make
+   // each of them suppress the others' page turns.
+   let rule='';
+   if(pr.printed!=null && LASTPG[vol]!==pr.printed){ rule=pageRule(vol,kind,pr); LASTPG[vol]=pr.printed; }
+   return rule+'<div class="'+cls+'" id="p-'+key.replace('#','-')+'">'+toolsFor(kind,vol,pr,pr.sutta)+st+wt+num+body+appBlock(app,vol)+'</div>';
+}
+function targetsFor(ord,kind){ // kind 'A'|'T' -> list of {key,state,worktag?}
+  const e=state.links[String(ord)]||{}; let arr=(kind==='A'?e.commentary:e.subcommentary)||[];
+  if(state.filter) arr=arr.filter(t=>parseKey(t.key)[0]===state.filter);
+  // !!! A COMMENTARY VOLUME'S OWN `hide` MAP WAS NEVER APPLIED.  The canon
+  // spine skips hidden ordinals (`if(HIDE[String(i)])return ''`), but that
+  // HIDE is the CANON volume's, indexed by canon ordinal — nothing anywhere
+  // consulted the TARGET volume's.  So 07DiA01 drew its leaked heading ord0
+  // ("Sīlakkhandhavaggaṭṭhakathā") and its 25,625-character unnumbered ord4 as
+  // body paragraphs, and a reader opening the volume met a wall of footnote
+  // markers with no readable text.  User-reported, 2026-07-27af.
+  arr=arr.filter(t=>{const a=parseKey(t.key); const c=cache[a[0]];
+                     return !(c && c.hide && c.hide[String(a[1])]);});
+  const multi=arr.length>1;
+  return arr.map(t=>{const v=parseKey(t.key)[0]; return {key:t.key,state:t.state,worktag: multi? ((shortWork(VOLWORK[v])||'')+' · '+v) : null};});
+}
+function activeKeys(){return ['canon','A','T'].filter(k=>state.active[k]);}
+// !!! AN EMPTY BAND HAS TO SAY WHY IT IS EMPTY (2026-08-01).  Pruning the
+// 22,719 impossible commentary targets put the honest answer — nothing — where
+// a confident wrong one used to be, and `render()` appends the same generic
+// hint line whatever it drew.  So tapping A on the Milindapañha, which the
+// edition gives no commentary at all, left ONLY "On-demand from the keyed
+// corpus…" on screen: indistinguishable from a page that failed to load, and
+// measured that way in Chromium at 390x844 (`.para` 0, 142 characters of text).
+// The edition's own answer is already in the reader as `GROUPHAS`, built from
+// `concordance.json`, so it can be stated instead of left to be guessed at.
+function bandNote(k){
+  const has=GROUPHAS[VOLGROUP[state.canonVol]];
+  const name=(META[k]||{}).name||k;
+  const msg=(has && has[k]===false)
+    ? TIP('band_none','The edition assigns no %s to this work.')
+    : TIP('band_here','No %s is linked to the passages on screen.');
+  return '<div class="bandnote">'+esc(msg.replace('%s',name))+'</div>';
+}
+function render(){
+  if(!state.opened) return;
+  LASTPG={};                   // a fresh pass draws the first page's rule again
+  const cv=cache[state.canonVol]; const first=cv.paras[0];
+  const _tv=state.titleVol||state.canonVol;
+  // the span id carries the clicked node's own label, so a parent and child
+  // that share a paragraph key still title the pane differently
+  const _sut=(state.curvagga&&SUTTALABEL[state.curvagga])?SUTTALABEL[state.curvagga].replace(/^\d+\.\s*/,'')
+            :(state.cursutta&&SUTTALABEL[state.cursutta])?SUTTALABEL[state.cursutta].replace(/^\d+\.\s*/,''):null;
+  // Aṅguttara: the anchored paragraph's `book` field is a paṇṇāsaka sub-marker
+  // ("Paṭhamapaṇṇāsaka"), so title by the nipāta name instead when one is open.
+  const _nip=(state.curbook&&VAGCONTENTS[state.curbook]&&parseKey(state.curbook)[0]===state.canonVol)?VOLBOOK[state.curbook]:null;
+  // !!! THE PARAGRAPH COUNT MUST BE THE DISPLAYED VOLUME'S, NOT THE CANON
+  // ONE'S.  `cv` is `cache[state.canonVol]`; `_tv` is the volume the pane is
+  // titled for, which on a standalone commentary or ṭīkā is a DIFFERENT
+  // volume.  The header read "08DiT01 · 559 ¶" — 559 is 06Di01's count.
+  // User-reported 2026-07-29t.
+  const _tvc=cache[_tv]||cv;
+  $('#doctitle').innerHTML=esc(_sut||_nip||state.currentBook||VOLTITLE[_tv]||shortWork(VOLWORK[_tv])||_tv)+'<small>'+esc(_tv)+' · '+_tvc.paras.length+' ¶</small>';
+  $('#scroll').style.setProperty('--rsize',state.size+'px');
+  syncButtons();
+  let lastSutta=null,lastVagga=null;
+  const cH=s=>(s||'').replace(/\s*\(\d+\)\s*$/,'').replace(/([a-zāīūṁṃṅñṭḍṇḷ])\d+$/,'$1');  // strip "(33)" / trailing artifact digit for display
+  // Compare on the CLEANED title so a sutta whose running-header form carries the
+  // MN number (e.g. 'Kandarakasutta' then 'Kandarakasutta (51)') emits ONE heading.
+  const emitHead=(po,key)=>{ if(!po) return ''; const vg=(po.vagga&&po.vagga!=='X')?cH(po.vagga):null, su=(po.sutta&&po.sutta!=='X')?cH(po.sutta):null;
+    if(su&&su!==lastSutta){ lastSutta=su; lastVagga=vg; return '<div class="head sutta" id="s-'+key.replace('#','-')+'">'+esc(su)+'</div>'; }
+    if(vg&&vg!==lastVagga){ lastVagga=vg; return '<div class="head vagga">'+esc(vg)+'</div>'; }
+    return ''; };
+  const secHead=(i)=> VOLPDFTOC[state.canonVol] ? '' : ((state.outlineByOrd&&state.outlineByOrd[i])||[]).map(it=>'<div class="head section" id="'+it.id+'">'+esc(it.title)+'</div>').join('');
+  // authoritative inline headings (sutta title + printed sub-section titles) for pdftoc volumes
+  const hmap=(i)=>{ if(!VOLPDFTOC[state.canonVol]) return ''; const arr=HEADMAP[state.canonVol+'#'+i]; if(!arr||!arr.length) return '';
+    const key=state.canonVol+'-'+i;
+    return '<div id="h-'+key+'">'+arr.map(h=>'<div class="head '+(h.lv==='sutta'?'sutta':'section')+'">'+esc(h.lv==='sutta'?h.label.replace(/^\d+\.\s*/,''):h.label)+'</div>').join('')+'</div>'; };
+  // precisely-anchored inline headings (one clean title per section) for non-pdftoc
+  // volumes — replaces the raw buildOutline path
+  const hasSec = cv.sec && Object.keys(cv.sec).length>0;
+  const CLS={book:'sutta',vagga:'vagga',sutta:'section',vatthu:'vatthu'};
+  // k:'incipit' is the "Namo tassa…" homage the edition prints once at the head of
+  // EVERY book, not just at the start of a physical volume. It is data, not a
+  // constant: Suttanipāta prints "Bhagavatā" where the other books print "Bhagavato".
+  // A sections entry with k:'gatha' carries DISPLAY VERSE that the page prints
+  // above a paragraph's own verse and that the corpus does not hold at all —
+  // Theragāthā's opening Nidānagāthā is the case this was added for.  Its `l`
+  // holds the printed lines joined by \n.  It has to live here rather than in
+  // verse.before because the page interleaves it WITH the headings (title,
+  // Nidānagāthā, its verse, nipāta, vagga, sutta, verse 1) and only `sections`
+  // preserves that order.
+  // The BOOK'S OWN NAME as its title page prints it — above the homage and
+  // larger than any heading inside the book — so a volume holding several books
+  // announces each one instead of running them together.
+  // It lives in its OWN side-map, `booktitle/<VOL>.json` = {ord: "Name"}, for the
+  // same reason the incipit does: a volume that gains a `sections/` file switches
+  // canonHead to the secmap path and silently drops every inline heading it draws
+  // from its `headings` array.  Most volumes have no sections file, so putting
+  // titles there would have broken their headings to add a title.
+  // The value is the STACK the title page prints above the homage, in printed
+  // order — normally the nikāya or piṭaka and then the book ("Dīghanikāya" over
+  // "Sīlakkhandhavaggapāḷi"), occasionally three lines. The last is the book's
+  // own name and is set largest; the ones above it name the collection.
+  const titleHTML=(i)=>{ let t=(cv.btl||{})[String(i)]; if(!t) return '';
+    if(typeof t==='string') t=[t];
+    return t.map((l,j)=>'<div class="head '+(j<t.length-1?'bookseries':'booktitle')+'">'
+      +esc(l)+'</div>').join(''); };
+  const secmap=(i)=>{ const all=((cv.sec||{})[String(i)]||[]); const arr=all.filter(h=>h.k!=='booktitle'); if(!arr.length) return '';
+    const sb=cv.sbold||{};
+    return '<div id="sec-'+state.canonVol+'-'+i+'">'+arr.map(h=> h.k==='gatha'
+      ? '<div class="gatha pali">'+gathaHTML(h.l, sb[i+':'+all.indexOf(h)])+'</div>'
+      : '<div class="head '+(CLS[h.k]||'section')+'">'+esc(h.l)+'</div>').join('')+'</div>'; };
+  const incHTML=(i)=>{ const t=(cv.inc||{})[String(i)]; return t?'<div class="incipit pali">'+esc(t)+'</div>':''; };
+  // The canon spine's own front matter, wrapped so the book node can scroll to
+  // it rather than to the paragraph BELOW it (see `layerFront`).
+  const canonFront=(i)=>{ const h=titleHTML(i)+incHTML(i);
+    return h?'<div class="frontmatter" id="front-'+state.canonVol+'-'+i+'">'+h+'</div>':h; };
+  // !!! THE FRONT MATTER OF A COMMENTARY OR ṬĪKĀ VOLUME NEVER REACHED THE PAGE.
+  // titleHTML/incHTML read cache[state.canonVol] — and for those layers the
+  // canon volume is the book the work HANGS OFF, not the work itself.  So
+  // 02VinA02's own title page (`Vinayapiṭaka` / `Pārājikakaṇḍa-aṭṭhakathā`) and
+  // its `Namo tassa Bhagavato Arahato Sammāsambuddhassa.` sat in
+  // booktitle/02VinA02.json and incipit/02VinA02.json and were never drawn.
+  // check_layout.js reports it as `incipit-not-rendered`.  Read the OTHER
+  // volume's maps, keyed by the OTHER volume's ordinal.
+  // !!! A BOOK MUST OPEN WITH ITS OWN TITLE PAGE, AND UNTIL NOW IT DID NOT.
+  // The reader shows a commentary or Ṭīkā work by opening the CANON volume it
+  // hangs off and filtering to that work (`openKey` -> `state.filter`), so the
+  // order its paragraphs appear in is the CANON volume's, not its own.
+  // `layerFront` drew the title stack, homage and opening headings at whatever
+  // position the ANCHOR ordinal happened to land in that stream — so ONE
+  // spurious link on an earlier canon paragraph put commentary text ABOVE the
+  // book's own title page, and where no canon paragraph links to the anchor at
+  // all the title page was never drawn anywhere.
+  // CENSUS over all 79 volumes that have a `booktitle/` anchor
+  // (`_khua/_front/before_the_book.py`): SIX draw something before their title
+  // page — 16SamA03 159 ¶, 44KhuA25 10, 40KhuA21 7, 20KhuA01 / 23KhuA04 /
+  // 47KhuA28 one each — and SIX have no title page at all: 04VinA04, 05Kankha,
+  // 06VinSg06, 17AnA01, 21KhuA02, 48AbhiA01.
+  // Neither is a rendering choice, and neither should wait on the link
+  // rebuild: where a single work is being shown, its front matter is emitted
+  // ONCE at the top of the stream and suppressed at its anchor.  The link
+  // defects that put it there are recorded in HANDOFF 2026-07-28t; this makes
+  // the reader's guarantee independent of them.
+  let _topFront=null;
+  const frontKeyOf=(vol)=>{ const c=cache[vol]; if(!c) return null;
+    const ks=Object.keys(c.btl||{}).concat(Object.keys(c.inc||{})).map(Number);
+    return ks.length? vol+'#'+Math.min.apply(null,ks) : null; };
+  const layerFront=(key)=>{ if(key===_topFront) return '';
+    const [tv,to]=parseKey(key); const c=cache[tv]; if(!c) return '';
+    let t=(c.btl||{})[String(to)], h='';
+    if(t){ if(typeof t==='string') t=[t];
+      h+=t.map((l,j)=>'<div class="head '+(j<t.length-1?'bookseries':'booktitle')+'">'+esc(l)+'</div>').join(''); }
+    const ic=(c.inc||{})[String(to)];
+    if(ic) h+='<div class="incipit pali">'+esc(ic)+'</div>';
+    const hadfront=!!(t||ic);
+    // ...AND ITS SECTION HEADINGS, for the same reason.  `canonHead` -> `secmap`
+    // reads cache[state.canonVol] too, so every heading built for a commentary
+    // volume was anchored, written to sections/<VOL>.json and never drawn:
+    // 02VinA02 has 60 anchors covering 74 headings — `3. Tatiyapārājika`, the
+    // opening gāthā, `Paṭhamapaññattinidānavaṇṇanā` — and the reading pane ran
+    // its 240 paragraphs together with nothing between them.
+    // ...AND NOT THE BOOK'S OWN TITLE A SECOND TIME.  Where the anchor's
+    // `sections` entry repeats a line of the title stack, the two are drawn
+    // adjacent and read as the "two titles" artifact — `duplicate-heading` in
+    // check_layout.js.  It was invisible while the front matter was drawn at
+    // an anchor these openings never reached; emitting it at the top of the
+    // stream exposed it.  MEASURED over every volume before suppressing:
+    // exactly THREE entries in TWO volumes are in that state — 05Kankha ord0
+    // `Dvemātikāpāḷi` and 04VinA04 ord0/ord186 `Vinayapiṭaka` — so nothing
+    // else can move.
+    const _fold=x=>String(x||'').replace(/\s+/g,' ').trim().toLowerCase().replace(/\.$/,'');
+    const _tn=new Set((t||[]).map(_fold));
+    const all=((c.sec||{})[String(to)]||[]).filter(x=>x.k==='gatha'||!_tn.has(_fold(x.l)));
+    const arr=all.filter(x=>x.k!=='booktitle');
+    const sb=c.sbold||{};
+    if(arr.length) h+='<div id="sec-'+tv+'-'+to+'">'+arr.map(x=> x.k==='gatha'
+        ? '<div class="gatha pali">'+gathaHTML(x.l, sb[to+':'+all.indexOf(x)])+'</div>'
+        : '<div class="head '+(CLS[x.k]||'section')+'">'+esc(x.l)+'</div>').join('')+'</div>';
+    // !!! THE BOOK'S FRONT MATTER NEEDS AN ID, OR CLICKING THE BOOK SCROLLS
+    // PAST IT.  `openCanon` scrolled to `p-<vol>-<ord>`, the ANCHOR PARAGRAPH —
+    // which sits BELOW the title stack, the homage and the opening heading, and
+    // (since 2026-07-28t hoists the front matter to the top of a filtered
+    // stream) can be a long way below it.  So the click landed mid-book on
+    // every volume, canon and commentary alike.  Named `front-<vol>-<ord>` and
+    // preferred over `s-`/`p-` when the click IS the book.
+    return (hadfront && h)?'<div class="frontmatter" id="front-'+tv+'-'+to+'">'+h+'</div>':h; };
+  const hasIncipit=(i)=>!!(cv.inc||{})[String(i)];
+  const canonHead=(i,p,key)=> VOLPDFTOC[state.canonVol] ? hmap(i) : (hasSec ? secmap(i) : (emitHead(p,key)+secHead(i)));
+  // book range: when several books share one physical volume, render only this book's slice
+  const _vg=(state.curvagga&&VAGGASPAN[state.curvagga]&&VAGGASPAN[state.curvagga].vol===state.canonVol)?VAGGASPAN[state.curvagga]:null;
+  const _span=_vg||((state.curbook&&BOOKSPAN[state.curbook]&&BOOKSPAN[state.curbook].vol===state.canonVol)?BOOKSPAN[state.curbook]:null);
+  const base=_span?_span.start:0;
+  const paras=_span?cv.paras.slice(_span.start, _span.end==null?cv.paras.length:_span.end):cv.paras;
+  const HIDE=cv.hide||{};
+  // Fall back to the built-in homage only where the data does not supply one.
+  // SKIP HIDDEN ORDINALS WHEN LOOKING.  A volume whose opening paragraphs are
+  // leaked headings carries its homage on the first VISIBLE one — 37Abhi09's
+  // ord0 and ord1 are the leaked pair "6. Vitakkattika / 1. Paṭiccavāra", so
+  // its incipit anchors at ord2 — and testing `base` alone drew the built-in
+  // lowercase copy ABOVE the volume's own: two homages on the page, which no
+  // content gate reports because both are present and neither is spliced.
+  let _ib=base; while(_ib<cv.paras.length && HIDE[String(_ib)]) _ib++;
+  // ...and never in front of a filtered work: that fallback belongs to the
+  // CANON volume, whose homage is not this book's.
+  let html=(!state.filter && base===0 && !hasIncipit(base) && !hasIncipit(_ib))?'<div class="incipit pali">namo tassa bhagavato arahato sammāsambuddhassa</div>':'';
+  const udd=(i)=> uddanaHTML((cv.udd||{})[String(i)], LAYERKIND[VOLLAYER[state.canonVol]]||'canon');
+  if(state.view==='columns'){
+    const keys=activeKeys(); const tmpl='repeat('+keys.length+',minmax(0,1fr))';
+    html+='<div class="colhead" style="grid-template-columns:'+tmpl+'">'+keys.map(k=>'<div class="ch"><span class="cdot" style="background:'+META[k].col+'"></span>'+META[k].name+'</div>').join('')+'</div>';
+    html+='<div class="grid" style="grid-template-columns:'+tmpl+'">';
+    paras.forEach((p,li)=>{ const i=base+li; html+='<div class="rowline">';
+      keys.forEach(k=>{ if(k==='canon'){ html+=block('canon',state.canonVol+'#'+i); }
+        else{ const ts=targetsFor(i,k); html+= ts.length? ts.map(t=>block(k,t.key,t)).join('') : '<div class="para empty">·</div>'; } });
+      html+='</div>'; });
+    html+='</div>';
+  } else if(state.view==='tabs'){
+    const k=state.tab;
+    if(k==='canon'){ html+='<div class="stack">'+paras.map((p,li)=>{const i=base+li; if(HIDE[String(i)])return ''; return canonFront(i)+canonHead(i,p,state.canonVol+'#'+i)+block('canon',state.canonVol+'#'+i)+udd(i);}).join('')+'</div>'; }
+    else { let buf='',last=null; const fk=state.filter?frontKeyOf(state.filter):null; if(fk){ buf+=layerFront(fk); _topFront=fk; }
+      paras.forEach((p,li)=>{ const i=base+li; targetsFor(i,k).forEach(t=>{ if(t.key===last)return; last=t.key; buf+=block(k,t.key,t); }); }); html+='<div class="stack">'+(buf.trim()?buf:bandNote(k))+'</div>'; }
+  } else { // single
+    const dedup=!state.active.canon; let lastA=null,lastT=null; let _drew=0;
+    const spine=state.active.canon?'canon':(state.active.A?'A':'T');
+    // THE BOOK'S OWN FRONT MATTER, FIRST.  Emitted before the stream is walked
+    // and then suppressed at its anchor (`_topFront`), so it is drawn exactly
+    // once and always at the top.
+    let _front0='';
+    if(state.filter && spine!=='canon'){ const fk=frontKeyOf(state.filter);
+      if(fk){ _front0=layerFront(fk); _topFront=fk; } }
+    html+='<div class="stack">'+_front0+paras.map((p,li)=>{ const i=base+li; if(HIDE[String(i)])return ''; let parts=[];
+      // !!! A TARGET'S FRONT MATTER IS DRAWN PER TARGET, NOT PER CANON ORDINAL.
+      // `layerFront(ts[0].key)` drew the FIRST target's title, homage and
+      // headings and nothing else, so where one canon paragraph points at
+      // several commentary paragraphs -- which is every volume that opens
+      // with unnumbered prose: 06Di01 ¶1 now owns 07DiA01 ¶3-¶9 -- the
+      // headings anchored to ¶4..¶8 were built, written to sections/ and
+      // never drawn.  `check_layout.js` reports `sections-not-rendered`.
+      const _front=(key)=>{ const _tv=parseKey(key)[0], _tc=cache[_tv];
+        const _hasSec=!!(_tc && _tc.sec && Object.keys(_tc.sec).length);
+        return layerFront(key)+(_hasSec?'':emitHead(paraOf(key),key)); };
+      let head = spine==='canon'? (canonFront(i)+canonHead(i,p,state.canonVol+'#'+i)) : (()=>{const ts=targetsFor(i,spine); if(!ts[0]) return '';
+        // !!! THE HEAD MUST OBEY THE SAME DEDUP AS THE BLOCK.  Several canon
+        // paragraphs routinely point at ONE commentary paragraph; the block is
+        // drawn once (`dedup`), so a head drawn per canon ordinal appeared
+        // TWICE with the single paragraph between the two copies —
+        // "Ānāpānassatisamādhikathā" above 02VinA02 ¶165 and again above ¶167.
+        // Not adjacent, so `duplicate-heading` in check_layout.js never saw it.
+        if(dedup && ts[0].key===(spine==='A'?lastA:lastT)) return '';
+        // !!! `emitHead` DRAWS THE CORPUS `book`/`vagga` FIELDS, AND IN THIS
+        // LAYER THOSE ARE RUNNING HEADERS, NOT STRUCTURE — 03VinA03's ord717
+        // carries vagga='Catuvaggakaraṇādikathā' and its sections map carries
+        // the same title, so the page drew that heading TWICE, adjacent, and
+        // `duplicate-heading` reported it in both 03VinA03 and 04VinA04.
+        // The canon path already makes this choice — `hasSec ? secmap : emitHead`
+        // — and `layerFront` has to make it too: where a volume has a sections
+        // map, that map is the authority and the corpus fields are not consulted.
+        const _tv=parseKey(ts[0].key)[0], _tc=cache[_tv];
+        const _hasSec=!!(_tc && _tc.sec && Object.keys(_tc.sec).length);
+        return layerFront(ts[0].key)+(_hasSec?'':emitHead(paraOf(ts[0].key),ts[0].key));})();
+      if(state.active.canon) parts.push(block('canon',state.canonVol+'#'+i));
+      if(state.active.A) targetsFor(i,'A').forEach((t,ti)=>{ if(dedup&&t.key===lastA)return; lastA=t.key; _drew++; parts.push(((spine==='A'&&ti>0)?_front(t.key):'')+(state.active.canon?'<div class="subwrap a"><span class="lchip a">Aṭṭhakathā</span>':'<div>')+block('A',t.key,t)+'</div>'); });
+      if(state.active.T) targetsFor(i,'T').forEach((t,ti)=>{ if(dedup&&t.key===lastT)return; lastT=t.key; _drew++; parts.push(((spine==='T'&&ti>0)?_front(t.key):'')+(state.active.canon?'<div class="subwrap t"><span class="lchip t">Ṭīkā</span>':'<div>')+block('T',t.key,t)+'</div>'); });
+      return head+(parts.length?'<div style="margin-bottom:12px">'+parts.join('')+'</div>':'')+(spine==='canon'?udd(i):''); }).join('')+'</div>';
+    // the canon band is off and neither layer drew anything: say why, rather
+    // than leaving the reader with the generic hint line and a blank page
+    if(!state.active.canon && _drew===0) html+=bandNote(spine);
+  }
+  html+='<div class="hint">On-demand from the keyed corpus. Toggle P / A / T; Columns / Tabs / Single; hover a paragraph for cite, copy, facsimile and cross-layer jumps.</div>';
+  $('#scroll').innerHTML=html; tipify($('#scroll'));
+  if(state.view==='columns'){ $('#scroll').querySelectorAll('.rowline').forEach(r=>{r.onmouseenter=()=>r.classList.add('hot');r.onmouseleave=()=>r.classList.remove('hot');}); }
+}
+function syncButtons(){
+  document.querySelectorAll('.lbtn').forEach(b=>{const k=b.dataset.k; b.classList.toggle('on', state.view==='tabs'?state.tab===k:state.active[k]);});
+  document.querySelectorAll('#viewtog button').forEach(b=>b.classList.toggle('on',b.dataset.view===state.view));
+}
+document.querySelectorAll('.lbtn').forEach(b=>b.onclick=async()=>{const k=b.dataset.k;
+  if(!state.opened){toast('Open a text first');return;}
+  state.filter=null;
+  if(state.view==='tabs'){state.tab=k;} else{const ak=activeKeys(); if(state.active[k]&&ak.length===1){toast('Keep one layer on');return;} state.active[k]=!state.active[k];}
+  // the band's volumes are no longer preloaded — fetch them before drawing, or
+  // the band opens empty (every block() guards on `cache[vol]`)
+  syncButtons(); await ensureBandVols(); render();});
+document.querySelectorAll('#viewtog button').forEach(b=>b.onclick=async()=>{state.view=b.dataset.view; if(state.view==='tabs'&&!state.active[state.tab])state.tab='canon'; if(state.opened){await ensureBandVols(); render();} else syncButtons();});
+$('#readtog').onclick=()=>{state.reading=state.reading==='outline'?'full':'outline';$('#readtog').classList.toggle('on',state.reading==='outline');if(state.opened)render();};
+window.tocGoKey=function(key){ const dd=document.getElementById('tocdrop'); if(dd) dd.hidden=true;
+  const hid='h-'+key.replace('#','-'), pid='p-'+key.replace('#','-');
+  const el=document.getElementById(hid)||document.getElementById(pid);
+  if(el){ el.scrollIntoView({block:'start'}); const pe=document.getElementById(pid); if(pe){pe.classList.add('flash'); setTimeout(()=>pe.classList.remove('flash'),1300);} }
+  else { openKey(key,'canon'); } };
+$('#tocbtn').onclick=(e)=>{ e.stopPropagation(); const dd=document.getElementById('tocdrop'); if(!dd.hidden){dd.hidden=true;return;}
+  const tv=state.titleVol||state.canonVol;
+  const bk=state.curbook, su=state.cursutta;
+  // If a sutta is open, the Contents shows that sutta's sub-sections
+  if(su && SUTTASUBS[su] && SUTTASUBS[su].length){
+    let html='<div class="tochead">'+esc(SUTTALABEL[su]||'')+'</div>';
+    html+='<div class="tocitem toc-sutta" onclick="tocGoKey(\''+su+'\')">'+esc(SUTTALABEL[su]||'')+'</div>';
+    for(const sub of SUTTASUBS[su]) html+='<div class="tocitem toc-sec" onclick="tocGoKey(\''+sub.key+'\')">'+esc(sub.label)+'</div>';
+    dd.innerHTML=html; dd.hidden=false; return;
+  }
+  // nipāta (Aṅguttara): Contents lists this nipāta's vaggas and their suttas
+  if(state.curbook && VAGCONTENTS[state.curbook]){
+    let html='<div class="tochead">'+esc(VOLBOOK[state.curbook]||state.canonVol)+'</div>';
+    for(const vg of VAGCONTENTS[state.curbook]){
+      html+='<div class="tocitem toc-sutta" onclick="tocGoKey(\''+vg.key+'\')">'+esc(vg.label)+'</div>';
+      for(const su of (vg.subs||[])) html+='<div class="tocitem toc-sec" onclick="tocGoKey(\''+su.key+'\')">'+esc(su.label)+'</div>';
+    }
+    dd.innerHTML=html; dd.hidden=false; return;
+  }
+  // nested volume (paṇṇāsa -> vagga -> sutta): list every vagga and its suttas
+  if(VOLNESTED[state.canonVol]){
+    let html='<div class="tochead">'+esc(VOLTITLE[state.canonVol]||state.canonVol)+'</div>';
+    for(const vg of VOLNESTED[state.canonVol]){
+      html+='<div class="tocitem toc-sutta" onclick="tocGoKey(\''+vg.key+'\')">'+esc(vg.label)+'</div>';
+      for(const su of (vg.subs||[])) html+='<div class="tocitem toc-sec" onclick="tocGoKey(\''+su.key+'\')">'+esc(su.label)+'</div>';
+    }
+    dd.innerHTML=html; dd.hidden=false; return;
+  }
+  // otherwise the whole book's suttas (+ their sub-sections)
+  if(bk && VOLTOC[bk] && VOLTOC[bk].length){
+    let html='<div class="tochead">'+esc(VOLBOOK[bk]||state.currentBook||VOLTITLE[tv]||tv)+'</div>';
+    for(const ch of VOLTOC[bk]){
+      html+='<div class="tocitem toc-sutta" onclick="tocGoKey(\''+ch.key+'\')">'+esc(ch.label)+'</div>';
+      for(const sub of (ch.subs||[])) html+='<div class="tocitem toc-sec" onclick="tocGoKey(\''+sub.key+'\')">'+esc(sub.label)+'</div>';
+    }
+    dd.innerHTML=html; dd.hidden=false; return;
+  }
+  let toc=state.toc||[];
+  if(state.currentSutta){ const m=toc.filter(s=>foldName(s.title)===state.currentSutta); if(m.length) toc=m; }
+  let html='<div class="tochead">'+esc((toc.length===1?toc[0].title:VOLTITLE[tv]||tv))+'</div>';
+  for(const s of toc){
+    html+='<div class="tocitem toc-sutta" onclick="tocGo(\''+s.domid+'\')">'+esc(s.title)+'</div>';
+    for(const sec of (s.sections||[])) html+='<div class="tocitem toc-sec" onclick="tocGo(\''+sec.domid+'\')">'+esc(sec.title)+'</div>';
+  }
+  dd.innerHTML=html; dd.hidden=false; };
+document.addEventListener('click',e=>{ const w=document.querySelector('.tocwrap'); if(w&&!w.contains(e.target)){ const d=document.getElementById('tocdrop'); if(d)d.hidden=true; } });
+$('#finc').onclick=()=>{state.size=Math.min(22,state.size+1);if(state.opened)render();};
+$('#fdec').onclick=()=>{state.size=Math.max(12,state.size-1);if(state.opened)render();};
+function tipify(root){(root||document).querySelectorAll('[title]').forEach(el=>{const v=el.getAttribute('title');if(v){el.setAttribute('data-tip',v);el.removeAttribute('title');}});}
+
+// ---------- search (top bar, real index) ----------
+const FOLDM={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
+const foldS=s=>(s||'').toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLDM[c]||c);
+const foldName=s=>foldS(s).replace(/[^a-z]/g,'');
+let TERMS=null, shardCache={}, TERMKEYS=null, SNAMES=null, SNFOLD=null;
+// !!! A SUTTA'S NAME IS USUALLY NOT IN ITS OWN PROSE.  Measured over the 2,593
+// distinct sutta names in the corpus: 16 are indexed as an exact term, 348 more
+// are reachable once the lookup does substrings — and **2,229 occur in no
+// running text at all**.  For those the text index can never help; the name is
+// printed in the HEADING and nowhere else.  So this box searches `names.json`
+// as well, exactly as `search.html` does, or typing `Abhabbasutta` here would
+// still find nothing however good the text matching got.
+async function ensureNames(){ if(SNAMES!==null) return;
+  SNAMES=await jget('../index/names.json',null);
+  SNFOLD=SNAMES?SNAMES.labels.map(foldS):null; }
+// !!! THE LOOKUP WAS EXACT-TOKEN WHILE THE PAGE PROMISED SUBSTRING
+// (2026-07-30m, user-reported).  `TERMS[ft]` is a key lookup, so `saṅgītisutta`
+// found nothing although `saṅgītisuttaṁ` is indexed in two volumes and thirteen
+// paragraphs carry the string — the edition inflects, so a bare stem is exactly
+// what a reader types and exactly what failed.  The footer has claimed
+// "exact / substring" all along.
+// Exact still wins outright; otherwise the term list is scanned once, cached,
+// and every term CONTAINING the query contributes its postings.
+function matchTerms(ft){
+  if(!TERMS) return [];
+  if(TERMS.terms[ft]) return [ft];
+  // A SUBSTRING SWEEP ON ONE OR TWO LETTERS IS NOT A SEARCH.  `og` matched 500
+  // terms across most of the corpus and pulled a shard for each — seconds of
+  // work for a result nobody wants, and it is what made the race above visible.
+  if(ft.length<3) return [];
+  if(!TERMKEYS) TERMKEYS=Object.keys(TERMS.terms);
+  const out=[];
+  for(let i=0;i<TERMKEYS.length;i++){ if(TERMKEYS[i].indexOf(ft)>=0){ out.push(TERMKEYS[i]); if(out.length>=500) break; } }
+  return out;
+}
+async function ensureTerms(){ if(TERMS)return; const j=await jget('../index/terms.compact.json',{terms:{},vols:[],layers:[]}); TERMS=j; }
+async function shard(vi){ if(shardCache[vi])return shardCache[vi]; return shardCache[vi]=await jget('../index/'+TERMS.vols[vi]+'.idx.json',{paras:[],inv:{}}); }
+let sTimer=null, sSeq=0;
+$('#sq').addEventListener('input',e=>{clearTimeout(sTimer);sTimer=setTimeout(()=>doSearch(e.target.value),180);});
+$('#sq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';$('#sdrop').hidden=true;}});
+document.addEventListener('click',e=>{const s=$('.search'); if(s&&!s.contains(e.target))$('#sdrop').hidden=true;});
+async function doSearch(q){
+  // !!! AN EARLIER KEYSTROKE MUST NOT PAINT OVER A LATER ONE (2026-07-30n,
+  // user-reported).  This function awaits the term map, the name index and one
+  // shard per volume, so a slow early call can resolve AFTER a fast later one:
+  // typing `oghasutta` showed "11,043 occurrence(s) for “og”" and 245 sections
+  // matching `og` — `Yogasutta`, `Rogasutta`, `Pubbayogādi`.  The race was
+  // always there; the substring scan added on 2026-07-30m made the early calls
+  // slow enough to lose it.  Each call takes a ticket and paints only if it is
+  // still the newest.
+  const my=++sSeq;
+  const dd=$('#sdrop'); const fq=foldS((q||'').trim());
+  if(fq.length<2){dd.hidden=true;dd.innerHTML='';return;}
+  await ensureTerms(); await ensureNames();
+  let secHTML='', nSec=0;
+  if(SNAMES){
+    const hit=[];
+    for(let i=0;i<SNFOLD.length;i++) if(SNFOLD[i].indexOf(fq)>=0) hit.push(i);
+    if(hit.length){
+      const H=new Set(hit); const rows=SNAMES.rows.filter(r=>H.has(r[0]));
+      nSec=rows.length;
+      rows.sort((a,b)=>{const A=SNAMES.labels[a[0]],Bb=SNAMES.labels[b[0]];
+        return (SNFOLD[a[0]]===fq?0:1)-(SNFOLD[b[0]]===fq?0:1)||A.length-Bb.length;});
+      const LN2={'canon':'Pāḷi','commentary':'Aṭṭhakathā','subcommentary':'Ṭīkā'};
+      secHTML='<div class="sr-head">'+nSec+' section'+(nSec===1?'':'s')+'</div>'+
+        rows.slice(0,10).map(r=>'<div class="sr-hit" onclick="openKey(\''+
+          SNAMES.vols[r[1]]+'#'+r[2]+'\',\''+({canon:'canon',commentary:'A',subcommentary:'T'})[SNAMES.layers[r[3]]]+
+          '\');document.getElementById(\'sdrop\').hidden=true;">'+
+          '<span class="sr-name">'+esc(SNAMES.labels[r[0]])+'</span>'+
+          '<span class="sr-loc" style="color:'+
+          ({canon:'var(--canon)',commentary:'var(--comm)',subcommentary:'var(--tika)'})[SNAMES.layers[r[3]]]+
+          '">'+LN2[SNAMES.layers[r[3]]]+' · '+SNAMES.vols[r[1]]+'</span></div>').join('');
+    }
+  }
+  const mts=matchTerms(fq);
+  const vis=mts.length?[...new Set(mts.flatMap(k=>TERMS.terms[k]||[]))].sort((a,b)=>a-b):null;
+  if(my!==sSeq) return;
+  if(!vis){dd.hidden=false;
+    dd.innerHTML=secHTML||('<div class="sr-head">No matches for “'+esc(q)+'”</div>');return;}
+  const LN={'pali-unicode':'Pāḷi','atthakatha-unicode':'Aṭṭhakathā','tika-unicode':'Ṭīkā'};
+  const COL={'pali-unicode':'var(--canon)','atthakatha-unicode':'var(--comm)','tika-unicode':'var(--tika)'};
+  let items=[],total=0;
+  for(const vi of vis){ const sh=await shard(vi);
+    const _m=new Map();
+    for(const k of mts) for(const [pi,c] of (sh.inv[k]||[])) _m.set(pi,(_m.get(pi)||0)+c);
+    const post=[..._m.entries()].sort((a,b)=>a[0]-b[0]);
+    for(const [pi,c] of post){ total+=c; if(items.length<80){ const p=sh.paras[pi]; const lay=TERMS.layers[vi];
+      const f=foldS(p.text), i=f.indexOf(fq), a=Math.max(0,i-24), b=Math.min(p.text.length,i+fq.length+42);
+      const snip=(a>0?'…':'')+esc(p.text.slice(a,i))+'<mark>'+esc(p.text.slice(i,i+fq.length))+'</mark>'+esc(p.text.slice(i+fq.length,b))+'…';
+      items.push('<div class="sresult" onclick="openKey(\''+p.key+'\',\''+({'pali-unicode':'canon','atthakatha-unicode':'A','tika-unicode':'T'}[lay])+'\');document.getElementById(\'sdrop\').hidden=true"><span class="sr-lay" style="color:'+COL[lay]+'">'+LN[lay]+(p.n!=null?' ¶'+p.n:(p.page!=null?' p.'+p.page:''))+'</span><div class="sr-snip">'+snip+'</div></div>');
+    } } }
+  // SECTIONS FIRST, THEN OCCURRENCES — the same order `search.html` uses, and
+  // for the same reason: someone typing a sutta's name wants the sutta.
+  if(my!==sSeq) return;
+  dd.hidden=false; dd.innerHTML=secHTML+
+    '<div class="sr-head">'+total.toLocaleString()+' occurrence(s) for “'+esc(q)+'”</div>'+items.join('');
+}
+// !!! reader2 HAD NO URL HANDLING AT ALL (2026-07-30g).  The site's own
+// navigation was split — `index.html` opened THIS reader while the top-nav
+// Reader link and, more seriously, every SEARCH RESULT opened the older
+// `reader.html` — and repointing them here would have silently dropped the
+// target paragraph and the query, because nothing below `buildSidebar` ever
+// read `location`.  So the two things the old reader supported are supported
+// here before anything is repointed.
+//
+// THREE HASH FORMS ARE ACCEPTED.  `#VOL#ORD` is what search now emits, and it
+// is exact.  `#VOL/ORD` is the same thing.  `#VOL/<id>` is the OLD reader's
+// form, kept so a bookmark or an outside link still lands — resolved by
+// scanning the volume for that `id`, which is NOT unique (12,110 collisions
+// corpus-wide, REBUILD-PLAN Phase 2), so it lands on the first match exactly
+// as the old reader did.  That ambiguity is the reason search now emits the
+// ordinal instead.
+const HLFOLD={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
+const hfold=s=>s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>HLFOLD[c]||c);
+function markInEl(el,q){
+  if(!el||!q) return; const fq=hfold(q.trim()); if(!fq) return;
+  const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null);
+  const nodes=[]; while(walker.nextNode()){ if(walker.currentNode.parentNode.nodeName!=='MARK') nodes.push(walker.currentNode); }
+  for(const node of nodes){
+    const text=node.nodeValue, f=hfold(text); let idx=f.indexOf(fq); if(idx<0) continue;
+    const frag=document.createDocumentFragment(); let last=0;
+    while(idx>=0){ if(idx>last)frag.appendChild(document.createTextNode(text.slice(last,idx)));
+      const m=document.createElement('mark'); m.className='shl'; m.textContent=text.slice(idx,idx+fq.length);
+      frag.appendChild(m); last=idx+fq.length; idx=f.indexOf(fq,last); }
+    if(last<text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    node.parentNode.replaceChild(frag,node);
+  }
+}
+async function resolveHash(){
+  const h=decodeURIComponent((location.hash||'').replace(/^#/,'')); if(!h) return null;
+  let vol=null, rest=null;
+  if(h.includes('#')){ [vol,rest]=h.split('#'); }
+  else { const i=h.indexOf('/'); if(i<0) return null; vol=h.slice(0,i); rest=h.slice(i+1); }
+  if(!vol||!(vol in VOLLAYER)) return null;
+  if(/^\d+$/.test(rest)) return vol+'#'+rest;
+  const c=await loadVol(vol);
+  const i=(c.paras||[]).findIndex(p=>p&&p.id===rest);
+  return i>=0 ? vol+'#'+i : vol+'#0';
+}
+async function openFromURL(){
+  const key=await resolveHash(); if(!key) return false;
+  const LK={canon:'canon',commentary:'A',subcommentary:'T'};
+  const vol=parseKey(key)[0];
+  await openKey(key, LK[VOLLAYER[vol]]||'canon');
+  const q=new URLSearchParams(location.search).get('q')||'';
+  // WAIT FOR THE PARAGRAPH, DO NOT GUESS A DELAY.  A fixed timeout raced the
+  // reader's own render: the highlight appeared on some runs and not others,
+  // which is the worst kind of green.  Polls a bounded number of times and
+  // gives up quietly if the ordinal is never drawn (a hidden one, say).
+  for(let i=0;i<40;i++){
+    const el=document.getElementById('p-'+key.replace('#','-'));
+    if(el){ el.scrollIntoView({block:'center'}); if(q) markInEl(el,q); return true; }
+    await new Promise(r=>setTimeout(r,60));
+  }
+  return true;
+}
+buildSidebar().then(()=>openFromURL());
+window.addEventListener('hashchange',()=>{ openFromURL(); });
+</script>
+</body>
+</html>
