@@ -1,6 +1,60 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-08-01)
+## START HERE (updated 2026-08-01b)
+
+* **THE TOP BAR IS FIXED, AND THE BREAKPOINTS CAME FROM A MEASUREMENT, NOT A
+  GUESS (2026-08-01b).** Committed and pushed, `f0aa8a8`; user-confirmed on the
+  iPhone. Sweeping the viewport from 900px down in 10px steps in Chromium gave
+  **two faults with different thresholds**, which is why one blanket rule at the
+  sidebar's 860px would have been wrong:
+  | width | symptom |
+  |---|---|
+  | ≤790px | the brand wraps and is clipped by the 52px header — **this is the iPad one** |
+  | ≤540px | `◐` leaves the viewport |
+  | ≤500px | `ES` leaves too |
+  | ≤440px / ≤380px / ≤320px | Errata / About / Downloads follow |
+  So: **`max-width:800px` truncates the brand** and nothing else, and
+  **`max-width:560px` moves Home/Downloads/About/Errata into the foot of the ☰
+  panel** while `ES` and `◐` keep their place in the bar. **iPad portrait at
+  768px therefore keeps its links and merely stops clipping** — a single 860px
+  rule would have taken away links that fit. Verified at 11 viewports including
+  both sides of each breakpoint (560/561, 800/801): **0 overflow, 0 clipping,
+  header 52px throughout, 0 page errors**; links follow the language
+  (`Inicio / Descargas / Acerca / Erratas`); `verify_sidebar` and `_navdup` pass.
+  **`addSideLinks()` must be called INSIDE `buildSidebar`** — the builder opens
+  with `side.innerHTML=''`, so anything appended earlier is discarded.
+* **!!! "TEACH `stamp_build.py` TO HASH THE READER HTML" IS A FIX FOR THE WRONG
+  THING. DO NOT DO IT (2026-08-01b).** The 07-31c entry below says an HTML-only
+  change "moves no BUILD and nothing forces a refetch". The first clause is
+  true, the second does not follow. **BUILD only ever appears inside a query
+  string this page builds** — `jget()` appends `?v=BUILD`, and `i18n.js` carries
+  it — while **the HTML is fetched at its bare URL**: `index.html` and
+  `reader.html` both link to `/reader/reader2.html` with no buster, and the `?q=`
+  on a search result is a search term, not a version. **Moving BUILD cannot make
+  any browser re-fetch the HTML.** It would only hand every returning visitor
+  1,691 fresh JSON URLs for unchanged data — the cost that made the idempotency
+  fix of 07-31b worth making. HTML freshness is set by GitHub Pages'
+  `Cache-Control` and the CDN, neither of which this repo controls. What works is
+  already in place: `verify_live.py` byte-compares the published HTML, and an
+  HTML-only change is tested with a fresh query string. If it ever needs solving
+  for real visitors, the fix belongs in the page — fetch a version marker and
+  offer a reload. Reasoning recorded in `stamp_build.py`'s own docstring so the
+  next session does not "fix" it.
+* **`_xc/` IS PARTLY TRACKED — NEVER `git rm -r --cached _xc/`.** 58 files there
+  were tracked before 08-01, including the gate scripts `verify_resolver.js`,
+  `verify_sidebar.js`, `verify_bands.js`, `residue.py`, `para_alignment*.py` and
+  the 40 `linksk_fixed/*.links.json`. A blanket untrack would have removed all of
+  them. `37f11e8` untracks only the session scratch — `sitemin.tgz` (27.4 MB),
+  `linksk_prePrune/`, the `reader2_*.html` and `i18n_v*.js` staging copies — and
+  `.gitignore` now names exactly those. **`beda0c3` had swept 202 scratch files
+  into the repo, 36.7 MB of it**, because `git add -A` was used; the 27.4 MB
+  tarball remains in history and would need `git filter-repo` to remove.
+  **`git add -u` is the right habit here** — it cannot pick up anything untracked.
+* **THE REMOTE IS NOW SSH** (`git@github.com:admin-iebh/OSBCT.git`), so pushes no
+  longer prompt. `admin-iebh` is a **personal account**, not an organization —
+  `ssh -T` greets it by name, and organizations cannot hold authentication keys.
+
+## START HERE — earlier (2026-08-01a)
 
 * **THE CLASS-A PRUNE IS APPLIED. 22,719 impossible commentary targets and 157
   impossible rev entries are gone from the live maps (2026-08-01).** Both

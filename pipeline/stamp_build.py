@@ -33,6 +33,34 @@ because no other gate can see it: `check_layout` grades roles, `verify_apparatus
 counts notes, `regress check` compares side-maps to their own baseline.
 `--force` overrides, and says so loudly.
 
+!!! WHAT BUILD DOES NOT COVER, AND WHY HASHING THE HTML WOULD NOT FIX IT
+(2026-08-01).  The 2026-07-31c note reads "`stamp_build.py` hashes JSON and
+`i18n.js` but NOT the reader HTML, so an HTML-only fix moves no BUILD and
+nothing forces a refetch."  The first half is true; the conclusion does not
+follow, and adding the HTML to the hash would be a fix for the wrong thing.
+
+BUILD only ever appears INSIDE a query string that this page builds:
+
+    jget(url) -> fetch(url + '?v=' + BUILD)        and  i18n.js?v=BUILD
+
+The HTML itself is fetched at its BARE URL — `/reader/reader2.html`, with no
+buster anywhere (checked: `index.html` and `reader.html` both link to the bare
+path, and the `?q=` on search results is a search term, not a version).  So
+moving BUILD cannot make any browser re-fetch the HTML.  It would only hand
+every returning visitor 1,691 fresh JSON URLs for data that had not changed —
+the exact cost that made `stamp_build` idempotency worth fixing on 07-31b.
+
+How long a visitor keeps stale HTML is set by GitHub Pages' own
+`Cache-Control` and by the CDN, neither of which this repository controls.
+The two things that DO work are already in place:
+  * `verify_live.py` byte-compares the published HTML against this working
+    copy, so a stale ORIGIN is detected rather than assumed;
+  * when testing an HTML-only change, open it with a fresh query string or in
+    a private window — the change is real, the copy on screen is not.
+If stale HTML ever needs solving for real visitors rather than for testing, the
+honest fix is in the page: fetch a small version marker and offer a reload when
+it disagrees with the built-in BUILD.  Do not reach for the hash.
+
 Run it LAST, after every builder and before deploying.
 Usage: python3 pipeline/stamp_build.py [--write] [--force] [--fast]
 """
