@@ -80,3 +80,17 @@ _xc/sitemin*.tgz
 _xc/linksk_classc/
 _xc/linksk_preC/
 _xc/linksk_rebuild/
+
+# Source PDFs of the Tipiṭaka-Pāḷi-Myanmā-Abhidhāna (23 vols, ~45 MB each) and any
+# page images extracted from them.  Same reasoning as the pali/ atthakatha/ tika/
+# rules above: public-domain source scans, kept ON DISK, never in the repository.
+# Globbed rather than spelled out because macOS stores the name in NFD and a
+# literal NFC pattern would silently fail to match.
+Tipi*Abhidh*na/
+
+# The sharded frequency table from roadmap step 1: 1,119 shards, 25 MB, and every
+# byte of it is regenerated exactly by `_vocab/report.py` from site/. Same
+# reasoning as the corpus/ rule above -- it is an intermediate until step 2 ships
+# it under site/, at which point it becomes the artefact and this rule goes.
+# The scripts and figures beside it ARE tracked; only freq/ is not.
+_vocab/freq/

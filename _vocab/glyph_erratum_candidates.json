@@ -1,0 +1,86 @@
+{
+ "note": "Candidates only. Not applied. Non-Pāḷi Latin letters found by the character census over 75,415,443 characters of site/<VOL>.json body text. The romanised Pāḷi alphabet has no f, q, x, z or w, so each of these is an extraction defect rather than a vocabulary fact. Each needs checking against the printed page before anything is written to data/glyph_errata.json.",
+ "source": "_vocab/tokenise.py character census, 2026-08-01",
+ "candidates": [
+  {
+   "vol": "10Ma02",
+   "ord": 295,
+   "n": 296,
+   "char": "x",
+   "printed": 247,
+   "context": "aṁ tāta Raṭṭhapāla kassaci dukkhassa jānāsi, x maraṇenapi te mayaṁ akāmakā vinā bhavissāma",
+   "form": null,
+   "conjecture": null
+  },
+  {
+   "vol": "10MaA01",
+   "ord": 108,
+   "n": 106,
+   "char": "q",
+   "printed": 232,
+   "context": "a kāye abhūtānaṁ subhasukhabhāvādīnaṁ pakkhepqssa, domanassavinayena kāye bhūtānaṁ asubhās",
+   "form": "pakkhepqssa",
+   "conjecture": "pakkhepassa"
+  },
+  {
+   "vol": "10MaA01",
+   "ord": 111,
+   "n": 109,
+   "char": "f",
+   "printed": 258,
+   "context": "iriyāpathā kathitā. Tasmā etesupi vuttanayenefa sampajānakāritā veditabbā. Tipiṭakamahāsīv",
+   "form": "vuttanayenefa",
+   "conjecture": "vuttanayeneva"
+  },
+  {
+   "vol": "15An01",
+   "ord": 581,
+   "n": 64,
+   "char": "q",
+   "printed": 181,
+   "context": "khāsahagatena cetasā vipulena mahaggatena appqmāṇena averena abyāpajjena pharitvā viharāmi",
+   "form": "appqmāṇena",
+   "conjecture": "appamāṇena"
+  },
+  {
+   "vol": "18AnA02",
+   "ord": 152,
+   "n": 16,
+   "char": "q",
+   "printed": 80,
+   "context": "aṁ paṭipannesu dvīsu satthavāhesu yakkhassa vqcanaṁ gahetvā bālasatthavāho saddhiṁ satthen",
+   "form": "vqcanaṁ",
+   "conjecture": "vacanaṁ"
+  },
+  {
+   "vol": "19AnT02",
+   "ord": 224,
+   "n": 157,
+   "char": "z",
+   "printed": 219,
+   "context": "evaṁ tesaṁ vacanaṁ kataṁ bhavissatīti. Kumbhizādīsupi so sattasaññīti āha “kumbhikaḷo piyo",
+   "form": "Kumbhizādīsupi",
+   "conjecture": "Kumbhilādīsupi / Kumbhiḷādīsupi"
+  },
+  {
+   "vol": "32Abhi04",
+   "ord": 896,
+   "n": 897,
+   "char": "q",
+   "printed": 444,
+   "context": "a re vattabbe “atthi gabbhaseyyāya dhammābhisqmayo”ti. * Atthi gabbhaseyyāya dhammābhisama",
+   "form": "dhammābhisqmayo",
+   "conjecture": "dhammābhisamayo"
+  },
+  {
+   "vol": "34KhuA15",
+   "ord": 408,
+   "n": 1,
+   "char": "F",
+   "printed": 193,
+   "context": "1. “Sumanassa aparena, Fevato nāma Nāyako. Anūpamo asadiso, atulo ut",
+   "form": "Fevato",
+   "conjecture": "Revato"
+  }
+ ]
+}
