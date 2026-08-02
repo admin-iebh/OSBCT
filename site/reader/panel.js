@@ -146,14 +146,26 @@ var S = {
                  es: 'Los diccionarios reunidos en dictionary.sutta.org, más CPED y PPN — '
                    + 'una sección cada uno, por orden de autoridad. Referencia, nunca la voz del panel (§9).'},
   wl_jump:      {en: 'In this word:', es: 'En esta palabra:'},
+  wl_goto:      {en: 'Open this passage in the reader',
+                 es: 'Abrir este pasaje en el lector'},
   wl_nodict:    {en: 'No dictionary reached from this form.',
                  es: 'Ningún diccionario alcanzado desde esta forma.'},
-  wl_tip_dpd:   {en: 'Digital Pāḷi Dictionary (Bodhirasa) — evaluation only; §9 keeps it a build-time filter, never the panel’s voice',
-                 es: 'Digital Pāḷi Dictionary (Bodhirasa) — sólo evaluación; el §9 lo mantiene como filtro, nunca como voz del panel'},
+  wl_tip_dpd:   {en: 'Digital Pāḷi Dictionary (Bodhirasa) — CC BY-NC-SA 4.0',
+                 es: 'Digital Pāḷi Dictionary (Bodhirasa) — CC BY-NC-SA 4.0'},
   wl_tip_abhi:  {en: 'Tipiṭaka-Pāḷi-Myanmā-Abhidhāna (Ministry of Religious Affairs, Yangon) — the lexical authority (§9)',
                  es: 'Tipiṭaka-Pāḷi-Myanmā-Abhidhāna (Ministerio de Asuntos Religiosos, Yangón) — la autoridad léxica (§9)'},
   wl_tip_peu:   {en: 'PEU — the Abhidhāna’s English rendering (encoded by Bodhirasa)',
                  es: 'PEU — la versión inglesa del Abhidhāna (codificada por Bodhirasa)'},
+  // ---- SHARING TERMS, SHOWN TO THE READER WITH THE SOURCE ITSELF ----
+  // Not a footnote and not a page the reader has to go and find: the terms
+  // travel with the entry, the way the licence notes already travel with the
+  // data in site/lookup/index.json.
+  wl_cc_dpd:    {en: 'Creative Commons CC BY-NC-SA 4.0 — attribution, non-commercial, share alike.',
+                 es: 'Creative Commons CC BY-NC-SA 4.0 — atribución, no comercial, compartir igual.'},
+  wl_dhamma:    {en: 'Freely available as a Gift of Dhamma. This material may only be '
+                   + 'distributed free of charge.',
+                 es: 'Disponible libremente como Regalo del Dhamma. Este material sólo '
+                   + 'puede distribuirse de forma gratuita.'},
   wl_tip_cped:  {en: 'Concise Pali-English Dictionary (A.P. Buddhadatta)',
                  es: 'Concise Pali-English Dictionary (A.P. Buddhadatta)'},
   wl_tip_ppn:   {en: 'Dictionary of Pāli Proper Names (G.P. Malalasekera)',
@@ -250,7 +262,7 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260802f';
+var WLV = '20260802h';
 function jfetch(url) {
   if (CACHE[url]) return CACHE[url];
   var u = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'v=' + WLV;
@@ -353,7 +365,13 @@ var CSS = ''
 + 'color:#fff;background:#3a3126;padding:6px 8px;border-radius:5px;'
 + 'box-shadow:0 2px 8px rgba(0,0,0,.3);pointer-events:none}'
 + '#wl .wl-b{overflow-y:auto;overflow-wrap:break-word;padding:10px 12px 18px;flex:1 1 auto;font-size:13.5px;line-height:1.55}'
++ '#wl .wl-cite a.wl-go{color:inherit;text-decoration:none;border-bottom:1px dotted currentColor}'
++ '#wl .wl-cite a.wl-go:hover{color:var(--acc,inherit);border-bottom-style:solid}'
 + '#wl .wl-src{font-size:11px;color:var(--mut);margin:0 0 8px}'
+  // the sharing terms: same weight as the attribution, but set apart so it
+  // reads as a condition rather than a credit
++ '#wl .wl-rights{font-size:11px;color:var(--mut);margin:-4px 0 10px;'
++ 'padding:5px 8px;border-left:2px solid var(--mut);opacity:.9}'
 + '#wl .wl-sub{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;'
 + 'color:var(--mut);margin:12px 0 4px}'
 + '#wl .wl-promo{border:1px solid var(--line);border-left:3px solid var(--comm);'
@@ -665,11 +683,16 @@ function lookup(word, paraEl, inPanel) {
         var page0 = r2[0], ped = r2[1], ev = r2[2];
         var rows = Array.isArray(gl) ? gl : (page0 ? page0.rows : []);
         var nGloss = big ? big.big : rows.length;
+        // the ordinal maps for the volumes these rows cite, so the citations
+        // can be links.  Awaited: rowHtml is synchronous, and a map that
+        // arrives after the render silently leaves every citation plain.
+        return loadOrds(rows).then(function () {
         render({word: word, para: paraEl, freq: freq, rows: rows,
                 linked: linked, ev: ev,
                 big: !!big, page: page0 ? page0.page : null,
                 pages: page0 ? page0.pages : null, nGloss: nGloss,
                 ped: ped.filter(function (p) { return p.e; })});
+        });
       });
     });
 }
@@ -911,14 +934,49 @@ function show(tab, d) {
   });
 }
 
+// THE CITATION IS A LINK INTO THE PASSAGE IT COMES FROM.
+//
+// A gloss row says "this is what 42KhuA23 §118 says about your word", and until
+// now the reader had to go and find §118 by hand.  The row carries the volume
+// and the printed paragraph NUMBER; reader2 routes on the paragraph's ORDINAL
+// (`#VOL/<index>`, see resolveHash) and the two are not the same -- unnumbered
+// paragraphs, `n_to` spans and `covers` all push them apart.  So the build ships
+// `reader/ord/<VOL>.json`, a plain {n: ordinal} map per volume, 724 kB for all
+// 118 of them, and the panel loads only the volumes actually on screen.
+//
+// If the map is missing or the number is not in it the citation stays plain
+// text rather than becoming a link that goes nowhere.  A dead link in an
+// apparatus is worse than no link: it makes the reader doubt the reference.
+var ORD = {};
+function ordOf(r) {
+  var m = ORD[r.v];
+  return (m && r.n != null && m[String(r.n)] != null) ? m[String(r.n)] : null;
+}
+function loadOrds(rows) {
+  var want = {};
+  (rows || []).forEach(function (r) { if (r.v && !(r.v in ORD)) want[r.v] = 1; });
+  var vols = Object.keys(want);
+  if (!vols.length) return Promise.resolve();
+  return Promise.all(vols.map(function (v) {
+    return jfetch('ord/' + v + '.json').then(function (m) { ORD[v] = m || {}; });
+  }));
+}
+
 function rowHtml(r) {
+  var o = ordOf(r);
+  var cite = esc(r.v) + ' §' + (r.n != null ? r.n : '—')
+           + (r.p ? ' · p.' + r.p : '') + (r.s ? ' · ' + esc(r.s) : '');
   return '<div class="wl-row"><span class="lem g">' + esc(r.l) + '</span>'
     + (r.q ? ' <span class="wl-flag">(' + esc(T('wl_quoted')) + ')</span>' : '')
     + (r.h ? ' <span class="wl-flag">(' + esc(T('wl_series')) + ')</span>' : '')
     + ' — <span class="wl-g">' + esc(r.g) + '</span>'
     + (r.t ? '<div class="wl-flag">' + esc(T('wl_trunc')) + '</div>' : '')
-    + '<div class="wl-cite">' + esc(r.v) + ' §' + (r.n != null ? r.n : '—')
-    + (r.p ? ' · p.' + r.p : '') + (r.s ? ' · ' + esc(r.s) : '') + '</div></div>';
+    + '<div class="wl-cite">'
+    + (o != null
+       ? '<a class="wl-go" href="#' + esc(r.v) + '/' + o + '" title="'
+         + esc(T('wl_goto')) + '">' + cite + ' \u2192</a>'
+       : cite)
+    + '</div></div>';
 }
 
 // Which target paragraphs does the edition's link map tie this one to?
@@ -1005,7 +1063,8 @@ function loadMore(d, btn) {
     .then(function (o) {
       if (!o) return;
       d.rows = d.rows.concat(o.rows); d.page = o.page; d.pages = o.pages;
-      show('ed', d);
+      // a paged-in batch cites volumes the first page never did
+      loadOrds(o.rows).then(function () { show('ed', d); });
     });
 }
 
@@ -1027,14 +1086,18 @@ function viewPed(d) {
 // Every one of these opens with an attribution line and the evaluation banner.
 // Sources are never merged: one tab, one source, and PEU's English appears
 // inside an Abhidhāna entry only in an attributed, collapsed reveal.
-function evHead(srcLine, extra) {
+// !!! THE SHARING TERMS RIDE WITH THE SOURCE, NOT IN A FOOTER.  A reader
+// looking at an entry has to be able to see, without leaving it, what they may
+// do with it.  `rights` is a T() key or null; it prints under the attribution.
+function evHead(srcLine, extra, rights) {
   return '<div class="wl-banner">' + esc(T('wl_eval')) + '</div>'
        + '<div class="wl-src">' + esc(srcLine) + (extra ? ' ' + esc(extra) : '')
-       + '</div>';
+       + '</div>'
+       + (rights ? '<div class="wl-rights">' + esc(T(rights)) + '</div>' : '');
 }
 
 function viewDpd(d) {
-  var h = evHead(T('wl_tip_dpd'));
+  var h = evHead(T('wl_tip_dpd'), '', 'wl_cc_dpd');
   var e = (d.ev && d.ev.dpd) || [];
   if (!e.length) return h + '<p class="wl-none">' + esc(T('wl_noentry')) + '</p>';
   // DPD's entry carries its own chips -- grammar, examples, declension, root
@@ -1050,7 +1113,7 @@ function viewDpd(d) {
 }
 
 function viewAbhi(d) {
-  var h = evHead(T('wl_tip_abhi'));
+  var h = evHead(T('wl_tip_abhi'), '', 'wl_dhamma');
   var i = 0;
   ((d.ev && d.ev.lem) || []).forEach(function (L) {
     (L.e.a || []).forEach(function (row) {
@@ -1085,7 +1148,7 @@ function viewAbhi(d) {
 }
 
 function viewPeu(d) {
-  var h = evHead(T('wl_tip_peu'));
+  var h = evHead(T('wl_tip_peu'), '', 'wl_dhamma');
   var human = '', mt = '', i = 0;
   ((d.ev && d.ev.lem) || []).forEach(function (L) {
     if (!L.e.p) return;

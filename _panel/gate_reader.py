@@ -202,6 +202,9 @@ def ped_rows(word, exp, EVAL_ON):
     return n
 
 
+VOLCACHE = {}
+
+
 def run_gate(EVAL_ON=False):
     rng = random.Random(SEED)
     fails, checked = [], 0
@@ -591,6 +594,60 @@ def run_gate(EVAL_ON=False):
                         c = collections.Counter(dup)
                         fail(f'a section shows the same entry twice: '
                              f'{sorted(c.items())}')
+                # 14. THE GLOSS CITATIONS ARE LINKS, AND THEY MUST LAND.
+                # A citation link that 404s or scrolls nowhere is worse than
+                # plain text -- it makes the reader doubt the reference.  So
+                # this does not check that anchors EXIST (they did, in the
+                # version that pointed at paragraph numbers instead of
+                # ordinals, and every one of them was wrong).  It reads the
+                # href, resolves it against the volume's own ord map, and
+                # requires the target paragraph to be real.
+                # !!! OPEN THE GLOSS TAB AND REQUIRE LINKS TO BE THERE.
+                # The first version of this assertion only iterated whatever
+                # anchors it found -- so suppressing every link entirely made it
+                # pass with 0 failures, exactly the way assertion 13 once passed
+                # by never running.  Negative control A proved it.  A word with
+                # gloss rows MUST produce at least one citation link.
+                pg.evaluate('''() => {
+                  const b = document.querySelector('#wlt button[data-tab="ed"]');
+                  if (b && !b.classList.contains('dis')) b.click();
+                }''')
+                pg.wait_for_timeout(120)
+                links = pg.evaluate('''() => [...document.querySelectorAll(
+                  '#wlb .wl-cite a.wl-go')].map(a => ({
+                    href: a.getAttribute('href'),
+                    text: (a.textContent || '').trim()}))''')
+                n_cite = pg.evaluate(
+                    "() => document.querySelectorAll('#wlb .wl-cite').length")
+                if exp_ed and n_cite and not links:
+                    fail(f'the Gloss tab shows {n_cite} citations and not one of '
+                         f'them is a link into the passage')
+                for a in links[:6]:
+                    m = re.match(r'^#([^/]+)/(\d+)$', a['href'] or '')
+                    if not m:
+                        fail(f'gloss citation link is malformed: {a["href"]!r}')
+                        continue
+                    tvol, tord = m.group(1), int(m.group(2))
+                    vpath = os.path.join(REPO, 'site', tvol + '.json')
+                    if not os.path.exists(vpath):
+                        fail(f'gloss citation points at a volume that is not '
+                             f'published: {tvol}')
+                        continue
+                    paras = VOLCACHE.get(tvol)
+                    if paras is None:
+                        paras = json.load(open(vpath)).get('paragraphs') or []
+                        VOLCACHE[tvol] = paras
+                    if not (0 <= tord < len(paras)):
+                        fail(f'gloss citation {a["href"]} is out of range: '
+                             f'{tvol} has {len(paras)} paragraphs')
+                        continue
+                    # the printed number in the citation must be the number of
+                    # the paragraph the ordinal actually lands on
+                    want_n = paras[tord].get('n')
+                    mm = re.search(r'§(\d+)', a['text'])
+                    if mm and want_n is not None and int(mm.group(1)) != want_n:
+                        fail(f'gloss citation says §{mm.group(1)} but '
+                             f'{tvol}/{tord} is §{want_n}')
                 if st['spill']['px'] > 2:
                     fail(f'{st["spill"]["px"]}px of the panel body is outside the '
                          f'panel ({st["spill"]["who"]})')
