@@ -2261,6 +2261,124 @@ def _bad_keys(onclicks, vol_paras):
     return out
 
 
+def _layer_probe():
+    """A canon paragraph deep in a volume, inside a NAMED section, that has a
+    commentary link.  Chosen from the files, not from the page."""
+    for vol in VOLS:
+        vp = os.path.join(REPO, 'site', vol + '.json')
+        lp = os.path.join(REPO, 'site', 'reader', 'linksk', vol + '.links.json')
+        if not (os.path.exists(vp) and os.path.exists(lp)):
+            continue
+        d = json.load(open(vp, encoding='utf-8'))
+        ps = d.get('paragraphs') or d.get('paras') or []
+        L = json.load(open(lp, encoding='utf-8'))
+        name, best = None, None
+        for i, q in enumerate(ps):
+            if q.get('sutta') and q['sutta'] != 'X':
+                name = q['sutta']
+            if i < len(ps) // 2 or not name:
+                continue          # deep enough that a scroll jump is visible
+            e = L.get(str(i)) or {}
+            if e.get('commentary'):
+                best = (vol, i, name, e['commentary'][0]['key'])
+                break
+        if best:
+            return best
+    return None
+
+
+def run_layers():
+    """PRESSING A LAYER BUTTON MUST NOT MOVE THE READER, AND THE SUTTA MUST
+    KEEP ITS NAME.
+
+    User-reported twice on 2026-08-02 -- "click in A it takes the user to a
+    place that it is not the Commentary and the Sutta looses its name".  The
+    first diagnosis found the link data wrong, which it was, fixed it, and
+    reported the fault closed.  It was not: the reported behaviour has TWO
+    causes and only one was in the data.
+
+      * `render()` rebuilds `#scroll` wholesale, and pressing A roughly DOUBLES
+        the blocks in the stream, so the browser's preserved `scrollTop` -- a
+        PIXEL offset into a document that just changed height -- lands
+        somewhere else.  Measured: top of view `p-16An02-383` before,
+        `p-16An02-216` after, twenty-two printed pages earlier.
+      * the title takes its sutta name from `state.cursutta`, which ONLY the
+        sidebar tree sets, so arriving by search or by hash titled the pane
+        with the nipata and the sutta had no name on screen at all.
+
+    Both were visible in the first session's own test output and read past.
+    This asserts the reader's experience instead of the data underneath it: go
+    to a named sutta deep in a volume, press A, press T, and require that the
+    paragraph at the top of the view is THE SAME ONE each time and that the
+    title still names the sutta.  At a phone width as well, because the jump
+    scales with document height and is worse there.
+    """
+    probe = _layer_probe()
+    if not probe:
+        print('  note: LAYERS NOT EXERCISED -- no volume with a named deep '
+              'paragraph carrying a commentary link')
+        print('gate_reader [layers]: 0 failures (NOT EXERCISED)')
+        return 0
+    vol, ord_, name, ckey = probe
+    pid = 'p-%s-%d' % (vol, ord_)
+    fails = []
+    READ = ("() => { const sc = document.getElementById('scroll');"
+            " const vt = sc.getBoundingClientRect().top;"
+            " for (const p of sc.querySelectorAll('.para')) {"
+            "   const r = p.getBoundingClientRect();"
+            "   if (r.bottom > vt + 4) return {top: p.id,"
+            "     title: document.querySelector('#doctitle').firstChild"
+            "            ? document.querySelector('#doctitle').firstChild.textContent : ''}; }"
+            " return {top: null, title: ''}; }")
+    with sync_playwright() as pw:
+        b = pw.chromium.launch()
+        for vw, vh in ((1400, 900), (390, 844)):
+            ctx = b.new_context(viewport={'width': vw, 'height': vh})
+            pg = ctx.new_page()
+            try:
+                pg.goto(BASE + '/reader/reader2.html?wl=0#%s#%d' % (vol, ord_),
+                        wait_until='domcontentloaded')
+                pg.wait_for_selector('.para', timeout=30000)
+                pg.wait_for_timeout(1500)
+                a = pg.evaluate(READ)
+                if a['top'] != pid:
+                    fails.append('%dx%d: opening %s#%d did not put %s at the top '
+                                 'of the view (got %s)'
+                                 % (vw, vh, vol, ord_, pid, a['top']))
+                if name.split()[-1][:6].lower() not in (a['title'] or '').lower():
+                    fails.append('%dx%d: arriving at %r the pane is titled %r -- '
+                                 'the sutta has no name on screen'
+                                 % (vw, vh, name, a['title']))
+                for k in ('A', 'T'):
+                    pg.click('#layerbar button[data-k="%s"]' % k)
+                    pg.wait_for_timeout(2500)
+                    g = pg.evaluate(READ)
+                    if g['top'] != a['top']:
+                        fails.append('%dx%d: pressing %s moved the reader from '
+                                     '%s to %s -- the re-render kept the pixel '
+                                     'offset, not the paragraph'
+                                     % (vw, vh, k, a['top'], g['top']))
+                # and the commentary drawn under the canon paragraph must be the
+                # one the map names -- the data half of the same complaint
+                nxt = pg.evaluate(
+                    "(id) => { const all = [...document.querySelectorAll('#scroll .para')];"
+                    " const i = all.findIndex(p => p.id === id);"
+                    " return i >= 0 && all[i + 1] ? all[i + 1].id : null; }", pid)
+                want = 'p-' + ckey.replace('#', '-')
+                if nxt != want:
+                    fails.append('%dx%d: the block under %s is %r, but the map '
+                                 'says %s' % (vw, vh, pid, nxt, ckey))
+            except Exception as e:
+                fails.append('%dx%d: layer check raised: %s' % (vw, vh, e))
+            ctx.close()
+        b.close()
+    for f in fails:
+        print('  FAIL layers: %s' % f)
+    print('gate_reader [layers]: %d failures  (probe %s#%d %r -> %s)'
+          % (len(fails), vol, ord_, name, ckey))
+    return 1 if fails else 0
+
+
 if __name__ == '__main__':
     if '--breakpoints' in sys.argv:
         sys.exit(run_breakpoints())
@@ -2272,6 +2390,8 @@ if __name__ == '__main__':
         sys.exit(run_design_negative_controls())
     if '--search-only' in sys.argv:
         sys.exit(run_search())
+    if '--layers-only' in sys.argv:
+        sys.exit(run_layers())
     vf = check_version()
     for f in vf:
         print(f'  FAIL version: {f}')
@@ -2286,6 +2406,9 @@ if __name__ == '__main__':
     # the search box is part of the reader a visitor uses, and until
     # 2026-08-02 nothing here ever typed into it -- see run_search
     rc |= run_search()
+    # the layer buttons are the other thing a reader presses constantly and
+    # nothing here had ever pressed -- see run_layers
+    rc |= run_layers()
     if '--no-eval' not in sys.argv:
         rc |= run_gate(EVAL_ON=True)
         rc |= run_tabs()
