@@ -209,10 +209,24 @@ var S = {
                  es: 'Pali Roots Dictionary (ဓာတ်အဘိဓာန်) — birmano, convertido desde Zawgyi'},
   wl_tip_uhs:   {en: 'U Hau Sein’s Pāḷi-Myanmar Dictionary — Burmese, converted from Zawgyi',
                  es: 'Diccionario Pāḷi-birmano de U Hau Sein — birmano, convertido desde Zawgyi'},
-  wl_eval:      {en: 'Evaluation only — this source is not published with the edition. '
-                   + 'Its redistribution licence is unconfirmed, or §9 excludes it as a voice.',
-                 es: 'Sólo evaluación — esta fuente no se publica con la edición. '
-                   + 'Su licencia de redistribución no está confirmada, o el §9 la excluye como voz.'},
+  // !!! THE OLD NOTICE ANSWERED A QUESTION NO READER WAS ASKING.  It spoke
+  // about redistribution licences and about §9's editorial position, which
+  // are the project's concerns and not the reader's, and it did so above
+  // every entry.  Replaced 2026-08-02 at the reader's direction, with his
+  // reasoning recorded because it governs the whole tab: a gloss written in
+  // Pāḷi is no use to someone who cannot yet read Pāḷi, and that is almost
+  // everyone.  The dictionaries are here to be learned from; the honest
+  // caution is about ACCURACY, and it points at the Gloss tab, which is the
+  // edition speaking in its own voice.
+  wl_eval:      {en: 'This dictionary is offered as it is as a reference for the '
+                   + 'study of Pāḷi. We cannot guarantee its accuracy. For accurate '
+                   + 'definitions use the Gloss tab. All the dictionaries provided '
+                   + 'here are found freely available on the Internet.',
+                 es: 'Este diccionario se ofrece tal cual, como referencia para el '
+                   + 'estudio del Pāḷi. No podemos garantizar su exactitud. Para '
+                   + 'definiciones precisas use la pestaña Gloss. Todos los '
+                   + 'diccionarios aquí ofrecidos se encuentran libremente '
+                   + 'disponibles en Internet.'},
   wl_zg:        {en: 'Burmese, transcoded from Zawgyi to Unicode and verified by character census (§3).',
                  es: 'Birmano, transcodificado de Zawgyi a Unicode y verificado por censo de caracteres (§3).'},
   wl_mt:        {en: 'machine-translated (Google) — withheld by default',
@@ -289,7 +303,7 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260803e';
+var WLV = '20260803f';
 
 // ---------------------------------------------------- gzipped shard sets --
 // WHY THE SHARDS ARE STORED GZIPPED, AND WHY THAT IS NOT THE SAME AS
@@ -622,7 +636,10 @@ var CSS = ''
 + 'background:none;border:1px dashed var(--line);border-radius:6px;padding:6px 10px;'
 + 'cursor:pointer;margin:10px 0}'
 + '#wl .wl-none{color:var(--mut);font-size:12.5px}'
-+ '#wl .wl-banner{background:var(--app);color:var(--mut);border:1px solid var(--line);'
+// SMALL BUT VISIBLE, at the reader's direction.  It was --mut, which the
+// 2026-08-02 contrast survey measured at 3.40:1 on --app — under AA, i.e.
+// not reliably legible, which for a caution is the wrong failure.
++ '#wl .wl-banner{background:var(--app);color:var(--fg);font-size:11.5px;line-height:1.4;border:1px solid var(--line);'
 + 'border-radius:6px;font-size:11px;padding:5px 8px;margin:0 0 8px}'
   // !!! BURMESE NEEDS MORE ROOM THAN LATIN, NOT LESS.  1.9 line-height was
   // already right; the size was not.  Stacked consonants, asat and kinzi are
@@ -1414,6 +1431,31 @@ function viewPed(d) {
 // !!! THE SHARING TERMS RIDE WITH THE SOURCE, NOT IN A FOOTER.  A reader
 // looking at an entry has to be able to see, without leaving it, what they may
 // do with it.  `rights` is a T() key or null; it prints under the attribution.
+// !!! THE DICTIONARIES' OWN MARKUP WAS BEING SHOWN AS TEXT (2026-08-02,
+// user-reported).  Every body here went through `esc()`, so a `<br>` in the
+// source arrived on screen as the four characters `<br>`.  Measured over
+// site/lookup_eval/{lem,form}: 137,190 strings carry one, and two fields
+// carry one in EVERY entry — K 45,847/45,847 and B 45,635/45,635; R is
+// 34,073 of 40,265.  The data also carries <p> <b> <span> <i> <abbr>
+// <ul>/<li>.
+//
+// ESCAPE FIRST, THEN LET A KNOWN LIST BACK THROUGH.  The reverse — strip
+// what looks dangerous and pass the rest — is the shape that always leaks.
+// Attributes are dropped whole, so there is no href, no style, no event
+// handler, and nothing outside the list survives at all.  This is a
+// third-party corpus of unknown provenance rendered into the reader's page;
+// it is not a place to be permissive.
+var SAFE_TAGS = {br: 1, b: 1, strong: 1, i: 1, em: 1, p: 1,
+                 ul: 1, ol: 1, li: 1, sub: 1, sup: 1};
+function rich(x) {
+  if (x == null) return '';
+  return esc(String(x)).replace(
+    /&lt;(\/?)\s*([a-zA-Z][a-zA-Z0-9]*)(?:[^&]*?)?&gt;/g,
+    function (m, slash, tag) {
+      var t = tag.toLowerCase();
+      return SAFE_TAGS[t] ? '<' + slash + t + '>' : '';
+    });
+}
 function evHead(srcLine, extra, rights) {
   return '<div class="wl-banner">' + esc(T('wl_eval')) + '</div>'
        + '<div class="wl-src">' + esc(srcLine) + (extra ? ' ' + esc(extra) : '')
@@ -1449,12 +1491,12 @@ function viewAbhi(d) {
           mydef = row[3], cites = row[4] || [];
       h += '<div class="wl-row"><span class="wl-cite">' + i + '. </span>'
          + '<span class="wl-lem wl-g">' + esc(L.b) + '</span> '
-         + '<span class="wl-my">' + esc(myhead) + '</span>'
+         + '<span class="wl-my">' + rich(myhead) + '</span>'
          + ((myetym || rometym)
             ? '<div class="wl-etym">' + esc(myetym)
               + (rometym ? ' <span class="wl-cite">' + esc(rometym) + '</span>' : '')
               + '</div>' : '')
-         + '<div class="wl-my">' + esc(mydef) + '</div>'
+         + '<div class="wl-my">' + rich(mydef) + '</div>'
          + (cites.length
             ? '<div class="wl-cites">' + esc(T('wl_cites')) + ' '
               + cites.map(esc).join(' · ')
@@ -1501,8 +1543,16 @@ function viewPeu(d) {
 // older index.json, a build that did not write one -- the sections must still
 // all appear, just unordered.  Silently showing none of them because a list of
 // preferences was absent is how this failed on the reader's machine.
+// !!! THE TWO SHORTEST ANSWERS GO FIRST (2026-08-02, at the reader's
+// direction).  `C` is the Concise Pāli-English Dictionary and `NCP` the New
+// Concise; their entries are a line or two, which is what someone asking
+// "what does this word mean" needs, and the build's order buried NCP last
+// behind eleven longer ones.  Pinned here rather than in the manifest so a
+// rebuild of the evaluation store cannot quietly undo it; ids absent from
+// the build are simply skipped.
+var APD_FIRST = ['C', 'NCP'];
 function apdOrder(d) {
-  var order = (EMAN && EMAN.apd_order) || [];
+  var order = APD_FIRST.concat((EMAN && EMAN.apd_order) || []);
   var have = Object.keys((d && d.apd) || {});
   var seen = {}, out = [];
   order.forEach(function (id) { if (!seen[id]) { seen[id] = 1; out.push(id); } });
@@ -1526,6 +1576,20 @@ function apdZawgyi(id) {
 // merge -- and a jump strip says what is in here for this word.
 function viewDict(d) {
   var have = [];
+  // THE CONCISE PAIR COMES BEFORE PED AS WELL.  PED is the longest entry in
+  // the tab, and putting it first meant scrolling past it to reach the two
+  // that answer quickest.
+  var pinned = [];
+  if (EVAL) {
+    APD_FIRST.forEach(function (id) {
+      var rows = d.apd && d.apd[id];
+      if (!rows || !rows.length) return;
+      var bk = apdBook(id);
+      pinned.push({id: id, label: bk.name, n: rows.length, ev: true,
+                   src: bk.author + (apdZawgyi(id) ? ' — ' + T('wl_zg') : '')});
+    });
+  }
+  have = pinned;
   // `d.pedRows` is the merged PED section — the shipped set plus whatever PCED's
   // "P" adds that is not already in it.  `d.apd.P` has been removed by render().
   if (d.pedRows && d.pedRows.length)
@@ -1533,6 +1597,7 @@ function viewDict(d) {
                src: T('wl_tip_ped'), n: d.pedRows.length, ev: false});
   if (EVAL) {
     apdOrder(d).forEach(function (id) {
+      if (APD_FIRST.indexOf(id) >= 0) return;      // already pinned above
       var rows = d.apd[id];
       if (!rows || !rows.length) return;
       var bk = apdBook(id);
@@ -1572,7 +1637,7 @@ function sectionBody(d, key) {
     // PCED "P" are plain text and are escaped.
     d.pedRows.forEach(function (r) {
       h += '<div class="wl-row"><div class="wl-lem wl-g">' + esc(r.lem) + '</div>'
-         + '<div class="wl-ext">' + (r.html ? r.body : esc(r.body)) + '</div></div>';
+         + '<div class="wl-ext">' + (r.html ? r.body : rich(r.body)) + '</div></div>';
     });
     return h;
   }
@@ -1590,7 +1655,7 @@ function sectionBody(d, key) {
     h += '<div class="wl-row"><span class="wl-cite">' + (i + 1) + '. </span>'
        + '<span class="wl-lem wl-g">' + esc(r.lem) + '</span>'
        + '<div class="' + (burmese ? 'wl-my' : 'wl-ext') + '">'
-       + esc(r.body) + '</div></div>';
+       + rich(r.body) + '</div></div>';
   });
   return h;
 }
@@ -1616,7 +1681,7 @@ function lexBody(d, key) {
       h += '<div class="wl-row"><span class="wl-cite">' + i + '. </span>'
          + '<span class="wl-lem wl-g">' + esc(L.b) + '</span>'
          + '<div class="' + (LEXBURMESE[key] ? 'wl-my' : 'wl-ext') + '">'
-         + (LEXBURMESE[key] ? esc(ent) : ent) + '</div></div>';
+         + (LEXBURMESE[key] ? rich(ent) : ent) + '</div></div>';
     });
   });
   return h;
@@ -1642,7 +1707,7 @@ function viewLex(d, tab) {
       h += '<div class="wl-row"><span class="wl-cite">' + i + '. </span>'
          + '<span class="wl-lem wl-g">' + esc(L.b) + '</span>'
          + '<div class="' + (LEXBURMESE[tab] ? 'wl-my' : 'wl-ext') + '">'
-         + (LEXBURMESE[tab] ? esc(ent) : ent) + '</div></div>';
+         + (LEXBURMESE[tab] ? rich(ent) : ent) + '</div></div>';
     });
   });
   if (!i) h += '<p class="wl-none">' + esc(T('wl_noentry')) + '</p>';
