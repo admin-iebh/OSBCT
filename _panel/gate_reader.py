@@ -29,7 +29,7 @@ prototype's numbers were measured on the prototype's layout; reader2 has a
 300px left pane and its own overlay rule at 861px, so they are a starting point
 and not an answer.
 """
-import json, glob, os, random, re, sys, collections
+import json, glob, os, random, re, sys, collections, hashlib, io
 from playwright.sync_api import sync_playwright
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -141,12 +141,25 @@ def eval_counts(word):
            'abhi': sum(len(L['a']) for L in lems if L.get('a')),
            'peu': sum(1 for L in lems if L.get('p')),
            'ppn': sum(len(L['pn']) for L in lems if L.get('pn'))}
-    apd = collections.Counter()
+    # !!! COUNT DISTINCT BODIES, NOT ROWS.  The store holds the same body more
+    # than once -- `build_eval.py` keyed PCED on fold(k) for each of {hw, acc,
+    # cap}, so one body was stored once per distinct RAW spelling, and `fr.b`
+    # then hands the panel two lemmas that fold to the same key.  Measured
+    # before the fix: 60.9% of every APD row was an exact duplicate and 100% of
+    # lemmas were affected.  The panel dedupes on the exact body string, so the
+    # gate must expect the deduped number or it is asserting the bug.
+    apd = collections.defaultdict(list)
+    apd_raw = collections.Counter()
     for L in lems:
         for did, v in (L.get('apd') or {}).items():
-            apd[did] += len(v)
-    out['apd'] = dict(apd)
-    out['apd_total'] = sum(apd.values())
+            apd_raw[did] += len(v)
+            for t in v:
+                if t not in apd[did]:
+                    apd[did].append(t)
+    out['apd'] = {k: len(v) for k, v in apd.items()}
+    out['apd_bodies'] = {k: list(v) for k, v in apd.items()}
+    out['apd_total'] = sum(len(v) for v in apd.values())
+    out['apd_raw_total'] = sum(apd_raw.values())
     return out
 
 
@@ -162,6 +175,31 @@ def gloss_total(word):
 def ped_total(word):
     hs = look('forms', word) or []
     return sum(len(look('ped', h) or []) for h in hs)
+
+
+PEDKEY = re.compile(r'[^0-9a-zāīūṁṃṅñṭḍṇḷ]+')
+
+
+def ped_key(body):
+    """The panel's `pedKey`: the shipped PED set and PCED's dictionary "P" are
+    the SAME dictionary, differing only in fullwidth punctuation, so they are
+    merged into one section.  Compare on letters and digits alone."""
+    return PEDKEY.sub('', re.sub(r'<[^>]*>', ' ', body).lower())
+
+
+def ped_rows(word, exp, EVAL_ON):
+    """How many rows the merged PED section should hold: the shipped rows, plus
+    any "P" body not already among them."""
+    keys, n = set(), 0
+    for h in (look('forms', word) or []):
+        for body in (look('ped', h) or []):
+            keys.add(ped_key(body)); n += 1
+    if EVAL_ON:
+        for body in ((exp.get('apd_bodies') or {}).get('P') or []):
+            k = ped_key(body)
+            if k not in keys:
+                keys.add(k); n += 1
+    return n
 
 
 def run_gate(EVAL_ON=False):
@@ -517,13 +555,42 @@ def run_gate(EVAL_ON=False):
                     pg.wait_for_timeout(120)
                     secs = pg.evaluate('''() => [...document.querySelectorAll(
                       '#wlb .wl-sec')].map(e => e.id.replace('wl-s-',''))''')
-                    want = set((exp.get('apd') or {}).keys())
+                    # "P" is the PTS P-E Dictionary -- the SAME dictionary as the
+                    # shipped PED set, and it used to draw a SECOND section
+                    # carrying the same entry in fullwidth punctuation.  For
+                    # `Nandane` that put one PED entry on screen five times.  It
+                    # is merged into `_ped` now, so it must NOT appear alone.
+                    want = set((exp.get('apd') or {}).keys()) - {'P'}
                     missing = sorted(want - set(secs))
                     if missing:
                         fail(f'APD tab draws no section for {missing} '
                              f'(sections drawn: {secs})')
+                    if 'P' in secs:
+                        fail('PED is drawn twice: "P" has its own section beside '
+                             '_ped, and they are the same dictionary')
                     if want and not secs:
                         fail('APD tab has a count but drew no sections at all')
+                    # 13b. NO SECTION MAY SHOW THE SAME BODY TWICE.  This is the
+                    # guarantee the dedup exists for, and nothing else asserts
+                    # it: counts and sections were both right while every entry
+                    # was on screen two or three times.
+                    dup = pg.evaluate('''() => {
+                      const out = [];
+                      document.querySelectorAll('#wlb .wl-sec').forEach(sec => {
+                        const seen = {}, id = sec.id.replace('wl-s-','');
+                        sec.querySelectorAll('.wl-row').forEach(r => {
+                          const t = (r.innerText || '').replace(/^\s*\d+\.\s*/, '')
+                                     .replace(/\s+/g, ' ').trim();
+                          if (!t) return;
+                          if (seen[t]) out.push(id); else seen[t] = 1;
+                        });
+                      });
+                      return out;
+                    }''')
+                    if dup:
+                        c = collections.Counter(dup)
+                        fail(f'a section shows the same entry twice: '
+                             f'{sorted(c.items())}')
                 if st['spill']['px'] > 2:
                     fail(f'{st["spill"]["px"]}px of the panel body is outside the '
                          f'panel ({st["spill"]["who"]})')
@@ -534,14 +601,28 @@ def run_gate(EVAL_ON=False):
                 # `dict` tab holding the rest as sections.  Its count is the
                 # sum of what is inside it, and with the flag off that is PED
                 # alone -- so the same assertion covers both states.
-                INSIDE = ('ppn',)
-                want_dict = pexp + ((exp.get('apd_total', 0)
-                                     + sum(exp.get(t, 0) for t in INSIDE))
-                                    if EVAL_ON else 0)
+                # !!! THE BADGE COUNTS DICTIONARIES, NOT ENTRIES -- the reader
+                # clicked `Nandane`, the tab said 102, and 102 was 1 PED + 100
+                # APD rows (of which only 50 were distinct) + 1 DPPN.  On an
+                # aggregate tab the number answers "how many dictionaries have
+                # this word"; the per-section entry totals are in the jump strip
+                # and the headings.  With the flag OFF the same tab IS one
+                # dictionary, so there it stays an entry count -- "PED 1" would
+                # say nothing.
+                n_ped_rows = ped_rows(shown, exp, EVAL_ON)
+                if EVAL_ON:
+                    want_dict = len(set((exp.get('apd') or {}).keys()) - {'P'})
+                    if n_ped_rows:
+                        want_dict += 1
+                    if exp.get('ppn', 0):
+                        want_dict += 1
+                else:
+                    want_dict = pexp
                 got_dict = int((st['tabs'].get('dict') or {}).get('n') or 0)
                 if got_dict != want_dict:
-                    fail(f'Pāḷi Dictionary tab shows {got_dict}, sources have '
-                         f'{want_dict}')
+                    fail(f'{"APD" if EVAL_ON else "PED"} tab shows {got_dict}, '
+                         f'sources give {want_dict} '
+                         f'({"dictionaries" if EVAL_ON else "entries"})')
                 if not EVAL_ON:
                     stray = [t for t in ('abhi', 'peu', 'dpd') if t in st['tabs']]
                     if stray:
@@ -809,11 +890,67 @@ def run_breakpoints():
     return 0
 
 
+def check_version():
+    """RULE 1, MECHANISED.  `WLV` in panel.js and the `?v=` on its script tag
+    must agree with each other AND be bumped whenever the data is rebuilt.
+
+    The fault this exists for: for most of a day nothing the panel fetched was
+    versioned, and the reader saw a tab counting 22 entries and drawing one --
+    their browser was serving an `index.json` from hours earlier.  No assertion
+    could see it, because every count the gate checked was read from disk, not
+    from what the browser had cached.
+
+    So: digest the two manifests, and remember the digest beside the WLV that
+    was current when it was taken.  If the data has changed and WLV has not,
+    that is the fault, and it fails here.  Bumping WLV is the acknowledgement,
+    and re-records the digest.
+    """
+    fails = []
+    js = os.path.join(REPO, 'site', 'reader', 'panel.js')
+    html = os.path.join(REPO, 'site', 'reader', 'reader2.html')
+    m = re.search(r"var WLV = '([^']+)'", io.open(js, encoding='utf-8').read())
+    if not m:
+        return ['panel.js: no `var WLV = ...` — the version constant is gone']
+    wlv = m.group(1)
+    h = re.search(r"panel\.js\?v=([^\"']+)", io.open(html, encoding='utf-8').read())
+    if not h:
+        fails.append('reader2.html: panel.js script tag carries no ?v=')
+    elif h.group(1) != wlv:
+        fails.append(f'version drift: panel.js WLV={wlv} but reader2.html '
+                     f'?v={h.group(1)} — the browser will cache one and fetch '
+                     f'the other')
+
+    dig = hashlib.sha1()
+    for path in (os.path.join(LOOKUP, 'index.json'),
+                 os.path.join(ELOOKUP, 'index.json')):
+        dig.update(open(path, 'rb').read() if os.path.exists(path) else b'-')
+    digest = dig.hexdigest()[:16]
+
+    stamp = os.path.join(ROOT, 'data_version.json')
+    rec = json.load(open(stamp)) if os.path.exists(stamp) else None
+    if rec is None:
+        json.dump({'wlv': wlv, 'digest': digest}, open(stamp, 'w'), indent=1)
+        print(f'  version stamp recorded: WLV={wlv} digest={digest}')
+    elif rec.get('digest') != digest and rec.get('wlv') == wlv:
+        fails.append(f'the lookup data changed (digest {rec.get("digest")} -> '
+                     f'{digest}) but WLV is still {wlv} — bump WLV in panel.js '
+                     f'and the ?v= in reader2.html, or the reader keeps the '
+                     f'old shards')
+    elif rec.get('wlv') != wlv:
+        json.dump({'wlv': wlv, 'digest': digest}, open(stamp, 'w'), indent=1)
+        print(f'  version stamp updated: WLV={wlv} digest={digest}')
+    return fails
+
+
 if __name__ == '__main__':
     if '--breakpoints' in sys.argv:
         sys.exit(run_breakpoints())
+    vf = check_version()
+    for f in vf:
+        print(f'  FAIL version: {f}')
+    print(f'gate_reader [version]: {len(vf)} failures')
     # both states of the evaluation flag, because "off" is an assertion too
     rc = run_gate(EVAL_ON=False)
     if '--no-eval' not in sys.argv:
         rc |= run_gate(EVAL_ON=True)
-    sys.exit(rc)
+    sys.exit(rc | (1 if vf else 0))

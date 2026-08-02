@@ -80,7 +80,9 @@ if (q.get('wle') === '0') EVAL = false;
 // Same shape and the same fallback discipline reader2 uses: if i18n.js has not
 // loaded, a bare t() in a render path throws and takes the panel with it.
 var S = {
-  wl_edition:   {en: 'Edition', es: 'Edición'},
+  // The tab is named for WHAT IT HOLDS -- the edition's glosses -- not for the
+  // edition itself; the tooltip carries the fuller sense unchanged.
+  wl_edition:   {en: 'Gloss', es: 'Glosa'},
   wl_ped:       {en: 'PED', es: 'PED'},
   wl_tip_ed:    {en: 'The edition’s own glosses — aṭṭhakathā and ṭīkā',
                  es: 'Las glosas de la edición misma — aṭṭhakathā y ṭīkā'},
@@ -213,6 +215,14 @@ var PALISET = {}; (PALI + PALI.toUpperCase()).split('').forEach(function (c) { P
 var APOS = {'’': 1, "'": 1};
 function esc(s) { return String(s).replace(/[&<>"]/g, function (c) {
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+// Compare two renderings of the SAME PED entry.  The shipped set and PCED's
+// dictionary "P" carry identical text differing only in fullwidth punctuation
+// (`，．（）` against `,.()`) and in markup, so the key keeps letters and digits
+// and throws the rest away.  Used only for PED, which is English.
+function pedKey(s) {
+  return String(s).replace(/<[^>]*>/g, ' ').toLowerCase()
+    .replace(/[^0-9a-zāīūṁṃṅñṭḍṇḷ]+/g, '');
+}
 
 // the shard manifest decides the shard name (adaptive prefix, see index.json)
 var MAN = null;
@@ -240,7 +250,7 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260802e';
+var WLV = '20260802f';
 function jfetch(url) {
   if (CACHE[url]) return CACHE[url];
   var u = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'v=' + WLV;
@@ -709,7 +719,6 @@ function render(d) {
     ? '<b>' + c[0] + '</b> ' + esc(T('wl_corpus')) + ' · ' + c[1] + ' ' + esc(T('wl_canon'))
       + ' · ' + c[2] + ' ' + esc(T('wl_comm')) + ' · ' + c[3] + ' ' + esc(T('wl_sub'))
     : '';
-  var nPed = d.ped.reduce(function (s, p) { return s + p.e.length; }, 0);
   // how many entries each evaluation source has for this word
   d.n = {};
   var lems = (d.ev && d.ev.lem) || [];
@@ -724,22 +733,82 @@ function render(d) {
   d.n.dpd = (d.ev && d.ev.dpd) ? d.ev.dpd.length : 0;
   d.n.abhi = count('a', true);
   d.n.peu = count('p', false);
-  // APD: one count per dictionary the manifest knows about.  Nothing here is
+  // APD: one section per dictionary the manifest knows about.  Nothing here is
   // named in this file -- if the build adds a dictionary, the panel shows it.
+  //
+  // !!! EVERY BODY IS DEDUPED, AND THE DUPLICATES CAME FROM TWO PLACES AT ONCE.
+  // The reader clicked `Nandane` and the tab said 102.  Measured: that was
+  // 1 PED + 100 APD + 1 DPPN, and of the 100 only 50 were distinct.
+  //
+  //   * WITHIN one lemma -- `build_eval.py` keys PCED on `fold(k)` for each of
+  //     {hw, acc, cap}.  The set dedupes the RAW spellings, then fold() collapses
+  //     them to one key, so the same body is appended once per distinct raw
+  //     spelling.  60.9% of every APD row in the store is an exact duplicate and
+  //     100% of lemmas are affected.  The build is fixed too, but the panel must
+  //     not depend on a rebuild to stop showing a gloss three times.
+  //   * ACROSS lemmas -- `fr.b` for `Nandane` is ["nandana","nandanā"], which
+  //     fold to the same key, so all ten dictionaries return byte-identical
+  //     lists and each was concatenated twice.  7,938 forms (3.15%) do this.
+  //
+  // Bodies are whitespace-collapsed by the build, so exact string equality is
+  // the right test; `lem` keeps the FIRST spelling that produced the body.
   d.apd = {};
+  var apdSeen = {};
   lems.forEach(function (L) {
     var m = L.e.apd;
     if (!m) return;
     for (var id in m) {
-      d.apd[id] = (d.apd[id] || []).concat(m[id].map(function (t) {
-        return {lem: L.b, body: t}; }));
+      var into = d.apd[id] || (d.apd[id] = []);
+      var seen = apdSeen[id] || (apdSeen[id] = {});
+      m[id].forEach(function (t) {
+        if (seen[t]) return;
+        seen[t] = 1;
+        into.push({lem: L.b, body: t});
+      });
     }
   });
-  d.n.ped = nPed;
-  var nDict = nPed;
+  for (var _id in d.apd) if (!d.apd[_id].length) delete d.apd[_id];
+
+  // !!! PED WAS IN THIS TAB TWICE.  The `_ped` section is the shipped PED set;
+  // APD id `P` is "PTS P-E Dictionary" -- the SAME dictionary from the same PCED
+  // dataset, differing only in fullwidth punctuation.  For `Nandane` that put one
+  // PED entry on screen five times.  So they are merged into one section: the
+  // shipped rows first (cleaner punctuation, reached through the DPD synonym
+  // index), then any `P` row that is not already there under normalisation --
+  // which keeps whatever reach `P` has without showing anything twice.
+  d.pedRows = [];
+  var pedSeen = {};
+  d.ped.forEach(function (p) {
+    p.e.forEach(function (body) {
+      pedSeen[pedKey(body)] = 1;
+      d.pedRows.push({lem: p.h, body: body, html: true});
+    });
+  });
   if (EVAL) {
-    for (var id in d.apd) nDict += d.apd[id].length;
-    nDict += count('pn', true);          // DPPN v1.0.8, fuller than PCED's own
+    (d.apd.P || []).forEach(function (r) {
+      var k = pedKey(r.body);
+      if (pedSeen[k]) return;
+      pedSeen[k] = 1;
+      d.pedRows.push({lem: r.lem, body: r.body, html: false});
+    });
+    delete d.apd.P;                    // it is the PED section now, not its own
+  }
+  d.n.ped = d.pedRows.length;
+  d.n.ppn = EVAL ? count('pn', true) : 0;
+
+  // !!! THE BADGE COUNTS DICTIONARIES, NOT ENTRIES.  On the aggregate tab the
+  // question a number answers is "how many dictionaries have this word" -- the
+  // per-section entry totals are already in the jump strip and the headings.
+  // On the publishable panel the same tab IS one dictionary, so there the badge
+  // stays an entry count; "PED 1" would say nothing.
+  var nDict;
+  if (EVAL) {
+    nDict = 0;
+    for (var id in d.apd) nDict++;
+    if (d.pedRows.length) nDict++;
+    if (d.n.ppn) nDict++;
+  } else {
+    nDict = d.pedRows.length;
   }
   d.nDict = nDict;
   // TAB ORDER DEPENDS ON WHICH PANEL THIS IS, AND THAT IS THE WHOLE POINT.
@@ -1069,9 +1138,11 @@ function apdZawgyi(id) {
 // merge -- and a jump strip says what is in here for this word.
 function viewDict(d) {
   var have = [];
-  if (d.ped && d.ped.length)
+  // `d.pedRows` is the merged PED section — the shipped set plus whatever PCED's
+  // "P" adds that is not already in it.  `d.apd.P` has been removed by render().
+  if (d.pedRows && d.pedRows.length)
     have.push({id: '_ped', label: T('wl_ped_tab'),
-               src: T('wl_tip_ped'), n: d.n.ped, ev: false});
+               src: T('wl_tip_ped'), n: d.pedRows.length, ev: false});
   if (EVAL) {
     apdOrder(d).forEach(function (id) {
       var rows = d.apd[id];
@@ -1080,11 +1151,8 @@ function viewDict(d) {
       have.push({id: id, label: bk.name, n: rows.length, ev: true,
                  src: bk.author + (apdZawgyi(id) ? ' — ' + T('wl_zg') : '')});
     });
-    var pn = 0;
-    ((d.ev && d.ev.lem) || []).forEach(function (L) {
-      if (L.e.pn) pn += L.e.pn.length; });
-    if (pn) have.push({id: '_ppn', label: T('wl_ppn'), n: pn, ev: true,
-                       src: T('wl_tip_ppn')});
+    if (d.n.ppn) have.push({id: '_ppn', label: T('wl_ppn'), n: d.n.ppn, ev: true,
+                            src: T('wl_tip_ppn')});
   }
   if (!have.length)
     return '<p class="wl-none">' + esc(T('wl_nodict')) + '</p>';
@@ -1112,11 +1180,11 @@ function viewDict(d) {
 function sectionBody(d, key) {
   var h = '';
   if (key === '_ped') {
-    d.ped.forEach(function (p) {
-      p.e.forEach(function (body) {
-        h += '<div class="wl-row"><div class="wl-lem wl-g">' + esc(p.h) + '</div>'
-           + '<div class="wl-ext">' + body + '</div></div>';
-      });
+    // rows from the shipped set carry PED's own markup; rows contributed by
+    // PCED "P" are plain text and are escaped.
+    d.pedRows.forEach(function (r) {
+      h += '<div class="wl-row"><div class="wl-lem wl-g">' + esc(r.lem) + '</div>'
+         + '<div class="wl-ext">' + (r.html ? r.body : esc(r.body)) + '</div></div>';
     });
     return h;
   }
