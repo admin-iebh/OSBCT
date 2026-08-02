@@ -2444,7 +2444,183 @@ def run_layers():
     return 1 if fails else 0
 
 
+def _wn_probe():
+    """A Pāḷi headword whose PED entry contains an English word WordNet has —
+    chosen FROM THE FILES, like every other probe here, so it keeps working
+    when either store is rebuilt and it cannot pass by agreeing with the page
+    about a word neither of them really carries."""
+    if 'wn' not in (MAN.get('shards') or {}):
+        return None
+    peddir = os.path.join(LOOKUP, 'ped')
+    if not os.path.isdir(peddir):
+        return None
+    for fn in sorted(os.listdir(peddir)):
+        if not fn.endswith('.json'):
+            continue
+        try:
+            d = json.load(open(os.path.join(peddir, fn), encoding='utf-8'))
+        except Exception:
+            continue
+        for head in sorted(d):
+            if not look('freq', head):
+                continue          # the panel opens on corpus forms
+            txt = ' '.join(x if isinstance(x, str) else '' for x in
+                           (d[head] if isinstance(d[head], list) else [d[head]]))
+            txt = re.sub(r'<[^>]*>', ' ', txt)
+            for w in re.findall(r'[a-z]{6,}', txt.lower()):
+                v = look('wn', w)
+                if isinstance(v, list) and v:
+                    return head, w
+    return None
+
+
+def run_wordnet():
+    """CLICKING AN ENGLISH WORD IN A DEFINITION MUST EXPLAIN IT — AND MUST NOT
+    COST THE PĀḶI CLICK THAT WAS ALREADY THERE.
+
+    The reader's decision, 2026-08-02: every English word in the dictionary
+    definitions is clickable.  The reference tabs are written in the English of
+    1921-2020 philology and this project's audience is Spanish-speaking; they
+    meet "mendicant" and "periphrastic" before they meet the Pāḷi.
+
+    What this asserts is the reader's own path, not the store underneath it:
+    open the panel on a Pāḷi word, go to the tab that carries its PED entry,
+    CLICK an English word in that entry, and require that
+
+      a. the panel is now headed by that English word and shows WordNet senses
+         carrying a part of speech -- not an empty pane and not the Pāḷi view;
+      b. WordNet is ATTRIBUTED on screen and says it is not a Pāḷi authority.
+         §9's attribution obligation is not limited to the Abhidhāna, and this
+         source is admitted only because it never speaks about Pāḷi;
+      c. Princeton's licence travels with the data (`site/lookup/wn/LICENSE`),
+         which is the one condition that licence imposes;
+      d. BACK returns to the Pāḷi word with its own tabs -- the English view is
+         a detour, not a destination;
+      e. the morphology resolves: an inflected form reaches its lemma;
+      f. NEGATIVE CONTROL, and it is the one that matters: a Pāḷi word must NOT
+         reach WordNet, and a string in no dictionary must return nothing at
+         all rather than an empty English pane.  Without (f) this whole check
+         could pass by answering everything.
+    """
+    probe = _wn_probe()
+    if not probe:
+        print('  note: WORDNET NOT EXERCISED — no `wn` set in the lookup '
+              'manifest, so there is nothing to click through to')
+        print('gate_reader [wordnet]: 0 failures (NOT EXERCISED)')
+        return 0
+    head, word = probe
+    fails = []
+    lic = os.path.join(LOOKUP, 'wn', 'LICENSE')
+    if not os.path.exists(lic):
+        fails.append("site/lookup/wn/LICENSE is missing — Princeton's licence "
+                     "requires the notice to travel with every copy of the data")
+    elif 'Princeton' not in io.open(lic, encoding='utf-8', errors='replace').read():
+        fails.append('site/lookup/wn/LICENSE does not name Princeton — it is '
+                     'not the notice the licence asks for')
+
+    FIND = """(word) => {
+      const b = document.getElementById('wlb');
+      if (!b) return null;
+      const w = document.createTreeWalker(b, NodeFilter.SHOW_TEXT);
+      let n;
+      while (n = w.nextNode()) {
+        const i = n.textContent.indexOf(word);
+        if (i < 0) continue;
+        const r = document.createRange();
+        r.setStart(n, i); r.setEnd(n, i + word.length);
+        const rc = r.getBoundingClientRect();
+        if (rc.width > 0 && rc.height > 0)
+          return {x: rc.left + rc.width / 2, y: rc.top + rc.height / 2};
+      }
+      return null; }"""
+    STATE = ("() => ({w: (document.getElementById('wlw') || {}).textContent || '',"
+             " tabs: [...document.querySelectorAll('#wlt button')].map(b => b.textContent.trim()),"
+             " pos: document.querySelectorAll('#wlb .wl-wn-pos').length,"
+             " senses: document.querySelectorAll('#wlb .wl-wn li').length,"
+             " body: (document.getElementById('wlb') || {}).innerText || ''})")
+    with sync_playwright() as pw:
+        b = pw.chromium.launch()
+        ctx = b.new_context(viewport={'width': 1400, 'height': 900})
+        pg = ctx.new_page()
+        errs = []
+        pg.on('pageerror', lambda e: errs.append(str(e)))
+        try:
+            pg.goto(BASE + '/reader/reader2.html#%s#%d' % (VOLS[0], 12),
+                    wait_until='domcontentloaded')
+            pg.wait_for_selector('.para', timeout=30000)
+            pg.wait_for_timeout(1800)
+            pg.evaluate("(w) => window.WL.lookup(w, document.querySelector('#scroll .para'))", head)
+            pg.wait_for_timeout(1800)
+            before = pg.evaluate(STATE)
+            # the PED entry may be under any tab; try each until the word shows
+            xy, tabs = None, pg.evaluate("() => document.querySelectorAll('#wlt button').length")
+            for i in range(tabs):
+                pg.evaluate("(i) => document.querySelectorAll('#wlt button')[i].click()", i)
+                pg.wait_for_timeout(700)
+                xy = pg.evaluate(FIND, word)
+                if xy:
+                    break
+            if not xy:
+                fails.append('%r is in the PED entry for %r on disk but nowhere '
+                             'in the panel — nothing to click' % (word, head))
+            else:
+                pg.mouse.click(xy['x'], xy['y'])
+                pg.wait_for_timeout(1600)
+                st = pg.evaluate(STATE)
+                if st['w'].strip().lower() != word:
+                    fails.append('clicking %r in the panel left the pane headed '
+                                 '%r' % (word, st['w']))
+                if not st['senses'] or not st['pos']:
+                    fails.append('clicking %r drew %d senses and %d parts of '
+                                 'speech — an empty English pane'
+                                 % (word, st['senses'], st['pos']))
+                if 'WordNet' not in st['body'] or 'Princeton' not in st['body']:
+                    fails.append('the English view does not attribute WordNet '
+                                 'or Princeton on screen (§9 attribution)')
+                if 'authority' not in st['body'].lower() and 'autoridad' not in st['body'].lower():
+                    fails.append('the English view does not say WordNet is not '
+                                 'an authority on Pāḷi — §9 is why it is here '
+                                 'at all')
+                pg.click('#wlback', timeout=5000)
+                pg.wait_for_timeout(1800)
+                bk = pg.evaluate(STATE)
+                if bk['w'].strip() != head or bk['tabs'] == st['tabs']:
+                    fails.append('Back from the English view left the pane at '
+                                 '%r with tabs %r — it did not return to the '
+                                 'Pāḷi word %r (%r)'
+                                 % (bk['w'], bk['tabs'], head, before['tabs']))
+            # (e) morphology, and (f) the negative controls
+            def wn(w):
+                return pg.evaluate(
+                    "(w) => window.WL.wn(w).then(r => r ? {key: r.key, n: r.senses.length} : null)", w)
+            infl = word + ('es' if word.endswith(('s', 'x', 'ch', 'sh')) else 's')
+            r = wn(infl)
+            if not r or r['key'] != word:
+                fails.append('the inflected form %r did not resolve to %r (got '
+                             '%r) — Morphy\'s rules are not being tried'
+                             % (infl, word, r))
+            if wn(head) is not None:
+                fails.append('the Pāḷi word %r reached WordNet — an English '
+                             'dictionary must not answer for the edition' % head)
+            if wn('qxzjvwkq') is not None:
+                fails.append('a string in no dictionary returned an English '
+                             'entry — the store answers everything')
+            if errs:
+                fails.append('the page raised: %s' % errs[0])
+        except Exception as e:
+            fails.append('wordnet check raised: %s' % e)
+        ctx.close()
+        b.close()
+    for f in fails:
+        print('  FAIL wordnet: %s' % f)
+    print('gate_reader [wordnet]: %d failures  (probe %r -> English %r, %d keys)'
+          % (len(fails), head, word, (MAN.get('sets', {}).get('wn') or {}).get('keys', 0)))
+    return 1 if fails else 0
+
+
 if __name__ == '__main__':
+    if '--wordnet-only' in sys.argv:
+        sys.exit(run_wordnet())
     if '--breakpoints' in sys.argv:
         sys.exit(run_breakpoints())
     if '--flag-negative-controls' in sys.argv:
@@ -2474,6 +2650,8 @@ if __name__ == '__main__':
     # the layer buttons are the other thing a reader presses constantly and
     # nothing here had ever pressed -- see run_layers
     rc |= run_layers()
+    # the English word inside an English definition -- see run_wordnet
+    rc |= run_wordnet()
     if '--no-eval' not in sys.argv:
         rc |= run_gate(EVAL_ON=True)
         rc |= run_tabs()

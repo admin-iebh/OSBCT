@@ -258,7 +258,25 @@ var S = {
   wl_back:      {en: 'Back', es: 'Atrás'},
   wl_noentry:   {en: 'No entry for the resolved lemma(s).',
                  es: 'Ninguna entrada para el lema resuelto.'},
-  wl_thisvol:   {en: 'this volume', es: 'este volumen'}
+  wl_thisvol:   {en: 'this volume', es: 'este volumen'},
+  // ---- WordNet, the English→English layer (reader's decision 2026-08-02)
+  wl_wn_tab:    {en: 'English', es: 'Inglés'},
+  wl_wn_src:    {en: 'WordNet 3.1 · Princeton University',
+                 es: 'WordNet 3.1 · Universidad de Princeton'},
+  wl_wn_why:    {en: 'An English word from another dictionary’s definition, '
+                     + 'explained in English. WordNet is not an authority on '
+                     + 'Pāḷi and says nothing about this text.',
+                 es: 'Una palabra inglesa de la definición de otro diccionario, '
+                     + 'explicada en inglés. WordNet no es autoridad sobre el '
+                     + 'Pāḷi y no dice nada sobre este texto.'},
+  wl_wn_from:   {en: 'inflected form of', es: 'forma flexionada de'},
+  wl_wn_syn:    {en: 'also', es: 'también'},
+  wl_wn_pali:   {en: 'Also a form in the edition — look it up there',
+                 es: 'También es una forma de la edición — búscala allí'},
+  wl_pos_n:     {en: 'noun', es: 'sustantivo'},
+  wl_pos_v:     {en: 'verb', es: 'verbo'},
+  wl_pos_a:     {en: 'adjective', es: 'adjetivo'},
+  wl_pos_r:     {en: 'adverb', es: 'adverbio'}
 };
 if (window.I18N) for (var k in S) if (!window.I18N[k]) window.I18N[k] = S[k];
 function T(key) {
@@ -319,7 +337,7 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260803h';
+var WLV = '20260803i';
 
 // ---------------------------------------------------- gzipped shard sets --
 // WHY THE SHARDS ARE STORED GZIPPED, AND WHY THAT IS NOT THE SAME AS
@@ -626,6 +644,108 @@ function elook(set, key) {
   });
 }
 
+// -------------------------------------------------- WordNet, the English --
+// !!! THE REFERENCE TABS ARE WRITTEN IN PHILOLOGISTS' ENGLISH -- "almsman",
+// "mendicant", "denominative", "periphrastic", "aorist" -- and this project's
+// stated audience is Spanish-speaking.  They meet that English before they
+// meet the Pāḷi.  So an English word inside another dictionary's definition is
+// clickable and this is what answers it.  Reader's decision, 2026-08-02.
+//
+// IT DOES NOT TOUCH §9.  §9 governs which dictionaries may speak about PĀḶI.
+// An English dictionary explaining an English word in someone else's gloss is
+// not a Pāḷi authority, and the view says so in as many words.  It is
+// attributed like every other source, because §9's attribution obligation is
+// not limited to the Abhidhāna.
+//
+// The store is `site/lookup/wn/`, built by `_panel/build_wordnet.py` and
+// sharded by the same adaptive prefix as every other set, so `look()` reaches
+// it unchanged.  A value is EITHER a list of senses
+// `[[pos, definition, [examples], [synonyms]], …]` OR a string, the lemma an
+// irregular inflection belongs to (WordNet's own exception lists, folded in at
+// build time so the browser needs no exception file).
+//
+// The REGULAR inflections are Morphy's detachment table, and they are here
+// rather than in the data because expanding them into keys would multiply the
+// store several times over for forms a reader may never click.
+var WN_RULES = [['ses', 's'], ['xes', 'x'], ['zes', 'z'], ['ches', 'ch'],
+                ['shes', 'sh'], ['ies', 'y'], ['men', 'man'], ['s', ''],
+                ['es', 'e'], ['es', ''], ['ed', 'e'], ['ed', ''],
+                ['ing', 'e'], ['ing', ''], ['est', 'e'], ['est', ''],
+                ['er', 'e'], ['er', '']];
+function wnCandidates(w) {
+  var out = [], seen = {};
+  function add(x) { if (x && x.length > 1 && !seen[x]) { seen[x] = 1; out.push(x); } }
+  add(w);
+  WN_RULES.forEach(function (r) {
+    if (w.length > r[0].length && w.slice(-r[0].length) === r[0])
+      add(w.slice(0, w.length - r[0].length) + r[1]);
+  });
+  return out;
+}
+// -> {key, senses, from} or null.  `from` is the word as clicked when the
+// answer came from an inflected form, so the view can say which lemma it read.
+function wnLook(word) {
+  var w = String(word || '').toLowerCase();
+  if (!/^[a-z][a-z'\-]*$/.test(w)) return Promise.resolve(null);
+  var cands = wnCandidates(w), i = 0;
+  function step() {
+    if (i >= cands.length) return Promise.resolve(null);
+    var k = cands[i++];
+    return look('wn', k).then(function (v) {
+      if (!v) return step();
+      if (typeof v === 'string')
+        return look('wn', v).then(function (v2) {
+          return (v2 && typeof v2 !== 'string')
+            ? {key: v, senses: v2, from: w} : step();
+        });
+      return {key: k, senses: v, from: (k === w ? null : w)};
+    });
+  }
+  return step();
+}
+var WN_POS = {n: 'wl_pos_n', v: 'wl_pos_v', a: 'wl_pos_a', r: 'wl_pos_r'};
+// `alsoPali` is true when the corpus ALSO carries this string.  74 of the
+// 6,503 distinct pure-ASCII forms in 09Ma01, 16An02 and 11MaA02 do -- `na`,
+// `ti`, `ca`, `so`, `pare` -- so the route to the edition is one click away
+// rather than a wrong answer the reader cannot get out of.
+function renderWn(word, r, alsoPali, paraEl) {
+  current = {word: word, para: paraEl, en: true};
+  var h = '<div class="wl-src">' + esc(T('wl_wn_src')) + '</div>';
+  if (r.from)
+    h += '<div class="wl-flag">' + esc(T('wl_wn_from')) + ' <b>' + esc(r.key) + '</b></div>';
+  h += '<ol class="wl-wn">';
+  (r.senses || []).forEach(function (s) {
+    h += '<li><span class="wl-wn-pos">' + esc(T(WN_POS[s[0]] || 'wl_pos_n'))
+       + '</span> ' + esc(s[1] || '');
+    if (s[3] && s[3].length)
+      h += '<div class="wl-wn-syn">' + esc(T('wl_wn_syn')) + ': '
+         + esc(s[3].join(', ')) + '</div>';
+    (s[2] || []).forEach(function (e) {
+      h += '<div class="wl-wn-ex">“' + esc(e) + '”</div>';
+    });
+    h += '</li>';
+  });
+  h += '</ol>';
+  if (alsoPali)
+    h += '<button class="wl-topali" type="button">' + esc(T('wl_wn_pali')) + '</button>';
+  h += '<div class="wl-why">' + esc(T('wl_wn_why')) + '</div>';
+  document.getElementById('wlw').textContent = word;
+  document.getElementById('wlc').textContent = '';
+  document.getElementById('wlt').innerHTML =
+    '<button role="tab" data-tab="wn" aria-selected="true" class="on">'
+    + esc(T('wl_wn_tab')) + '</button>';
+  var body = document.getElementById('wlb');
+  body.innerHTML = h;
+  var b = body.querySelector('.wl-topali');
+  if (b) b.addEventListener('click', function () {
+    var p = current && current.para;
+    HIST.push({word: word, para: p});
+    updateBack();
+    lookup(word, p, true);
+  });
+  el.dataset.state = 'ready';
+}
+
 // -------------------------------------------------------------- the markup --
 var CSS = ''
 + '#wl{position:fixed;z-index:60;background:var(--panel);color:var(--fg);'
@@ -704,6 +824,16 @@ var CSS = ''
 + '#wl .wl-g{font-family:"Gentium Plus",Georgia,serif;font-size:var(--rsize, 15.5px)}'
 + '#wl .wl-cite{font-size:11px;color:var(--mut);margin-top:2px}'
 + '#wl .wl-flag{font-size:11px;color:var(--mut)}'
+// WordNet: an ordered list of senses, each with its part of speech, its
+// synonyms and WordNet's own examples.  English, so it takes the panel's
+// English size (A1) and not the Pāḷi face.
++ '#wl .wl-wn{margin:2px 0 6px;padding-left:1.4em}'
++ '#wl .wl-wn li{margin:5px 0}'
++ '#wl .wl-wn-pos{color:var(--accent);font-style:italic;margin-right:4px}'
++ '#wl .wl-wn-syn,#wl .wl-wn-ex{font-size:11.5px;color:var(--mut);margin-top:2px}'
++ '#wl .wl-topali{font:600 12px Inter,system-ui,sans-serif;color:var(--accent);'
++ 'background:none;border:1px dashed var(--line);border-radius:6px;'
++ 'padding:6px 10px;cursor:pointer;margin:6px 0;display:block}'
 + '#wl .wl-more{font:600 12px Inter,system-ui,sans-serif;color:var(--accent);'
 + 'background:none;border:1px dashed var(--line);border-radius:6px;padding:6px 10px;'
 + 'cursor:pointer;margin:10px 0}'
@@ -883,15 +1013,43 @@ function build() {
   // It fires only when the corpus actually has the word — an English or
   // Burmese word in a dictionary entry is a silent no-op rather than an empty
   // panel.
+  // !!! AND SINCE 2026-08-03 THE PANEL ROUTES THAT CLICK BY LANGUAGE.  The
+  // recovery here reads ENGLISH letters too (`wordAt(..., true)`): the Pāḷi
+  // alphabet has no f, q, w, x or z, so with the Pāḷi set alone "few" gave
+  // nothing and "explain" broke in half at the x.
+  //
+  // The rule, and it was measured before it was chosen:
+  //   * a word carrying a Pāḷi diacritic is Pāḷi and goes where it always went;
+  //   * a pure-ASCII word is looked for in WordNet FIRST, because the prose in
+  //     this pane is English and that is what the reader is reading.  Of the
+  //     6,503 distinct pure-ASCII forms in 09Ma01, 16An02 and 11MaA02, 74
+  //     (1.1%) are also WordNet keys and nearly all of those are two-letter
+  //     particles -- `na`, `ti`, `ca`, `so`.  Those 74 get a one-click route
+  //     to the edition instead of a dead end;
+  //   * anything WordNet does not have falls through to the corpus lookup,
+  //     exactly as before, and is still a silent no-op when the corpus has
+  //     nothing either.
   document.getElementById('wlb').addEventListener('click', function (ev) {
     if (ev.target.closest('a,button')) return;
-    var hit = wordAt(ev.clientX, ev.clientY);
+    var hit = wordAt(ev.clientX, ev.clientY, true);
     if (!hit || !current || hit.word === current.word) return;
-    look('freq', hit.word).then(function (fr) {
-      if (!fr || !current) return;
-      HIST.push({word: current.word, para: current.para});
-      updateBack();
-      lookup(hit.word, current.para, true);
+    var w = hit.word, para = current.para;
+    function goPali() {
+      look('freq', w).then(function (fr) {
+        if (!fr || !current) return;
+        HIST.push({word: current.word, para: current.para});
+        updateBack();
+        lookup(w, para, true);
+      });
+    }
+    if (/[āīūṁṃṅñṭḍṇḷ]/.test(w)) return goPali();
+    wnLook(w).then(function (r) {
+      if (!r || !current) return goPali();
+      look('freq', w).then(function (fr) {
+        HIST.push({word: current.word, para: current.para});
+        updateBack();
+        renderWn(w, r, !!fr, para);
+      });
     });
   });
   layout();
@@ -953,7 +1111,11 @@ function keepWordVisible() {
 }
 
 // ------------------------------------------- caret-based click recovery ----
-function wordAt(x, y) {
+// `en` widens the alphabet to the ASCII letters.  It is passed ONLY for
+// clicks inside the panel, where the prose is English: the reader's own text
+// is Pāḷi and must keep the Pāḷi set, or a stray Latin word in the apparatus
+// would start behaving like a headword.
+function wordAt(x, y, en) {
   var node, off, c, r;
   if (document.caretPositionFromPoint) {
     c = document.caretPositionFromPoint(x, y); if (!c) return null;
@@ -964,10 +1126,16 @@ function wordAt(x, y) {
   } else return null;
   if (!node || node.nodeType !== 3) return null;
   var t = node.textContent;
+  function isL(ch) {
+    return !!PALISET[ch]
+      || !!(en && ch && ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')));
+  }
   function isW(i) {
     var ch = t[i]; if (ch === undefined) return false;
     if (PALISET[ch]) return true;
-    if (APOS[ch]) return !!(PALISET[t[i - 1] || ''] && PALISET[t[i + 1] || '']);
+    if (en && ch >= 'a' && ch <= 'z') return true;
+    if (en && ch >= 'A' && ch <= 'Z') return true;
+    if (APOS[ch]) return !!(isL(t[i - 1] || '') && isL(t[i + 1] || ''));
     return false;
   }
   if (!isW(off) && !isW(off - 1)) return null;
@@ -1891,5 +2059,8 @@ else start();
 
 // exposed for the gate
 window.WL = {lookup: function (w, p) { return lookup(w, p); },
+             // the English resolver, so the gate can assert the morphology
+             // (`mendicants` -> `mendicant`) without going through a click
+             wn: function (w) { return wnLook(w); },
              panelW: PANEL_W, textMin: TEXT_MIN, layout: layout, on: true};
 })();
