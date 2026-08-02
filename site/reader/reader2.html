@@ -1871,13 +1871,46 @@ async function doSearch(q){
 // the Visuddhimagga with nothing to say which one had been asked for.  Same
 // poll-don't-guess shape as `openFromURL` — the paragraph is drawn
 // asynchronously and a fixed delay races the render.
+// !!! CENTRING THE PARAGRAPH IS NOT ARRIVING AT THE WORD (2026-08-02,
+// user-reported: "it does not take one to the exact place where it is but one
+// has to look around to find it").  A commentary paragraph is routinely taller
+// than the window, so `scrollIntoView` on the PARAGRAPH puts its middle on
+// screen and the word wherever it happens to fall.  Measured on 51Vism01 ¶180,
+// the second hit for `medoti`:
+//
+//   1400x900  paragraph 1382px in a 797px viewport — word at y=575, low and
+//             far from where the eye goes
+//    390x844  paragraph 2841px in a  657px viewport — word at y=1228, i.e.
+//             571px BELOW THE FOLD.  On a phone the hit was not on screen at
+//             all, which is the report exactly.
+//
+// So: mark FIRST, then scroll to the mark.  And settle, because the first
+// scroll happens on the first render and the layout is still moving under it —
+// fonts resolve, page rules and the apparatus land — so a single scroll aims
+// at a target that then walks away.  Bounded, and it stops as soon as two
+// consecutive frames agree.
+async function settleTo(el){
+  try{ if(document.fonts && document.fonts.ready) await document.fonts.ready; }catch(e){}
+  let prev=null;
+  for(let i=0;i<12;i++){
+    el.scrollIntoView({block:'center'});
+    await new Promise(r=>requestAnimationFrame(()=>setTimeout(r,60)));
+    const y=Math.round(el.getBoundingClientRect().top);
+    if(prev!==null && Math.abs(y-prev)<2) return;
+    prev=y;
+  }
+}
+async function landOn(el,q){
+  if(q) markInEl(el,q);
+  await settleTo(el.querySelector('mark.shl')||el);
+}
 async function openHit(key,kind){
   const dd=document.getElementById('sdrop'); if(dd) dd.hidden=true;
   const q=window.__hq||'';
   await openKey(key,kind);
   for(let i=0;i<40;i++){
     const el=document.getElementById('p-'+key.replace('#','-'));
-    if(el){ el.scrollIntoView({block:'center'}); if(q) markInEl(el,q); return; }
+    if(el){ await landOn(el,q); return; }
     await new Promise(r=>setTimeout(r,60));
   }
 }
@@ -1935,7 +1968,9 @@ async function openFromURL(){
   // gives up quietly if the ordinal is never drawn (a hidden one, say).
   for(let i=0;i<40;i++){
     const el=document.getElementById('p-'+key.replace('#','-'));
-    if(el){ el.scrollIntoView({block:'center'}); if(q) markInEl(el,q); return true; }
+    // same landing as the top-bar box — a link from search.html arrives at the
+    // word, not at the middle of a paragraph that may be three screens tall
+    if(el){ await landOn(el,q); return true; }
     await new Promise(r=>setTimeout(r,60));
   }
   return true;

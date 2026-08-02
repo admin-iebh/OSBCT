@@ -2067,6 +2067,44 @@ def run_search():
             except Exception as e:
                 fails.append('clicking the first hit for %r raised: %s'
                              % (term, e))
+        # (c2) AND IT MUST LAND ON THE WORD, AT A PHONE SIZE TOO.  Centring
+        # the PARAGRAPH is not arriving: measured on 51Vism01 §180 at 390x844
+        # the paragraph is 2841px in a 657px viewport and the highlighted word
+        # came to rest 571px BELOW THE FOLD -- on screen by no measure a reader
+        # would accept, and reported as "one has to look around to find it".
+        # Asserted at both sizes because the desktop case merely looked poor
+        # while the phone case was actually broken.
+        try:
+            for vw, vh in ((1400, 900), (390, 844)):
+                c4 = b.new_context(viewport={'width': vw, 'height': vh})
+                p4 = c4.new_page()
+                p4.goto(BASE + '/reader/reader2.html?wl=0', wait_until='domcontentloaded')
+                p4.wait_for_timeout(1000)
+                p4.fill('#sq', term)
+                p4.wait_for_selector('#sdrop .sresult', timeout=30000)
+                p4.click('#sdrop .sresult')
+                p4.wait_for_timeout(3000)
+                land = p4.evaluate("""() => {
+                    const sc = document.getElementById('scroll');
+                    const m = document.querySelector('mark.shl');
+                    if (!m) return null;
+                    const vb = sc.getBoundingClientRect(), mb = m.getBoundingClientRect();
+                    return {top: Math.round(mb.top - vb.top),
+                            h: Math.round(vb.height),
+                            on: mb.top >= vb.top && mb.bottom <= vb.bottom,
+                            ph: Math.round(m.closest('.para').getBoundingClientRect().height)};
+                }""")
+                if not land:
+                    fails.append('%dx%d: nothing was highlighted after the click'
+                                 % (vw, vh))
+                elif not land['on']:
+                    fails.append('%dx%d: the hit is OFF SCREEN — the word sits at '
+                                 'y=%d in a %dpx viewport (its paragraph is %dpx '
+                                 'tall)' % (vw, vh, land['top'], land['h'], land['ph']))
+                c4.close()
+        except Exception as e:
+            fails.append('landing check raised: %s' % e)
+
         # (d) ONE FAILED FETCH OF THE TERM MAP MUST NOT KILL THE BOX.
         # `ensureTerms` used to cache `jget`'s fallback -- an EMPTY term map --
         # as though it were the answer, and its own `if (TERMS) return` then
