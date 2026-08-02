@@ -149,7 +149,36 @@ def write_shards(name, data, allow_big=False):
     # 718 gloss rows.  Those go to their own file, fetched only when the reader
     # actually opens that word -- the shard keeps the count so the tab can say
     # how many there are without loading them.
-    bigkeys = {k for k, b in sizes.items() if allow_big and b > CAP // 2}
+    # !!! A FIXED THRESHOLD DOES NOT KEEP THE CAP.  With `> CAP//2` the eval
+    # build produced a 227 kB `lem` shard: a bucket whose keys are individually
+    # under the threshold but which cannot be split any further, because they
+    # share a fold() prefix all the way down.  Prefix sharding alone cannot fix
+    # that -- the only lever left is to send keys to their own files.  So the
+    # threshold starts low and the buckets are RE-CHECKED afterwards: any
+    # bucket still over the cap gives up its largest key, and it repeats until
+    # every shard fits.  The cap is a promise about what a phone downloads; it
+    # is not decoration.
+    bigkeys = {k for k, b in sizes.items() if allow_big and b > CAP // 3}
+    if allow_big:
+        for _ in range(200):
+            probe = {k: (entry(k, {'big': 1, 'pages': 1}) if k in bigkeys
+                         else sizes[k]) for k in data}
+            assign_p, _m = shard_table(probe)
+            over = collections.defaultdict(list)
+            for k in data:
+                over[assign_p[k]].append(k)
+            worst = None
+            for g, ks in over.items():
+                tot = sum(probe[k] for k in ks)
+                if tot > CAP:
+                    cand = max((k for k in ks if k not in bigkeys),
+                               key=lambda k: sizes[k], default=None)
+                    if cand is not None:
+                        worst = cand if worst is None or sizes[cand] > sizes[worst] \
+                                else worst
+            if worst is None:
+                break
+            bigkeys.add(worst)
     PAGE = 120
     if bigkeys:
         os.makedirs(os.path.join(d, 'big'), exist_ok=True)
@@ -161,6 +190,25 @@ def write_shards(name, data, allow_big=False):
             # which is how the first eval build died.  Only a list of gloss rows
             # can be ordered and paged; anything else goes in one page whole.
             if not isinstance(rows, list):
+                # a dict value (a lemma record) is split by KEY across pages so
+                # no single overflow file breaks the cap either; page 0 carries
+                # the key list so the panel knows what is coming.
+                if isinstance(rows, dict):
+                    ks = sorted(rows)
+                    pages, cur, cursz = [], {}, 0
+                    for kk in ks:
+                        sz = len(json.dumps(rows[kk], ensure_ascii=False).encode())
+                        if cur and cursz + sz > CAP:
+                            pages.append(cur); cur, cursz = {}, 0
+                        cur[kk] = rows[kk]; cursz += sz
+                    if cur:
+                        pages.append(cur)
+                    for i, pg in enumerate(pages or [{}]):
+                        json.dump({'n': len(ks), 'pages': max(len(pages), 1),
+                                   'page': i, 'keys': ks, 'rows': pg},
+                                  open(os.path.join(d, 'big', f'{safe(k)}.{i}.json'), 'w'),
+                                  ensure_ascii=False, separators=(',', ':'))
+                    continue
                 json.dump({'n': 1, 'pages': 1, 'page': 0, 'rows': rows},
                           open(os.path.join(d, 'big', f'{safe(k)}.0.json'), 'w'),
                           ensure_ascii=False, separators=(',', ':'))

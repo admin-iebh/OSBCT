@@ -137,7 +137,8 @@ var S = {
   wl_tpm:       {en: 'TPM', es: 'TPM'},
   wl_rt:        {en: 'Roots', es: 'Raíces'},
   wl_uhs:       {en: 'U Hau Sein', es: 'U Hau Sein'},
-  wl_dict:      {en: 'Pāḷi Dictionary', es: 'Diccionario Pāḷi'},
+  wl_dict:      {en: 'APD', es: 'APD'},
+  wl_ped_tab:   {en: 'PED', es: 'PED'},
   wl_tip_dict:  {en: 'The dictionaries aggregated at dictionary.sutta.org, plus CPED and PPN — '
                    + 'one section each, in order of authority. Reference, never the panel’s voice (§9).',
                  es: 'Los diccionarios reunidos en dictionary.sutta.org, más CPED y PPN — '
@@ -280,9 +281,24 @@ function elook(set, key) {
     if (!o) return null;
     var v = o[key] !== undefined ? o[key] : o[key.toLowerCase()];
     // an oversize value lives in its own file; the shard holds only a marker
-    if (v && v.big && v.pages)
-      return jfetch(EBASE + set + '/big/' + safeName(key) + '.0.json')
-        .then(function (pg) { return pg ? pg.rows : null; });
+    // !!! AN OVERSIZE LEMMA RECORD IS NOW PAGED BY KEY, NOT JUST BY ROW.  A
+    // record carrying all twenty-four APD dictionaries can exceed the shard
+    // cap on its own, so build_lookup splits it across files; fetching only
+    // page 0 would silently drop whichever dictionaries fell on later pages.
+    if (v && v.big && v.pages) {
+      var jobs = [];
+      for (var i = 0; i < v.pages; i++)
+        jobs.push(jfetch(EBASE + set + '/big/' + safeName(key) + '.' + i + '.json'));
+      return Promise.all(jobs).then(function (pgs) {
+        var out = null;
+        pgs.forEach(function (pg) {
+          if (!pg || !pg.rows) return;
+          if (Array.isArray(pg.rows)) out = (out || []).concat(pg.rows);
+          else { out = out || {}; for (var k2 in pg.rows) out[k2] = pg.rows[k2]; }
+        });
+        return out;
+      });
+    }
     return v;
   });
 }
@@ -697,21 +713,23 @@ function render(d) {
   d.n.dpd = (d.ev && d.ev.dpd) ? d.ev.dpd.length : 0;
   d.n.abhi = count('a', true);
   d.n.peu = count('p', false);
-  d.n.cped = count('cp', false);
-  d.n.ppn = count('pn', true);
-  d.n.ny = count('ny', true);
-  d.n.vri = count('vri', true);
-  d.n.pwg = count('pwg', true);
-  d.n.tpm = count('tpm', true);
-  d.n.rt = count('rt', true);
-  d.n.uhs = count('uhs', true);
-
-  d.n.ped = nPed;
-  // the aggregate count on the one dictionary tab
-  var nDict = 0;
-  DICT_SECTIONS.forEach(function (t) {
-    if (EVAL || t[0] === 'ped') nDict += (d.n[t[0]] || 0);
+  // APD: one count per dictionary the manifest knows about.  Nothing here is
+  // named in this file -- if the build adds a dictionary, the panel shows it.
+  d.apd = {};
+  lems.forEach(function (L) {
+    var m = L.e.apd;
+    if (!m) return;
+    for (var id in m) {
+      d.apd[id] = (d.apd[id] || []).concat(m[id].map(function (t) {
+        return {lem: L.b, body: t}; }));
+    }
   });
+  d.n.ped = nPed;
+  var nDict = nPed;
+  if (EVAL) {
+    for (var id in d.apd) nDict += d.apd[id].length;
+    nDict += count('pn', true);          // DPPN v1.0.8, fuller than PCED's own
+  }
   d.nDict = nDict;
   // TAB ORDER DEPENDS ON WHICH PANEL THIS IS, AND THAT IS THE WHOLE POINT.
   //
@@ -728,7 +746,7 @@ function render(d) {
       + tabBtn('dict', T('wl_dict'), nDict || null, !nDict, T('wl_tip_dict'))
       + tabBtn('ed',   T('wl_edition'), d.nGloss || null, !d.nGloss, T('wl_tip_ed'))
     : tabBtn('ed',   T('wl_edition'), d.nGloss || null, !d.nGloss, T('wl_tip_ed'))
-      + tabBtn('dict', T('wl_dict'), nDict || null, !nDict, T('wl_tip_dict'));
+      + tabBtn('dict', T('wl_ped_tab'), nDict || null, !nDict, T('wl_tip_ped'));
   tabs.innerHTML = html;
   Array.prototype.forEach.call(tabs.querySelectorAll('button'), function (b) {
     b.addEventListener('click', function () {
@@ -1011,10 +1029,43 @@ function viewPeu(d) {
 // ONE TAB, MANY SOURCES.  Each keeps its own heading, count, attribution and
 // banner -- a section, not a merge.  A jump strip at the top says what is in
 // here for this word, so the reader can see at a glance without scrolling.
+function apdOrder() {
+  return (EMAN && EMAN.apd_order) || [];
+}
+function apdBook(id) {
+  var b = (EMAN && EMAN.apd_books && EMAN.apd_books[id]) || {};
+  return {name: b.name || id, author: b.author || '', lang: b.lang || '?'};
+}
+function apdZawgyi(id) {
+  return ((EMAN && EMAN.apd_zawgyi) || []).indexOf(id) >= 0;
+}
+
+// ONE TAB, MANY SOURCES -- and the sources come from the BUILD's book table,
+// never from a list kept here.  The first version named six dictionaries in
+// this file; the build imported six; and the reader found `āmanteti` showing
+// two where dictionary.sutta.org shows ten.  Whatever the build ingests is
+// what this renders, so the two cannot drift apart again.
+// Each section keeps its own heading, count and attribution -- sections, not a
+// merge -- and a jump strip says what is in here for this word.
 function viewDict(d) {
-  var have = DICT_SECTIONS.filter(function (t) {
-    return (EVAL || t[0] === 'ped') && (d.n[t[0]] || 0) > 0;
-  });
+  var have = [];
+  if (d.ped && d.ped.length)
+    have.push({id: '_ped', label: T('wl_ped_tab'),
+               src: T('wl_tip_ped'), n: d.n.ped, ev: false});
+  if (EVAL) {
+    apdOrder().forEach(function (id) {
+      var rows = d.apd[id];
+      if (!rows || !rows.length) return;
+      var bk = apdBook(id);
+      have.push({id: id, label: bk.name, n: rows.length, ev: true,
+                 src: bk.author + (apdZawgyi(id) ? ' — ' + T('wl_zg') : '')});
+    });
+    var pn = 0;
+    ((d.ev && d.ev.lem) || []).forEach(function (L) {
+      if (L.e.pn) pn += L.e.pn.length; });
+    if (pn) have.push({id: '_ppn', label: T('wl_ppn'), n: pn, ev: true,
+                       src: T('wl_tip_ppn')});
+  }
   if (!have.length)
     return '<p class="wl-none">' + esc(T('wl_nodict')) + '</p>';
 
@@ -1022,27 +1073,25 @@ function viewDict(d) {
   if (have.length > 1) {
     h += '<div class="wl-jump"><span class="wl-cite">' + esc(T('wl_jump')) + '</span> '
        + have.map(function (t) {
-           return '<a href="#wl-s-' + t[0] + '">' + esc(T(t[1]))
-                + ' <span class="wl-cite">' + d.n[t[0]] + '</span></a>';
+           return '<a href="#wl-s-' + t.id + '">' + esc(t.label)
+                + ' <span class="wl-cite">' + t.n + '</span></a>';
          }).join(' · ') + '</div>';
   }
   have.forEach(function (t) {
-    var key = t[0];
-    h += '<div class="wl-sec" id="wl-s-' + key + '">'
-       + '<div class="wl-sub">' + esc(T(t[1]))
-       + ' <span class="wl-flag">(' + d.n[key] + ')</span></div>'
-       + '<div class="wl-src">' + esc(T(t[2]))
-       + (LEXBURMESE[key] ? ' ' + esc(T('wl_zg')) : '') + '</div>'
-       + (key === 'ped' ? '' : '<div class="wl-banner">' + esc(T('wl_eval')) + '</div>')
-       + sectionBody(d, key)
+    h += '<div class="wl-sec" id="wl-s-' + t.id + '">'
+       + '<div class="wl-sub">' + esc(t.label)
+       + ' <span class="wl-flag">(' + t.n + ')</span></div>'
+       + '<div class="wl-src">' + esc(t.src) + '</div>'
+       + (t.ev ? '<div class="wl-banner">' + esc(T('wl_eval')) + '</div>' : '')
+       + sectionBody(d, t.id)
        + '</div>';
   });
   return h;
 }
 
 function sectionBody(d, key) {
-  if (key === 'ped') {
-    var h = '';
+  var h = '';
+  if (key === '_ped') {
     d.ped.forEach(function (p) {
       p.e.forEach(function (body) {
         h += '<div class="wl-row"><div class="wl-lem wl-g">' + esc(p.h) + '</div>'
@@ -1051,8 +1100,23 @@ function sectionBody(d, key) {
     });
     return h;
   }
-  if (key === 'dpd') return dpdBody(d);
-  return lexBody(d, key);
+  if (key === '_ppn') {
+    ((d.ev && d.ev.lem) || []).forEach(function (L) {
+      (L.e.pn || []).forEach(function (ent) {
+        h += '<div class="wl-row"><span class="wl-lem wl-g">' + esc(L.b) + '</span>'
+           + '<div class="wl-ext">' + ent + '</div></div>';
+      });
+    });
+    return h;
+  }
+  var rows = d.apd[key] || [], burmese = apdZawgyi(key);
+  rows.forEach(function (r, i) {
+    h += '<div class="wl-row"><span class="wl-cite">' + (i + 1) + '. </span>'
+       + '<span class="wl-lem wl-g">' + esc(r.lem) + '</span>'
+       + '<div class="' + (burmese ? 'wl-my' : 'wl-ext') + '">'
+       + esc(r.body) + '</div></div>';
+  });
+  return h;
 }
 
 function dpdBody(d) {

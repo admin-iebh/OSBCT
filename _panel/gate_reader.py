@@ -104,24 +104,49 @@ def elook(setname, key):
     if p not in _ecache:
         _ecache[p] = json.load(open(p)) if os.path.exists(p) else {}
     o = _ecache[p]
-    return o.get(key, o.get(key.lower()))
+    v = o.get(key, o.get(key.lower()))
+    if isinstance(v, dict) and v.get('big') and v.get('pages'):
+        merged = None
+        for i in range(v['pages']):
+            fp = os.path.join(ELOOKUP, setname, 'big', _safe(key) + f'.{i}.json')
+            if not os.path.exists(fp):
+                continue
+            pg = json.load(open(fp)).get('rows')
+            if isinstance(pg, list):
+                merged = (merged or []) + pg
+            elif isinstance(pg, dict):
+                merged = merged or {}
+                merged.update(pg)
+            else:
+                merged = pg
+        return merged
+    return v
+
+
+def _safe(k):
+    return ''.join(c if c.isalnum() and c.isascii() else '-%d-' % ord(c)
+                   for c in fold(k))
 
 
 def eval_counts(word):
-    """What the evaluation tabs SHOULD show for this form."""
+    """What the panel SHOULD show for this form, read the way the panel reads
+    it -- including the paged lemma records, which is where a whole dictionary
+    could silently go missing."""
     fr = elook('form', word)
     if not fr:
         return {}
     lems = [elook('lem', b) for b in fr.get('b', [])]
     lems = [x for x in lems if x]
-    listy = {'abhi': 'a', 'ppn': 'pn', 'ny': 'ny', 'vri': 'vri',
-             'pwg': 'pwg', 'tpm': 'tpm', 'rt': 'rt', 'uhs': 'uhs'}
-    flat = {'peu': 'p', 'cped': 'cp'}
-    out = {'dpd': sum(1 for h in fr.get('h', []) if elook('dpd', h))}
-    for tab, f2 in listy.items():
-        out[tab] = sum(len(L[f2]) for L in lems if L.get(f2))
-    for tab, f2 in flat.items():
-        out[tab] = sum(1 for L in lems if L.get(f2))
+    out = {'dpd': sum(1 for h in fr.get('h', []) if elook('dpd', h)),
+           'abhi': sum(len(L['a']) for L in lems if L.get('a')),
+           'peu': sum(1 for L in lems if L.get('p')),
+           'ppn': sum(len(L['pn']) for L in lems if L.get('pn'))}
+    apd = collections.Counter()
+    for L in lems:
+        for did, v in (L.get('apd') or {}).items():
+            apd[did] += len(v)
+    out['apd'] = dict(apd)
+    out['apd_total'] = sum(apd.values())
     return out
 
 
@@ -477,16 +502,16 @@ def run_gate(EVAL_ON=False):
                 # sum of what is inside it, and with the flag off that is PED
                 # alone -- so the same assertion covers both states.
                 exp = eval_counts(shown) if EVAL_ON else {}
-                INSIDE = ('cped', 'ny', 'vri', 'ppn', 'uhs', 'rt', 'tpm', 'pwg')
-                want_dict = pexp + (sum(exp.get(t, 0) for t in INSIDE)
+                INSIDE = ('ppn',)
+                want_dict = pexp + ((exp.get('apd_total', 0)
+                                     + sum(exp.get(t, 0) for t in INSIDE))
                                     if EVAL_ON else 0)
                 got_dict = int((st['tabs'].get('dict') or {}).get('n') or 0)
                 if got_dict != want_dict:
                     fail(f'Pāḷi Dictionary tab shows {got_dict}, sources have '
                          f'{want_dict}')
                 if not EVAL_ON:
-                    stray = [t for t in ('abhi', 'peu', 'dpd') + INSIDE
-                             if t in st['tabs']]
+                    stray = [t for t in ('abhi', 'peu', 'dpd') if t in st['tabs']]
                     if stray:
                         fail(f'evaluation flag off but the tabs are there: {stray}')
                 else:

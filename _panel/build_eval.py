@@ -254,32 +254,72 @@ for lem in LEMMAS:
 log(f'  Abhidhāna: {n:,} lemmas of {len(abhi):,} roman headwords')
 
 # ------------------------------------------------------------------ PCED ----
-# Nyanatiloka + VRI in English; the four Burmese ones Zawgyi→Unicode.
-PCED_SETS = {'N': ('ny', False), 'I': ('vri', False),
-             'B': ('pwg', True), 'K': ('tpm', True),
-             'O': ('rt', True), 'R': ('uhs', True)}
+# THE ĀMANTETI BUG, AND IT WAS TWO BUGS (2026-08-02, user-reported: clicking
+# `āmanteti` gave two sources where dictionary.sutta.org gives ten).
+#
+#  1. THE KEY WAS THE WRONG COLUMN.  PCED stores each entry three ways: column
+#     3 is the headword with its DIACRITICS STRIPPED (`amanteti`), column 4 is
+#     the accented form (`āmanteti`), column 5 the capitalised one.  The first
+#     build keyed on column 3 and looked it up with an accented lemma from DPD.
+#     Those match only for words that have no diacritics at all: **468,611 of
+#     504,414 rows — 92.9% — could never be found**, whatever else was right.
+#     That, not the dictionary list, is why VRI reached 1,664 lemmas of 13,508
+#     and Nyanatiloka 161 of 923.
+#
+#  2. ONLY SIX OF THE TWENTY-FOUR were imported.  The reader asked for "all the
+#     English ones, and the Burmese ones too"; the site also carries Chinese,
+#     Japanese and Vietnamese dictionaries, and those are what the missing
+#     sources for `āmanteti` turned out to be (Mahāñāṇo, Ming-fa, Mizuno, Bửu
+#     Chơn). All of them are imported now, and the panel renders them from the
+#     book table rather than a hardcoded list, so the set cannot drift again.
+#
+# Lookup is now diacritic-insensitive on BOTH sides — fold() the key and
+# fold() the lemma — which is also what §7 requires of search and what the site
+# itself does.
 log('PCED…')
+BOOKS = {}
+bpath = os.path.join(PCED, 'dict-books.csv')
+if os.path.exists(bpath):
+    for r in csv.reader(open(bpath, encoding='utf-8')):
+        if len(r) > 3 and r[0] != 'b_lang':
+            BOOKS[r[1]] = {'lang': r[0], 'name': r[2].strip(), 'author': r[3].strip()}
+BOOKS_JSON = os.environ.get('PCED_BOOKS')
+if not BOOKS and BOOKS_JSON and os.path.exists(BOOKS_JSON):
+    BOOKS = json.load(open(BOOKS_JSON, encoding='utf-8'))
+
+# Order of presentation: English, then Burmese, then Vietnamese, then the
+# Chinese/Japanese group.  Within each, the fuller and more scholarly first.
+APD_ORDER = ['P', 'C', 'N', 'I', 'V',            # English
+             'K', 'B', 'R', 'O',                 # Burmese
+             'U', 'Q', 'E',                      # Vietnamese
+             'S', 'A', 'J', 'H', 'T', 'M',       # Japanese / Chinese
+             'D', 'F', 'G', 'W', 'Z', 'X']
+ZAWGYI_IDS = {'B', 'K', 'O', 'R'}
+
 pced = collections.defaultdict(lambda: collections.defaultdict(list))
 zg_left = collections.Counter()
+seen_ids = set()
 
 
-def _take(dict_id, hw, body, already_converted):
-    field, is_zg = PCED_SETS[dict_id]
-    if is_zg and not already_converted:
-        body = zawgyi.convert(body)
-    if is_zg:
+def _take(dict_id, row, already_converted):
+    """row = the raw PCED row.  Key on the ACCENTED form, folded."""
+    seen_ids.add(dict_id)
+    body = row['b']
+    if dict_id in ZAWGYI_IDS:
+        if not already_converted:
+            body = zawgyi.convert(body)
         for ch in body:
             if 0x1060 <= ord(ch) <= 0x109F:
-                zg_left[field] += 1
+                zg_left[dict_id] += 1
     body = re.sub(r'\s+', ' ', body).strip()
-    if body:
-        pced[hw.strip().lower()][field].append(body)
+    if not body:
+        return
+    # every spelling PCED gives, folded, so an accented lemma finds it
+    for k in {row['hw'], row.get('acc') or '', row.get('cap') or ''}:
+        if k:
+            pced[fold(k)][dict_id].append(body)
 
 
-# Two ways in.  On a machine with the PCED dataset checked out, read the CSVs
-# and convert here.  On the user's machine there is no checkout and no network,
-# so the build reads a prepared JSONL in which the Zawgyi has ALREADY been
-# converted (and census-verified) — same rows, same order, one file.
 JSONL = os.environ.get('PCED_JSONL')
 if JSONL and os.path.exists(JSONL):
     import gzip as _gz
@@ -287,23 +327,29 @@ if JSONL and os.path.exists(JSONL):
     with op(JSONL, 'rt', encoding='utf-8') as f:
         for line in f:
             r = json.loads(line)
-            if r['d'] in PCED_SETS:
-                _take(r['d'], r['hw'], r['b'], True)
+            _take(r['d'], r, True)
     log(f'  from {os.path.basename(JSONL)} (Zawgyi already converted)')
 else:
     for fn in ('dict_words_1.csv', 'dict_words_2.csv'):
         for row in csv.reader(open(os.path.join(PCED, fn), encoding='utf-8')):
-            if len(row) < 7 or row[2] not in PCED_SETS:
+            if len(row) < 7:
                 continue
-            _take(row[2], row[3], row[6], False)
+            _take(row[2], {'hw': row[3], 'acc': row[4], 'cap': row[5], 'b': row[6]},
+                  False)
+
 n = collections.Counter()
 for lem in LEMMAS:
-    e = pced.get(lem.lower()) or pced.get(norm(lem))
+    e = pced.get(fold(lem))
     if not e:
         continue
-    for field, v in e.items():
-        put(lem, field, v); n[field] += 1
-log('  ' + ' · '.join(f'{f} {n[f]:,}' for _, (f, _z) in PCED_SETS.items()))
+    apd = {}
+    for did, v in e.items():
+        apd[did] = v
+        n[did] += 1
+    if apd:
+        put(lem, 'apd', apd)
+log(f'  {len(seen_ids)} dictionaries · lemmas reached: '
+    + ' · '.join(f'{d}={n[d]:,}' for d in APD_ORDER if n[d]))
 if zg_left:
     log(f'  !!! Zawgyi characters surviving conversion (flagged, not patched): '
         f'{dict(zg_left)}')
@@ -341,6 +387,13 @@ json.dump({
     # eleven tabs rendered disabled -- with no error anywhere to say why.  The
     # shipped index.json has carried `shards` from the start; this one did not.
     'shards': {'form': m_form, 'dpd': m_dpd, 'lem': m_lem},
+    # the panel renders one APD section per dictionary from THIS table, not
+    # from a list of its own, so the two cannot drift apart again
+    'apd_books': {k: BOOKS.get(k, {'name': k, 'author': '', 'lang': '?'})
+                  for k in sorted(seen_ids)},
+    'apd_order': [k for k in APD_ORDER if k in seen_ids]
+                 + sorted(seen_ids - set(APD_ORDER)),
+    'apd_zawgyi': sorted(ZAWGYI_IDS & seen_ids),
     'sources': {
         'dpd': 'Digital Pāḷi Dictionary (Bodhirasa), GoldenDict build — '
                'CC BY-NC-SA 4.0. EVALUATION ONLY; §9 excludes it as a voice.',
