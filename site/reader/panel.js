@@ -743,6 +743,24 @@ function render(d) {
   el.dataset.state = 'ready';
 }
 
+// !!! EVERY INTERACTIVE THING IN THE PANEL BODY IS WIRED HERE, AND THREE OF
+// THEM WERE NOT.  `body.innerHTML = ...` throws away the listeners with the
+// markup, so every control has to be bound again on each render -- and this
+// function had drifted until it bound exactly one of four:
+//
+//   * DPD's chips had NO click handler at all.  They looked right and did
+//     nothing.  Reported by the reader as "the chips are dead", and they were.
+//   * the reveals (`English (PEU) ⇣`, `Show the machine translation anyway`)
+//     had none either, so the Abhidhāna's English and PEU's segregated
+//     machine translation could not be opened.
+//   * the jump strip in the dictionary tab did nothing.
+//   * "Show more" queried `button.more`, but the class had been renamed to
+//     `wl-more` in the namespacing pass -- so paging through a high-frequency
+//     word's glosses was dead too, and nothing said so.
+//
+// Each was a silent `String.replace` that matched nothing, applied nothing and
+// asserted nothing.  The gate now PRESSES these, rather than checking they
+// exist: see gate_reader.py assertion 12.
 function show(tab, d) {
   var tabs = document.getElementById('wlt'), body = document.getElementById('wlb');
   Array.prototype.forEach.call(tabs.querySelectorAll('button'), function (b) {
@@ -752,8 +770,47 @@ function show(tab, d) {
                  : tab === 'dpd'  ? viewDpd(d)
                  : viewDict(d);
   body.scrollTop = 0;
-  var more = body.querySelector('button.more');
+
+  // 1. paging through a form with more gloss rows than a shard may hold
+  var more = body.querySelector('button.wl-more');
   if (more) more.addEventListener('click', function () { loadMore(d, more); });
+
+  // 2. our own reveals: the attributed English under an Abhidhāna entry, and
+  //    PEU's machine-translated block
+  Array.prototype.forEach.call(body.querySelectorAll('button.wl-reveal'),
+    function (b) {
+      b.addEventListener('click', function () {
+        var t = b.nextElementSibling;
+        if (t) t.classList.toggle('wl-hidden');
+      });
+    });
+
+  // 3. DPD's own chips — grammar, examples, declension, root family, compound
+  //    family, idioms.  Each carries data-target naming a block DPD ships
+  //    closed; the chip toggles it.  DPD's ids are per-headword
+  //    (`declension_bhikkhave`), so scope the lookup to the panel body and
+  //    match by attribute — an id starting with a digit would break
+  //    getElementById-style selectors.
+  Array.prototype.forEach.call(body.querySelectorAll('a.dpd-button[data-target]'),
+    function (a) {
+      a.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        var target = body.querySelector('[id="' + a.dataset.target + '"]');
+        if (target) target.classList.toggle('hidden');
+      });
+    });
+
+  // 4. the jump strip scrolls inside the panel instead of navigating the page
+  Array.prototype.forEach.call(body.querySelectorAll('.wl-jump a'), function (a) {
+    a.addEventListener('click', function (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      var t = body.querySelector(a.getAttribute('href'));
+      if (t) body.scrollTop += t.getBoundingClientRect().top
+                             - body.getBoundingClientRect().top - 6;
+    });
+  });
 }
 
 function rowHtml(r) {

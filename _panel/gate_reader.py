@@ -423,6 +423,49 @@ def run_gate(EVAL_ON=False):
                         if chips['open']:
                             fail('a DPD disclosure block is open before its '
                                  'chip was pressed')
+                # 12. PRESS THINGS.  Assertions 1-11 check that controls are
+                # present and styled; three separate controls were present,
+                # styled, and bound to nothing at all -- the reader found the
+                # DPD chips dead, and the reveals and the paging button were
+                # dead beside them.  Presence is not behaviour.  Press one of
+                # each and require the state to change.
+                if EVAL_ON and (st['tabs'].get('dpd') or {}).get('sel'):
+                    press = pg.evaluate('''() => {
+                      const a = document.querySelector('#wlb a.dpd-button[data-target]');
+                      if (!a) return null;
+                      const t = document.querySelector('[id="' + a.dataset.target + '"]');
+                      if (!t) return {err: 'chip target ' + a.dataset.target + ' does not exist'};
+                      const before = getComputedStyle(t).display !== 'none';
+                      a.click();
+                      const after = getComputedStyle(t).display !== 'none';
+                      return {label: a.textContent.trim(), before: before, after: after};
+                    }''')
+                    if press:
+                        if press.get('err'):
+                            fail(press['err'])
+                        elif press['before']:
+                            fail(f'DPD block "{press["label"]}" was already open')
+                        elif not press['after']:
+                            fail(f'pressing the DPD chip "{press["label"]}" '
+                                 f'did nothing — it is not wired')
+                if EVAL_ON and (st['tabs'].get('abhi') or {}).get('sel'):
+                    rev = pg.evaluate('''() => {
+                      const b = document.querySelector('#wlb button.wl-reveal');
+                      if (!b) return null;
+                      const t = b.nextElementSibling;
+                      if (!t) return {err: 'reveal button has nothing after it'};
+                      const before = !t.classList.contains('wl-hidden');
+                      b.click();
+                      return {before: before,
+                              after: !t.classList.contains('wl-hidden')};
+                    }''')
+                    if rev:
+                        if rev.get('err'):
+                            fail(rev['err'])
+                        elif rev['before']:
+                            fail('an attributed reveal was open before it was pressed')
+                        elif not rev['after']:
+                            fail('pressing the reveal did nothing — it is not wired')
                 if st['spill']['px'] > 2:
                     fail(f'{st["spill"]["px"]}px of the panel body is outside the '
                          f'panel ({st["spill"]["who"]})')
