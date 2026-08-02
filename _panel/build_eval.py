@@ -288,22 +288,56 @@ BOOKS_JSON = os.environ.get('PCED_BOOKS')
 if not BOOKS and BOOKS_JSON and os.path.exists(BOOKS_JSON):
     BOOKS = json.load(open(BOOKS_JSON, encoding='utf-8'))
 
-# Order of presentation: English, then Burmese, then Vietnamese, then the
-# Chinese/Japanese group.  Within each, the fuller and more scholarly first.
+# THE VIETNAMESE, JAPANESE AND CHINESE DICTIONARIES ARE NOT BUILT (user, 2026-08-02).
+#
+# !!! FILTER BY ID, NEVER BY `BOOKS[id]['lang']`.  PCED's own language tags are
+# wrong for exactly the dictionaries being dropped here: all three Vietnamese
+# ones are tagged 'E' (English) and every Japanese-source one is tagged 'C'.
+# A `lang` filter would keep the Vietnamese, drop nothing Japanese by name, and
+# take out things nobody asked to lose.  So the list is explicit, each id
+# carries the title it stands for, and the whole thing is asserted against
+# `BOOKS` at build time -- if PCED ever renumbers, the build stops rather than
+# silently pruning the wrong dictionary.
+APD_DROP = {
+    # Vietnamese
+    'U': 'Pali Viet Dictionary — Bửu Chơn',
+    'Q': 'Pali Viet Vinaya Terms — Giác Nguyên',
+    'E': 'Pali Viet Abhidhamma Terms — Tịnh Sự',
+    # Japanese (Mizuno Kōgen and its errata)
+    'S': '《パーリ语辞典》水野弘元',
+    'A': '《パーリ语辞典》增补改订 水野弘元',
+    'J': '《パーリ语辞典-勘误表》覓寂尊者',
+    # Chinese — including the two Chinese renderings of Mizuno
+    'H': '《汉译パーリ语辞典》黃秉榮譯',
+    'T': '《汉译パーリ语辞典》李瑩譯',
+    'M': '《巴利语汇解》玛欣德尊者',
+    'D': '《巴汉词典》Mahāñāṇo Bhikkhu',
+    'F': '《巴汉词典》明法尊者增订',
+    'G': '《巴利语字汇》葛印卡',
+    'W': '《巴英术语汇编》温宗堃',
+    'Z': '《巴汉佛学辞汇》张文明',
+    'X': '《巴利语入门》释性恩',
+}
+
+# Order of presentation: English, then Burmese.  (Vietnamese and the
+# Chinese/Japanese group used to follow; they are in APD_DROP now.)
 APD_ORDER = ['P', 'C', 'N', 'I', 'V',            # English
-             'K', 'B', 'R', 'O',                 # Burmese
-             'U', 'Q', 'E',                      # Vietnamese
-             'S', 'A', 'J', 'H', 'T', 'M',       # Japanese / Chinese
-             'D', 'F', 'G', 'W', 'Z', 'X']
+             'K', 'B', 'R', 'O']                 # Burmese
 ZAWGYI_IDS = {'B', 'K', 'O', 'R'}
+assert not (APD_DROP.keys() & set(APD_ORDER)), \
+    f'APD_DROP and APD_ORDER overlap: {APD_DROP.keys() & set(APD_ORDER)}'
 
 pced = collections.defaultdict(lambda: collections.defaultdict(list))
 zg_left = collections.Counter()
 seen_ids = set()
+dropped = collections.Counter()   # what APD_DROP kept out, reported at the end
 
 
 def _take(dict_id, row, already_converted):
     """row = the raw PCED row.  Key on the ACCENTED form, folded."""
+    if dict_id in APD_DROP:
+        dropped[dict_id] += 1
+        return
     seen_ids.add(dict_id)
     body = row['b']
     if dict_id in ZAWGYI_IDS:
@@ -445,6 +479,18 @@ for lem in LEMMAS:
         n[did] += 1
     if apd:
         put(lem, 'apd', apd)
+# No silent caps: say what was left out and how much of it there was.
+if BOOKS:
+    unknown = [k for k in APD_DROP if k not in BOOKS]
+    assert not unknown, f'APD_DROP names ids PCED does not have: {unknown}'
+missing = [k for k in APD_DROP if not dropped[k]]
+log(f'  APD_DROP: {len(APD_DROP)} dictionaries excluded, '
+    f'{sum(dropped.values()):,} rows not stored')
+for k in sorted(dropped, key=lambda k: -dropped[k]):
+    log(f'    {k}  {dropped[k]:8,}  {APD_DROP[k]}')
+if missing:
+    log(f'  !! these APD_DROP ids matched NOTHING: {missing} — either PCED has '
+        f'renumbered or the source is not being read')
 log(f'  {len(seen_ids)} dictionaries · lemmas reached: '
     + ' · '.join(f'{d}={n[d]:,}' for d in APD_ORDER if n[d]))
 if zg_left:

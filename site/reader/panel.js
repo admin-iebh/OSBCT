@@ -262,7 +262,7 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260803a';
+var WLV = '20260803b';
 
 // ---------------------------------------------------- gzipped shard sets --
 // WHY THE SHARDS ARE STORED GZIPPED, AND WHY THAT IS NOT THE SAME AS
@@ -422,13 +422,31 @@ function jfetch(url, gz) {
   return CACHE[url] = fetch(u).then(function (r) {
     if (!r.ok) return null;
     if (!gz) return r.json();
-    // !!! A .gz served by GitHub Pages arrives as an OPAQUE BODY -- the
-    // Content-Type is application/gzip and there is no Content-Encoding, so
-    // the browser does not inflate it and r.json() would throw on the magic
-    // bytes.  Inflate explicitly, both paths.
-    if (HAS_DS)
-      return new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).json();
+    // !!! SNIFF THE BODY, DO NOT TRUST THE URL.  A .gz can arrive here in
+    // EITHER of two states and the difference is the host's, not ours:
+    //
+    //   * opaque -- Content-Type: application/gzip and no Content-Encoding,
+    //     so the browser hands over the compressed bytes untouched.  This is
+    //     what a plain static server does, and what localhost does.
+    //   * ALREADY INFLATED -- a host that sets `Content-Encoding: gzip` on
+    //     the response makes the browser inflate it in the network layer, and
+    //     what lands here is ordinary JSON.
+    //
+    // Inflating the second case produces null and an empty tab.  `python3 -m
+    // http.server` never sets that header, so localhost and every gate pass
+    // are blind to it -- which is exactly the kind of difference between the
+    // test rig and the real host that this project has been bitten by before.
+    // Two magic bytes settle it, and cost nothing.
     return r.arrayBuffer().then(function (ab) {
+      var b = new Uint8Array(ab);
+      if (b.length < 2 || b[0] !== 0x1f || b[1] !== 0x8b) {
+        try { return JSON.parse(new TextDecoder().decode(b)); }
+        catch (e) { return null; }
+      }
+      if (HAS_DS)
+        return new Response(new Blob([ab]).stream()
+                 .pipeThrough(new DecompressionStream('gzip'))).json()
+               .catch(function () { return null; });
       var s = ungzip(ab);
       return s == null ? null : JSON.parse(s);
     });
