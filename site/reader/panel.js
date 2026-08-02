@@ -173,6 +173,11 @@ var S = {
                  es: 'Los diccionarios reunidos en dictionary.sutta.org, más CPED y PPN — '
                    + 'una sección cada uno, por orden de autoridad. Referencia, nunca la voz del panel (§9).'},
   wl_jump:      {en: 'In this word:', es: 'En esta palabra:'},
+  wl_type:      {en: 'Look up a Pāḷi word', es: 'Buscar una palabra pāḷi'},
+  wl_type_tip:  {en: 'Type a Pāḷi word — diacritics optional',
+                 es: 'Escriba una palabra pāḷi — diacríticos opcionales'},
+  wl_notfound:  {en: 'No entry for “%s” in the corpus or the dictionaries.',
+                 es: 'No hay entrada para «%s» en el corpus ni en los diccionarios.'},
   wl_goto:      {en: 'Open this passage in the reader',
                  es: 'Abrir este pasaje en el lector'},
   wl_nodict:    {en: 'No dictionary reached from this form.',
@@ -314,7 +319,7 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260803g';
+var WLV = '20260803h';
 
 // ---------------------------------------------------- gzipped shard sets --
 // WHY THE SHARDS ARE STORED GZIPPED, AND WHY THAT IS NOT THE SAME AS
@@ -532,6 +537,55 @@ function eShardName(set, key) {
   }
   return null;
 }
+// !!! A TYPED WORD IS NOT A CLICKED ONE, AND THE STORE IS KEYED EXACTLY.
+// `look()` picks its shard by the FOLDED key -- so `nibbana` and `nibbāna`
+// land in the same file -- and then reads `o[key]`, which is exact.  A
+// reader typing without diacritics would therefore reach the right shard
+// and miss every entry in it, which reads as "the word is not in the
+// canon": a confident wrong answer, the shape this project keeps meeting.
+//
+// So resolve the typed string against the shard's own keys before looking
+// anything up.  Exact wins; then the case-folded form; then the
+// diacritic-folded one, shortest first so `nibbana` prefers `nibbāna` over
+// `nibbanaṁ`.  Returns null when the shard genuinely has nothing, and the
+// caller SAYS so rather than opening an empty panel.
+function resolveTyped(q) {
+  var w = (q || '').trim();
+  if (!w) return Promise.resolve(null);
+  return manifest().then(function () {
+    return jfetch(BASE + 'freq/' + shardName('freq', w) + '.json',
+                  gzSet(MAN, 'freq'));
+  }).then(function (o) {
+    if (!o) return null;
+    // !!! AN EXACT MATCH IS NOT ALWAYS THE ANSWER.  `nibbana` IS a key -- it
+    // occurs once in the corpus -- so exact-first sent a reader who typed it
+    // to a hapax instead of to `nibbāna`, which occurs 17,211 times.  Right by
+    // the letter, useless in fact.
+    //
+    // So: if the reader typed a diacritic they meant it, and exact wins.  If
+    // they typed plain ASCII they are asking for whatever that spells, and the
+    // COMMONEST reading of it is what they want.  Frequency is already in this
+    // shard; ties go to the shorter form.
+    var deliberate = /[āīūṁṃṅñṭḍṇḷ]/.test(w);
+    if (deliberate) {
+      if (o[w] !== undefined) return w;
+      var lcd = w.toLowerCase();
+      if (o[lcd] !== undefined) return lcd;
+    }
+    var f = fold(w), best = null, bestN = -1;
+    for (var k in o) {
+      if (fold(k) !== f) continue;
+      var n = (o[k] && o[k][0]) || 0;
+      if (n > bestN || (n === bestN && best !== null && k.length < best.length)) {
+        best = k; bestN = n;
+      }
+    }
+    if (best !== null) return best;
+    if (o[w] !== undefined) return w;
+    var lc = w.toLowerCase();
+    return o[lc] !== undefined ? lc : null;
+  }).catch(function () { return null; });
+}
 function look(set, key) {
   return manifest().then(function () {
     return jfetch(BASE + set + '/' + shardName(set, key) + '.json', gzSet(MAN, set));
@@ -585,6 +639,13 @@ var CSS = ''
 + '#wl .wl-w{font-family:"Gentium Plus",Georgia,serif;font-size:22px;font-weight:700;'
 + 'padding-right:26px;word-break:break-word}'
 + '#wl .wl-c{font-size:11px;color:var(--mut);margin:2px 0 7px}'
++ '#wl .wl-find{margin-left:7px;border:1px solid var(--line);background:none;'
++ 'color:var(--mut);border-radius:6px;width:22px;height:22px;line-height:1;'
++ 'font-size:14px;cursor:pointer;vertical-align:middle;padding:0}'
++ '#wl .wl-find:hover,#wl .wl-find.on{color:var(--fg);border-color:var(--fg)}'
++ '#wl .wl-q{font-family:"Gentium Plus",Georgia,serif;font-size:19px;'
++ 'width:100%;box-sizing:border-box;border:1px solid var(--fg);border-radius:7px;'
++ 'background:var(--panel);color:var(--fg);padding:2px 8px}'
 + '#wl .wl-c b{color:var(--fg)}'
 + '#wl .wl-x{position:absolute;top:6px;right:9px;border:none;background:none;'
 + 'font-size:17px;color:var(--mut);cursor:pointer;line-height:1}'
@@ -756,12 +817,61 @@ function build() {
   el.innerHTML =
     '<div class="wl-h"><button class="wl-x" id="wlx" title="' + esc(T('wl_close')) + '">✕</button>'
     + '<div class="wl-w"><button class="wl-back" id="wlback" title="'
-    + esc(T('wl_back')) + '">‹</button><span id="wlw">&nbsp;</span></div>'
+    + esc(T('wl_back')) + '">‹</button><span id="wlw">&nbsp;</span>'
+    + '<button class="wl-find" id="wlfind" title="'
+    + esc(T('wl_type_tip')) + '" aria-label="' + esc(T('wl_type')) + '">⌕</button>'
+    + '<input class="wl-q" id="wlq" type="search" hidden autocomplete="off"'
+    + ' spellcheck="false" placeholder="' + esc(T('wl_type')) + '">'
+    + '</div>'
     + '<div class="wl-c" id="wlc"></div>'
     + '<div class="wl-tabs" id="wlt" role="tablist"></div></div>'
     + '<div class="wl-b" id="wlb"></div>';
   document.body.appendChild(el);
   document.getElementById('wlx').addEventListener('click', close);
+  // THE HEADWORD IS ALSO THE SEARCH BOX.  The reader asked for it in the
+  // place the clicked word appears, which is right: it is the same question
+  // asked two ways, and a word merely heard should be as reachable as one
+  // found in a text.
+  (function () {
+    var q = document.getElementById('wlq'), w = document.getElementById('wlw'),
+        f = document.getElementById('wlfind');
+    function open_() {
+      q.hidden = false; w.style.display = 'none'; f.classList.add('on');
+      q.value = ''; q.focus();
+    }
+    function shut() {
+      q.hidden = true; w.style.display = ''; f.classList.remove('on');
+    }
+    f.addEventListener('click', function () {
+      if (q.hidden) open_(); else shut();
+    });
+    w.addEventListener('click', open_);
+    q.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { shut(); return; }
+      if (e.key !== 'Enter') return;
+      var typed = q.value.trim();
+      if (!typed) return;
+      // the paragraph context is carried over, so the Edition tab still
+      // knows where the reader is standing -- a typed word is looked up
+      // FROM somewhere, exactly as a clicked one is
+      var para = current && current.para;
+      resolveTyped(typed).then(function (key) {
+        if (!key) {
+          document.getElementById('wlb').innerHTML =
+            '<p class="wl-none">'
+            + esc(T('wl_notfound').replace('%s', typed)) + '</p>';
+          document.getElementById('wlt').innerHTML = '';
+          document.getElementById('wlc').textContent = '';
+          w.textContent = typed;
+          el.dataset.state = 'ready';
+          shut();
+          return;
+        }
+        shut();
+        lookup(key, para, true);
+      });
+    });
+  })();
   document.getElementById('wlback').addEventListener('click', function () {
     var prev = HIST.pop();
     updateBack();

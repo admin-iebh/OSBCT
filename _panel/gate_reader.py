@@ -2036,6 +2036,19 @@ _SLAYER = {'pali-unicode': 'canon', 'atthakatha-unicode': 'A',
            'tika-unicode': 'T'}
 
 
+HOT_WORD = """() => {
+  const p = document.querySelector('.para.canon');
+  const w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
+  let n;
+  while ((n = w.nextNode())) {
+    const i = n.textContent.search(/[a-z\u0101\u012b\u016b\u1e41\u1e45\u00f1\u1e6d\u1e0d\u1e47\u1e37]{6,}/i);
+    if (i >= 0) { const r = document.createRange();
+      r.setStart(n, i + 1); r.setEnd(n, i + 4);
+      const q = r.getBoundingClientRect();
+      if (q.width > 0) return {x: q.x + 2, y: q.y + q.height / 2}; }
+  } return null; }"""
+
+
 def run_search():
     """DOES CLICKING A SEARCH HIT OPEN THE PASSAGE IT POINTS AT?
 
@@ -2177,6 +2190,46 @@ def run_search():
                 c4.close()
         except Exception as e:
             fails.append('landing check raised: %s' % e)
+
+        # (c3) THE PANEL'S OWN SEARCH BOX.  A word merely heard must be as
+        # reachable as one found in a text, and without diacritics -- the store
+        # is keyed exactly, so `nibbana` reaches the right shard and would miss
+        # every entry in it unless the typed string is resolved against the
+        # shard's own keys first.  Asserted with an ASCII query whose accented
+        # form is far commoner, because exact-match-first passes a naive check
+        # and still sends the reader to a hapax.
+        try:
+            c5 = b.new_context(viewport={'width': 1500, 'height': 950})
+            p5 = c5.new_page()
+            p5.goto(BASE + '/reader/reader2.html?wl=1&wle=1#%s/0' % VOLS[0],
+                    wait_until='domcontentloaded')
+            p5.wait_for_selector('.para.canon', timeout=30000)
+            p5.wait_for_timeout(800)
+            h5 = p5.evaluate(HOT_WORD)
+            if h5:
+                p5.mouse.click(h5['x'], h5['y'])
+                p5.wait_for_selector('#wl[data-state="ready"]', timeout=20000)
+                p5.click('#wlfind')
+                p5.wait_for_timeout(250)
+                p5.fill('#wlq', 'bhagava')
+                p5.keyboard.press('Enter')
+                p5.wait_for_timeout(2500)
+                got = p5.evaluate(
+                    "() => ({w: document.getElementById('wlw').textContent,"
+                    " c: document.getElementById('wlc').textContent,"
+                    " tabs: document.querySelectorAll('#wlt button').length})")
+                if got['w'] != 'bhagavā':
+                    fails.append('typing "bhagava" in the panel gave the headword '
+                                 '%r, not the accented form it spells' % got['w'])
+                if not got['c'] or not got['tabs']:
+                    fails.append('typing "bhagava" opened a panel with no corpus '
+                                 'counts (%r) or no tabs (%s)'
+                                 % (got['c'], got['tabs']))
+            else:
+                fails.append('search-box check: no clickable word to open the panel')
+            c5.close()
+        except Exception as e:
+            fails.append('panel search-box check raised: %s' % e)
 
         # (d) ONE FAILED FETCH OF THE TERM MAP MUST NOT KILL THE BOX.
         # `ensureTerms` used to cache `jget`'s fallback -- an EMPTY term map --
