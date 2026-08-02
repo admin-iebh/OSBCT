@@ -2444,6 +2444,27 @@ def run_layers():
     return 1 if fails else 0
 
 
+def check_notices():
+    """THE READER'S OWN WORDING, HELD IN PLACE.
+
+    2026-08-03 he corrected the Spanish evaluation notice: the tab is called
+    *Glosa* in Spanish, not *Gloss*, and both the singular and the plural form
+    of the notice named the English label.  A wording correction is exactly the
+    kind of change that gets undone by the next edit to the strings table and
+    noticed by nobody, so it is asserted rather than remembered.
+    """
+    fails = []
+    js = io.open(os.path.join(REPO, 'site', 'reader', 'panel.js'),
+                 encoding='utf-8').read()
+    if 'pestaña Gloss' in js:
+        fails.append('the Spanish notice still says "pestaña Gloss" — the tab '
+                     'is called Glosa in Spanish (reader, 2026-08-03)')
+    if js.count('pestaña Glosa') < 2:
+        fails.append('only %d of the two Spanish notices (singular and plural) '
+                     'name the Glosa tab' % js.count('pestaña Glosa'))
+    return fails
+
+
 def _wn_probe():
     """A Pāḷi headword whose PED entry contains an English word WordNet has —
     chosen FROM THE FILES, like every other probe here, so it keeps working
@@ -2581,14 +2602,66 @@ def run_wordnet():
                     fails.append('the English view does not say WordNet is not '
                                  'an authority on Pāḷi — §9 is why it is here '
                                  'at all')
+                # !!! GO ONE MORE ENGLISH WORD DEEP BEFORE PRESSING IT.
+                # User-reported 2026-08-03: "to go back from a clicked word one
+                # needs to click twice".  Measured: bhikkhu -> mendicant ->
+                # religious, and Back gave the pane headed `mendicant` WITH THE
+                # PĀḶI TABS AND NO COUNTS, because `wlback` renders whatever it
+                # pops through the Pāḷi path.  ONE Back must reach the Pāḷi
+                # word from any depth of English.  Without this second click
+                # the assertion below passes on the broken build.
+                deep = None
+                for w2 in re.findall(r'[a-z]{5,}', (st.get('body') or '').lower()):
+                    if w2 == word or not isinstance(look('wn', w2), list):
+                        continue
+                    deep = pg.evaluate(FIND, w2)
+                    if deep:
+                        break
+                if not deep:
+                    fails.append('no second English word inside the English '
+                                 'view — the one-click Back is not exercised')
+                else:
+                    pg.mouse.click(deep['x'], deep['y'])
+                    pg.wait_for_timeout(1500)
+                    if pg.evaluate(STATE)['w'].strip().lower() == word:
+                        fails.append('clicking a word inside the English view '
+                                     'did nothing — the English view is not '
+                                     'itself clickable')
                 pg.click('#wlback', timeout=5000)
                 pg.wait_for_timeout(1800)
                 bk = pg.evaluate(STATE)
                 if bk['w'].strip() != head or bk['tabs'] == st['tabs']:
-                    fails.append('Back from the English view left the pane at '
-                                 '%r with tabs %r — it did not return to the '
-                                 'Pāḷi word %r (%r)'
+                    fails.append('ONE Back from the English view left the pane '
+                                 'at %r with tabs %r — it did not return to '
+                                 'the Pāḷi word %r (%r)'
                                  % (bk['w'], bk['tabs'], head, before['tabs']))
+                elif len(bk['tabs']) < 2:
+                    fails.append('Back reached %r but with the single tab %r — '
+                                 'that is the English shell, not the Pāḷi view'
+                                 % (bk['w'], bk['tabs']))
+                # §9: the Abhidhāna is the lexical AUTHORITY, so the
+                # not-guaranteed notice must not stand on its tab — while its
+                # attribution, which is §9's other obligation, must.
+                ab = pg.evaluate("""() => {
+                    const b = document.querySelector('#wlt button[data-tab="abhi"]');
+                    if (!b || b.classList.contains('dis')) return null;
+                    b.click(); return true; }""")
+                if not ab:
+                    print('  note: no Abhidhāna tab here (no evaluation store) '
+                          '— its notice is NOT checked')
+                else:
+                    pg.wait_for_timeout(900)
+                    ah = pg.evaluate("""() => { const b = document.getElementById('wlb');
+                        return {banners: b.querySelectorAll('.wl-banner').length,
+                                src: b.querySelectorAll('.wl-src').length,
+                                rows: b.querySelectorAll('.wl-row').length}; }""")
+                    if ah['rows'] and ah['banners']:
+                        fails.append('the Abhidhāna tab carries the "we cannot '
+                                     'guarantee its accuracy" notice — it is '
+                                     'the §9 lexical authority')
+                    if ah['rows'] and not ah['src']:
+                        fails.append('the Abhidhāna tab has no attribution '
+                                     'line — §9 requires one')
             # (e) morphology, and (f) the negative controls
             def wn(w):
                 return pg.evaluate(
@@ -2619,6 +2692,12 @@ def run_wordnet():
 
 
 if __name__ == '__main__':
+    if '--notices-only' in sys.argv:
+        nf = check_notices()
+        for f in nf:
+            print(f'  FAIL notices: {f}')
+        print(f'gate_reader [notices]: {len(nf)} failures')
+        sys.exit(1 if nf else 0)
     if '--wordnet-only' in sys.argv:
         sys.exit(run_wordnet())
     if '--breakpoints' in sys.argv:
@@ -2637,6 +2716,10 @@ if __name__ == '__main__':
     for f in vf:
         print(f'  FAIL version: {f}')
     print(f'gate_reader [version]: {len(vf)} failures')
+    nf = check_notices()
+    for f in nf:
+        print(f'  FAIL notices: {f}')
+    print(f'gate_reader [notices]: {len(nf)} failures')
     # both states of the evaluation flag, because "off" is an assertion too
     if '--tabs-only' in sys.argv:
         sys.exit(run_tabs())

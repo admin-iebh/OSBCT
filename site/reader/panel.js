@@ -229,7 +229,7 @@ var S = {
                    + 'here are found freely available on the Internet.',
                  es: 'Este diccionario se ofrece tal cual, como referencia para el '
                    + 'estudio del Pāḷi. No podemos garantizar su exactitud. Para '
-                   + 'definiciones precisas use la pestaña Gloss. Todos los '
+                   + 'definiciones precisas use la pestaña Glosa. Todos los '
                    + 'diccionarios aquí ofrecidos se encuentran libremente '
                    + 'disponibles en Internet.'},
   // The same caution in the plural, for the APD tab, where it is said ONCE
@@ -240,7 +240,7 @@ var S = {
                    + 'provided here are found freely available on the Internet.',
                  es: 'Estos diccionarios se ofrecen tal cual, como referencia para el '
                    + 'estudio del Pāḷi. No podemos garantizar su exactitud. Para '
-                   + 'definiciones precisas use la pestaña Gloss. Todos los '
+                   + 'definiciones precisas use la pestaña Glosa. Todos los '
                    + 'diccionarios aquí ofrecidos se encuentran libremente '
                    + 'disponibles en Internet.'},
   wl_zg:        {en: 'Burmese, transcoded from Zawgyi to Unicode and verified by character census (§3).',
@@ -337,7 +337,7 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260803i';
+var WLV = '20260803j';
 
 // ---------------------------------------------------- gzipped shard sets --
 // WHY THE SHARDS ARE STORED GZIPPED, AND WHY THAT IS NOT THE SAME AS
@@ -737,11 +737,12 @@ function renderWn(word, r, alsoPali, paraEl) {
   var body = document.getElementById('wlb');
   body.innerHTML = h;
   var b = body.querySelector('.wl-topali');
+  // no HIST push: this is a lateral move INSIDE the detour, and the entry
+  // already on the stack is the Pāḷi word the reader left.  Pushing here is
+  // what would put an English word back on a stack that `wlback` renders
+  // through the Pāḷi path.
   if (b) b.addEventListener('click', function () {
-    var p = current && current.para;
-    HIST.push({word: word, para: p});
-    updateBack();
-    lookup(word, p, true);
+    lookup(word, current && current.para, true);
   });
   el.dataset.state = 'ready';
 }
@@ -1046,8 +1047,23 @@ function build() {
     wnLook(w).then(function (r) {
       if (!r || !current) return goPali();
       look('freq', w).then(function (fr) {
-        HIST.push({word: current.word, para: current.para});
-        updateBack();
+        // !!! BACK NEEDED TWO CLICKS, AND THE FIRST ONE LANDED SOMEWHERE
+        // WRONG (user-reported 2026-08-03).  Measured: `bhikkhu` -> English
+        // `mendicant` -> English `religious`, then Back gave the pane headed
+        // `mendicant` WITH THE PĀḶI TABS AND NO COUNTS -- because `wlback`
+        // calls `lookup()`, which is the Pāḷi path, on whatever it popped.  An
+        // English word rendered through the Pāḷi panel is an empty answer
+        // wearing an honest one's face, and only the SECOND click reached the
+        // word the reader came from.
+        //
+        // HIST NOW RECORDS PĀḶI VIEWS ONLY.  The English layer is a detour,
+        // not a destination -- however many English words deep the reader
+        // goes, one Back returns to the Pāḷi word they left, and everything
+        // `wlback` can pop is something `lookup()` can actually render.
+        if (!current.en) {
+          HIST.push({word: current.word, para: current.para});
+          updateBack();
+        }
         renderWn(w, r, !!fr, para);
       });
     });
@@ -1752,8 +1768,17 @@ function rich(x) {
       return SAFE_TAGS[t] ? '<' + slash + t + '>' : '';
     });
 }
-function evHead(srcLine, extra, rights) {
-  return '<div class="wl-banner">' + esc(T('wl_eval')) + '</div>'
+// `authority` omits the not-guaranteed notice.  It is passed by exactly one
+// view, and the reason is §9: the Abhidhāna is the lexical authority of this
+// edition — the Sixth Council's own lexicon over the Sixth Council's own text,
+// its definitions drawn from the Aṭṭhakathā and Ṭīkā.  The notice says "we
+// cannot guarantee its accuracy … for accurate definitions use the Glosa tab",
+// which is the right thing to say about a modern lexicon standing outside the
+// text and the wrong thing to say about the tradition's own glosses.  Reader's
+// instruction, 2026-08-03.  Its attribution and rights lines stay: those are
+// §9's other obligation and are not in question.
+function evHead(srcLine, extra, rights, authority) {
+  return (authority ? '' : '<div class="wl-banner">' + esc(T('wl_eval')) + '</div>')
        + '<div class="wl-src">' + esc(srcLine) + (extra ? ' ' + esc(extra) : '')
        + '</div>'
        + (rights ? '<div class="wl-rights">' + esc(T(rights)) + '</div>' : '');
@@ -1776,7 +1801,7 @@ function viewDpd(d) {
 }
 
 function viewAbhi(d) {
-  var h = evHead(T('wl_tip_abhi'), '', 'wl_dhamma');
+  var h = evHead(T('wl_tip_abhi'), '', 'wl_dhamma', true);   // §9: the authority
   var i = 0;
   ((d.ev && d.ev.lem) || []).forEach(function (L) {
     (L.e.a || []).forEach(function (row) {
