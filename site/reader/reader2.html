@@ -314,7 +314,11 @@ if(window.I18N) Object.assign(window.I18N,{
   r2_tabs:{en:'Tabs',es:'Pestañas'},
   r2_single:{en:'Single',es:'Simple'},
   r2_outline:{en:'☰ Outline',es:'☰ Esquema'},
-  r2_contents:{en:'☰ Contents',es:'☰ Contenido'}
+  r2_contents:{en:'☰ Contents',es:'☰ Contenido'},
+  r2_search_loading:{en:'Loading the search index…',
+                     es:'Cargando el índice de búsqueda…'},
+  r2_search_failed:{en:'The search index could not be loaded. Check the connection and type again.',
+                    es:'No se pudo cargar el índice de búsqueda. Revise la conexión y escriba de nuevo.'}
 });
 document.documentElement.setAttribute('data-theme', localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
 $('#themebtn').onclick=()=>{const d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n)};
@@ -1744,7 +1748,33 @@ function matchTerms(ft){
   for(let i=0;i<TERMKEYS.length;i++){ if(TERMKEYS[i].indexOf(ft)>=0){ out.push(TERMKEYS[i]); if(out.length>=500) break; } }
   return out;
 }
-async function ensureTerms(){ if(TERMS)return; const j=await jget('../index/terms.compact.json',{terms:{},vols:[],layers:[]}); TERMS=j; }
+// !!! A FAILED FETCH MUST NOT BE CACHED AS AN ANSWER (2026-08-02,
+// user-reported: "the search box only works when there is text in the reader
+// pane").  This was `if(TERMS) return; TERMS = await jget(url, {terms:{}})` —
+// and `jget` returns its fallback on ANY error.  So ONE failed, aborted or
+// timed-out request for the 22 MB term map installed an EMPTY term map as
+// though it were the answer, and `if(TERMS) return` then guaranteed it was
+// never fetched again: every later keystroke matched nothing, in silence, for
+// the rest of the page load.
+//
+// That is the same shape as `jget()` failing silently everywhere else (the
+// standing open item), and it explains the reported correlation with an empty
+// pane WITHOUT the pane being the cause: on a cold load this 22 MB request
+// contends with nav.json, pageindex, pagespan, concordance and the fonts,
+// which is where it is most likely to lose.  Once a volume is open those are
+// done and it succeeds — so the box "only works when there is text on screen".
+//
+// A failure is now remembered AS a failure, retried on the next keystroke, and
+// SAID on screen rather than left to look like "no matches".
+let TERMSERR=null;
+async function ensureTerms(){ if(TERMS)return;
+  try{
+    const r=await fetch('../index/terms.compact.json?v='+BUILD);
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const j=await r.json();
+    if(!j||!j.terms||!j.vols) throw new Error('malformed index');
+    TERMS=j; TERMSERR=null;
+  }catch(e){ TERMS=null; TERMSERR=(e&&e.message)||String(e); } }
 async function shard(vi){ if(shardCache[vi])return shardCache[vi]; return shardCache[vi]=await jget('../index/'+TERMS.vols[vi]+'.idx.json',{paras:[],inv:{}}); }
 let sTimer=null, sSeq=0;
 $('#sq').addEventListener('input',e=>{clearTimeout(sTimer);sTimer=setTimeout(()=>doSearch(e.target.value),180);});
@@ -1765,7 +1795,16 @@ async function doSearch(q){
   window.__hq=(q||'').trim();
   const dd=$('#sdrop'); const fq=foldS((q||'').trim());
   if(fq.length<2){dd.hidden=true;dd.innerHTML='';return;}
+  // THE BOX MUST NEVER BE SILENT.  The first search of a page load has to pull
+  // a 22 MB term map before it can answer anything, and until it lands nothing
+  // appeared at all — indistinguishable from a broken box, and reported as one.
+  if(!TERMS){ dd.hidden=false;
+    dd.innerHTML='<div class="sr-head">'+esc(TIP('r2_search_loading','Loading the search index…'))+'</div>'; }
   await ensureTerms(); await ensureNames();
+  if(my!==sSeq) return;
+  if(!TERMS){ dd.hidden=false;
+    dd.innerHTML='<div class="sr-head">'+esc(TIP('r2_search_failed','The search index could not be loaded. Check the connection and type again.'))+(TERMSERR?' ('+esc(TERMSERR)+')':'')+'</div>';
+    return; }
   let secHTML='', nSec=0;
   if(SNAMES){
     const hit=[];

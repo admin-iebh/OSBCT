@@ -2067,6 +2067,56 @@ def run_search():
             except Exception as e:
                 fails.append('clicking the first hit for %r raised: %s'
                              % (term, e))
+        # (d) ONE FAILED FETCH OF THE TERM MAP MUST NOT KILL THE BOX.
+        # `ensureTerms` used to cache `jget`'s fallback -- an EMPTY term map --
+        # as though it were the answer, and its own `if (TERMS) return` then
+        # guaranteed it was never fetched again.  Every later keystroke
+        # answered "No matches", confidently and wrongly, for the rest of the
+        # page load.  Reported 2026-08-02 as "the search box only works when
+        # there is text in the reader pane": the 22 MB request loses exactly
+        # where it contends with nav.json, pageindex, pagespan, concordance
+        # and the fonts, which is a cold load.
+        # The recovery half of this is the assertion that cannot be satisfied
+        # by absence -- it demands ROWS, from a page that has already failed
+        # once.
+        try:
+            c3 = b.new_context(viewport={'width': 1400, 'height': 900})
+            p3 = c3.new_page()
+            seen = {'n': 0}
+
+            def _route(r):
+                seen['n'] += 1
+                r.abort('failed') if seen['n'] == 1 else r.continue_()
+
+            p3.route('**/terms.compact.json*', _route)
+            p3.goto(BASE + '/reader/reader2.html?wl=0', wait_until='domcontentloaded')
+            p3.wait_for_timeout(1200)
+            p3.fill('#sq', term)
+            p3.wait_for_timeout(2500)
+            said = p3.evaluate(
+                "() => (document.getElementById('sdrop').textContent||'').trim()")
+            if not said:
+                fails.append('with the term map failing, the box showed nothing '
+                             'at all — indistinguishable from a dead search box')
+            elif 'occurrence' not in said and 'could not be loaded' not in said \
+                    and 'no se pudo' not in said.lower():
+                fails.append('with the term map failing, the box said %r rather '
+                             'than saying the index failed' % said[:70])
+            p3.fill('#sq', term[:-1])
+            p3.wait_for_timeout(400)
+            p3.fill('#sq', term)
+            p3.wait_for_timeout(4000)
+            back = p3.evaluate(
+                "() => document.querySelectorAll('#sdrop .sresult').length")
+            if back == 0:
+                fails.append('after the term map failed once, a later keystroke '
+                             'still returned nothing (%d request(s) made) — the '
+                             'failed fetch is cached as the answer'
+                             % seen['n'])
+            c3.close()
+        except Exception as e:
+            fails.append('failed-index-fetch check raised: %s' % e)
+
         if errs:
             fails.append('page errors during search: %s' % errs[:3])
         b.close()
