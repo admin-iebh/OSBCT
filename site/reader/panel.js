@@ -231,10 +231,21 @@ function safeName(k) {
 }
 
 var CACHE = {};
+// !!! NOTHING THE PANEL FETCHED CARRIED A VERSION, AND THE BROWSER KEPT IT ALL.
+// reader2 appends `?v=BUILD` to every data URL it loads and this file did not,
+// so once a reader had opened the panel, their browser served the FIRST
+// index.json and the FIRST shards it ever saw, for as long as its cache lived.
+// That is how a rebuilt lookup_eval/ produced "APD 22" with a single PED
+// section on the reader's machine while rendering all eleven sections here:
+// their manifest was hours old, had no `apd_order`, and so named no sections
+// to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
+// data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
+var WLV = '20260802e';
 function jfetch(url) {
   if (CACHE[url]) return CACHE[url];
-  return CACHE[url] = fetch(url).then(function (r) { return r.ok ? r.json() : null; })
-                                .catch(function () { return null; });
+  var u = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'v=' + WLV;
+  return CACHE[url] = fetch(u).then(function (r) { return r.ok ? r.json() : null; })
+                              .catch(function () { return null; });
 }
 // !!! The shard data lives at site/lookup/, and this file runs from
 // site/reader/ — a bare 'lookup/…' resolves to /reader/lookup/ and every fetch
@@ -1029,8 +1040,17 @@ function viewPeu(d) {
 // ONE TAB, MANY SOURCES.  Each keeps its own heading, count, attribution and
 // banner -- a section, not a merge.  A jump strip at the top says what is in
 // here for this word, so the reader can see at a glance without scrolling.
-function apdOrder() {
-  return (EMAN && EMAN.apd_order) || [];
+// The manifest's order is a PRESENTATION preference.  If it is missing -- an
+// older index.json, a build that did not write one -- the sections must still
+// all appear, just unordered.  Silently showing none of them because a list of
+// preferences was absent is how this failed on the reader's machine.
+function apdOrder(d) {
+  var order = (EMAN && EMAN.apd_order) || [];
+  var have = Object.keys((d && d.apd) || {});
+  var seen = {}, out = [];
+  order.forEach(function (id) { if (!seen[id]) { seen[id] = 1; out.push(id); } });
+  have.sort().forEach(function (id) { if (!seen[id]) { seen[id] = 1; out.push(id); } });
+  return out;
 }
 function apdBook(id) {
   var b = (EMAN && EMAN.apd_books && EMAN.apd_books[id]) || {};
@@ -1053,7 +1073,7 @@ function viewDict(d) {
     have.push({id: '_ped', label: T('wl_ped_tab'),
                src: T('wl_tip_ped'), n: d.n.ped, ev: false});
   if (EVAL) {
-    apdOrder().forEach(function (id) {
+    apdOrder(d).forEach(function (id) {
       var rows = d.apd[id];
       if (!rows || !rows.length) return;
       var bk = apdBook(id);

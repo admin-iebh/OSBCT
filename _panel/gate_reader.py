@@ -389,6 +389,12 @@ def run_gate(EVAL_ON=False):
                     if (st['tabs'].get('dict') or {}).get('sel') and exp_ed:
                         fail('the dictionary tab opened by default over the Edition')
                 pexp = ped_total(shown)
+                # !!! computed HERE, not further down.  Assertion 13 referenced
+                # `exp` before the line that assigned it, so the whole
+                # evaluation pass died with UnboundLocalError -- and because the
+                # run still printed its first line, two "clean" runs were read
+                # as passes when the second pass had not happened at all.
+                exp = eval_counts(shown) if EVAL_ON else {}
                 # 5. every promoted row really is about this paragraph
                 # counts, not a set: a two-word lemma has to find two words
                 pool = collections.Counter()
@@ -491,6 +497,33 @@ def run_gate(EVAL_ON=False):
                             fail('an attributed reveal was open before it was pressed')
                         elif not rev['after']:
                             fail('pressing the reveal did nothing — it is not wired')
+                # 13. EVERY DICTIONARY IN THE DATA MUST GET A SECTION.  The
+                # count on the tab and the sections in the body are computed by
+                # different paths -- one from the record, one from the
+                # manifest's order list -- so they can disagree, and they did:
+                # a stale manifest with no `apd_order` gave "APD 22" over a
+                # single PED section.  Assert them against each other.
+                # !!! OPEN THE TAB.  The first version of this assertion was
+                # conditional on the APD tab being SELECTED -- and with the
+                # evaluation flag on the default tab is DPD, so it was never
+                # selected, the assertion never ran, and the negative control
+                # passed.  A skipped assertion is worse than no assertion: it
+                # reports success.  Click the tab, then look.
+                if EVAL_ON and not (st['tabs'].get('dict') or {}).get('dis'):
+                    pg.evaluate('''() => {
+                      const b = document.querySelector('#wlt button[data-tab="dict"]');
+                      if (b) b.click();
+                    }''')
+                    pg.wait_for_timeout(120)
+                    secs = pg.evaluate('''() => [...document.querySelectorAll(
+                      '#wlb .wl-sec')].map(e => e.id.replace('wl-s-',''))''')
+                    want = set((exp.get('apd') or {}).keys())
+                    missing = sorted(want - set(secs))
+                    if missing:
+                        fail(f'APD tab draws no section for {missing} '
+                             f'(sections drawn: {secs})')
+                    if want and not secs:
+                        fail('APD tab has a count but drew no sections at all')
                 if st['spill']['px'] > 2:
                     fail(f'{st["spill"]["px"]}px of the panel body is outside the '
                          f'panel ({st["spill"]["who"]})')
@@ -501,7 +534,6 @@ def run_gate(EVAL_ON=False):
                 # `dict` tab holding the rest as sections.  Its count is the
                 # sum of what is inside it, and with the flag off that is PED
                 # alone -- so the same assertion covers both states.
-                exp = eval_counts(shown) if EVAL_ON else {}
                 INSIDE = ('ppn',)
                 want_dict = pexp + ((exp.get('apd_total', 0)
                                      + sum(exp.get(t, 0) for t in INSIDE))
