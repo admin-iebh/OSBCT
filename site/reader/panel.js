@@ -262,12 +262,177 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260802i';
-function jfetch(url) {
+var WLV = '20260803a';
+
+// ---------------------------------------------------- gzipped shard sets --
+// WHY THE SHARDS ARE STORED GZIPPED, AND WHY THAT IS NOT THE SAME AS
+// TRANSFER COMPRESSION.  GitHub Pages already gzips a .json response over the
+// wire, so the reader was never downloading the expanded bytes.  What the
+// expanded bytes cost is the PUBLISHED SITE SIZE, which GitHub caps at 1 GB,
+// and DPD's 379 MB of shards did not fit under it.  Storing them pre-gzipped
+// (43.7 MB, 8.68x) buys the cap back, at the price of inflating here instead
+// of in the network layer.
+//
+// WHICH sets are stored that way is the manifest's business, never this
+// file's: `index.json` carries a `gz` list, so DPD-only and everything-gzipped
+// are the same code path with different data.  A hardcoded list here is
+// exactly the mistake that once made `āmanteti` show 2 sources where the site
+// showed 10.
+function gzSet(man, set) {
+  return !!(man && man.gz && man.gz.indexOf(set) >= 0);
+}
+// DecompressionStream('gzip') is Safari 16.4+ / 93.7% of global traffic.  The
+// remaining 6.3% must not silently get an empty panel, so INFLATE is a real
+// fallback, not a stub -- see inflate.js's raw-DEFLATE decoder below.
+var HAS_DS = (typeof DecompressionStream === 'function');
+// ---- raw DEFLATE (RFC 1951), for browsers without DecompressionStream ------
+// 6.3% of global traffic lacks DecompressionStream (Safari < 16.4).  Once the
+// `lookup/` shards are gzipped too, that 6.3% would lose the WHOLE panel, not
+// one tab -- so this is a real decoder, verified against every published shard,
+// not a stub.  Returns null on any malformed input; the caller treats null the
+// same as a failed fetch.
+function rawInflate(b, pos) {
+  var out = new Uint8Array(65536), olen = 0;
+  var bitbuf = 0, bitcnt = 0, p = pos;
+  function bits(n) {
+    while (bitcnt < n) {
+      if (p >= b.length) throw 0;
+      bitbuf = (bitbuf | (b[p++] << bitcnt)) >>> 0; bitcnt += 8;
+    }
+    var v = bitbuf & ((1 << n) - 1);
+    bitbuf >>>= n; bitcnt -= n;
+    return v;
+  }
+  function grow(n) {
+    if (olen + n <= out.length) return;
+    var cap = out.length;
+    while (cap < olen + n) cap *= 2;
+    var t = new Uint8Array(cap); t.set(out.subarray(0, olen)); out = t;
+  }
+  function build(lengths, count0) {
+    var maxbits = 0, i, N = count0 === undefined ? lengths.length : count0;
+    for (i = 0; i < N; i++) if (lengths[i] > maxbits) maxbits = lengths[i];
+    var count = new Int32Array(maxbits + 1);
+    for (i = 0; i < N; i++) count[lengths[i]]++;
+    count[0] = 0;
+    var offs = new Int32Array(maxbits + 2), s = 0;
+    for (i = 1; i <= maxbits; i++) { offs[i] = s; s += count[i]; }
+    var symbol = new Int32Array(s);
+    for (i = 0; i < N; i++) if (lengths[i]) symbol[offs[lengths[i]]++] = i;
+    return {count: count, symbol: symbol, max: maxbits};
+  }
+  function decode(h) {
+    var code = 0, first = 0, index = 0, len, cnt;
+    for (len = 1; len <= h.max; len++) {
+      code |= bits(1);
+      cnt = h.count[len];
+      if (code - first < cnt) return h.symbol[index + (code - first)];
+      index += cnt; first = (first + cnt) << 1; code <<= 1;
+    }
+    throw 0;
+  }
+  var LBASE = [3,4,5,6,7,8,9,10,11,13,15,17,19,23,27,31,35,43,51,59,67,83,99,
+               115,131,163,195,227,258],
+      LEXT  = [0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,0],
+      DBASE = [1,2,3,4,5,7,9,13,17,25,33,49,65,97,129,193,257,385,513,769,1025,
+               1537,2049,3073,4097,6145,8193,12289,16385,24577],
+      DEXT  = [0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13];
+  var ORD = [16,17,18,0,8,7,9,6,10,5,11,4,12,3,13,2,14,1,15];
+  var fixedL = null, fixedD = null;
+  try {
+    for (;;) {
+      var last = bits(1), type = bits(2), lh, dh, i, k;
+      if (type === 0) {
+        bitbuf = 0; bitcnt = 0;                      // discard to byte boundary
+        if (p + 4 > b.length) throw 0;
+        var len = b[p] | (b[p + 1] << 8);
+        var nlen = b[p + 2] | (b[p + 3] << 8);
+        if ((len ^ 0xffff) !== nlen) throw 0;
+        p += 4;
+        if (p + len > b.length) throw 0;
+        grow(len);
+        for (i = 0; i < len; i++) out[olen++] = b[p++];
+      } else if (type === 1 || type === 2) {
+        if (type === 1) {
+          if (!fixedL) {
+            var fl = new Uint8Array(288), fd = new Uint8Array(30);
+            for (k = 0; k < 144; k++) fl[k] = 8;
+            for (; k < 256; k++) fl[k] = 9;
+            for (; k < 280; k++) fl[k] = 7;
+            for (; k < 288; k++) fl[k] = 8;
+            for (k = 0; k < 30; k++) fd[k] = 5;
+            fixedL = build(fl); fixedD = build(fd);
+          }
+          lh = fixedL; dh = fixedD;
+        } else {
+          var hlit = bits(5) + 257, hdist = bits(5) + 1, hclen = bits(4) + 4;
+          var cl = new Uint8Array(19);
+          for (k = 0; k < hclen; k++) cl[ORD[k]] = bits(3);
+          var ch = build(cl);
+          var lens = new Uint8Array(hlit + hdist), n = 0, prev = 0, sym, rep;
+          while (n < lens.length) {
+            sym = decode(ch);
+            if (sym < 16) lens[n++] = prev = sym;
+            else if (sym === 16) { rep = 3 + bits(2);
+                                   while (rep-- && n < lens.length) lens[n++] = prev; }
+            else if (sym === 17) { rep = 3 + bits(3);
+                                   while (rep-- && n < lens.length) lens[n++] = 0; prev = 0; }
+            else { rep = 11 + bits(7);
+                   while (rep-- && n < lens.length) lens[n++] = 0; prev = 0; }
+          }
+          lh = build(lens, hlit);
+          dh = build(lens.subarray(hlit));
+        }
+        for (;;) {
+          var s2 = decode(lh);
+          if (s2 < 256) { grow(1); out[olen++] = s2; }
+          else if (s2 === 256) break;
+          else {
+            s2 -= 257; if (s2 >= 29) throw 0;
+            var length = LBASE[s2] + bits(LEXT[s2]);
+            var ds = decode(dh); if (ds >= 30) throw 0;
+            var dist = DBASE[ds] + bits(DEXT[ds]);
+            var from = olen - dist; if (from < 0) throw 0;
+            grow(length);
+            for (var q = 0; q < length; q++) out[olen++] = out[from + q];
+          }
+        }
+      } else throw 0;
+      if (last) break;
+    }
+  } catch (e) { return null; }
+  try { return new TextDecoder().decode(out.subarray(0, olen)); }
+  catch (e) { return null; }
+}
+function ungzip(buf) {
+  var b = new Uint8Array(buf);
+  // gzip header: 10 bytes fixed, then optional FEXTRA/FNAME/FCOMMENT/FHCRC
+  if (b.length < 18 || b[0] !== 0x1f || b[1] !== 0x8b || b[2] !== 8) return null;
+  var flg = b[3], p = 10;
+  if (flg & 4) { p += 2 + (b[p] | (b[p + 1] << 8)); }
+  if (flg & 8) { while (p < b.length && b[p]) p++; p++; }
+  if (flg & 16) { while (p < b.length && b[p]) p++; p++; }
+  if (flg & 2) p += 2;
+  return rawInflate(b, p);
+}
+function jfetch(url, gz) {
   if (CACHE[url]) return CACHE[url];
-  var u = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'v=' + WLV;
-  return CACHE[url] = fetch(u).then(function (r) { return r.ok ? r.json() : null; })
-                              .catch(function () { return null; });
+  var u = (gz ? url + '.gz' : url);
+  u += (u.indexOf('?') >= 0 ? '&' : '?') + 'v=' + WLV;
+  return CACHE[url] = fetch(u).then(function (r) {
+    if (!r.ok) return null;
+    if (!gz) return r.json();
+    // !!! A .gz served by GitHub Pages arrives as an OPAQUE BODY -- the
+    // Content-Type is application/gzip and there is no Content-Encoding, so
+    // the browser does not inflate it and r.json() would throw on the magic
+    // bytes.  Inflate explicitly, both paths.
+    if (HAS_DS)
+      return new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).json();
+    return r.arrayBuffer().then(function (ab) {
+      var s = ungzip(ab);
+      return s == null ? null : JSON.parse(s);
+    });
+  }).catch(function () { return null; });
 }
 // !!! The shard data lives at site/lookup/, and this file runs from
 // site/reader/ — a bare 'lookup/…' resolves to /reader/lookup/ and every fetch
@@ -299,7 +464,7 @@ function eShardName(set, key) {
 }
 function look(set, key) {
   return manifest().then(function () {
-    return jfetch(BASE + set + '/' + shardName(set, key) + '.json');
+    return jfetch(BASE + set + '/' + shardName(set, key) + '.json', gzSet(MAN, set));
   }).then(function (o) {
     return o ? (o[key] !== undefined ? o[key] : o[key.toLowerCase()]) : null;
   });
@@ -309,7 +474,7 @@ function elook(set, key) {
   if (!EVAL) return Promise.resolve(null);
   return emanifest().then(function () {
     var n = eShardName(set, key);
-    return n ? jfetch(EBASE + set + '/' + n + '.json') : null;
+    return n ? jfetch(EBASE + set + '/' + n + '.json', gzSet(EMAN, set)) : null;
   }).then(function (o) {
     if (!o) return null;
     var v = o[key] !== undefined ? o[key] : o[key.toLowerCase()];
@@ -321,7 +486,8 @@ function elook(set, key) {
     if (v && v.big && v.pages) {
       var jobs = [];
       for (var i = 0; i < v.pages; i++)
-        jobs.push(jfetch(EBASE + set + '/big/' + safeName(key) + '.' + i + '.json'));
+        jobs.push(jfetch(EBASE + set + '/big/' + safeName(key) + '.' + i + '.json',
+                         gzSet(EMAN, set)));
       return Promise.all(jobs).then(function (pgs) {
         var out = null;
         pgs.forEach(function (pg) {
@@ -658,7 +824,7 @@ function lookup(word, paraEl, inPanel) {
       // it has not got, nor show a count with nothing behind it.
       var big = gl && !Array.isArray(gl) && gl.big ? gl : null;
       var pGloss = big
-        ? jfetch(BASE + 'gloss/big/' + safeName(word) + '.0.json')
+        ? jfetch(BASE + 'gloss/big/' + safeName(word) + '.0.json', gzSet(MAN, 'gloss'))
         : Promise.resolve(null);
       var pPed = (forms && forms.length)
         ? Promise.all(forms.map(function (h) {
@@ -1059,7 +1225,8 @@ function loadMore(d, btn) {
   var next = (d.page == null ? 0 : d.page + 1);
   if (next >= d.pages) return;
   btn.disabled = true;
-  jfetch(BASE + 'gloss/big/' + safeName(d.word) + '.' + next + '.json')
+  jfetch(BASE + 'gloss/big/' + safeName(d.word) + '.' + next + '.json',
+         gzSet(MAN, 'gloss'))
     .then(function (o) {
       if (!o) return;
       d.rows = d.rows.concat(o.rows); d.page = o.page; d.pages = o.pages;

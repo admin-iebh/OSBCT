@@ -128,7 +128,19 @@ site/lookup/
 # The panel keeps it behind its own flag (?wle=1), off by default, and
 # site/lookup/ -- Edition + counts + the public-domain PED -- is what ships.
 # Regenerated exactly by build_eval.py from ~/GoldenDict plus _dictsrc/.
-site/lookup_eval/
+# !!! `site/lookup_eval/` (no star) excludes the DIRECTORY, and git cannot
+# re-include anything under an excluded directory -- so a `!.../dpd/**` line
+# below it silently does nothing.  The star excludes the CONTENTS instead,
+# which is what makes the negations below work at all.
+site/lookup_eval/*
+!site/lookup_eval/index.json
+!site/lookup_eval/form/
+!site/lookup_eval/lem/
+# DPD is published GZIPPED and only gzipped: 379.2 MB of .json would put the
+# site 120 MB over the GitHub Pages 1 GB cap, 43.7 MB of .json.gz leaves it at
+# ~826 MB.  The .json stay on disk so a rebuild need not start from nothing.
+!site/lookup_eval/dpd/
+site/lookup_eval/dpd/*.json
 _dictsrc/
 
 # Build-run stdout/stderr from _panel/ scripts (eval rebuilds, precision sweeps).

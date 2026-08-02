@@ -86,6 +86,34 @@ def look(setname, key):
 _ecache = {}
 
 
+def _egz(setname):
+    """Is this eval set stored gzipped?  The manifest says so -- same rule
+    panel.js uses.  A gate that reads the .json while the panel reads the
+    .json.gz would assert against data the reader never sees."""
+    return bool(EMAN and setname in (EMAN.get('gz') or []))
+
+
+def _eread(path, setname):
+    """Read a shard the way the panel would: .json.gz when the set is gzipped.
+
+    !!! A BROKEN SHARD MUST DEGRADE, NOT RAISE.  `panel.js` returns null from
+    `jfetch` for a shard it cannot inflate, so the reader sees an empty tab.
+    If this raised instead, the negative controls would end as a traceback --
+    which is not the gate reporting a failure, it is the gate falling over, and
+    the two are not the same thing.  Empty here, so the emptiness is what gets
+    asserted on."""
+    if _egz(setname):
+        gp = path + '.gz'
+        if os.path.exists(gp):
+            import gzip as _gz
+            try:
+                return json.loads(_gz.decompress(open(gp, 'rb').read()))
+            except Exception:
+                return {}
+        return {} if not os.path.exists(path) else json.load(open(path))
+    return json.load(open(path)) if os.path.exists(path) else {}
+
+
 def elook(setname, key):
     """The evaluation store, read the same way the panel reads it."""
     if not EMAN:
@@ -102,16 +130,16 @@ def elook(setname, key):
         return None
     p = os.path.join(ELOOKUP, setname, name + '.json')
     if p not in _ecache:
-        _ecache[p] = json.load(open(p)) if os.path.exists(p) else {}
+        _ecache[p] = _eread(p, setname)
     o = _ecache[p]
     v = o.get(key, o.get(key.lower()))
     if isinstance(v, dict) and v.get('big') and v.get('pages'):
         merged = None
         for i in range(v['pages']):
             fp = os.path.join(ELOOKUP, setname, 'big', _safe(key) + f'.{i}.json')
-            if not os.path.exists(fp):
+            if not (os.path.exists(fp) or os.path.exists(fp + '.gz')):
                 continue
-            pg = json.load(open(fp)).get('rows')
+            pg = (_eread(fp, setname) or {}).get('rows')
             if isinstance(pg, list):
                 merged = (merged or []) + pg
             elif isinstance(pg, dict):
@@ -999,6 +1027,265 @@ def check_version():
     return fails
 
 
+
+# ---------------------------------------------------------------- TABS ----
+# 12. EVERY TAB RENDERS, WITH A COUNT AND ITS SHARING LINE.
+#
+# !!! THE OLD DPD ASSERTION WAS VACUOUS AND REPORTED SUCCESS.  Assertion 6
+# compares the DPD tab's badge against `elook('dpd', h)` -- BOTH SIDES READ THE
+# SAME STORE.  With `site/lookup_eval/dpd/` absent (it is gitignored, so it is
+# absent on any clean checkout, which is what Actions publishes) the store gave
+# 0, the tab showed 0, and the gate reported 0 failures while the tab the whole
+# exercise is about did not exist.  Same shape as assertion 14 iterating an
+# empty list.
+#
+# So this pass asserts something the store cannot satisfy by being empty:
+#   * the tab is ENABLED and its badge is > 0;
+#   * pressing it renders a non-empty body;
+#   * that body carries a `.wl-rights` sharing line with text in it;
+#   * and the pass FAILS IF IT NEVER SAW A LIVE DPD TAB AT ALL -- the
+#     non-vacuity guard, which is the assertion that the assertion ran.
+
+TAB_MEASURE = r'''([word, pid]) => {
+  const p = document.getElementById(pid); if (!p) return null;
+  const rx = new RegExp('(^|[^a-zāīūṁṅñṭḍṇḷ’])' +
+        word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') +
+        '($|[^a-zāīūṁṅñṭḍṇḷ’0-9])', 'i');
+  const t = p.textContent; const m = rx.exec(t); if (!m) return null;
+  const i = m.index + m[1].length;
+  const walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
+  let acc = 0, node;
+  while ((node = walker.nextNode())) {
+    const L = node.textContent.length;
+    if (acc + L > i) {
+      const r = document.createRange();
+      r.setStart(node, i - acc);
+      r.setEnd(node, Math.min(i - acc + word.length, node.textContent.length));
+      const rect = r.getBoundingClientRect();
+      if (rect.top < 60 || rect.bottom > innerHeight - 10) return null;
+      return {x: rect.x + Math.min(rect.width / 2, 5), y: rect.y + rect.height / 2};
+    }
+    acc += L;
+  }
+  return null;
+}'''
+
+TAB_MIN_LIVE_DPD = 3
+
+
+def _tab_words():
+    """Canon words the store says have both DPD and Abhidhāna data."""
+    out = []
+    for vol in VOLS[:4]:
+        p = os.path.join(REPO, 'site', vol + '.json')
+        if not os.path.exists(p):
+            continue
+        seen, n_here = set(), 0
+        for pp in json.load(open(p))['paragraphs'][:600]:
+            for w in re.findall(r'[a-zāīūṁṅñṭḍṇḷ]{5,}', pp.get('text') or '', re.I):
+                if w.lower() in seen or n_here >= 2:
+                    continue
+                seen.add(w.lower())
+                e = eval_counts(w)
+                if e.get('dpd', 0) > 0 and e.get('abhi', 0) > 0:
+                    out.append((vol, w, e)); n_here += 1
+    return out
+
+
+def run_tabs(pinned=None):
+    """`pinned` fixes the word list.
+
+    !!! WITHOUT IT THE NEGATIVE CONTROLS DO NOT FIRE, AND THAT IS NOT A
+    HYPOTHETICAL -- all three passed clean the first time they were run.  This
+    pass chooses its words by asking the store which ones have DPD data; break
+    a shard and those words stop qualifying, so it quietly PICKS AROUND THE
+    DAMAGE and reports 8 live DPD tabs on a store that has just been corrupted.
+    An adaptive sample cannot be its own control.  The controls pin the words
+    first, then break exactly those words\' shards."""
+    rng = random.Random(SEED)
+    fails, checked, live_dpd = [], 0, 0
+
+    def fail(m):
+        fails.append(m)
+        print(f'  FAIL tabs: {m}')
+
+    # words that the store says have DPD, Abhidhāna and dictionary data, so a
+    # zero badge is a real defect and not just a word nothing covers
+    want = pinned if pinned is not None else _tab_words()
+    if len(want) < TAB_MIN_LIVE_DPD:
+        fail(f'could not find {TAB_MIN_LIVE_DPD} canon words with DPD data in the '
+             f'store — found {len(want)}. The store is empty or unreadable; '
+             f'every DPD assertion below would be vacuous.')
+        print(f'gate_reader [tabs]: {len(fails)} failures')
+        return 1 if fails else 0
+
+    with sync_playwright() as pw:
+        b = pw.chromium.launch()
+        pg = b.new_page(viewport={'width': 1400, 'height': 900})
+        errors = []
+        pg.on('pageerror', lambda e: errors.append(str(e)))
+        for vol, word, exp in want:
+            pg.goto(BASE + f'/reader/reader2.html?wl=1&wle=1#{vol}/0',
+                    wait_until='domcontentloaded')
+            try:
+                pg.wait_for_selector('.para.canon', timeout=30000)
+            except Exception:
+                fail(f'{vol}: no canon rendered')
+                continue
+            pg.wait_for_timeout(300)
+            # Click the word in the rendered text, the way a reader does and
+            # the way the rest of this gate does -- no test hook in shipped code.
+            # plain substring is enough to pick the paragraph; TAB_MEASURE does
+            # the exact word-boundary work when it aims the mouse
+            pid = pg.evaluate('''(w) => {
+              const needle = w.toLowerCase();
+              for (const p of document.querySelectorAll('.para.canon'))
+                if (p.textContent.toLowerCase().indexOf(needle) >= 0) return p.id;
+              return null;
+            }''', word)
+            if not pid:
+                continue
+            pg.evaluate('''(pid) => {
+              const p = document.getElementById(pid);
+              if (p) p.scrollIntoView({block: 'center'});
+            }''', pid)
+            pg.wait_for_timeout(140)
+            ok = pg.evaluate(TAB_MEASURE, [word, pid])
+            if not ok:
+                continue
+            pg.mouse.click(ok['x'], ok['y'])
+            try:
+                pg.wait_for_selector('#wl[data-state="ready"]', timeout=20000)
+            except Exception:
+                fail(f'{word}: panel never became ready')
+                continue
+            checked += 1
+            tabs = pg.evaluate('''() => Object.fromEntries(
+              [...document.querySelectorAll('#wlt button')].map(b => [b.dataset.tab, {
+                n: parseInt(((b.querySelector('.wl-n')||{}).textContent||'0'), 10) || 0,
+                dis: b.classList.contains('dis')}]))''')
+            if 'dpd' not in tabs:
+                fail(f'{word}: no DPD tab with the evaluation flag on')
+                continue
+            if tabs['dpd']['dis'] or tabs['dpd']['n'] <= 0:
+                fail(f'{word}: DPD tab disabled/zero ({tabs["dpd"]}) but the store '
+                     f'holds {exp.get("dpd")} entries — the shards are not being read')
+                continue
+            live_dpd += 1
+            for tab, info in tabs.items():
+                if info['dis']:
+                    continue
+                pg.evaluate('''(t) => {
+                  const b = document.querySelector('#wlt button[data-tab="'+t+'"]');
+                  if (b) b.click();
+                }''', tab)
+                pg.wait_for_timeout(160)
+                got = pg.evaluate('''() => {
+                  const b = document.getElementById('wlb');
+                  const r = b.querySelector('.wl-rights'), s = b.querySelector('.wl-src');
+                  return {len: (b.textContent||'').trim().length,
+                          rights: r ? (r.textContent||'').trim() : null,
+                          src: s ? (s.textContent||'').trim() : null};
+                }''')
+                if got['len'] < 20:
+                    fail(f'{word} [{tab}]: tab has a count of {info["n"]} but its '
+                         f'body is empty ({got["len"]} chars)')
+                if not got['src']:
+                    fail(f'{word} [{tab}]: no attribution line')
+                if tab in ('dpd', 'abhi') and not got['rights']:
+                    fail(f'{word} [{tab}]: no sharing-terms line (.wl-rights) — '
+                         f'the licence must ride with the source')
+        if errors:
+            fail(f'page errors: {errors[:2]}')
+        b.close()
+
+    # THE NON-VACUITY GUARD
+    if live_dpd < TAB_MIN_LIVE_DPD:
+        fail(f'only {live_dpd} of {checked} words produced a live DPD tab; this '
+             f'pass proves nothing below {TAB_MIN_LIVE_DPD}')
+    print(f'gate_reader [tabs]: {checked} words, {live_dpd} with a live DPD tab, '
+          f'{len(fails)} failures')
+    return 1 if fails else 0
+
+
+# ------------------------------------------------- NEGATIVE CONTROLS ------
+# A gate is only worth its runtime if it FAILS when the thing it guards is
+# broken.  Rule 2 of the handoff, and assertion 14's history: a check that
+# iterates an empty list reports success.
+#
+# The weak control is "delete the file" -- almost anything catches that.  The
+# ones that matter here are the two failure modes gzip actually has in the
+# wild: a TRUNCATED shard (interrupted upload, partial write) and a CORRUPT
+# shard (a flipped byte).  Both still exist, still have the gzip magic, still
+# return HTTP 200, and both must end as an empty DPD tab that the gate calls a
+# failure -- not as garbled text on a reader's screen.
+def _dpd_shard_paths(words):
+    """The .json.gz files the tabs pass will actually read for these words."""
+    out = []
+    for w in words:
+        fr = elook('form', w) or {}
+        for h in (fr.get('h') or []):
+            m = (EMAN['shards'].get('dpd') or {})
+            f = fold(h)
+            for d in range(2, 41):
+                cand = (f[:d] + '_' * d)[:d]
+                if cand in m:
+                    p = os.path.join(ELOOKUP, 'dpd', cand + '.json.gz')
+                    if os.path.exists(p) and p not in out:
+                        out.append(p)
+                    break
+    return out
+
+
+def run_negative_controls():
+    print('\n--- negative controls: the tabs pass must FAIL on broken shards ---')
+    # the same words the tabs pass picks, so the mutation is guaranteed to be
+    # on the read path rather than on some shard nobody opens
+    pinned = _tab_words()
+    paths = _dpd_shard_paths([w for _, w, _ in pinned])
+    print(f'  pinned {len(pinned)} words -> {len(paths)} DPD shards on the read path')
+    if not paths:
+        print('  FAIL: no DPD shard is on the read path — the control itself is vacuous')
+        return 1
+
+    def mutate_truncate(b):
+        return b[:max(12, int(len(b) * 0.55))]
+
+    def mutate_corrupt(b):
+        a = bytearray(b)
+        a[len(a) // 2] ^= 0xff        # flip a byte in the DEFLATE stream
+        return bytes(a)
+
+    def mutate_delete(b):
+        return None
+
+    bad = 0
+    for name, mut in (('truncated .gz', mutate_truncate),
+                      ('corrupt .gz', mutate_corrupt),
+                      ('missing .gz', mutate_delete)):
+        saved = {p: open(p, 'rb').read() for p in paths}
+        try:
+            for p in paths:
+                nb = mut(saved[p])
+                if nb is None:
+                    os.remove(p)
+                else:
+                    open(p, 'wb').write(nb)
+            _ecache.clear()
+            rc = run_tabs(pinned=pinned)
+            if rc == 0:
+                print(f'  NEGATIVE CONTROL DID NOT FIRE: {name} — the gate passed '
+                      f'with {len(paths)} broken shards on the read path')
+                bad += 1
+            else:
+                print(f'  negative control fired: {name} ({len(paths)} shards)')
+        finally:
+            for p, b in saved.items():
+                open(p, 'wb').write(b)
+            _ecache.clear()
+    print(f'--- negative controls: {bad} did not fire ---')
+    return 1 if bad else 0
+
 if __name__ == '__main__':
     if '--breakpoints' in sys.argv:
         sys.exit(run_breakpoints())
@@ -1007,7 +1294,12 @@ if __name__ == '__main__':
         print(f'  FAIL version: {f}')
     print(f'gate_reader [version]: {len(vf)} failures')
     # both states of the evaluation flag, because "off" is an assertion too
+    if '--tabs-only' in sys.argv:
+        sys.exit(run_tabs())
+    if '--negative-controls' in sys.argv:
+        sys.exit(run_negative_controls())
     rc = run_gate(EVAL_ON=False)
     if '--no-eval' not in sys.argv:
         rc |= run_gate(EVAL_ON=True)
+        rc |= run_tabs()
     sys.exit(rc | (1 if vf else 0))
