@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OSBCT — gloss precision check, 02VinA02</title>
+<style>
+:root{
+  --bg:#fbfaf7; --panel:#fff; --ink:#1c1a17; --mute:#6c665d; --faint:#a8a29a;
+  --line:#e6e1d8; --accent:#8a5a2b; --ok:#2f6d4f; --no:#9b3025; --maybe:#8a6d1f;
+  --okbg:#e8f2ec; --nobg:#faeae8; --maybebg:#f7f0dc;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#16150f;--panel:#1e1c16;--ink:#eae5da;--mute:#a09a8e;--faint:#6d675c;
+        --line:#2f2c23;--accent:#d9a15e;--ok:#7fc4a0;--no:#e08a7e;--maybe:#d8bc72;
+        --okbg:#1c2b23;--nobg:#2e1c1a;--maybebg:#2c2617;}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+     font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+.wrap{max-width:860px;margin:0 auto;padding:32px 20px 120px}
+h1{font-size:22px;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--mute);font-size:14px;margin:0 0 24px}
+.brief{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+       padding:18px 20px;margin:0 0 28px;font-size:14.5px;color:var(--mute)}
+.brief b{color:var(--ink)}
+.brief ul{margin:10px 0 0;padding-left:20px}
+.brief li{margin:4px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+      padding:18px 20px;margin:0 0 16px;transition:border-color .15s}
+.card.j-y{border-color:var(--ok);background:var(--okbg)}
+.card.j-n{border-color:var(--no);background:var(--nobg)}
+.card.j-m{border-color:var(--maybe);background:var(--maybebg)}
+.meta{display:flex;gap:10px;align-items:baseline;font-size:12px;color:var(--faint);
+      margin-bottom:10px;flex-wrap:wrap}
+.num{font-weight:700;color:var(--accent);font-size:13px}
+.tag{border:1px solid var(--line);border-radius:20px;padding:1px 9px;font-size:11px}
+.pali{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+      font-size:17px;line-height:1.75}
+.before{color:var(--faint);font-size:15px}
+.lemma{font-weight:700;color:var(--accent)}
+.gloss{background:rgba(138,90,43,.10);border-radius:3px;padding:1px 3px}
+.extra{color:var(--faint)}
+.q{margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+button{font:inherit;font-size:13.5px;padding:6px 14px;border-radius:7px;cursor:pointer;
+       border:1px solid var(--line);background:transparent;color:var(--mute)}
+button:hover{border-color:var(--accent);color:var(--ink)}
+button.on[data-v=y]{background:var(--ok);border-color:var(--ok);color:#fff}
+button.on[data-v=n]{background:var(--no);border-color:var(--no);color:#fff}
+button.on[data-v=m]{background:var(--maybe);border-color:var(--maybe);color:#fff}
+input.note{flex:1;min-width:180px;font:inherit;font-size:13.5px;padding:6px 10px;
+           border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--ink)}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--panel);
+     border-top:1px solid var(--line);padding:12px 20px}
+.barin{max-width:860px;margin:0 auto;display:flex;gap:16px;align-items:center;
+       justify-content:space-between;flex-wrap:wrap;font-size:14px}
+.tally b{font-variant-numeric:tabular-nums}
+textarea{width:100%;height:150px;margin-top:12px;font:12px/1.5 ui-monospace,Menlo,monospace;
+         padding:10px;border:1px solid var(--line);border-radius:8px;
+         background:var(--bg);color:var(--ink)}
+.hide{display:none}
+.warn{color:var(--maybe);font-size:12.5px}
+</style></head><body><div class="wrap">
+
+<h1>Gloss precision check — 02VinA02</h1>
+<p class="sub">30 rows drawn at random (seed 2026) from the 1,433 clean gloss rows.
+Roadmap step 3. Nothing here is saved anywhere — use <b>Copy results</b> at the bottom when done.</p>
+
+<div class="brief">
+<b>The question for each row:</b> is this a genuine word-gloss — the commentary defining the
+bolded lemma — or is it something else the extractor mistook for one?
+<ul>
+<li><b>Yes</b> — the edition is explaining that word or phrase.</li>
+<li><b>No</b> — e.g. the bold run is a canon phrase being <i>quoted</i> and what follows reports
+speech rather than defines (<i>… “x”ti vuttaṁ</i>), or the boundary is wrong.</li>
+<li><b>Unsure</b> — genuinely borderline. Please use it; a forced call is worse data.</li>
+</ul>
+<b>My own verdicts are deliberately not in this page</b> — you would anchor on them and the
+second reading would stop being independent. I'll compare after you send yours.
+<span class="warn">Grey text before the lemma is the run-up in the same paragraph, for context.</span>
+</div>
+
+<div id="list"></div>
+
+<div class="bar"><div class="barin">
+  <span class="tally">Judged <b id="done">0</b>/30 &nbsp;·&nbsp;
+    yes <b id="cy">0</b> · no <b id="cn">0</b> · unsure <b id="cm">0</b>
+    &nbsp;·&nbsp; precision so far <b id="prec">—</b></span>
+  <span><button id="copy">Copy results</button>
+        <button id="show">Show as text</button></span>
+</div></div>
+
+<textarea id="out" class="hide" readonly></textarea>
+
+<script>
+const ROWS = [{"i": 1, "lemma": "Pasannamukhavaṇṇā", "gloss": "kiñcāpi avisesena vaṇṇavanto, sarīravaṇṇato pana nesaṁ mukhavaṇṇo adhikataraṁ pasanno, accho anāvilo parisuddhoti attho.", "extra": "", "before": "194. Vaṇṇavā ahesunti aññoyeva nesaṁ abhinavo sarīravaṇṇo uppajji, tena vaṇṇena vaṇṇavanto ahesuṁ. Piṇindriyāti pañcahi pasādehi abhiniviṭṭhokāsassa paripuṇṇattā manacchaṭṭhānaṁ indriyānaṁ amilātabhāvena pīṇindriyā. ", "covers": [194], "n": 194, "ord": 25, "quoted": false, "series": false, "pdf_page": 80}, {"i": 2, "lemma": "Nālaṁvacanīyā", "gloss": "na pariccattāti attho.", "extra": "Yā hi yathā yathā yesu yesu janapadesu pariccattā pariccattāva hoti, bhariyābhāvaṁ atikkamati, ayaṁ “alaṁvacanīyā”ti vuccati. Esā pana na alaṁvacanīyā, kenacideva kāraṇena kalahaṁ katvā gatā, tenevettha Bhagavā “", "before": "341. Vinītavatthūsu ādito vatthupañcake paṭiggahitamattattā dukkaṭaṁ. Kalahavatthusmiṁ sammodanīyaṁ akāsīti taṁ saññāpetvā puna gehagamanīyaṁ akāsi. ", "covers": [341], "n": 341, "ord": 91, "quoted": false, "series": false, "pdf_page": 153}, {"i": 3, "lemma": "raho nisajjassādo", "gloss": "methunadhammasannissitakileso vuccati.", "extra": "Yo bhikkhu tenassādena mātugāmassa santikaṁ gantukāmo akkhiṁ añjeti, dukkaṭaṁ. Nivāsanaṁ nivāseti, kāyabandhanaṁ bandhati, cīvaraṁ pārupati, sabbattha payoge payoge dukkaṭaṁ. Gacchati, padavāre padavāre dukkaṭaṁ. Gantvā nisīdati, dukkaṭameva. Mātugāme āgantvā nisinnamatte pācittiyaṁ. Sace sā itthī kenaci karaṇīyena uṭṭhāyuṭṭhāya punappunaṁ nisīdati, nisajjāya nisajjāya pācittiyaṁ. Yaṁ sandhāya gato, sā na diṭṭhā, aññā āgantvā nisīdati, assāde uppanne pācittiyaṁ. Mahāpaccariyaṁ pana “gamanakālato paṭṭhāya asuddhacittattā āpattiyevā”ti vuttaṁ. Sace sambahulā āgacchanti, mātugāmagaṇanāya pācittiyāni. Sace uṭṭhāyuṭṭhāya punappunaṁ nisīdanti, nisajjāgaṇanāya pācittiyāni. Aniyametvā “diṭṭhadiṭṭhāya saddhiṁ rahassādaṁ kappessāmī”ti gantvā nisinnassāpi āgatāgatānaṁ vasena, punappunaṁ nisajjāvasena ca vuttanayeneva āpattiyo veditabbā. Sace suddhacittena gantvā nisinnassa santikaṁ āgantvā nisinnāya itthiyā rahassādo uppajjati, anāpatti. Samuṭṭhānādīni paṭhamapārājikasadisānevāti.", "before": "etabboti tīsu yaṁ paṭijānāti, tāya kāretabbo. Sesamettha catukke uttānādhippāyameva. Dutiyacatukke pana gamanaṁ na paṭijānātīti raho nisajjassādavasena na paṭijānāti, “salākabhattādinā attano kammena gatomhi, sā pana mayhaṁ nisinnaṭṭhānaṁ āgatā”ti vadati. Sesametthāpi uttānādhippāyameva. Ayaṁ pana sabbattha vinicchayo–", "covers": [451], "n": 451, "ord": 139, "quoted": false, "series": false, "pdf_page": 222}, {"i": 4, "lemma": "ekādase aruṇuggamane", "gloss": "ettha yaṁ divasaṁ cīvaraṁ uppannaṁ, tassa yo aruṇo, so uppannadivasanissito, tasmā cīvaruppādadivasena saddhiṁ ekādase aruṇuggamane nissaggiyaṁ hotīti veditabbaṁ.", "extra": "Sacepi bahūni ekajjhaṁ bandhitvā vā veṭhetvā vā ṭhapitāni, ekāva āpatti. Abaddhāveṭhitesu vatthugaṇanāya āpattiyo.", "before": "mmaṁ2 pācittiyaṁ hotīti ayamettha attho. Padabhājane pana paṭhamaṁ tāva atthavikappaṁ dassetuṁ “taṁ atikkāmayato nissaggiyaṁ hotī”ti mātikaṁ ṭhapetvā “ekādase aruṇuggamane nissaggiyaṁ hoti, nissajjitabban”ti vuttaṁ. Puna yassa ca nissajjitabbaṁ, yathā ca nissajjitabbaṁ, taṁ dassetuṁ “saṁghassa vā”ti-ādi vuttaṁ. Tattha ", "covers": [], "n": 462, "ord": 145, "quoted": false, "series": false, "pdf_page": 226}, {"i": 5, "lemma": "Na adese", "gloss": "mañcapīṭhachattanāgadantakādike adese na nikkhipitabbo.", "extra": "Yattha purimaṁ sundaraṁ pattaṁ ṭhapeti, tattheva ṭhapetabbo. Pattassa hi nikkhipanadeso “anujānāmi bhikkhave ādhārakan”ti1 ādinā nayena Khandhake vuttoyeva.", "before": "615. Thero vattabboti patte ānisaṁsaṁ dassetvā “ayaṁ bhante patto pamāṇayutto sundaro therānurūpo, taṁ gaṇhathā”ti vattabbo. Yo na gaṇheyyāti anukampāya na gaṇhantassa dukkaṭaṁ. Yo pana santuṭṭhiyā “kiṁ me aññena pattenā”ti na gaṇhāti, tassa anāpatti. Pattapariyantoti evaṁ parivattetvā pariyante ṭhitapatto. ", "covers": [615], "n": 615, "ord": 210, "quoted": false, "series": false, "pdf_page": 293}, {"i": 6, "lemma": "apuṭṭho", "gloss": "evaṁ apucchito sāmaññeva bhaṇati.", "extra": "Saṅketakammanimittakammāni adinnādānakathāyaṁ vuttanayeneva veditabbāni. Evaṁ nānappakārato āpattibhedaṁ dassetvā idāni anāpattibhedaṁ dassento “", "before": "179. Ācikkhanāyaṁ puṭṭho bhaṇatīti “bhante kathaṁ mato dhanaṁ vā labhati, sagge vā upapajjatī”ti evaṁ pucchito bhaṇati. Anusāsaniyaṁ ", "covers": [179], "n": 179, "ord": 13, "quoted": false, "series": false, "pdf_page": 65}, {"i": 7, "lemma": "upakkamatī", "gloss": "nayena dasa cakkāni vuttāni, tānipi asammohato vitthāretvā veditabbāni.", "extra": "Attho panettha pākaṭoyeva. Puna ārogyatthañca nīlañca,", "before": "dīni sabbapadehi yojetvā yāva attano attano atītānantarapadaṁ, tāva ānetvā vuttāni nava baddhacakkānīti evaṁ ekekamūlakāni dasa cakkāni honti, tāni dumūlakādīhi saddhiṁ asammohato vitthāretvā veditabbāni. Attho panettha pākaṭoyeva. Yathā ca ārogyatthāyāti-ādīsu dasasu padesu, evaṁ nīlādīsupi “nīlañca pītakañca ceteti, ", "covers": [240], "n": 240, "ord": 52, "quoted": true, "series": true, "pdf_page": 117}, {"i": 8, "lemma": "Dve tulā ādātabbā", "gloss": "catūhi tulāhi kāretukāmaṁ sandhāya vuttaṁ, atthato pana yattakehi eḷakalomehi kātukāmo hoti, tesu dve koṭṭhāsā kāḷakānaṁ, eko odātānaṁ, eko gocariyānanti idameva dassitaṁ hotīti veditabbaṁ.", "extra": "Sesaṁ uttānatthameva. Samuṭṭhānādīnipi kosiyasikkhāpadasadisāneva. Kevalaṁ idaṁ ādāya, anādāya ca karaṇato kiriyākiriyaṁ veditabbanti.", "before": "552. Tena samayenāti Dvebhāgasikkhāpadaṁ. Tattha ante ādiyitvāti santhatassa ante anuvātaṁ viya dassetvā1 odātaṁ alliyāpetvā. Dve bhāgāti dve koṭṭhāsā. Ādātabbāti gahetabbā. Gocariyānanti kapilavaṇṇānaṁ. ", "covers": [552], "n": 552, "ord": 183, "quoted": false, "series": false, "pdf_page": 269}, {"i": 9, "lemma": "Saṁghamajjhe nissajjitabban", "gloss": "ettha yasmā rūpiyaṁ nāma akappiyaṁ, tasmā “nissajjitabbaṁ saṁghassa vā gaṇassa vā puggalassa vā”ti na vuttaṁ.", "extra": "Yasmā pana taṁ paṭiggahitamattameva, na tena kiñci kappiyabhaṇḍaṁ cetāpitaṁ, tasmā upāyena paribhogadassanatthaṁ “saṁghamajjhe nissajjitabban”ti vuttaṁ.", "before": "piyakārako bhavissāmi, dvāraṁ vivaritvā dethā”ti. Dvāraṁ vivaritvā “imasmiṁ okāse ṭhapitan”ti vattabbaṁ, “imaṁ gaṇhā”ti na vattabbaṁ. Evampi kappiyañca akappiyañca nissāya ṭhitameva hoti. So ce taṁ gahetvā tassa kappiyabhaṇḍaṁ deti, vaṭṭati. Sace adhikaṁ gaṇhāti, “na mayaṁ tava bhaṇḍaṁ gaṇhāma, nikkhamāhī”ti vattabbo. ", "covers": [], "n": 583, "ord": 193, "quoted": false, "series": false, "pdf_page": 275}, {"i": 10, "lemma": "Ekato upasampannāyā", "gloss": "bhikkhunīnaṁ santike upasampannāya hatthato gaṇhantassa dukkaṭaṁ, bhikkhūnaṁ santike upasampannāya pana pācittiyameva.", "extra": "", "before": "513. Aññātikāya aññātikasaññīti tikapācittiyaṁ. ", "covers": [513], "n": 513, "ord": 167, "quoted": false, "series": false, "pdf_page": 250}, {"i": 11, "lemma": "sāṭakapatto", "gloss": "lohapattasadiso susaṇṭhāno succhavi siniddho bhamaravaṇṇo mattikāpatto vuccati.", "extra": "", "before": "400. Pattalesaniddese ca ", "covers": [400], "n": 400, "ord": 118, "quoted": false, "series": false, "pdf_page": 192}, {"i": 12, "lemma": "atthāvuso maṁ so upaṭṭhāko", "gloss": "āvuso yaṁ tvaṁ bhaṇasi, atthi evarūpo so mama upaṭṭhākoti ayamettha attho.", "extra": "Api meyya1", "before": "527. Tena samayenāti Upakkhaṭasikkhāpadaṁ. Tattha ", "covers": [527], "n": 527, "ord": 175, "quoted": false, "series": false, "pdf_page": 256}, {"i": 13, "lemma": "Ekato upasampannāyā", "gloss": "bhikkhunīnaṁ santike upasampannāya dhovāpentassa dukkaṭaṁ.", "extra": "Bhikkhūnaṁ santike upasampannāya pana yathāvatthukameva. Bhikkhūnaṁ santike upasampannā nāma pañcasatā sākiyāniyo.", "before": "aṁ sabbattha vuttādhikakaraṇe “avuttā dhovatī”ti iminā lakkhaṇena anāpatti veditabbā. “Imasmiṁ cīvare yaṁ kātabbaṁ, sabbaṁ taṁ tuyhaṁ bhāro”ti vadanto pana ekavācāya sambahulā āpattiyo āpajjatīti. Aññātikāya vematiko, aññātikāya ñātikasaññīti imānipi padāni vuttānaṁyeva tiṇṇaṁ catukkānaṁ vasena vitthārato veditabbāni. ", "covers": [506], "n": 506, "ord": 162, "quoted": false, "series": false, "pdf_page": 247}, {"i": 14, "lemma": "Kālayuttaṁ dhammaṁ bhaṇanto", "gloss": "kālaṁ sallakkhetvā yadā añño koci samīpena gacchati vā āgacchati vā, tadā tadanurūpaṁ “uposathaṁ kareyyāsi, salākabhattaṁ dadeyyāsī”ti-ādikaṁ dhammakathaṁ kathento.", "extra": "Bahū dhītaro ca puttā ca assāti bahuputtā. Tassā kira dasa puttā dasa dhītaro ahesuṁ. Bahū nattāro assāti bahunattā. Yatheva hi tassā, evamassā puttadhītānampi vīsati vīsati dārakā ahesuṁ, iti sā vīsuttaracatusataputtanattaparivārā ahosi.", "before": "443. Tena samayena Buddho Bhagavāti Paṭhama-aniyatasikkhāpadaṁ. Tattha kālayuttaṁ samullapantoti kālaṁ sallakkhetvā yadā na añño koci samīpena gacchati vā āgacchati vā, tadā tadanurūpaṁ “kacci na ukkaṇṭhasi na kilamasi na chātāsī”ti-ādikaṁ gehassitaṁ kathaṁ kathento. ", "covers": [443], "n": 443, "ord": 136, "quoted": false, "series": false, "pdf_page": 220}, {"i": 15, "lemma": "Attho me āvuso cīvarenā", "gloss": "codanālakkhaṇanidassanametaṁ.", "extra": "Idañhi vacanaṁ vattabbaṁ, assa vā attho yāya kāyaci bhāsāya. Idaṁ codanālakkhaṇaṁ.", "before": "tthattāyeva padabhājanaṁ na vuttanti veditabbaṁ. Ābhatanti ānītaṁ. Kālena kappiyanti yuttapattakālena, yadā no attho hoti, tadā kappiyaṁ cīvaraṁ gaṇhāmāti attho. Veyyāvaccakaroti kiccakaro, kappiyakārakoti attho. Saññatto so mayāti āṇatto so mayā, yathā tumhākaṁ cīvarena atthe sati cīvaraṁ dassati, evaṁ vuttoti attho. ", "covers": [], "n": 538, "ord": 180, "quoted": false, "series": false, "pdf_page": 258}, {"i": 16, "lemma": "ādikammikassā", "gloss": "potthakesu likhitaṁ, taṁ pamādalikhitaṁ.", "extra": "Pamādalikhitabhāvo cassa “paṭhamaṁ Ariṭṭho bhikkhu codetabbo, codetvā sāretabbo, sāretvā āpattiṁ āropetabbo”ti evaṁ Kammakkhandhake4 āpattiropanavacanato veditabbo. Iti bhedāya parakkamane ādikammikassa Devadattassa yasmā taṁ kammaṁ na kataṁ, tasmāssa āpattiyeva na jātā. Sikkhāpadaṁ pana taṁ ārabbha paññattanti katvā “", "before": " Ariṭṭhassa kammaṁ katanti paññāyati, na tathā Devadattassa. Athāpissa katena bhavitabbanti koci attano rucimattena vadeyya, tathāpi appaṭinissajjane ādikammikassa anāpatti nāma natthi. Na hi paññattaṁ sikkhāpadaṁ vītikkamantassa aññatra uddissa anuññātato anāpatti nāma dissati. Yampi Ariṭṭhasikkhāpadassa anāpattiyaṁ “", "covers": [416], "n": 416, "ord": 126, "quoted": true, "series": false, "pdf_page": 200}, {"i": 17, "lemma": "Veṇī", "gloss": "tīhi kesavaṭṭīhi vinandhitvā katakesakalāpassetaṁ nāmaṁ.", "extra": "", "before": "na atthadassanaṁ. Tattha hatthādīnaṁ vibhāgadassanatthaṁ “hattho nāma kapparaṁ upādāyā”ti- ādimāha. Tattha kapparaṁ upādāyāti dutiyaṁ mahāsandhiṁ upādāya. Aññattha pana maṇibandhato paṭṭhāya yāva agganakhā hattho, idha saddhiṁ aggabāhāya kapparato paṭṭhāya adhippeto. Suddhakesā vāti1 suttādīhi amissā suddhā kesāyeva2. ", "covers": [271], "n": 271, "ord": 61, "quoted": false, "series": false, "pdf_page": 126}, {"i": 18, "lemma": "Icchāmahaṁ bhikkhave addhamāsaṁ paṭisallīyitun", "gloss": "ahaṁ bhikkhave ekaṁ addhamāsaṁ paṭisallīyituṁ nilīyituṁ ekova hutvā viharituṁ icchāmīti attho.", "extra": "", "before": "ā pāṭikulyatā vā saṇṭhāti. Seyyathāpi bhikkhave kukkuṭapattaṁ vā nhārudaddulaṁ vā aggimhi pakkhittaṁ patilīyati patikuṭati pativattati na sampasāriyati. Evamevaṁ kho bhikkhave bhikkhuno asubhasaññāparicitena cetasā bahulaṁ viharato methunadhammasamāpattiyā cittaṁ patilīyati patikuṭati pativattati na sampasāriyatī”ti3. ", "covers": [162], "n": 162, "ord": 0, "quoted": false, "series": false, "pdf_page": 7}, {"i": 19, "lemma": "Tiyojanaṁ vāsādhippāyo gantvā tato paraṁ haratī", "gloss": "yattha gato, tattha uddesaparipucchādīnaṁ vā paccayādīnaṁ1 vā alābhena tato paraṁ aññattha gacchati, tatopi aññatthāti evaṁ yojanasatampi harantassa anāpatti.", "extra": "", "before": "575. ", "covers": [575], "n": 575, "ord": 190, "quoted": false, "series": false, "pdf_page": 273}, {"i": 20, "lemma": "Nissaggiyenā", "gloss": "kāyato ca kāyapaṭibaddhato ca mocitena ususatti-ādinā.", "extra": "Ettāvatā sāhatthiko ca1 nissaggiyo cāti dve payogā vuttā honti. Tattha ekameko uddissānuddissabhedato duvidho. Tattha uddesike yaṁ uddissa paharati, tasseva maraṇena kammunā bajjhati. “Yo koci maratū”ti evaṁ anuddesike2 pahārappaccayā yassa kassaci maraṇena kammunā bajjhati. Ubhayathāpi ca paharitamatte vā maratu, pacchā vā teneva rogena, paharitamatteyeva kammunā bajjhati. Maraṇādhippāyena ca pahāraṁ datvā tena amatassa puna aññacittena pahāre dinne pacchāpi yadi paṭhamappahāreneva marati, tadā eva kammunā baddho. Atha dutiyappahārena marati, natthi pāṇātipāto. Ubhayehi matepi paṭhamappahāreneva kammunā baddho. Ubhayehi amate nevatthi pāṇātipāto. Esa nayo bahūhipi ekassa pahāre dinne. Tatrāpi hi yassa pahārena marati, tasseva kammunā baddho hotīti. Kammāpattibyattibhāvatthañcettha eḷakacatukkampi veditabbaṁ. Yo hi eḷakaṁ ekasmiṁ ṭhāne nipannaṁ upadhāreti “rattiṁ āgantvā vadhissāmī”ti. Eḷakassa ca nipannokāse tassa mātā vā pitā vā arahā vā paṇḍukāsāvaṁ pārupitvā nipanno hoti. So rattibhāge āgantvā “eḷakaṁ māremī”ti mātaraṁ vā pitaraṁ vā arahantaṁ vā māreti. “Imaṁ vatthuṁ māremī”ti cetanāya atthibhāvato ghātako ca hoti, anantariyakammañca phusati, pārājikañca āpajjati. Añño koci āgantuko nipanno hoti, “eḷakaṁ māremī”ti taṁ māreti, ghātako ca hoti, pārājikañca āpajjati, ānantariyaṁ na phusati. Yakkho vā peto vā nipanno hoti, “eḷakaṁ māremī”ti taṁ1 māreti, ghātakova hoti, na cānantariyaṁ phusati, na ca pārājikaṁ āpajjati, thullaccayaṁ pana hoti. Añño koci nipanno natthi, eḷakova hoti, taṁ māreti. Ghātako ca hoti, pācittiyañca āpajjati. “Mātāpitu- arahantānaṁ aññataraṁ māremī”ti tesaṁyeva aññataraṁ māreti, ghātako ca hoti, ānantariyañca phusati, pārājikañca āpajjati. “Tesaṁ2 aññataraṁ māressāmī”ti aññaṁ āgantukaṁ māreti, yakkhaṁ vā petaṁ vā māreti, eḷakaṁ vā māreti, pubbe vuttanayena veditabbaṁ. Idha pana cetanā dāruṇā hotīti. Aññānipi ettha palālapuñjādivatthūni veditabbāni–yo hi “lohitakaṁ asiṁ vā sattiṁ vā puñchissāmī”ti palālapuñje pavesento tattha nipannaṁ mātaraṁ vā pitaraṁ vā arahantaṁ vā āgantukapurisaṁ vā yakkhaṁ vā petaṁ vā tiracchānagataṁ vā māreti. Vohāravasena ghātakoti vuccati, vadhakacetanāya pana abhāvato neva kammaṁ phusati, na āpattiṁ āpajjati. Yo pana evaṁ pavesento sarīrasamphassaṁ sallakkhetvā “satto maññe abbhantaragato maratū”ti pavesetvā māreti, tassa tesaṁ vatthūnaṁ anurūpena kammabaddho ca āpatti ca veditabbā. Esa nayo tattha nidahanatthaṁ pavesentassāpi vanappagumbādīsu khipantassāpi. Yopi “coraṁ māremī”ti coravesena gacchantaṁ pitaraṁ māreti, ānantariyañca phusati, pārājiko ca hoti. Yo pana parasenāya aññañca yodhaṁ, pitarañca kammaṁ karonte disvā yodhassa usuṁ khipati, “etaṁ vijjhitvā mama pitaraṁ vijjhissatī”ti, yathādhippāyaṁ gate pitughātako hoti. “Yodhe viddhe mama pitā palāyissatī”ti khipati, usu ayathādhippāyaṁ gantvā pitaraṁ māreti, vohāravasena pitughātakoti vuccati, ānantariyaṁ pana natthīti.", "before": "ṁ, adhiṭṭhāyā”ti-ādinā nayena mātikaṁ ṭhapetvā vitthārato manussaviggahapārājikaṁ dassento “sāmanti sayaṁ hanatī”ti-ādimāha. Tatrāyaṁ anuttānapadavaṇṇanāya saddhiṁ vinicchayakathā. Kāyenāti hatthena vā pādena vā muṭṭhinā vā jāṇunā vā yena kenaci aṅgapaccaṅgena. Kāyapaṭibaddhenāti kāyato amocitena asi-ādinā paharaṇena. ", "covers": [174], "n": 174, "ord": 8, "quoted": false, "series": false, "pdf_page": 48}, {"i": 21, "lemma": "pavutthapatikā", "gloss": "pavāsaṁ gatapatikā.", "extra": "", "before": "185-7. Jāragabbhinivatthusmiṁ ", "covers": [], "n": 185, "ord": 18, "quoted": false, "series": false, "pdf_page": 70}, {"i": 22, "lemma": "Attakāmapāricariyāyā", "gloss": "methunadhammasaṅkhātena kāmena pāricariyā kāmapāricariyā.", "extra": "Attano atthāya kāmapāricariyā attakāmapāricariyā, attanā vā kāmitā icchitāti attakāmā, sayaṁ methunarāgavasena patthitāti attho. Attakāmā ca sā pāricariyā cāti attakāmapāricariyā, tassā attakāmapāricariyāya.", "before": "291. Santiketi upacāre ṭhatvā sāmantā avidūre. Padabhājanepi ayameva attho dīpito. ", "covers": [291], "n": 291, "ord": 80, "quoted": false, "series": false, "pdf_page": 143}, {"i": 23, "lemma": "lekhaṁ chindatī", "gloss": "paṇṇe vā potthake vā akkharāni likhati “yo satthaṁ vā āharitvā papāte vā papatitvā aññehi vā aggippavesana-udakappavesanādīhi upāyehi marati, so idañcidañca labhatī”ti vā “tassa dhammo hotī”ti vāti, etthāpi dukkaṭathullaccayā4 vuttanayeneva veditabbā.", "extra": "Uddissa likhite pana yaṁ uddissa likhitaṁ, tasseva maraṇena pārājikaṁ. Bahū uddissa likhite yattakā maranti, tattakā pāṇātipātā. Mātāpitūnaṁ maraṇena ānantariyaṁ. Anuddissa likhitepi eseva nayo. “Bahū marantī”ti vippaṭisāre uppanne taṁ potthakaṁ jhāpetvā vā, yathā vā akkharāni na paññāyanti, tathā katvā muccati. Sace so parassa potthako hoti uddissa5 likhito vā hoti anuddissa likhito vā, gahitaṭṭhāne ṭhapetvā muccati. Sace mūlena kīto hoti, potthakassāmikānaṁ potthakaṁ, yesaṁ hatthato mūlaṁ gahitaṁ, tesaṁ mūlaṁ datvā muccati. Sace sambahulā “maraṇavaṇṇaṁ likhissāmā”ti ekajjhāsayā hutvā eko tālarukkhaṁ6 ārohitvā paṇṇaṁ chindati, eko āharati, eko potthakaṁ karoti, eko likhati, eko sace kaṇṭakalekhā hoti, masiṁ makkheti. Masiṁ makkhetvā taṁ potthakaṁ sajjetvā sabbeva sabhāyaṁ vā āpaṇe vā yattha vā pana lekhādassanakotūhalakā bahū sannipatanti, tattha ṭhapenti. Taṁ vācetvā sacepi eko marati, sabbesaṁ pārājikaṁ. Sace bahukā maranti, vuttasadisova nayo. Vippaṭisāre pana uppanne taṁ potthakaṁ sacepi mañjūsāyaṁ gopenti, añño ca taṁ disvā nīharitvā puna bahūnaṁ dasseti, neva muccanti. Tiṭṭhatu mañjūsā, sacepi taṁ potthakaṁ nadiyaṁ vā samudde vā khipanti dhovanti vā, khaṇḍākhaṇḍaṁ vā chindanti, aggimhi vā jhāpenti, yāva saṅghaṭṭitepi duddhote vā dujjhāpite vā patte akkharāni paññāyanti, tāva na muccanti. Yathā pana akkharāni na paññāyanti, tatheva kate muccantīti. Idāni thāvarapayogassa vibhāgadassanatthaṁ vuttesu opātādimātikāniddesesu", "before": "176. Lekhāsaṁvaṇṇanāyaṁ ", "covers": [176], "n": 176, "ord": 10, "quoted": false, "series": false, "pdf_page": 57}, {"i": 24, "lemma": "Sevālo", "gloss": "nīlasevālo, avaseso udakapappaṭakatilabījakādi sabbopi", "extra": "", "before": " Tiṇakaṭṭhapaṇṇasaṭanti tattha tattha patitaṁ tiṇakaṭṭhapaṇṇaṁ. Atha vā tiṇañca nissārakaṁ lahukaṁ kaṭṭhañca tiṇakaṭṭhaṁ. Paṇṇasaṭanti purāṇapaṇṇaṁ. Ussāreyyāti rāsiṁ kareyya. Pabbateyyāti pabbatappabhavā, sā hi sīghasotā hoti, tasmā tameva gaṇhāti. Saṅkhasevālapaṇakanti ettha saṅkhoti dīghamūlako paṇṇasevālo vuccati. ", "covers": [424], "n": 424, "ord": 128, "quoted": false, "series": false, "pdf_page": 202}, {"i": 25, "lemma": "Ahudeva kukkuccan", "gloss": "tesu kira bhikkhūsu kenacipi kāyavikāro vā vacīvikāro vā na kato, sabbe satā sampajānā dakkhiṇena passena nipajjiṁsu, taṁ anussarato tassa kukkuccaṁ ahosiyeva.", "extra": "", "before": "163. ", "covers": [163], "n": 163, "ord": 1, "quoted": false, "series": false, "pdf_page": 12}, {"i": 26, "lemma": "Accekacīvaran", "gloss": "accāyikacīvaraṁ vuccati, tassa pana accāyikabhāvaṁ dassetuṁ “", "extra": "", "before": "pajjeyya. ‘Accekaṁ idan’ti jānamānena bhikkhunā sabbampi paṭiggahetabban”ti. Tena pavāraṇāmāsassa juṇhapakkhapañcamito paṭṭhāya uppannassa cīvarassa nidhānakālo dassito hoti. Kāmañcesa “dasāhaparamaṁ atirekacīvaraṁ dhāretabban”ti imināva siddho, aṭṭhuppattivasena pana apubbaṁ viya atthaṁ dassetvā sikkhāpadaṁ ṭhapitaṁ. ", "covers": [], "n": 646, "ord": 231, "quoted": false, "series": false, "pdf_page": 312}, {"i": 27, "lemma": "kālayuttaṁ samullapanto", "gloss": "kālaṁ sallakkhetvā yadā na añño koci samīpena gacchati vā āgacchati vā, tadā tadanurūpaṁ “kacci na ukkaṇṭhasi na kilamasi na chātāsī”ti-ādikaṁ gehassitaṁ kathaṁ kathento.", "extra": "", "before": "443. Tena samayena Buddho Bhagavāti Paṭhama-aniyatasikkhāpadaṁ. Tattha ", "covers": [443], "n": 443, "ord": 136, "quoted": false, "series": false, "pdf_page": 220}, {"i": 28, "lemma": "Suvilekhitan", "gloss": "lekhaniyā suṭṭhu vilikhitaṁ.", "extra": "", "before": "641. Tena samayenāti Mahāpesakārasikkhāpadaṁ. Tattha suttaṁ dhārayitvāti suttaṁ tuletvā palaparicchedaṁ katvā. Appitanti ghanaṁ. Suvītanti suṭṭhu vītaṁ sabbaṭṭhānesu samaṁ katvā vītaṁ. Suppavāyitanti suṭṭhu pavāyitaṁ sabbaṭṭhānesu samaṁ katvā tante pasāritaṁ. ", "covers": [641], "n": 641, "ord": 229, "quoted": false, "series": false, "pdf_page": 311}, {"i": 29, "lemma": "Na paṭiggaṇhāti vīmaṁsati paccāharatī", "gloss": "koci puriso bhikkhussa ṭhitaṭṭhāne vā nisinnaṭṭhāne vā tathārūpiṁ kathaṁ katheti, bhikkhu tena appahitopi pahito viya hutvā itthiyā santikaṁ gantvā “hohi kira itthannāmassa bhariyā”ti-ādinā nayena vīmaṁsitvā tassā ruciṁ vā aruciṁ vā puna āgantvā imassa āroceti.", "extra": "Teneva nayena vīmaṁsitvā apaccāharanto “", "before": "mī”ti vā “na bhavissāmī”ti vā vadati. So tassā vacanaṁ anabhinanditvā appaṭikkositvā tuṇhībhūtova uṭṭhāyāsanā tassa purisassa santikaṁ āgantvā taṁ pavattiṁ āroceti, ettāvatā “na vīmaṁsati paccāharati nāmā”ti vuccati. Na vīmaṁsati na paccāharatīti kevalaṁ sāsanārocanakāle paṭiggaṇhātiyeva, itaraṁ pana dvayaṁ na karoti. ", "covers": [338], "n": 338, "ord": 88, "quoted": false, "series": false, "pdf_page": 150}, {"i": 30, "lemma": "ajjhattaṁ upādinne rūpe", "gloss": "attano hatthādibhede rūpe.", "extra": "", "before": "238. Ito paraṁ pana imesaṁyeva ajjhattarūpādīnaṁ padānaṁ pakāsanatthaṁ “ajjhattarūpeti ajjhattaṁ upādinne rūpe”ti-ādi vuttaṁ. Tattha ", "covers": [238], "n": 238, "ord": 50, "quoted": false, "series": false, "pdf_page": 116}];
+const V = {};
+const esc = s => (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const list = document.getElementById('list');
+
+ROWS.forEach(r=>{
+  const cov = Array.isArray(r.covers) && r.covers.length
+      ? (r.covers.length>1 ? 'pp. '+r.covers[0]+'–'+r.covers[r.covers.length-1]
+                           : 'p. '+r.covers[0]) : '';
+  const d = document.createElement('div');
+  d.className='card'; d.id='c'+r.i;
+  d.innerHTML =
+    '<div class="meta"><span class="num">'+r.i+'</span>'
+    + '<span>02VinA02 · para '+r.n+' · '+cov+' · PDF p.'+r.pdf_page+'</span>'
+    + (r.quoted?'<span class="tag">quoted lemma</span>':'')
+    + (r.series?'<span class="tag">series head</span>':'')
+    + '</div>'
+    + '<div class="pali"><span class="before">…'+esc(r.before)+'</span>'
+    + '<span class="lemma">'+esc(r.lemma)+'</span>ti '
+    + '<span class="gloss">'+esc(r.gloss)+'</span> '
+    + (r.extra ? '<span class="extra">'+esc(r.extra.slice(0,300))
+                 + (r.extra.length>300?'…':'')+'</span>' : '')
+    + '</div>'
+    + '<div class="q">'
+    + '<button data-i="'+r.i+'" data-v="y">Yes — a gloss</button>'
+    + '<button data-i="'+r.i+'" data-v="n">No</button>'
+    + '<button data-i="'+r.i+'" data-v="m">Unsure</button>'
+    + '<input class="note" data-i="'+r.i+'" placeholder="note (optional)">'
+    + '</div>';
+  list.appendChild(d);
+});
+
+list.addEventListener('click', e=>{
+  const b = e.target.closest('button[data-v]'); if(!b) return;
+  const i = b.dataset.i;
+  V[i] = V[i] || {};
+  V[i].v = (V[i].v === b.dataset.v) ? null : b.dataset.v;
+  const card = document.getElementById('c'+i);
+  card.className = 'card' + (V[i].v ? ' j-'+V[i].v : '');
+  card.querySelectorAll('button[data-v]').forEach(x=>
+    x.classList.toggle('on', x.dataset.v===V[i].v));
+  tally();
+});
+list.addEventListener('input', e=>{
+  if(!e.target.classList.contains('note')) return;
+  const i = e.target.dataset.i; V[i] = V[i]||{}; V[i].note = e.target.value;
+});
+
+function tally(){
+  let y=0,n=0,m=0;
+  Object.values(V).forEach(o=>{ if(o.v==='y')y++; else if(o.v==='n')n++; else if(o.v==='m')m++; });
+  document.getElementById('done').textContent = y+n+m;
+  document.getElementById('cy').textContent = y;
+  document.getElementById('cn').textContent = n;
+  document.getElementById('cm').textContent = m;
+  document.getElementById('prec').textContent =
+    (y+n) ? (100*y/(y+n)).toFixed(0)+'% (unsure excluded)' : '—';
+}
+
+function text(){
+  let s = 'OSBCT gloss precision check — 02VinA02, 30 rows, second reader\n';
+  const lab={y:'YES',n:'NO',m:'UNSURE'};
+  ROWS.forEach(r=>{
+    const o = V[r.i]||{};
+    s += '\n'+String(r.i).padStart(2)+'. '+(lab[o.v]||'(not judged)')+'  '+r.lemma+'ti'
+       + (o.note ? '   — '+o.note : '');
+  });
+  let y=0,n=0,m=0;
+  Object.values(V).forEach(o=>{ if(o.v==='y')y++; else if(o.v==='n')n++; else if(o.v==='m')m++; });
+  s += '\n\ntotals: yes '+y+', no '+n+', unsure '+m
+     + ((y+n)?('  → precision '+(100*y/(y+n)).toFixed(1)+'% (unsure excluded)'):'');
+  return s;
+}
+document.getElementById('show').onclick = ()=>{
+  const t=document.getElementById('out'); t.value=text(); t.classList.toggle('hide');
+};
+document.getElementById('copy').onclick = async ()=>{
+  const b=document.getElementById('copy');
+  try{ await navigator.clipboard.writeText(text()); b.textContent='Copied ✓'; }
+  catch(e){ const t=document.getElementById('out'); t.value=text();
+            t.classList.remove('hide'); t.select(); b.textContent='Select and copy ↓'; }
+  setTimeout(()=>b.textContent='Copy results',2200);
+};
+</script></div></body></html>

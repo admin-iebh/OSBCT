@@ -94,3 +94,45 @@ Tipi*Abhidh*na/
 # it under site/, at which point it becomes the artefact and this rule goes.
 # The scripts and figures beside it ARE tracked; only freq/ is not.
 _vocab/freq/
+
+# Step 3's extracted glosses: 187,275 rows, 115 MB across 89 volumes, regenerated
+# exactly by `_gloss/glosses.py` from site/ plus site/reader/bold/. Same reasoning
+# as _vocab/freq/ -- an intermediate until it ships under site/. The extractor and
+# the two verification samples beside it ARE tracked; only by_volume/ is not.
+_gloss/by_volume/
+
+# The panel prototype's generated lookup data: ~800 JSON shards, 116 MB, rebuilt
+# exactly by `_panel/build_panel_data.py` from ~/GoldenDict, pm12e.csv and DPPN.json.
+# Same reasoning as _vocab/freq/ and _gloss/by_volume/ -- generated intermediate.
+# It additionally carries dictionary text whose redistribution licences are
+# unconfirmed (DPD CC BY-NC-SA, DOP in copyright, the Abhidhana digitisation
+# unlicensed), so it must not enter a public repo. The panel code beside it IS
+# tracked; only data/ is not.
+_panel/data/
+
+# The shipped word-lookup data, built by `_panel/build_lookup.py`: ~5,900 JSON
+# shards, 138 MB. Generated exactly from _gloss/by_volume/, _vocab/freq/, the
+# PCED dataset's public-domain PED, and DPD's synonym index used as a
+# build-time filter only. Same reasoning as _vocab/freq/ and _gloss/by_volume/:
+# an intermediate that regenerates. It is under site/ because that is where the
+# reader fetches it from, and it goes into the repo the day it is published --
+# at which point this rule goes and the licence note in
+# site/lookup/index.json is the thing to re-read first.
+site/lookup/
+
+# The EVALUATION lookup data and its sources, built by `_panel/build_eval.py`.
+# DPD (CC BY-NC-SA, and excluded as a voice by §9 whatever its licence), the
+# Abhidhana and PEU (permission unconfirmed -- Ven. Subhuti / the pm12e
+# maintainers, and the Ministry question of §8), PPN, and the PCED English and
+# Burmese dictionaries. NONE OF IT MAY ENTER A PUBLIC REPO OR A PUBLIC BUILD.
+# The panel keeps it behind its own flag (?wle=1), off by default, and
+# site/lookup/ -- Edition + counts + the public-domain PED -- is what ships.
+# Regenerated exactly by build_eval.py from ~/GoldenDict plus _dictsrc/.
+site/lookup_eval/
+_dictsrc/
+
+# Build-run stdout/stderr from _panel/ scripts (eval rebuilds, precision sweeps).
+# Transient: every run overwrites them, and the numbers that matter are recorded
+# in claude/ docs, not here.
+_panel/*.out
+_panel/*.err
