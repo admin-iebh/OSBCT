@@ -815,7 +815,8 @@ function buildOutline(vol){
 window.tocGo=function(domid){
   if(!state.active.canon){ state.active.canon=true; state.filter=null; render(); syncButtons(); }
   const dd=document.getElementById('tocdrop'); if(dd) dd.hidden=true;
-  setTimeout(()=>{ const el=document.getElementById(domid); if(el){ el.scrollIntoView({block:'start'}); el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),1300);} },30);
+  // ...and settle it, for the reason given above `holdAt`
+  setTimeout(()=>{ const el=document.getElementById(domid); if(el){ el.scrollIntoView({block:'start'}); holdAt(el,0); el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),1300);} },30);
 };
 // !!! OPENING ONE VOLUME USED TO FETCH EVERY VOLUME ITS LINKS POINT INTO, IN
 // FULL, BEFORE THE FIRST RENDER (2026-07-31b, user-reported: the site was
@@ -904,7 +905,14 @@ async function _openCanon(canonVol, scrollKey){
       const _ks=_c?Object.keys(_c.btl||{}).concat(Object.keys(_c.inc||{})).map(Number):[];
       if(_ks.length && _k[1]<=Math.min.apply(null,_ks))
         el=document.querySelector('#scroll .frontmatter[id^="front-'+_k[0]+'-"]'); }
-    if(el) el.scrollIntoView({block:'start'});
+    // ONE SHOT IS NOT ENOUGH HERE EITHER (2026-08-03).  Same cause as the note
+    // above `holdAt`: this scrolls a document whose off-screen paragraphs are
+    // still 180px placeholders, they resolve to their real heights over the
+    // next frames, and everything above the target grows.  Measured arriving at
+    // `09Ma01#255` at 1400x900: the paragraph landed 225px BELOW the top of the
+    // view and the previous one straddled it — i.e. the reader arrived at a
+    // named sutta looking at the end of the one before it.
+    if(el){ el.scrollIntoView({block:'start'}); holdAt(el,0); }
     const pel=document.getElementById(pid); if(pel){pel.classList.add('flash');setTimeout(()=>pel.classList.remove('flash'),1500);} },60); }
 }
 
@@ -1727,13 +1735,59 @@ function topPara(){
   }
   return null;
 }
+// !!! AND ANCHORING ON THE PARAGRAPH WAS STILL NOT ENOUGH (2026-08-03).  The
+// restore above is arithmetically correct and it does not hold: measured on
+// 09Ma01 ¶255, the anchor sits at y=-504 the instant `keepPlace` returns —
+// exactly where it started — and is at -1990 fifty milliseconds later, with
+// NO DOM MUTATION in between (21,339 mutation records after pressing A, and
+// only one of them, the `innerHTML` swap, changes `scrollHeight`).  The height
+// goes 272,868 -> 279,900 and `scrollTop` 139,655 -> 144,623 on their own.
+//
+// The cause is `content-visibility:auto` on `.para` (see the note at the top of
+// the stylesheet).  Every paragraph off screen is laid out at the
+// `contain-intrinsic-size` PLACEHOLDER of 180px, and `render()` rebuilds the
+// stream wholesale, so every element is new and no remembered size survives.
+// The document the restore measures is therefore an ESTIMATE; the browser
+// replaces the estimates with real heights over the following frames, the
+// content above the viewport changes height, and the paragraph we just put
+// back walks away from where we put it.
+//
+// So the restore has to be REPEATED until the layout stops moving under it —
+// the same shape as `settleTo`, and for the same reason.  Do not replace this
+// with a single larger timeout: the estimates resolve progressively as the
+// scroll position moves, so each correction can provoke the next one, and what
+// settles it is agreement between frames, not elapsed time.
+let _placeTok=0;
+// Hold `el` at `off` pixels below the top of the scrollport and KEEP holding it
+// until two consecutive frames agree.  Gives up the moment the reader touches
+// the wheel — a settle that fights the user is worse than one that gives up.
+async function holdAt(el,off){
+  const sc=$('#scroll'); const tok=++_placeTok;
+  let user=false; const stop=()=>{user=true;};
+  const EV=['wheel','touchstart','keydown','mousedown'];
+  EV.forEach(t=>window.addEventListener(t,stop,{passive:true,capture:true}));
+  try{
+    let agreed=0;
+    for(let i=0;i<24;i++){
+      if(!el.isConnected) return;
+      const d=el.getBoundingClientRect().top-sc.getBoundingClientRect().top-off;
+      if(Math.abs(d)>=0.5){ sc.scrollTop+=d; agreed=0; } else agreed++;
+      if(agreed>=2) return;
+      await new Promise(r=>requestAnimationFrame(()=>setTimeout(r,0)));
+      if(user||tok!==_placeTok) return;
+    }
+  } finally { EV.forEach(t=>window.removeEventListener(t,stop,{capture:true})); }
+}
 function keepPlace(fn){
   const a=state.opened?topPara():null;
   fn();
   if(!a) return;
   const el=document.getElementById(a.id); if(!el) return;
   const sc=$('#scroll');
+  // first synchronously, so the reader never sees the jump...
   sc.scrollTop += el.getBoundingClientRect().top - sc.getBoundingClientRect().top - a.off;
+  // ...then hold it there while the placeholder heights resolve
+  holdAt(el,a.off);
 }
 function syncButtons(){
   document.querySelectorAll('.lbtn').forEach(b=>{const k=b.dataset.k; b.classList.toggle('on', state.view==='tabs'?state.tab===k:state.active[k]);});
@@ -1751,7 +1805,7 @@ $('#readtog').onclick=()=>{state.reading=state.reading==='outline'?'full':'outli
 window.tocGoKey=function(key){ const dd=document.getElementById('tocdrop'); if(dd) dd.hidden=true;
   const hid='h-'+key.replace('#','-'), pid='p-'+key.replace('#','-');
   const el=document.getElementById(hid)||document.getElementById(pid);
-  if(el){ el.scrollIntoView({block:'start'}); const pe=document.getElementById(pid); if(pe){pe.classList.add('flash'); setTimeout(()=>pe.classList.remove('flash'),1300);} }
+  if(el){ el.scrollIntoView({block:'start'}); holdAt(el,0); const pe=document.getElementById(pid); if(pe){pe.classList.add('flash'); setTimeout(()=>pe.classList.remove('flash'),1300);} }
   else { openKey(key,'canon'); } };
 $('#tocbtn').onclick=(e)=>{ e.stopPropagation(); const dd=document.getElementById('tocdrop'); if(!dd.hidden){dd.hidden=true;return;}
   const tv=state.titleVol||state.canonVol;
@@ -1988,10 +2042,17 @@ async function doSearch(q){
 // fonts resolve, page rules and the apparatus land — so a single scroll aims
 // at a target that then walks away.  Bounded, and it stops as soon as two
 // consecutive frames agree.
+// Shares `_placeTok` with `holdAt`, so the LATEST scroll intent wins and two
+// settles never fight each other: `openKey` schedules a hold that puts the
+// arrival paragraph at the top of the view, and a search hit wants the WORD in
+// the middle of it — before this was one shot each and the later one simply
+// won; with both of them looping, the token is what decides.
 async function settleTo(el){
+  const tok=++_placeTok;
   try{ if(document.fonts && document.fonts.ready) await document.fonts.ready; }catch(e){}
   let prev=null;
   for(let i=0;i<12;i++){
+    if(tok!==_placeTok) return;
     el.scrollIntoView({block:'center'});
     await new Promise(r=>requestAnimationFrame(()=>setTimeout(r,60)));
     const y=Math.round(el.getBoundingClientRect().top);
@@ -2007,6 +2068,9 @@ async function openHit(key,kind){
   const dd=document.getElementById('sdrop'); if(dd) dd.hidden=true;
   const q=window.__hq||'';
   await openKey(key,kind);
+  // `openKey` schedules its own top-of-view landing 60ms out; start after it,
+  // so the hit's centring is the LATER intent and the token gives it the scroll
+  await new Promise(r=>setTimeout(r,90));
   for(let i=0;i<40;i++){
     const el=document.getElementById('p-'+key.replace('#','-'));
     if(el){ await landOn(el,q); return; }
