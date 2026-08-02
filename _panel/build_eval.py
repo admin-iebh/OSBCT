@@ -35,6 +35,7 @@ Sharding, the shard-name scheme and the 150 kB cap are `build_lookup.py`'s, so
 one lookup routine in the panel serves both.
 """
 import json, os, re, sys, csv, struct, gzip, collections
+import html as _html
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(ROOT)
@@ -347,6 +348,91 @@ else:
                 continue
             _take(row[2], {'hw': row[3], 'acc': row[4], 'cap': row[5], 'b': row[6]},
                   False)
+
+# ------------------------------------------- StarDict into the aggregate ----
+# The reader asked for DOP, CPD and NCPED, and for everything that is not the
+# Abhidhāna or DPD to live inside the APD tab.  So these do NOT get tabs of
+# their own: they are injected into the same `pced` map the PCED dictionaries
+# use, which means the panel picks them up with no change at all -- it renders
+# one section per id in the build's book table, never from a list of its own.
+#
+# Ids are multi-character on purpose.  PCED already owns 24 single letters and
+# a collision would silently merge two dictionaries into one section.
+#
+# NCPED has no standalone file.  It exists only inside `simsapa`, which is a
+# MERGE of four dictionaries -- Nyanatiloka, DPPN, NCPED and PTS PED -- three of
+# which are already sections here.  Taking simsapa whole would reintroduce
+# exactly the duplication this build was just fixed for.  Its entries are
+# tagged by source (`<p>[NCPED]</p>`), so only that block is taken.
+def _ncped_only(html):
+    for part in re.split(r'(?=<html><body><p>\[)', html):
+        if part.startswith('<html><body><p>[NCPED]'):
+            return part
+    return ''
+
+
+def stardict_into_apd(dict_id, dirname, stem, name, author, lang='E', pick=None):
+    d = os.path.join(GD, dirname)
+    if not os.path.exists(os.path.join(d, stem + '.idx')):
+        log(f'  {dict_id}: {dirname}/ not present — skipped')
+        return 0
+    idx = sources.read_idx(os.path.join(d, stem + '.idx'))
+    pos = {w.lstrip('\ufeff'): (o, sz) for w, o, sz in idx}
+    fh = sources.ensure_dict(os.path.join(d, stem))
+    syn = {}
+    for cand in (stem + '.syn.dz', stem + '.syn'):     # DOP ships it uncompressed
+        sp = os.path.join(d, cand)
+        if os.path.exists(sp):
+            for w, i in sources.iter_syn(sp):
+                syn.setdefault(w, idx[i][0])
+            break
+    BOOKS[dict_id] = {'lang': lang, 'name': name, 'author': author}
+    # !!! WITHOUT THIS THE SECTION IS INVISIBLE.  The manifest builds both
+    # `apd_books` and `apd_order` from `seen_ids`, which only `_take` fills.  A
+    # dictionary absent from that set gets no book entry and no place in the
+    # order, and the panel -- which renders strictly from the book table -- draws
+    # nothing for it, with the data sitting right there in the shard.
+    seen_ids.add(dict_id)
+    hit = 0
+    for lem in LEMMAS:
+        for k in (lem, norm(lem), lem.replace('ṃ', 'ṁ')):
+            kk = k if k in pos else syn.get(k)
+            if not (kk and kk in pos):
+                continue
+            o, sz = pos[kk]
+            body = sources.entry(fh, o, sz)
+            if pick:
+                body = pick(body)
+            # APD bodies are rendered as ESCAPED plain text, so flatten here --
+            # and unescape entities while doing it, or `&amp;` reaches the reader
+            # as the five literal characters rather than an ampersand.
+            body = re.sub(r'<[^>]+>', ' ', body)
+            body = _html.unescape(body)
+            # simsapa tags each merged source inline; the tag is how NCPED was
+            # found, and it has no business being shown as part of the entry
+            body = re.sub(r'^\s*\[(?:NCPED|PTS|DPPN)\]\s*', '', body)
+            body = re.sub(r'\s+', ' ', body).strip()
+            if body:
+                bucket = pced[fold(lem)][dict_id]
+                if body not in bucket:
+                    bucket.append(body)
+                hit += 1
+            break
+    log(f'  {dict_id} {name}: {hit:,} lemmas')
+    return hit
+
+
+if os.environ.get('SKIP_EXTRA') != '1':
+    log('StarDict → APD…')
+    stardict_into_apd('DOP', '02-DOP', 'cone', 'A Dictionary of Pāli',
+                      'Margaret Cone — Pali Text Society, in copyright')
+    stardict_into_apd('CPD', 'cpd', 'cpd', 'A Critical Pāli Dictionary',
+                      'V. Trenckner et al. — Royal Danish Academy, Copenhagen')
+    stardict_into_apd('NCP', 'simsapa', 'simsapa',
+                      'New Concise Pāli-English Dictionary',
+                      'NCPED — extracted from the Simsapa combined dictionary',
+                      pick=_ncped_only)
+    APD_ORDER.extend(['DOP', 'CPD', 'NCP'])
 
 n = collections.Counter()
 for lem in LEMMAS:

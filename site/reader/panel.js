@@ -262,7 +262,7 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260802h';
+var WLV = '20260802i';
 function jfetch(url) {
   if (CACHE[url]) return CACHE[url];
   var u = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'v=' + WLV;

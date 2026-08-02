@@ -5,11 +5,19 @@
 # out of the repo can still be published to the open internet.  This file is
 # what keeps it off.
 #
-# lookup_eval/ is 441 MB of dictionary data whose redistribution licences are
-# unconfirmed (Abhidhāna, PEU, PPN) or which §9 excludes as a voice however it
-# is licensed (DPD).  Publishing it would be exactly the thing the evaluation
-# flag exists to prevent.  It is served from localhost only.
-lookup_eval
+# !!! lookup_eval/ IS NOW PUBLISHED, AND THIS EXCLUSION IS GONE (2026-08-02).
+# It said: 441 MB of dictionary data whose redistribution licences are
+# unconfirmed, or which §9 excludes as a voice however it is licensed.  The
+# reader has since settled the terms it was waiting on -- DPD is CC BY-NC-SA
+# 4.0, the Abhidhāna and PEU are a Gift of Dhamma, free distribution only, and
+# each of those notices now travels with its source in the panel.  The
+# remaining PCED dictionaries are published on the reader's own judgement; the
+# open questions are recorded in _panel/rights_and_tooltips.md, not hidden.
+#
+# NOTE FOR ANYONE READING THIS FILE AS A GUARD: it is not one, on this site.
+# `wrangler pages deploy` is not how buddha-dhamma.net is published --
+# .github/workflows/deploy-pages.yml uploads site/ from a clean checkout, so
+# what is TRACKED is what ships, and .gitignore is the only thing that decides.
 
 # Working copies and backups that have accumulated beside the real files.
 *.bak_*
