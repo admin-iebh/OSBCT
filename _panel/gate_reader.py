@@ -35,6 +35,7 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(ROOT)
 LOOKUP = os.path.join(REPO, 'site', 'lookup')
+ELOOKUP = os.path.join(REPO, 'site', 'lookup_eval')
 BASE = os.environ.get('GATE_BASE', 'http://localhost:8932')
 SEED = 20260802
 VOLS = os.environ.get('GATE_VOLS', '09Ma01,08Di03,18Khu01,37Abhi09,05Vin05').split(',')
@@ -54,6 +55,8 @@ def stem(w):
 
 
 MAN = json.load(open(os.path.join(LOOKUP, 'index.json')))
+EMAN = (json.load(open(os.path.join(ELOOKUP, 'index.json')))
+        if os.path.exists(os.path.join(ELOOKUP, 'index.json')) else None)
 
 
 def shard_of(setname, key):
@@ -80,6 +83,48 @@ def look(setname, key):
     return o.get(key, o.get(key.lower()))
 
 
+_ecache = {}
+
+
+def elook(setname, key):
+    """The evaluation store, read the same way the panel reads it."""
+    if not EMAN:
+        return None
+    m = EMAN['shards'].get(setname) or {}
+    f = fold(key)
+    name = None
+    for d in range(2, 41):
+        cand = (f[:d] + '_' * d)[:d]
+        if cand in m:
+            name = cand
+            break
+    if not name:
+        return None
+    p = os.path.join(ELOOKUP, setname, name + '.json')
+    if p not in _ecache:
+        _ecache[p] = json.load(open(p)) if os.path.exists(p) else {}
+    o = _ecache[p]
+    return o.get(key, o.get(key.lower()))
+
+
+def eval_counts(word):
+    """What the evaluation tabs SHOULD show for this form."""
+    fr = elook('form', word)
+    if not fr:
+        return {}
+    lems = [elook('lem', b) for b in fr.get('b', [])]
+    lems = [x for x in lems if x]
+    listy = {'abhi': 'a', 'ppn': 'pn', 'ny': 'ny', 'vri': 'vri',
+             'pwg': 'pwg', 'tpm': 'tpm', 'rt': 'rt', 'uhs': 'uhs'}
+    flat = {'peu': 'p', 'cped': 'cp'}
+    out = {'dpd': sum(1 for h in fr.get('h', []) if elook('dpd', h))}
+    for tab, f2 in listy.items():
+        out[tab] = sum(len(L[f2]) for L in lems if L.get(f2))
+    for tab, f2 in flat.items():
+        out[tab] = sum(1 for L in lems if L.get(f2))
+    return out
+
+
 def gloss_total(word):
     g = look('gloss', word)
     if g is None:
@@ -94,7 +139,7 @@ def ped_total(word):
     return sum(len(look('ped', h) or []) for h in hs)
 
 
-def run_gate():
+def run_gate(EVAL_ON=False):
     rng = random.Random(SEED)
     fails, checked = [], 0
     with sync_playwright() as pw:
@@ -112,9 +157,43 @@ def run_gate():
             fails.append('flag off: the panel node exists anyway')
         if any('/lookup/' in u for u in reqs):
             fails.append('flag off: lookup/ was fetched anyway')
+        if any('/lookup_eval/' in u for u in reqs):
+            fails.append('flag off: lookup_eval/ was fetched anyway')
+
+        # the evaluation store must not be touched with only ?wl=1
+        reqs2 = []
+        pg2 = b.new_page(viewport={'width': 1280, 'height': 900})
+        pg2.on('request', lambda r: reqs2.append(r.url))
+        pg2.goto(BASE + '/reader/reader2.html?wl=1&wle=0#09Ma01/0',
+                 wait_until='domcontentloaded')
+        try:
+            pg2.wait_for_selector('.para.canon', timeout=20000)
+            pg2.wait_for_timeout(600)
+            hit = pg2.evaluate('''() => {
+              const p = document.querySelector('.para.canon');
+              const w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
+              let node;
+              while ((node = w.nextNode())) {
+                const i = node.textContent.search(/[a-zāīūṁṅñṭḍṇḷ]{6,}/i);
+                if (i >= 0) {
+                  const r = document.createRange();
+                  r.setStart(node, i + 1); r.setEnd(node, i + 4);
+                  const rect = r.getBoundingClientRect();
+                  if (rect.width > 0) return {x: rect.x + 2, y: rect.y + rect.height / 2};
+                }
+              }
+              return null;}''')
+            if hit:
+                pg2.mouse.click(hit['x'], hit['y'])
+                pg2.wait_for_selector('#wl[data-state="ready"]', timeout=20000)
+                if any('/lookup_eval/' in u for u in reqs2):
+                    fails.append('wle=0: the evaluation store was fetched anyway')
+        except Exception as e:
+            fails.append(f'wle=0 check: {e}')
+        pg2.close()
 
         for vol in VOLS:
-            pg.goto(BASE + f'/reader/reader2.html?wl=1#{vol}/0',
+            pg.goto(BASE + f'/reader/reader2.html?wl=1&wle={1 if EVAL_ON else 0}#{vol}/0',
                     wait_until='domcontentloaded')
             try:
                 pg.wait_for_selector('.para.canon', timeout=20000)
@@ -302,10 +381,108 @@ def run_gate():
                 if st['spill']['px'] > 2:
                     fail(f'{st["spill"]["px"]}px of the panel body is outside the '
                          f'panel ({st["spill"]["who"]})')
+                # 9. THE EVALUATION FLAG.  Off, none of those tabs may exist
+                # and nothing may be fetched from lookup_eval/.  On, every tab's
+                # count must match the evaluation store.
+                EVT = ('abhi', 'peu', 'cped', 'ppn', 'ny', 'vri', 'dpd',
+                       'tpm', 'pwg', 'rt', 'uhs')
+                if not EVAL_ON:
+                    present = [t for t in EVT if t in st['tabs']]
+                    if present:
+                        fail(f'evaluation flag off but the tabs are there: {present}')
+                else:
+                    exp = eval_counts(shown)
+                    for t in EVT:
+                        got = int((st['tabs'].get(t) or {}).get('n') or 0)
+                        want = exp.get(t, 0)
+                        if got != want:
+                            fail(f'{t} tab shows {got}, evaluation store has {want}')
                 # 7. no DPD
                 if 'digital pāḷi dictionary' in st['body'].lower() or 'dpd' in \
                         st['body'].lower():
                     fail('DPD text reached the panel')
+        # --- 10. RECURSIVE LOOKUP.  A Pāḷi word inside the panel is a word
+        # like any other: clicking it looks it up, the back button appears, and
+        # back returns to where the reader was.  It must be a no-op for a word
+        # the corpus does not have, rather than an empty panel.
+        try:
+            pg.goto(BASE + '/reader/reader2.html?wl=1&wle=1#09Ma01/0',
+                    wait_until='domcontentloaded')
+            pg.wait_for_selector('.para.canon', timeout=20000)
+            pg.wait_for_timeout(400)
+            ok = pg.evaluate('''() => {
+              for (const p of document.querySelectorAll('.para.canon')) {
+                const i = p.textContent.indexOf('bhikkhave'); if (i < 0) continue;
+                const w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
+                let acc = 0, node;
+                while ((node = w.nextNode())) {
+                  const L = node.textContent.length;
+                  if (acc + L > i && i - acc >= 0) {
+                    const r = document.createRange();
+                    r.setStart(node, i - acc); r.setEnd(node, Math.min(i - acc + 4, L));
+                    p.scrollIntoView({block: 'center'});
+                    const rect = r.getBoundingClientRect();
+                    if (rect.width > 0 && rect.top > 60 && rect.bottom < innerHeight - 20)
+                      return {x: rect.x + 2, y: rect.y + rect.height / 2};
+                  }
+                  acc += L;
+                }
+              }
+              return null;}''')
+            if not ok:
+                fails.append('recursive: no word to start from')
+            else:
+                pg.mouse.click(ok['x'], ok['y'])
+                pg.wait_for_selector('#wl[data-state="ready"]', timeout=20000)
+                first = pg.evaluate("document.getElementById('wlw').textContent")
+                backshown = pg.evaluate(
+                    "document.getElementById('wlback').classList.contains('on')")
+                if backshown:
+                    fails.append('recursive: the back button is showing before any jump')
+                # click a Pāḷi word inside the Edition tab's gloss text
+                inner = pg.evaluate('''() => {
+                  const g = document.querySelector('#wlb .wl-g');
+                  if (!g) return null;
+                  const w = document.createTreeWalker(g, NodeFilter.SHOW_TEXT);
+                  let node;
+                  while ((node = w.nextNode())) {
+                    const m = /[a-zāīūṁṅñṭḍṇḷ]{6,}/i.exec(node.textContent);
+                    if (m) {
+                      const r = document.createRange();
+                      r.setStart(node, m.index + 1); r.setEnd(node, m.index + 4);
+                      const rect = r.getBoundingClientRect();
+                      if (rect.width > 0)
+                        return {x: rect.x + 2, y: rect.y + rect.height / 2,
+                                word: m[0]};
+                    }
+                  }
+                  return null;}''')
+                if inner:
+                    pg.evaluate("document.getElementById('wl').dataset.state='stale'")
+                    pg.mouse.click(inner['x'], inner['y'])
+                    try:
+                        pg.wait_for_selector('#wl[data-state="ready"]', timeout=8000)
+                    except Exception:
+                        pass
+                    st2 = pg.evaluate('''() => ({
+                      word: document.getElementById('wlw').textContent,
+                      back: document.getElementById('wlback').classList.contains('on')
+                    })''')
+                    if st2['word'] != first:
+                        # it jumped: the back button must be there and must work
+                        if not st2['back']:
+                            fails.append('recursive: jumped but no back button')
+                        else:
+                            pg.evaluate("document.getElementById('wlback').click()")
+                            pg.wait_for_selector('#wl[data-state="ready"]', timeout=8000)
+                            back = pg.evaluate("document.getElementById('wlw').textContent")
+                            if back != first:
+                                fails.append(f'recursive: back went to {back!r}, '
+                                             f'not {first!r}')
+                    checked += 1
+        except Exception as e:
+            fails.append(f'recursive: {e}')
+
         # --- 9. the phone.  390x844, the size the reader is most used at ----
         # A bottom sheet that covers the word it is explaining is no use, and a
         # tab row that leaves the viewport cannot be pressed.  Both measured
@@ -369,7 +546,8 @@ def run_gate():
         ph.close()
         b.close()
 
-    print(f'gate_reader: {checked} words clicked in reader2, {len(fails)} failures')
+    print(f'gate_reader [eval {"on" if EVAL_ON else "off"}]: {checked} words '
+          f'clicked in reader2, {len(fails)} failures')
     for f in fails:
         print('  FAIL', f)
     if errors:
@@ -451,4 +629,10 @@ def run_breakpoints():
 
 
 if __name__ == '__main__':
-    sys.exit(run_breakpoints() if '--breakpoints' in sys.argv else run_gate())
+    if '--breakpoints' in sys.argv:
+        sys.exit(run_breakpoints())
+    # both states of the evaluation flag, because "off" is an assertion too
+    rc = run_gate(EVAL_ON=False)
+    if '--no-eval' not in sys.argv:
+        rc |= run_gate(EVAL_ON=True)
+    sys.exit(rc)

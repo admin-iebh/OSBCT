@@ -1,0 +1,14 @@
+FULL CHARACTER CENSUS after Zawgyi->Unicode (project instructions §3)
+
+PaliWordGrammar (157,271 rows)
+  : 17,198,766 chars  !!! 1 unconverted in U+1060–109F (U+1064×1)  |  detector: in 0.00 → out 0.00
+
+TipitakaPaliMyanmar (157,271 rows)
+  : 18,007,930 chars  !!! 5 unconverted in U+1060–109F (U+1064×5)  |  detector: in 1.00 → out 0.00
+
+PaliRoots (1,894 rows)
+  : 186,400 chars  census clean (nothing left in U+1060–109F)  |  detector: in 1.00 → out 0.00
+
+UHauSein (60,751 rows)
+  : 3,352,355 chars  !!! 153 unconverted in U+1060–109F (U+1064×137, U+108B×8, U+108C×7, U+108D×1)  |  detector: in 1.00 → out 0.00
+

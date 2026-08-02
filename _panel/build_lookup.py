@@ -155,6 +155,16 @@ def write_shards(name, data, allow_big=False):
         os.makedirs(os.path.join(d, 'big'), exist_ok=True)
         for k in bigkeys:
             rows = data[k]
+            # !!! NOT EVERY OVERSIZE VALUE IS A LIST OF GLOSS ROWS.  build_eval
+            # reuses this sharder for DPD entries (one HTML string) and lemma
+            # records (a dict of sources); `rows[0]` on either is a KeyError,
+            # which is how the first eval build died.  Only a list of gloss rows
+            # can be ordered and paged; anything else goes in one page whole.
+            if not isinstance(rows, list):
+                json.dump({'n': 1, 'pages': 1, 'page': 0, 'rows': rows},
+                          open(os.path.join(d, 'big', f'{safe(k)}.0.json'), 'w'),
+                          ensure_ascii=False, separators=(',', ':'))
+                continue
             # order is the EDITION's own -- volume, then paragraph.  Not a
             # ranking (roadmap §4 forbids ranking by guess); just the order the
             # books stand in, stated so the reader knows what they are seeing.
@@ -166,10 +176,13 @@ def write_shards(name, data, allow_big=False):
                           open(os.path.join(d, 'big', f'{safe(k)}.{i}.json'), 'w'),
                           ensure_ascii=False, separators=(',', ':'))
 
-    shard_data = {k: ({'big': len(data[k]),
-                       'pages': (len(data[k]) + PAGE - 1) // PAGE} if k in bigkeys
-                      else data[k])
-                  for k in data}
+    def marker(k):
+        v = data[k]
+        if isinstance(v, list):
+            return {'big': len(v), 'pages': (len(v) + PAGE - 1) // PAGE}
+        return {'big': 1, 'pages': 1}         # one whole value, one page
+
+    shard_data = {k: (marker(k) if k in bigkeys else data[k]) for k in data}
     sizes2 = {k: entry(k, v) for k, v in shard_data.items()}
     assign, manifest = shard_table(sizes2)
     buckets = collections.defaultdict(dict)

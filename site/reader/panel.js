@@ -61,6 +61,21 @@ if (q.get('wl') === '1') ON = true;
 if (q.get('wl') === '0') ON = false;
 if (!ON) return;
 
+// A SECOND FLAG FOR THE EVALUATION DICTIONARIES (?wle=1).  Every source it
+// adds either has an unresolved redistribution licence (Abhidhāna, PEU, PPN)
+// or is excluded by §9 as a voice however it is licensed (DPD).  They are
+// worth reading and they are not the project's to publish, so they sit behind
+// their own switch, off unless asked for, each banner'd where it is shown, and
+// their data lives in site/lookup_eval/ which is gitignored.  ?wl=1 alone is
+// still Edition + PED and nothing else.
+if (q.has('wle')) {
+  try { localStorage.setItem('osbct-wle', q.get('wle') === '0' ? '0' : '1'); } catch (e) {}
+}
+var EVAL = false;
+try { EVAL = localStorage.getItem('osbct-wle') === '1'; } catch (e) {}
+if (q.get('wle') === '1') EVAL = true;
+if (q.get('wle') === '0') EVAL = false;
+
 // ------------------------------------------------------------ i18n strings --
 // Same shape and the same fallback discipline reader2 uses: if i18n.js has not
 // loaded, a bare t() in a render path throws and takes the panel with it.
@@ -111,6 +126,58 @@ var S = {
   wl_more:      {en: 'Show more', es: 'Mostrar más'},
   wl_of:        {en: 'of', es: 'de'},
   wl_pilot:     {en: 'Word lookup — in testing', es: 'Consulta de palabras — en pruebas'},
+  wl_dpd:       {en: 'DPD', es: 'DPD'},
+  wl_abhi:      {en: 'Abhidhāna', es: 'Abhidhāna'},
+  wl_peu:       {en: 'PEU', es: 'PEU'},
+  wl_cped:      {en: 'CPED', es: 'CPED'},
+  wl_ppn:       {en: 'PPN', es: 'PPN'},
+  wl_ny:        {en: 'Nyanatiloka', es: 'Nyanatiloka'},
+  wl_vri:       {en: 'VRI', es: 'VRI'},
+  wl_pwg:       {en: 'PWG', es: 'PWG'},
+  wl_tpm:       {en: 'TPM', es: 'TPM'},
+  wl_rt:        {en: 'Roots', es: 'Raíces'},
+  wl_uhs:       {en: 'U Hau Sein', es: 'U Hau Sein'},
+  wl_tip_dpd:   {en: 'Digital Pāḷi Dictionary (Bodhirasa) — evaluation only; §9 keeps it a build-time filter, never the panel’s voice',
+                 es: 'Digital Pāḷi Dictionary (Bodhirasa) — sólo evaluación; el §9 lo mantiene como filtro, nunca como voz del panel'},
+  wl_tip_abhi:  {en: 'Tipiṭaka-Pāḷi-Myanmā-Abhidhāna (Ministry of Religious Affairs, Yangon) — the lexical authority (§9)',
+                 es: 'Tipiṭaka-Pāḷi-Myanmā-Abhidhāna (Ministerio de Asuntos Religiosos, Yangón) — la autoridad léxica (§9)'},
+  wl_tip_peu:   {en: 'PEU — the Abhidhāna’s English rendering (encoded by Bodhirasa)',
+                 es: 'PEU — la versión inglesa del Abhidhāna (codificada por Bodhirasa)'},
+  wl_tip_cped:  {en: 'Concise Pali-English Dictionary (A.P. Buddhadatta)',
+                 es: 'Concise Pali-English Dictionary (A.P. Buddhadatta)'},
+  wl_tip_ppn:   {en: 'Dictionary of Pāli Proper Names (G.P. Malalasekera)',
+                 es: 'Dictionary of Pāli Proper Names (G.P. Malalasekera)'},
+  wl_tip_ny:    {en: 'Buddhist Dictionary (Nyanatiloka Mahāthera) — a doctrinal glossary, not a lexicon',
+                 es: 'Buddhist Dictionary (Nyanatiloka Mahāthera) — un glosario doctrinal, no un léxico'},
+  wl_tip_vri:   {en: 'Pali-Dictionary, Vipassana Research Institute',
+                 es: 'Pali-Dictionary, Vipassana Research Institute'},
+  wl_tip_pwg:   {en: 'Pali Word Grammar from the Pali Myanmar Dictionary — Burmese, converted from Zawgyi',
+                 es: 'Pali Word Grammar del Pali Myanmar Dictionary — birmano, convertido desde Zawgyi'},
+  wl_tip_tpm:   {en: 'Tipiṭaka Pāḷi-Myanmar Dictionary — Burmese, converted from Zawgyi; a second copy of the Abhidhāna’s digitisation',
+                 es: 'Tipiṭaka Pāḷi-Myanmar Dictionary — birmano, convertido desde Zawgyi; segunda copia de la digitalización del Abhidhāna'},
+  wl_tip_rt:    {en: 'Pali Roots Dictionary (ဓာတ်အဘိဓာန်) — Burmese, converted from Zawgyi',
+                 es: 'Pali Roots Dictionary (ဓာတ်အဘိဓာန်) — birmano, convertido desde Zawgyi'},
+  wl_tip_uhs:   {en: 'U Hau Sein’s Pāḷi-Myanmar Dictionary — Burmese, converted from Zawgyi',
+                 es: 'Diccionario Pāḷi-birmano de U Hau Sein — birmano, convertido desde Zawgyi'},
+  wl_eval:      {en: 'Evaluation only — this source is not published with the edition. '
+                   + 'Its redistribution licence is unconfirmed, or §9 excludes it as a voice.',
+                 es: 'Sólo evaluación — esta fuente no se publica con la edición. '
+                   + 'Su licencia de redistribución no está confirmada, o el §9 la excluye como voz.'},
+  wl_zg:        {en: 'Burmese, transcoded from Zawgyi to Unicode and verified by character census (§3).',
+                 es: 'Birmano, transcodificado de Zawgyi a Unicode y verificado por censo de caracteres (§3).'},
+  wl_mt:        {en: 'machine-translated (Google) — withheld by default',
+                 es: 'traducción automática (Google) — retenida por omisión'},
+  wl_mt_show:   {en: 'Show the machine translation anyway',
+                 es: 'Mostrar la traducción automática de todos modos'},
+  wl_cites:     {en: 'Citations:', es: 'Citas:'},
+  wl_cites_note:{en: '(transcoded from the Burmese; an abbreviation without a settled reading is left as printed)',
+                 es: '(transcritas del birmano; una abreviatura sin lectura establecida se deja como está impresa)'},
+  wl_en_btn:    {en: 'English (PEU) ⇣', es: 'Inglés (PEU) ⇣'},
+  wl_en_attr:   {en: 'PEU’s English rendering of this entry. A translation, not the authority: where they differ, the Abhidhāna governs.',
+                 es: 'La versión inglesa del PEU de esta entrada. Una traducción, no la autoridad: donde difieran, gobierna el Abhidhāna.'},
+  wl_back:      {en: 'Back', es: 'Atrás'},
+  wl_noentry:   {en: 'No entry for the resolved lemma(s).',
+                 es: 'Ninguna entrada para el lema resuelto.'},
   wl_thisvol:   {en: 'this volume', es: 'este volumen'}
 };
 if (window.I18N) for (var k in S) if (!window.I18N[k]) window.I18N[k] = S[k];
@@ -166,19 +233,49 @@ function jfetch(url) {
 // the panel opened, the header was right, and every count was empty.  Same '../'
 // convention reader2 already uses for '../<VOL>.json'.
 var BASE = '../lookup/';
+var EBASE = '../lookup_eval/';
 // The manifest names the shards; without it shardName() guesses a 2-character
 // prefix that mostly does not exist.  Nothing may look anything up until it has
 // landed, so every lookup waits on the same promise.
-var MANP = null;
+var MANP = null, EMAN = null, EMANP = null;
 function manifest() {
   if (!MANP) MANP = jfetch(BASE + 'index.json').then(function (m) { MAN = m; return m; });
   return MANP;
+}
+function emanifest() {
+  if (!EMANP) EMANP = jfetch(EBASE + 'index.json').then(function (m) { EMAN = m; return m; });
+  return EMANP;
+}
+function eShardName(set, key) {
+  var f = fold(key), m = EMAN && EMAN.shards && EMAN.shards[set];
+  if (!m) return null;
+  for (var d = 2; d <= 40; d++) {
+    var name = (f.slice(0, d) + new Array(d + 1).join('_')).slice(0, d);
+    if (m[name]) return name;
+  }
+  return null;
 }
 function look(set, key) {
   return manifest().then(function () {
     return jfetch(BASE + set + '/' + shardName(set, key) + '.json');
   }).then(function (o) {
     return o ? (o[key] !== undefined ? o[key] : o[key.toLowerCase()]) : null;
+  });
+}
+// the evaluation store, same shard scheme, different manifest and directory
+function elook(set, key) {
+  if (!EVAL) return Promise.resolve(null);
+  return emanifest().then(function () {
+    var n = eShardName(set, key);
+    return n ? jfetch(EBASE + set + '/' + n + '.json') : null;
+  }).then(function (o) {
+    if (!o) return null;
+    var v = o[key] !== undefined ? o[key] : o[key.toLowerCase()];
+    // an oversize value lives in its own file; the shard holds only a marker
+    if (v && v.big && v.pages)
+      return jfetch(EBASE + set + '/big/' + safeName(key) + '.0.json')
+        .then(function (pg) { return pg ? pg.rows : null; });
+    return v;
   });
 }
 
@@ -230,6 +327,27 @@ var CSS = ''
 + 'background:none;border:1px dashed var(--line);border-radius:6px;padding:6px 10px;'
 + 'cursor:pointer;margin:10px 0}'
 + '#wl .wl-none{color:var(--mut);font-size:12.5px}'
++ '#wl .wl-banner{background:var(--app);color:var(--mut);border:1px solid var(--line);'
++ 'border-radius:6px;font-size:11px;padding:5px 8px;margin:0 0 8px}'
++ '#wl .wl-my{font-family:"Padauk","Myanmar Text","Myanmar MN","Myanmar Sangam MN","Noto Sans Myanmar",serif;'
++ 'font-size:15px;line-height:1.9;margin:.25em 0}'
++ '#wl .wl-etym{color:var(--comm);font-family:"Padauk","Myanmar Text","Myanmar MN","Myanmar Sangam MN",serif;'
++ 'font-size:14px;line-height:1.9}'
++ '#wl .wl-cites{font-size:11px;color:var(--fg);background:var(--app);'
++ 'border-radius:5px;padding:4px 7px;margin:.3em 0}'
++ '#wl .wl-reveal{font:600 11px Inter,system-ui,sans-serif;color:var(--accent);'
++ 'background:none;border:1px dashed var(--line);border-radius:5px;'
++ 'padding:4px 8px;cursor:pointer;margin:.3em 0}'
++ '#wl .wl-inline{border-left:3px solid var(--line);padding-left:8px;margin:.3em 0}'
++ '#wl .wl-hidden{display:none}'
++ '#wl .wl-ext{overflow-wrap:break-word}'
++ '#wl .wl-ext table,#wl .wl-ext img{max-width:100%}'
++ '#wl .wl-ext table{border-collapse:collapse;font-size:11.5px}'
++ '#wl .wl-ext td,#wl .wl-ext th{border:1px solid var(--line);padding:1px 4px}'
++ '#wl .wl-back{border:1px solid var(--line);background:var(--panel);'
++ 'color:var(--accent);border-radius:5px;font:700 13px/1 Inter,system-ui,sans-serif;'
++ 'padding:3px 7px;cursor:pointer;margin-right:6px;display:none}'
++ '#wl .wl-back.on{display:inline-block}'
 + '#wl .wl-ped p{margin:.35em 0}'
 + /* !!! THE PANEL IS position:fixed AND THE PAGE IS A GRID, SO NOTHING
      REFLOWED FOR IT.  Measured in Chromium by sweeping the viewport
@@ -250,11 +368,35 @@ function build() {
   el.id = 'wl'; el.setAttribute('aria-label', 'Word lookup');
   el.innerHTML =
     '<div class="wl-h"><button class="wl-x" id="wlx" title="' + esc(T('wl_close')) + '">✕</button>'
-    + '<div class="wl-w" id="wlw">&nbsp;</div><div class="wl-c" id="wlc"></div>'
+    + '<div class="wl-w"><button class="wl-back" id="wlback" title="'
+    + esc(T('wl_back')) + '">‹</button><span id="wlw">&nbsp;</span></div>'
+    + '<div class="wl-c" id="wlc"></div>'
     + '<div class="wl-tabs" id="wlt" role="tablist"></div></div>'
     + '<div class="wl-b" id="wlb"></div>';
   document.body.appendChild(el);
   document.getElementById('wlx').addEventListener('click', close);
+  document.getElementById('wlback').addEventListener('click', function () {
+    var prev = HIST.pop();
+    updateBack();
+    if (prev) lookup(prev.word, prev.para, true);
+  });
+  // RECURSIVE LOOKUP.  A word inside the panel is a word like any other: the
+  // same caret recovery runs on the panel body, and the paragraph context is
+  // carried over so the Edition tab still knows where the reader is standing.
+  // It fires only when the corpus actually has the word — an English or
+  // Burmese word in a dictionary entry is a silent no-op rather than an empty
+  // panel.
+  document.getElementById('wlb').addEventListener('click', function (ev) {
+    if (ev.target.closest('a,button')) return;
+    var hit = wordAt(ev.clientX, ev.clientY);
+    if (!hit || !current || hit.word === current.word) return;
+    look('freq', hit.word).then(function (fr) {
+      if (!fr || !current) return;
+      HIST.push({word: current.word, para: current.para});
+      updateBack();
+      lookup(hit.word, current.para, true);
+    });
+  });
   layout();
   addEventListener('resize', layout);
   try {
@@ -355,6 +497,11 @@ function mark(node, a, b) {
 
 // ------------------------------------------------------------- the lookup --
 var current = null;
+var HIST = [];
+function updateBack() {
+  var b = document.getElementById('wlback');
+  if (b) b.classList.toggle('on', HIST.length > 0);
+}
 function paraTextOf(node) {
   var p = node && node.parentNode;
   while (p && !(p.classList && p.classList.contains('para'))) p = p.parentNode;
@@ -382,7 +529,8 @@ function inPara(row, pool) {
   return true;
 }
 
-function lookup(word, paraEl) {
+function lookup(word, paraEl, inPanel) {
+  if (!inPanel) { HIST.length = 0; updateBack(); }   // a click in the text starts fresh
   current = {word: word, para: paraEl};
   el.classList.add('open');
   el.dataset.state = 'loading';
@@ -410,19 +558,47 @@ function lookup(word, paraEl) {
         ? Promise.all(forms.map(function (h) {
             return look('ped', h).then(function (e) { return {h: h, e: e}; }); }))
         : Promise.resolve([]);
-      return Promise.all([pGloss, pPed]).then(function (r2) {
+      // the evaluation store: form -> {h: DPD headwords, b: base lemmas},
+      // then one fetch per headword and per lemma
+      var pEval = elook('form', word).then(function (fr) {
+        if (!fr) return null;
+        return Promise.all([
+          Promise.all((fr.h || []).map(function (h) {
+            return elook('dpd', h).then(function (e) { return {h: h, e: e}; }); })),
+          Promise.all((fr.b || []).map(function (b) {
+            return elook('lem', b).then(function (e) { return {b: b, e: e}; }); }))
+        ]).then(function (z) {
+          return {dpd: z[0].filter(function (x) { return x.e; }),
+                  lem: z[1].filter(function (x) { return x.e; })};
+        });
+      });
+      return Promise.all([pGloss, pPed, pEval]).then(function (r2) {
         if (!current || current.word !== word) return;
-        var page0 = r2[0], ped = r2[1];
+        var page0 = r2[0], ped = r2[1], ev = r2[2];
         var rows = Array.isArray(gl) ? gl : (page0 ? page0.rows : []);
         var nGloss = big ? big.big : rows.length;
         render({word: word, para: paraEl, freq: freq, rows: rows,
-                linked: linked,
+                linked: linked, ev: ev,
                 big: !!big, page: page0 ? page0.page : null,
                 pages: page0 ? page0.pages : null, nGloss: nGloss,
                 ped: ped.filter(function (p) { return p.e; })});
       });
     });
 }
+
+var EV_TABS = [
+  ['abhi', 'wl_abhi', 'wl_tip_abhi'],
+  ['peu',  'wl_peu',  'wl_tip_peu'],
+  ['cped', 'wl_cped', 'wl_tip_cped'],
+  ['ppn',  'wl_ppn',  'wl_tip_ppn'],
+  ['ny',   'wl_ny',   'wl_tip_ny'],
+  ['vri',  'wl_vri',  'wl_tip_vri'],
+  ['dpd',  'wl_dpd',  'wl_tip_dpd'],
+  ['tpm',  'wl_tpm',  'wl_tip_tpm'],
+  ['pwg',  'wl_pwg',  'wl_tip_pwg'],
+  ['rt',   'wl_rt',   'wl_tip_rt'],
+  ['uhs',  'wl_uhs',  'wl_tip_uhs']
+];
 
 function tabBtn(id, label, n, dis, tip) {
   // no `disabled` attribute: it swallows hover events, and the tooltip with
@@ -441,14 +617,46 @@ function render(d) {
       + ' · ' + c[2] + ' ' + esc(T('wl_comm')) + ' · ' + c[3] + ' ' + esc(T('wl_sub'))
     : '';
   var nPed = d.ped.reduce(function (s, p) { return s + p.e.length; }, 0);
-  tabs.innerHTML =
+  // how many entries each evaluation source has for this word
+  d.n = {};
+  var lems = (d.ev && d.ev.lem) || [];
+  function count(field, listy) {
+    var n = 0;
+    lems.forEach(function (L) {
+      var v = L.e[field];
+      if (v) n += listy ? v.length : 1;
+    });
+    return n;
+  }
+  d.n.dpd = (d.ev && d.ev.dpd) ? d.ev.dpd.length : 0;
+  d.n.abhi = count('a', true);
+  d.n.peu = count('p', false);
+  d.n.cped = count('cp', false);
+  d.n.ppn = count('pn', true);
+  d.n.ny = count('ny', true);
+  d.n.vri = count('vri', true);
+  d.n.pwg = count('pwg', true);
+  d.n.tpm = count('tpm', true);
+  d.n.rt = count('rt', true);
+  d.n.uhs = count('uhs', true);
+
+  var html =
       tabBtn('ed', T('wl_edition'), d.nGloss || null, !d.nGloss, T('wl_tip_ed'))
     + tabBtn('ped', T('wl_ped'), nPed || null, !nPed, T('wl_tip_ped'));
+  if (EVAL) {
+    // ORDER MATTERS AND IS §9's, NOT ALPHABETICAL: the edition's own glosses,
+    // then the lexical authority and its English rendering, and only then the
+    // modern lexica.  DPD sits last of the English ones however good it is.
+    EV_TABS.forEach(function (t) {
+      html += tabBtn(t[0], T(t[1]), d.n[t[0]] || null, !d.n[t[0]], T(t[2]));
+    });
+  }
+  tabs.innerHTML = html;
   Array.prototype.forEach.call(tabs.querySelectorAll('button'), function (b) {
     b.addEventListener('click', function () {
       if (!b.classList.contains('dis')) show(b.dataset.tab, d); });
   });
-  // Edition is the default tab, always — never a modern dictionary (§9)
+  // Edition is the default tab, always — never a dictionary (§9)
   show(d.nGloss ? 'ed' : (nPed ? 'ped' : 'ed'), d);
   keepWordVisible();
   el.dataset.state = 'ready';
@@ -458,7 +666,12 @@ function show(tab, d) {
   var tabs = document.getElementById('wlt'), body = document.getElementById('wlb');
   Array.prototype.forEach.call(tabs.querySelectorAll('button'), function (b) {
     b.setAttribute('aria-selected', b.dataset.tab === tab ? 'true' : 'false'); });
-  body.innerHTML = tab === 'ped' ? viewPed(d) : viewEd(d);
+  body.innerHTML = tab === 'ped' ? viewPed(d)
+                 : tab === 'ed'  ? viewEd(d)
+                 : tab === 'dpd' ? viewDpd(d)
+                 : tab === 'abhi' ? viewAbhi(d)
+                 : tab === 'peu' ? viewPeu(d)
+                 : viewLex(d, tab);
   body.scrollTop = 0;
   var more = body.querySelector('button.more');
   if (more) more.addEventListener('click', function () { loadMore(d, more); });
@@ -571,6 +784,113 @@ function viewPed(d) {
          + '<div>' + body + '</div></div>';
     });
   });
+  return h;
+}
+
+
+
+// ---------------------------------------------------- evaluation views ----
+// Every one of these opens with an attribution line and the evaluation banner.
+// Sources are never merged: one tab, one source, and PEU's English appears
+// inside an Abhidhāna entry only in an attributed, collapsed reveal.
+function evHead(srcLine, extra) {
+  return '<div class="wl-banner">' + esc(T('wl_eval')) + '</div>'
+       + '<div class="wl-src">' + esc(srcLine) + (extra ? ' ' + esc(extra) : '')
+       + '</div>';
+}
+
+function viewDpd(d) {
+  var h = evHead(T('wl_tip_dpd'));
+  var e = (d.ev && d.ev.dpd) || [];
+  if (!e.length) return h + '<p class="wl-none">' + esc(T('wl_noentry')) + '</p>';
+  e.forEach(function (x, i) {
+    h += '<div class="wl-row"><span class="wl-cite">' + (i + 1) + '. </span>'
+       + '<span class="wl-lem wl-g">' + esc(x.h) + '</span>'
+       + '<div class="wl-ext">' + x.e + '</div></div>';
+  });
+  return h;
+}
+
+function viewAbhi(d) {
+  var h = evHead(T('wl_tip_abhi'));
+  var i = 0;
+  ((d.ev && d.ev.lem) || []).forEach(function (L) {
+    (L.e.a || []).forEach(function (row) {
+      i++;
+      // row = [Burmese headword+POS, Burmese etymology, roman etymology,
+      //        Burmese definition, [transcoded citations]]
+      var myhead = row[0], myetym = row[1], rometym = row[2],
+          mydef = row[3], cites = row[4] || [];
+      h += '<div class="wl-row"><span class="wl-cite">' + i + '. </span>'
+         + '<span class="wl-lem wl-g">' + esc(L.b) + '</span> '
+         + '<span class="wl-my">' + esc(myhead) + '</span>'
+         + ((myetym || rometym)
+            ? '<div class="wl-etym">' + esc(myetym)
+              + (rometym ? ' <span class="wl-cite">' + esc(rometym) + '</span>' : '')
+              + '</div>' : '')
+         + '<div class="wl-my">' + esc(mydef) + '</div>'
+         + (cites.length
+            ? '<div class="wl-cites">' + esc(T('wl_cites')) + ' '
+              + cites.map(esc).join(' · ')
+              + ' <span class="wl-cite">' + esc(T('wl_cites_note')) + '</span></div>'
+            : '');
+      if (L.e.p) {
+        h += '<button class="wl-reveal">' + esc(T('wl_en_btn')) + '</button>'
+           + '<div class="wl-inline wl-hidden"><div class="wl-src">'
+           + esc(L.e.pm ? T('wl_mt') : T('wl_en_attr')) + '</div>' + L.e.p + '</div>';
+      }
+      h += '</div>';
+    });
+  });
+  if (!i) h += '<p class="wl-none">' + esc(T('wl_noentry')) + '</p>';
+  return h;
+}
+
+function viewPeu(d) {
+  var h = evHead(T('wl_tip_peu'));
+  var human = '', mt = '', i = 0;
+  ((d.ev && d.ev.lem) || []).forEach(function (L) {
+    if (!L.e.p) return;
+    i++;
+    var ent = '<div class="wl-row"><span class="wl-cite">' + i + '. </span>'
+            + '<span class="wl-lem wl-g">' + esc(L.e.pk || L.b) + '</span>'
+            + '<div class="wl-ext">' + L.e.p + '</div></div>';
+    if (L.e.pm) mt += ent; else human += ent;
+  });
+  h += human;
+  // machine translation is never mixed in: it is withheld behind its own press
+  if (mt)
+    h += '<div class="wl-banner">' + esc(T('wl_mt')) + '</div>'
+       + '<button class="wl-reveal">' + esc(T('wl_mt_show')) + '</button>'
+       + '<div class="wl-mt wl-hidden">' + mt + '</div>';
+  if (!i) h += '<p class="wl-none">' + esc(T('wl_noentry')) + '</p>';
+  return h;
+}
+
+var LEXFIELD = {cped: 'cp', ppn: 'pn', ny: 'ny', vri: 'vri',
+                pwg: 'pwg', tpm: 'tpm', rt: 'rt', uhs: 'uhs'};
+var LEXTIP = {cped: 'wl_tip_cped', ppn: 'wl_tip_ppn', ny: 'wl_tip_ny',
+              vri: 'wl_tip_vri', pwg: 'wl_tip_pwg', tpm: 'wl_tip_tpm',
+              rt: 'wl_tip_rt', uhs: 'wl_tip_uhs'};
+var LEXBURMESE = {pwg: 1, tpm: 1, rt: 1, uhs: 1};
+
+function viewLex(d, tab) {
+  var field = LEXFIELD[tab];
+  if (!field) return '<p class="wl-none">' + esc(T('wl_noentry')) + '</p>';
+  var h = evHead(T(LEXTIP[tab]), LEXBURMESE[tab] ? T('wl_zg') : '');
+  var i = 0;
+  ((d.ev && d.ev.lem) || []).forEach(function (L) {
+    var v = L.e[field];
+    if (!v) return;
+    (Array.isArray(v) ? v : [v]).forEach(function (ent) {
+      i++;
+      h += '<div class="wl-row"><span class="wl-cite">' + i + '. </span>'
+         + '<span class="wl-lem wl-g">' + esc(L.b) + '</span>'
+         + '<div class="' + (LEXBURMESE[tab] ? 'wl-my' : 'wl-ext') + '">'
+         + (LEXBURMESE[tab] ? esc(ent) : ent) + '</div></div>';
+    });
+  });
+  if (!i) h += '<p class="wl-none">' + esc(T('wl_noentry')) + '</p>';
   return h;
 }
 

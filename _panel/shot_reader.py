@@ -3,13 +3,14 @@
 import sys, os
 from playwright.sync_api import sync_playwright
 BASE = os.environ.get('GATE_BASE', 'http://localhost:8932')
+EV = os.environ.get('EV', '1')
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
-def shoot(pw, name, vw, vh, vol, word, mobile=False):
+def shoot(pw, name, vw, vh, vol, word, mobile=False, tab=None):
     b = pw.chromium.launch()
     pg = b.new_page(viewport={'width': vw, 'height': vh},
                     device_scale_factor=2, is_mobile=mobile, has_touch=mobile)
-    pg.goto(BASE + f'/reader/reader2.html?wl=1#{vol}/0', wait_until='domcontentloaded')
+    pg.goto(BASE + f'/reader/reader2.html?wl=1&wle={EV}#{vol}/0', wait_until='domcontentloaded')
     pg.wait_for_selector('.para.canon', timeout=20000)
     pg.wait_for_timeout(600)
     hit = pg.evaluate('''(word) => {
@@ -19,7 +20,7 @@ def shoot(pw, name, vw, vh, vol, word, mobile=False):
         let acc = 0, node;
         while ((node = w.nextNode())) {
           const L = node.textContent.length;
-          if (acc + L > i) {
+          if (acc + L > i && i - acc >= 0) {
             const r = document.createRange();
             r.setStart(node, i - acc); r.setEnd(node, Math.min(i - acc + 3, L));
             p.scrollIntoView({block: 'center'});
@@ -35,11 +36,16 @@ def shoot(pw, name, vw, vh, vol, word, mobile=False):
     if hit:
         pg.mouse.click(hit['x'], hit['y'])
         pg.wait_for_selector('#wl[data-state="ready"]', timeout=20000)
-        pg.wait_for_timeout(400)
+        if tab:
+            btn = pg.query_selector('#wlt button[data-tab="%s"]' % tab)
+            if btn and 'dis' not in (btn.get_attribute('class') or ''):
+                btn.click()
+        pg.wait_for_timeout(500)
     pg.screenshot(path=os.path.join(ROOT, name))
     print(name, 'ok' if hit else 'WORD NOT FOUND')
     b.close()
 
 with sync_playwright() as pw:
-    shoot(pw, 'shot_desktop.png', 1440, 900, '09Ma01', 'kāmahetu')
+    shoot(pw, 'shot_desktop.png', 1440, 900, '09Ma01', 'dhammaṁ', tab='abhi')
     shoot(pw, 'shot_phone.png', 390, 844, '09Ma01', 'khayaṁ', mobile=True)
+    shoot(pw, 'shot_abhi.png', 1440, 900, '09Ma01', 'bhikkhave', tab='abhi')
