@@ -2332,12 +2332,41 @@ def _layer_probe():
             if i < len(ps) // 2 or not name:
                 continue          # deep enough that a scroll jump is visible
             e = L.get(str(i)) or {}
-            if e.get('commentary'):
-                best = (vol, i, name, e['commentary'][0]['key'])
+            # `direct` only: since 2026-08-03 a `covered` target -- the
+            # builder's "nearest earlier number" fallback -- draws nothing, so
+            # probing with one would assert a band that must NOT exist
+            d = [t for t in (e.get('commentary') or [])
+                 if t.get('state') == 'direct']
+            if d:
+                best = (vol, i, name, d[0]['key'])
                 break
         if best:
             return best
     return None
+
+
+def _covered_probe(vol):
+    """A canon ordinal in `vol` whose commentary targets are ALL `covered`, and
+    whose target is not the direct target of anything else in the volume -- so
+    if it shows up on the page, the manufactured link is the only thing that
+    could have put it there."""
+    lp = os.path.join(REPO, 'site', 'reader', 'linksk', vol + '.links.json')
+    if not os.path.exists(lp):
+        return None, None
+    L = json.load(open(lp, encoding='utf-8'))
+    direct = set()
+    for e in L.values():
+        for t in (e.get('commentary') or []):
+            if t.get('state') == 'direct':
+                direct.add(t.get('key'))
+    for k in sorted(L, key=lambda x: int(x)):
+        ts = L[k].get('commentary') or []
+        if not ts or any(t.get('state') == 'direct' for t in ts):
+            continue
+        for t in ts:
+            if t.get('key') and t['key'] not in direct:
+                return int(k), t['key']
+    return None, None
 
 
 def run_layers():
@@ -2375,6 +2404,7 @@ def run_layers():
     vol, ord_, name, ckey = probe
     pid = 'p-%s-%d' % (vol, ord_)
     fails = []
+    cov_ord, cov_key = _covered_probe(vol)
     # THE PROPERTY IS "THE PARAGRAPH I WAS READING STAYED WHERE IT WAS", not
     # "the same element is topmost".  Once a band is drawn, NEW blocks are
     # interleaved and one of them can legitimately take the top few pixels --
@@ -2423,6 +2453,26 @@ def run_layers():
                                      'y=%s to y=%s -- the re-render kept the '
                                      'pixel offset, not the paragraph'
                                      % (vw, vh, k, a0, g0))
+                # !!! AND A PARAGRAPH THE COMMENTARY DOES NOT GLOSS MUST DRAW
+                # NOTHING.  Reader, 2026-08-03: "when there is no paragraph in
+                # the Aṭṭhakathā or the Ṭīkā for a Pāḷi paragraph there
+                # shouldn't be a button".  35,741 of 68,193 targets were the
+                # builder's `covered` fallback, and 3,477 of those pointed into
+                # a DIFFERENT sutta -- which is the fault first reported on the
+                # Aratisutta.  The probe below is chosen so that its target is
+                # not the direct target of any other paragraph in the volume,
+                # so if it appears on the page it can only have come from the
+                # manufactured link.
+                if cov_key:
+                    drawn = pg.evaluate(
+                        "(k) => !!document.getElementById('p-' + k.replace('#','-'))",
+                        cov_key)
+                    if drawn:
+                        fails.append('%dx%d: %s#%d has only a `covered` '
+                                     'commentary target and %s was drawn '
+                                     'anyway -- the reader is being shown a '
+                                     'link the edition does not make'
+                                     % (vw, vh, vol, cov_ord, cov_key))
                 # and the commentary drawn under the canon paragraph must be the
                 # one the map names -- the data half of the same complaint
                 nxt = pg.evaluate(

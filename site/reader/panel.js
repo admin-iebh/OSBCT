@@ -337,7 +337,7 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260803j';
+var WLV = '20260803k';
 
 // ---------------------------------------------------- gzipped shard sets --
 // WHY THE SHARDS ARE STORED GZIPPED, AND WHY THAT IS NOT THE SAME AS
@@ -1651,8 +1651,12 @@ function loadLinks(vol) {
 function linkedKeys(links, ord) {
   var out = {}, e = (links && links[String(ord)]) || {};
   ['commentary', 'subcommentary'].forEach(function (layer) {
+    // `direct` only: a `covered` target is the builder's "nearest earlier
+    // number" fallback, not something the edition says, and this map is what
+    // makes a gloss row claim to be "in the commentary on this paragraph"
     (e[layer] || []).forEach(function (t) {
-      if (t && t.n != null) out[t.key.split('#')[0] + '|' + t.n] = 1; });
+      if (t && t.n != null && t.state === 'direct')
+        out[t.key.split('#')[0] + '|' + t.n] = 1; });
   });
   return out;
 }

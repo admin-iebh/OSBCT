@@ -263,7 +263,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
      and so it does not collide with concurrent edits to this page.  See
      panel.js for what it shows, whose voice it speaks in (§9), and the
      proximity measurement that decided how the Edition tab orders itself. -->
-<script src="panel.js?v=20260803j" defer></script>
+<script src="panel.js?v=20260803k" defer></script>
 </head>
 <body>
   <div id="errbar" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:999;background:#7f1d1d;color:#fff;font:12px/1.4 ui-monospace,monospace;padding:8px 10px;white-space:pre-wrap"></div>
@@ -846,8 +846,11 @@ async function ensureBandVols(){
   const on=(k)=> state.view==='tabs' ? state.tab===k : state.active[k];
   const slots=[]; if(on('A')) slots.push('commentary'); if(on('T')) slots.push('subcommentary');
   if(!slots.length) return;
+  // only ATTESTED targets draw (see targetsFor), so only those are worth
+  // fetching — a `covered` target would pull a whole volume for a band that
+  // is never rendered
   for(const e of Object.values(links)) for(const lk of slots)
-    for(const t of (e[lk]||[])) if(t&&t.key) want.add(parseKey(t.key)[0]);
+    for(const t of (e[lk]||[])) if(t&&t.key&&t.state==='direct') want.add(parseKey(t.key)[0]);
   const todo=[...want].filter(v=>!cache[v]);
   if(!todo.length) return;
   await Promise.all(todo.map(loadVol));
@@ -1231,7 +1234,7 @@ function hasBand(key,tg){
     const links=(vol===state.canonVol&&state.links)?state.links:linkCache[vol];
     if(!links) return null;
     if(tg===spine) return true;
-    return ((links[String(ord)]||{})[SLOT[tg]]||[]).length>0;
+    return ((links[String(ord)]||{})[SLOT[tg]]||[]).filter(t=>t.state==='direct').length>0;
   }
   const rev=revCache[vol]; if(!rev) return null;
   const c=(rev[String(ord)]||{}).canon; if(!c) return false;
@@ -1260,13 +1263,13 @@ window.jumpFrom=async function(key,tg){
   let targetKey=null;
   if(mine===spine){
     const links=(vol===state.canonVol&&state.links)?state.links:await loadLinks(vol);
-    const arr=((links[String(ord)]||{})[SLOT[tg]])||[]; targetKey=arr[0]&&arr[0].key;
+    const arr=(((links[String(ord)]||{})[SLOT[tg]])||[]).filter(t=>t.state==='direct'); targetKey=arr[0]&&arr[0].key;
   } else {
     const rev=await loadRev(vol); const c=(rev[String(ord)]||{}).canon;
     if(!c){ toast('No linked '+NAME[spine]); return; }
     if(tg===spine){ targetKey=c; }
     else { const [cv,co]=parseKey(c); const links=await loadLinks(cv);
-           const arr=((links[String(co)]||{})[SLOT[tg]])||[]; targetKey=arr[0]&&arr[0].key; }
+           const arr=(((links[String(co)]||{})[SLOT[tg]])||[]).filter(t=>t.state==='direct'); targetKey=arr[0]&&arr[0].key; }
   }
   if(!targetKey){ toast('No '+NAME[tg]+' here'); return; }
   state.active[LK[tg]]=true; state.filter=null;
@@ -1429,6 +1432,23 @@ function block(kind, key, opts){
 }
 function targetsFor(ord,kind){ // kind 'A'|'T' -> list of {key,state,worktag?}
   const e=state.links[String(ord)]||{}; let arr=(kind==='A'?e.commentary:e.subcommentary)||[];
+  // !!! HALF OF WHAT THIS RETURNED WAS NEVER SAID BY THE EDITION (2026-08-03,
+  // reader: "when there is no paragraph in the Aṭṭhakathā or the Ṭīkā for a
+  // Pāḷi paragraph there shouldn't be a button").  The commentary glosses
+  // SELECTED paragraphs — 19AnA03 runs 104, 107, 112, 113, 116, 119 — and
+  // `build_links_bynum.py`, finding no paragraph N, fell back to "the nearest
+  // earlier one" and recorded that as `state: "covered"`.  That is not a link;
+  // it is the pipeline refusing to say "nothing here", and it is what sent a
+  // reader of the Aratisutta into Pacchāsamaṇasuttavaṇṇanā.
+  //
+  // Measured over all 118 volumes: 35,741 of 68,193 targets (52.4%) are
+  // `covered`.  3,477 of those cross into a DIFFERENT sutta from the canon
+  // paragraph's; 6,211 stay inside the same one; 26,053 sit in volumes where
+  // neither side names a section, so nothing can vouch for them at all.  Given
+  // those numbers the reader chose the strict rule: only what the edition
+  // attests reaches the page.  A paragraph the commentary does not gloss now
+  // draws NO BAND rather than the previous sutta's.
+  arr=arr.filter(t=>t.state==='direct');
   if(state.filter) arr=arr.filter(t=>parseKey(t.key)[0]===state.filter);
   // !!! A COMMENTARY VOLUME'S OWN `hide` MAP WAS NEVER APPLIED.  The canon
   // spine skips hidden ordinals (`if(HIDE[String(i)])return ''`), but that
