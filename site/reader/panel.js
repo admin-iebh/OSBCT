@@ -1,0 +1,600 @@
+/* OSBCT word-lookup panel — reader2 integration, BEHIND A FLAG.
+   ---------------------------------------------------------------------------
+   Enable with `?wl=1` in the URL, or once with localStorage['osbct-wl']='1'.
+   `?wl=0` turns it off again.  Nothing runs, nothing is fetched and no event
+   is bound while the flag is off, so a reader who has not asked for it meets
+   exactly the reader that shipped before.
+
+   WHAT IT SHOWS, AND WHOSE VOICE IT SPEAKS IN (§9)
+     Edition   — DEFAULT.  The edition's own glosses: the aṭṭhakathā and ṭīkā
+                 explaining the word, from roadmap step 3.
+     PED       — the PTS Pali-English Dictionary 1921–25, public domain.  A
+                 reference, marked as one; not the panel's voice.
+     header    — corpus occurrence counts from roadmap step 1.
+   Abhidhāna, PEU and PPN are NOT here.  The prototype has them and they are
+   the better lexical authority; they wait on the permissions recorded in
+   claude/panel_prototype_built.md.  DPD is not here either and will not be:
+   it is a build-time filter, never a voice (§9).
+
+   HOW THE EDITION TAB ORDERS ITSELF — measured, not assumed (2026-08-02)
+   The obvious ranking was proximity: put first the gloss sitting in the
+   commentary paragraph the link map ties to the canon paragraph on screen.
+   Measured over all 40 canon volumes and all 187,248 gloss rows:
+
+       a proximity row exists for   6.5% of clicks that get any gloss
+       and when it exists it is really about this passage 57% of the time
+       (Dīgha 84 · Khuddaka 80 · Majjhima 79 · Vinaya 63 · Aṅguttara 61 ·
+        Saṁyutta 39 · Abhidhamma 36 — the Abhidhamma volumes share one
+        Pañcapakaraṇa commentary and their paragraph numbers collide)
+
+   So proximity is NOT the ranking.  The tab LEADS WITH THE OCCURRENCES and
+   says how many there are.  What earns a place at the top is a checkable
+   claim, not a positional guess: a row is promoted only when the phrase it
+   glosses — the words the edition printed in bold — actually stands in the
+   paragraph on screen.  `row.k` carries that phrase's stems; the check runs
+   here, at click time, against the text already rendered.  Measured, that rule
+   reaches 80.9% of glossed clicks and 99.3% of the >50-row band — which was
+   the band the whole exercise was about (13.3% of canon clicks).
+
+   FOUR GROUPS, each with a criterion a reader could check for themselves:
+       "in the commentary on this paragraph"   phrase present AND the row sits
+                                               in the linked paragraph   3.6%
+       "on a phrase that stands in this ¶"     phrase present, >1 word
+       "on the word itself"                    the edition glosses this form
+                                               alone — true wherever it stands,
+                                               and said that way
+       "all occurrences"                       the rest, in the edition's order
+
+   Click recovery is caret-based: no per-word spans (roadmap §5).
+   Chrome goes through i18n.js.  The Pāḷi never does.                        */
+(function () {
+'use strict';
+
+// ---------------------------------------------------------------- the flag --
+var q = new URLSearchParams(location.search);
+if (q.has('wl')) {
+  try { localStorage.setItem('osbct-wl', q.get('wl') === '0' ? '0' : '1'); } catch (e) {}
+}
+var ON = false;
+try { ON = localStorage.getItem('osbct-wl') === '1'; } catch (e) {}
+if (q.get('wl') === '1') ON = true;
+if (q.get('wl') === '0') ON = false;
+if (!ON) return;
+
+// ------------------------------------------------------------ i18n strings --
+// Same shape and the same fallback discipline reader2 uses: if i18n.js has not
+// loaded, a bare t() in a render path throws and takes the panel with it.
+var S = {
+  wl_edition:   {en: 'Edition', es: 'Edición'},
+  wl_ped:       {en: 'PED', es: 'PED'},
+  wl_tip_ed:    {en: 'The edition’s own glosses — aṭṭhakathā and ṭīkā',
+                 es: 'Las glosas de la edición misma — aṭṭhakathā y ṭīkā'},
+  wl_tip_ped:   {en: 'PTS Pali-English Dictionary (Rhys Davids & Stede, 1921–25) — public domain',
+                 es: 'PTS Pali-English Dictionary (Rhys Davids y Stede, 1921–25) — dominio público'},
+  wl_corpus:    {en: 'corpus', es: 'corpus'},
+  wl_canon:     {en: 'canon', es: 'canon'},
+  wl_comm:      {en: 'aṭṭh.', es: 'aṭṭh.'},
+  wl_sub:       {en: 'ṭīkā', es: 'ṭīkā'},
+  wl_loading:   {en: 'Loading…', es: 'Cargando…'},
+  wl_close:     {en: 'Close', es: 'Cerrar'},
+  wl_ed_src:    {en: 'The edition’s own glosses (bold lemma + -ti formula, step 3). '
+                   + 'Ordered as the books stand: volume, then paragraph.',
+                 es: 'Las glosas de la edición misma (lema en negrita + fórmula -ti, paso 3). '
+                   + 'En el orden de los libros: volumen y luego párrafo.'},
+  wl_prox:      {en: 'In the commentary on this paragraph',
+                 es: 'En el comentario a este párrafo'},
+  wl_here:      {en: 'On a phrase that stands in this paragraph',
+                 es: 'Sobre una frase que está en este párrafo'},
+  wl_word:      {en: 'On the word itself',
+                 es: 'Sobre la palabra misma'},
+  wl_rest:      {en: 'Other occurrences', es: 'Otras apariciones'},
+  wl_checked:   {en: 'shown first because the phrase the edition glosses stands '
+                   + 'in this paragraph — checked, not guessed',
+                 es: 'se muestra primero porque la frase que glosa la edición está '
+                   + 'en este párrafo — comprobado, no supuesto'},
+  wl_why_word:  {en: 'the edition glosses this form on its own, wherever it stands',
+                 es: 'la edición glosa esta forma por sí sola, dondequiera que esté'},
+  wl_nogloss:   {en: 'The edition gives no gloss for this form.',
+                 es: 'La edición no da ninguna glosa para esta forma.'},
+  wl_noped:     {en: 'No PED entry reachable from this form.',
+                 es: 'Ninguna entrada del PED es alcanzable desde esta forma.'},
+  wl_ped_src:   {en: 'The Pali Text Society’s Pali-English Dictionary, T. W. Rhys Davids '
+                   + '& William Stede, 1921–25 (public domain). A reference, not this '
+                   + 'edition’s voice.',
+                 es: 'The Pali Text Society’s Pali-English Dictionary, T. W. Rhys Davids '
+                   + 'y William Stede, 1921–25 (dominio público). Una referencia, no la '
+                   + 'voz de esta edición.'},
+  wl_trunc:     {en: '…continues in the text (cut short by the next lemma — flagged, not patched)',
+                 es: '…continúa en el texto (cortada por el lema siguiente — señalado, no corregido)'},
+  wl_quoted:    {en: 'quoted', es: 'citada'},
+  wl_series:    {en: '-ādi: heads a series', es: '-ādi: encabeza una serie'},
+  wl_more:      {en: 'Show more', es: 'Mostrar más'},
+  wl_of:        {en: 'of', es: 'de'},
+  wl_pilot:     {en: 'Word lookup — in testing', es: 'Consulta de palabras — en pruebas'},
+  wl_thisvol:   {en: 'this volume', es: 'este volumen'}
+};
+if (window.I18N) for (var k in S) if (!window.I18N[k]) window.I18N[k] = S[k];
+function T(key) {
+  if (window.t && window.I18N && window.I18N[key]) return window.t(key);
+  var lang = 'en';
+  try { lang = localStorage.getItem('osbct-lang') || 'en'; } catch (e) {}
+  return (S[key] && (S[key][lang] || S[key].en)) || key;
+}
+
+// ------------------------------------------------------------------- utils --
+var FOLD = {'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
+function fold(s) { return s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g, function (c) { return FOLD[c] || c; }); }
+var VOW = 'aiueo';
+// the same normalisation build_lookup.py used to write row.k — they must agree
+function stem(w) {
+  var f = fold(w).replace(/(.)\1+/g, '$1');
+  while (f && (f.slice(-1) === 'm' || f.slice(-1) === 'n' || VOW.indexOf(f.slice(-1)) >= 0))
+    f = f.slice(0, -1);
+  return f;
+}
+var PALI = 'aāiīuūeokgṅcjñṭḍṇtdnpbmyrlvshḷṁ';
+var PALISET = {}; (PALI + PALI.toUpperCase()).split('').forEach(function (c) { PALISET[c] = 1; });
+var APOS = {'’': 1, "'": 1};
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) {
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+// the shard manifest decides the shard name (adaptive prefix, see index.json)
+var MAN = null;
+function shardName(set, key) {
+  var f = fold(key), m = MAN && MAN.shards && MAN.shards[set];
+  if (!m) return (f.slice(0, 2) + '__').slice(0, 2);
+  for (var d = 2; d <= 40; d++) {
+    var name = (f.slice(0, d) + new Array(d + 1).join('_')).slice(0, d);
+    if (m[name]) return name;
+  }
+  return (f.slice(0, 2) + '__').slice(0, 2);
+}
+function safeName(k) {
+  return fold(k).split('').map(function (c) {
+    return /[a-z0-9]/.test(c) ? c : '-' + c.charCodeAt(0) + '-'; }).join('');
+}
+
+var CACHE = {};
+function jfetch(url) {
+  if (CACHE[url]) return CACHE[url];
+  return CACHE[url] = fetch(url).then(function (r) { return r.ok ? r.json() : null; })
+                                .catch(function () { return null; });
+}
+// !!! The shard data lives at site/lookup/, and this file runs from
+// site/reader/ — a bare 'lookup/…' resolves to /reader/lookup/ and every fetch
+// 404s in silence, which is exactly what the first run of gate_reader.py found:
+// the panel opened, the header was right, and every count was empty.  Same '../'
+// convention reader2 already uses for '../<VOL>.json'.
+var BASE = '../lookup/';
+// The manifest names the shards; without it shardName() guesses a 2-character
+// prefix that mostly does not exist.  Nothing may look anything up until it has
+// landed, so every lookup waits on the same promise.
+var MANP = null;
+function manifest() {
+  if (!MANP) MANP = jfetch(BASE + 'index.json').then(function (m) { MAN = m; return m; });
+  return MANP;
+}
+function look(set, key) {
+  return manifest().then(function () {
+    return jfetch(BASE + set + '/' + shardName(set, key) + '.json');
+  }).then(function (o) {
+    return o ? (o[key] !== undefined ? o[key] : o[key.toLowerCase()]) : null;
+  });
+}
+
+// -------------------------------------------------------------- the markup --
+var CSS = ''
++ '#wl{position:fixed;z-index:60;background:var(--panel);color:var(--fg);'
++ 'border-left:1px solid var(--line);box-shadow:-2px 0 18px rgba(0,0,0,.10);'
++ 'display:none;flex-direction:column;font-family:Inter,system-ui,sans-serif}'
++ '#wl.open{display:flex}'
++ 'body.wl-side #wl{top:52px;right:0;bottom:0;width:380px}'
++ 'body.wl-sheet #wl{left:0;right:0;bottom:0;top:auto;width:auto;max-height:62vh;'
++ 'border-left:none;border-top:2px solid var(--accent);box-shadow:0 -6px 20px rgba(0,0,0,.22)}'
++ '#wl .wl-h{padding:9px 12px 0;border-bottom:1px solid var(--line);background:var(--app)}'
++ '#wl .wl-w{font-family:"Gentium Plus",Georgia,serif;font-size:22px;font-weight:700;'
++ 'padding-right:26px;word-break:break-word}'
++ '#wl .wl-c{font-size:11px;color:var(--mut);margin:2px 0 7px}'
++ '#wl .wl-c b{color:var(--fg)}'
++ '#wl .wl-x{position:absolute;top:6px;right:9px;border:none;background:none;'
++ 'font-size:17px;color:var(--mut);cursor:pointer;line-height:1}'
++ '#wl .wl-tabs{display:flex;gap:3px;flex-wrap:wrap}'
++ '#wl .wl-tabs button{font:600 12px/1 Inter,system-ui,sans-serif;border:1px solid var(--line);'
++ 'border-bottom:none;background:var(--chip);color:var(--chipfg);padding:7px 10px 8px;'
++ 'border-radius:8px 8px 0 0;cursor:pointer;position:relative}'
++ '#wl .wl-tabs button[aria-selected=true]{background:var(--panel);color:var(--accent)}'
++ '#wl .wl-tabs button.dis{opacity:.42;cursor:default}'
++ '#wl .wl-tabs button .wl-n{font-weight:400;opacity:.7}'
++ '#wl .wl-tabs button[data-tip]:hover::after{content:attr(data-tip);position:absolute;'
++ 'top:calc(100% + 5px);left:0;z-index:70;width:max-content;max-width:min(260px,70vw);'
++ 'white-space:normal;text-align:left;font:400 12px/1.4 Inter,system-ui,sans-serif;'
++ 'color:#fff;background:#3a3126;padding:6px 8px;border-radius:5px;'
++ 'box-shadow:0 2px 8px rgba(0,0,0,.3);pointer-events:none}'
++ '#wl .wl-b{overflow-y:auto;overflow-wrap:break-word;padding:10px 12px 18px;flex:1 1 auto;font-size:13.5px;line-height:1.55}'
++ '#wl .wl-src{font-size:11px;color:var(--mut);margin:0 0 8px}'
++ '#wl .wl-sub{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;'
++ 'color:var(--mut);margin:12px 0 4px}'
++ '#wl .wl-promo{border:1px solid var(--line);border-left:3px solid var(--comm);'
++ 'border-radius:8px;padding:2px 9px;background:var(--app)}'
++ '#wl .wl-wordgrp{border:1px solid var(--line);border-left:3px solid var(--canon);'
++ 'border-radius:8px;padding:2px 9px}'
++ '#wl .wl-why{font-size:10.5px;color:var(--mut);margin:3px 0 0;font-style:italic}'
++ '#wl .wl-row{border-top:1px solid var(--line);padding:7px 0 5px}'
++ '#wl .wl-promo .row:first-child,#wl .wl-wordgrp .row:first-child,'
++ '#wl .wl-row:first-of-type{border-top:none}'
++ '#wl .wl-lem{font-family:"Gentium Plus",Georgia,serif;font-weight:700}'
++ '#wl .wl-g{font-family:"Gentium Plus",Georgia,serif}'
++ '#wl .wl-cite{font-size:11px;color:var(--mut);margin-top:2px}'
++ '#wl .wl-flag{font-size:11px;color:var(--mut)}'
++ '#wl .wl-more{font:600 12px Inter,system-ui,sans-serif;color:var(--accent);'
++ 'background:none;border:1px dashed var(--line);border-radius:6px;padding:6px 10px;'
++ 'cursor:pointer;margin:10px 0}'
++ '#wl .wl-none{color:var(--mut);font-size:12.5px}'
++ '#wl .wl-ped p{margin:.35em 0}'
++ /* !!! THE PANEL IS position:fixed AND THE PAGE IS A GRID, SO NOTHING
+     REFLOWED FOR IT.  Measured in Chromium by sweeping the viewport
+     (gate_reader.py --breakpoints): at every width from 1500 down to 1180 the
+     canon paragraph's right edge sat 190-350px INSIDE the panel — the side
+     panel was simply printed on top of the text it was explaining, and the
+     text column never moved.  reader2's main region is `.main` (grid-area:
+     main), so that is what has to give up the width. */
+  'body.wl-side.wl-open .main{padding-right:380px}'
++ 'body.wl-sheet.wl-open .main{padding-bottom:64vh}'
++ '.wl-mark{background:var(--hl);border-radius:2px}';
+
+var el = null;
+function build() {
+  var s = document.createElement('style'); s.textContent = CSS;
+  document.head.appendChild(s);
+  el = document.createElement('aside');
+  el.id = 'wl'; el.setAttribute('aria-label', 'Word lookup');
+  el.innerHTML =
+    '<div class="wl-h"><button class="wl-x" id="wlx" title="' + esc(T('wl_close')) + '">✕</button>'
+    + '<div class="wl-w" id="wlw">&nbsp;</div><div class="wl-c" id="wlc"></div>'
+    + '<div class="wl-tabs" id="wlt" role="tablist"></div></div>'
+    + '<div class="wl-b" id="wlb"></div>';
+  document.body.appendChild(el);
+  document.getElementById('wlx').addEventListener('click', close);
+  layout();
+  addEventListener('resize', layout);
+  try {
+    var m = document.querySelector('.main');
+    if (m && window.ResizeObserver) new ResizeObserver(layout).observe(m);
+  } catch (e) {}
+}
+
+// LAYOUT — decided by the width the TEXT would be left with, measured, not by
+// a viewport breakpoint guessed from the prototype.
+//
+// The prototype's rule was "side panel at >= ~1140px".  Swept inside reader2
+// (gate_reader.py --breakpoints) that is wrong twice over.  First, reader2
+// keeps a 300px left pane above 861px, so the same viewport leaves far less
+// text; at 1180px the canon column came out at 456px — 59 characters, below a
+// comfortable measure.  Second, the reader lets the user HIDE that pane, and
+// then 300px comes back: a rule keyed on the viewport cannot see the
+// difference and would give a reader with the pane hidden a bottom sheet on a
+// screen with room to spare.
+//
+// So the rule reads the region the text actually lives in.  `.main` is
+// reader2's grid area; its clientWidth does not change when the panel adds
+// padding, so it is a stable measure of what there is to divide.
+var PANEL_W = 380;      // must match the width in CSS above
+var TEXT_MIN = 550;     // ≈ 65 characters at the reader's default size,
+                        // measured: 1240px viewport with the pane shown
+function mainW() {
+  var m = document.querySelector('.main');
+  return m ? m.clientWidth : innerWidth;
+}
+function layout() {
+  var side = mainW() >= PANEL_W + TEXT_MIN;
+  document.body.classList.toggle('wl-side', side);
+  document.body.classList.toggle('wl-sheet', !side);
+}
+function close() {
+  el.classList.remove('open');
+  document.body.classList.remove('wl-open');
+  unmark();
+}
+
+// !!! IN SHEET MODE THE PANEL COVERS THE WORD IT IS EXPLAINING.  Measured on a
+// real 390x844 phone viewport in Chromium: the sheet's top edge lands at y=321
+// and the clicked word sat at y=460, behind it — the reader taps a word and the
+// answer arrives on top of the question.  reader2 scrolls in `.scroll`, so that
+// is what has to move; the word is put a little above the sheet, not merely
+// "into view", or it ends up flush against the edge.
+function keepWordVisible() {
+  if (!markEl || !document.body.classList.contains('wl-sheet')) return;
+  var sc = document.getElementById('scroll');
+  if (!sc) return;
+  var limit = el.getBoundingClientRect().top - 12;
+  var r = markEl.getBoundingClientRect();
+  if (r.bottom <= limit && r.top >= 56) return;
+  var target = 56 + (limit - 56) * 0.45;       // a little above the middle
+  sc.scrollTop += (r.top - target);
+}
+
+// ------------------------------------------- caret-based click recovery ----
+function wordAt(x, y) {
+  var node, off, c, r;
+  if (document.caretPositionFromPoint) {
+    c = document.caretPositionFromPoint(x, y); if (!c) return null;
+    node = c.offsetNode; off = c.offset;
+  } else if (document.caretRangeFromPoint) {
+    r = document.caretRangeFromPoint(x, y); if (!r) return null;
+    node = r.startContainer; off = r.startOffset;
+  } else return null;
+  if (!node || node.nodeType !== 3) return null;
+  var t = node.textContent;
+  function isW(i) {
+    var ch = t[i]; if (ch === undefined) return false;
+    if (PALISET[ch]) return true;
+    if (APOS[ch]) return !!(PALISET[t[i - 1] || ''] && PALISET[t[i + 1] || '']);
+    return false;
+  }
+  if (!isW(off) && !isW(off - 1)) return null;
+  var a = isW(off) ? off : off - 1, b = a;
+  while (a > 0 && isW(a - 1)) a--;
+  while (b < t.length - 1 && isW(b + 1)) b++;
+  var w = t.slice(a, b + 1).replace(/(\d{1,2})$/, '');
+  return w ? {word: w, node: node, a: a, b: b} : null;
+}
+
+var markEl = null;
+function unmark() {
+  if (!markEl) return;
+  var p = markEl.parentNode;
+  while (markEl.firstChild) p.insertBefore(markEl.firstChild, markEl);
+  p.removeChild(markEl); p.normalize(); markEl = null;
+}
+function mark(node, a, b) {
+  unmark();
+  var r = document.createRange(); r.setStart(node, a); r.setEnd(node, b + 1);
+  markEl = document.createElement('mark'); markEl.className = 'wl-mark';
+  try { r.surroundContents(markEl); } catch (e) { markEl = null; }
+}
+
+// ------------------------------------------------------------- the lookup --
+var current = null;
+function paraTextOf(node) {
+  var p = node && node.parentNode;
+  while (p && !(p.classList && p.classList.contains('para'))) p = p.parentNode;
+  return p;
+}
+
+// The paragraph's stems WITH THEIR COUNTS.  A two-word lemma has to find two
+// words, or `Tassa tassā` would count as satisfied by a single `tassa`.
+function poolOf(text) {
+  var pool = {};
+  function add(w) { var s = stem(w); if (s) pool[s] = (pool[s] || 0) + 1; }
+  (text.match(/[aāiīuūeokgṅcjñṭḍṇtdnpbmyrlvshḷṁAĀIĪUŪEOKGṄCJÑṬḌṆTDNPBMYRLVSHḶṀ’'-]+/g) || [])
+    .forEach(function (w) {
+      add(w);
+      if (w.indexOf('-') >= 0)
+        w.split('-').forEach(function (part) { if (part) add(part); });
+    });
+  return pool;
+}
+function inPara(row, pool) {
+  if (!row.k || !row.k.length) return false;
+  var need = {}, i;
+  for (i = 0; i < row.k.length; i++) need[row.k[i]] = (need[row.k[i]] || 0) + 1;
+  for (var s in need) if (!(pool[s] >= need[s])) return false;
+  return true;
+}
+
+function lookup(word, paraEl) {
+  current = {word: word, para: paraEl};
+  el.classList.add('open');
+  el.dataset.state = 'loading';
+  document.body.classList.add('wl-open');
+  document.getElementById('wlw').textContent = word;
+  document.getElementById('wlc').textContent = T('wl_loading');
+  document.getElementById('wlb').innerHTML = '';
+
+  var vo = volOrdOf(paraEl);
+  Promise.all([look('freq', word), look('gloss', word), look('forms', word),
+               vo ? loadLinks(vo.vol) : Promise.resolve(null)])
+    .then(function (res) {
+      if (!current || current.word !== word) return;   // superseded by a later click
+      var freq = res[0], gl = res[1], forms = res[2];
+      var linked = vo ? linkedKeys(res[3], vo.ord) : {};
+      // A high-frequency form's rows do not fit in a shard (`tattha` alone has
+      // 718): the shard carries only the count and the rows live in paged
+      // files.  Fetch the first page now — the panel must never claim a total
+      // it has not got, nor show a count with nothing behind it.
+      var big = gl && !Array.isArray(gl) && gl.big ? gl : null;
+      var pGloss = big
+        ? jfetch(BASE + 'gloss/big/' + safeName(word) + '.0.json')
+        : Promise.resolve(null);
+      var pPed = (forms && forms.length)
+        ? Promise.all(forms.map(function (h) {
+            return look('ped', h).then(function (e) { return {h: h, e: e}; }); }))
+        : Promise.resolve([]);
+      return Promise.all([pGloss, pPed]).then(function (r2) {
+        if (!current || current.word !== word) return;
+        var page0 = r2[0], ped = r2[1];
+        var rows = Array.isArray(gl) ? gl : (page0 ? page0.rows : []);
+        var nGloss = big ? big.big : rows.length;
+        render({word: word, para: paraEl, freq: freq, rows: rows,
+                linked: linked,
+                big: !!big, page: page0 ? page0.page : null,
+                pages: page0 ? page0.pages : null, nGloss: nGloss,
+                ped: ped.filter(function (p) { return p.e; })});
+      });
+    });
+}
+
+function tabBtn(id, label, n, dis, tip) {
+  // no `disabled` attribute: it swallows hover events, and the tooltip with
+  // them, in Safari.  A class + aria-disabled + a click guard instead.
+  return '<button role="tab" data-tab="' + id + '" aria-selected="false"'
+    + (dis ? ' class="dis" aria-disabled="true"' : '')
+    + (tip ? ' data-tip="' + esc(tip) + '"' : '') + '>'
+    + esc(label) + (n != null ? ' <span class="wl-n">' + n + '</span>' : '') + '</button>';
+}
+
+function render(d) {
+  var tabs = document.getElementById('wlt'), body = document.getElementById('wlb');
+  var c = d.freq;
+  document.getElementById('wlc').innerHTML = c
+    ? '<b>' + c[0] + '</b> ' + esc(T('wl_corpus')) + ' · ' + c[1] + ' ' + esc(T('wl_canon'))
+      + ' · ' + c[2] + ' ' + esc(T('wl_comm')) + ' · ' + c[3] + ' ' + esc(T('wl_sub'))
+    : '';
+  var nPed = d.ped.reduce(function (s, p) { return s + p.e.length; }, 0);
+  tabs.innerHTML =
+      tabBtn('ed', T('wl_edition'), d.nGloss || null, !d.nGloss, T('wl_tip_ed'))
+    + tabBtn('ped', T('wl_ped'), nPed || null, !nPed, T('wl_tip_ped'));
+  Array.prototype.forEach.call(tabs.querySelectorAll('button'), function (b) {
+    b.addEventListener('click', function () {
+      if (!b.classList.contains('dis')) show(b.dataset.tab, d); });
+  });
+  // Edition is the default tab, always — never a modern dictionary (§9)
+  show(d.nGloss ? 'ed' : (nPed ? 'ped' : 'ed'), d);
+  keepWordVisible();
+  el.dataset.state = 'ready';
+}
+
+function show(tab, d) {
+  var tabs = document.getElementById('wlt'), body = document.getElementById('wlb');
+  Array.prototype.forEach.call(tabs.querySelectorAll('button'), function (b) {
+    b.setAttribute('aria-selected', b.dataset.tab === tab ? 'true' : 'false'); });
+  body.innerHTML = tab === 'ped' ? viewPed(d) : viewEd(d);
+  body.scrollTop = 0;
+  var more = body.querySelector('button.more');
+  if (more) more.addEventListener('click', function () { loadMore(d, more); });
+}
+
+function rowHtml(r) {
+  return '<div class="wl-row"><span class="lem g">' + esc(r.l) + '</span>'
+    + (r.q ? ' <span class="wl-flag">(' + esc(T('wl_quoted')) + ')</span>' : '')
+    + (r.h ? ' <span class="wl-flag">(' + esc(T('wl_series')) + ')</span>' : '')
+    + ' — <span class="wl-g">' + esc(r.g) + '</span>'
+    + (r.t ? '<div class="wl-flag">' + esc(T('wl_trunc')) + '</div>' : '')
+    + '<div class="wl-cite">' + esc(r.v) + ' §' + (r.n != null ? r.n : '—')
+    + (r.p ? ' · p.' + r.p : '') + (r.s ? ' · ' + esc(r.s) : '') + '</div></div>';
+}
+
+// Which target paragraphs does the edition's link map tie this one to?
+//
+// !!! reader2 declares its own `state` with `const` at script top level, which
+// does NOT put it on `window` — reading `window.state.links` from here gets
+// undefined, silently, and every gloss would fall out of the promoted group
+// with no error to show for it.  So the panel loads the same map itself.  That
+// also keeps the coupling to one thing that is already a published file
+// (`linksk/<VOL>.links.json`, keyed by ordinal) rather than to reader2's
+// internals, which another session may be changing.
+function volOrdOf(paraEl) {
+  var m = paraEl && paraEl.id && /^p-(.+)-(\d+)$/.exec(paraEl.id);
+  return m ? {vol: m[1], ord: m[2]} : null;
+}
+function loadLinks(vol) {
+  return jfetch('linksk/' + vol + '.links.json');
+}
+function linkedKeys(links, ord) {
+  var out = {}, e = (links && links[String(ord)]) || {};
+  ['commentary', 'subcommentary'].forEach(function (layer) {
+    (e[layer] || []).forEach(function (t) {
+      if (t && t.n != null) out[t.key.split('#')[0] + '|' + t.n] = 1; });
+  });
+  return out;
+}
+
+function viewEd(d) {
+  var h = '<div class="wl-src">' + esc(T('wl_ed_src')) + '</div>';
+  if (!d.nGloss) return h + '<p class="wl-none">' + esc(T('wl_nogloss')) + '</p>';
+  var rows = d.rows;
+  var pool = d.para ? poolOf(d.para.textContent) : {};
+  var linked = d.linked || {};
+  // FOUR GROUPS, EACH WITH A CRITERION THAT CAN BE STATED AND CHECKED.
+  //
+  // !!! The first version had two, and the second of them was a lie by
+  // omission.  "The lemma stands in this paragraph" is a real coincidence for a
+  // multi-word lemma and NO information at all for a one-word one: if the
+  // reader clicked `tattha`, then a row whose whole lemma is `tattha` is
+  // trivially "in this paragraph".  Measured over the corpus: the rule fires on
+  // 80.9% of glossed clicks, but 30% of what it promotes is that empty
+  // one-word case.  A one-word gloss is worth having — it is the edition
+  // defining the word plainly — so it keeps a group; it just must not be
+  // dressed up as being about this passage.
+  var prox = [], here = [], word = [], rest = [];
+  rows.forEach(function (r) {
+    var multi = (r.w || (r.k || []).length) > 1;   // words printed in bold
+    if (inPara(r, pool)) {
+      if (linked[r.v + '|' + r.n]) prox.push(r);
+      else if (multi) here.push(r);
+      else word.push(r);
+    } else rest.push(r);
+  });
+  if (prox.length)
+    h += '<div class="wl-sub">' + esc(T('wl_prox')) + '</div><div class="wl-promo">'
+       + prox.map(rowHtml).join('') + '</div>'
+       + '<div class="wl-why">' + esc(T('wl_checked')) + '</div>';
+  if (here.length)
+    h += '<div class="wl-sub">' + esc(T('wl_here')) + '</div><div class="wl-promo">'
+       + here.map(rowHtml).join('') + '</div>'
+       + (prox.length ? '' : '<div class="wl-why">' + esc(T('wl_checked')) + '</div>');
+  if (word.length)
+    h += '<div class="wl-sub">' + esc(T('wl_word')) + '</div><div class="wl-wordgrp">'
+       + word.map(rowHtml).join('') + '</div>'
+       + '<div class="wl-why">' + esc(T('wl_why_word')) + '</div>';
+  if (rest.length)
+    // !!! "All occurrences (1 of 5)" read as though it were showing one of
+    // five, when it was showing the one that had NOT been promoted.  The count
+    // that belongs here is the size of this group; the total is on the tab.
+    h += '<div class="wl-sub">' + esc(T('wl_rest')) + ' <span class="wl-flag">('
+       + rest.length + ')</span></div>'
+       + rest.map(rowHtml).join('');
+  if (d.big && d.pages && d.page + 1 < d.pages)
+    h += '<button class="wl-more">' + esc(T('wl_more')) + ' — '
+       + ((d.page + 1) * 120) + ' ' + esc(T('wl_of')) + ' ' + d.nGloss + '</button>';
+  return h;
+}
+
+function loadMore(d, btn) {
+  var next = (d.page == null ? 0 : d.page + 1);
+  if (next >= d.pages) return;
+  btn.disabled = true;
+  jfetch(BASE + 'gloss/big/' + safeName(d.word) + '.' + next + '.json')
+    .then(function (o) {
+      if (!o) return;
+      d.rows = d.rows.concat(o.rows); d.page = o.page; d.pages = o.pages;
+      show('ed', d);
+    });
+}
+
+function viewPed(d) {
+  var h = '<div class="wl-src">' + esc(T('wl_ped_src')) + '</div>';
+  if (!d.ped.length) return h + '<p class="wl-none">' + esc(T('wl_noped')) + '</p>';
+  d.ped.forEach(function (p) {
+    p.e.forEach(function (body) {
+      h += '<div class="wl-row wl-ped"><div class="lem g">' + esc(p.h) + '</div>'
+         + '<div>' + body + '</div></div>';
+    });
+  });
+  return h;
+}
+
+// ------------------------------------------------------------------- wire --
+function start() {
+  build();
+  manifest();
+  document.addEventListener('click', function (ev) {
+    if (el && el.contains(ev.target)) return;
+    var p = ev.target.closest && ev.target.closest('.para');
+    if (!p) return;
+    if (ev.target.closest('a,button,.tools,.app')) return;
+    var hit = wordAt(ev.clientX, ev.clientY);
+    if (!hit) return;
+    mark(hit.node, hit.a, hit.b);
+    lookup(hit.word, p);
+  }, true);
+}
+
+if (document.readyState === 'loading')
+  document.addEventListener('DOMContentLoaded', start);
+else start();
+
+// exposed for the gate
+window.WL = {lookup: function (w, p) { return lookup(w, p); },
+             panelW: PANEL_W, textMin: TEXT_MIN, layout: layout, on: true};
+})();

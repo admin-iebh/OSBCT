@@ -1,0 +1,31 @@
+A. COVERAGE
+   frame: 48,361 canon paragraphs that carry a forward link map
+
+   Model 1 — a uniform-random click in the paragraph
+     clicks that get any gloss at all    36,089 (74.62% of clicks)
+     proximity: the exact linked paragraph        2,323 ( 4.80% of clicks,  6.44% of glossed clicks)
+     proximity: the linked paragraph ±2           2,390 ( 4.94% of clicks,  6.62% of glossed clicks)
+     proximity: the same sutta in that volume    11,524 (23.83% of clicks, 31.93% of glossed clicks)
+     any of the three tiers                          16,237 (33.57% of clicks, 44.99% of glossed clicks)
+
+     by how many gloss rows the clicked word has:
+       rows      clicks    exact-paragraph proximity
+            1     4,589       214 ( 4.66%)
+          2-3     4,767       158 ( 3.31%)
+         4-10     5,827       215 ( 3.69%)
+        11-50     7,636       341 ( 4.47%)
+          >50    13,270     1,395 (10.51%)
+
+   Model 2 — the reader clicks the RAREST word in the paragraph
+   (an upper bound: readers look up what puzzles them, and the commentary
+    glosses the unusual word far more often than the common one)
+     clicks that get any gloss at all    10,677 (22.08% of clicks)
+     proximity: the exact linked paragraph        1,117 ( 2.31% of clicks, 10.46% of glossed clicks)
+     proximity: the linked paragraph ±2             521 ( 1.08% of clicks,  4.88% of glossed clicks)
+     proximity: the same sutta in that volume     1,807 ( 3.74% of clicks, 16.92% of glossed clicks)
+
+B. JUDGING SHEET — 60 items → _panel/proximity_sample.json
+   band    2-3: 15 of 158 eligible
+   band   4-10: 15 of 215 eligible
+   band  11-50: 15 of 341 eligible
+   band    >50: 15 of 1,395 eligible
