@@ -116,6 +116,9 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
 .kids{display:none}.kids.open{display:block}
 .sr-head{font-family:'Inter',sans-serif;font-size:11px;color:var(--faint);padding:8px 12px 4px}
 .sresult{padding:7px 12px;border-radius:8px;cursor:pointer}.sresult:hover{background:var(--hover)}
+/* A hit the index cannot place (no ordinal) is drawn plainly and does not
+   pretend to be clickable — see the note beside `_k` in doSearch. */
+.sresult.sr-dead{cursor:default;opacity:.62}.sresult.sr-dead:hover{background:none}
 .sr-lay{font-size:10.5px;font-weight:600}.sr-snip{font-family:'Gentium Plus',serif;font-size:12.5px;margin-top:2px;line-height:1.4}
 .sr-snip mark{background:var(--hl);border-radius:2px}
 /* !!! THE SECTION ROWS HAD NO STYLES AT ALL (2026-07-30o, user-reported): they
@@ -168,6 +171,7 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
 .head.booktitle{font-size:27px;font-weight:700;color:var(--fg);margin:30px 0 6px;text-align:center;letter-spacing:.01em}
 .head.sutta{font-size:20px;font-weight:700;color:var(--fg);margin:26px 0 12px;text-align:center;border-bottom:1px solid var(--line);padding-bottom:8px}
 .head.vagga{font-size:17px;font-weight:700;color:var(--fg);margin:20px 0 8px;text-align:center}
+.head.section.band{margin:6px 0 4px}
 .head.section{font-size:14.5px;font-weight:600;color:var(--accent);margin:15px 0 5px;text-align:center;scroll-margin-top:14px}
 .head.vatthu{font-size:13px;font-weight:600;color:var(--mut);margin:14px 0 4px;text-align:center;scroll-margin-top:14px}
 .gatha{font-family:'Gentium Plus',serif;font-style:italic;line-height:1.7;margin:8px 0 4px 1.6em;color:var(--fg)}
@@ -201,7 +205,7 @@ sup.fnm{color:var(--accent);font-size:9.5px;font-weight:700;vertical-align:super
 .unit .ugloss{display:none;padding:2px 6px 6px 22px;color:var(--fg)}.unit.open .ugloss{display:block}
 .unit.lead{padding:3px 6px;color:var(--fg)}.uhint{font-family:'Inter',sans-serif;font-size:11px;color:var(--faint);padding:2px 6px}
 .tools{float:right;display:inline-flex;gap:3px;margin-left:8px;opacity:0;transition:opacity .12s}
-.para:hover .tools{opacity:1}
+.para:hover .tools{opacity:1;position:relative;z-index:300}
 .icn,.jbtn{border:1px solid var(--line);background:var(--panel);border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
 .icn{width:24px;height:22px;color:var(--mut)}.icn:hover{color:var(--fg);border-color:var(--faint)}.icn.ok{color:var(--comm);border-color:var(--comm)}
 .jbtn{font-family:'Inter',sans-serif;font-size:10.5px;font-weight:700;width:22px;height:22px}.jbtn:hover{background:var(--hover)}.jbtn.off{opacity:.28;cursor:default}
@@ -311,7 +315,11 @@ if(window.I18N) Object.assign(window.I18N,{
   r2_tabs:{en:'Tabs',es:'Pestañas'},
   r2_single:{en:'Single',es:'Simple'},
   r2_outline:{en:'☰ Outline',es:'☰ Esquema'},
-  r2_contents:{en:'☰ Contents',es:'☰ Contenido'}
+  r2_contents:{en:'☰ Contents',es:'☰ Contenido'},
+  r2_search_loading:{en:'Loading the search index…',
+                     es:'Cargando el índice de búsqueda…'},
+  r2_search_failed:{en:'The search index could not be loaded. Check the connection and type again.',
+                    es:'No se pudo cargar el índice de búsqueda. Revise la conexión y escriba de nuevo.'}
 });
 document.documentElement.setAttribute('data-theme', localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
 $('#themebtn').onclick=()=>{const d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('osbct-theme',n)};
@@ -871,11 +879,9 @@ async function _openCanon(canonVol, scrollKey){
   // takes its name from `state.cursutta`/`curvagga`, and ONLY the sidebar
   // tree sets those — so landing on the Aratisutta from a search or a hash
   // titled the pane `Chakkanipātapāḷi`, the nipāta, and the sutta "lost its
-  // name" exactly as reported.  The name is in the paragraph itself, or in
-  // the nearest named paragraph above it (`sutta` marks where a section
-  // OPENS and is carried forward), so read it from there.
-  // Guarded on ord>0: opening a VOLUME lands on ord 0 and must keep the
-  // book's own title, not borrow its first sutta's.
+  // name" exactly as reported.  Read it from the paragraph itself, or the
+  // nearest named one above it.  Guarded on ord>0: opening a VOLUME lands
+  // on ord 0 and must keep the book's own title.
   state.landedSutta=null;
   if(scrollKey){ const _k=parseKey(scrollKey), _c=cache[_k[0]];
     if(_c && _k[1]>0){ for(let j=_k[1]; j>=0; j--){ const q=_c.paras[j];
@@ -1193,10 +1199,43 @@ function bandsFor(vol){
   const has=GROUPHAS[VOLGROUP[vol]];
   return {mine, bands: has? ['P','A','T'].filter(b=>has[b]) : ['P','A','T']};
 }
-// cross-layer jump buttons — only for bands this work actually has
+// !!! A BUTTON THAT LEADS NOWHERE IS WORSE THAN NO BUTTON (2026-08-02,
+// user-reported).  `bandsFor` answers at the level of the WORK — does this
+// group have a ṭīkā at all — so T was drawn on every paragraph of a work
+// that has one, and pressing it on a paragraph with no linked ṭīkā only
+// produced a toast.  The link maps answer the narrower question and are
+// already in memory for the volumes on screen, so ask them.
+//
+// WHERE THE ANSWER IS NOT KNOWN THE BUTTON STAYS.  `hasBand` returns null
+// when the map it would need has not been fetched, and null must not read
+// as 'no' — hiding a control because a fetch has not landed is the same
+// class of fault as an assertion satisfied by absence.
+//
+// And keep in view that after 2026-08-02 a missing LINK is not strong
+// evidence of missing TEXT: 40.3% of canon→commentary links disagreed on
+// the sutta name before the name anchor went in.  `check_links.py` measures
+// that, so this cannot quietly hide a gap.
+function hasBand(key,tg){
+  const SLOT={A:'commentary',T:'subcommentary'};
+  const [vol,ord]=parseKey(key); const {mine,bands}=bandsFor(vol);
+  const spine=bands[0]; if(tg===mine) return true;
+  if(mine===spine){
+    const links=(vol===state.canonVol&&state.links)?state.links:linkCache[vol];
+    if(!links) return null;
+    if(tg===spine) return true;
+    return ((links[String(ord)]||{})[SLOT[tg]]||[]).length>0;
+  }
+  const rev=revCache[vol]; if(!rev) return null;
+  const c=(rev[String(ord)]||{}).canon; if(!c) return false;
+  if(tg===spine) return true;
+  const [cv,co]=parseKey(c); const links=linkCache[cv]; if(!links) return null;
+  return ((links[String(co)]||{})[SLOT[tg]]||[]).length>0;
+}
+// cross-layer jump buttons — only for bands this work actually has, and
+// only where this paragraph really has one
 function jbtns(kind,key){
   const vol=parseKey(key)[0]; const {mine,bands}=bandsFor(vol);
-  const targets=bands.filter(b=>b!==mine);
+  const targets=bands.filter(b=>b!==mine).filter(b=>hasBand(key,b)!==false);
   const COL={P:'var(--canon)',A:'var(--comm)',T:'var(--tika)'},NAME={P:'Pāḷi',A:'Aṭṭhakathā',T:'Ṭīkā'};
   return targets.map(tg=>'<button class="jbtn" style="color:'+COL[tg]+';border-color:'+COL[tg]+'" title="'+escA(TIP('tip_goto','Go to'))+' '+NAME[tg]+'" onclick="jumpFrom(\''+key+'\',\''+tg+'\')">'+tg+'</button>').join('');
 }
@@ -1395,6 +1434,28 @@ function targetsFor(ord,kind){ // kind 'A'|'T' -> list of {key,state,worktag?}
   const multi=arr.length>1;
   return arr.map(t=>{const v=parseKey(t.key)[0]; return {key:t.key,state:t.state,worktag: multi? ((shortWork(VOLWORK[v])||'')+' · '+v) : null};});
 }
+// !!! A COMMENTARY BLOCK ARRIVED WITH NO TITLE (2026-08-02, user-reported).
+// The printed edition heads it `7. Aratisuttavaṇṇanā`; the reader drew only
+// the AṬṬHAKATHĀ chip, so a reader pulling the commentary could not see
+// which section of it they had been given.
+// `sections/<vol>.json` is the authority and already carries the edition's
+// own numbering — 19AnA03 ord254 is "6. Assādasuttavaṇṇanā" — so where it
+// speaks nothing needs reconstructing.  The paragraph's `sutta` field is
+// the fallback, and only that needs a number borrowed from the canon
+// heading, which the edition prints on both layers.
+const SECNAME={};
+function secNameAt(vol,ord){
+  const c=cache[vol]; if(!c) return null;
+  if(!SECNAME[vol]){ const a=new Array(c.paras.length); let cur=null;
+    for(let j=0;j<c.paras.length;j++){
+      const e=(c.sec||{})[String(j)];
+      if(e&&e.length){ const x=e.filter(y=>y.k==='sutta').pop()||e[e.length-1];
+        if(x&&x.l) cur=x.l; }
+      else { const q=c.paras[j]; if(q&&q.sutta&&q.sutta!=='X') cur=q.sutta; }
+      a[j]=cur; }
+    SECNAME[vol]=a; }
+  return SECNAME[vol][ord]||null;
+}
 function activeKeys(){return ['canon','A','T'].filter(k=>state.active[k]);}
 // !!! AN EMPTY BAND HAS TO SAY WHY IT IS EMPTY (2026-08-01).  Pruning the
 // 22,719 impossible commentary targets put the honest answer — nothing — where
@@ -1434,7 +1495,7 @@ function render(){
   $('#doctitle').innerHTML=esc(_sut||_nip||state.landedSutta||state.currentBook||VOLTITLE[_tv]||shortWork(VOLWORK[_tv])||_tv)+'<small>'+esc(_tv)+' · '+_tvc.paras.length+' ¶</small>';
   applyRsize();
   syncButtons();
-  let lastSutta=null,lastVagga=null;
+  let lastSutta=null,lastVagga=null,lastHeadA=null,lastHeadT=null;
   const cH=s=>(s||'').replace(/\s*\(\d+\)\s*$/,'').replace(/([a-zāīūṁṃṅñṭḍṇḷ])\d+$/,'$1');  // strip "(33)" / trailing artifact digit for display
   // Compare on the CLEANED title so a sutta whose running-header form carries the
   // MN number (e.g. 'Kandarakasutta' then 'Kandarakasutta (51)') emits ONE heading.
@@ -1631,8 +1692,16 @@ function render(){
         const _hasSec=!!(_tc && _tc.sec && Object.keys(_tc.sec).length);
         return layerFront(ts[0].key)+(_hasSec?'':emitHead(paraOf(ts[0].key),ts[0].key));})();
       if(state.active.canon) parts.push(block('canon',state.canonVol+'#'+i));
-      if(state.active.A) targetsFor(i,'A').forEach((t,ti)=>{ if(dedup&&t.key===lastA)return; lastA=t.key; _drew++; parts.push(((spine==='A'&&ti>0)?_front(t.key):'')+(state.active.canon?'<div class="subwrap a"><span class="lchip a">Aṭṭhakathā</span>':'<div>')+block('A',t.key,t)+'</div>'); });
-      if(state.active.T) targetsFor(i,'T').forEach((t,ti)=>{ if(dedup&&t.key===lastT)return; lastT=t.key; _drew++; parts.push(((spine==='T'&&ti>0)?_front(t.key):'')+(state.active.canon?'<div class="subwrap t"><span class="lchip t">Ṭīkā</span>':'<div>')+block('T',t.key,t)+'</div>'); });
+      // the number the edition prints on both layers, taken off the canon
+      // heading just emitted for this same ordinal
+      const _num=(()=>{ const m=/>(\d+(?:-\d+)?)\.[\s&]/.exec(head||''); return m?m[1]+'. ':''; })();
+      const _bandHead=(key,band)=>{ const [tv,to]=parseKey(key);
+        const nm=secNameAt(tv,to); if(!nm) return '';
+        if(band==='A'){ if(nm===lastHeadA) return ''; lastHeadA=nm; }
+        else { if(nm===lastHeadT) return ''; lastHeadT=nm; }
+        return '<div class="head section band">'+esc(/^\d/.test(nm)?nm:_num+nm)+'</div>'; };
+      if(state.active.A) targetsFor(i,'A').forEach((t,ti)=>{ if(dedup&&t.key===lastA)return; lastA=t.key; _drew++; parts.push(((spine==='A'&&ti>0)?_front(t.key):'')+(state.active.canon?'<div class="subwrap a"><span class="lchip a">Aṭṭhakathā</span>'+_bandHead(t.key,'A'):'<div>')+block('A',t.key,t)+'</div>'); });
+      if(state.active.T) targetsFor(i,'T').forEach((t,ti)=>{ if(dedup&&t.key===lastT)return; lastT=t.key; _drew++; parts.push(((spine==='T'&&ti>0)?_front(t.key):'')+(state.active.canon?'<div class="subwrap t"><span class="lchip t">Ṭīkā</span>'+_bandHead(t.key,'T'):'<div>')+block('T',t.key,t)+'</div>'); });
       return head+(parts.length?'<div style="margin-bottom:12px">'+parts.join('')+'</div>':'')+(spine==='canon'?udd(i):''); }).join('')+'</div>';
     // the canon band is off and neither layer drew anything: say why, rather
     // than leaving the reader with the generic hint line and a blank page
@@ -1642,19 +1711,14 @@ function render(){
   $('#scroll').innerHTML=html; tipify($('#scroll'));
   if(state.view==='columns'){ $('#scroll').querySelectorAll('.rowline').forEach(r=>{r.onmouseenter=()=>r.classList.add('hot');r.onmouseleave=()=>r.classList.remove('hot');}); }
 }
-// !!! A RE-RENDER MUST NOT MOVE THE READER (2026-08-02, user-reported twice —
-// "click in A it takes the user to a place that it is not the Commentary").
-// Pressing A roughly DOUBLES the number of blocks in the stream, and `render()`
-// rebuilds `#scroll` wholesale; the browser then keeps `scrollTop`, which is a
-// PIXEL offset into a document that has just changed height.  Measured on the
-// Aratisutta: before pressing A the top of the view was `p-16An02-383`, after
-// it was `p-16An02-216` — the same 121,000px landing twenty-two printed pages
-// earlier.  Nothing was wrong with where the link pointed; the reader was
-// simply no longer where it had been.
-//
-// The first diagnosis of this session blamed only the link data, which WAS also
-// wrong, and this was visible in that session's own test output and read past.
-// Anchor on the PARAGRAPH, not the pixel.
+// !!! A RE-RENDER MUST NOT MOVE THE READER (2026-08-02, user-reported
+// twice — "click in A it takes the user to a place that it is not the
+// Commentary").  Pressing A roughly DOUBLES the blocks in the stream and
+// `render()` rebuilds `#scroll` wholesale; the browser then keeps
+// `scrollTop`, a PIXEL offset into a document that has just changed height.
+// Measured on the Aratisutta: top of view `p-16An02-383` before,
+// `p-16An02-216` after — the same 121,000px landing twenty-two printed
+// pages earlier.  Anchor on the PARAGRAPH, not the pixel.
 function topPara(){
   const sc=$('#scroll'); const vt=sc.getBoundingClientRect().top;
   for(const p of sc.querySelectorAll('.para')){
@@ -1783,7 +1847,33 @@ function matchTerms(ft){
   for(let i=0;i<TERMKEYS.length;i++){ if(TERMKEYS[i].indexOf(ft)>=0){ out.push(TERMKEYS[i]); if(out.length>=500) break; } }
   return out;
 }
-async function ensureTerms(){ if(TERMS)return; const j=await jget('../index/terms.compact.json',{terms:{},vols:[],layers:[]}); TERMS=j; }
+// !!! A FAILED FETCH MUST NOT BE CACHED AS AN ANSWER (2026-08-02,
+// user-reported: "the search box only works when there is text in the reader
+// pane").  This was `if(TERMS) return; TERMS = await jget(url, {terms:{}})` —
+// and `jget` returns its fallback on ANY error.  So ONE failed, aborted or
+// timed-out request for the 22 MB term map installed an EMPTY term map as
+// though it were the answer, and `if(TERMS) return` then guaranteed it was
+// never fetched again: every later keystroke matched nothing, in silence, for
+// the rest of the page load.
+//
+// That is the same shape as `jget()` failing silently everywhere else (the
+// standing open item), and it explains the reported correlation with an empty
+// pane WITHOUT the pane being the cause: on a cold load this 22 MB request
+// contends with nav.json, pageindex, pagespan, concordance and the fonts,
+// which is where it is most likely to lose.  Once a volume is open those are
+// done and it succeeds — so the box "only works when there is text on screen".
+//
+// A failure is now remembered AS a failure, retried on the next keystroke, and
+// SAID on screen rather than left to look like "no matches".
+let TERMSERR=null;
+async function ensureTerms(){ if(TERMS)return;
+  try{
+    const r=await fetch('../index/terms.compact.json?v='+BUILD);
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const j=await r.json();
+    if(!j||!j.terms||!j.vols) throw new Error('malformed index');
+    TERMS=j; TERMSERR=null;
+  }catch(e){ TERMS=null; TERMSERR=(e&&e.message)||String(e); } }
 async function shard(vi){ if(shardCache[vi])return shardCache[vi]; return shardCache[vi]=await jget('../index/'+TERMS.vols[vi]+'.idx.json',{paras:[],inv:{}}); }
 let sTimer=null, sSeq=0;
 $('#sq').addEventListener('input',e=>{clearTimeout(sTimer);sTimer=setTimeout(()=>doSearch(e.target.value),180);});
@@ -1799,9 +1889,21 @@ async function doSearch(q){
   // slow enough to lose it.  Each call takes a ticket and paints only if it is
   // still the newest.
   const my=++sSeq;
+  // kept for `openHit` so the clicked term can be highlighted where it lands,
+  // rather than being interpolated into an inline onclick and escaped there
+  window.__hq=(q||'').trim();
   const dd=$('#sdrop'); const fq=foldS((q||'').trim());
   if(fq.length<2){dd.hidden=true;dd.innerHTML='';return;}
+  // THE BOX MUST NEVER BE SILENT.  The first search of a page load has to pull
+  // a 22 MB term map before it can answer anything, and until it lands nothing
+  // appeared at all — indistinguishable from a broken box, and reported as one.
+  if(!TERMS){ dd.hidden=false;
+    dd.innerHTML='<div class="sr-head">'+esc(TIP('r2_search_loading','Loading the search index…'))+'</div>'; }
   await ensureTerms(); await ensureNames();
+  if(my!==sSeq) return;
+  if(!TERMS){ dd.hidden=false;
+    dd.innerHTML='<div class="sr-head">'+esc(TIP('r2_search_failed','The search index could not be loaded. Check the connection and type again.'))+(TERMSERR?' ('+esc(TERMSERR)+')':'')+'</div>';
+    return; }
   let secHTML='', nSec=0;
   if(SNAMES){
     const hit=[];
@@ -1837,13 +1939,79 @@ async function doSearch(q){
     for(const [pi,c] of post){ total+=c; if(items.length<80){ const p=sh.paras[pi]; const lay=TERMS.layers[vi];
       const f=foldS(p.text), i=f.indexOf(fq), a=Math.max(0,i-24), b=Math.min(p.text.length,i+fq.length+42);
       const snip=(a>0?'…':'')+esc(p.text.slice(a,i))+'<mark>'+esc(p.text.slice(i,i+fq.length))+'</mark>'+esc(p.text.slice(i+fq.length,b))+'…';
-      items.push('<div class="sresult" onclick="openKey(\''+p.key+'\',\''+({'pali-unicode':'canon','atthakatha-unicode':'A','tika-unicode':'T'}[lay])+'\');document.getElementById(\'sdrop\').hidden=true"><span class="sr-lay" style="color:'+COL[lay]+'">'+LN[lay]+(p.n!=null?' ¶'+p.n:(p.page!=null?' p.'+p.page:''))+'</span><div class="sr-snip">'+snip+'</div></div>');
+      // !!! `p.key` IS NOT A FIELD THE INDEX HAS EVER CARRIED (2026-08-02,
+      // user-reported).  This row was built as `openKey(p.key, …)`; measured
+      // over all 118 shards, `key` is present on 0 of 86,365 paragraphs and
+      // `ord` on all of them — `build_search_index.py` says so in its own
+      // docstring ("**`ord` is added**… the reader needs the ordinal"), and
+      // `search.html` has always used `p.ord`.  So EVERY occurrence hit in
+      // this box called `openKey('undefined', …)`: `parseKey` found no '#',
+      // returned the volume as `'undefine'` (slice(0,-1)) and the ordinal as
+      // NaN, the reader drew 0 paragraphs, and the layer band reported "No
+      // Aṭṭhakathā is linked to the passages on screen" — a wrong answer that
+      // reads as an honest one.  Fourth instance of this project's
+      // characteristic failure: an ABSENT VALUE PRODUCED A CALL THAT LOOKED
+      // LIKE A CALL.  Section hits above were never affected; they build the
+      // key from `vols[]` + ord, which is what this now does.
+      // A row whose ordinal is missing is drawn WITHOUT an onclick rather
+      // than with a dead one, so the failure is visible instead of silent.
+      const _k=(p.ord!=null)?(TERMS.vols[vi]+'#'+p.ord):null;
+      items.push('<div class="sresult'+(_k?'':' sr-dead')+'"'+(_k?' onclick="openHit(\''+_k+'\',\''+({'pali-unicode':'canon','atthakatha-unicode':'A','tika-unicode':'T'}[lay])+'\')"':'')+'><span class="sr-lay" style="color:'+COL[lay]+'">'+LN[lay]+(p.n!=null?' ¶'+p.n:(p.page!=null?' p.'+p.page:''))+'</span><div class="sr-snip">'+snip+'</div></div>');
     } } }
   // SECTIONS FIRST, THEN OCCURRENCES — the same order `search.html` uses, and
   // for the same reason: someone typing a sutta's name wants the sutta.
   if(my!==sSeq) return;
   dd.hidden=false; dd.innerHTML=secHTML+
     '<div class="sr-head">'+total.toLocaleString()+' occurrence(s) for “'+esc(q)+'”</div>'+items.join('');
+}
+// A HIT MUST LAND ON THE WORD, NOT MERELY IN THE VOLUME.  A link from
+// `search.html` carries `?q=` and `openFromURL` highlights it; this box called
+// `openKey` bare, so once the key was right it still opened 364 paragraphs of
+// the Visuddhimagga with nothing to say which one had been asked for.  Same
+// poll-don't-guess shape as `openFromURL` — the paragraph is drawn
+// asynchronously and a fixed delay races the render.
+// !!! CENTRING THE PARAGRAPH IS NOT ARRIVING AT THE WORD (2026-08-02,
+// user-reported: "it does not take one to the exact place where it is but one
+// has to look around to find it").  A commentary paragraph is routinely taller
+// than the window, so `scrollIntoView` on the PARAGRAPH puts its middle on
+// screen and the word wherever it happens to fall.  Measured on 51Vism01 ¶180,
+// the second hit for `medoti`:
+//
+//   1400x900  paragraph 1382px in a 797px viewport — word at y=575, low and
+//             far from where the eye goes
+//    390x844  paragraph 2841px in a  657px viewport — word at y=1228, i.e.
+//             571px BELOW THE FOLD.  On a phone the hit was not on screen at
+//             all, which is the report exactly.
+//
+// So: mark FIRST, then scroll to the mark.  And settle, because the first
+// scroll happens on the first render and the layout is still moving under it —
+// fonts resolve, page rules and the apparatus land — so a single scroll aims
+// at a target that then walks away.  Bounded, and it stops as soon as two
+// consecutive frames agree.
+async function settleTo(el){
+  try{ if(document.fonts && document.fonts.ready) await document.fonts.ready; }catch(e){}
+  let prev=null;
+  for(let i=0;i<12;i++){
+    el.scrollIntoView({block:'center'});
+    await new Promise(r=>requestAnimationFrame(()=>setTimeout(r,60)));
+    const y=Math.round(el.getBoundingClientRect().top);
+    if(prev!==null && Math.abs(y-prev)<2) return;
+    prev=y;
+  }
+}
+async function landOn(el,q){
+  if(q) markInEl(el,q);
+  await settleTo(el.querySelector('mark.shl')||el);
+}
+async function openHit(key,kind){
+  const dd=document.getElementById('sdrop'); if(dd) dd.hidden=true;
+  const q=window.__hq||'';
+  await openKey(key,kind);
+  for(let i=0;i<40;i++){
+    const el=document.getElementById('p-'+key.replace('#','-'));
+    if(el){ await landOn(el,q); return; }
+    await new Promise(r=>setTimeout(r,60));
+  }
 }
 // !!! reader2 HAD NO URL HANDLING AT ALL (2026-07-30g).  The site's own
 // navigation was split — `index.html` opened THIS reader while the top-nav
@@ -1899,7 +2067,9 @@ async function openFromURL(){
   // gives up quietly if the ordinal is never drawn (a hidden one, say).
   for(let i=0;i<40;i++){
     const el=document.getElementById('p-'+key.replace('#','-'));
-    if(el){ el.scrollIntoView({block:'center'}); if(q) markInEl(el,q); return true; }
+    // same landing as the top-bar box — a link from search.html arrives at the
+    // word, not at the middle of a paragraph that may be three screens tall
+    if(el){ await landOn(el,q); return true; }
     await new Promise(r=>setTimeout(r,60));
   }
   return true;

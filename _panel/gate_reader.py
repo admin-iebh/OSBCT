@@ -2322,14 +2322,19 @@ def run_layers():
     vol, ord_, name, ckey = probe
     pid = 'p-%s-%d' % (vol, ord_)
     fails = []
-    READ = ("() => { const sc = document.getElementById('scroll');"
+    # THE PROPERTY IS "THE PARAGRAPH I WAS READING STAYED WHERE IT WAS", not
+    # "the same element is topmost".  Once a band is drawn, NEW blocks are
+    # interleaved and one of them can legitimately take the top few pixels --
+    # asserting on identity there fails a reader who has not moved at all.
+    READ = ("(id) => { const sc = document.getElementById('scroll');"
             " const vt = sc.getBoundingClientRect().top;"
+            " let top = null;"
             " for (const p of sc.querySelectorAll('.para')) {"
             "   const r = p.getBoundingClientRect();"
-            "   if (r.bottom > vt + 4) return {top: p.id,"
-            "     title: document.querySelector('#doctitle').firstChild"
-            "            ? document.querySelector('#doctitle').firstChild.textContent : ''}; }"
-            " return {top: null, title: ''}; }")
+            "   if (r.bottom > vt + 4) { top = p.id; break; } }"
+            " return {top: top,"
+            "   title: document.querySelector('#doctitle').firstChild"
+            "          ? document.querySelector('#doctitle').firstChild.textContent : ''}; }")
     with sync_playwright() as pw:
         b = pw.chromium.launch()
         for vw, vh in ((1400, 900), (390, 844)):
@@ -2340,7 +2345,12 @@ def run_layers():
                         wait_until='domcontentloaded')
                 pg.wait_for_selector('.para', timeout=30000)
                 pg.wait_for_timeout(1500)
-                a = pg.evaluate(READ)
+                a = pg.evaluate(READ, pid)
+                OFF = ("(id) => { const sc = document.getElementById('scroll');"
+                       " const e = document.getElementById(id); if (!e) return null;"
+                       " return Math.round(e.getBoundingClientRect().top"
+                       "        - sc.getBoundingClientRect().top); }")
+                a0 = pg.evaluate(OFF, a['top'])
                 if a['top'] != pid:
                     fails.append('%dx%d: opening %s#%d did not put %s at the top '
                                  'of the view (got %s)'
@@ -2352,12 +2362,14 @@ def run_layers():
                 for k in ('A', 'T'):
                     pg.click('#layerbar button[data-k="%s"]' % k)
                     pg.wait_for_timeout(2500)
-                    g = pg.evaluate(READ)
-                    if g['top'] != a['top']:
-                        fails.append('%dx%d: pressing %s moved the reader from '
-                                     '%s to %s -- the re-render kept the pixel '
-                                     'offset, not the paragraph'
-                                     % (vw, vh, k, a['top'], g['top']))
+                    g = pg.evaluate(READ, pid)
+                    g0 = pg.evaluate(OFF, a['top'])
+                    if a0 is None or g0 is None or abs(g0 - a0) > 40:
+                        fails.append('%dx%d: pressing %s moved the paragraph '
+                                     'that was at the top of the view from '
+                                     'y=%s to y=%s -- the re-render kept the '
+                                     'pixel offset, not the paragraph'
+                                     % (vw, vh, k, a0, g0))
                 # and the commentary drawn under the canon paragraph must be the
                 # one the map names -- the data half of the same complaint
                 nxt = pg.evaluate(
