@@ -87,11 +87,18 @@ HWS = sorted({h for s in form2hw.values() for h in s})
 LEMMAS = sorted({base_of(h) for h in HWS})
 log(f'  {len(form2hw):,} forms resolve · {len(HWS):,} headwords · {len(LEMMAS):,} lemmas')
 
+# !!! READ IN OFFSET ORDER, NOT ALPHABETICAL ORDER.  `HWS` is sorted by
+# headword, so pulling entries in that order seeks backwards and forwards
+# across an 889 MB file 74,146 times.  On a local disk that is merely wasteful;
+# over the device bridge, where the user's own machine runs this build, it
+# defeats readahead completely -- the first attempt sat in this loop for a
+# quarter of an hour and was still going.  Sorting by offset makes the same
+# reads monotonic, which is to say sequential.
 log('DPD entries…')
 dpdf = sources.ensure_dict(os.path.join(GD, 'dpd', 'dpd'))
 DPD = {}
-for h in HWS:
-    w, off, sz = dpd_idx[dpd_pos[h]]
+by_off = sorted(((dpd_idx[dpd_pos[h]][1], dpd_idx[dpd_pos[h]][2], h) for h in HWS))
+for off, sz, h in by_off:
     DPD[h] = sources.dpd_trim(sources.entry(dpdf, off, sz))
 log(f'  {len(DPD):,} entries')
 
