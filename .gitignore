@@ -148,3 +148,4 @@ _dictsrc/
 # in claude/ docs, not here.
 _panel/*.out
 _panel/*.err
+_xc/linksk_named/
