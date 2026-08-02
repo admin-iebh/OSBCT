@@ -304,10 +304,29 @@ def run_gate(EVAL_ON=False):
                   // gate could not see it because nothing measured geometry.
                   spill: (() => {
                     const wl = document.getElementById('wl').getBoundingClientRect();
+                    const body = document.getElementById('wlb');
+                    // !!! CONTENT INSIDE A HORIZONTAL SCROLLER IS NOT A SPILL.
+                    // getBoundingClientRect reports an element's full box even
+                    // when an ancestor with overflow-x:auto is clipping it, so
+                    // DPD's declension table -- deliberately made scrollable
+                    // rather than squashed -- was reported as 34px outside the
+                    // panel on every word that has one.  That was the gate
+                    // being wrong, not the layout: the reader sees a clipped
+                    // table they can drag, which is what was intended.  Skip
+                    // anything a scrollable ancestor already contains.
+                    const clipped = e => {
+                      for (let a = e.parentElement; a && a !== body.parentElement;
+                           a = a.parentElement) {
+                        const ox = getComputedStyle(a).overflowX;
+                        if (ox === 'auto' || ox === 'scroll' || ox === 'hidden')
+                          return true;
+                      }
+                      return false;
+                    };
                     let worst = 0, who = '';
                     document.querySelectorAll('#wlb *').forEach(e => {
                       const r = e.getBoundingClientRect();
-                      if (!r.width) return;
+                      if (!r.width || clipped(e)) return;
                       const over = Math.max(r.right - wl.right, wl.left - r.left);
                       if (over > worst) { worst = over; who = e.className || e.tagName; }
                     });
@@ -329,20 +348,15 @@ def run_gate(EVAL_ON=False):
                     if not st['counts'].startswith(str(fr[0]) + ' '):
                         fail(f'counts {st["counts"]!r} do not start with freq {fr[0]}')
                 # 4. Edition count
-                exp = gloss_total(shown)
+                exp_ed = gloss_total(shown)
                 got = int((st['tabs'].get('ed') or {}).get('n') or 0)
-                if got != exp:
-                    fail(f'Edition count {got} != {exp} rows in the shard')
+                if got != exp_ed:
+                    fail(f'Edition count {got} != {exp_ed} rows in the shard')
                 # 6. default tab
-                if exp and not (st['tabs'].get('ed') or {}).get('sel'):
+                d_has_gloss = bool(exp_ed)
+                if exp_ed and not (st['tabs'].get('ed') or {}).get('sel'):
                     fail('Edition is not the default tab')
-                if exp and (st['tabs'].get('ped') or {}).get('sel'):
-                    fail('PED opened by default — §9 says the edition speaks first')
-                # PED count
                 pexp = ped_total(shown)
-                pgot = int((st['tabs'].get('ped') or {}).get('n') or 0)
-                if pgot != pexp:
-                    fail(f'PED count {pgot} != {pexp} entries in the shard')
                 # 5. every promoted row really is about this paragraph
                 # counts, not a set: a two-word lemma has to find two words
                 pool = collections.Counter()
@@ -374,7 +388,7 @@ def run_gate(EVAL_ON=False):
                     if len(ws) != 1 or stem(ws[0]) != stem(shown):
                         fail(f'"on the word itself" row {lem!r} is not this word')
                 # 8. honesty when there is nothing
-                if not exp and 'no gloss' not in st['body'].lower() \
+                if not exp_ed and 'no gloss' not in st['body'].lower() \
                         and 'ninguna glosa' not in st['body'].lower():
                     if not (st['tabs'].get('ed') or {}).get('dis'):
                         fail('no gloss, but the tab neither says so nor is disabled')
@@ -384,23 +398,53 @@ def run_gate(EVAL_ON=False):
                 # 9. THE EVALUATION FLAG.  Off, none of those tabs may exist
                 # and nothing may be fetched from lookup_eval/.  On, every tab's
                 # count must match the evaluation store.
-                EVT = ('abhi', 'peu', 'cped', 'ppn', 'ny', 'vri', 'dpd',
-                       'tpm', 'pwg', 'rt', 'uhs')
+                # The eleven tabs are now three: Edition, Abhidhāna, and one
+                # `dict` tab holding the rest as sections.  Its count is the
+                # sum of what is inside it, and with the flag off that is PED
+                # alone -- so the same assertion covers both states.
+                exp = eval_counts(shown) if EVAL_ON else {}
+                INSIDE = ('cped', 'ny', 'vri', 'ppn', 'uhs', 'rt', 'tpm',
+                          'pwg', 'dpd')
+                want_dict = pexp + (sum(exp.get(t, 0) for t in INSIDE)
+                                    if EVAL_ON else 0)
+                got_dict = int((st['tabs'].get('dict') or {}).get('n') or 0)
+                if got_dict != want_dict:
+                    fail(f'Pāḷi Dictionary tab shows {got_dict}, sources have '
+                         f'{want_dict}')
                 if not EVAL_ON:
-                    present = [t for t in EVT if t in st['tabs']]
-                    if present:
-                        fail(f'evaluation flag off but the tabs are there: {present}')
+                    stray = [t for t in ('abhi', 'peu') + INSIDE
+                             if t in st['tabs']]
+                    if stray:
+                        fail(f'evaluation flag off but the tabs are there: {stray}')
                 else:
-                    exp = eval_counts(shown)
-                    for t in EVT:
-                        got = int((st['tabs'].get(t) or {}).get('n') or 0)
-                        want = exp.get(t, 0)
-                        if got != want:
-                            fail(f'{t} tab shows {got}, evaluation store has {want}')
-                # 7. no DPD
-                if 'digital pāḷi dictionary' in st['body'].lower() or 'dpd' in \
-                        st['body'].lower():
-                    fail('DPD text reached the panel')
+                    got_ab = int((st['tabs'].get('abhi') or {}).get('n') or 0)
+                    if got_ab != exp.get('abhi', 0):
+                        fail(f'Abhidhāna tab shows {got_ab}, store has '
+                             f'{exp.get("abhi", 0)}')
+                # the edition still speaks first, whatever else is on screen
+                if exp and (st['tabs'].get('dict') or {}).get('sel') and d_has_gloss:
+                    fail('the dictionary tab opened by default over the Edition')
+                # 7. NO DPD WHERE IT MAY NOT BE.  With the evaluation flag
+                # off, not a character of it anywhere -- that is the §9
+                # guarantee for anything publishable.  With the flag on it is
+                # allowed, but only inside its own section of the dictionary
+                # tab, never loose in the Edition or Abhidhāna tabs.
+                low = st['body'].lower()
+                if not EVAL_ON:
+                    if 'digital pāḷi dictionary' in low or 'dpd' in low:
+                        fail('DPD text reached the panel with the flag off')
+                else:
+                    where = pg.evaluate('''() => {
+                      const sec = document.getElementById('wl-s-dpd');
+                      const hits = [];
+                      document.querySelectorAll('#wlb *').forEach(e => {
+                        if (!/dpd/i.test(e.className || '')) return;
+                        if (!sec || !sec.contains(e)) hits.push(e.className);
+                      });
+                      return hits.slice(0, 3);
+                    }''')
+                    if where:
+                        fail(f'DPD markup outside its own section: {where}')
         # --- 10. RECURSIVE LOOKUP.  A Pāḷi word inside the panel is a word
         # like any other: clicking it looks it up, the back button appears, and
         # back returns to where the reader was.  It must be a no-op for a word

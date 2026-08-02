@@ -113,10 +113,20 @@ aside#panel.empty .pbody:after{content:attr(data-empty);display:block;color:var(
 .en-inline.hidden{display:none}
 .mt{display:none;border-left:3px solid #eadfa8;padding-left:.6em;margin:.3em 0}
 .mt.open{display:block}
-.pbody a.dpd-button{display:inline-block;font:600 .72rem/1 system-ui,sans-serif;color:#5a4a30;
-  background:#f2ecdf;border:1px solid var(--rule);border-radius:10px;padding:.3em .7em;margin:.15em .15em 0 0;
-  text-decoration:none}
-.pbody a.dpd-button:hover{background:#e9e0cc}
+/* !!! DPD'S OWN CHIPS WERE READING AS A SECOND ROW OF TABS (2026-08-02,
+   user-reported).  `grammar`, `examples`, `declension`, `root family`,
+   `compound family`, `idioms` are DISCLOSURE TOGGLES for content hidden inside
+   the entry -- same pill shape, same size and same colour as the real tabs
+   directly above them, so the panel appeared to have two tab rows with
+   nothing to say which was which.  They are now plain underlined links with a
+   ⌄ marker: unmistakably "open this", and unmistakably not a tab. */
+.pbody a.dpd-button{display:inline;font:400 .8rem/1.7 system-ui,sans-serif;
+  color:var(--accent);background:none;border:none;border-radius:0;padding:0;
+  margin:0 .9em 0 0;text-decoration:underline;text-decoration-style:dotted;
+  text-underline-offset:2px;white-space:nowrap}
+.pbody a.dpd-button:before{content:"⌄ ";text-decoration:none;font-size:.9em}
+.pbody a.dpd-button:hover{background:none;color:#5a3a00}
+.pbody .button-box{margin:.45em 0 .2em;line-height:1.9}
 .pbody .button-box{margin:.3em 0}
 .dpd .content.hidden,.content.hidden{display:none}
 .dpd table,.pbody table{border-collapse:collapse;font-size:.82rem;margin:.4em 0;max-width:100%}
@@ -385,18 +395,24 @@ function render(d){
   const lemCped=[...d.lemData.values()].filter(r=>r.cp);
   const lemDop=[...d.lemData.values()].filter(r=>r.dp);
   const nPpn=[...d.lemData.values()].reduce((s,r)=>s+((r.pn||[]).length),0);
+  // !!! THE EDITION COMES FIRST AND DPD LAST (2026-08-02, user-reported from
+  // this very page).  The original order opened on DPD, which was a decision
+  // taken on 2026-08-01 so the sources could be compared side by side -- and
+  // it reads as though a modern dictionary were the panel's voice, which §9
+  // says it is not and never will be.  Comparison does not require pride of
+  // place.  DPD keeps its tab, at the end, behind its banner.
   tabs.innerHTML=
-    tabBtn(T.dpd,STR.dpd,d.hwData.length||null,!d.hwData.length&&!d.rec,STR.tip_dpd)+
+    tabBtn(T.ed,STR.edition,d.gl.length||null,!d.gl.length,STR.tip_ed)+
     tabBtn(T.abhi,STR.abhi,lemAbhi.length||null,!lemAbhi.length,STR.tip_abhi)+
     tabBtn(T.peu,STR.peu,lemPeu.length||null,!lemPeu.length,STR.tip_peu)+
     tabBtn(T.cped,STR.cped,lemCped.length||null,!lemCped.length,STR.tip_cped)+
     tabBtn(T.dop,STR.dop,lemDop.length||null,!lemDop.length,STR.tip_dop)+
     tabBtn(T.ppn,STR.ppn,nPpn||null,!nPpn,STR.tip_ppn)+
-    tabBtn(T.ed,STR.edition,d.gl.length||null,!d.gl.length,STR.tip_ed);
+    tabBtn(T.dpd,STR.dpd,d.hwData.length||null,!d.hwData.length&&!d.rec,STR.tip_dpd);
   tabs.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
     if(!b.classList.contains('dis'))show(b.dataset.tab,d);}));
-  // default: DPD (user decision 2026-08-01, prototype only); fall through in order
-  const order=[T.dpd,T.abhi,T.peu,T.cped,T.dop,T.ppn,T.ed];
+  // default: the Edition; fall through in the order the tabs are drawn
+  const order=[T.ed,T.abhi,T.peu,T.cped,T.dop,T.ppn,T.dpd];
   const first=order.find(t=>!tabs.querySelector('[data-tab="'+t+'"]').classList.contains('dis'));
   if(first)show(first,d);
   else body.innerHTML='<p class="unres">'+STR.unresolved+'</p>';

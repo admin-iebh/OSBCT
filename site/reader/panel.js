@@ -137,6 +137,14 @@ var S = {
   wl_tpm:       {en: 'TPM', es: 'TPM'},
   wl_rt:        {en: 'Roots', es: 'Raíces'},
   wl_uhs:       {en: 'U Hau Sein', es: 'U Hau Sein'},
+  wl_dict:      {en: 'Pāḷi Dictionary', es: 'Diccionario Pāḷi'},
+  wl_tip_dict:  {en: 'The dictionaries aggregated at dictionary.sutta.org, plus CPED and PPN — '
+                   + 'one section each, in order of authority. Reference, never the panel’s voice (§9).',
+                 es: 'Los diccionarios reunidos en dictionary.sutta.org, más CPED y PPN — '
+                   + 'una sección cada uno, por orden de autoridad. Referencia, nunca la voz del panel (§9).'},
+  wl_jump:      {en: 'In this word:', es: 'En esta palabra:'},
+  wl_nodict:    {en: 'No dictionary reached from this form.',
+                 es: 'Ningún diccionario alcanzado desde esta forma.'},
   wl_tip_dpd:   {en: 'Digital Pāḷi Dictionary (Bodhirasa) — evaluation only; §9 keeps it a build-time filter, never the panel’s voice',
                  es: 'Digital Pāḷi Dictionary (Bodhirasa) — sólo evaluación; el §9 lo mantiene como filtro, nunca como voz del panel'},
   wl_tip_abhi:  {en: 'Tipiṭaka-Pāḷi-Myanmā-Abhidhāna (Ministry of Religious Affairs, Yangon) — the lexical authority (§9)',
@@ -340,8 +348,27 @@ var CSS = ''
 + 'padding:4px 8px;cursor:pointer;margin:.3em 0}'
 + '#wl .wl-inline{border-left:3px solid var(--line);padding-left:8px;margin:.3em 0}'
 + '#wl .wl-hidden{display:none}'
++ '#wl .wl-sec{border-top:1px solid var(--line);padding-top:10px;margin-top:14px}'
++ '#wl .wl-sec:first-of-type{border-top:none;margin-top:0;padding-top:0}'
++ '#wl .wl-sec .wl-sub{margin-top:0;color:var(--accent);font-size:11.5px}'
++ '#wl .wl-jump{font-size:11.5px;line-height:1.9;padding:0 0 10px;'
++ 'border-bottom:1px solid var(--line);margin-bottom:12px}'
++ '#wl .wl-jump a{color:var(--accent);text-decoration:underline;'
++ 'text-decoration-style:dotted;text-underline-offset:2px;margin-right:2px}'
 + '#wl .wl-ext{overflow-wrap:break-word}'
 + '#wl .wl-ext table,#wl .wl-ext img{max-width:100%}'
+/* DPD's declension grid is wider than any panel; it spilled 34px past the
+   edge and the gate's geometry check caught it.  Scroll it, do not squash it:
+   a declension table with collapsed columns is worse than one you drag. */
++ '#wl .wl-ext .inflection{display:block;overflow-x:auto;max-width:100%}'
++ '#wl .wl-ext .inflection table{max-width:none}'
+/* !!! and not every DPD table is inside .inflection -- the gate reported a
+   bare TBODY 34px past the edge.  Give every table in an entry its own
+   horizontal scroller instead of trusting DPD's markup to be consistent. */
++ '#wl .wl-ext{max-width:100%}'
++ '#wl .wl-ext table{display:block;overflow-x:auto;max-width:100%;width:max-content}'
++ '#wl .wl-ext table tbody,#wl .wl-ext table thead{width:max-content}'
++ '#wl .wl-ext pre{white-space:pre-wrap;word-break:break-word}'
 + '#wl .wl-ext table{border-collapse:collapse;font-size:11.5px}'
 + '#wl .wl-ext td,#wl .wl-ext th{border:1px solid var(--line);padding:1px 4px}'
 + '#wl .wl-back{border:1px solid var(--line);background:var(--panel);'
@@ -586,18 +613,32 @@ function lookup(word, paraEl, inPanel) {
     });
 }
 
-var EV_TABS = [
-  ['abhi', 'wl_abhi', 'wl_tip_abhi'],
-  ['peu',  'wl_peu',  'wl_tip_peu'],
+// !!! ELEVEN TABS WAS TOO MANY, AND THE READER SAID SO (2026-08-02).  A tab
+// row that wraps to three lines is a menu, not a choice, and it also put the
+// modern lexica on the same visual footing as the edition's own glosses --
+// which is the one thing §9 is about.  So there are now THREE tabs:
+//
+//     Edition           the edition's own glosses.  Always first, always default.
+//     Abhidhāna         the §9 lexical authority, with PEU's English inside each
+//                       entry behind its attributed reveal, as before.
+//     Pāḷi Dictionary   everything else, stacked as SECTIONS inside one tab, in
+//                       order of authority, each with its own attribution and
+//                       banner.  This is the shape dictionary.sutta.org itself
+//                       uses, and what the reader asked for.
+//
+// Nothing is lost: every source still has its own heading, count and
+// attribution, and DPD is still last and still banner'd.
+var DICT_SECTIONS = [
+  ['ped',  'wl_ped',  'wl_tip_ped'],
   ['cped', 'wl_cped', 'wl_tip_cped'],
-  ['ppn',  'wl_ppn',  'wl_tip_ppn'],
   ['ny',   'wl_ny',   'wl_tip_ny'],
   ['vri',  'wl_vri',  'wl_tip_vri'],
-  ['dpd',  'wl_dpd',  'wl_tip_dpd'],
+  ['ppn',  'wl_ppn',  'wl_tip_ppn'],
+  ['uhs',  'wl_uhs',  'wl_tip_uhs'],
+  ['rt',   'wl_rt',   'wl_tip_rt'],
   ['tpm',  'wl_tpm',  'wl_tip_tpm'],
   ['pwg',  'wl_pwg',  'wl_tip_pwg'],
-  ['rt',   'wl_rt',   'wl_tip_rt'],
-  ['uhs',  'wl_uhs',  'wl_tip_uhs']
+  ['dpd',  'wl_dpd',  'wl_tip_dpd']    // last, always
 ];
 
 function tabBtn(id, label, n, dis, tip) {
@@ -640,24 +681,25 @@ function render(d) {
   d.n.rt = count('rt', true);
   d.n.uhs = count('uhs', true);
 
+  d.n.ped = nPed;
+  // the aggregate count on the one dictionary tab
+  var nDict = 0;
+  DICT_SECTIONS.forEach(function (t) {
+    if (EVAL || t[0] === 'ped') nDict += (d.n[t[0]] || 0);
+  });
+  d.nDict = nDict;
   var html =
       tabBtn('ed', T('wl_edition'), d.nGloss || null, !d.nGloss, T('wl_tip_ed'))
-    + tabBtn('ped', T('wl_ped'), nPed || null, !nPed, T('wl_tip_ped'));
-  if (EVAL) {
-    // ORDER MATTERS AND IS §9's, NOT ALPHABETICAL: the edition's own glosses,
-    // then the lexical authority and its English rendering, and only then the
-    // modern lexica.  DPD sits last of the English ones however good it is.
-    EV_TABS.forEach(function (t) {
-      html += tabBtn(t[0], T(t[1]), d.n[t[0]] || null, !d.n[t[0]], T(t[2]));
-    });
-  }
+    + (EVAL ? tabBtn('abhi', T('wl_abhi'), d.n.abhi || null, !d.n.abhi,
+                     T('wl_tip_abhi')) : '')
+    + tabBtn('dict', T('wl_dict'), nDict || null, !nDict, T('wl_tip_dict'));
   tabs.innerHTML = html;
   Array.prototype.forEach.call(tabs.querySelectorAll('button'), function (b) {
     b.addEventListener('click', function () {
       if (!b.classList.contains('dis')) show(b.dataset.tab, d); });
   });
   // Edition is the default tab, always — never a dictionary (§9)
-  show(d.nGloss ? 'ed' : (nPed ? 'ped' : 'ed'), d);
+  show(d.nGloss ? 'ed' : (nDict ? 'dict' : 'ed'), d);
   keepWordVisible();
   el.dataset.state = 'ready';
 }
@@ -666,12 +708,9 @@ function show(tab, d) {
   var tabs = document.getElementById('wlt'), body = document.getElementById('wlb');
   Array.prototype.forEach.call(tabs.querySelectorAll('button'), function (b) {
     b.setAttribute('aria-selected', b.dataset.tab === tab ? 'true' : 'false'); });
-  body.innerHTML = tab === 'ped' ? viewPed(d)
-                 : tab === 'ed'  ? viewEd(d)
-                 : tab === 'dpd' ? viewDpd(d)
+  body.innerHTML = tab === 'ed'   ? viewEd(d)
                  : tab === 'abhi' ? viewAbhi(d)
-                 : tab === 'peu' ? viewPeu(d)
-                 : viewLex(d, tab);
+                 : viewDict(d);
   body.scrollTop = 0;
   var more = body.querySelector('button.more');
   if (more) more.addEventListener('click', function () { loadMore(d, more); });
@@ -864,6 +903,81 @@ function viewPeu(d) {
        + '<button class="wl-reveal">' + esc(T('wl_mt_show')) + '</button>'
        + '<div class="wl-mt wl-hidden">' + mt + '</div>';
   if (!i) h += '<p class="wl-none">' + esc(T('wl_noentry')) + '</p>';
+  return h;
+}
+
+
+// ONE TAB, MANY SOURCES.  Each keeps its own heading, count, attribution and
+// banner -- a section, not a merge.  A jump strip at the top says what is in
+// here for this word, so the reader can see at a glance without scrolling.
+function viewDict(d) {
+  var have = DICT_SECTIONS.filter(function (t) {
+    return (EVAL || t[0] === 'ped') && (d.n[t[0]] || 0) > 0;
+  });
+  if (!have.length)
+    return '<p class="wl-none">' + esc(T('wl_nodict')) + '</p>';
+
+  var h = '';
+  if (have.length > 1) {
+    h += '<div class="wl-jump"><span class="wl-cite">' + esc(T('wl_jump')) + '</span> '
+       + have.map(function (t) {
+           return '<a href="#wl-s-' + t[0] + '">' + esc(T(t[1]))
+                + ' <span class="wl-cite">' + d.n[t[0]] + '</span></a>';
+         }).join(' · ') + '</div>';
+  }
+  have.forEach(function (t) {
+    var key = t[0];
+    h += '<div class="wl-sec" id="wl-s-' + key + '">'
+       + '<div class="wl-sub">' + esc(T(t[1]))
+       + ' <span class="wl-flag">(' + d.n[key] + ')</span></div>'
+       + '<div class="wl-src">' + esc(T(t[2]))
+       + (LEXBURMESE[key] ? ' ' + esc(T('wl_zg')) : '') + '</div>'
+       + (key === 'ped' ? '' : '<div class="wl-banner">' + esc(T('wl_eval')) + '</div>')
+       + sectionBody(d, key)
+       + '</div>';
+  });
+  return h;
+}
+
+function sectionBody(d, key) {
+  if (key === 'ped') {
+    var h = '';
+    d.ped.forEach(function (p) {
+      p.e.forEach(function (body) {
+        h += '<div class="wl-row"><div class="wl-lem wl-g">' + esc(p.h) + '</div>'
+           + '<div class="wl-ext">' + body + '</div></div>';
+      });
+    });
+    return h;
+  }
+  if (key === 'dpd') return dpdBody(d);
+  return lexBody(d, key);
+}
+
+function dpdBody(d) {
+  var h = '', e = (d.ev && d.ev.dpd) || [];
+  e.forEach(function (x, i) {
+    h += '<div class="wl-row"><span class="wl-cite">' + (i + 1) + '. </span>'
+       + '<span class="wl-lem wl-g">' + esc(x.h) + '</span>'
+       + '<div class="wl-ext">' + x.e + '</div></div>';
+  });
+  return h;
+}
+
+function lexBody(d, key) {
+  var field = LEXFIELD[key], h = '', i = 0;
+  if (!field) return '';
+  ((d.ev && d.ev.lem) || []).forEach(function (L) {
+    var v = L.e[field];
+    if (!v) return;
+    (Array.isArray(v) ? v : [v]).forEach(function (ent) {
+      i++;
+      h += '<div class="wl-row"><span class="wl-cite">' + i + '. </span>'
+         + '<span class="wl-lem wl-g">' + esc(L.b) + '</span>'
+         + '<div class="' + (LEXBURMESE[key] ? 'wl-my' : 'wl-ext') + '">'
+         + (LEXBURMESE[key] ? esc(ent) : ent) + '</div></div>';
+    });
+  });
   return h;
 }
 
