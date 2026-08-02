@@ -242,17 +242,67 @@ def run_gate(EVAL_ON=False):
         errors = []
         pg.on('pageerror', lambda e: errors.append(str(e)))
 
-        # --- 1. the flag is off by default -----------------------------------
+        # --- 1. THE OFF SWITCH.  Inverted 2026-08-02, NOT deleted. -----------
+        #
+        # This used to assert that WITHOUT `?wl=1` there is no #wl node and no
+        # lookup/ request — the panel being off by default.  The default is now
+        # ON, because off-by-default did not mean "optional", it meant
+        # UNREACHABLE: nothing anywhere in site/ linked to `?wl=1`, so no
+        # visitor ever arrived at the panel at all.
+        #
+        # !!! THE ASSERTION IS INVERTED, NOT REMOVED, AND THAT IS THE POINT.
+        # What it really guarantees is not "the default is off" but "there is a
+        # way to switch this off, and switching it off is TOTAL — no node, no
+        # fetch, no listener".  That is a §9 guarantee: it is what lets the page
+        # be served to a reader who wants only the edition.  Deleting the
+        # assertion along with the default would retire the guarantee silently
+        # and nothing would ever tell us.  So it now aims at `?wl=0`.
+        #
+        # Two separate claims, and both are checked below, because the flag is
+        # persisted: `?wl=0` must work on a cold visit, and it must STILL be off
+        # on the next visit with no query string at all.
         reqs = []
         pg.on('request', lambda r: reqs.append(r.url))
         pg.goto(BASE + '/reader/reader2.html?wl=0', wait_until='domcontentloaded')
         pg.wait_for_timeout(1200)
         if pg.evaluate("!!document.getElementById('wl')"):
-            fails.append('flag off: the panel node exists anyway')
+            fails.append('wl=0: the panel node exists anyway')
         if any('/lookup/' in u for u in reqs):
-            fails.append('flag off: lookup/ was fetched anyway')
+            fails.append('wl=0: lookup/ was fetched anyway')
         if any('/lookup_eval/' in u for u in reqs):
-            fails.append('flag off: lookup_eval/ was fetched anyway')
+            fails.append('wl=0: lookup_eval/ was fetched anyway')
+        # the choice has to survive the next page load, or "off" is one
+        # navigation deep and the reader who turned it off gets it back
+        reqs_sticky = []
+        pg.on('request', lambda r: reqs_sticky.append(r.url))
+        pg.goto(BASE + '/reader/reader2.html', wait_until='domcontentloaded')
+        pg.wait_for_timeout(1000)
+        if pg.evaluate("!!document.getElementById('wl')"):
+            fails.append('wl=0 did not stick: the panel is back on the next '
+                         'visit with no query string')
+        if any('/lookup/' in u for u in reqs_sticky):
+            fails.append('wl=0 did not stick: lookup/ was fetched on the next '
+                         'visit')
+        # --- 1b. AND THE DEFAULT REALLY IS ON, for a reader with no history. --
+        # The complement of the above, and the assertion the whole change is
+        # for.  A fresh context — no localStorage — must get the panel without
+        # asking for it.  Without this, reverting the default to off would pass
+        # the gate clean, which is how it stayed unreachable through four gate
+        # passes in the first place.
+        fresh = b.new_context(viewport={'width': 1280, 'height': 900})
+        fpg = fresh.new_page()
+        fpg.goto(BASE + '/reader/reader2.html#09Ma01/0',
+                 wait_until='domcontentloaded')
+        try:
+            fpg.wait_for_selector('.para.canon', timeout=20000)
+            fpg.wait_for_timeout(700)
+            if not fpg.evaluate("!!document.getElementById('wl')"):
+                fails.append('DEFAULT: a first-time reader with no query string '
+                             'and no localStorage gets no panel node — the '
+                             'feature is unreachable again')
+        except Exception as e:
+            fails.append(f'default-on check: {e}')
+        fresh.close()
 
         # the evaluation store must not be touched with only ?wl=1
         reqs2 = []
@@ -489,6 +539,24 @@ def run_gate(EVAL_ON=False):
                         fail(f'one-word lemma {lem!r} promoted as a phrase — '
                              f'"it stands in this paragraph" says nothing '
                              f'about a lemma that IS the clicked word')
+                # !!! 5c. THE NON-VACUITY GUARD FOR 5 AND 5b.  Both loops above
+                # iterate a list read out of the DOM with `.wl-promo .wl-row
+                # .wl-lem`, and for as long as assertion 5 has existed that
+                # selector matched NOTHING: `rowHtml` emitted `class="lem g"`,
+                # unprefixed, while the panel's CSS and this gate both look for
+                # `wl-lem`/`wl-g`.  28 promoted rows on screen, 0 seen here, 0
+                # failures reported — and assertion 5 is the one the docstring
+                # calls "the whole design claim of the Edition tab and the one
+                # thing a reader cannot verify".  Third instance of this exact
+                # shape after assertions 14 and 6.  So: if the panel drew boxed
+                # rows, this pass MUST have found lemmas in them.
+                n_boxed = pg.evaluate(
+                    "() => document.querySelectorAll('#wlb .wl-promo .wl-row,'"
+                    " + ' #wlb .wl-wordgrp .wl-row').length")
+                if n_boxed and not (st['promoted'] or st['wordgrp']):
+                    fail(f'{n_boxed} boxed rows are on screen but the gate '
+                         f'extracted 0 lemmas from them — assertion 5 is '
+                         f'iterating an empty list and cannot fail')
                 # 5b. "on the word itself" must really be the word itself
                 for lem in st['wordgrp']:
                     ws = LEMWORDS(lem)
@@ -1286,9 +1354,535 @@ def run_negative_controls():
     print(f'--- negative controls: {bad} did not fire ---')
     return 1 if bad else 0
 
+# ------------------------------------------------------- TYPE & CONTRAST ----
+# 15. THE PANEL FOLLOWS THE READER, THE PĀḶI IS NOT SHRUNK, AND THE COLOURS
+#     REACH AA.
+#
+# !!! THIS PASS PRESSES A+ INSTEAD OF READING A NUMBER ONCE.  That is the whole
+# point of it, and it is the §0 lesson applied in advance rather than after the
+# fact.  An assertion that merely reads `getComputedStyle('.wl-b').fontSize` and
+# finds 13.5px would be satisfied by a hardcoded 13.5px -- which is exactly the
+# bug this change exists to remove.  The claim is not "the panel body is some
+# size", it is "the panel body MOVES WHEN THE READER MOVES IT", and only
+# pressing the control can tell those apart.  Six controls were once present,
+# styled, counted and dead while the gate read 0 failures; a design pass is the
+# likeliest place to reintroduce that, so this pass presses.
+#
+# It asserts, in order:
+#   A1  the panel body tracks --rsize     (pressed: A+ x3 must move it)
+#   A2  panel Pāḷi == clicked Pāḷi        (.wl-g is not smaller than .wl-b)
+#   A4  Burmese is at least 16px          (and stays the largest in the body)
+#   A5  .wl-sub / .wl-why >= 11px, and .wl-why is --fg and not --mut
+#   A3  no request reaches Google, the local woff2 actually loads, and the
+#       DIACRITICS specifically are covered -- not merely the family name
+#   B   every text token clears 4.5:1 against BOTH --panel and --app, in BOTH
+#       themes, and white-on-token clears 4.5:1 where white text sits on one
+
+TYPE_READ = r'''() => {
+  const cs = s => { const e = document.querySelector(s); return e ? getComputedStyle(e) : null; };
+  const px = s => { const c = cs(s); return c ? parseFloat(c.fontSize) : null; };
+  const root = getComputedStyle(document.documentElement);
+  const tok = n => (root.getPropertyValue(n) || '').trim();
+  const why = cs('#wl .wl-why');
+  return {
+    rsize:  tok('--rsize'),
+    para:   px('.para.canon'),
+    body:   px('#wl .wl-b'),
+    g:      px('#wl .wl-g:not(.wl-lem)'),   // the GLOSS, not the lemma span
+                                            // (the lemma carries both classes
+                                            //  and is first in the DOM)
+    lem:    px('#wl .wl-lem'),
+    my:     px('#wl .wl-my'),
+    sub:    px('#wl .wl-sub'),
+    whyPx:  why ? parseFloat(why.fontSize) : null,
+    whyCol: why ? why.color : null,
+    fgCol:  (() => { const d = document.createElement('span');
+                     d.style.color = 'var(--fg)'; document.body.appendChild(d);
+                     const c = getComputedStyle(d).color; d.remove(); return c; })(),
+    mutCol: (() => { const d = document.createElement('span');
+                     d.style.color = 'var(--mut)'; document.body.appendChild(d);
+                     const c = getComputedStyle(d).color; d.remove(); return c; })(),
+    // A3 behavioural: does the loaded face actually cover the Pāḷi diacritics?
+    // `document.fonts.check(font, text)` answers for THAT TEXT, so a font that
+    // loaded but carries no ṁ ṅ ṭ ḍ ṇ ḷ still fails -- which is the failure
+    // mode the self-hosting exists to prevent.
+    faceAny:   document.fonts.check('400 15.5px "Gentium Plus"', 'a'),
+    faceDiac:  document.fonts.check('400 15.5px "Gentium Plus"', 'āīūṁṃṅñṭḍṇḷ'),
+    faceBold:  document.fonts.check('700 15.5px "Gentium Plus"', 'āīūṁṃṅñṭḍṇḷ'),
+    faceInter: document.fonts.check('400 13.5px "Inter"', 'āīūṁṃṅñṭḍṇḷ'),
+  };
+}'''
+
+TOKENS_READ = r'''() => {
+  const r = getComputedStyle(document.documentElement);
+  const out = {};
+  for (const n of ['--panel','--app','--bg','--fg','--mut','--faint','--canon',
+                   '--comm','--tika','--accent','--chipfg'])
+    out[n] = (r.getPropertyValue(n) || '').trim();
+  return out;
+}'''
+
+
+def _lin(c):
+    c /= 255.0
+    return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+
+
+def _lum(h):
+    h = h.strip().lstrip('#')
+    if h.startswith('rgb'):
+        h = re.findall(r'\d+', h)
+        r, g, b = (int(x) for x in h[:3])
+    else:
+        if len(h) == 3:
+            h = ''.join(c * 2 for c in h)
+        r, g, b = (int(h[i:i + 2], 16) for i in (0, 2, 4))
+    return .2126 * _lin(r) + .7152 * _lin(g) + .0722 * _lin(b)
+
+
+def contrast(a, b):
+    la, lb = _lum(a), _lum(b)
+    hi, lo = max(la, lb), min(la, lb)
+    return (hi + .05) / (lo + .05)
+
+
+# which tokens are text, and therefore need 4.5:1 -- and which are not.
+# !!! --canon IS NOT TEXT.  It is a 3px border on .para.canon and .wl-wordgrp,
+# a legend dot, and the BACKGROUND of `.lbtn.on[data-k=canon]`, which sets
+# `color:#fff`.  Asserting 4.5:1 for it as a foreground would be asserting the
+# wrong thing; what actually has to hold is white-on-it.  Checked in the source
+# before it was written down -- the paragraph numbers are --accent, not --canon.
+TEXT_TOKENS  = ['--fg', '--mut', '--accent', '--comm', '--tika', '--chipfg']
+THIRD_TIER   = ['--faint']                                   # 3:1, deliberately
+# !!! AND THE CASE WHERE A TOKEN IS THE BACKGROUND, NOT THE FOREGROUND.  This
+# is the one the earlier survey missed entirely: it measured every token as a
+# foreground against --panel and stopped, so it reported the dark theme as
+# "fine, leave it alone" while `.lchip.a` and `.lbtn.on` were putting white text
+# on --comm at 2.25:1 and on --canon at 2.18:1.  Those three tokens are LIGHT in
+# dark theme -- gold, mint, lilac -- so white on them is close to invisible.
+# The label colour is --panel, which flips with the theme; assert it as the
+# reader will actually see it rather than assuming #fff.
+PANEL_ON     = ['--canon', '--comm', '--tika']               # .lchip / .lbtn.on
+
+
+def run_design(pin=None):
+    """A1-A5 and B, on the shipped reader, with the control pressed."""
+    fails, seen_panel = [], False
+    with sync_playwright() as pw:
+        b = pw.chromium.launch()
+        pg = b.new_page(viewport={'width': 1400, 'height': 900})
+        reqs, bad_status = [], []
+        pg.on('request', lambda r: reqs.append(r.url))
+        pg.on('response', lambda r: bad_status.append((r.url, r.status))
+              if ('/fonts/' in r.url and r.status >= 400) else None)
+        vol = (pin or VOLS)[0]
+        pg.goto(BASE + f'/reader/reader2.html?wl=1&wle=0#{vol}/0',
+                wait_until='domcontentloaded')
+        try:
+            pg.wait_for_selector('.para.canon', timeout=20000)
+        except Exception:
+            return ['design: no canon paragraph rendered'], 1
+        pg.wait_for_timeout(500)
+        pg.evaluate('document.fonts.ready')
+
+        # --- A3, before anything else: where did the type come from? --------
+        if any('fonts.googleapis.com' in u or 'fonts.gstatic.com' in u for u in reqs):
+            fails.append('A3: the reader still requests type from Google — the '
+                         'whole point of self-hosting is that it does not')
+        local = [u for u in reqs if u.endswith('.woff2')]
+        if not local:
+            fails.append('A3: no local .woff2 was fetched at all — the '
+                         '@font-face block is not being used')
+        for u, s in bad_status:
+            fails.append(f'A3: {u.rsplit("/", 1)[-1]} returned {s}')
+
+        # --- open the panel on a word that has a Burmese block --------------
+        # `.wl-my` only exists on words the Abhidhāna covers, so a word picked
+        # at random would make A4 vacuous -- the same shape as assertion 14
+        # iterating an empty list.  Try words until one draws every element the
+        # pass measures, and FAIL if none does.
+        words = pg.evaluate('''() => {
+          const out = [];
+          document.querySelectorAll('.para.canon').forEach(p => {
+            const t = p.textContent;
+            (t.match(/[a-zāīūṁṅñṭḍṇḷ’]{5,}/gi) || []).slice(0, 40)
+              .forEach(w => out.push([w, p.id]));
+          });
+          return out; }''')
+        need = ('#wl .wl-g:not(.wl-lem)', '#wl .wl-lem', '#wl .wl-sub',
+                '#wl .wl-why')
+        base = None
+        for word, pid in words[:60]:
+            hit = pg.evaluate(TAB_MEASURE, [word, pid])
+            if not hit:
+                continue
+            pg.evaluate('''() => { const x = document.getElementById('wlx');
+                                   if (x) x.click();
+                                   const w = document.getElementById('wl');
+                                   if (w) w.dataset.state = 'stale'; }''')
+            pg.wait_for_timeout(60)
+            hit = pg.evaluate(TAB_MEASURE, [word, pid])
+            if not hit:
+                continue
+            pg.mouse.click(hit['x'], hit['y'])
+            try:
+                pg.wait_for_selector('#wl[data-state="ready"]', timeout=8000)
+            except Exception:
+                continue
+            pg.evaluate('''() => { const b =
+              document.querySelector('#wlt button[data-tab="ed"]');
+              if (b && !b.classList.contains('dis')) b.click(); }''')
+            pg.wait_for_timeout(150)
+            if pg.evaluate('(s) => s.every(x => !!document.querySelector(x))',
+                           list(need)):
+                base = pg.evaluate(TYPE_READ)
+                seen_panel = True
+                break
+        if not seen_panel:
+            # the non-vacuity guard: this pass may not report success by never
+            # having had a panel to measure.  !!! PRINT, DO NOT JUST RETURN —
+            # the first version returned silently and produced a bare exit code
+            # 1 with no output, which is only marginally better than the vacuous
+            # pass it exists to prevent.
+            fails.append('design: no clicked word produced a panel carrying all '
+                         'of ' + ', '.join(need) + ' — the pass measured '
+                         'nothing and must not report success')
+            b.close()
+            for f in fails:
+                print(f'  FAIL design: {f}')
+            print(f'gate_reader [design]: {len(fails)} failures')
+            return fails, 1
+
+        if not base['faceAny']:
+            fails.append('A3: "Gentium Plus" did not load at all')
+        elif not base['faceDiac']:
+            fails.append('A3: "Gentium Plus" loaded but does not cover '
+                         'ā ī ū ṁ ṃ ṅ ñ ṭ ḍ ṇ ḷ — the latin-ext subset is '
+                         'missing and every diacritic will render as tofu')
+        if base['faceAny'] and not base['faceBold']:
+            fails.append('A3: Gentium Plus 700 does not cover the diacritics')
+        if not base['faceInter']:
+            fails.append('A3: "Inter" does not cover the diacritics — the Pāḷi '
+                         'book names in the left pane are set in it')
+
+        # --- A2: the Pāḷi in the panel is not smaller than the Pāḷi clicked --
+        if base['g'] is None or base['body'] is None:
+            fails.append('A2: could not measure .wl-g against .wl-b')
+        else:
+            if base['g'] < base['body'] - 0.01:
+                fails.append(f'A2: panel Pāḷi is {base["g"]}px but the English '
+                             f'body is {base["body"]}px — the script the reader '
+                             f'clicked to see better is the smaller of the two')
+            if base['para'] and abs(base['g'] - base['para']) > 0.51:
+                fails.append(f'A2: panel Pāḷi is {base["g"]}px and the clicked '
+                             f'Pāḷi is {base["para"]}px')
+            if base['lem'] and base['lem'] < base['body'] - 0.01:
+                fails.append(f'A2: .wl-lem is {base["lem"]}px, under the '
+                             f'{base["body"]}px body')
+
+        # --- A4 / A5 -------------------------------------------------------
+        # !!! A4 IS ONLY EXERCISED WHEN THE ABHIDHĀNA IS PRESENT.  `.wl-my` is
+        # drawn by the Abhidhāna renderer, which lives behind ?wle=1 and reads
+        # site/lookup_eval/ -- gitignored, so absent on any clean checkout.
+        # With the flag off there is no Burmese in the panel at all, and a
+        # silent skip here would be assertion 14's empty list over again: a pass
+        # reporting success for a check it never ran.  So SAY SO, and make it a
+        # failure only where the data to run it exists.
+        if base['my'] is None:
+            msg = ('A4 NOT EXERCISED: no .wl-my in the panel — Burmese is drawn '
+                   'only under ?wle=1 with site/lookup_eval/ present')
+            if EMAN is not None:
+                fails.append(msg + ', and the evaluation store IS present here')
+            else:
+                print(f'  note: {msg}; run with the evaluation store to cover it')
+        if base['my'] is not None and base['my'] < 16:
+            fails.append(f'A4: Burmese is {base["my"]}px; stacked consonants, '
+                         f'asat and kinzi are not separable below 16px')
+        if base['my'] is not None and base['g'] and base['my'] <= base['g']:
+            fails.append(f'A4: Burmese ({base["my"]}px) is not larger than the '
+                         f'Latin-script Pāḷi ({base["g"]}px)')
+        for k, label in (('sub', '.wl-sub'), ('whyPx', '.wl-why')):
+            if base[k] is not None and base[k] < 11:
+                fails.append(f'A5: {label} is {base[k]}px, under the 11px floor')
+        if base['whyCol'] and base['mutCol'] and base['whyCol'] == base['mutCol']:
+            fails.append('A5: .wl-why is still --mut — it is the design claim '
+                         'of the Gloss tab, not a footnote, and must be --fg')
+
+        # --- A6: THE HOVER AFFORDANCE.  Move the mouse, do not read the CSS. --
+        # Defaulting the panel on made it reachable; it did not make it visible.
+        # The underline under the word beneath the pointer is the only thing
+        # telling a reader that the text is clickable at all, so it is now load
+        # bearing for the whole feature and gets an assertion that MOVES A MOUSE
+        # — presence of the CSS rule proves nothing, which is §0's entire point.
+        hov = pg.evaluate('''() => {
+          // find a word rect in the rendered canon, on screen
+          const p = document.querySelector('.para.canon');
+          const w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
+          let n;
+          while ((n = w.nextNode())) {
+            const i = n.textContent.search(/[a-zāīūṁṅñṭḍṇḷ]{6,}/i);
+            if (i >= 0) {
+              const r = document.createRange();
+              r.setStart(n, i + 1); r.setEnd(n, i + 4);
+              const b = r.getBoundingClientRect();
+              if (b.width > 0 && b.top > 80 && b.bottom < innerHeight - 20)
+                return {x: b.x + 2, y: b.y + b.height / 2};
+            }
+          }
+          return null;}''')
+        if not hov:
+            fails.append('A6: no on-screen word to hover — assertion not run')
+        else:
+            pg.mouse.move(hov['x'] - 200, hov['y'])   # start off the word
+            pg.wait_for_timeout(120)
+            before_h = pg.evaluate(
+                "() => [document.querySelectorAll('.wl-hov').length,"
+                " document.querySelectorAll('.para.wl-hot').length]")
+            pg.mouse.move(hov['x'], hov['y'])
+            pg.wait_for_timeout(200)
+            on_h = pg.evaluate('''() => {
+              const e = [...document.querySelectorAll('.wl-hov')];
+              const p = document.querySelector('.para.wl-hot');
+              return {n: e.length,
+                      w: e.length ? Math.round(e[0].getBoundingClientRect().width) : 0,
+                      pe: e.length ? getComputedStyle(e[0]).pointerEvents : null,
+                      cursor: p ? getComputedStyle(p).cursor : null};}''')
+            if on_h['n'] == 0:
+                fails.append('A6: hovering a word draws no underline — the '
+                             'panel is on but nothing tells a reader so')
+            if on_h['n'] and on_h['w'] < 4:
+                fails.append(f'A6: the hover underline is {on_h["w"]}px wide')
+            # !!! IF THIS IS NOT `none` EVERY CLICK LANDS ON THE OVERLAY AND THE
+            # PANEL NEVER OPENS.  The affordance would break the thing it
+            # advertises, and the geometry assertions would not notice.
+            if on_h['n'] and on_h['pe'] != 'none':
+                fails.append(f'A6: the hover overlay has pointer-events '
+                             f'{on_h["pe"]!r} — it will swallow the click')
+            if on_h['cursor'] != 'pointer':
+                fails.append(f'A6: the hovered paragraph\'s cursor is '
+                             f'{on_h["cursor"]!r}, not pointer')
+            # and it must come back off, or the underline is just decoration
+            pg.mouse.move(hov['x'] - 200, hov['y'])
+            pg.wait_for_timeout(200)
+            off_h = pg.evaluate(
+                "() => [document.querySelectorAll('.wl-hov').length,"
+                " document.querySelectorAll('.para.wl-hot').length]")
+            if off_h[0] or off_h[1]:
+                fails.append(f'A6: moving off the word left {off_h[0]} '
+                             f'underline(s) and {off_h[1]} hot paragraph(s)')
+            if before_h[0] or before_h[1]:
+                fails.append('A6: an underline existed before the pointer was '
+                             'ever over a word')
+            # the click must still work with the affordance in play
+            pg.mouse.move(hov['x'], hov['y'])
+            pg.wait_for_timeout(150)
+            pg.evaluate('''() => { const x = document.getElementById('wlx');
+                                   if (x) x.click();
+                                   const w = document.getElementById('wl');
+                                   if (w) w.dataset.state = 'stale'; }''')
+            pg.mouse.click(hov['x'], hov['y'])
+            try:
+                pg.wait_for_selector('#wl[data-state="ready"]', timeout=10000)
+            except Exception:
+                fails.append('A6: with the hover underline drawn, clicking the '
+                             'word no longer opens the panel')
+
+        # --- A1: PRESS THE CONTROL.  This is the assertion that matters. ----
+        before = dict(base)
+        pg.evaluate('''() => { for (let i = 0; i < 3; i++)
+                                 document.getElementById('finc').click(); }''')
+        pg.wait_for_timeout(300)
+        after = pg.evaluate(TYPE_READ)
+        moved = []
+        for k, label in (('body', 'the English body'), ('g', 'the Pāḷi gloss'),
+                         ('lem', 'the lemma'), ('my', 'the Burmese')):
+            if before[k] is None or after[k] is None:
+                continue
+            if after[k] <= before[k] + 0.01:
+                fails.append(f'A1: A+ pressed three times and {label} stayed at '
+                             f'{before[k]}px — the panel does not follow the '
+                             f'reader\'s own text-size control')
+            else:
+                moved.append(f'{label} {before[k]}->{after[k]}px')
+        if after['para'] and before['para'] and after['para'] <= before['para']:
+            fails.append('A1: A+ did not even move the canon text — the control '
+                         'itself is broken and this pass proves nothing')
+        pg.evaluate('''() => { for (let i = 0; i < 3; i++)
+                                 document.getElementById('fdec').click(); }''')
+
+        # --- B: contrast, in both themes, against both backgrounds ----------
+        for theme in ('light', 'dark'):
+            pg.evaluate('(t) => document.documentElement.setAttribute('
+                        '"data-theme", t)', theme)
+            pg.wait_for_timeout(80)
+            T = pg.evaluate(TOKENS_READ)
+            for bgname in ('--panel', '--app'):
+                bg = T[bgname]
+                for t in TEXT_TOKENS:
+                    r = contrast(T[t], bg)
+                    if r < 4.5:
+                        fails.append(f'B[{theme}]: {t} {T[t]} on {bgname} '
+                                     f'{bg} is {r:.2f}:1, under AA 4.5')
+                for t in THIRD_TIER:
+                    r = contrast(T[t], bg)
+                    if r < 3.0:
+                        fails.append(f'B[{theme}]: {t} {T[t]} on {bgname} '
+                                     f'{bg} is {r:.2f}:1, under 3:1')
+            for t in PANEL_ON:
+                r = contrast(T['--panel'], T[t])
+                if r < 4.5:
+                    fails.append(f'B[{theme}]: the layer label on {t} {T[t]} is '
+                                 f'{r:.2f}:1 — .lchip and .lbtn.on set the text '
+                                 f'to --panel and put it directly on this token')
+        pg.evaluate('() => document.documentElement.setAttribute('
+                    '"data-theme", "light")')
+        b.close()
+    for f in fails:
+        print(f'  FAIL design: {f}')
+    if moved:
+        print(f'  A+ moved: {"; ".join(moved)}')
+    print(f'gate_reader [design]: {len(fails)} failures')
+    return fails, (1 if fails else 0)
+
+
+def run_design_negative_controls():
+    """Every assertion above, broken on purpose.  An assertion that cannot be
+    made to fail is not an assertion.  These patch the SHIPPED files on disk and
+    restore them, so what is broken is what runs -- not a copy."""
+    print('\n--- negative controls: the design pass must FAIL when broken ---')
+    js = os.path.join(REPO, 'site', 'reader', 'panel.js')
+    html = os.path.join(REPO, 'site', 'reader', 'reader2.html')
+    cases = [
+        ('A1 panel body hardcoded again', js,
+         'font-size:calc(var(--rsize, 15.5px) - 2px);line-height:1.55',
+         'font-size:13.5px;line-height:1.55'),
+        ('A2 Pāḷi left to inherit', js,
+         '#wl .wl-g{font-family:"Gentium Plus",Georgia,serif;'
+         'font-size:var(--rsize, 15.5px)}',
+         '#wl .wl-g{font-family:"Gentium Plus",Georgia,serif}'),
+        ('A4 Burmese back to 15px', js,
+         'font-size:calc(var(--rsize, 15.5px) + 1px);line-height:1.9;margin:.25em 0',
+         'font-size:15px;line-height:1.9;margin:.25em 0'),
+        ('A5 why-line back to 10.5px --mut', js,
+         "#wl .wl-why{font-size:11px;color:var(--fg);",
+         "#wl .wl-why{font-size:10.5px;color:var(--mut);"),
+        ('B --mut back to its sub-AA value', html, '--mut:#756d63', '--mut:#8a8175'),
+        ('B --canon back, layer label 3.24:1', html,
+         '--canon:#976e27', '--canon:#b8862f'),
+        ('A6 hover affordance never bound', js,
+         '  hoverBind();\n', '\n'),
+        ('A6 overlay swallows the click', js,
+         "'.wl-hov{position:fixed;pointer-events:none;z-index:40;'",
+         "'.wl-hov{position:fixed;z-index:40;'"),
+        ('A3 type back on Google Fonts', html,
+         '<link href="../fonts/fonts.css" rel="stylesheet">',
+         '<link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:'
+         'ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap"'
+         ' rel="stylesheet">'),
+    ]
+    # !!! A CONTROL FOR AN ASSERTION THAT CANNOT RUN IS NOT A CONTROL.  A4 is
+    # only exercised when the Abhidhāna is present (site/lookup_eval/, behind
+    # ?wle=1), so on a clean checkout breaking `.wl-my` cannot make the design
+    # pass fail — and counting that as "did not fire" would be reporting a
+    # tooling gap as a defect, while counting it as "fired" would be worse.
+    # Say plainly that it was not run, and where to run it.
+    if EMAN is None:
+        skipped = [c for c in cases if c[0].startswith('A4')]
+        cases = [c for c in cases if not c[0].startswith('A4')]
+        for c in skipped:
+            print(f'  NOT EXERCISABLE HERE: {c[0]} — A4 needs the evaluation '
+                  f'store; run this with site/lookup_eval/ present')
+
+    bad = 0
+    for name, path, find, repl in cases:
+        src = io.open(path, encoding='utf-8').read()
+        # !!! ASSERT THE PATCH MATCHED.  Six faults in one earlier session came
+        # from String.replace calls that matched nothing and said nothing; a
+        # control that silently patched nothing would "fire" by not firing.
+        if src.count(find) != 1:
+            print(f'  CONTROL IS BROKEN: {name} — its anchor matches '
+                  f'{src.count(find)} times, not 1')
+            bad += 1
+            continue
+        try:
+            io.open(path, 'w', encoding='utf-8').write(src.replace(find, repl))
+            f, rc = run_design()
+            if rc == 0:
+                print(f'  NEGATIVE CONTROL DID NOT FIRE: {name}')
+                bad += 1
+            else:
+                print(f'  negative control fired: {name} '
+                      f'({len(f)} failure(s), first: {f[0][:78]}…)')
+        finally:
+            io.open(path, 'w', encoding='utf-8').write(src)
+    print(f'--- design negative controls: {bad} did not fire ---')
+    return 1 if bad else 0
+
+
+def run_flag_negative_controls():
+    """Assertion 1, both directions, broken on purpose.
+
+    The default flipped from off to on, and the assertion that guarded it was
+    INVERTED rather than deleted.  An inverted assertion is worth exactly as
+    much as its ability to fail, and there are two distinct ways this can now
+    go wrong -- the off switch stops working, or the default quietly goes back
+    to off and the panel is unreachable again without anything saying so.  One
+    control each.
+    """
+    print('\n--- negative controls: the flag assertions must FAIL when broken ---')
+    js = os.path.join(REPO, 'site', 'reader', 'panel.js')
+    ON_BLOCK = ("var ON = true;\n"
+                "try { if (localStorage.getItem('osbct-wl') === '0') ON = false; } catch (e) {}\n"
+                "if (q.get('wl') === '1') ON = true;\n"
+                "if (q.get('wl') === '0') ON = false;")
+    cases = [
+        # the change itself, reverted: does anything notice the panel is
+        # unreachable again?  Before this control existed, nothing did -- four
+        # gate passes ran clean on a build no reader could reach.
+        ('the default silently goes back to OFF', ON_BLOCK,
+         ON_BLOCK.replace('var ON = true;', 'var ON = false;')
+                 .replace("if (localStorage.getItem('osbct-wl') === '0') ON = false;",
+                          "ON = localStorage.getItem('osbct-wl') === '1';")),
+        # and the §9 guarantee: ?wl=0 must be total, not cosmetic.
+        # !!! THE FIRST VERSION OF THIS CONTROL DID NOT FIRE, AND THE ASSERTION
+        # WAS RIGHT.  It deleted only `if (q.get('wl') === '0') ON = false;` --
+        # but the block above it writes `?wl=0` into localStorage BEFORE the
+        # read, so the off switch still worked through the stored value and the
+        # gate correctly saw nothing wrong.  A control that breaks one of two
+        # redundant paths tests nothing.  Remove both: ON, with no way out.
+        ('?wl=0 stops turning the panel off', ON_BLOCK, 'var ON = true;'),
+    ]
+    bad = 0
+    for name, find, repl in cases:
+        src = io.open(js, encoding='utf-8').read()
+        if src.count(find) != 1:
+            print(f'  CONTROL IS BROKEN: {name} — its anchor matches '
+                  f'{src.count(find)} times, not 1')
+            bad += 1
+            continue
+        try:
+            io.open(js, 'w', encoding='utf-8').write(src.replace(find, repl))
+            rc = run_gate(EVAL_ON=False)
+            if rc == 0:
+                print(f'  NEGATIVE CONTROL DID NOT FIRE: {name}')
+                bad += 1
+            else:
+                print(f'  negative control fired: {name}')
+        finally:
+            io.open(js, 'w', encoding='utf-8').write(src)
+    print(f'--- flag negative controls: {bad} did not fire ---')
+    return 1 if bad else 0
+
+
 if __name__ == '__main__':
     if '--breakpoints' in sys.argv:
         sys.exit(run_breakpoints())
+    if '--flag-negative-controls' in sys.argv:
+        sys.exit(run_flag_negative_controls())
+    if '--design-only' in sys.argv:
+        sys.exit(run_design()[1])
+    if '--design-negative-controls' in sys.argv:
+        sys.exit(run_design_negative_controls())
     vf = check_version()
     for f in vf:
         print(f'  FAIL version: {f}')
@@ -1299,6 +1893,7 @@ if __name__ == '__main__':
     if '--negative-controls' in sys.argv:
         sys.exit(run_negative_controls())
     rc = run_gate(EVAL_ON=False)
+    rc |= run_design()[1]
     if '--no-eval' not in sys.argv:
         rc |= run_gate(EVAL_ON=True)
         rc |= run_tabs()

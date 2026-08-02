@@ -4,12 +4,46 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reader — Sixth Buddhist Council Tipiṭaka</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Type is self-hosted.  It used to come from fonts.googleapis.com, which meant
+     that where Google Fonts is blocked -- mainland China, intermittently
+     Myanmar -- this page fell back to a generic serif and the Pāḷi diacritics
+     rendered from whatever that face happened to carry.  For `ṁ ṅ ṭ ḍ ṇ ḷ` that
+     is frequently nothing.  See ../fonts/fonts.css: the diacritics live in the
+     `latin-ext` subset, NOT `latin`, and both files are required. -->
+<link rel="preload" href="../fonts/gentium-plus-latin-ext-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link href="../fonts/fonts.css" rel="stylesheet">
 <style>
-:root{--bg:#f7f5f1;--panel:#fffdf9;--fg:#211f1a;--mut:#8a8175;--faint:#b7afa0;--line:#ece7dd;--accent:#8a6a3b;
-  --canon:#b8862f;--comm:#2f8a7a;--tika:#7a5cc0;--hover:#f0ebe1;--active:#efe7d7;--chip:#efeae0;--chipfg:#6a5f4d;--app:#f5f1e8;--hl:#fbe7b8}
-html[data-theme=dark]{--bg:#141210;--panel:#1c1a16;--fg:#ece6da;--mut:#8f867a;--faint:#5c554a;--line:#2a2620;--accent:#cba976;
+/* --rsize LIVES ON :root, NOT ON .scroll.  The word-lookup panel is
+   `position:fixed`, so it is outside the `.scroll` subtree and could not
+   inherit a variable set there -- which is why its body was hardcoded to
+   13.5px and ignored the reader's own A- / A+ buttons entirely.  A reader who
+   enlarged the text because they needed to got no help in the pane where the
+   definitions are.  Setting it here puts it in scope for both. */
+:root{--rsize:15.5px;
+  --bg:#f7f5f1;--panel:#fffdf9;--fg:#211f1a;--mut:#756d63;--faint:#918b7f;--line:#ece7dd;--accent:#88693a;
+  --canon:#976e27;--comm:#2a7a6c;--tika:#7a5cc0;--hover:#f0ebe1;--active:#efe7d7;--chip:#efeae0;--chipfg:#6a5f4d;--app:#f5f1e8;--hl:#fbe7b8}
+/* CONTRAST, MEASURED AGAINST BOTH BACKGROUNDS THESE TOKENS SIT ON -- not just
+   --panel.  The earlier survey checked --panel alone and stopped there, but
+   .wl-banner, .wl-cites, .wl-promo and the reader's own .appx apparatus block
+   are --app, which is darker, so a value that just clears 4.5:1 on --panel is
+   still under AA where it is most used.  Measured, old -> new:
+
+     token      old        --panel        --app          also
+     --mut      #8a8175    3.77 -> 5.01   3.40 -> 4.52
+     --comm     #2f8a7a    4.10 -> 5.04   3.70 -> 4.55   #fff on it 4.17 -> 5.12
+     --canon    #b8862f    3.19 -> 4.52   2.87 -> 4.07   --panel on it 3.24 -> 4.52
+     --accent   #8a6a3b    4.92 -> 5.01   4.43 -> 4.51   #fff on it 4.99 -> 5.09
+     --faint    #b7afa0    2.14 -> 3.33   1.93 -> 3.00   (3:1, a third tier)
+
+   --canon is the one to read twice: it is NEVER text.  It is a 3px border on
+   .para.canon and .wl-wordgrp, a dot, and -- the reason it changes -- the
+   background of `.lbtn.on[data-k=canon]`, which sets `color:#fff`.  White on
+   the old value was 3.24:1.  The layer buttons were the failure, not the
+   paragraph numbers (those are --accent, and always passed).
+
+   Darkening is multiplicative, so the hue is held exactly and the palette
+   stays warm.  Dark theme is untouched except --faint, which was 2.36:1. */
+html[data-theme=dark]{--bg:#141210;--panel:#1c1a16;--fg:#ece6da;--mut:#8f867a;--faint:#6f6759;--line:#2a2620;--accent:#cba976;
   --canon:#d6a94e;--comm:#4fbfa8;--tika:#a487e6;--hover:#232019;--active:#2b2618;--chip:#282318;--chipfg:#d8c9a6;--app:#201d16;--hl:#5c4a1c}
 *{box-sizing:border-box}html,body{height:100%}
 body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--fg);
@@ -110,12 +144,18 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
 .tochead{font-family:'Inter',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);padding:8px 12px 4px}
 .layerbar{display:flex;gap:5px}
 .lbtn{font:inherit;font-size:14px;font-weight:600;width:34px;height:32px;border:1px solid var(--line);background:var(--panel);color:var(--mut);border-radius:9px;cursor:pointer}
-.lbtn.on{color:#fff}.lbtn.on[data-k=canon]{background:var(--canon);border-color:var(--canon)}.lbtn.on[data-k=A]{background:var(--comm);border-color:var(--comm)}.lbtn.on[data-k=T]{background:var(--tika);border-color:var(--tika)}
+/* !!! NOT `color:#fff`.  These three tokens are FOREGROUND colours in dark
+   theme -- light gold, mint, lilac -- so white text sat on them at 2.18:1,
+   2.25:1 and 2.92:1.  The earlier survey never saw it because it measured
+   every token AS a foreground against --panel and stopped there; nothing
+   measured the case where a token IS the background.  --panel flips with
+   the theme and clears AA in both: light 4.52-5.04, dark 5.95-7.98. */
+.lbtn.on{color:var(--panel)}.lbtn.on[data-k=canon]{background:var(--canon);border-color:var(--canon)}.lbtn.on[data-k=A]{background:var(--comm);border-color:var(--comm)}.lbtn.on[data-k=T]{background:var(--tika);border-color:var(--tika)}
 .viewtog,.rctrl{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
 .viewtog button,.rctrl button{font:inherit;font-size:12px;color:var(--mut);background:var(--panel);border:none;padding:6px 11px;cursor:pointer}
 .viewtog button.on{background:var(--active);color:var(--fg);font-weight:500}
 .rctrl button{border-right:1px solid var(--line)}.rctrl button:last-child{border-right:none}
-.scroll{overflow-y:auto;padding:20px 22px 130px;flex:1;--rsize:15.5px}
+.scroll{overflow-y:auto;padding:20px 22px 130px;flex:1}  /* --rsize moved to :root, see above */
 .scroll::-webkit-scrollbar{width:11px}.scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
 .incipit{font-family:'Gentium Plus',serif;font-style:italic;color:var(--accent);text-align:center;font-size:15px;margin:2px 0 16px}
 .uddana{text-align:center;margin:14px auto 22px;max-width:640px;color:var(--mut)}
@@ -153,7 +193,7 @@ sup.fnm{color:var(--accent);font-size:9.5px;font-weight:700;vertical-align:super
 .state.covered{font-style:italic;opacity:.85}
 .worktag{font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;color:var(--mut);margin-right:6px}
 .lchip{display:inline-block;font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:1px 8px;border-radius:20px;margin:0 0 4px 2px}
-.lchip.a{background:var(--comm);color:#fff}.lchip.t{background:var(--tika);color:#fff}
+.lchip.a{background:var(--comm);color:var(--panel)}.lchip.t{background:var(--tika);color:var(--panel)}
 .subwrap.a{margin-left:20px}.subwrap.t{margin-left:40px}
 .cmt-outline{margin-top:3px}.unit{margin:1px 0;border-radius:8px}
 .unit .uhead{cursor:pointer;display:flex;align-items:baseline;gap:7px;padding:3px 6px;border-radius:7px}.unit .uhead:hover{background:var(--hover)}
@@ -207,15 +247,19 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
 <script src="../i18n.js?v=3a1dcc26249e"></script>
-<!-- WORD-LOOKUP PANEL — BEHIND A FLAG (2026-08-02).  Off unless `?wl=1` or
-     localStorage['osbct-wl']==='1'; `?wl=0` turns it off again.  With the flag
-     off panel.js returns on its first statement: nothing is fetched, nothing is
-     bound, and this page behaves exactly as it did before.  Deliberately a
+<!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
+     and the choice sticks in localStorage['osbct-wl'].  It was off by default
+     until then, which made it unreachable rather than merely optional: nothing
+     in site/ linked to `?wl=1`, so no visitor could arrive at it.  With the
+     flag off panel.js still returns on its first statement: nothing is fetched,
+     nothing is bound, and this page behaves exactly as it did before — that is
+     the §9 guarantee, and gate assertion 1 enforces it against `?wl=0`.
+     The evaluation flag `wle` is SEPARATE and remains off.  Deliberately a
      separate file reached by one line here — so it can be reverted in one line,
      and so it does not collide with concurrent edits to this page.  See
      panel.js for what it shows, whose voice it speaks in (§9), and the
      proximity measurement that decided how the Edition tab orders itself. -->
-<script src="panel.js?v=20260803b" defer></script>
+<script src="panel.js?v=20260803d" defer></script>
 </head>
 <body>
   <div id="errbar" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:999;background:#7f1d1d;color:#fff;font:12px/1.4 ui-monospace,monospace;padding:8px 10px;white-space:pre-wrap"></div>
@@ -1375,7 +1419,7 @@ function render(){
   // User-reported 2026-07-29t.
   const _tvc=cache[_tv]||cv;
   $('#doctitle').innerHTML=esc(_sut||_nip||state.currentBook||VOLTITLE[_tv]||shortWork(VOLWORK[_tv])||_tv)+'<small>'+esc(_tv)+' · '+_tvc.paras.length+' ¶</small>';
-  $('#scroll').style.setProperty('--rsize',state.size+'px');
+  applyRsize();
   syncButtons();
   let lastSutta=null,lastVagga=null;
   const cH=s=>(s||'').replace(/\s*\(\d+\)\s*$/,'').replace(/([a-zāīūṁṃṅñṭḍṇḷ])\d+$/,'$1');  // strip "(33)" / trailing artifact digit for display
@@ -1649,8 +1693,17 @@ $('#tocbtn').onclick=(e)=>{ e.stopPropagation(); const dd=document.getElementByI
   }
   dd.innerHTML=html; dd.hidden=false; };
 document.addEventListener('click',e=>{ const w=document.querySelector('.tocwrap'); if(w&&!w.contains(e.target)){ const d=document.getElementById('tocdrop'); if(d)d.hidden=true; } });
-$('#finc').onclick=()=>{state.size=Math.min(22,state.size+1);if(state.opened)render();};
-$('#fdec').onclick=()=>{state.size=Math.max(12,state.size-1);if(state.opened)render();};
+// !!! SET --rsize ON documentElement, AND SET IT WHETHER OR NOT A VOLUME IS
+// OPEN.  It used to be written to `#scroll` from inside render(), which meant
+// two things: the fixed-position lookup panel was outside the subtree and could
+// never see it, and pressing A+ before opening a volume changed `state.size`
+// and nothing else, because render() is guarded on `state.opened`.  Both are
+// fixed by putting it on the root and applying it from the handler rather than
+// from the render.
+function applyRsize(){ document.documentElement.style.setProperty('--rsize',state.size+'px'); }
+$('#finc').onclick=()=>{state.size=Math.min(22,state.size+1);applyRsize();if(state.opened)render();};
+$('#fdec').onclick=()=>{state.size=Math.max(12,state.size-1);applyRsize();if(state.opened)render();};
+applyRsize();
 function tipify(root){(root||document).querySelectorAll('[title]').forEach(el=>{const v=el.getAttribute('title');if(v){el.setAttribute('data-tip',v);el.removeAttribute('title');}});}
 
 // ---------- search (top bar, real index) ----------

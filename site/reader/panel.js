@@ -55,8 +55,30 @@ var q = new URLSearchParams(location.search);
 if (q.has('wl')) {
   try { localStorage.setItem('osbct-wl', q.get('wl') === '0' ? '0' : '1'); } catch (e) {}
 }
-var ON = false;
-try { ON = localStorage.getItem('osbct-wl') === '1'; } catch (e) {}
+// DEFAULT ON since 2026-08-02.  `?wl=0` turns it off and the choice sticks.
+//
+// !!! IT WAS OFF BY DEFAULT AND THAT MADE IT UNREACHABLE.  Not "hard to find" —
+// unreachable.  Measured across the whole of site/: NO link, button or script
+// anywhere carries `?wl=1` or ever writes `osbct-wl`, so a reader arriving at
+// buddha-dhamma.net/reader/reader2.html got `localStorage` unset, `ON` false,
+// this early return, and a word-click that did nothing.  v2.2.0 was deployed,
+// tagged, released — and reached nobody. The only way in was to know the query
+// parameter existed and type it by hand.
+//
+// The argument for off-by-default was that an unshipped feature should not
+// touch a reader who did not ask for it.  That expired when the panel shipped,
+// was gated and was verified live.  What replaced it is a worse property: with
+// the flag off the panel leaves NO trace at all — no node, no fetch, nothing in
+// the DOM — so "off" and "broken" are indistinguishable from outside.  That is
+// not hypothetical either; it cost three separate wrong diagnoses on this
+// project's own live site, by someone who knew the flag existed.
+//
+// §9 is not at risk: `wl` exposes only the publishable panel — the edition's
+// own glosses, the corpus counts, and the public-domain PED.  Every source with
+// an unresolved licence or an excluded voice sits behind `wle`, which is
+// SEPARATE and STAYS OFF.  Do not fold the two together.
+var ON = true;
+try { if (localStorage.getItem('osbct-wl') === '0') ON = false; } catch (e) {}
 if (q.get('wl') === '1') ON = true;
 if (q.get('wl') === '0') ON = false;
 if (!ON) return;
@@ -262,7 +284,7 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260803b';
+var WLV = '20260803d';
 
 // ---------------------------------------------------- gzipped shard sets --
 // WHY THE SHARDS ARE STORED GZIPPED, AND WHY THAT IS NOT THE SAME AS
@@ -548,26 +570,47 @@ var CSS = ''
 + 'white-space:normal;text-align:left;font:400 12px/1.4 Inter,system-ui,sans-serif;'
 + 'color:#fff;background:#3a3126;padding:6px 8px;border-radius:5px;'
 + 'box-shadow:0 2px 8px rgba(0,0,0,.3);pointer-events:none}'
-+ '#wl .wl-b{overflow-y:auto;overflow-wrap:break-word;padding:10px 12px 18px;flex:1 1 auto;font-size:13.5px;line-height:1.55}'
+  // !!! THE PANEL FOLLOWS THE READER'S OWN TEXT SIZE.  This was 13.5px, flat,
+  // so the A- / A+ buttons in the top bar moved the canon text and did nothing
+  // at all to the pane holding the definitions -- the one place a reader who
+  // enlarged the text because they needed to was going in order to look more
+  // closely.  `--rsize` now lives on :root (reader2.html) precisely so this
+  // fixed-position element can see it; the fallback is its default, 15.5px.
++ '#wl .wl-b{overflow-y:auto;overflow-wrap:break-word;padding:10px 12px 18px;flex:1 1 auto;'
++ 'font-size:calc(var(--rsize, 15.5px) - 2px);line-height:1.55}'
 + '#wl .wl-cite a.wl-go{color:inherit;text-decoration:none;border-bottom:1px dotted currentColor}'
 + '#wl .wl-cite a.wl-go:hover{color:var(--acc,inherit);border-bottom-style:solid}'
 + '#wl .wl-src{font-size:11px;color:var(--mut);margin:0 0 8px}'
   // the sharing terms: same weight as the attribution, but set apart so it
   // reads as a condition rather than a credit
+  // opacity:.9 used to sit on top of --mut and compounded the contrast problem
+  // -- two dimmings for one effect.  The colour does the work on its own.
 + '#wl .wl-rights{font-size:11px;color:var(--mut);margin:-4px 0 10px;'
-+ 'padding:5px 8px;border-left:2px solid var(--mut);opacity:.9}'
-+ '#wl .wl-sub{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;'
++ 'padding:5px 8px;border-left:2px solid var(--mut)}'
++ '#wl .wl-sub{font-size:11px;letter-spacing:.06em;text-transform:uppercase;'
 + 'color:var(--mut);margin:12px 0 4px}'
 + '#wl .wl-promo{border:1px solid var(--line);border-left:3px solid var(--comm);'
 + 'border-radius:8px;padding:2px 9px;background:var(--app)}'
 + '#wl .wl-wordgrp{border:1px solid var(--line);border-left:3px solid var(--canon);'
 + 'border-radius:8px;padding:2px 9px}'
-+ '#wl .wl-why{font-size:10.5px;color:var(--mut);margin:3px 0 0;font-style:italic}'
+  // !!! THIS LINE IS AN ARGUMENT, NOT A FOOTNOTE.  "shown first because the
+  // phrase the edition glosses stands in this paragraph -- checked, not
+  // guessed" is the entire design claim of the Gloss tab: the sentence that
+  // separates a promotion from a guess, and the one thing a reader cannot
+  // verify for themselves.  It was 10.5px in --mut, which made it the least
+  // legible text in the interface.
++ '#wl .wl-why{font-size:11px;color:var(--fg);margin:3px 0 0;font-style:italic}'
 + '#wl .wl-row{border-top:1px solid var(--line);padding:7px 0 5px}'
-+ '#wl .wl-promo .row:first-child,#wl .wl-wordgrp .row:first-child,'
++ '#wl .wl-promo .wl-row:first-child,#wl .wl-wordgrp .wl-row:first-child,'
 + '#wl .wl-row:first-of-type{border-top:none}'
-+ '#wl .wl-lem{font-family:"Gentium Plus",Georgia,serif;font-weight:700}'
-+ '#wl .wl-g{font-family:"Gentium Plus",Georgia,serif}'
+  // !!! PĀḶI IN THE PANEL IS THE SAME SIZE AS THE PĀḶI THAT WAS CLICKED.
+  // These two set no size at all, so they inherited the panel body -- the same
+  // script, the same language, two pixels smaller in the place the reader went
+  // in order to see it better.  Gentium's small x-height made the gap read
+  // wider than 2px beside Inter.  English and metadata stay where they are;
+  // only the Pāḷi comes back up to --rsize.
++ '#wl .wl-lem{font-family:"Gentium Plus",Georgia,serif;font-weight:700;font-size:var(--rsize, 15.5px)}'
++ '#wl .wl-g{font-family:"Gentium Plus",Georgia,serif;font-size:var(--rsize, 15.5px)}'
 + '#wl .wl-cite{font-size:11px;color:var(--mut);margin-top:2px}'
 + '#wl .wl-flag{font-size:11px;color:var(--mut)}'
 + '#wl .wl-more{font:600 12px Inter,system-ui,sans-serif;color:var(--accent);'
@@ -576,10 +619,18 @@ var CSS = ''
 + '#wl .wl-none{color:var(--mut);font-size:12.5px}'
 + '#wl .wl-banner{background:var(--app);color:var(--mut);border:1px solid var(--line);'
 + 'border-radius:6px;font-size:11px;padding:5px 8px;margin:0 0 8px}'
+  // !!! BURMESE NEEDS MORE ROOM THAN LATIN, NOT LESS.  1.9 line-height was
+  // already right; the size was not.  Stacked consonants, asat and kinzi are
+  // exactly what the character census exists to verify, and at 15px they are
+  // hard to tell apart -- a conversion the reader cannot see is a conversion
+  // the reader cannot check.  One pixel above --rsize, so it stays the largest
+  // thing in the body at every setting of A- / A+.
 + '#wl .wl-my{font-family:"Padauk","Myanmar Text","Myanmar MN","Myanmar Sangam MN","Noto Sans Myanmar",serif;'
-+ 'font-size:15px;line-height:1.9;margin:.25em 0}'
++ 'font-size:calc(var(--rsize, 15.5px) + 1px);line-height:1.9;margin:.25em 0}'
+  // the etymology line is Burmese too and was a further pixel down at 14px --
+  // the same fault as above, one line lower, and not named in the brief
 + '#wl .wl-etym{color:var(--comm);font-family:"Padauk","Myanmar Text","Myanmar MN","Myanmar Sangam MN",serif;'
-+ 'font-size:14px;line-height:1.9}'
++ 'font-size:var(--rsize, 15.5px);line-height:1.9}'
 + '#wl .wl-cites{font-size:11px;color:var(--fg);background:var(--app);'
 + 'border-radius:5px;padding:4px 7px;margin:.3em 0}'
 + '#wl .wl-reveal{font:600 11px Inter,system-ui,sans-serif;color:var(--accent);'
@@ -648,7 +699,13 @@ var CSS = ''
      main), so that is what has to give up the width. */
   'body.wl-side.wl-open .main{padding-right:380px}'
 + 'body.wl-sheet.wl-open .main{padding-bottom:64vh}'
-+ '.wl-mark{background:var(--hl);border-radius:2px}';
++ '.wl-mark{background:var(--hl);border-radius:2px}'
+  // the hover affordance.  `pointer-events:none` is not optional — the overlay
+  // sits directly over the word, and without it every click would land on the
+  // underline instead of the text and the panel would never open.
++ '.wl-hov{position:fixed;pointer-events:none;z-index:40;'
++ 'border-bottom:1px solid var(--accent);opacity:.5}'
++ '.para.wl-hot{cursor:pointer}';
 
 var el = null;
 function build() {
@@ -783,6 +840,84 @@ function mark(node, a, b) {
   var r = document.createRange(); r.setStart(node, a); r.setEnd(node, b + 1);
   markEl = document.createElement('mark'); markEl.className = 'wl-mark';
   try { r.surroundContents(markEl); } catch (e) { markEl = null; }
+}
+
+// ------------------------------------------------- the hover affordance ----
+// ENABLED IS NOT THE SAME AS VISIBLE.  Defaulting the panel on made it reachable
+// but not discoverable: nothing in the reader says that a word can be clicked,
+// so a visitor reads the page and never finds it.  This underlines the word
+// under the pointer and turns the cursor, so the text reveals itself as
+// clickable when explored, and nothing is added to the page for a reader who
+// does not explore.
+//
+// !!! IT DOES NOT USE mark().  `mark()` calls `surroundContents`, which splits
+// the text node and inserts an element; doing that on every mouse move would
+// collapse the reader's text selection continuously, churn `normalize()` over
+// the paragraph, and invalidate layout inside blocks that are deliberately
+// `content-visibility:auto`.  So the underline is an OVERLAY positioned from
+// the range's client rects — the text DOM is never touched.
+//
+// !!! AND IT IS NOT BOUND AT ALL ON A PHONE.  There is no hover on a touch
+// screen, so a pointermove listener there would be pure cost on the device this
+// project has a performance history with.  `(hover:hover) and (pointer:fine)`
+// gates it.  The consequence is real and accepted: on a phone the panel remains
+// undiscoverable until someone taps a word.  If that matters, it needs a
+// different affordance, not this one.
+var hovEls = [], hovKey = '', hovPara = null, hovRaf = 0, hovXY = null;
+
+function hoverClear() {
+  for (var i = 0; i < hovEls.length; i++)
+    if (hovEls[i].parentNode) hovEls[i].parentNode.removeChild(hovEls[i]);
+  hovEls = []; hovKey = '';
+  if (hovPara) { hovPara.classList.remove('wl-hot'); hovPara = null; }
+}
+
+function hoverDraw() {
+  hovRaf = 0;
+  var xy = hovXY; if (!xy) return;
+  var p = xy.t && xy.t.closest && xy.t.closest('.para');
+  // the same exclusions the click handler uses, or the underline would promise
+  // a lookup on a footnote link or an apparatus block that will never happen
+  if (!p || (xy.t.closest && xy.t.closest('a,button,.tools,.app'))) {
+    hoverClear(); return;
+  }
+  var hit = wordAt(xy.x, xy.y);
+  if (!hit) { hoverClear(); return; }
+  var key = hit.word + '|' + hit.a + '|' + hit.b;
+  if (key === hovKey && hovPara === p) return;      // same word, nothing to do
+  hoverClear();
+  var r = document.createRange();
+  try { r.setStart(hit.node, hit.a); r.setEnd(hit.node, hit.b + 1); }
+  catch (e) { return; }
+  var rects = r.getClientRects();
+  for (var i = 0; i < rects.length; i++) {          // a word can wrap a line
+    var q = rects[i];
+    if (!q.width || q.top < 56) continue;           // under the top bar: skip
+    var d = document.createElement('div');
+    d.className = 'wl-hov';
+    d.style.left = q.left + 'px'; d.style.top = q.top + 'px';
+    d.style.width = q.width + 'px'; d.style.height = q.height + 'px';
+    document.body.appendChild(d); hovEls.push(d);
+  }
+  if (hovEls.length) { hovKey = key; hovPara = p; p.classList.add('wl-hot'); }
+}
+
+function hoverBind() {
+  if (!(window.matchMedia
+        && matchMedia('(hover: hover) and (pointer: fine)').matches)) return;
+  document.addEventListener('pointermove', function (ev) {
+    if (ev.pointerType && ev.pointerType !== 'mouse') return;
+    hovXY = {x: ev.clientX, y: ev.clientY, t: ev.target};
+    // at most one hit-test per frame, however fast the pointer moves
+    if (!hovRaf) hovRaf = requestAnimationFrame(hoverDraw);
+  }, {passive: true});
+  // the rects are viewport-relative, so anything that moves the text
+  // invalidates them.  Clearing is cheap and the next move redraws.
+  ['scroll', 'resize', 'wheel'].forEach(function (e) {
+    window.addEventListener(e, hoverClear, {passive: true, capture: true});
+  });
+  document.addEventListener('pointerdown', hoverClear, true);
+  return true;
 }
 
 // ------------------------------------------------------------- the lookup --
@@ -1150,7 +1285,7 @@ function rowHtml(r) {
   var o = ordOf(r);
   var cite = esc(r.v) + ' §' + (r.n != null ? r.n : '—')
            + (r.p ? ' · p.' + r.p : '') + (r.s ? ' · ' + esc(r.s) : '');
-  return '<div class="wl-row"><span class="lem g">' + esc(r.l) + '</span>'
+  return '<div class="wl-row"><span class="wl-lem wl-g">' + esc(r.l) + '</span>'
     + (r.q ? ' <span class="wl-flag">(' + esc(T('wl_quoted')) + ')</span>' : '')
     + (r.h ? ' <span class="wl-flag">(' + esc(T('wl_series')) + ')</span>' : '')
     + ' — <span class="wl-g">' + esc(r.g) + '</span>'
@@ -1258,7 +1393,7 @@ function viewPed(d) {
   if (!d.ped.length) return h + '<p class="wl-none">' + esc(T('wl_noped')) + '</p>';
   d.ped.forEach(function (p) {
     p.e.forEach(function (body) {
-      h += '<div class="wl-row wl-ped"><div class="lem g">' + esc(p.h) + '</div>'
+      h += '<div class="wl-row wl-ped"><div class="wl-lem wl-g">' + esc(p.h) + '</div>'
          + '<div>' + body + '</div></div>';
     });
   });
@@ -1512,7 +1647,27 @@ function viewLex(d, tab) {
 // ------------------------------------------------------------------- wire --
 function start() {
   build();
-  manifest();
+  // !!! DO NOT FETCH THE MANIFEST AT BOOT.  `manifest()` was called here, so
+  // turning the panel on by default would have put `lookup/index.json` —
+  // 312 kB — on every reader's load path, whether or not they ever touch a
+  // word.  Measured on a phone (390x844, CPU 4x) that was the ENTIRE cost of
+  // the new default: +312 kB and +1 request, against +16 DOM nodes and
+  // +0.36 MB of heap.  It is the same shape as search.html fetching its 21 MB
+  // term list before anyone had typed, and it gets the same treatment.
+  //
+  // `look()` already awaits `manifest()` before every shard fetch, so removing
+  // this costs nothing but the first click's latency — and even that is paid
+  // back by warming on the pointerdown that PRECEDES the click, scoped to the
+  // text itself so a reader who only scrolls and never taps a word never
+  // fetches it at all.
+  hoverBind();
+  var warmed = false;
+  document.addEventListener('pointerdown', function (ev) {
+    if (warmed) return;
+    if (!(ev.target.closest && ev.target.closest('.para'))) return;
+    warmed = true;
+    manifest();
+  }, true);
   document.addEventListener('click', function (ev) {
     if (el && el.contains(ev.target)) return;
     var p = ev.target.closest && ev.target.closest('.para');
