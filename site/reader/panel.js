@@ -93,8 +93,13 @@ if (!ON) return;
 if (q.has('wle')) {
   try { localStorage.setItem('osbct-wle', q.get('wle') === '0' ? '0' : '1'); } catch (e) {}
 }
-var EVAL = false;
-try { EVAL = localStorage.getItem('osbct-wle') === '1'; } catch (e) {}
+// DEFAULT ON since 2026-08-02: every visitor gets every tab.  `?wle=0` turns
+// them off and the choice sticks.  The licences this was waiting on are
+// settled -- DPD is CC BY-NC-SA 4.0, the Abhidhāna and PEU are a Gift of
+// Dhamma, free distribution only -- and each notice travels with its source in
+// the panel (`.wl-rights`).  `site/lookup_eval/` is tracked and deployed.
+var EVAL = true;
+try { if (localStorage.getItem('osbct-wle') === '0') EVAL = false; } catch (e) {}
 if (q.get('wle') === '1') EVAL = true;
 if (q.get('wle') === '0') EVAL = false;
 
@@ -284,7 +289,7 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260803d';
+var WLV = '20260803e';
 
 // ---------------------------------------------------- gzipped shard sets --
 // WHY THE SHARDS ARE STORED GZIPPED, AND WHY THAT IS NOT THE SAME AS

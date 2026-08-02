@@ -304,7 +304,53 @@ def run_gate(EVAL_ON=False):
             fails.append(f'default-on check: {e}')
         fresh.close()
 
-        # the evaluation store must not be touched with only ?wl=1
+        # --- 1c. THE OTHER DEFAULT: every tab, for a first-time reader. -------
+        # `wle` now defaults ON too, so a fresh context must get the full tab
+        # row without asking.  Same reasoning as 1b: without this, a revert to
+        # off-by-default passes the gate clean and the tabs quietly vanish for
+        # everyone while every other assertion stays green.
+        # Conditional on the evaluation store existing, because it is gitignored
+        # and absent on a clean checkout — a silent skip here would be the
+        # vacuous-pass fault over again, so it says which it did.
+        if EMAN is not None:
+            f2 = b.new_context(viewport={'width': 1280, 'height': 900})
+            fp2 = f2.new_page()
+            fp2.goto(BASE + '/reader/reader2.html#09Ma01/0',
+                     wait_until='domcontentloaded')
+            try:
+                fp2.wait_for_selector('.para.canon', timeout=20000)
+                fp2.wait_for_timeout(600)
+                h2 = fp2.evaluate('''() => {
+                  const p = document.querySelector('.para.canon');
+                  const w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
+                  let n;
+                  while ((n = w.nextNode())) {
+                    const i = n.textContent.search(/[a-zāīūṁṅñṭḍṇḷ]{6,}/i);
+                    if (i >= 0) { const r = document.createRange();
+                      r.setStart(n, i + 1); r.setEnd(n, i + 4);
+                      const q = r.getBoundingClientRect();
+                      if (q.width > 0) return {x: q.x + 2, y: q.y + q.height / 2}; }
+                  } return null;}''')
+                if h2:
+                    fp2.mouse.click(h2['x'], h2['y'])
+                    fp2.wait_for_selector('#wl[data-state="ready"]', timeout=20000)
+                    tabs_seen = fp2.evaluate(
+                        "() => [...document.querySelectorAll('#wlt button')]"
+                        ".map(b => b.dataset.tab)")
+                    for t in ('dpd', 'abhi', 'dict', 'ed'):
+                        if t not in tabs_seen:
+                            fails.append(
+                                f'DEFAULT TABS: a first-time reader with no query '
+                                f'string gets no {t!r} tab (saw {tabs_seen}) — the '
+                                f'evaluation tabs are hidden again')
+            except Exception as e:
+                fails.append(f'default-tabs check: {e}')
+            f2.close()
+        else:
+            print('  note: 1c NOT EXERCISED — site/lookup_eval/ absent, so the '
+                  'default tab row cannot be checked here')
+
+        # the evaluation store must not be touched with ?wle=0
         reqs2 = []
         pg2 = b.new_page(viewport={'width': 1280, 'height': 900})
         pg2.on('request', lambda r: reqs2.append(r.url))

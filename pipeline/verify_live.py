@@ -58,6 +58,15 @@ TARGETS = [
     ('/downloads.html',        'site/downloads.html',        'html'),
     ('/reader/reader.html',    'site/reader/reader.html',    'stub'),
     ('/i18n.js',               'site/i18n.js',               'text'),
+    # !!! panel.js WAS NEVER FETCHED BY THIS GATE.  reader2.html is compared
+    # byte-for-byte but the file carrying the entire word-lookup feature was
+    # not in the list, so 'LIVE SITE MATCHES' could be printed while the
+    # deployed panel was an older build with the flag defaulting off.
+    ('/reader/panel.js',       'site/reader/panel.js',       'bytes'),
+    # and the self-hosted type: site/fonts/ is NEW, and .gitignore decides
+    # what Actions publishes.  A 404 here means every page fell back to a
+    # generic serif and the Pāḷi diacritics are rendering as tofu.
+    ('/fonts/fonts.css',       'site/fonts/fonts.css',       'bytes'),
     ('/reader/pageindex.json', 'site/reader/pageindex.json', 'bytes'),
     ('/reader/manifest.json',  'site/reader/manifest.json',  'bytes'),
     ('/errata.json',           'site/errata.json',           'bytes'),
@@ -89,6 +98,22 @@ def get(url, follow=True):
         return 0, ('%s: %s' % (type(e).__name__, e)).encode(), {}
 
 
+def local_wlv():
+    """The panel's own version, which moves when BUILD does not.
+
+    BUILD is stamped from the JSON and i18n.js, so a change confined to
+    reader2.html and panel.js moves nothing -- that is the 2026-07-31c trap,
+    and it is exactly what a panel-only deploy looks like.  WLV is the
+    constant that DOES move, so check the live HTML against it by name.
+    """
+    try:
+        s = open(os.path.join(ROOT, 'site/reader/panel.js'), encoding='utf-8').read()
+    except OSError:
+        return None
+    m = re.search(r"var WLV = '([^']*)'", s)
+    return m.group(1) if m else None
+
+
 def local_build():
     s = open(os.path.join(ROOT, 'site/reader/reader2.html'), encoding='utf-8').read()
     m = re.search(r"const BUILD='([^']*)'", s)
@@ -97,9 +122,11 @@ def local_build():
 
 def run(origin, redirect_host, quiet=False):
     want = local_build()
+    wlv = local_wlv()
     if not want:
         print('cannot read BUILD from the local reader2.html'); return 1
-    print('working copy BUILD %s   origin %s\n' % (want, origin))
+    print('working copy BUILD %s   WLV %s   origin %s\n'
+          % (want, wlv or '(none)', origin))
     bad = 0
     for path, local, kind in TARGETS:
         url = origin.rstrip('/') + path
@@ -131,6 +158,16 @@ def run(origin, redirect_host, quiet=False):
                         notes.append('BUILD %s, expected %s' % (m.group(1), want))
                     if 'i18n.js' in txt and ('i18n.js?v=' + want) not in txt:
                         notes.append('i18n.js is not versioned to this BUILD')
+                    # the same trap one file over: stale HTML asks for the
+                    # stale panel.js, and the ?v= on the script tag cannot
+                    # help because it is IN the stale HTML.  Name it plainly.
+                    if wlv and 'panel.js' in txt \
+                            and ('panel.js?v=' + wlv) not in txt:
+                        live_v = re.search(r'panel\.js\?v=([^"\']*)', txt)
+                        notes.append('the live page asks for panel.js?v=%s but this '
+                                     'copy ships WLV %s — the word-lookup panel a '
+                                     'visitor gets is NOT this one'
+                                     % (live_v.group(1) if live_v else '(none)', wlv))
                 else:
                     if 'reader2.html' not in txt or len(body_a) > 8000:
                         notes.append('does NOT look like the retirement stub '
