@@ -46,6 +46,6 @@ def shoot(pw, name, vw, vh, vol, word, mobile=False, tab=None):
     b.close()
 
 with sync_playwright() as pw:
-    shoot(pw, 'shot_desktop.png', 1440, 900, '09Ma01', 'bhikkhave')
+    shoot(pw, 'shot_desktop.png', 1440, 900, '09Ma01', 'hetu')
     shoot(pw, 'shot_phone.png', 390, 844, '09Ma01', 'khayaṁ', mobile=True)
-    shoot(pw, 'shot_dict.png', 1440, 900, '09Ma01', 'bhikkhave', tab='dict')
+    shoot(pw, 'shot_dpd.png', 1440, 900, '09Ma01', 'bhikkhave', tab='dpd')

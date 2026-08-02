@@ -113,20 +113,19 @@ aside#panel.empty .pbody:after{content:attr(data-empty);display:block;color:var(
 .en-inline.hidden{display:none}
 .mt{display:none;border-left:3px solid #eadfa8;padding-left:.6em;margin:.3em 0}
 .mt.open{display:block}
-/* !!! DPD'S OWN CHIPS WERE READING AS A SECOND ROW OF TABS (2026-08-02,
-   user-reported).  `grammar`, `examples`, `declension`, `root family`,
-   `compound family`, `idioms` are DISCLOSURE TOGGLES for content hidden inside
-   the entry -- same pill shape, same size and same colour as the real tabs
-   directly above them, so the panel appeared to have two tab rows with
-   nothing to say which was which.  They are now plain underlined links with a
-   ⌄ marker: unmistakably "open this", and unmistakably not a tab. */
-.pbody a.dpd-button{display:inline;font:400 .8rem/1.7 system-ui,sans-serif;
-  color:var(--accent);background:none;border:none;border-radius:0;padding:0;
-  margin:0 .9em 0 0;text-decoration:underline;text-decoration-style:dotted;
-  text-underline-offset:2px;white-space:nowrap}
-.pbody a.dpd-button:before{content:"⌄ ";text-decoration:none;font-size:.9em}
-.pbody a.dpd-button:hover{background:none;color:#5a3a00}
-.pbody .button-box{margin:.45em 0 .2em;line-height:1.9}
+/* DPD'S OWN CHIPS ARE KEPT AS CHIPS.  `grammar`, `examples`, `declension`,
+   `root family`, `compound family`, `idioms` are DPD's disclosure toggles for
+   content it hides inside the entry, and they are how a DPD entry is meant to
+   be read -- the user asked for them, in this form, twice.  A session briefly
+   flattened them into plain links on the theory that they looked like a second
+   row of tabs; they were restored.  They are set slightly smaller and warmer
+   than the real tabs so the two rows are told apart by weight rather than by
+   removing one of them. */
+.pbody a.dpd-button{display:inline-block;font:600 .7rem/1 system-ui,sans-serif;color:#6a5a40;
+  background:#f6f1e7;border:1px solid var(--rule);border-radius:10px;padding:.32em .68em;
+  margin:.2em .2em 0 0;text-decoration:none;cursor:pointer}
+.pbody a.dpd-button:hover{background:#ece2cd;color:#3a2f18}
+.pbody .button-box{margin:.35em 0 .2em}
 .pbody .button-box{margin:.3em 0}
 .dpd .content.hidden,.content.hidden{display:none}
 .dpd table,.pbody table{border-collapse:collapse;font-size:.82rem;margin:.4em 0;max-width:100%}
@@ -395,24 +394,25 @@ function render(d){
   const lemCped=[...d.lemData.values()].filter(r=>r.cp);
   const lemDop=[...d.lemData.values()].filter(r=>r.dp);
   const nPpn=[...d.lemData.values()].reduce((s,r)=>s+((r.pn||[]).length),0);
-  // !!! THE EDITION COMES FIRST AND DPD LAST (2026-08-02, user-reported from
-  // this very page).  The original order opened on DPD, which was a decision
-  // taken on 2026-08-01 so the sources could be compared side by side -- and
-  // it reads as though a modern dictionary were the panel's voice, which §9
-  // says it is not and never will be.  Comparison does not require pride of
-  // place.  DPD keeps its tab, at the end, behind its banner.
+  // DPD FIRST, EDITION LAST.  Confirmed by the user 2026-08-02 after a
+  // session briefly reversed it: this page is the COMPARISON surface, and the
+  // point of it is to put the sources side by side with DPD -- the fullest of
+  // them -- in front.  It is not the reader's panel and it does not ship; §9
+  // governs what a published build shows, and that is settled separately in
+  // site/reader/panel.js, where with no evaluation flag there is no DPD at all
+  // and the edition is necessarily first.
   tabs.innerHTML=
-    tabBtn(T.ed,STR.edition,d.gl.length||null,!d.gl.length,STR.tip_ed)+
+    tabBtn(T.dpd,STR.dpd,d.hwData.length||null,!d.hwData.length&&!d.rec,STR.tip_dpd)+
     tabBtn(T.abhi,STR.abhi,lemAbhi.length||null,!lemAbhi.length,STR.tip_abhi)+
     tabBtn(T.peu,STR.peu,lemPeu.length||null,!lemPeu.length,STR.tip_peu)+
     tabBtn(T.cped,STR.cped,lemCped.length||null,!lemCped.length,STR.tip_cped)+
     tabBtn(T.dop,STR.dop,lemDop.length||null,!lemDop.length,STR.tip_dop)+
     tabBtn(T.ppn,STR.ppn,nPpn||null,!nPpn,STR.tip_ppn)+
-    tabBtn(T.dpd,STR.dpd,d.hwData.length||null,!d.hwData.length&&!d.rec,STR.tip_dpd);
+    tabBtn(T.ed,STR.edition,d.gl.length||null,!d.gl.length,STR.tip_ed);
   tabs.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
     if(!b.classList.contains('dis'))show(b.dataset.tab,d);}));
-  // default: the Edition; fall through in the order the tabs are drawn
-  const order=[T.ed,T.abhi,T.peu,T.cped,T.dop,T.ppn,T.dpd];
+  // default: DPD; fall through in the order the tabs are drawn
+  const order=[T.dpd,T.abhi,T.peu,T.cped,T.dop,T.ppn,T.ed];
   const first=order.find(t=>!tabs.querySelector('[data-tab="'+t+'"]').classList.contains('dis'));
   if(first)show(first,d);
   else body.innerHTML='<p class="unres">'+STR.unresolved+'</p>';

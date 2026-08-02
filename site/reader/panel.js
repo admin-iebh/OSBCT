@@ -370,6 +370,30 @@ var CSS = ''
 + '#wl .wl-ext table tbody,#wl .wl-ext table thead{width:max-content}'
 + '#wl .wl-ext pre{white-space:pre-wrap;word-break:break-word}'
 + '#wl .wl-ext table{border-collapse:collapse;font-size:11.5px}'
+/* DPD'S OWN CHIPS -- grammar, examples, declension, root family, compound
+   family, idioms -- each open a block DPD keeps hidden inside the entry. They
+   are how a DPD entry is read and the reader asked for them, so they are kept
+   as chips, set smaller and warmer than the real tabs above so the two rows
+   are told apart by weight.
+   !!! This block went in once before and silently did not apply: the string it
+   was replacing had drifted, the replace matched nothing, and there was no
+   assertion to say so -- the chips rendered as four run-together blue links.
+   Anchored and asserted now. */
++ '#wl .wl-ext a.dpd-button{display:inline-block;font:600 10.5px/1 Inter,system-ui,sans-serif;'
++ 'color:var(--chipfg);background:var(--chip);border:1px solid var(--line);'
++ 'border-radius:9px;padding:5px 9px;margin:3px 4px 0 0;text-decoration:none;'
++ 'cursor:pointer;white-space:nowrap}'
++ '#wl .wl-ext a.dpd-button:hover{background:var(--hover);color:var(--fg)}'
++ '#wl .wl-ext .button-box{margin:6px 0 3px}'
+/* ...and the blocks they open must START closed.  DPD marks them
+   `class="dpd content hidden"` and relies on its own stylesheet, which is not
+   here -- so every one of them was open, and the entry arrived as a wall with
+   the chips doing nothing visible. */
++ '#wl .wl-ext .content.hidden,#wl .wl-ext .dpd.hidden{display:none}'
+/* DPD's feedback prompts point at DPD's own site and are addressed to its
+   editors, not to a reader of this edition. */
++ '#wl .wl-ext a.dpd-link{display:none}'
++ '#wl .wl-ext p.dpd-footer{display:none}'
 + '#wl .wl-ext td,#wl .wl-ext th{border:1px solid var(--line);padding:1px 4px}'
 + '#wl .wl-back{border:1px solid var(--line);background:var(--panel);'
 + 'color:var(--accent);border-radius:5px;font:700 13px/1 Inter,system-ui,sans-serif;'
@@ -637,8 +661,9 @@ var DICT_SECTIONS = [
   ['uhs',  'wl_uhs',  'wl_tip_uhs'],
   ['rt',   'wl_rt',   'wl_tip_rt'],
   ['tpm',  'wl_tpm',  'wl_tip_tpm'],
-  ['pwg',  'wl_pwg',  'wl_tip_pwg'],
-  ['dpd',  'wl_dpd',  'wl_tip_dpd']    // last, always
+  ['pwg',  'wl_pwg',  'wl_tip_pwg']
+  // DPD is NOT a section here: with the evaluation flag on it has its own tab,
+  // first, and with the flag off it is not in the build at all.
 ];
 
 function tabBtn(id, label, n, dis, tip) {
@@ -688,18 +713,32 @@ function render(d) {
     if (EVAL || t[0] === 'ped') nDict += (d.n[t[0]] || 0);
   });
   d.nDict = nDict;
-  var html =
-      tabBtn('ed', T('wl_edition'), d.nGloss || null, !d.nGloss, T('wl_tip_ed'))
-    + (EVAL ? tabBtn('abhi', T('wl_abhi'), d.n.abhi || null, !d.n.abhi,
-                     T('wl_tip_abhi')) : '')
-    + tabBtn('dict', T('wl_dict'), nDict || null, !nDict, T('wl_tip_dict'));
+  // TAB ORDER DEPENDS ON WHICH PANEL THIS IS, AND THAT IS THE WHOLE POINT.
+  //
+  // With the evaluation flag ON this is the reader's own comparison surface,
+  // and they want it in the prototype's order: DPD first, the edition last.
+  // That is a working preference about a local tool, and §9 does not reach it.
+  //
+  // With the flag OFF this is the publishable panel, there IS no DPD, and the
+  // edition is first because it is the only voice there is. So §9's guarantee
+  // is kept exactly where it applies, and the gate asserts it there.
+  var html = EVAL
+    ? tabBtn('dpd',  T('wl_dpd'),  d.n.dpd || null, !d.n.dpd, T('wl_tip_dpd'))
+      + tabBtn('abhi', T('wl_abhi'), d.n.abhi || null, !d.n.abhi, T('wl_tip_abhi'))
+      + tabBtn('dict', T('wl_dict'), nDict || null, !nDict, T('wl_tip_dict'))
+      + tabBtn('ed',   T('wl_edition'), d.nGloss || null, !d.nGloss, T('wl_tip_ed'))
+    : tabBtn('ed',   T('wl_edition'), d.nGloss || null, !d.nGloss, T('wl_tip_ed'))
+      + tabBtn('dict', T('wl_dict'), nDict || null, !nDict, T('wl_tip_dict'));
   tabs.innerHTML = html;
   Array.prototype.forEach.call(tabs.querySelectorAll('button'), function (b) {
     b.addEventListener('click', function () {
       if (!b.classList.contains('dis')) show(b.dataset.tab, d); });
   });
   // Edition is the default tab, always — never a dictionary (§9)
-  show(d.nGloss ? 'ed' : (nDict ? 'dict' : 'ed'), d);
+  var first = EVAL
+    ? (d.n.dpd ? 'dpd' : d.n.abhi ? 'abhi' : nDict ? 'dict' : 'ed')
+    : (d.nGloss ? 'ed' : nDict ? 'dict' : 'ed');
+  show(first, d);
   keepWordVisible();
   el.dataset.state = 'ready';
 }
@@ -710,6 +749,7 @@ function show(tab, d) {
     b.setAttribute('aria-selected', b.dataset.tab === tab ? 'true' : 'false'); });
   body.innerHTML = tab === 'ed'   ? viewEd(d)
                  : tab === 'abhi' ? viewAbhi(d)
+                 : tab === 'dpd'  ? viewDpd(d)
                  : viewDict(d);
   body.scrollTop = 0;
   var more = body.querySelector('button.more');
@@ -842,10 +882,14 @@ function viewDpd(d) {
   var h = evHead(T('wl_tip_dpd'));
   var e = (d.ev && d.ev.dpd) || [];
   if (!e.length) return h + '<p class="wl-none">' + esc(T('wl_noentry')) + '</p>';
+  // DPD's entry carries its own chips -- grammar, examples, declension, root
+  // family, compound family, idioms -- each opening a block it keeps hidden.
+  // They are how the entry is read, so they are passed through as DPD draws
+  // them and wired up in show().
   e.forEach(function (x, i) {
     h += '<div class="wl-row"><span class="wl-cite">' + (i + 1) + '. </span>'
        + '<span class="wl-lem wl-g">' + esc(x.h) + '</span>'
-       + '<div class="wl-ext">' + x.e + '</div></div>';
+       + '<div class="wl-ext wl-dpd">' + x.e + '</div></div>';
   });
   return h;
 }

@@ -353,9 +353,16 @@ def run_gate(EVAL_ON=False):
                 if got != exp_ed:
                     fail(f'Edition count {got} != {exp_ed} rows in the shard')
                 # 6. default tab
-                d_has_gloss = bool(exp_ed)
-                if exp_ed and not (st['tabs'].get('ed') or {}).get('sel'):
-                    fail('Edition is not the default tab')
+                # §9's guarantee is about what a PUBLISHED build shows.  With
+                # the evaluation flag on, the reader has asked for DPD first --
+                # their comparison surface, their order.  With it off, this is
+                # the publishable panel and the edition must be first and
+                # selected; that is the assertion that matters and it is kept.
+                if not EVAL_ON:
+                    if exp_ed and not (st['tabs'].get('ed') or {}).get('sel'):
+                        fail('Edition is not the default tab in the publishable panel')
+                    if (st['tabs'].get('dict') or {}).get('sel') and exp_ed:
+                        fail('the dictionary tab opened by default over the Edition')
                 pexp = ped_total(shown)
                 # 5. every promoted row really is about this paragraph
                 # counts, not a set: a two-word lemma has to find two words
@@ -392,6 +399,30 @@ def run_gate(EVAL_ON=False):
                         and 'ninguna glosa' not in st['body'].lower():
                     if not (st['tabs'].get('ed') or {}).get('dis'):
                         fail('no gloss, but the tab neither says so nor is disabled')
+                # 11. DPD's chips must LOOK like chips and their blocks must
+                # start CLOSED.  Both are pure CSS, both silently did nothing
+                # when a replace failed to match, and nothing in the gate could
+                # see it: counts were right, geometry was right, and the entry
+                # was a wall of text with four run-together links on top.
+                if EVAL_ON and (st['tabs'].get('dpd') or {}).get('sel'):
+                    chips = pg.evaluate('''() => {
+                      const a = document.querySelector('#wlb a.dpd-button');
+                      const h = document.querySelector('#wlb .content.hidden');
+                      return {n: document.querySelectorAll('#wlb a.dpd-button').length,
+                              disp: a ? getComputedStyle(a).display : null,
+                              bg: a ? getComputedStyle(a).backgroundColor : null,
+                              open: h ? getComputedStyle(h).display !== 'none' : false};
+                    }''')
+                    if chips['n']:
+                        if chips['disp'] != 'inline-block':
+                            fail(f'DPD chips are not styled as chips '
+                                 f'(display {chips["disp"]})')
+                        if chips['bg'] in ('rgba(0, 0, 0, 0)', 'transparent'):
+                            fail('DPD chips have no chip background — the CSS '
+                                 'is not reaching them')
+                        if chips['open']:
+                            fail('a DPD disclosure block is open before its '
+                                 'chip was pressed')
                 if st['spill']['px'] > 2:
                     fail(f'{st["spill"]["px"]}px of the panel body is outside the '
                          f'panel ({st["spill"]["who"]})')
@@ -403,8 +434,7 @@ def run_gate(EVAL_ON=False):
                 # sum of what is inside it, and with the flag off that is PED
                 # alone -- so the same assertion covers both states.
                 exp = eval_counts(shown) if EVAL_ON else {}
-                INSIDE = ('cped', 'ny', 'vri', 'ppn', 'uhs', 'rt', 'tpm',
-                          'pwg', 'dpd')
+                INSIDE = ('cped', 'ny', 'vri', 'ppn', 'uhs', 'rt', 'tpm', 'pwg')
                 want_dict = pexp + (sum(exp.get(t, 0) for t in INSIDE)
                                     if EVAL_ON else 0)
                 got_dict = int((st['tabs'].get('dict') or {}).get('n') or 0)
@@ -412,7 +442,7 @@ def run_gate(EVAL_ON=False):
                     fail(f'Pāḷi Dictionary tab shows {got_dict}, sources have '
                          f'{want_dict}')
                 if not EVAL_ON:
-                    stray = [t for t in ('abhi', 'peu') + INSIDE
+                    stray = [t for t in ('abhi', 'peu', 'dpd') + INSIDE
                              if t in st['tabs']]
                     if stray:
                         fail(f'evaluation flag off but the tabs are there: {stray}')
@@ -421,9 +451,10 @@ def run_gate(EVAL_ON=False):
                     if got_ab != exp.get('abhi', 0):
                         fail(f'Abhidhāna tab shows {got_ab}, store has '
                              f'{exp.get("abhi", 0)}')
-                # the edition still speaks first, whatever else is on screen
-                if exp and (st['tabs'].get('dict') or {}).get('sel') and d_has_gloss:
-                    fail('the dictionary tab opened by default over the Edition')
+                    got_dpd = int((st['tabs'].get('dpd') or {}).get('n') or 0)
+                    if got_dpd != exp.get('dpd', 0):
+                        fail(f'DPD tab shows {got_dpd}, store has '
+                             f'{exp.get("dpd", 0)}')
                 # 7. NO DPD WHERE IT MAY NOT BE.  With the evaluation flag
                 # off, not a character of it anywhere -- that is the §9
                 # guarantee for anything publishable.  With the flag on it is
@@ -434,17 +465,23 @@ def run_gate(EVAL_ON=False):
                     if 'digital pāḷi dictionary' in low or 'dpd' in low:
                         fail('DPD text reached the panel with the flag off')
                 else:
+                    # DPD now has its own TAB rather than a section inside
+                    # the dictionary tab, so the containment test is "the DPD
+                    # tab is the one on screen", not "inside #wl-s-dpd".  What
+                    # is still asserted is the thing that matters: DPD markup
+                    # never appears while some OTHER tab is selected.
                     where = pg.evaluate('''() => {
-                      const sec = document.getElementById('wl-s-dpd');
+                      const sel = document.querySelector('#wlt button[aria-selected="true"]');
+                      const tab = sel ? sel.dataset.tab : null;
+                      if (tab === 'dpd') return [];
                       const hits = [];
                       document.querySelectorAll('#wlb *').forEach(e => {
-                        if (!/dpd/i.test(e.className || '')) return;
-                        if (!sec || !sec.contains(e)) hits.push(e.className);
+                        if (/dpd/i.test(String(e.className))) hits.push(String(e.className));
                       });
                       return hits.slice(0, 3);
                     }''')
                     if where:
-                        fail(f'DPD markup outside its own section: {where}')
+                        fail(f'DPD markup showing under another tab: {where}')
         # --- 10. RECURSIVE LOOKUP.  A Pāḷi word inside the panel is a word
         # like any other: clicking it looks it up, the back button appears, and
         # back returns to where the reader was.  It must be a no-op for a word
