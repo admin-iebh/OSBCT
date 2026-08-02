@@ -1522,7 +1522,17 @@ def run_design(pin=None):
         pg.on('response', lambda r: bad_status.append((r.url, r.status))
               if ('/fonts/' in r.url and r.status >= 400) else None)
         vol = (pin or VOLS)[0]
-        pg.goto(BASE + f'/reader/reader2.html?wl=1&wle=0#{vol}/0',
+        # !!! THIS PASS OPENED THE READER WITH `wle=0`, AND A4 MEASURES A THING
+        # THAT ONLY EXISTS WITH `wle=1`.  `.wl-my` is drawn by the Abhidhana and
+        # the APD, both behind the evaluation flag, so with the flag off there
+        # was no Burmese in the panel by construction -- and A4 then reported
+        # "NOT EXERCISED" and attributed it to the store being absent, which
+        # made the note itself misleading: the store's absence was never the
+        # only reason, and on a machine that HAS the store the pass still could
+        # not run.  Follow the store: exercise the evaluation surface where it
+        # exists, and stay off it where it does not.
+        _wle = 1 if EMAN is not None else 0
+        pg.goto(BASE + f'/reader/reader2.html?wl=1&wle={_wle}#{vol}/0',
                 wait_until='domcontentloaded')
         try:
             pg.wait_for_selector('.para.canon', timeout=20000)
@@ -1582,6 +1592,64 @@ def run_design(pin=None):
             if pg.evaluate('(s) => s.every(x => !!document.querySelector(x))',
                            list(need)):
                 base = pg.evaluate(TYPE_READ)
+                # !!! `.wl-my` IS NOT ON THE EDITION TAB, AND THIS PASS IS
+                # STANDING ON IT.  A4 read base['my'] out of a measurement
+                # taken three lines after clicking `data-tab="ed"`, so the
+                # Burmese it exists to measure was NEVER IN THE DOM and
+                # base['my'] was structurally always None.  That never
+                # showed, because with the evaluation store absent A4
+                # printed NOT EXERCISED and stopped there -- so the first
+                # run that could exercise it was also the first run that
+                # could see the assertion was broken.  Measured: the
+                # Burmese lives on the `abhi` and `dict` tabs, at 16.5px.
+                #
+                # The comment above the word loop already said the right
+                # thing -- a word picked at random would make A4 vacuous,
+                # try words until one draws every element the pass measures
+                # -- but `need` never contained `.wl-my`, so the intent was
+                # written down and not implemented.  Both halves are fixed:
+                # find the tab the Burmese is on and measure it there, and,
+                # when the store is present, REQUIRE it, so a word no source
+                # glosses in Burmese moves the probe on instead of quietly
+                # emptying the assertion.
+                #
+                # POLL, DO NOT GUESS A DELAY: a tab renders asynchronously,
+                # so clicking and reading in the same turn finds nothing --
+                # which is how the first attempt at this fix concluded,
+                # wrongly, that no word in the Majjhima had any Burmese.
+                myv = None
+                for _t in pg.evaluate(
+                        "() => [...document.querySelectorAll('#wlt button')]"
+                        ".filter(b => !b.classList.contains('dis'))"
+                        ".map(b => b.dataset.tab)"):
+                    pg.evaluate(
+                        "t => { const b = document.querySelector("
+                        "  '#wlt button[data-tab=\"' + t + '\"]');"
+                        " if (b) b.click(); }", _t)
+                    for _ in range(8):
+                        myv = pg.evaluate(
+                        "() => { const e = document.querySelector('#wl .wl-my');"
+                        " if (!e) return null; const c = getComputedStyle(e);"
+                        " return {my: parseFloat(c.fontSize), fam: c.fontFamily,"
+                        "         n: document.querySelectorAll('#wl .wl-my').length}; }")
+                        if myv:
+                            break
+                        pg.wait_for_timeout(150)
+                    if myv:
+                        myv['tab'] = _t
+                        break
+                pg.evaluate(
+                    "() => { const b = document.querySelector("
+                    "  '#wlt button[data-tab=\"ed\"]');"
+                    " if (b && !b.classList.contains('dis')) b.click(); }")
+                pg.wait_for_timeout(250)
+                if EMAN is not None and not myv:
+                    continue        # no Burmese anywhere for this word
+                if myv:
+                    base['my'] = myv['my']
+                    base['myFam'] = myv['fam']
+                    base['myN'] = myv['n']
+                    base['myTab'] = myv['tab']
                 seen_panel = True
                 break
         if not seen_panel:
@@ -1641,6 +1709,11 @@ def run_design(pin=None):
                 fails.append(msg + ', and the evaluation store IS present here')
             else:
                 print(f'  note: {msg}; run with the evaluation store to cover it')
+        if base['my'] is not None:
+            print('  A4 measured: %s Burmese block(s) on the %r tab at '
+                  '%.1fpx in %s'
+                  % (base.get('myN'), base.get('myTab'), base['my'],
+                     (base.get('myFam') or '?').split(',')[0].strip('\"')))
         if base['my'] is not None and base['my'] < 16:
             fails.append(f'A4: Burmese is {base["my"]}px; stacked consonants, '
                          f'asat and kinzi are not separable below 16px')
