@@ -116,6 +116,9 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
 .kids{display:none}.kids.open{display:block}
 .sr-head{font-family:'Inter',sans-serif;font-size:11px;color:var(--faint);padding:8px 12px 4px}
 .sresult{padding:7px 12px;border-radius:8px;cursor:pointer}.sresult:hover{background:var(--hover)}
+/* A hit the index cannot place (no ordinal) is drawn plainly and does not
+   pretend to be clickable — see the note beside `_k` in doSearch. */
+.sresult.sr-dead{cursor:default;opacity:.62}.sresult.sr-dead:hover{background:none}
 .sr-lay{font-size:10.5px;font-weight:600}.sr-snip{font-family:'Gentium Plus',serif;font-size:12.5px;margin-top:2px;line-height:1.4}
 .sr-snip mark{background:var(--hl);border-radius:2px}
 /* !!! THE SECTION ROWS HAD NO STYLES AT ALL (2026-07-30o, user-reported): they
@@ -1757,6 +1760,9 @@ async function doSearch(q){
   // slow enough to lose it.  Each call takes a ticket and paints only if it is
   // still the newest.
   const my=++sSeq;
+  // kept for `openHit` so the clicked term can be highlighted where it lands,
+  // rather than being interpolated into an inline onclick and escaped there
+  window.__hq=(q||'').trim();
   const dd=$('#sdrop'); const fq=foldS((q||'').trim());
   if(fq.length<2){dd.hidden=true;dd.innerHTML='';return;}
   await ensureTerms(); await ensureNames();
@@ -1795,13 +1801,46 @@ async function doSearch(q){
     for(const [pi,c] of post){ total+=c; if(items.length<80){ const p=sh.paras[pi]; const lay=TERMS.layers[vi];
       const f=foldS(p.text), i=f.indexOf(fq), a=Math.max(0,i-24), b=Math.min(p.text.length,i+fq.length+42);
       const snip=(a>0?'…':'')+esc(p.text.slice(a,i))+'<mark>'+esc(p.text.slice(i,i+fq.length))+'</mark>'+esc(p.text.slice(i+fq.length,b))+'…';
-      items.push('<div class="sresult" onclick="openKey(\''+p.key+'\',\''+({'pali-unicode':'canon','atthakatha-unicode':'A','tika-unicode':'T'}[lay])+'\');document.getElementById(\'sdrop\').hidden=true"><span class="sr-lay" style="color:'+COL[lay]+'">'+LN[lay]+(p.n!=null?' ¶'+p.n:(p.page!=null?' p.'+p.page:''))+'</span><div class="sr-snip">'+snip+'</div></div>');
+      // !!! `p.key` IS NOT A FIELD THE INDEX HAS EVER CARRIED (2026-08-02,
+      // user-reported).  This row was built as `openKey(p.key, …)`; measured
+      // over all 118 shards, `key` is present on 0 of 86,365 paragraphs and
+      // `ord` on all of them — `build_search_index.py` says so in its own
+      // docstring ("**`ord` is added**… the reader needs the ordinal"), and
+      // `search.html` has always used `p.ord`.  So EVERY occurrence hit in
+      // this box called `openKey('undefined', …)`: `parseKey` found no '#',
+      // returned the volume as `'undefine'` (slice(0,-1)) and the ordinal as
+      // NaN, the reader drew 0 paragraphs, and the layer band reported "No
+      // Aṭṭhakathā is linked to the passages on screen" — a wrong answer that
+      // reads as an honest one.  Fourth instance of this project's
+      // characteristic failure: an ABSENT VALUE PRODUCED A CALL THAT LOOKED
+      // LIKE A CALL.  Section hits above were never affected; they build the
+      // key from `vols[]` + ord, which is what this now does.
+      // A row whose ordinal is missing is drawn WITHOUT an onclick rather
+      // than with a dead one, so the failure is visible instead of silent.
+      const _k=(p.ord!=null)?(TERMS.vols[vi]+'#'+p.ord):null;
+      items.push('<div class="sresult'+(_k?'':' sr-dead')+'"'+(_k?' onclick="openHit(\''+_k+'\',\''+({'pali-unicode':'canon','atthakatha-unicode':'A','tika-unicode':'T'}[lay])+'\')"':'')+'><span class="sr-lay" style="color:'+COL[lay]+'">'+LN[lay]+(p.n!=null?' ¶'+p.n:(p.page!=null?' p.'+p.page:''))+'</span><div class="sr-snip">'+snip+'</div></div>');
     } } }
   // SECTIONS FIRST, THEN OCCURRENCES — the same order `search.html` uses, and
   // for the same reason: someone typing a sutta's name wants the sutta.
   if(my!==sSeq) return;
   dd.hidden=false; dd.innerHTML=secHTML+
     '<div class="sr-head">'+total.toLocaleString()+' occurrence(s) for “'+esc(q)+'”</div>'+items.join('');
+}
+// A HIT MUST LAND ON THE WORD, NOT MERELY IN THE VOLUME.  A link from
+// `search.html` carries `?q=` and `openFromURL` highlights it; this box called
+// `openKey` bare, so once the key was right it still opened 364 paragraphs of
+// the Visuddhimagga with nothing to say which one had been asked for.  Same
+// poll-don't-guess shape as `openFromURL` — the paragraph is drawn
+// asynchronously and a fixed delay races the render.
+async function openHit(key,kind){
+  const dd=document.getElementById('sdrop'); if(dd) dd.hidden=true;
+  const q=window.__hq||'';
+  await openKey(key,kind);
+  for(let i=0;i<40;i++){
+    const el=document.getElementById('p-'+key.replace('#','-'));
+    if(el){ el.scrollIntoView({block:'center'}); if(q) markInEl(el,q); return; }
+    await new Promise(r=>setTimeout(r,60));
+  }
 }
 // !!! reader2 HAD NO URL HANDLING AT ALL (2026-07-30g).  The site's own
 // navigation was split — `index.html` opened THIS reader while the top-nav

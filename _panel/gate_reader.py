@@ -1920,6 +1920,186 @@ def run_flag_negative_controls():
     return 1 if bad else 0
 
 
+def _search_probe():
+    """A query the shipped index really answers, chosen deterministically.
+
+    Picked from `site/index/terms.compact.json` rather than hard-coded, so the
+    gate keeps working when the corpus is rebuilt, and returns the volume and
+    ordinals the INDEX says the term is at -- computed here, from the files,
+    independently of anything the page does.  That independence is the point:
+    an assertion that reads the answer off the same DOM it is judging can
+    only tell you the DOM is self-consistent.
+    """
+    tp = os.path.join(REPO, 'site', 'index', 'terms.compact.json')
+    if not os.path.exists(tp):
+        return None
+    T = json.load(open(tp))
+    rng = random.Random(SEED)
+    # only volumes whose shard is actually on disk, so a partial checkout
+    # narrows the probe instead of failing it
+    have = {i for i, v in enumerate(T['vols'])
+            if os.path.exists(os.path.join(REPO, 'site', 'index',
+                                           v + '.idx.json'))}
+    keys = [k for k in T['terms']
+            if len(k) >= 6 and k.isalpha()
+            and len(T['terms'][k]) == 1 and T['terms'][k][0] in have]
+    keys.sort()
+    rng.shuffle(keys)
+    for term in keys[:60]:
+        vi = T['terms'][term][0]
+        vol = T['vols'][vi]
+        sp = os.path.join(REPO, 'site', 'index', vol + '.idx.json')
+        sh = json.load(open(sp))
+        post = sh['inv'].get(term) or []
+        ords = [sh['paras'][pi].get('ord') for pi, _ in post]
+        if post and all(o is not None for o in ords):
+            return {'term': term, 'vol': vol, 'ords': ords,
+                    'layer': T['layers'][vi], 'npara': len(sh['paras'])}
+    return None
+
+
+# `pali-unicode` etc. -> the layer letter the result row must pass to openHit
+_SLAYER = {'pali-unicode': 'canon', 'atthakatha-unicode': 'A',
+           'tika-unicode': 'T'}
+
+
+def run_search():
+    """DOES CLICKING A SEARCH HIT OPEN THE PASSAGE IT POINTS AT?
+
+    User-reported 2026-08-02, and dead since 8d5bebed: the top-bar box built
+    every occurrence row as `openKey(p.key, ...)`, and `key` IS NOT A FIELD
+    THE INDEX EMITS.  Measured over all 118 shards: present on 0 of 86,365
+    paragraphs; `ord` present on all of them, and `build_search_index.py`
+    says so in its own docstring.  So every hit called `openKey('undefined')`,
+    `parseKey` split it into the volume `'undefine'` and the ordinal `NaN`,
+    the reader drew nothing, and the layer band said "No Aṭṭhakathā is linked
+    to the passages on screen."  A wrong answer wearing an honest one's face.
+
+    Nothing in this repository could see it.  `search.html` was correct, so
+    every check of the search DATA passed; the reader's own gate never typed
+    anything into the box.  So this asserts the whole path a reader walks --
+    type, look, click, arrive -- and it asserts ARRIVAL against the index
+    files rather than against the page.
+
+    Three things, and the third is the one that matters:
+      a. the box returns rows for a term the index really carries (non-vacuity
+         -- an empty dropdown must not read as a pass);
+      b. every row carries a key of the form VOL#ORD, with VOL a volume that
+         exists and ORD inside that volume's paragraph count;
+      c. clicking the first row draws paragraphs, leaves no empty-band note,
+         and highlights the term INSIDE the paragraph the row pointed at.
+    """
+    probe = _search_probe()
+    fails = []
+    if not probe:
+        print('  note: SEARCH NOT EXERCISED — site/index/ absent, so the '
+              'result rows cannot be checked here')
+        print('gate_reader [search]: 0 failures (NOT EXERCISED)')
+        return 0
+    term, vol, ords = probe['term'], probe['vol'], probe['ords']
+    want_key = '%s#%d' % (vol, ords[0])
+    want_kind = _SLAYER.get(probe['layer'], 'canon')
+
+    with sync_playwright() as pw:
+        b = pw.chromium.launch()
+        pg = b.new_page(viewport={'width': 1400, 'height': 900})
+        errs = []
+        pg.on('pageerror', lambda e: errs.append(str(e)))
+        pg.goto(BASE + '/reader/reader2.html?wl=0#%s#0' % vol,
+                wait_until='domcontentloaded')
+        try:
+            pg.wait_for_selector('.para', timeout=30000)
+            pg.fill('#sq', term)
+            pg.wait_for_selector('#sdrop .sresult', timeout=30000)
+            rows = pg.evaluate(
+                "() => [...document.querySelectorAll('#sdrop .sresult')]"
+                ".map(d => d.getAttribute('onclick') || '')")
+        except Exception as e:
+            rows = []
+            fails.append('search for %r never produced a result row: %s'
+                         % (term, e))
+
+        # (a) non-vacuity, phrased against the FILES: the index says this term
+        # is there, so an empty dropdown is a failure and not an empty loop.
+        if not rows:
+            fails.append('the index carries %r in %s at ords %s, and the box '
+                         'showed no occurrence row at all' % (term, vol, ords))
+
+        # (b) every key must be one the reader can actually parse
+        vol_paras = {vol: probe['npara']}
+        bad = _bad_keys(rows, vol_paras)
+        fails.extend(bad)
+
+        # THE CONTROL, run in the same breath as the assertion it guards.  If
+        # `_bad_keys` cannot catch the exact string that shipped for two days,
+        # then (b) above is a comment, not a check.
+        if not _bad_keys(["openHit('undefined','A')"], vol_paras):
+            fails.append('CONTROL IS BROKEN: the row-key check accepts '
+                         "openHit('undefined', ...), which is the defect it "
+                         'exists to catch')
+
+        # (c) arrival
+        if rows:
+            try:
+                pg.click('#sdrop .sresult')
+                pg.wait_for_timeout(1500)
+                got = pg.evaluate("""() => ({
+                    small: (document.querySelector('#doctitle small')||{}).textContent||'',
+                    paras: document.querySelectorAll('.para').length,
+                    band: (document.querySelector('.bandnote')||{}).textContent||'',
+                    markIn: [...document.querySelectorAll('mark.shl')]
+                              .map(m => (m.closest('.para')||{}).id),
+                })""")
+                if 'undefine' in got['small']:
+                    fails.append('clicking a hit left the title bar reading %r'
+                                 % got['small'])
+                if got['paras'] == 0:
+                    fails.append('clicking a hit for %r drew 0 paragraphs '
+                                 '(the volume has %d)' % (term, probe['npara']))
+                if got['band']:
+                    fails.append('clicking a hit left an empty-layer note on '
+                                 'screen: %r' % got['band'])
+                want_el = 'p-' + want_key.replace('#', '-')
+                if want_el not in (got['markIn'] or []):
+                    fails.append('the term is not highlighted in the paragraph '
+                                 'the row points at (%s); marks landed in %r'
+                                 % (want_el, got['markIn']))
+            except Exception as e:
+                fails.append('clicking the first hit for %r raised: %s'
+                             % (term, e))
+        if errs:
+            fails.append('page errors during search: %s' % errs[:3])
+        b.close()
+
+    for f in fails:
+        print('  FAIL search: %s' % f)
+    print('gate_reader [search]: %d failures  (probe %r -> %s, expected %s, '
+          'kind %s)' % (len(fails), term, ords, want_key, want_kind))
+    return 1 if fails else 0
+
+
+def _bad_keys(onclicks, vol_paras):
+    """The row-key assertion, factored out so its own control can call it."""
+    out = []
+    for i, oc in enumerate(onclicks):
+        m = re.search(r"open(?:Hit|Key)\('([^']*)'", oc or '')
+        if not m:
+            # a row with no handler at all is only acceptable if it says so
+            out.append('row %d has no openHit(...) handler: %r' % (i, oc[:80]))
+            continue
+        k = m.group(1)
+        km = re.match(r'^([0-9A-Za-z]+)#(\d+)$', k)
+        if not km:
+            out.append('row %d carries the unusable key %r — this is the '
+                       '2026-08-02 defect' % (i, k))
+            continue
+        v, o = km.group(1), int(km.group(2))
+        if v in vol_paras and not (0 <= o < vol_paras[v]):
+            out.append('row %d points at %s ordinal %d, outside that volume '
+                       '(%d paragraphs)' % (i, v, o, vol_paras[v]))
+    return out
+
+
 if __name__ == '__main__':
     if '--breakpoints' in sys.argv:
         sys.exit(run_breakpoints())
@@ -1929,6 +2109,8 @@ if __name__ == '__main__':
         sys.exit(run_design()[1])
     if '--design-negative-controls' in sys.argv:
         sys.exit(run_design_negative_controls())
+    if '--search-only' in sys.argv:
+        sys.exit(run_search())
     vf = check_version()
     for f in vf:
         print(f'  FAIL version: {f}')
@@ -1940,6 +2122,9 @@ if __name__ == '__main__':
         sys.exit(run_negative_controls())
     rc = run_gate(EVAL_ON=False)
     rc |= run_design()[1]
+    # the search box is part of the reader a visitor uses, and until
+    # 2026-08-02 nothing here ever typed into it -- see run_search
+    rc |= run_search()
     if '--no-eval' not in sys.argv:
         rc |= run_gate(EVAL_ON=True)
         rc |= run_tabs()
