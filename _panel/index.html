@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="pi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Word-lookup panel — PILOT — 09Ma01</title>
+<!--
+  OSBCT word-lookup panel PROTOTYPE (dictionary roadmap step 2 shell, piloted).
+  Standalone: nothing here touches site/.  Serve this folder over http
+  (python3 -m http.server) — fetch() does not work from file://.
+
+  Sources are TABS, never merged (principle 4, and the design reading in
+  claude/learning_from_tipitakapali_word_panel.md):
+    - DPD        — EVALUATION ONLY.  Decided 2026-08-01: no DPD gloss ships
+                   (§9 authority constraint + CC BY-NC-SA).  It is in this
+                   prototype, marked, so the sources can be compared.
+    - Abhidhāna  — Tipiṭaka-Pāḷi-Myanmā-Abhidhāna, Burmese, citations intact
+                   (pm12e.csv digitisation).  THE lexical authority (§9).
+    - PEU        — its English rendering; Google-Translate-marked entries are
+                   segregated behind an explicit reveal, never mixed.
+    - Edition    — the step-3 glosses: the edition's own -ti definitions,
+                   proximity-first via the existing link map.
+  Click recovery is caret-based — no per-word <span>s (roadmap §5).
+  Chrome strings are collected in STR{} below; at integration they go through
+  i18n.js (roadmap §7). The Pāḷi never does.
+-->
+<style>
+:root{
+  --ink:#26211a; --paper:#faf7f2; --accent:#7a4a10; --rule:#e5ddd0;
+  --panelw:400px; --warm:#fdf3e4; --warnbg:#fff3cd; --warnink:#7a5a00;
+  --blue:#1d5c96; --orange:#b05c10; --green:#2f6b3a; --cyan:#0f6b74; --grey:#6b6459;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font:17px/1.65 Georgia,'Times New Roman',serif;color:var(--ink);background:var(--paper)}
+header.top{position:sticky;top:0;z-index:30;background:var(--accent);color:#fff;
+  padding:.45rem .9rem;display:flex;gap:.7rem;align-items:baseline;flex-wrap:wrap}
+header.top h1{font-size:1rem;margin:0;font-weight:normal;letter-spacing:.02em}
+header.top .pilot{font-size:.72rem;background:#fff;color:var(--accent);border-radius:3px;
+  padding:0 .4em;font-family:system-ui,sans-serif;font-weight:600}
+header.top .hint{font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+.wrap{display:flex;align-items:flex-start;max-width:1200px;margin:0 auto}
+main#text{flex:1 1 auto;min-width:0;padding:1.2rem 1.4rem 4rem;max-width:46rem;margin:0 auto}
+main#text h2{font-size:1.25rem;color:var(--accent);font-weight:normal;margin:1.6em 0 .4em;text-align:center}
+main#text h3{font-size:1.05rem;font-weight:normal;font-style:italic;margin:1.2em 0 .3em;text-align:center}
+main#text p.para{margin:.55em 0;text-align:justify;cursor:pointer}
+main#text p.para:hover{background:#f4ede1}
+.pgrule{color:var(--grey);font-size:.75rem;text-align:center;margin:.9em 0;font-family:system-ui,sans-serif;
+  user-select:none}
+.pgrule:before,.pgrule:after{content:"──";letter-spacing:.2em;margin:0 .5em;color:var(--rule)}
+mark.sel{background:#ffe9a8;border-radius:2px}
+
+/* ---------- the panel ---------- */
+aside#panel{width:var(--panelw);max-width:100vw;flex:0 0 auto;position:sticky;top:2.4rem;
+  align-self:flex-start;max-height:calc(100vh - 2.4rem);display:flex;flex-direction:column;
+  background:#fff;border-left:1px solid var(--rule);box-shadow:-2px 0 8px rgba(0,0,0,.04)}
+aside#panel.empty .pbody:after{content:attr(data-empty);display:block;color:var(--grey);
+  font-family:system-ui,sans-serif;font-size:.85rem;padding:1.2rem}
+.phead{padding:.6rem .9rem .0;border-bottom:1px solid var(--rule);background:var(--warm)}
+.phead .pwrow{display:flex;align-items:center;gap:.4rem}
+.phead .pword{font-size:1.35rem;font-weight:bold}
+.pback{border:1px solid var(--rule);background:#fff;color:var(--accent);border-radius:5px;
+  font:700 1rem/1 system-ui,sans-serif;padding:.15em .5em;cursor:pointer;display:none}
+.pback.show{display:inline-block}
+.phead .pcounts{font-family:system-ui,sans-serif;font-size:.72rem;color:var(--grey);margin:.15rem 0 .5rem}
+.phead .pcounts b{color:var(--ink);font-weight:600}
+.ptabs{display:flex;gap:.15rem;flex-wrap:wrap;padding:0 .9rem;margin:0 -.9rem;background:var(--warm)}
+.ptabs button{font:600 .78rem/1 system-ui,sans-serif;border:1px solid var(--rule);border-bottom:none;
+  background:#efe7d8;color:#5a4a30;padding:.45em .7em .5em;border-radius:6px 6px 0 0;cursor:pointer;
+  position:relative}
+.ptabs button[aria-selected="true"]{background:#fff;color:var(--accent)}
+.ptabs button.dis{opacity:.4;cursor:default}
+.ptabs button .n{font-weight:400;opacity:.7}
+/* instant tooltips — native title tooltips are slow and never fire on
+   disabled buttons (Safari swallows their mouse events entirely) */
+.ptabs button[data-tip]:hover::after{content:attr(data-tip);position:absolute;
+  top:calc(100% + 5px);left:50%;transform:translateX(-50%);z-index:60;
+  width:max-content;max-width:min(280px,72vw);white-space:normal;text-align:left;
+  font:400 .85rem/1.4 system-ui,sans-serif;color:#fff;background:#3a3126;
+  padding:.45em .6em;border-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,.25);
+  pointer-events:none}
+.ptabs button[data-tip]:hover::before{content:"";position:absolute;top:100%;left:50%;
+  transform:translateX(-50%);border:5px solid transparent;border-bottom-color:#3a3126;
+  z-index:60;pointer-events:none}
+.pbody{overflow-y:auto;padding:.8rem .9rem 1.2rem;flex:1 1 auto;font-size:.95rem}
+.pclose{position:absolute;top:.4rem;right:.6rem;border:none;background:none;font-size:1.1rem;
+  color:var(--grey);cursor:pointer;font-family:system-ui,sans-serif}
+.src{font-family:system-ui,sans-serif;font-size:.7rem;color:var(--grey);margin:.2rem 0 .6rem}
+.banner{background:var(--warnbg);color:var(--warnink);border:1px solid #eadfa8;border-radius:4px;
+  font-family:system-ui,sans-serif;font-size:.74rem;padding:.4em .6em;margin:0 0 .7rem}
+.entry{border-top:1px solid var(--rule);padding:.55rem 0 .3rem}
+.entry:first-of-type{border-top:none}
+.enum{font-family:system-ui,sans-serif;font-size:.72rem;color:var(--grey)}
+.lemma{color:var(--blue);font-weight:bold}
+.mypos{color:var(--green);font-family:system-ui,sans-serif;font-size:.85em}
+.myhead{color:var(--orange);font-weight:bold}
+.etym{color:var(--cyan)}
+.mydef{margin:.25em 0}
+.cite{color:var(--grey);font-size:.85em;text-align:right;font-family:system-ui,sans-serif}
+.gcite{color:var(--grey);font-size:.78em;font-family:system-ui,sans-serif}
+.gword{font-weight:bold}
+.gloss-prox{background:#eef6ee;border:1px solid #cfe3cf;border-radius:4px;padding:.35em .5em;margin:.3em 0}
+.gtrunc{color:var(--warnink);font-size:.78em;font-family:system-ui,sans-serif}
+.mt-reveal{font:600 .78rem system-ui,sans-serif;color:var(--warnink);background:none;
+  border:1px dashed #d8c890;border-radius:4px;padding:.35em .6em;cursor:pointer;margin:.3rem 0}
+.acites{font-family:system-ui,sans-serif;font-size:.78rem;color:#4a4034;margin:.3em 0;
+  padding:.3em .5em;background:#f6f1e7;border-radius:4px}
+.en-reveal{font:600 .78rem system-ui,sans-serif;color:var(--blue);background:none;
+  border:1px dashed #b8cfe0;border-radius:4px;padding:.3em .6em;cursor:pointer;margin:.25rem 0}
+.en-reveal.mt-style{color:var(--warnink);border-color:#d8c890}
+.en-inline{border-left:3px solid #b8cfe0;padding-left:.6em;margin:.3em 0}
+.en-inline.hidden{display:none}
+.mt{display:none;border-left:3px solid #eadfa8;padding-left:.6em;margin:.3em 0}
+.mt.open{display:block}
+.pbody a.dpd-button{display:inline-block;font:600 .72rem/1 system-ui,sans-serif;color:#5a4a30;
+  background:#f2ecdf;border:1px solid var(--rule);border-radius:10px;padding:.3em .7em;margin:.15em .15em 0 0;
+  text-decoration:none}
+.pbody a.dpd-button:hover{background:#e9e0cc}
+.pbody .button-box{margin:.3em 0}
+.dpd .content.hidden,.content.hidden{display:none}
+.dpd table,.pbody table{border-collapse:collapse;font-size:.82rem;margin:.4em 0;max-width:100%}
+.pbody table th,.pbody table td{border:1px solid var(--rule);padding:.15em .4em;text-align:left;
+  font-family:system-ui,sans-serif;font-weight:normal;vertical-align:top}
+.pbody table th{background:#f6f1e7;color:#5a4a30}
+.pbody .inflection{display:block;overflow-x:auto}
+.pbody .subscript{vertical-align:sub;font-size:.72em}
+.pbody .lemsuper{vertical-align:super;font-size:.72em;color:var(--grey)}
+.pbody .gd3definition p{margin:.3em 0}
+.decon li{font-family:Georgia,serif}
+.subhead{font-family:system-ui,sans-serif;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--grey);margin:.8rem 0 .2rem}
+.unres{color:var(--grey);font-family:system-ui,sans-serif;font-size:.85rem}
+
+/* ---------- narrow layout: bottom sheet ---------- */
+@media (max-width:900px){
+  .wrap{display:block}
+  aside#panel{position:fixed;left:0;right:0;bottom:0;top:auto;width:100%;max-height:60vh;
+    border-left:none;border-top:2px solid var(--accent);box-shadow:0 -4px 16px rgba(0,0,0,.15);
+    transform:translateY(105%);transition:transform .18s ease-out;z-index:40}
+  aside#panel.open{transform:none}
+  body.panel-open main#text{padding-bottom:62vh}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Mūlapaṇṇāsapāḷi — 09Ma01</h1>
+  <span class="pilot">WORD-LOOKUP PILOT</span>
+  <span class="hint" id="hint">Click any word to look it up.</span>
+</header>
+<div class="wrap">
+  <main id="text" data-vol="09Ma01"></main>
+  <aside id="panel" class="empty" aria-label="Word lookup">
+    <button class="pclose" id="pclose" title="Close">✕</button>
+    <div class="phead">
+      <div class="pwrow">
+        <button class="pback" id="pback" title="Back">‹</button>
+        <div class="pword" id="pword">&nbsp;</div>
+      </div>
+      <div class="pcounts" id="pcounts"></div>
+      <div class="ptabs" id="ptabs" role="tablist"></div>
+    </div>
+    <div class="pbody" id="pbody" data-empty="Click a word in the text."></div>
+  </aside>
+</div>
+<script>
+'use strict';
+/* ---------- chrome strings: through i18n.js at integration (roadmap §7) --- */
+const STR={
+  dpd:'DPD', abhi:'Abhidhāna', peu:'PEU', edition:'Edition', occ:'occurrences',
+  cped:'CPED', dop:'DOP', ppn:'PPN',
+  tip_dpd:'Digital Pāḷi Dictionary (Bodhirasa) — evaluation only, does not ship (§9)',
+  tip_abhi:'Tipiṭaka-Pāḷi-Myanmā-Abhidhāna (Ministry of Religious Affairs, Yangon) — the lexical authority (§9)',
+  tip_peu:'PEU — English rendering of the Abhidhāna (encoded by Bodhirasa)',
+  tip_cped:'Concise Pali English Dictionary (A.P. Buddhadatta)',
+  tip_dop:'Dictionary of Pāli by Margaret Cone',
+  tip_ppn:'Dictionary of Pāli Proper Names (G.P. Malalasekera)',
+  tip_ed:'The edition’s own glosses — aṭṭhakathā/ṭīkā, step 3',
+  modern_note:'Modern lexicon — reference only in this prototype; per §9 a filter, never the panel’s voice.',
+  cites:'Citations:',
+  cites_note:'(transcoded from the Burmese — abbreviations without a settled reading are left as printed)',
+  en_btn:'English (PEU) ⇣',
+  en_btn_mt:'English (PEU — machine-translated) ⇣',
+  en_attr:'PEU’s English rendering of this entry (human-translated). A translation, not the authority.',
+  cped_src:'Concise Pali English Dictionary (A.P. Buddhadatta).',
+  dop_src:'Dictionary of Pāli by Margaret Cone (homonyms shown numbered, as printed).',
+  ppn_src:'Dictionary of Pāli Proper Names (G.P. Malalasekera) — DPPN, other-dictionaries v1.0.8.',
+  corpus:'corpus', thisvol:'this volume', canon:'canon', comm:'aṭṭh.', sub:'ṭīkā',
+  dpd_banner:'Evaluation only — DPD content does not ship (§9; CC BY-NC-SA). '+
+             'Form→lemma resolution (build-time filter use) is what remains.',
+  abhi_src:'Tipiṭaka-Pāḷi-Myanmā-Abhidhāna (Ministry of Religious Affairs, Yangon) — '+
+           'Burmese text, pm12e digitisation (2020), citations as printed.',
+  peu_src:'PEU — English rendering of the Abhidhāna (encoded by Bodhirasa, 2024). '+
+          'A translation, not the authority: where they differ, the Abhidhāna governs.',
+  peu_mt:'machine-translated (Google) — withheld by default',
+  peu_mt_show:'Show machine translation anyway',
+  ed_src:'The edition’s own glosses (bold + ti formula, step 3). '+
+         'Pilot data: Majjhima aṭṭhakathā + ṭīkā volumes only.',
+  prox:'In the linked passage on this paragraph',
+  others:'Elsewhere in the Majjhima commentaries',
+  trunc:'…continues in the text (gloss cut short by the next lemma — flagged, not patched)',
+  unresolved:'Not resolved to any lemma — shown as occurrences only (roadmap §4: never a confident wrong lemma).',
+  nogloss:'No gloss in the pilot volumes for this exact form.',
+  noentry:'No entry for the resolved lemma(s).',
+  grammar_form:'This form — grammatical possibilities (DPD)',
+  decon_form:'Deconstruction candidates (DPD, unranked alternatives)',
+  loading:'Loading…'
+};
+const FOLD={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
+const fold=s=>s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLD[c]||c);
+const pfx=s=>{const f=fold(s);return (f.slice(0,2)+'__').slice(0,2);};
+const PALI='aāiīuūeokgṅcjñṭḍṇtdnpbmyrlvshḷṁ';
+const PALISET=new Set((PALI+PALI.toUpperCase()).split(''));
+const APOS=new Set(['’',"'"]);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------------- data loading (sharded, cached per session) ------------- */
+const cache=new Map();
+async function shard(dir,p){
+  const k=dir+'/'+p;
+  if(cache.has(k)) return cache.get(k);
+  const pr=fetch('data/'+dir+'/'+p+'.json').then(r=>r.ok?r.json():null).catch(()=>null);
+  cache.set(k,pr); return pr;
+}
+
+/* ---------------- render the volume -------------------------------------- */
+let LINKS=null;
+(async function(){
+  const [vol,links]=await Promise.all([
+    fetch('data/volume.json').then(r=>r.json()),
+    fetch('data/links.json').then(r=>r.json())]);
+  LINKS=links;
+  const m=document.getElementById('text');
+  let html='', lastSutta=null, lastVagga=null, lastPage=null;
+  for(const p of vol.paragraphs){
+    if(p.vagga && p.vagga!==lastVagga && p.vagga!=='X'){ html+='<h2>'+esc(p.vagga)+'</h2>'; lastVagga=p.vagga; }
+    if(p.sutta && p.sutta!==lastSutta && p.sutta!=='X'){ html+='<h3>'+esc(p.sutta)+'</h3>'; lastSutta=p.sutta; }
+    if(p.printed && p.printed!==lastPage){ html+='<div class="pgrule">p. '+p.printed+'</div>'; lastPage=p.printed; }
+    html+='<p class="para" data-n="'+p.n+'" data-printed="'+(p.printed||'')+'">'+esc(p.text)+'</p>';
+  }
+  m.innerHTML=html;
+})();
+
+/* ---------------- caret-based click recovery (no per-word spans) --------- */
+function wordAt(x,y){
+  let node,off;
+  if(document.caretPositionFromPoint){
+    const c=document.caretPositionFromPoint(x,y); if(!c)return null;
+    node=c.offsetNode; off=c.offset;
+  }else if(document.caretRangeFromPoint){
+    const r=document.caretRangeFromPoint(x,y); if(!r)return null;
+    node=r.startContainer; off=r.startOffset;
+  }else return null;
+  if(!node||node.nodeType!==3) return null;
+  const t=node.textContent;
+  const isW=i=>{
+    const ch=t[i]; if(ch===undefined)return false;
+    if(PALISET.has(ch))return true;
+    if(APOS.has(ch))return PALISET.has(t[i-1]||'')&&PALISET.has(t[i+1]||'');
+    return false;
+  };
+  if(!isW(off)&&!isW(off-1)) return null;
+  let a=isW(off)?off:off-1,b=a;
+  while(a>0&&isW(a-1))a--;
+  while(b<t.length-1&&isW(b+1))b++;
+  let w=t.slice(a,b+1);
+  // strip a glued apparatus digit (defensive; text should already be clean)
+  w=w.replace(/(\d{1,2})$/,'');
+  if(!w)return null;
+  return {word:w,node,a,b};
+}
+
+let markEl=null;
+function markSel(node,a,b){
+  if(markEl){const p=markEl.parentNode;while(markEl.firstChild)p.insertBefore(markEl.firstChild,markEl);
+    p.removeChild(markEl);p.normalize();markEl=null;}
+  const r=document.createRange();r.setStart(node,a);r.setEnd(node,b+1);
+  markEl=document.createElement('mark');markEl.className='sel';
+  try{r.surroundContents(markEl);}catch(e){markEl=null;}
+}
+
+document.getElementById('text').addEventListener('click',ev=>{
+  const hit=wordAt(ev.clientX,ev.clientY);
+  if(!hit)return;
+  const para=ev.target.closest('p.para');
+  markSel(hit.node,hit.a,hit.b);
+  HIST.length=0; updateBack();          // a click in the text starts fresh
+  lookup(hit.word,para?+para.dataset.n:null);
+});
+
+/* clicking a Pāḷi word INSIDE the panel looks it up too (recursive lookup).
+   Only fires when the pilot dataset has something for the word — otherwise
+   the click does nothing (the shards cover the pilot volume's vocabulary). */
+document.getElementById('pbody').addEventListener('click',async ev=>{
+  if(ev.target.closest('a,button'))return;      // chips, reveals, links
+  const hit=wordAt(ev.clientX,ev.clientY);
+  if(!hit||!current||hit.word===current.word)return;
+  const w=hit.word,p=pfx(w);
+  const [ft,gt]=await Promise.all([shard('forms',p),shard('gloss',p)]);
+  const known=(ft&&(ft[w]||ft[w.toLowerCase()]))||(gt&&(gt[w]||gt[w.toLowerCase()]));
+  if(!known)return;
+  HIST.push({word:current.word,paraN:current.paraN}); updateBack();
+  lookup(w,current.paraN);              // keep the paragraph context for proximity
+});
+
+const HIST=[];
+function updateBack(){
+  document.getElementById('pback').classList.toggle('show',HIST.length>0);
+}
+document.getElementById('pback').addEventListener('click',()=>{
+  const prev=HIST.pop(); updateBack();
+  if(prev)lookup(prev.word,prev.paraN);
+});
+document.getElementById('pclose').addEventListener('click',()=>{
+  document.getElementById('panel').classList.remove('open');
+  document.body.classList.remove('panel-open');
+});
+
+/* ---------------- the lookup --------------------------------------------- */
+const T={dpd:'dpd',abhi:'abhi',peu:'peu',cped:'cped',dop:'dop',ppn:'ppn',ed:'ed'};
+let current=null;
+
+async function lookup(word,paraN){
+  current={word,paraN};
+  const panel=document.getElementById('panel');
+  panel.dataset.state='loading';
+  panel.classList.remove('empty');panel.classList.add('open');
+  document.body.classList.add('panel-open');
+  document.getElementById('pword').textContent=word;
+  document.getElementById('pcounts').textContent=STR.loading;
+  document.getElementById('pbody').innerHTML='';
+
+  const p=pfx(word);
+  const [formsT,glossT]=await Promise.all([shard('forms',p),shard('gloss',p)]);
+  const rec=(formsT&&(formsT[word]||formsT[word.toLowerCase()]))||null;
+
+  // gloss rows: exact form, lowercased, and elision-normalised
+  const glKeys=[word,word.toLowerCase()];
+  const gl=[];
+  if(glossT)for(const k of new Set(glKeys)){if(glossT[k])gl.push(...glossT[k]);}
+
+  // counts line
+  const c=rec&&rec.c;
+  const cEl=document.getElementById('pcounts');
+  if(c){cEl.innerHTML='<b>'+c[0]+'</b> '+STR.corpus+' · '+c[1]+' '+STR.canon+' · '+c[2]+' '+STR.comm+
+     ' · '+c[3]+' '+STR.sub+(rec.n?' · <b>'+rec.n+'</b> '+STR.thisvol:'');}
+  else if(rec){cEl.innerHTML=(rec.n||'?')+' '+STR.thisvol;}
+  else cEl.textContent='';
+
+  // resolve headwords → lemma entries
+  let hwData=[],lemData=new Map(),gram=null;
+  if(rec&&rec.hw&&rec.hw.length){
+    const byP=new Map();
+    for(const h of rec.hw){const q=pfx(h);if(!byP.has(q))byP.set(q,[]);byP.get(q).push(h);}
+    await Promise.all([...byP.entries()].map(async([q,hs])=>{
+      const t=await shard('hw',q);if(!t)return;
+      for(const h of hs)if(t[h])hwData.push({hw:h,d:t[h].d,b:t[h].b});
+    }));
+    const bases=[...new Set(hwData.map(e=>e.b))];
+    await Promise.all(bases.map(async b=>{
+      const t=await shard('lem',pfx(b));
+      if(t&&t[b])lemData.set(b,t[b]);
+    }));
+  }
+  if(rec&&rec.gr){const t=await shard('gram',p);if(t)gram=t[word]||t[word.toLowerCase()]||null;}
+
+  if(current.word!==word)return;   // a later click superseded this one
+  render({word,paraN,rec,gl,hwData,lemData,gram});
+}
+
+function tabBtn(id,label,n,dis,tip){
+  // no `disabled` attribute: it kills hover events (and the tooltip with
+  // them) in Safari.  A class + aria-disabled + a click guard instead.
+  return '<button role="tab" data-tab="'+id+'" aria-selected="false"'+
+    (dis?' class="dis" aria-disabled="true"':'')+
+    (tip?' data-tip="'+esc(tip)+'"':'')+'>'+
+    label+(n!=null?' <span class="n">'+n+'</span>':'')+'</button>';
+}
+
+function render(d){
+  const tabs=document.getElementById('ptabs'),body=document.getElementById('pbody');
+  const lemAbhi=[...d.lemData.values()].filter(r=>r.a);
+  const lemPeu=[...d.lemData.values()].filter(r=>r.p);
+  const lemCped=[...d.lemData.values()].filter(r=>r.cp);
+  const lemDop=[...d.lemData.values()].filter(r=>r.dp);
+  const nPpn=[...d.lemData.values()].reduce((s,r)=>s+((r.pn||[]).length),0);
+  tabs.innerHTML=
+    tabBtn(T.dpd,STR.dpd,d.hwData.length||null,!d.hwData.length&&!d.rec,STR.tip_dpd)+
+    tabBtn(T.abhi,STR.abhi,lemAbhi.length||null,!lemAbhi.length,STR.tip_abhi)+
+    tabBtn(T.peu,STR.peu,lemPeu.length||null,!lemPeu.length,STR.tip_peu)+
+    tabBtn(T.cped,STR.cped,lemCped.length||null,!lemCped.length,STR.tip_cped)+
+    tabBtn(T.dop,STR.dop,lemDop.length||null,!lemDop.length,STR.tip_dop)+
+    tabBtn(T.ppn,STR.ppn,nPpn||null,!nPpn,STR.tip_ppn)+
+    tabBtn(T.ed,STR.edition,d.gl.length||null,!d.gl.length,STR.tip_ed);
+  tabs.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    if(!b.classList.contains('dis'))show(b.dataset.tab,d);}));
+  // default: DPD (user decision 2026-08-01, prototype only); fall through in order
+  const order=[T.dpd,T.abhi,T.peu,T.cped,T.dop,T.ppn,T.ed];
+  const first=order.find(t=>!tabs.querySelector('[data-tab="'+t+'"]').classList.contains('dis'));
+  if(first)show(first,d);
+  else body.innerHTML='<p class="unres">'+STR.unresolved+'</p>';
+  document.getElementById('panel').dataset.state='ready';
+}
+
+function show(tab,d){
+  const tabs=document.getElementById('ptabs'),body=document.getElementById('pbody');
+  tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab?'true':'false'));
+  if(tab===T.dpd)body.innerHTML=viewDpd(d);
+  else if(tab===T.abhi)body.innerHTML=viewAbhi(d);
+  else if(tab===T.peu)body.innerHTML=viewPeu(d);
+  else if(tab===T.cped)body.innerHTML=viewLex(d,'cp',STR.cped_src,false);
+  else if(tab===T.dop)body.innerHTML=viewLex(d,'dp',STR.dop_src,true);
+  else if(tab===T.ppn)body.innerHTML=viewLex(d,'pn',STR.ppn_src,true);
+  else body.innerHTML=viewEd(d);
+  body.scrollTop=0;
+  // DPD chip toggles (grammar / declension / root family)
+  body.querySelectorAll('a.dpd-button[data-target]').forEach(a=>{
+    a.addEventListener('click',ev=>{ev.preventDefault();
+      const el=body.querySelector('[id="'+a.dataset.target+'"]');
+      if(el)el.classList.toggle('hidden');});
+  });
+  body.querySelectorAll('button.mt-reveal').forEach(b=>{
+    b.addEventListener('click',()=>{b.nextElementSibling.classList.add('open');b.remove();});
+  });
+  body.querySelectorAll('button.en-reveal').forEach(b=>{
+    b.addEventListener('click',()=>{b.nextElementSibling.classList.toggle('hidden');});
+  });
+}
+
+function viewDpd(d){
+  let h='<div class="banner">'+STR.dpd_banner+'</div>';
+  if(!d.hwData.length){
+    h+='<p class="unres">'+STR.unresolved+'</p>';
+  }else{
+    d.hwData.forEach((e,i)=>{
+      h+='<div class="entry"><span class="enum">'+(i+1)+'. <span class="lemma">'+esc(e.hw)+'</span></span>'+
+         '<div class="dpd-entry">'+e.d+'</div></div>';
+    });
+  }
+  if(d.gram)h+='<div class="subhead">'+STR.grammar_form+'</div>'+d.gram;
+  if(d.rec&&d.rec.de)h+='<div class="subhead">'+STR.decon_form+'</div><ul class="decon">'+
+      d.rec.de.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+  return h;
+}
+
+function viewAbhi(d){
+  let h='<div class="src">'+STR.abhi_src+'</div>';
+  let i=0;
+  for(const [b,rec] of d.lemData){
+    if(!rec.a)continue;
+    for(const row of rec.a){
+      i++;
+      const [myhead,myetym,rometym,mydef,cites]=row;
+      h+='<div class="entry"><span class="enum">'+i+'. <span class="lemma">'+esc(b)+'</span> '+
+         '<span class="myhead">'+esc(myhead)+'</span></span>'+
+         (myetym||rometym?'<div class="etym">'+esc(myetym)+(rometym?' <span class="gcite">'+esc(rometym)+'</span>':'')+'</div>':'')+
+         '<div class="mydef">'+esc(mydef)+'</div>'+
+         (cites&&cites.length?'<div class="acites">'+STR.cites+' '+
+            cites.map(esc).join(' · ')+' <span class="gcite">'+STR.cites_note+'</span></div>':'');
+      // inline English: PEU is the entry-by-entry human translation of this
+      // work — revealed on demand, attributed, machine-marked ones warned.
+      if(rec.p){
+        if(rec.pm){
+          h+='<button class="en-reveal mt-style">'+STR.en_btn_mt+'</button>'+
+             '<div class="en-inline hidden"><div class="src">'+STR.peu_mt+'</div>'+rec.p+'</div>';
+        }else{
+          h+='<button class="en-reveal">'+STR.en_btn+'</button>'+
+             '<div class="en-inline hidden"><div class="src">'+STR.en_attr+'</div>'+rec.p+'</div>';
+        }
+      }
+      h+='</div>';
+    }
+  }
+  if(!i)h+='<p class="unres">'+STR.noentry+'</p>';
+  return h;
+}
+
+function viewPeu(d){
+  let h='<div class="src">'+STR.peu_src+'</div>';
+  let human='',mt='',i=0;
+  for(const [b,rec] of d.lemData){
+    if(!rec.p)continue;
+    i++;
+    const ent='<div class="entry"><span class="enum">'+i+'. <span class="lemma">'+esc(rec.pk||b)+'</span></span>'+
+      rec.p+'</div>';
+    if(rec.pm)mt+=ent;else human+=ent;
+  }
+  h+=human;
+  if(mt)h+='<div class="banner">'+STR.peu_mt+'</div>'+
+    '<button class="mt-reveal">'+STR.peu_mt_show+'</button><div class="mt">'+mt+'</div>';
+  if(!i)h+='<p class="unres">'+STR.noentry+'</p>';
+  return h;
+}
+
+function viewLex(d,field,srcLine,isList){
+  let h='<div class="src">'+srcLine+' '+STR.modern_note+'</div>';
+  let i=0;
+  for(const [b,rec] of d.lemData){
+    const v=rec[field];
+    if(!v)continue;
+    const items=isList?v:[v];
+    for(const ent of items){
+      i++;
+      h+='<div class="entry"><span class="enum">'+i+'. <span class="lemma">'+esc(b)+'</span></span>'+
+         '<div>'+ent+'</div></div>';
+    }
+  }
+  if(!i)h+='<p class="unres">'+STR.noentry+'</p>';
+  return h;
+}
+
+function viewEd(d){
+  let h='<div class="src">'+STR.ed_src+'</div>';
+  if(!d.gl.length)return h+'<p class="unres">'+STR.nogloss+'</p>';
+  // proximity: rows in the commentary/subcommentary paragraph the link map
+  // ties to the canon paragraph being read
+  const linked=[];
+  if(d.paraN!=null&&LINKS&&LINKS[d.paraN]){
+    for(const layer of['commentary','subcommentary']){
+      const L=LINKS[d.paraN][layer];
+      if(L&&L.vol!=null&&L.n!=null)linked.push(L.vol+'|'+L.n);
+    }
+  }
+  const prox=d.gl.filter(r=>linked.includes(r.v+'|'+r.n));
+  const rest=d.gl.filter(r=>!linked.includes(r.v+'|'+r.n));
+  const row=r=>'<div class="entry'+'">'+
+    '<span class="gword">'+esc(r.l)+'</span>'+(r.q?' <span class="gcite">(quoted)</span>':'')+
+    (r.sh?' <span class="gcite">(-ādi: heads a series)</span>':'')+
+    ' — '+esc(r.g)+
+    (r.t?'<div class="gtrunc">'+STR.trunc+'</div>':'')+
+    '<div class="gcite">'+esc(r.v)+' §'+(r.n!=null?r.n:'—')+
+    (r.pf?' · p.'+r.pf:'')+(r.s?' · '+esc(r.s):'')+'</div></div>';
+  if(prox.length)h+='<div class="subhead">'+STR.prox+'</div><div class="gloss-prox">'+prox.map(row).join('')+'</div>';
+  if(rest.length)h+='<div class="subhead">'+STR.others+'</div>'+rest.map(row).join('');
+  return h;
+}
+</script>
+</body>
+</html>
