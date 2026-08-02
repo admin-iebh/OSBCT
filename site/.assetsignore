@@ -1,0 +1,19 @@
+# CLOUDFLARE PAGES DEPLOY EXCLUSIONS
+#
+# !!! `.gitignore` DOES NOT PROTECT A DEPLOY.  `wrangler pages deploy site`
+# uploads what is on disk, not what is tracked, so a directory that is safely
+# out of the repo can still be published to the open internet.  This file is
+# what keeps it off.
+#
+# lookup_eval/ is 441 MB of dictionary data whose redistribution licences are
+# unconfirmed (Abhidhāna, PEU, PPN) or which §9 excludes as a voice however it
+# is licensed (DPD).  Publishing it would be exactly the thing the evaluation
+# flag exists to prevent.  It is served from localhost only.
+lookup_eval
+
+# Working copies and backups that have accumulated beside the real files.
+*.bak_*
+*.pre*
+*.prerebuild
+*.prerepair
+*.damaged_by_*
