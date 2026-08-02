@@ -227,6 +227,17 @@ var S = {
                    + 'definiciones precisas use la pestaña Gloss. Todos los '
                    + 'diccionarios aquí ofrecidos se encuentran libremente '
                    + 'disponibles en Internet.'},
+  // The same caution in the plural, for the APD tab, where it is said ONCE
+  // above the whole list rather than under each dictionary in it.
+  wl_eval_pl:   {en: 'These dictionaries are offered as they are as a reference for '
+                   + 'the study of Pāḷi. We cannot guarantee their accuracy. For '
+                   + 'accurate definitions use the Gloss tab. All the dictionaries '
+                   + 'provided here are found freely available on the Internet.',
+                 es: 'Estos diccionarios se ofrecen tal cual, como referencia para el '
+                   + 'estudio del Pāḷi. No podemos garantizar su exactitud. Para '
+                   + 'definiciones precisas use la pestaña Gloss. Todos los '
+                   + 'diccionarios aquí ofrecidos se encuentran libremente '
+                   + 'disponibles en Internet.'},
   wl_zg:        {en: 'Burmese, transcoded from Zawgyi to Unicode and verified by character census (§3).',
                  es: 'Birmano, transcodificado de Zawgyi a Unicode y verificado por censo de caracteres (§3).'},
   wl_mt:        {en: 'machine-translated (Google) — withheld by default',
@@ -303,7 +314,7 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260803f';
+var WLV = '20260803g';
 
 // ---------------------------------------------------- gzipped shard sets --
 // WHY THE SHARDS ARE STORED GZIPPED, AND WHY THAT IS NOT THE SAME AS
@@ -639,8 +650,15 @@ var CSS = ''
 // SMALL BUT VISIBLE, at the reader's direction.  It was --mut, which the
 // 2026-08-02 contrast survey measured at 3.40:1 on --app — under AA, i.e.
 // not reliably legible, which for a caution is the wrong failure.
-+ '#wl .wl-banner{background:var(--app);color:var(--fg);font-size:11.5px;line-height:1.4;border:1px solid var(--line);'
-+ 'border-radius:6px;font-size:11px;padding:5px 8px;margin:0 0 8px}'
+// SMALL BUT VISIBLE, at the reader's direction, and smaller again once it
+// stopped repeating under every dictionary.  It was --mut, which the
+// 2026-08-02 contrast survey measured at 3.40:1 on --app -- under AA, i.e.
+// not reliably legible, which for a caution is the wrong way to fail.
+// (The first version of this rule carried TWO font-size declarations and
+// the second silently won.  One only.)
++ '#wl .wl-banner{background:var(--app);color:var(--fg);font-size:10.5px;'
++ 'line-height:1.45;border:1px solid var(--line);'
++ 'border-radius:6px;padding:5px 8px;margin:0 0 10px}'
   // !!! BURMESE NEEDS MORE ROOM THAN LATIN, NOT LESS.  1.9 line-height was
   // already right; the size was not.  Stacked consonants, asat and kinzi are
   // exactly what the character census exists to verify, and at 15px they are
@@ -1610,6 +1628,11 @@ function viewDict(d) {
   if (!have.length)
     return '<p class="wl-none">' + esc(T('wl_nodict')) + '</p>';
 
+  // !!! SAID ONCE, ABOVE THE LIST.  It was emitted inside every section, so a
+  // word carried by six dictionaries printed the same four sentences six
+  // times and pushed the definitions off the screen.  It belongs after the
+  // 'In this word:' line and before the first dictionary's name, in the
+  // plural, because that is what it is describing.
   var h = '';
   if (have.length > 1) {
     h += '<div class="wl-jump"><span class="wl-cite">' + esc(T('wl_jump')) + '</span> '
@@ -1618,12 +1641,14 @@ function viewDict(d) {
                 + ' <span class="wl-cite">' + t.n + '</span></a>';
          }).join(' · ') + '</div>';
   }
+  if (have.some(function (t) { return t.ev; }))
+    h += '<div class="wl-banner">'
+       + esc(T(have.length > 1 ? 'wl_eval_pl' : 'wl_eval')) + '</div>';
   have.forEach(function (t) {
     h += '<div class="wl-sec" id="wl-s-' + t.id + '">'
        + '<div class="wl-sub">' + esc(t.label)
        + ' <span class="wl-flag">(' + t.n + ')</span></div>'
        + '<div class="wl-src">' + esc(t.src) + '</div>'
-       + (t.ev ? '<div class="wl-banner">' + esc(T('wl_eval')) + '</div>' : '')
        + sectionBody(d, t.id)
        + '</div>';
   });
