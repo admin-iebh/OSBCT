@@ -2369,6 +2369,24 @@ def _covered_probe(vol):
     return None, None
 
 
+def _split_probe(vol):
+    """A canon paragraph with a DIRECT commentary target and NO direct
+    subcommentary one -- the Aratisutta's shape.  That is the only pair where
+    the two answers can differ visibly: a band is drawn, and the T beside it
+    must be dim because the canon paragraph's own T is dim."""
+    lp = os.path.join(REPO, 'site', 'reader', 'linksk', vol + '.links.json')
+    if not os.path.exists(lp):
+        return None, None
+    L = json.load(open(lp, encoding='utf-8'))
+    for k in sorted(L, key=lambda x: int(x)):
+        e = L[k]
+        d = [t for t in (e.get('commentary') or []) if t.get('state') == 'direct']
+        t2 = [t for t in (e.get('subcommentary') or []) if t.get('state') == 'direct']
+        if d and not t2:
+            return int(k), d[0]['key']
+    return None, None
+
+
 def run_layers():
     """PRESSING A LAYER BUTTON MUST NOT MOVE THE READER, AND THE SUTTA MUST
     KEEP ITS NAME.
@@ -2405,6 +2423,7 @@ def run_layers():
     pid = 'p-%s-%d' % (vol, ord_)
     fails = []
     cov_ord, cov_key = _covered_probe(vol)
+    sp_ord, sp_key = _split_probe(vol)
     # THE PROPERTY IS "THE PARAGRAPH I WAS READING STAYED WHERE IT WAS", not
     # "the same element is topmost".  Once a band is drawn, NEW blocks are
     # interleaved and one of them can legitimately take the top few pixels --
@@ -2473,6 +2492,35 @@ def run_layers():
                                      'anyway -- the reader is being shown a '
                                      'link the edition does not make'
                                      % (vw, vh, vol, cov_ord, cov_key))
+                # !!! AND THE BAND MUST NOT CONTRADICT THE PARAGRAPH THAT
+                # DREW IT.  Reader, 2026-08-03, with screenshots: "The T
+                # button is dimmed in the Aratisutta but it is on in
+                # Aratisuttavaṇṇanā."  One canon record, two answers -- the
+                # canon paragraph read it directly, the band block reached it
+                # through a rev map and a second links map, and either one
+                # missing returned "unknown", which keeps the button.  Assert
+                # the agreement, not the mechanism.
+                agree = pg.evaluate(
+                    "([a, b]) => { const st = id => { const e = document.getElementById(id);"
+                    "  if (!e) return null; const o = {};"
+                    "  for (const x of e.closest('div').querySelectorAll('.jbtn'))"
+                    "    o[x.textContent.trim()] = !x.disabled; return o; };"
+                    " return {canon: st(a), band: st(b)}; }",
+                    ['p-%s-%s' % (vol, sp_ord), 'p-' + (sp_key or '').replace('#', '-')]
+                    ) if sp_ord is not None else None
+                c_, b_ = (agree or {}).get('canon'), (agree or {}).get('band')
+                if sp_ord is None:
+                    print('  note: no paragraph with a commentary and no ṭīkā '
+                          '— the band/paragraph agreement is NOT checked')
+                elif not c_ or not b_:
+                    fails.append('%dx%d: %s#%s or its band %s drew no tools at '
+                                 'all' % (vw, vh, vol, sp_ord, sp_key))
+                elif c_.get('T') != b_.get('T'):
+                    fails.append('%dx%d: %s#%s says T=%s and the commentary '
+                                 'block drawn under it (%s) says T=%s — one '
+                                 'record, two answers'
+                                 % (vw, vh, vol, sp_ord, c_.get('T'), sp_key,
+                                    b_.get('T')))
                 # and the commentary drawn under the canon paragraph must be the
                 # one the map names -- the data half of the same complaint
                 nxt = pg.evaluate(

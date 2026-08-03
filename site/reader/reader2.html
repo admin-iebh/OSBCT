@@ -378,7 +378,32 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
 const BUILD='b1f3553873c4';
-async function jget(url,fallback){ try{const sep=url.includes('?')?'&':'?'; const r=await fetch(url+sep+'v='+BUILD); if(!r.ok) return fallback; return await r.json();}catch(e){return fallback;} }
+
+// !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
+// A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
+// reader2 fetches carries `?v=BUILD`; nothing versions reader2 itself, so an
+// HTML-only fix reaches a returning visitor whenever their cache decides.
+// Worse than a delay: the reader photographed a fault that was already fixed,
+// because his browser was running the PREVIOUS reader over the REBUILT data,
+// and the two disagreed on screen precisely where the old code met the new
+// maps.
+//
+// `stamp_build.py` now publishes the stamp as `site/build.json` too.  Fetch it
+// with a query the cache has never seen, and if it names a build this page is
+// not, reload ONCE onto a URL the cache has never seen either.  Guarded by
+// sessionStorage so a server that insists on serving the old page cannot make
+// this loop, and it never blocks the first paint.
+(function(){
+  try{
+    if(sessionStorage.getItem('osbct-reload')===BUILD) return;
+    fetch('../build.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{
+      if(!j||!j.build||j.build===BUILD) return;
+      sessionStorage.setItem('osbct-reload',BUILD);
+      const u=new URL(location.href); u.searchParams.set('b',j.build);
+      location.replace(u.toString());
+    }).catch(()=>{});
+  }catch(e){}
+})();async function jget(url,fallback){ try{const sep=url.includes('?')?'&':'?'; const r=await fetch(url+sep+'v='+BUILD); if(!r.ok) return fallback; return await r.json();}catch(e){return fallback;} }
 async function loadVol(vol){
   if(cache[vol]) return cache[vol];
   const [d,bold,sbold,app,udd,sec,hide,verse,inc,btl]=await Promise.all([
@@ -1204,7 +1229,7 @@ function toolsFor(kind,vol,pr,sutta){
   const name=META[kind].name, cite=name+', '+(sutta||'')+' §'+(pr.n!=null?pr.n:'')+' (p.'+(pr.printed!=null?pr.printed:'?')+')';
   const COPY='<svg viewBox="0 0 16 16" width="13" height="13"><rect x="5" y="5" width="8" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M3 10.5V3a1 1 0 0 1 1-1h6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
   const CITE='<svg viewBox="0 0 16 16" width="13" height="13"><path d="M6 5H3.5A1.5 1.5 0 0 0 2 6.5V9A1.5 1.5 0 0 0 3.5 10.5H5V11a2 2 0 0 1-2 2M14 5h-2.5A1.5 1.5 0 0 0 10 6.5V9a1.5 1.5 0 0 0 1.5 1.5H13V11a2 2 0 0 1-2 2" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
-  return '<span class="tools">'+jbtns(kind,pr._key)+facs(vol,kind,pr)
+  return '<span class="tools">'+jbtns(kind,pr._key,pr._src)+facs(vol,kind,pr)
     +'<button class="icn" title="'+escA(TIP('tip_copy_text','Copy text'))+'" data-txt="'+escA((pr.text||'').replace(/^\s*\d+(-\d+)?\.\s*/,''))+'" onclick="copyText(this)">'+COPY+'</button>'
     +'<button class="icn" title="'+escA(TIP('tip_copy_cit','Copy citation'))+'" data-cite="'+escA(cite)+'" onclick="copyCite(this)">'+CITE+'</button></span>';
 }
@@ -1237,10 +1262,31 @@ function bandsFor(vol){
 // evidence of missing TEXT: 40.3% of canon→commentary links disagreed on
 // the sutta name before the name anchor went in.  `check_links.py` measures
 // that, so this cannot quietly hide a gap.
-function hasBand(key,tg){
+// !!! AND "UNKNOWN" WAS STILL REACHING THE PAGE AS "YES" (2026-08-03, reader,
+// with screenshots: "The T button is dimmed in the Aratisutta but it is on in
+// Aratisuttavaṇṇanā").  The rev branch below needs TWO fetched maps -- the rev
+// map of the band volume and the links map of the canon it points back to --
+// and `linkCache[cv]` is not where the OPEN volume's links live; they are in
+// `state.links`.  Either miss returns null, and null deliberately keeps the
+// button.  So the same fact answered twice, differently, depending on what had
+// been fetched.
+//
+// A drawn band does not need any of that.  It was drawn UNDER a paragraph, and
+// `targetsFor` now carries that paragraph's key as `src`, so the block's own
+// tools read the very record that produced them.  No rev map, no cache race,
+// no unknown.
+function hasBand(key,tg,src){
   const SLOT={A:'commentary',T:'subcommentary'};
   const [vol,ord]=parseKey(key); const {mine,bands}=bandsFor(vol);
   const spine=bands[0]; if(tg===mine) return true;
+  if(src&&mine!==spine){
+    const [sv,so]=parseKey(src);
+    const sl=(sv===state.canonVol&&state.links)?state.links:linkCache[sv];
+    if(sl){
+      if(tg===(bandsFor(sv).bands[0])) return true;   // the paragraph it came from
+      return ((sl[String(so)]||{})[SLOT[tg]]||[]).filter(t=>t.state==='direct').length>0;
+    }
+  }
   if(mine===spine){
     const links=(vol===state.canonVol&&state.links)?state.links:linkCache[vol];
     if(!links) return null;
@@ -1258,7 +1304,7 @@ function hasBand(key,tg){
   // correctly said it has no Ṭīkā while its COMMENTARY block, asking the very
   // same canon record through the other branch, still offered one.  Two
   // answers from one fact.
-  const [cv,co]=parseKey(c); const links=linkCache[cv]; if(!links) return null;
+  const [cv,co]=parseKey(c); const links=(cv===state.canonVol&&state.links)?state.links:linkCache[cv]; if(!links) return null;
   return ((links[String(co)]||{})[SLOT[tg]]||[]).filter(t=>t.state==='direct').length>0;
 }
 // cross-layer jump buttons — only for bands this work actually has, and
@@ -1271,11 +1317,11 @@ function hasBand(key,tg){
 // chip leaves the reader to wonder whether the button is broken; a chip that
 // is present, dimmed and says why is the difference between "nothing here"
 // and "nothing happened".
-function jbtns(kind,key){
+function jbtns(kind,key,src){
   const vol=parseKey(key)[0]; const {mine,bands}=bandsFor(vol);
   const COL={P:'var(--canon)',A:'var(--comm)',T:'var(--tika)'},NAME={P:'Pāḷi',A:'Aṭṭhakathā',T:'Ṭīkā'};
   return bands.filter(b=>b!==mine).map(tg=>{
-    const h=hasBand(key,tg);
+    const h=hasBand(key,tg,src);
     if(h===false) return '<button class="jbtn none" disabled data-keeptitle title="'
       + escA(TIP('band_para','No %s is linked to this paragraph.').replace('%s',NAME[tg]))
       + '">'+tg+'</button>';
@@ -1325,7 +1371,7 @@ let LASTPG={};                 // per volume: the last printed page a rule was d
 function block(kind, key, opts){
   const [vol,ord]=parseKey(key); const c=cache[vol]; if(!c) return '';
   const pr=c.paras[ord]; if(!pr) return '<div class="para empty">·</div>';
-  pr._key=key; pr._ord=ord;
+  pr._key=key; pr._ord=ord; pr._src=(opts&&opts.src)||null;
   const spans=c.bold[String(ord)]||[]; const app=c.app[String(ord)]||[];
   const lk=LAYERKIND[VOLLAYER[vol]]||kind;
   const cls='para'+(lk==='canon'?' canon':' l-'+lk);
@@ -1493,7 +1539,11 @@ function targetsFor(ord,kind){ // kind 'A'|'T' -> list of {key,state,worktag?}
   arr=arr.filter(t=>{const a=parseKey(t.key); const c=cache[a[0]];
                      return !(c && c.hide && c.hide[String(a[1])]);});
   const multi=arr.length>1;
-  return arr.map(t=>{const v=parseKey(t.key)[0]; return {key:t.key,state:t.state,worktag: multi? ((shortWork(VOLWORK[v])||'')+' · '+v) : null};});
+  // `src` is the paragraph this block is being drawn UNDER.  It travels with
+  // the target so the band's own tools never have to guess (see hasBand).
+  return arr.map(t=>{const v=parseKey(t.key)[0]; return {key:t.key,state:t.state,
+    src:state.canonVol+'#'+ord,
+    worktag: multi? ((shortWork(VOLWORK[v])||'')+' · '+v) : null};});
 }
 // !!! A COMMENTARY BLOCK ARRIVED WITH NO TITLE (2026-08-02, user-reported).
 // The printed edition heads it `7. Aratisuttavaṇṇanā`; the reader drew only

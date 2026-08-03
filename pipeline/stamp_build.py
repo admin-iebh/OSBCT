@@ -64,7 +64,7 @@ it disagrees with the built-in BUILD.  Do not reach for the hash.
 Run it LAST, after every builder and before deploying.
 Usage: python3 pipeline/stamp_build.py [--write] [--force] [--fast]
 """
-import hashlib, os, re, sys
+import hashlib, json, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = os.path.join(ROOT, 'site')
 # every page that fetches data, not just the readers — `search.html` had no
@@ -129,6 +129,24 @@ for rp in READERS:
     if '--write' in sys.argv:
         open(rp, 'w', encoding='utf-8').write(
             s[:m.start(1)] + stamp + s[m.end(1):])
+# !!! AND THE READER ITSELF CARRIES NO CACHE-BUSTER (fixed here 2026-08-03).
+# `reader2.html` versions everything it FETCHES and nothing versions the page,
+# so an HTML-only change reaches a returning visitor only when their cache
+# expires.  It has cost a round-trip on nearly every check for two days -- and
+# worse than a delay: on 2026-08-03 the reader photographed a fault that was
+# already fixed, because his browser was running the previous reader over the
+# rebuilt data, and the two disagreed on screen exactly where the old code and
+# the new data met.
+#
+# So the stamp is also published as a tiny file the page can fetch with a
+# cache-defeating query, and the page compares it with its own constant.  This
+# file is the only thing in the site that must never be served stale, and it is
+# 30 bytes.
+if '--write' in sys.argv:
+    with open(os.path.join(SITE, 'build.json'), 'w', encoding='utf-8') as fh:
+        json.dump({'build': stamp}, fh)
+    print('   site/build.json      %s' % stamp)
+
 # Version every <script src="…i18n.js"> so a new stamp forces a re-fetch.
 I18N_SRC = re.compile(r'(<script src="[^"]*i18n\.js)(\?v=[^"]*)?(")')
 pages = [os.path.join(b, f) for b, d, fs in os.walk(SITE) for f in fs
