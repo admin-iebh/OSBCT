@@ -38,6 +38,13 @@ window.I18N = {
              es:'La edición no asigna ningún %s a esta obra.'},
   band_here:{en:'No %s is linked to the passages on screen.',
              es:'Ningún %s está enlazado con los pasajes en pantalla.'},
+  // said on the layer button itself, and when it is pressed: the WORK has this
+  // band but this VOLUME links nothing to it (2026-08-03)
+  band_vol:{en:'No %s is linked in this volume.',
+            es:'Ningún %s está enlazado en este volumen.'},
+  // on the paragraph's own dimmed jump chip (2026-08-03)
+  band_para:{en:'No %s is linked to this paragraph.',
+             es:'Ningún %s está enlazado con este párrafo.'},
   lang_toggle:{en:'Cambiar a español',es:'Switch to English'},
 
   // landing

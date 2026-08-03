@@ -153,6 +153,8 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
    every token AS a foreground against --panel and stopped there; nothing
    measured the case where a token IS the background.  --panel flips with
    the theme and clears AA in both: light 4.52-5.04, dark 5.95-7.98. */
+.lbtn.noav{opacity:.42;border-style:dashed}
+.jbtn.none{color:var(--mut);border-color:var(--line);border-style:dashed;opacity:.55;cursor:default}
 .lbtn.on{color:var(--panel)}.lbtn.on[data-k=canon]{background:var(--canon);border-color:var(--canon)}.lbtn.on[data-k=A]{background:var(--comm);border-color:var(--comm)}.lbtn.on[data-k=T]{background:var(--tika);border-color:var(--tika)}
 .viewtog,.rctrl{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
 .viewtog button,.rctrl button{font:inherit;font-size:12px;color:var(--mut);background:var(--panel);border:none;padding:6px 11px;cursor:pointer}
@@ -263,7 +265,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
      and so it does not collide with concurrent edits to this page.  See
      panel.js for what it shows, whose voice it speaks in (§9), and the
      proximity measurement that decided how the Edition tab orders itself. -->
-<script src="panel.js?v=20260803k" defer></script>
+<script src="panel.js?v=20260803l" defer></script>
 </head>
 <body>
   <div id="errbar" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:999;background:#7f1d1d;color:#fff;font:12px/1.4 ui-monospace,monospace;padding:8px 10px;white-space:pre-wrap"></div>
@@ -1244,11 +1246,25 @@ function hasBand(key,tg){
 }
 // cross-layer jump buttons — only for bands this work actually has, and
 // only where this paragraph really has one
+// !!! AND WHERE THIS PARAGRAPH HAS NONE, SAY SO RATHER THAN VANISH (2026-08-03,
+// reader: "What about the buttons that do not have links like the T in the
+// Aratisutta?").  16An02 HAS a Ṭīkā — 194 of its 497 paragraphs draw one — so
+// no volume-level rule can answer for the Aratisutta, whose own Ṭīkā target
+// was the `covered` fallback and now correctly draws nothing.  Hiding the
+// chip leaves the reader to wonder whether the button is broken; a chip that
+// is present, dimmed and says why is the difference between "nothing here"
+// and "nothing happened".
 function jbtns(kind,key){
   const vol=parseKey(key)[0]; const {mine,bands}=bandsFor(vol);
-  const targets=bands.filter(b=>b!==mine).filter(b=>hasBand(key,b)!==false);
   const COL={P:'var(--canon)',A:'var(--comm)',T:'var(--tika)'},NAME={P:'Pāḷi',A:'Aṭṭhakathā',T:'Ṭīkā'};
-  return targets.map(tg=>'<button class="jbtn" style="color:'+COL[tg]+';border-color:'+COL[tg]+'" title="'+escA(TIP('tip_goto','Go to'))+' '+NAME[tg]+'" onclick="jumpFrom(\''+key+'\',\''+tg+'\')">'+tg+'</button>').join('');
+  return bands.filter(b=>b!==mine).map(tg=>{
+    const h=hasBand(key,tg);
+    if(h===false) return '<button class="jbtn none" disabled data-keeptitle title="'
+      + escA(TIP('band_para','No %s is linked to this paragraph.').replace('%s',NAME[tg]))
+      + '">'+tg+'</button>';
+    return '<button class="jbtn" style="color:'+COL[tg]+';border-color:'+COL[tg]+'" title="'
+      + escA(TIP('tip_goto','Go to'))+' '+NAME[tg]+'" onclick="jumpFrom(\''+key+'\',\''+tg+'\')">'+tg+'</button>';
+  }).join('');
 }
 window.jumpFrom=async function(key,tg){
   const NAME={P:'Pāḷi',A:'Aṭṭhakathā',T:'Ṭīkā'}, LK={P:'canon',A:'A',T:'T'},
@@ -1494,6 +1510,32 @@ function activeKeys(){return ['canon','A','T'].filter(k=>state.active[k]);}
 // measured that way in Chromium at 390x844 (`.para` 0, 142 characters of text).
 // The edition's own answer is already in the reader as `GROUPHAS`, built from
 // `concordance.json`, so it can be stated instead of left to be guessed at.
+// !!! A BUTTON THAT CANNOT LAND ANYWHERE IS STILL A BUTTON (2026-08-03,
+// reader: "What about the buttons that do not have links like the T in the
+// Aratisutta?").  `GROUPHAS` already refuses a layer the edition gives the
+// WORK — the Milindapañha has no commentary at all — but it cannot see the
+// volume: 16An02 has a Ṭīkā, and after the manufactured targets stopped
+// drawing, only 194 of its 497 paragraphs have one.  The Aratisutta is not
+// among them: its Ṭīkā target `20AnT03#57` is `covered`, so pressing T there
+// used to draw the previous section's ṭīkā and now correctly draws nothing —
+// and nothing is exactly what the button did not say.
+//
+// So availability is read from the volume's own map, `direct` only, and a
+// layer with nothing in this volume says so when pressed instead of toggling
+// into an empty page.
+const AVAIL={};
+function availFor(vol){
+  if(AVAIL[vol]) return AVAIL[vol];
+  const L=(vol===state.canonVol&&state.links)?state.links:linkCache[vol];
+  if(!L) return {A:true,T:true};
+  let A=false,T=false;
+  for(const e of Object.values(L)){
+    if(!A&&(e.commentary||[]).some(t=>t.state==='direct')) A=true;
+    if(!T&&(e.subcommentary||[]).some(t=>t.state==='direct')) T=true;
+    if(A&&T) break;
+  }
+  return AVAIL[vol]={A,T};
+}
 function bandNote(k){
   const has=GROUPHAS[VOLGROUP[state.canonVol]];
   const name=(META[k]||{}).name||k;
@@ -1681,7 +1723,7 @@ function render(){
     else { let buf='',last=null; const fk=state.filter?frontKeyOf(state.filter):null; if(fk){ buf+=layerFront(fk); _topFront=fk; }
       paras.forEach((p,li)=>{ const i=base+li; targetsFor(i,k).forEach(t=>{ if(t.key===last)return; last=t.key; buf+=block(k,t.key,t); }); }); html+='<div class="stack">'+(buf.trim()?buf:bandNote(k))+'</div>'; }
   } else { // single
-    const dedup=!state.active.canon; let lastA=null,lastT=null; let _drew=0;
+    const dedup=!state.active.canon; let lastA=null,lastT=null; let _drew=0,_drewA=0,_drewT=0;
     const spine=state.active.canon?'canon':(state.active.A?'A':'T');
     // THE BOOK'S OWN FRONT MATTER, FIRST.  Emitted before the stream is walked
     // and then suppressed at its anchor (`_topFront`), so it is drawn exactly
@@ -1728,12 +1770,18 @@ function render(){
         if(band==='A'){ if(nm===lastHeadA) return ''; lastHeadA=nm; }
         else { if(nm===lastHeadT) return ''; lastHeadT=nm; }
         return '<div class="head section band">'+esc(/^\d/.test(nm)?nm:_num+nm)+'</div>'; };
-      if(state.active.A) targetsFor(i,'A').forEach((t,ti)=>{ if(dedup&&t.key===lastA)return; lastA=t.key; _drew++; parts.push(((spine==='A'&&ti>0)?_front(t.key):'')+(state.active.canon?'<div class="subwrap a"><span class="lchip a">Aṭṭhakathā</span>'+_bandHead(t.key,'A'):'<div>')+block('A',t.key,t)+'</div>'); });
-      if(state.active.T) targetsFor(i,'T').forEach((t,ti)=>{ if(dedup&&t.key===lastT)return; lastT=t.key; _drew++; parts.push(((spine==='T'&&ti>0)?_front(t.key):'')+(state.active.canon?'<div class="subwrap t"><span class="lchip t">Ṭīkā</span>'+_bandHead(t.key,'T'):'<div>')+block('T',t.key,t)+'</div>'); });
+      if(state.active.A) targetsFor(i,'A').forEach((t,ti)=>{ if(dedup&&t.key===lastA)return; lastA=t.key; _drew++; _drewA++; parts.push(((spine==='A'&&ti>0)?_front(t.key):'')+(state.active.canon?'<div class="subwrap a"><span class="lchip a">Aṭṭhakathā</span>'+_bandHead(t.key,'A'):'<div>')+block('A',t.key,t)+'</div>'); });
+      if(state.active.T) targetsFor(i,'T').forEach((t,ti)=>{ if(dedup&&t.key===lastT)return; lastT=t.key; _drew++; _drewT++; parts.push(((spine==='T'&&ti>0)?_front(t.key):'')+(state.active.canon?'<div class="subwrap t"><span class="lchip t">Ṭīkā</span>'+_bandHead(t.key,'T'):'<div>')+block('T',t.key,t)+'</div>'); });
       return head+(parts.length?'<div style="margin-bottom:12px">'+parts.join('')+'</div>':'')+(spine==='canon'?udd(i):''); }).join('')+'</div>';
     // the canon band is off and neither layer drew anything: say why, rather
     // than leaving the reader with the generic hint line and a blank page
-    if(!state.active.canon && _drew===0) html+=bandNote(spine);
+    // an ACTIVE layer that drew nothing must say so even when the canon band
+    // is on — otherwise pressing T simply does nothing visible, which is
+    // indistinguishable from a page that failed
+    if(state.active.A && !_drewA) html+=bandNote('A');
+    if(state.active.T && !_drewT) html+=bandNote('T');
+    if(!state.active.canon && _drew===0 && !state.active.A && !state.active.T)
+      html+=bandNote(spine);
   }
   html+='<div class="hint">On-demand from the keyed corpus. Toggle P / A / T; Columns / Tabs / Single; hover a paragraph for cite, copy, facsimile and cross-layer jumps.</div>';
   $('#scroll').innerHTML=html; tipify($('#scroll'));
@@ -1810,11 +1858,29 @@ function keepPlace(fn){
   holdAt(el,a.off);
 }
 function syncButtons(){
-  document.querySelectorAll('.lbtn').forEach(b=>{const k=b.dataset.k; b.classList.toggle('on', state.view==='tabs'?state.tab===k:state.active[k]);});
+  const av=state.opened?availFor(state.canonVol):null;
+  const gh=GROUPHAS[VOLGROUP[state.canonVol]];
+  document.querySelectorAll('.lbtn').forEach(b=>{const k=b.dataset.k;
+    b.classList.toggle('on', state.view==='tabs'?state.tab===k:state.active[k]);
+    const none=!!av && k!=='canon' && !av[k] ;
+    b.classList.toggle('noav', none);
+    if(none) b.title=((gh&&gh[k]===false)
+        ? TIP('band_none','The edition assigns no %s to this work.')
+        : TIP('band_vol','No %s is linked in this volume.'))
+      .replace('%s',(META[k]||{}).name||k);});
   document.querySelectorAll('#viewtog button').forEach(b=>b.classList.toggle('on',b.dataset.view===state.view));
 }
 document.querySelectorAll('.lbtn').forEach(b=>b.onclick=async()=>{const k=b.dataset.k;
   if(!state.opened){toast('Open a text first');return;}
+  // a layer with nothing in this volume states the reason rather than toggling
+  // into an empty page
+  if(k!=='canon' && !availFor(state.canonVol)[k] && !state.active[k]){
+    const gh=GROUPHAS[VOLGROUP[state.canonVol]];
+    toast(((gh&&gh[k]===false)
+      ? TIP('band_none','The edition assigns no %s to this work.')
+      : TIP('band_vol','No %s is linked in this volume.'))
+      .replace('%s',(META[k]||{}).name||k));
+    return;}
   state.filter=null;
   if(state.view==='tabs'){state.tab=k;} else{const ak=activeKeys(); if(state.active[k]&&ak.length===1){toast('Keep one layer on');return;} state.active[k]=!state.active[k];}
   // the band's volumes are no longer preloaded — fetch them before drawing, or
@@ -1884,7 +1950,12 @@ function applyRsize(){ document.documentElement.style.setProperty('--rsize',stat
 $('#finc').onclick=()=>{state.size=Math.min(22,state.size+1);applyRsize();if(state.opened)keepPlace(render);};
 $('#fdec').onclick=()=>{state.size=Math.max(12,state.size-1);applyRsize();if(state.opened)keepPlace(render);};
 applyRsize();
-function tipify(root){(root||document).querySelectorAll('[title]').forEach(el=>{const v=el.getAttribute('title');if(v){el.setAttribute('data-tip',v);el.removeAttribute('title');}});}
+// `data-keeptitle` opts an element OUT of the styled tooltip and leaves the
+// browser's own.  Used by the dimmed jump chip, whose whole purpose is to say
+// why it is dimmed: the styled tooltip is still clipped to a sliver
+// (`claude/start_here_2026-08-03.md` §3, unfixed), so routing that one
+// explanation through it would deliver nothing.
+function tipify(root){(root||document).querySelectorAll('[title]').forEach(el=>{const v=el.getAttribute('title');if(v&&!el.hasAttribute('data-keeptitle')){el.setAttribute('data-tip',v);el.removeAttribute('title');}});}
 
 // ---------- search (top bar, real index) ----------
 const FOLDM={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
