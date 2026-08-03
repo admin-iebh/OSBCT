@@ -1025,6 +1025,13 @@ def printed_heads(vol):
 
     From BOTH side-maps: `sections/` holds the headings set above a numbered
     unit, `uddana/` plain-block `head` fields those set after one.
+
+    A `sections` entry is a heading only if it is NEITHER display verse NOR
+    printed prose.  k:'prose' joined k:'gatha' as a non-heading kind when the
+    pre-first-unit emitter learned to tell the two apart (2026-08-03); without
+    this skip a prose paragraph printed above a book's first unit — 20KhuA01's
+    `Ayaṁ saraṇagamananiddeso Khuddakānaṁ ādi.` — would enter the tree as a
+    nav node.
     """
     S = json.load(open(os.path.join(ROOT, 'site/reader/sections', vol + '.json'),
                        encoding='utf-8'))
@@ -1033,7 +1040,7 @@ def printed_heads(vol):
     out = []
     for k in sorted(set(S) | set(U), key=int):
         for e in S.get(k, []):
-            if e.get('k') in ('gatha', 'booktitle'):
+            if e.get('k') in ('gatha', 'prose', 'booktitle'):
                 continue
             out.append((e['l'], int(k)))
         for b in U.get(k, []):

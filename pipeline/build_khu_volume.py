@@ -7001,10 +7001,45 @@ def kat_build(pages, paras, title, p0, p1, o0, o1,
             # display verse printed before the book's first unit — the Netti's
             # ten opening Saṅgahavāra gāthā.  `sections` entries may carry
             # k:'gatha', which is how 19Khu02's Nidānagāthā is placed.
-            if pend_open and pend_open[-1]['k'] == 'gatha':
-                pend_open[-1]['l'] += '\n' + it[1]
+            #
+            # !!! AND THE PAGE SETS PROSE THERE TOO.  This branch USED TO IGNORE
+            # `kind` entirely and pour every pre-first-unit line into ONE
+            # k:'gatha' block, so prose printed between two display blocks came
+            # out italic and broken one paragraph per PRINTED LINE.  20KhuA01
+            # p1 is the reader-reported case: the triple refuge (indent 18) is
+            # display, then `Ayaṁ saraṇagamananiddeso Khuddakānaṁ ādi.` at the
+            # BODY COLUMN and `Imassa dāni atthaṁ … idaṁ vuccati–` opening at
+            # body+4 and continuing at the body column are PROSE, and only then
+            # does the Ganthārambha gāthā begin at body+8.
+            #
+            # NOTHING NEW IS MEASURED HERE.  `kat_items` already reads that
+            # geometry and hands this loop 'vline' for the display lines and
+            # 'popen'/'pcont'/'cand' for the prose — the rule stated at the head
+            # of this file, that verse is a RUN of two or more consecutive lines
+            # sharing an indent ABOVE the body column while prose returns to the
+            # body column.  The classification was right; only the emitter threw
+            # it away.  So the fix is to spend the kind the page already gave:
+            # 'vline' opens/extends a k:'gatha' block, anything else opens or
+            # extends a k:'prose' block, joined by the SAME popen/pcont rule
+            # `add_prose` and the `pend_before` branch below both use — a
+            # 'popen' starts a new printed paragraph, a continuation joins the
+            # open one on the line-end hyphen and nothing else.
+            #
+            # `sections` k:'prose' is a NEW entry kind and reader2.html draws it
+            # as an ordinary body paragraph; every other consumer keys on
+            # k:'gatha' or on the heading classes and is unmoved.
+            if kind == 'vline':
+                if pend_open and pend_open[-1]['k'] == 'gatha':
+                    pend_open[-1]['l'] += '\n' + it[1]
+                else:
+                    pend_open.append({'l': it[1], 'k': 'gatha'})
+                continue
+            _po = pend_open[-1] if pend_open else None
+            if (_po is not None and _po['k'] == 'prose'
+                    and (kind != 'popen' or _po['l'].endswith('-'))):
+                _po['l'] = hyjoin(_po['l'], it[1])
             else:
-                pend_open.append({'l': it[1], 'k': 'gatha'})
+                pend_open.append({'l': it[1], 'k': 'prose'})
             continue
         if cur is None or pend_heads:
             # ONE ENTRY PER PRINTED PARAGRAPH, not per printed LINE.  `before`
@@ -7400,10 +7435,29 @@ def build():
                 in_tail = False
             elif kind in ('pada', 'prose'):
                 if not opened:
-                    if kind == 'pada' and pend_open and pend_open[-1]['k'] == 'gatha':
-                        pend_open[-1]['l'] += '\n' + it[1]
+                    # THE SAME DEFECT ON THE VERSE PATH, and the same fix.  A
+                    # 'prose' item printed before the book's first unit was
+                    # falling into the k:'gatha' block with the pādas — 02Vin02
+                    # p1 sets `Ime kho panāyasmanto dvenavuti pācittiyā` /
+                    # `āgacchanti.`, one wrapped prose sentence, drawn italic on
+                    # two lines; 06VinSg06 p1 sets `Tatrāyaṁ mātikā–` inside a
+                    # nineteen-line display block.  `items_for` already tells
+                    # the two apart ('pada' vs 'prose'); this branch now spends
+                    # that instead of discarding it.  Consecutive prose lines
+                    # are joined on the line-end hyphen, as `cur_after` does,
+                    # and PROSEOPEN starts a new printed paragraph.
+                    if kind == 'pada':
+                        if pend_open and pend_open[-1]['k'] == 'gatha':
+                            pend_open[-1]['l'] += '\n' + it[1]
+                        else:
+                            pend_open.append({'l': it[1], 'k': 'gatha'})
                     else:
-                        pend_open.append({'l': it[1], 'k': 'gatha'})
+                        _po = pend_open[-1] if pend_open else None
+                        if (_po is not None and _po['k'] == 'prose'
+                                and not PROSEOPEN.match(it[1])):
+                            _po['l'] = hyjoin(_po['l'], it[1])
+                        else:
+                            pend_open.append({'l': it[1], 'k': 'prose'})
                 elif pend_heads:
                     # same precedence as in the centred branch: a heading is open,
                     # so this is its opener and belongs to the heading's own verse,
