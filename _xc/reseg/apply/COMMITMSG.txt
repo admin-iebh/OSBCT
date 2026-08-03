@@ -1,0 +1,121 @@
+20KhuA01 is re-segmented in site/: 673 paragraphs where 109 stood, and every
+side-map, link and index re-keyed to the printed page
+
+The first write into `site/` from the re-segmentation work of `7e3a9c0a`,
+`4d4a1db7` and `7b989fcb`.  One volume only; nothing else in the corpus moves.
+
+## What changed
+
+    paragraphs        109  ->  673      median 1,782 -> 467 chars, longest 36,529 -> 3,071
+    paragraph ids     109  ->  673      673 distinct, 0 collisions (rank-in-group ".K")
+    bold spans         96  ->  389 keys (1,580 spans, redistributed, unchanged in sum)
+    verse/             71  ->   67 keys (63 rebuilt from the page + 4 carried through)
+    sections/          98  ->   98 keys anchored by printed position, 8 headings move
+    uddana/            22  ->   22 keys, last-of-run
+    hide/               3  ->   14 keys (run-expanded, +9 merge-absorbed, +1 uddana, +1 leaked heading)
+    ord/               17  ->   17 keys, 17/17 land on a paragraph carrying that n
+    apparatus appk     83  ->  292 ordinals, 520 notes (same 520, none lost)
+    linksk rev         86  ->   86 entries, re-keyed
+    pageindex           93 ->  215 printed pages
+    pagespan            75 ->  136 ranges (3 unresolved, left out rather than guessed)
+    search shard       109 ->  673 paragraphs, 13,453 terms (unchanged term set)
+    nav.json          109 keys, 107 moved; the 109 LABELS are identical to before
+    inbound targets   119 `20KhuA01#<ord>` in seven other volumes' linksk/*.links.json
+                      remapped (18Khu01 105, 22Khu05 6, 25Khu08 3, 19Khu02 2,
+                      23Khu06/26Khu09/27Khu10 1 each)
+
+`incipit/`, `booktitle/`, `xrefs/` and `apparatus/20KhuA01.app.json` come out
+byte-identical and are not touched.
+
+## The gate that failed first, and why it is not loosened
+
+`verify_render_vs_pdf` read **7 printed lines missing from the render** on the
+first pass.  They are exactly the four `verse/` entries that carry no `groups`
+key — the ones `reader2.html:1474` has never drawn (phase 2 §3; 75 such entries
+in 30 volumes, a shipped defect independent of this work).  The prepared map
+dropped them "as the shipped reader drops them", but the shipped MAP did not
+drop them, and the harness measures the map.
+
+They are carried through instead, keyed by the printed position `b2/locate`
+found for them (before ords 15, 29, 99, 511), in their shipped shape and with
+**no `groups` key**, so the browser still ignores them exactly as today.  The
+defect is preserved unchanged for the separate fix phase 2 §7.6 names; no data
+is lost and nothing new is drawn.  RESTORE=1 was NOT used: it would have put
+189 letters on the page that the reader has never shown, which is a content
+decision this commit is not the place for.
+
+## Apparatus: two routes, and a third to adjudicate them
+
+`rebuild_apparatus.py` was re-run against the re-segmented corpus with the
+existing appk emptied first, so its MERGE branch could not re-attach notes at
+old-ordinal keys.  Result: **520 printed notes anchored, 1 unanchored**
+(p178 note 7 `Icchitabbato (Ka)`, a duplicate text whose other copy anchored).
+
+Cross-checked against `_xc/reseg/apparatus/` (the redistribution route):
+
+    same 520 notes both ways — 0 only-in-A, 0 only-in-B, 516 distinct (n,text)
+    same ordinal:  392 of 516  (76.0%)
+    disputed:      124
+
+The 124 were put to a THIRD route that consults neither — the page the
+footnote cell is printed on, the marker's own position in that page's body
+letters, and the paragraph whose printed extent contains it
+(`_xc/reseg/apply/adjudicate.py`):
+
+    rebuild_apparatus right  70      redistribution right  41
+    neither  3               undecided  10
+
+So the shipped route is right on 462 of 516 (89.5%) by printed position,
+against 433 (84.0%) for the redistribution.  It is the better route and it is
+the one shipped — but 41 notes are placed where the third route disagrees, and
+that is recorded rather than patched by hand.
+
+## Baselines: NONE MOVED
+
+`check_links.py`, `check_ordinal.py` and `check_concordance.py` were expected
+to move and did not — every measure is identical to the digit:
+
+    n-match 55.196%  name-match 76.195%  reachable 28145      (check_links)
+    ord_match 86.987%  byname 99.892%  condemned 320          (check_ordinal)
+    targets 67323  outside 3163  violation 4.698%             (check_concordance)
+
+The reason is that the remap is 1:1 and monotone onto the FIRST of each run,
+and the first of a run is the paragraph that carries the printed number, so
+every number, name and volume the three gates read is the same paragraph's.
+`--record` was therefore not run, and `pipeline/*_baseline.json` is untouched.
+
+## Every gate
+
+    verify_render_vs_pdf 20KhuA01   0 lines  0 chunks  0 rev  0 dup   clean 1/1
+                                    (pre-state was also 0/0/0/0)
+    check_links                     no measure regressed
+    check_ordinal                   no measure regressed
+    check_concordance               no measure regressed
+    check_derived                   all derived artefacts fresh
+    regress.py check                53/55 maps byte-identical, 2 exempt  [OK]
+    stamp_build.py --write          BUILD cb889fcdb1d1 -> feead2b22b9c
+
+`pdfblanks.json` was rebuilt only to clear an mtime staleness flag; its content
+is byte-identical to the previous file.
+
+## NOT VERIFIED
+
+* **`pipeline/check_layout.js` was NOT run.**  It needs Playwright, which is not
+  installed on the device and cannot be, as there is no network there.  Nothing
+  in this commit is browser-verified.  The render equivalence that stands behind
+  it is a RE-IMPLEMENTATION of `reader2.html`'s order and its `vmap.groups`
+  gate, not the reader itself.
+* `reader2.html:1474` gates the verse branch on `kind==='canon'` as well as on
+  `vmap.groups`.  A commentary volume drawn in the A band therefore never takes
+  that branch at all, so the verse map's effect in the paired view is untested
+  here in either direction.
+* `apparatus/20KhuA01.app.json` is the legacy id-keyed input, read only by
+  `rekey_apparatus.py` and served to nobody.  It is left as it was: 57 of its
+  58 keys still resolve against the new ids, 58 with the base-indexing fix the
+  blocker-1 note describes.  Do not run `rekey_apparatus.py` on this volume.
+* One volume.  Nothing here is evidence for the other 117.
+
+Pre-images are beside every file as `<path>.prereseg` (38 of them, gitignored).
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01BcgPjfPCGBDwzS1dqi2QK7
