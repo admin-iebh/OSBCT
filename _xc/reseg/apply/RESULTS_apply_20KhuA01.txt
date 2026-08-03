@@ -1,0 +1,142 @@
+cross-layer links, /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/linksk
+  n-match       55.20%  of 66009 numbered targets
+  name-match    76.19%  of 20760 links naming a sutta on both sides
+  reachable     28145    distinct layer paragraphs
+  baseline    n-match 55.196%  name-match 76.195%  reachable 28145
+  worst sources by wrong-number targets: 39Abhi11 3314, 38Abhi10 2878, 40Abhi12 2775, 29Abhi01 2291, 02Vin02 1768, 37Abhi09 1379
+
+no measure regressed
+cross-layer links, /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/linksk
+  n-match       55.20%  of 66009 numbered targets
+  name-match    76.19%  of 20760 links naming a sutta on both sides
+  reachable     28145    distinct layer paragraphs
+  baseline    n-match 55.196%  name-match 76.195%  reachable 28145
+  worst sources by wrong-number targets: 39Abhi11 3314, 38Abhi10 2878, 40Abhi12 2775, 29Abhi01 2291, 02Vin02 1768, 37Abhi09 1379
+
+no measure regressed
+stated ordinals against cross-layer links, /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/linksk
+  stated                         3617   was 3617
+  checked                        2459   was 2459
+  ord_match                    86.987%   was 86.987%
+  ord_floor                     5.091%   was 5.091%
+  byname_match                 99.892%   was 99.892%
+  condemned                       320   was 320
+  condemned_nameless               92   was 92
+  condemned_name_concurs        96.93%   was 96.93%
+
+  margin over the shift-25 floor: +81.9 points
+
+no measure regressed
+stated ordinals against cross-layer links, /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/linksk
+  stated                         3617   was 3617
+  checked                        2459   was 2459
+  ord_match                    86.987%   was 86.987%
+  ord_floor                     5.091%   was 5.091%
+  byname_match                 99.892%   was 99.892%
+  condemned                       320   was 320
+  condemned_nameless               92   was 92
+  condemned_name_concurs        96.93%   was 96.93%
+
+  margin over the shift-25 floor: +81.9 points
+
+no measure regressed
+cross-layer links against /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/concordance.json
+  targets               67323   was 67323
+  outside                3163   was 3163
+  no_such_layer             0   was 0
+  violation_pct         4.698   was 4.698
+
+no measure regressed
+[1/1] 20KhuA01        7 lines     0 chunks     0 rev    0 dup
+
+clean 0/1  ->  _xc/reseg/apply/post_verify_report.md
+DONE
+[1/1] 20KhuA01        0 lines     0 chunks     0 rev    0 dup
+
+clean 1/1  ->  _xc/reseg/apply/post_verify2_report.md
+DONE
+  EXEMPT 20Khu03 verse — same place, same reason
+  EXEMPT 20Khu03 uddana — applied glyph erratum Aòjalī -> Añjalī; the baseline builder has no register
+REGRESSION: 53/55 maps byte-identical across 11 volumes, 2 exempt (named above)  [OK]
+  pageindex              content  ok     118 volumes, 29703 pages, byte-for-byte what the builder would write
+  pagespan               mtime    ok     newer than every source
+  pdfblanks              mtime    ok     newer than every source
+  search index           mtime    ok     newer than every source
+  pageindex self-check   corpus   ok     all 29703 entries point at a paragraph carrying that printed page
+
+all derived artefacts fresh
+checking derived artefacts before stamping:
+  pageindex              content  ok     118 volumes, 29703 pages, byte-for-byte what the builder would write
+  pagespan               mtime    ok     newer than every source
+  pdfblanks              content  ok     67 volumes, identical to a fresh build
+  search index           mtime    ok     newer than every source
+  pageindex self-check   corpus   ok     all 29703 entries point at a paragraph carrying that printed page
+
+all derived artefacts fresh
+
+26408 JSON + i18n file(s) under site/  ->  BUILD feead2b22b9c
+   reader2.html  cb889fcdb1d1 -> feead2b22b9c
+   reader.html carries no BUILD constant — skipped
+   search.html   cb889fcdb1d1 -> feead2b22b9c
+   errata.html   cb889fcdb1d1 -> feead2b22b9c
+   downloads.html cb889fcdb1d1 -> feead2b22b9c
+   site/build.json      feead2b22b9c
+   i18n.js cache-buster: 6 page(s) updated
+DONE
+DISPUTED NOTES ADJUDICATED BY PRINTED POSITION: 124
+  route A right: 70   route B right: 41   neither: 3   undecided: 10
+   neither n=1   p102 -> ord235  A[234] B[207]                  '...sampaṭicchanākāra (Sī)'
+   A       n=1   p175 -> ord473  A[473] B[472]                  'Abhi 1. 208; Abhi 2. 379 piṭṭhesu.'
+   A       n=1   p81 -> ord175  A[175] B[177]                   'Abhi 2. 434 piṭṭhe.'
+   A       n=1   p57 -> ord97  A[97] B[75]                      'Anekasandhīsamito (Sī)'
+   A       n=1   p156 -> ord423  A[423] B[413]                  'Aparikkhāya parittāya (Syā), aparikkhatāya p'
+   A       n=1   p120 -> ord297  A[297] B[288]                  'Atisitvā (Sī)'
+   A       n=1   p103 -> ord235  A[235] B[240]                  'Aṁ 1. 190 piṭṭhe.'
+   None    n=1   cell on 2 pages                                'Aṁ 1. 343; Khu 1. 254 piṭṭhesu.'
+   A       n=1   p45 -> ord72  A[72] B[74]                      'Aṁ 1. 44 piṭṭhe.'
+   A       n=1   p83 -> ord180  A[180] B[182]                   'Aṁ 3. 297 piṭṭhe.'
+   None    n=1   cell on 2 pages                                'Aṁ 3. 298 piṭṭhe.'
+   A       n=1   p89 -> ord195  A[195] B[199]                   'Aṁ 3. 301 piṭṭhe.'
+   A       n=1   p92 -> ord203  A[203] B[175]                   'Aṁ 3. 436 piṭṭhe.'
+   B       n=1   p117 -> ord289  A[288] B[289]                  'Bhāsamānasakuṇaṁ (Sī), vātasakuṇaṁ (Syā)'
+   A       n=1   p23 -> ord11  A[11] B[9]                       'Buddhi bodhoti (Ka)'
+   None    n=1   0 marker sites on p164 -> []                   'Cakkavattisseva (Syā, Ka)'
+   A       n=1   p56 -> ord95  A[95] B[97]                      'Daṇḍena (Ka)'
+   A       n=1   p145 -> ord391  A[391] B[377]                  'Dī 1. 60; Ma 1. 237 piṭṭhesu.'
+   None    n=1   1 marker sites on p25 -> []                    'Dī 2. 204; Saṁ 1. 25 piṭṭhesu.'
+   A       n=1   p210 -> ord587  A[587] B[590]                  'Dī 3. 141 piṭṭhe.'
+   B       n=1   p49 -> ord77  A[76] B[77]                      'Dīghavaṭṭulakā (Sī), dīghavaṭṭakā (Syā)'
+   A       n=1   p211 -> ord590  A[590] B[587]                  'Ekaṁ (Syā)'
+   A       n=1   p104 -> ord240  A[240] B[246]                  'Khu 1. 18 piṭṭhe.'
+   A       n=1   p28 -> ord22  A[22] B[20]                      'Khu 1. 254; Aṁ 1. 343, 490 piṭṭhādīsu.'
+   A       n=1   p185 -> ord499  A[499] B[497]                  'Khu 1. 55 piṭṭhe.'
+   A       n=1   p114 -> ord278  A[278] B[281]                  'Khu 2. 73 piṭṭhe.'
+   A       n=1   p143 -> ord380  A[380] B[385]                  'Khu 6. 7 piṭṭhe.'
+   None    n=1   2 marker sites on p22 -> [9, 10]               'Khu 7. 363; Khu 8. 197; Khu 9. 172 piṭṭhesu.'
+   A       n=1   p50 -> ord79  A[79] B[82]                      'Likhāmattaṁ (Ka)'
+   A       n=1   p192 -> ord522  A[522] B[518]                  'Ma 1. 266; Vi 3. 498 piṭṭhesu.'
+   B       n=1   p177 -> ord479  A[478] B[479]                  'Ma 1. 399 piṭṭhe.'
+   A       n=1   p111 -> ord270  A[270] B[273]                  'Ma-Ṭṭha 1. 62 piṭṭhepi.'
+   A       n=1   p46 -> ord74  A[74] B[72]                      'Matthaluṅganti (Sī, Syā)'
+   A       n=1   p229 -> ord655  A[655] B[652]                  'Mettāmānasaṁ (Sī), mettāsaṁkhyaṁ mānasaṁ (Sy'
+   A       n=1   p219 -> ord617  A[617] B[620]                  'Muggasuppataṁ (Sī, Syā)'
+   A       n=1   p137 -> ord358  A[358] B[360]                  'Na samācarati (Sī, Syā)'
+   A       n=1   p132 -> ord340  A[340] B[331]                  'Nahāpanena (Sī, Syā)'
+   B       n=1   p48 -> ord76  A[75] B[76]                      'Pariggahitassa (Ka)'
+   A       n=1   p133 -> ord341  A[341] B[344]                  'Paṭipajjāmi (Ka)'
+   A       n=1   p142 -> ord377  A[377] B[365]                  'Pekkhaṇaṁ (Sī)'
+DONE
+   merge: kept 0 existing note(s) the rebuild missed; dropped 0 not printed anywhere in the volume
+20KhuA01: printed notes anchored 520 (was 0 stored)   unanchored 1   xref lines 0
+   UNANCHORED: p178 note 7: Icchitabbato (Ka)
+wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/apparatus/20KhuA01.appk.json and /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/xrefs/20KhuA01.json
+  20KhuA01     673 ¶   13453 terms  wrote
+118 volumes, 643965 distinct terms
+wrote terms.compact.json
+page index: 118 volumes, 29703 pages, 338 KB
+20KhuA01    673 ¶   136 span >1 page (widest ord75: p.29-31, 3 pages)  3 unresolved
+
+1 volume(s), 136 paragraph(s) with a page RANGE, 3 left out as unresolved
+   merged into the existing map: 114 volume(s) in all
+wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/pagespan.json (194 KB)
+DONE
