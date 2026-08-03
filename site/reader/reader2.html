@@ -261,7 +261,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=feead2b22b9c"></script>
+<script src="../i18n.js?v=838fc81a1342"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -386,7 +386,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='feead2b22b9c';
+const BUILD='838fc81a1342';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -924,7 +924,13 @@ async function ensureBandVols(){
   const want=new Set();
   const on=(k)=> state.view==='tabs' ? state.tab===k : state.active[k];
   const slots=[]; if(on('A')) slots.push('commentary'); if(on('T')) slots.push('subcommentary');
-  if(!slots.length) return;
+  // ...AND THE FILTERED WORK ITSELF, whether or not any `direct` link points
+  // into it.  A work reached from the tree is now the SPINE (see `_work` in
+  // `render`), so its own volume has to be in the cache; before, it arrived
+  // only as the target of a link, and a work with no attested inbound link
+  // would have been rendered from an empty cache entry.
+  if(state.filter) want.add(state.filter);
+  if(!slots.length && !want.size) return;
   // only ATTESTED targets draw (see targetsFor), so only those are worth
   // fetching — a `covered` target would pull a whole volume for a band that
   // is never rendered
@@ -1470,8 +1476,25 @@ function block(kind, key, opts){
   let num=(pr.n!=null)?'<span class="pn k-'+lk+'"'+PNT+'>'+pr.n+'.</span>':'';
   const st='', wt='';
   const vmap=(c.verse||{})[String(ord)];
+  // !!! THE VERSE MAP BELONGS TO THE VOLUME, NOT TO THE CANON BAND (2026-08-03).
+  // This gate read `kind==='canon'`, so a commentary volume drawn in the A band
+  // never took the verse branch at all — and its `hide/` map is written on the
+  // assumption that the branch runs.  MEASURED on 20KhuA01: ten of its fourteen
+  // hidden ordinals are `merge-absorbed`, i.e. their text is carried in a
+  // NEIGHBOURING paragraph's `verse` entry (98 in 99, 332 and 333 in 331, 351 in
+  // 350, 380 in 379, 386 in 385, 430 in 429, 470 in 469, 588 and 589 in 587) and
+  // exists nowhere else in the corpus file.  With the branch shut those ten
+  // paragraphs are hidden by `hide/` and never re-emitted: the page silently
+  // loses them.  (An eleventh, 329, is carried by `uddana/` at 328, which the
+  // spine already draws; 376 is a leaked heading and 671-672 are the index.)
+  //
+  // Opened for the SPINE only — the volume whose own stream is being drawn —
+  // and not for a band block hanging under a canon paragraph, which is a
+  // different question and is left exactly as it was.  So this changes the
+  // standalone-work view and nothing else.
+  const asSpine = kind==='canon' || !!(opts&&opts.spine);
   let body;
-  if(kind==='canon' && vmap && vmap.groups){
+  if(asSpine && vmap && vmap.groups){
     // a prose entry may also be {gatha:[lines]} — the page sets some suttas as
     // verse -> prose -> verse (e.g. Udāna Lokasutta), which a flat groups list
     // plus trailing prose cannot express on its own.
@@ -1548,7 +1571,7 @@ function block(kind, key, opts){
     // suppressed outside once it has been placed inside a block — in the first
     // .gatha for a verse, in the first prose block for a prose unit
     if(vmap.groups.length || (isProse && lead===null)) num='';
-  } else if(kind==='canon'){
+  } else if(asSpine){
     // The homage that opens a book is rendered as an .incipit above this
     // paragraph (see incHTML), so remove the copy the extraction swallowed into
     // the body — otherwise it shows twice, and as prose.
@@ -1670,7 +1693,45 @@ function bandNote(k){
 function render(){
   if(!state.opened) return;
   LASTPG={};                   // a fresh pass draws the first page's rule again
-  const cv=cache[state.canonVol]; const first=cv.paras[0];
+  // !!! A FILTERED WORK IS ITS OWN SPINE, AND UNTIL NOW IT WAS NOT (2026-08-03,
+  // user-reported three times: opening 20KhuA01 in the A band drew the opening
+  // gāthā and then jumped to printed page 125, with `Khuddakavavatthāna` and
+  // `Khantī cāti gāthāvaṇṇanā` adjacent although ~100 printed pages separate
+  // them).
+  //
+  // `openKey` shows a commentary or Ṭīkā work by opening the CANON volume it
+  // hangs off and setting `state.filter`.  Every render path then walked the
+  // CANON volume's paragraphs and drew, at each one, whatever the links point
+  // at — so the work reached the page only through its own inbound links, in
+  // the CANON volume's order.  Two faults follow from that one fact and both
+  // were on screen:
+  //
+  //   COMPLETENESS.  MEASURED in Chromium at 1280x1000: 20KhuA01 has 673
+  //   paragraphs and 48 blocks were drawn, 45 of them distinct — ordinals 298
+  //   to 665 only.  18Khu01 carries 45 distinct `direct` targets into it and
+  //   `targetsFor` draws nothing else, so 628 paragraphs — everything on
+  //   printed pages 2-102, and five of every six paragraphs after that — had
+  //   no way to reach the page at all.  Neither of the two changes that
+  //   exposed this was wrong: pruning the 56 `covered` targets (2026-08-03)
+  //   removed the front of the volume, and the re-segmentation (75ee5904)
+  //   re-keyed each link to the FIRST paragraph of the lump it used to point
+  //   at, leaving the other 5/6 of each lump unreachable.  The rendering model
+  //   was wrong, and had been all along: a work is not the sum of its inbound
+  //   links.
+  //
+  //   ORDER.  The first page rule drawn was `page 125` (canon ord 21 -> A ord
+  //   377), the second `page 103` (canon ord 23 -> A ord 298).  Canon order is
+  //   not the commentary's order and cannot be made into it.
+  //
+  // So where a single work is being shown and the canon band is off, THAT
+  // work's own paragraph list is the stream, in its own order, with its own
+  // sections, hide map, uddāna and front matter.  `SP` is the spine volume;
+  // it is `state.canonVol` in every other case, so no other path moves.
+  const _work=(!state.active.canon && state.filter && state.filter!==state.canonVol
+               && cache[state.filter] && (cache[state.filter].paras||[]).length)
+              ? state.filter : null;
+  const SP=_work||state.canonVol;
+  const cv=cache[SP]; const first=cv.paras[0];
   const _tv=state.titleVol||state.canonVol;
   // the span id carries the clicked node's own label, so a parent and child
   // that share a paragraph key still title the pane differently
@@ -1696,10 +1757,10 @@ function render(){
     if(su&&su!==lastSutta){ lastSutta=su; lastVagga=vg; return '<div class="head sutta" id="s-'+key.replace('#','-')+'">'+esc(su)+'</div>'; }
     if(vg&&vg!==lastVagga){ lastVagga=vg; return '<div class="head vagga">'+esc(vg)+'</div>'; }
     return ''; };
-  const secHead=(i)=> VOLPDFTOC[state.canonVol] ? '' : ((state.outlineByOrd&&state.outlineByOrd[i])||[]).map(it=>'<div class="head section" id="'+it.id+'">'+esc(it.title)+'</div>').join('');
+  const secHead=(i)=> (_work||VOLPDFTOC[SP]) ? '' : ((state.outlineByOrd&&state.outlineByOrd[i])||[]).map(it=>'<div class="head section" id="'+it.id+'">'+esc(it.title)+'</div>').join('');
   // authoritative inline headings (sutta title + printed sub-section titles) for pdftoc volumes
-  const hmap=(i)=>{ if(!VOLPDFTOC[state.canonVol]) return ''; const arr=HEADMAP[state.canonVol+'#'+i]; if(!arr||!arr.length) return '';
-    const key=state.canonVol+'-'+i;
+  const hmap=(i)=>{ if(!VOLPDFTOC[SP]) return ''; const arr=HEADMAP[SP+'#'+i]; if(!arr||!arr.length) return '';
+    const key=SP+'-'+i;
     return '<div id="h-'+key+'">'+arr.map(h=>'<div class="head '+(h.lv==='sutta'?'sutta':'section')+'">'+esc(h.lv==='sutta'?h.label.replace(/^\d+\.\s*/,''):h.label)+'</div>').join('')+'</div>'; };
   // precisely-anchored inline headings (one clean title per section) for non-pdftoc
   // volumes — replaces the raw buildOutline path
@@ -1733,14 +1794,14 @@ function render(){
       +esc(l)+'</div>').join(''); };
   const secmap=(i)=>{ const all=((cv.sec||{})[String(i)]||[]); const arr=all.filter(h=>h.k!=='booktitle'); if(!arr.length) return '';
     const sb=cv.sbold||{};
-    return '<div id="sec-'+state.canonVol+'-'+i+'">'+arr.map(h=> h.k==='gatha'
+    return '<div id="sec-'+SP+'-'+i+'">'+arr.map(h=> h.k==='gatha'
       ? '<div class="gatha pali">'+gathaHTML(h.l, sb[i+':'+all.indexOf(h)])+'</div>'
       : '<div class="head '+(CLS[h.k]||'section')+'">'+esc(h.l)+'</div>').join('')+'</div>'; };
   const incHTML=(i)=>{ const t=(cv.inc||{})[String(i)]; return t?'<div class="incipit pali">'+esc(t)+'</div>':''; };
   // The canon spine's own front matter, wrapped so the book node can scroll to
   // it rather than to the paragraph BELOW it (see `layerFront`).
   const canonFront=(i)=>{ const h=titleHTML(i)+incHTML(i);
-    return h?'<div class="frontmatter" id="front-'+state.canonVol+'-'+i+'">'+h+'</div>':h; };
+    return h?'<div class="frontmatter" id="front-'+SP+'-'+i+'">'+h+'</div>':h; };
   // !!! THE FRONT MATTER OF A COMMENTARY OR ṬĪKĀ VOLUME NEVER REACHED THE PAGE.
   // titleHTML/incHTML read cache[state.canonVol] — and for those layers the
   // canon volume is the book the work HANGS OFF, not the work itself.  So
@@ -1812,10 +1873,10 @@ function render(){
     // preferred over `s-`/`p-` when the click IS the book.
     return (hadfront && h)?'<div class="frontmatter" id="front-'+tv+'-'+to+'">'+h+'</div>':h; };
   const hasIncipit=(i)=>!!(cv.inc||{})[String(i)];
-  const canonHead=(i,p,key)=> VOLPDFTOC[state.canonVol] ? hmap(i) : (hasSec ? secmap(i) : (emitHead(p,key)+secHead(i)));
+  const canonHead=(i,p,key)=> VOLPDFTOC[SP] ? hmap(i) : (hasSec ? secmap(i) : (emitHead(p,key)+secHead(i)));
   // book range: when several books share one physical volume, render only this book's slice
-  const _vg=(state.curvagga&&VAGGASPAN[state.curvagga]&&VAGGASPAN[state.curvagga].vol===state.canonVol)?VAGGASPAN[state.curvagga]:null;
-  const _span=_vg||((state.curbook&&BOOKSPAN[state.curbook]&&BOOKSPAN[state.curbook].vol===state.canonVol)?BOOKSPAN[state.curbook]:null);
+  const _vg=(state.curvagga&&VAGGASPAN[state.curvagga]&&VAGGASPAN[state.curvagga].vol===SP)?VAGGASPAN[state.curvagga]:null;
+  const _span=_vg||((state.curbook&&BOOKSPAN[state.curbook]&&BOOKSPAN[state.curbook].vol===SP)?BOOKSPAN[state.curbook]:null);
   const base=_span?_span.start:0;
   const paras=_span?cv.paras.slice(_span.start, _span.end==null?cv.paras.length:_span.end):cv.paras;
   const HIDE=cv.hide||{};
@@ -1830,8 +1891,19 @@ function render(){
   // ...and never in front of a filtered work: that fallback belongs to the
   // CANON volume, whose homage is not this book's.
   let html=(!state.filter && base===0 && !hasIncipit(base) && !hasIncipit(_ib))?'<div class="incipit pali">namo tassa bhagavato arahato sammāsambuddhassa</div>':'';
-  const udd=(i)=> uddanaHTML((cv.udd||{})[String(i)], LAYERKIND[VOLLAYER[state.canonVol]]||'canon');
-  if(state.view==='columns'){
+  const udd=(i)=> uddanaHTML((cv.udd||{})[String(i)], LAYERKIND[VOLLAYER[SP]]||'canon');
+  // THE FILTERED WORK'S OWN STREAM (see `_work` at the head of `render`).  Its
+  // paragraphs, in its order, with its own front matter, headings, hide map and
+  // uddāna — `cv`, `HIDE`, `canonFront`, `canonHead` and `udd` all read `SP`,
+  // which IS the work here.  There is exactly one band on (the canon band being
+  // off is what makes a work the spine, and the band buttons clear
+  // `state.filter`), so there is nothing to interleave and every view draws the
+  // same stack.
+  if(_work){
+    const wk=state.active.A?'A':'T';
+    html+='<div class="stack">'+paras.map((p,li)=>{ const i=base+li; if(HIDE[String(i)])return '';
+      return canonFront(i)+canonHead(i,p,SP+'#'+i)+block(wk,SP+'#'+i,{spine:true})+udd(i); }).join('')+'</div>';
+  } else if(state.view==='columns'){
     const keys=activeKeys(); const tmpl='repeat('+keys.length+',minmax(0,1fr))';
     html+='<div class="colhead" style="grid-template-columns:'+tmpl+'">'+keys.map(k=>'<div class="ch"><span class="cdot" style="background:'+META[k].col+'"></span>'+META[k].name+'</div>').join('')+'</div>';
     html+='<div class="grid" style="grid-template-columns:'+tmpl+'">';
