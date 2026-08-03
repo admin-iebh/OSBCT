@@ -32,13 +32,19 @@
    claim, not a positional guess: a row is promoted only when the phrase it
    glosses — the words the edition printed in bold — actually stands in the
    paragraph on screen.  `row.k` carries that phrase's stems; the check runs
-   here, at click time, against the text already rendered.  Measured, that rule
-   reaches 80.9% of glossed clicks and 99.3% of the >50-row band — which was
-   the band the whole exercise was about (13.3% of canon clicks).
+   here, at click time, against the text already rendered.  Measured ON THE RULE
+   THAT SHIPS — 2,000 clicks driven through this very file in Chromium, not a
+   Python restatement of it — that rule reaches 75.2% of glossed clicks and
+   96.6% of the >50-row band, which was the band the whole exercise was about
+   (13.3% of canon clicks).  This comment said 80.9% / 99.3% for four sessions;
+   those came from `_panel/proximity_variant.py`, which tests a different rule
+   against a different link map.  96.6% against 99.3% over 384 clicks in that
+   band (s.e. ~0.9%) is a real difference, not sampling noise.  See
+   `claude/judging_sheet_for_the_shipped_rule.md` §3.
 
    FOUR GROUPS, each with a criterion a reader could check for themselves:
        "in the commentary on this paragraph"   phrase present AND the row sits
-                                               in the linked paragraph   3.6%
+                                               in the linked paragraph   4.0%
        "on a phrase that stands in this ¶"     phrase present, >1 word
        "on the word itself"                    the edition glosses this form
                                                alone — true wherever it stands,
@@ -1673,9 +1679,12 @@ function viewEd(d) {
   // omission.  "The lemma stands in this paragraph" is a real coincidence for a
   // multi-word lemma and NO information at all for a one-word one: if the
   // reader clicked `tattha`, then a row whose whole lemma is `tattha` is
-  // trivially "in this paragraph".  Measured over the corpus: the rule fires on
-  // 80.9% of glossed clicks, but 30% of what it promotes is that empty
-  // one-word case.  A one-word gloss is worth having — it is the edition
+  // trivially "in this paragraph".  Measured over the corpus: the two-group
+  // rule fired on 80.9% of glossed clicks, and 30% of what it promoted was that
+  // empty one-word case.  (Those two numbers describe the SUPERSEDED rule and
+  // were taken with the superseded tooling; the shipped four-group rule
+  // measures 75.2%, and the 30% has not been re-measured against it.  Do not
+  // quote either for what ships.)  A one-word gloss is worth having — the edition
   // defining the word plainly — so it keeps a group; it just must not be
   // dressed up as being about this passage.
   var prox = [], here = [], word = [], rest = [];
