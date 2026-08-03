@@ -42,9 +42,17 @@ window.I18N = {
   // band but this VOLUME links nothing to it (2026-08-03)
   band_vol:{en:'No %s is linked in this volume.',
             es:'Ningún %s está enlazado en este volumen.'},
-  // on the paragraph's own dimmed jump chip (2026-08-03)
-  band_para:{en:'No %s is linked to this paragraph.',
-             es:'Ningún %s está enlazado con este párrafo.'},
+  // On the paragraph's own dimmed jump chip (2026-08-03).
+  // !!! IT USED TO SAY "No %s is linked to this paragraph." and a reader read
+  // that, reasonably, as "this passage has no Ṭīkā" — which is the one thing
+  // that is NOT known.  The Aratisutta HAS a subcommentary record
+  // (`20AnT03#57`); it is a `covered` fallback the builder invented, so it is
+  // not shown.  Whether the Ṭīkā glosses the sutta is undetermined.  The gap is
+  // ours, and the wording now says so.
+  // `band_vol` and `band_layer` keep "is linked": they are scoped to a volume
+  // and to what is on screen, where the misreading does not arise.
+  band_para:{en:'No %s passage could be identified for this paragraph.',
+             es:'No se ha podido identificar ningún pasaje de %s para este párrafo.'},
   lang_toggle:{en:'Cambiar a español',es:'Switch to English'},
 
   // landing
