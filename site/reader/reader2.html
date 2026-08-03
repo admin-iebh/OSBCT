@@ -261,7 +261,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=291eb674d768"></script>
+<script src="../i18n.js?v=fc3feb8656c8"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -386,7 +386,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='291eb674d768';
+const BUILD='fc3feb8656c8';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -1374,7 +1374,11 @@ function jbtns(kind,key,src){
   const COL={P:'var(--canon)',A:'var(--comm)',T:'var(--tika)'},NAME={P:'Pāḷi',A:'Aṭṭhakathā',T:'Ṭīkā'};
   return bands.filter(b=>b!==mine).map(tg=>{
     const h=hasBand(key,tg,src);
-    if(h===false) return '<button class="jbtn none" disabled data-keeptitle title="'
+    // `data-keeptitle` used to sit here, opting this chip out of `tipify` and
+    // back into the browser's own tooltip, because the custom one was clipped
+    // to a sliver.  d4cec8b5 removed the clipping, so the workaround goes with
+    // it — and this is the very tooltip the reader was trying to read.
+    if(h===false) return '<button class="jbtn none" disabled title="'
       + escA(TIP('band_para','No %s passage could be identified for this paragraph.').replace('%s',NAME[tg]))
       + '">'+tg+'</button>';
     return '<button class="jbtn" style="color:'+COL[tg]+';border-color:'+COL[tg]+'" title="'
@@ -2074,12 +2078,28 @@ applyRsize();
 // why it is dimmed: the styled tooltip is still clipped to a sliver
 // (`claude/start_here_2026-08-03.md` §3, unfixed), so routing that one
 // explanation through it would deliver nothing.
+// !!! ONLY `#scroll` WAS EVER TIPIFIED.  `render()` called this on the reading
+// pane, so the ten `title` attributes on the top bar — the layer buttons, the
+// view toggles, Contents, Outline, A-/A+ — never became `data-tip` and still
+// used the browser's own slow tooltip.  A page that answers two different ways
+// depending on which half of it you point at is not a design.  `tipifyAll()`
+// below runs over the document once i18n has put the translated titles in.
 function tipify(root){(root||document).querySelectorAll('[title]').forEach(el=>{const v=el.getAttribute('title');if(v&&!el.hasAttribute('data-keeptitle')){el.setAttribute('data-tip',v);el.removeAttribute('title');}});}
 // ---------- tooltips, rendered on <body> so nothing can clip them ----------
 // See the #tiptip rule for why.  One node, reused; the listeners are delegated
 // on `document`, so anything rendered later is covered without re-running
 // tipify for the tooltip's sake.  `data-keeptitle` still opts an element out
 // entirely -- it keeps its native `title` and never reaches here.
+function tipifyAll(){ tipify(document); }
+// !!! A `DOMContentLoaded` LISTENER REGISTERED AFTER THE EVENT HAS FIRED NEVER
+// RUNS, and this script executes late enough that it had already gone: the
+// first version of this call was dead on arrival and the top bar stayed
+// untipified with no error to show for it.  Check `readyState` instead.
+// The `setTimeout` defers past `i18n.js`'s own DOMContentLoaded listener, so
+// the titles being converted are the translated ones.
+if(document.readyState==='loading')
+  document.addEventListener('DOMContentLoaded',function(){ setTimeout(tipifyAll,0); });
+else setTimeout(tipifyAll,0);
 var TIPEL=null;
 function tipNode(){
   if(!TIPEL||!TIPEL.isConnected){ TIPEL=document.createElement('div'); TIPEL.id='tiptip';

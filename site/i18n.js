@@ -145,7 +145,17 @@ window.applyI18n=function(){
   const lang=osbctLang(); document.documentElement.lang=lang;
   document.querySelectorAll('[data-i18n]').forEach(el=>{ el.innerHTML=t(el.getAttribute('data-i18n')); });
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ el.setAttribute('placeholder',t(el.getAttribute('data-i18n-ph'))); });
-  document.querySelectorAll('[data-i18n-title]').forEach(el=>{ el.setAttribute('title',t(el.getAttribute('data-i18n-title'))); });
-  document.querySelectorAll('.langbtn').forEach(b=>{ b.textContent = lang==='es'?'EN':'ES'; b.title=t('lang_toggle'); b.onclick=()=>osbctSetLang(lang==='es'?'en':'es'); });
+  // !!! WRITE TO `data-tip` ONCE THE ELEMENT HAS ONE.  `tipify` moves `title`
+  // into `data-tip` so the custom tooltip can render it; if this kept writing
+  // `title`, a language switch would hand the element BOTH and the browser
+  // would draw its own tooltip over ours.
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{
+    el.setAttribute(el.hasAttribute('data-tip')?'data-tip':'title',
+                    t(el.getAttribute('data-i18n-title'))); });
+  document.querySelectorAll('.langbtn').forEach(b=>{ b.textContent = lang==='es'?'EN':'ES';
+    // same rule as `data-i18n-title` above: never hand a tipified element a
+    // `title` as well, or the browser draws its own tooltip over ours
+    b.setAttribute(b.hasAttribute('data-tip')?'data-tip':'title', t('lang_toggle'));
+    b.onclick=()=>osbctSetLang(lang==='es'?'en':'es'); });
 };
 document.addEventListener('DOMContentLoaded',window.applyI18n);
