@@ -252,7 +252,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=3a1dcc26249e"></script>
+<script src="../i18n.js?v=b1f3553873c4"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -377,7 +377,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='3a1dcc26249e';
+const BUILD='b1f3553873c4';
 async function jget(url,fallback){ try{const sep=url.includes('?')?'&':'?'; const r=await fetch(url+sep+'v='+BUILD); if(!r.ok) return fallback; return await r.json();}catch(e){return fallback;} }
 async function loadVol(vol){
   if(cache[vol]) return cache[vol];
@@ -853,9 +853,18 @@ async function ensureBandVols(){
   // is never rendered
   for(const e of Object.values(links)) for(const lk of slots)
     for(const t of (e[lk]||[])) if(t&&t.key&&t.state==='direct') want.add(parseKey(t.key)[0]);
+  // !!! AND THEIR REV MAPS, OR A DRAWN BAND CANNOT SAY WHAT IT HAS
+  // (2026-08-03).  `hasBand` answers for a paragraph in a BAND by going
+  // through `revCache[vol]` back to its canon record -- and with no rev map
+  // loaded it returns null, "unknown", which `jbtns` was rendering as a live
+  // button.  That is how the commentary block under the Aratisutta still
+  // offered a Ṭīkā the canon paragraph beside it had just been dimmed for:
+  // not a second opinion, an absence of one.  Unknown must not look like yes,
+  // so the evidence is fetched with the volume it belongs to.
   const todo=[...want].filter(v=>!cache[v]);
-  if(!todo.length) return;
-  await Promise.all(todo.map(loadVol));
+  const revs=[...want].filter(v=>!(v in revCache));
+  if(!todo.length && !revs.length) return;
+  await Promise.all(todo.map(loadVol).concat(revs.map(loadRev)));
 }
 // !!! A THROW ANYWHERE BELOW USED TO LEAVE "Loading <VOL>…" ON SCREEN FOR EVER
 // (2026-07-31c, user-reported on an iPhone).  `jget` swallows fetch failures
@@ -1241,8 +1250,16 @@ function hasBand(key,tg){
   const rev=revCache[vol]; if(!rev) return null;
   const c=(rev[String(ord)]||{}).canon; if(!c) return false;
   if(tg===spine) return true;
+  // !!! AND THE SAME FILTER HERE (2026-08-03, reader: "you removed the T from
+  // the Aratisutta, only A remains, but in the A of the Aratisutta there is a
+  // T button").  `hasBand` has TWO branches -- the spine's own paragraph, and
+  // a paragraph in a band that reaches its canon through the rev map -- and
+  // the `direct`-only filter went on only the first.  So the canon Aratisutta
+  // correctly said it has no Ṭīkā while its COMMENTARY block, asking the very
+  // same canon record through the other branch, still offered one.  Two
+  // answers from one fact.
   const [cv,co]=parseKey(c); const links=linkCache[cv]; if(!links) return null;
-  return ((links[String(co)]||{})[SLOT[tg]]||[]).length>0;
+  return ((links[String(co)]||{})[SLOT[tg]]||[]).filter(t=>t.state==='direct').length>0;
 }
 // cross-layer jump buttons — only for bands this work actually has, and
 // only where this paragraph really has one
