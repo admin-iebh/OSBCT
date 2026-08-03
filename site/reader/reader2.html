@@ -261,7 +261,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=fc3feb8656c8"></script>
+<script src="../i18n.js?v=cb889fcdb1d1"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -386,7 +386,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='fc3feb8656c8';
+const BUILD='cb889fcdb1d1';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -1987,10 +1987,16 @@ function syncButtons(){
     b.classList.toggle('on', state.view==='tabs'?state.tab===k:state.active[k]);
     const none=!!av && k!=='canon' && !av[k] ;
     b.classList.toggle('noav', none);
-    if(none) b.title=((gh&&gh[k]===false)
-        ? TIP('band_none','The edition assigns no %s to this work.')
-        : TIP('band_vol','No %s is linked in this volume.'))
-      .replace('%s',(META[k]||{}).name||k);});
+    // and when the layer IS available, restore the plain description, or the
+    // button keeps saying "no Ṭīkā is linked here" after moving to a volume
+    // that has one
+    setTip(b, none
+      ? ((gh&&gh[k]===false)
+          ? TIP('band_none','The edition assigns no %s to this work.')
+          : TIP('band_vol','No %s is linked in this volume.'))
+        .replace('%s',(META[k]||{}).name||k)
+      : TIP({canon:'tip_layer_canon',A:'tip_layer_comm',T:'tip_layer_tika'}[k],
+            ((META[k]||{}).name||k)));});
   document.querySelectorAll('#viewtog button').forEach(b=>b.classList.toggle('on',b.dataset.view===state.view));
 }
 document.querySelectorAll('.lbtn').forEach(b=>b.onclick=async()=>{const k=b.dataset.k;
@@ -2090,6 +2096,17 @@ function tipify(root){(root||document).querySelectorAll('[title]').forEach(el=>{
 // on `document`, so anything rendered later is covered without re-running
 // tipify for the tooltip's sake.  `data-keeptitle` still opts an element out
 // entirely -- it keeps its native `title` and never reaches here.
+// !!! SETTING `.title` ON A TIPIFIED ELEMENT IS THE BUG THAT KEEPS COMING BACK.
+// Once `tipify` has moved `title` into `data-tip`, any later `el.title = ...`
+// hands the element BOTH: the browser draws its own slow tooltip with the new
+// text while ours draws the stale one.  It happened in `applyI18n`'s
+// `data-i18n-title` loop, again on `.langbtn`, and a third time in
+// `syncButtons`, which is why the reader still saw nothing useful on a dimmed
+// layer button after two "fixes".  Use this, never `.title`.
+function setTip(el, text){
+  if(!el) return;
+  el.setAttribute(el.hasAttribute('data-tip') ? 'data-tip' : 'title', text);
+}
 function tipifyAll(){ tipify(document); }
 // !!! A `DOMContentLoaded` LISTENER REGISTERED AFTER THE EVENT HAS FIRED NEVER
 // RUNS, and this script executes late enough that it had already gone: the
