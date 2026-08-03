@@ -227,7 +227,16 @@ sup.fnm{color:var(--accent);font-size:9.5px;font-weight:700;vertical-align:super
 #toast.show{opacity:.96;transform:translateX(-50%) translateY(0)}
 mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1px}
 [data-tip]{position:relative}
-[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%);background:var(--fg);color:var(--bg);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;line-height:1.3;white-space:normal;width:max-content;max-width:230px;text-align:center;padding:5px 9px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.26);z-index:200;pointer-events:none}
+/* !!! THE TOOLTIP USED TO BE AN `::after` ON THE ELEMENT ITSELF, and an
+   absolutely-positioned pseudo-element cannot leave its ancestors.  `.scroll`
+   is `overflow-y:auto` and `.para` is `position:relative`, so a tooltip under a
+   paragraph's button was clipped to a sliver -- reader screenshots 2026-08-03
+   show it painting as a bare white bar, and "Copiar la c" cut off mid-word.
+   No amount of `overflow:visible` or z-index fixes that: the clip is the scroll
+   container's, and it has to scroll.
+   So the tooltip is now ONE element on `<body>`, `position:fixed`, positioned
+   in JS.  Nothing can clip it because nothing contains it. */
+#tiptip{position:fixed;display:none;background:var(--fg);color:var(--bg);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;line-height:1.35;white-space:normal;width:max-content;max-width:260px;text-align:center;padding:5px 9px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.26);z-index:9999;pointer-events:none}
 /* !!! OPENING A SUTTA TOOK EIGHT SECONDS ON A PHONE (2026-07-31c,
    user-reported: "sluggish or unresponsive when one clicks the links").
    Measured in Chromium at 390x844 with the CPU throttled 4x, opening 18Khu01:
@@ -252,7 +261,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=a96b9c6433a1"></script>
+<script src="../i18n.js?v=537907a81369"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -377,7 +386,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='a96b9c6433a1';
+const BUILD='537907a81369';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -2066,6 +2075,46 @@ applyRsize();
 // (`claude/start_here_2026-08-03.md` §3, unfixed), so routing that one
 // explanation through it would deliver nothing.
 function tipify(root){(root||document).querySelectorAll('[title]').forEach(el=>{const v=el.getAttribute('title');if(v&&!el.hasAttribute('data-keeptitle')){el.setAttribute('data-tip',v);el.removeAttribute('title');}});}
+// ---------- tooltips, rendered on <body> so nothing can clip them ----------
+// See the #tiptip rule for why.  One node, reused; the listeners are delegated
+// on `document`, so anything rendered later is covered without re-running
+// tipify for the tooltip's sake.  `data-keeptitle` still opts an element out
+// entirely -- it keeps its native `title` and never reaches here.
+var TIPEL=null;
+function tipNode(){
+  if(!TIPEL||!TIPEL.isConnected){ TIPEL=document.createElement('div'); TIPEL.id='tiptip';
+    TIPEL.setAttribute('role','tooltip'); document.body.appendChild(TIPEL); }
+  return TIPEL;
+}
+function tipHide(){ if(TIPEL) TIPEL.style.display='none'; }
+function tipShow(el){
+  const txt=el.getAttribute('data-tip'); if(!txt){ tipHide(); return; }
+  const d=tipNode();
+  d.textContent=txt;
+  // measure before placing: the box has to be known to be centred, clamped and
+  // flipped, and it cannot be measured while display:none
+  d.style.visibility='hidden'; d.style.display='block'; d.style.left='0px'; d.style.top='0px';
+  const r=el.getBoundingClientRect(), b=d.getBoundingClientRect();
+  const vw=document.documentElement.clientWidth, vh=document.documentElement.clientHeight, M=6;
+  let left=r.left+r.width/2-b.width/2;
+  left=Math.max(M, Math.min(left, vw-b.width-M));      // clamp inside the viewport
+  let top=r.bottom+7;
+  if(top+b.height>vh-M) top=r.top-b.height-7;          // no room below: go above
+  if(top<M) top=M;
+  d.style.left=left+'px'; d.style.top=top+'px'; d.style.visibility='visible';
+}
+(function(){
+  const tgt=e=>e.target&&e.target.closest?e.target.closest('[data-tip]'):null;
+  document.addEventListener('mouseover',e=>{const t=tgt(e); if(t) tipShow(t); });
+  document.addEventListener('mouseout', e=>{const t=tgt(e); if(t) tipHide(); });
+  document.addEventListener('focusin',  e=>{const t=tgt(e); if(t) tipShow(t); });
+  document.addEventListener('focusout', tipHide);
+  // a fixed tooltip does not travel with the element, so it must go when the
+  // element moves under it
+  document.addEventListener('scroll', tipHide, true);
+  window.addEventListener('resize', tipHide);
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') tipHide(); });
+})();
 
 // ---------- search (top bar, real index) ----------
 const FOLDM={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
