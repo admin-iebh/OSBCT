@@ -68,10 +68,25 @@ def main():
     man_path = os.path.join(STORE, 'index.json')
     man = json.load(open(man_path, encoding='utf-8'))
     books = man.get('apd_books') or {}
-    unknown = [k for k in DROP if k not in books]
+    done = man.get('apd_dropped') or {}
+    # !!! THIS GUARD USED TO MAKE THE SCRIPT RUN ONCE AND NEVER AGAIN.  It
+    # compared APD_DROP against `apd_books` alone, so the moment a run
+    # succeeded, every id it had just removed was "an id this store does not
+    # have" and the next run refused.  Adding one dictionary to APD_DROP a day
+    # later was therefore impossible without editing this file -- discovered
+    # 2026-08-03 doing exactly that.
+    # An id absent from `apd_books` but recorded in `apd_dropped` is ALREADY
+    # PRUNED, which is agreement, not disagreement.  Only an id in neither is
+    # the renumbering this guard was written for.
+    unknown = [k for k in DROP if k not in books and k not in done]
     if unknown:
-        sys.exit(f'APD_DROP names ids this store does not have: {unknown}\n'
+        sys.exit(f'APD_DROP names ids this store has never had: {unknown}\n'
                  f'Refusing to run: the store and the drop list disagree.')
+    todo = [k for k in DROP if k in books]
+    if not todo:
+        print('nothing to prune: every id in APD_DROP is already recorded in '
+              'apd_dropped')
+        return
 
     rows_before = collections.Counter()
     rows_after = collections.Counter()

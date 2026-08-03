@@ -192,6 +192,19 @@ for lem in LEMMAS:
     if v:
         put(lem, 'pn', v); n += 1
 log(f'  PPN: {n:,} lemmas of {len(ppn):,} names')
+# !!! THIS IMPORT REACHES FEWER LEMMAS THAN THE COPY THAT WAS JUST DROPPED, AND
+# WHY IS NOT ESTABLISHED.  Measured over the built store: the APD's `V` section
+# reached 2,437 lemmas against this block's 2,184, and 532 of the difference are
+# not reachable here under any folding.  Two candidate causes, neither checked
+# because DPPN.json is not on the machine this was measured on:
+#   * the key is the FIRST <b> of `name`, so a name printed as `Abbhuta Sutta`
+#     keys as `abbhuta sutta` and no single-word lemma will ever match it;
+#   * `Abbhavalāhakā` against the lemma `abbhavalāhaka` differs only in a final
+#     vowel length, which neither `.lower()` nor `norm()` closes.
+# Whoever has DPPN.json: print the keys this builds, look for the 532, and widen
+# the keying to whichever cause it turns out to be.  Do NOT widen it blind --
+# keying on a first word would merge `Abhaya Thera` into `Abhaya` and that may
+# not be wanted.
 
 # ------------------------------------------------------- Abhidhāna (pm12e) --
 # Citation transcoding is build_panel_data.py's, unchanged: the abbreviations
@@ -317,11 +330,26 @@ APD_DROP = {
     'W': '《巴英术语汇编》温宗堃',
     'Z': '《巴汉佛学辞汇》张文明',
     'X': '《巴利语入门》释性恩',
+    # THE SAME DICTIONARY TWICE.  Reader-reported 2026-08-03: the Dictionary
+    # tab showed Malalasekera's proper-names dictionary as its own APD section
+    # AND as the `_ppn` section built from DPPN.json, one above the other.
+    # `V` is the copy that goes, and the choice was measured, not assumed: its
+    # text carries full-width CJK punctuation from the aggregate's encoding
+    # (`Sāvatthi，` `M.iii.102；` `ābha：`) and broken diacritics
+    # (`āppamānābhā` for `Āppamāṇābhā`, `Sāvatthi` for `Sāvatthī`), where
+    # DPPN.json carries marked-up HTML with the diacritics intact.
+    # KNOWN COST, recorded because it is not zero: over this store's 52,757
+    # lemmas, `V` reaches 2,437 and `_ppn` 2,184, overlapping on 1,580.  Of the
+    # 857 `V` reaches alone, 325 are a fold-variant of a key `_ppn` already has
+    # and 532 are not reachable through `_ppn` at all.  Those 532 are lost
+    # until the DPPN import is widened -- see the note at the PPN block.
+    'V': 'Pali Proper Names Dictionary — the duplicate of DPPN.json; see note',
 }
 
 # Order of presentation: English, then Burmese.  (Vietnamese and the
 # Chinese/Japanese group used to follow; they are in APD_DROP now.)
-APD_ORDER = ['P', 'C', 'N', 'I', 'V',            # English
+APD_ORDER = ['P', 'C', 'N', 'I',                 # English ('V' dropped: it is
+                                                 # DPPN twice -- see APD_DROP)
              'K', 'B', 'R', 'O']                 # Burmese
 ZAWGYI_IDS = {'B', 'K', 'O', 'R'}
 assert not (APD_DROP.keys() & set(APD_ORDER)), \
