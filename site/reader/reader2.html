@@ -252,7 +252,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=f0136c314e42"></script>
+<script src="../i18n.js?v=a96b9c6433a1"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -377,7 +377,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='f0136c314e42';
+const BUILD='a96b9c6433a1';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -403,11 +403,54 @@ const BUILD='f0136c314e42';
       location.replace(u.toString());
     }).catch(()=>{});
   }catch(e){}
-})();async function jget(url,fallback){ try{const sep=url.includes('?')?'&':'?'; const r=await fetch(url+sep+'v='+BUILD); if(!r.ok) return fallback; return await r.json();}catch(e){return fallback;} }
+})();
+// !!! EVERY FETCH USED TO FAIL SILENTLY.  `jget` returned its fallback on any
+// error, so a reader whose `nav.json` 404s — or anyone who opened this file
+// from disk over `file://`, where `fetch` throws outright — got an empty left
+// pane, no message, and nothing in the interface to say why.  The same lesson
+// `openCanon` learned after the iPhone session: on a phone there is no console
+// to tell you otherwise, so the error has to be put on the page.
+//
+// BUT NOT EVERY MISS IS A FAULT, and that is why this is a flag and not a
+// blanket.  Most volumes legitimately have no `sections/`, `verse/`, `uddana/`
+// or `incipit/` file; surfacing those would cry wolf on every open and train
+// the reader to ignore the one that matters.  So the CALLER says which files
+// the reader cannot work without, and only those speak up.
+var LOADFAIL = [];
+function loadFailNote(){
+  if(!LOADFAIL.length) return '';
+  var f = LOADFAIL[0];
+  var whence = (location.protocol === 'file:')
+    ? 'This page was opened from disk (file://), where the browser refuses to '
+      + 'read the data files next to it. The reader has to be served over http '
+      + '— any local web server will do.'
+    : 'The file did not load. If this persists, the published build may be '
+      + 'incomplete or a network rule is blocking it.';
+  return '<div class="hint" style="text-align:left;white-space:pre-wrap;'
+       + 'font:12px/1.45 ui-monospace,monospace;color:var(--fg);padding:14px">'
+       + 'Could not load ' + esc(f.url) + '\n\n' + esc(whence)
+       + (LOADFAIL.length > 1 ? '\n\n(' + (LOADFAIL.length - 1) + ' more failed the same way.)' : '')
+       + '\n\n' + esc(f.why) + '</div>';
+}
+function surfaceLoadFail(){
+  var host = document.getElementById('scroll');
+  if(host && LOADFAIL.length) host.innerHTML = loadFailNote();
+}
+async function jget(url,fallback,required){
+  var why='';
+  try{
+    const sep=url.includes('?')?'&':'?';
+    const r=await fetch(url+sep+'v='+BUILD);
+    if(!r.ok){ why='HTTP '+r.status+' '+(r.statusText||''); }
+    else { return await r.json(); }
+  }catch(e){ why=(e&&(e.message||String(e)))||'fetch threw'; }
+  if(required){ LOADFAIL.push({url:url, why:why}); surfaceLoadFail(); }
+  return fallback;
+}
 async function loadVol(vol){
   if(cache[vol]) return cache[vol];
   const [d,bold,sbold,app,udd,sec,hide,verse,inc,btl]=await Promise.all([
-    jget('../'+vol+'.json',{paragraphs:[]}),
+    jget('../'+vol+'.json',{paragraphs:[]},true),
     jget('bold/'+vol+'.bold.json',{}),
     jget('bold/'+vol+'.sect.json',{}),
     jget('apparatus/'+vol+'.appk.json',{}),
@@ -433,14 +476,14 @@ function node(label,depth,{open,leafKey,layerkind}={}){
 }
 async function buildSidebar(){ try{
   console.log('OSBCT reader build: '+BUILD);
-  NAV=await jget('nav.json',{layers:[]});
+  NAV=await jget('nav.json',{layers:[]},true);
   console.log('OSBCT nav loaded: layers=',(NAV.layers||[]).length,'canon nikāyas=',(((NAV.layers||[]).find(l=>l.layer==='canon')||{}).nikayas||[]).map(n=>n.nikaya).join(', '));
   PAGEIDX=await jget('pageindex.json',{});
   // the blank pages `extract.py` dropped before numbering `pdf_page`, and each
   // paragraph's LAST printed page — see `truePdfPage` and `facs` below
   PDFBLANK=await jget('pdfblanks.json',{});
   PAGESPAN=await jget('pagespan.json',{});
-  const man=await jget('manifest.json',{volumes:{}});
+  const man=await jget('manifest.json',{volumes:{}},true);
   for(const [code,m] of Object.entries(man.volumes||{})){ VOLLAYER[code]=m.layer; VOLWORK[code]=m.work; }
   // !!! WHICH CROSS-LAYER BUTTONS A PARAGRAPH MAY OFFER IS A FACT ABOUT THE
   // WORK, NOT ABOUT THE STREAM IT HAPPENS TO BE DRAWN IN (2026-07-30g).

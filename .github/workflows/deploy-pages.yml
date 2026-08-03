@@ -1,7 +1,15 @@
 name: Deploy site to GitHub Pages
 
 # Publishes the contents of site/ to GitHub Pages on every push to main.
-# This is a mirror/backup of the primary site hosted on Cloudflare.
+#
+# THIS IS THE SITE, not a mirror.  `site/CNAME` holds `buddha-dhamma.net`, and a
+# CNAME file in the published directory is how GitHub Pages binds a custom
+# domain — so this workflow is what serves the domain.  The line that used to
+# sit here called this "a mirror/backup of the primary site hosted on
+# Cloudflare" and was contradicted by the file beside it.
+# `site/DEPLOY.md` still documents a Cloudflare Pages route; see the note at its
+# head.  DNS could not be checked from the sandbox that corrected this, so the
+# Cloudflare instructions were flagged rather than deleted.
 
 on:
   push:

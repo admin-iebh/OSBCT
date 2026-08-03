@@ -149,3 +149,8 @@ _dictsrc/
 _panel/*.out
 _panel/*.err
 _xc/linksk_named/
+
+# Transfer scratch: tarballs and unpacked copies used to move files between the
+# sandbox and this machine. Six of these were swept into commit 649b0059 before
+# this line existed.
+_xfer/

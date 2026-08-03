@@ -1,4 +1,16 @@
-# Deploying the OSBCT site to Cloudflare Pages
+> **What actually serves buddha-dhamma.net is GitHub Pages**, via
+> `.github/workflows/deploy-pages.yml`, which publishes `site/` on every push to
+> `main`. `site/CNAME` holds the domain, and a CNAME file in the published
+> directory is GitHub Pages' mechanism for binding one. Nothing needs to be run
+> by hand to deploy.
+>
+> The Cloudflare Pages route below is kept as an alternative and as history. It
+> is **not** the live path. It was not deleted because DNS could not be checked
+> from the sandbox that found the discrepancy (2026-08-03) — if you can confirm
+> the domain resolves to GitHub Pages and nothing depends on the R2 bucket for
+> the PDFs, this file can lose everything under the heading.
+
+# Deploying the OSBCT site to Cloudflare Pages (alternative route — not live)
 
 This `site/` folder is a complete, self-contained static site. It needs no build step and
 no server — every file is a static asset.
