@@ -1,0 +1,32 @@
+MODE: control=None volumes=1
+45KhuA26   body   8060  miss     1 ( 0.01%)  digit  166  edge   370   V-as-P    77  V-as-H   25  P-as-V    29  P-as-U    0  pV   200 pP   7716   [honest]
+45KhuA26   body      0  miss     0 ( 0.00%)  digit   11  edge  8430   V-as-P     1  V-as-H    0  P-as-V     0  P-as-U    0  pV     1 pP    131   [wrongvol] fired on 8016 of 8430 lines
+45KhuA26   body   8060  miss     1 ( 0.01%)  digit  166  edge   370   V-as-P   200  V-as-H    0  P-as-V     0  P-as-U    0  pV   200 pP   7716   [allprose] fired on 152 of 8430 lines
+45KhuA26   body   8060  miss     1 ( 0.01%)  digit  166  edge   370   V-as-P     0  V-as-H    0  P-as-V  7390  P-as-U    0  pV   200 pP   7716   [allverse] fired on 7463 of 8430 lines
+45KhuA26   body   8060  miss     1 ( 0.01%)  digit  166  edge   370   V-as-P   126  V-as-H   32  P-as-V   556  P-as-U  212  pV   200 pP   7716   [shiftclass] fired on 903 of 8430 lines
+45KhuA26   body   8060  miss     1 ( 0.01%)  digit  166  edge   370   V-as-P   169  V-as-H    1  P-as-V    79  P-as-U   31  pV   198 pP   7718   [shiftlines] fired on 945 of 8430 lines
+MODE: control=None volumes=1
+20KhuA01   body   6124  miss     6 ( 0.10%)  digit   78  edge  1053   V-as-P   297  V-as-H   22  P-as-V    86  P-as-U    2  pV   499 pP   5634   [honest]
+20KhuA01   body      0  miss     0 ( 0.00%)  digit   38  edge  7177   V-as-P     4  V-as-H    0  P-as-V     0  P-as-U    0  pV     4 pP    127   [wrongvol] fired on 6217 of 7177 lines
+20KhuA01   body   6124  miss     6 ( 0.10%)  digit   78  edge  1053   V-as-P   499  V-as-H    0  P-as-V     0  P-as-U    0  pV   499 pP   5634   [allprose] fired on 290 of 7177 lines
+20KhuA01   body   6124  miss     6 ( 0.10%)  digit   78  edge  1053   V-as-P     0  V-as-H    0  P-as-V  5217  P-as-U    0  pV   499 pP   5634   [allverse] fired on 5450 of 7177 lines
+20KhuA01   body   6124  miss     6 ( 0.10%)  digit   78  edge  1053   V-as-P   336  V-as-H   54  P-as-V   807  P-as-U  112  pV   499 pP   5634   [shiftclass] fired on 1115 of 7177 lines
+20KhuA01   body   6124  miss     6 ( 0.10%)  digit   78  edge  1053   V-as-P   383  V-as-H   16  P-as-V   153  P-as-U   18  pV   497 pP   5636   [shiftlines] fired on 1367 of 7177 lines
+MODE: control=None volumes=1
+MODE: control=None volumes=1
+20KhuA01   body   6124  miss     6 ( 0.10%)  digit   78  edge  1053   V-as-P   297  V-as-H   22  P-as-V    86  P-as-U    2  pV   499 pP   5634   [honest]
+20KhuA01   body      0  miss     0 ( 0.00%)  digit   38  edge  7177   V-as-P     4  V-as-H    0  P-as-V     0  P-as-U    0  pV     4 pP    127   [wrongvol] fired on 6217 of 7177 lines
+20KhuA01   body   6124  miss     6 ( 0.10%)  digit   78  edge  1053   V-as-P   499  V-as-H    0  P-as-V     0  P-as-U    0  pV   499 pP   5634   [allprose] fired on 290 of 7177 lines
+20KhuA01   body   6124  miss     6 ( 0.10%)  digit   78  edge  1053   V-as-P     0  V-as-H    0  P-as-V  5217  P-as-U    0  pV   499 pP   5634   [allverse] fired on 5450 of 7177 lines
+20KhuA01   body   6124  miss     6 ( 0.10%)  digit   78  edge  1053   V-as-P   336  V-as-H   54  P-as-V   807  P-as-U  112  pV   499 pP   5634   [shiftclass] fired on 1115 of 7177 lines
+20KhuA01   body   6124  miss     6 ( 0.10%)  digit   78  edge  1053   V-as-P   383  V-as-H   16  P-as-V   153  P-as-U   18  pV   497 pP   5636   [shiftlines] fired on 1367 of 7177 lines
+MODE: control=None volumes=1
+44KhuA25   body   3882  miss     2 ( 0.05%)  digit  214  edge  1043   V-as-P    28  V-as-H   15  P-as-V    32  P-as-U    0  pV   209 pP   3542   [honest]
+44KhuA25   body      0  miss     0 ( 0.00%)  digit   28  edge  4925   V-as-P     5  V-as-H    0  P-as-V     0  P-as-U    0  pV     5 pP    124   [wrongvol] fired on 4018 of 4925 lines
+44KhuA25   body   3882  miss     2 ( 0.05%)  digit  214  edge  1043   V-as-P   209  V-as-H    0  P-as-V     0  P-as-U    0  pV   209 pP   3542   [allprose] fired on 213 of 4925 lines
+44KhuA25   body   3882  miss     2 ( 0.05%)  digit  214  edge  1043   V-as-P     0  V-as-H    0  P-as-V  3318  P-as-U    0  pV   209 pP   3542   [allverse] fired on 3329 of 4925 lines
+44KhuA25   body   3882  miss     2 ( 0.05%)  digit  214  edge  1043   V-as-P   106  V-as-H    4  P-as-V   390  P-as-U  336  pV   209 pP   3542   [shiftclass] fired on 833 of 4925 lines
+44KhuA25   body   3882  miss     2 ( 0.05%)  digit  214  edge  1043   V-as-P   132  V-as-H    2  P-as-V    81  P-as-U   69  pV   213 pP   3538   [shiftlines] fired on 682 of 4925 lines
+--- 19AnA03 single controls ---
+MODE: control=allprose volumes=1
+19AnA03    body   9515  miss     2 ( 0.02%)  digit  776  edge  3277   V-as-P   271  V-as-H    0  P-as-V     0  P-as-U    0  pV   271 pP   8798
