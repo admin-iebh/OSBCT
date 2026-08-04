@@ -53,6 +53,13 @@ window.I18N = {
   // and to what is on screen, where the misreading does not arise.
   band_para:{en:'No %s passage could be identified for this paragraph.',
              es:'No se ha podido identificar ningún pasaje de %s para este párrafo.'},
+  // A CANON PARAGRAPH'S COMMENTARY IS A RANGE (2026-08-04, reader-reported).
+  // The band now draws the whole printed section, not the first paragraph of
+  // it, and the reader asked for a control because some runs are long — the
+  // longest in `18Khu01` is 98 paragraphs.  The count is substituted for %s.
+  run_more:{en:'Read more — %s more paragraphs of this section',
+            es:'Leer más — %s párrafos más de esta sección'},
+  run_less:{en:'Show less',es:'Mostrar menos'},
   lang_toggle:{en:'Cambiar a español',es:'Switch to English'},
 
   // landing

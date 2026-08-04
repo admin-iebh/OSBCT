@@ -205,6 +205,8 @@ sup.fnm{color:var(--accent);font-size:9.5px;font-weight:700;vertical-align:super
 .lchip{display:inline-block;font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:1px 8px;border-radius:20px;margin:0 0 4px 2px}
 .lchip.a{background:var(--comm);color:var(--panel)}.lchip.t{background:var(--tika);color:var(--panel)}
 .subwrap.a{margin-left:20px}.subwrap.t{margin-left:40px}
+.runmore{display:block;margin:2px 0 10px 2px;padding:5px 12px;font-family:'Inter',sans-serif;font-size:12px;line-height:1.4;color:var(--mut);background:transparent;border:1px dashed var(--line);border-radius:16px;cursor:pointer}
+.runmore:hover{color:var(--ink);border-style:solid}
 .cmt-outline{margin-top:3px}.unit{margin:1px 0;border-radius:8px}
 .unit .uhead{cursor:pointer;display:flex;align-items:baseline;gap:7px;padding:3px 6px;border-radius:7px}.unit .uhead:hover{background:var(--hover)}
 .unit .utw{font-size:9px;color:var(--faint);transition:transform .15s;flex:none}.unit.open .utw{transform:rotate(90deg)}
@@ -265,7 +267,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=255a05e953fc"></script>
+<script src="../i18n.js?v=44172f08f571"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -390,7 +392,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='255a05e953fc';
+const BUILD='44172f08f571';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -1592,7 +1594,153 @@ function block(kind, key, opts){
    if(pr.printed!=null && LASTPG[vol]!==pr.printed){ rule=pageRule(vol,kind,pr); LASTPG[vol]=pr.printed; }
    return rule+'<div class="'+cls+'" id="p-'+key.replace('#','-')+'">'+toolsFor(kind,vol,pr,pr.sutta)+st+wt+num+body+appBlock(app,vol)+'</div>';
 }
-function targetsFor(ord,kind){ // kind 'A'|'T' -> list of {key,state,worktag?}
+// !!! A CANON PARAGRAPH'S COMMENTARY IS A RANGE, NOT A POINT (2026-08-04,
+// reader-reported with a screenshot).  Reading `18Khu01` with the A band on,
+// `1. Saraṇattaya` drew EXACTLY ONE commentary paragraph — `20KhuA01#9`,
+// "Ayaṁ tāva atthato Buddhavibhāvanā" — while the printed commentary on the
+// Saraṇattaya runs to p.13 and closes at `Saraṇattayavaṇṇanā niṭṭhitā.`:
+// nineteen paragraphs, of which the reader was shown one.
+//
+// `linksk/<vol>.links.json` records ONE target per canon paragraph, and that
+// was enough only by accident: before `75ee5904` re-segmented `20KhuA01` to
+// 673 paragraphs it held 109 LUMPS, and the single link landed on a lump that
+// happened to contain the whole section.  Re-segmenting turned every such lump
+// into real paragraphs and the same link now points at the first of them.
+// The fault is general — every canon paragraph whose commentary spans more
+// than one paragraph, in every re-segmented volume.
+//
+// So the range: a canon paragraph's commentary runs from its own target up to,
+// but not including, whatever comes first of
+//
+//   (a) the next canon paragraph's target in the SAME volume, and
+//   (b) the next work boundary the EDITION ITSELF prints.
+//
+// (b) is not optional and it is not decoration.  Measured over the 42 canon
+// volumes that carry links, 19,145 targets have both bounds available; the
+// arithmetic and the printed headings AGREE on 3,470 (18.1%), the next target
+// falls first on 14,158 (74.0%) — the ordinary case of several canon
+// paragraphs inside one commentary section — and on **1,517 (7.9%) the
+// arithmetic runs PAST a printed section end** and only the heading stops it.
+// Canon ¶0 of `18Khu01` is one of the 1,517: its next target is `20KhuA01#39`,
+// eleven paragraphs INSIDE `2. Sikkhāpadavaṇṇanā`.
+//
+// NOTHING IS MANUFACTURED HERE.  This draws paragraphs that already exist
+// between two attested targets; no record is created, and `linksk/` is not
+// touched.  `6f7e5629` removed 52.4% of the targets because they were
+// invented, and inventing a range would be the same fault in a new place.
+const RUNB={};
+function runBounds(vol){
+  // The ordinals in `vol` at which a new WORK begins, by two independent routes:
+  //
+  //   colophon — the edition closes a work with `X niṭṭhitā.` / `X samattā.`,
+  //     and `sections/` deliberately drops those end markers
+  //     (`extract_toc.is_endmarker`), so they are read from the volume's own
+  //     `headings` array and resolved to the ordinal of the head that FOLLOWS.
+  //   number   — a section head carrying the edition's own printed number,
+  //     `2. Sikkhāpadavaṇṇanā`.
+  //
+  // On `20KhuA01` the two routes agree on 8 of 8 boundaries the colophon route
+  // can resolve {28,72,170,204,406,500,541,606}; the colophon route loses the
+  // last two of ten because `Nigamanakathā` and the back-matter index are not
+  // in `sections/`.  The union is used: a boundary either route attests.
+  if(RUNB[vol]) return RUNB[vol];
+  const c=cache[vol]; if(!c) return [];
+  const sm=c.sec||{}, heads=c.headings||[];
+  const strip=t=>String(t||'').trim().replace(/^\d+(-\d+)?\.\s*/,'');
+  const fold=t=>hfold(strip(t)).replace(/[^a-z ]/g,'').trim();
+  const isEnd=t=>{const w=fold(t).split(' ').filter(Boolean); if(!w.length) return false;
+    return /(nitthita|nitthitam|nitthito|samatta|samattam|samatto)$/.test(w[w.length-1]);};
+  const anch=[];
+  Object.keys(sm).map(Number).sort((a,b)=>a-b).forEach(o=>{
+    (sm[String(o)]||[]).forEach(x=>anch.push([o,fold(x.l||'')])); });
+  const B=new Set(); let ptr=0;
+  for(let i=0;i<heads.length;i++){
+    if(!isEnd(heads[i].title)) continue;
+    let j=i+1;
+    while(j<heads.length && (/^[_\s.]*$/.test(heads[j].title||'') || isEnd(heads[j].title))) j++;
+    if(j>=heads.length) continue;
+    const want=fold(heads[j].title); if(want.length<4) continue;
+    let hit=-1;
+    for(let k=ptr;k<anch.length;k++) if(anch[k][1]===want){hit=k;break;}
+    if(hit<0) for(let k=0;k<anch.length;k++) if(anch[k][1]===want){hit=k;break;}
+    if(hit<0) continue;                       // unresolved colophon: no boundary claimed
+    ptr=hit+1;
+    // !!! AND THE COLOPHON MUST BE ON THE PAGE THE ORDINAL PUTS IT ON.  Head
+    // labels repeat — `24KhuA05` prints `Paṭhamavaggavaṇṇanā` once per nipāta —
+    // so the name match alone can land on the wrong occurrence.  The printed
+    // page took no part in choosing the ordinal, so it can judge it:
+    // printed(¶ b-1) <= printed(colophon) <= printed(¶ b).  Measured over 350
+    // resolvable colophons in nine commentary volumes, 7 fail this and are
+    // dropped; shifting every boundary by three makes 332 of the 350 fail, so
+    // the test is not vacuous.
+    const b=anch[hit][0], ps=c.paras||[];
+    if(b>0 && b<ps.length){
+      const pc=heads[i].printed, pa=ps[b-1].printed, pb=ps[b].printed;
+      if(pc!=null&&pa!=null&&pb!=null&&!(pa<=pc&&pc<=pb)) continue;
+    }
+    B.add(b);
+  }
+  Object.keys(sm).forEach(o=>{ if((sm[o]||[]).some(x=>/^\s*\d+(-\d+)?\.\s/.test(x.l||''))) B.add(+o); });
+  return RUNB[vol]=[...B].sort((a,b)=>a-b);
+}
+// canonVol|kind -> {end:{targetKey:lastOrdinal}, first:{targetKey:canonOrdinal}}
+let RUNS={};
+function runsFor(kind){
+  const ck=state.canonVol+'|'+kind; if(RUNS[ck]) return RUNS[ck];
+  const SLOT=(kind==='A')?'commentary':'subcommentary';
+  const L=state.links||{}; const byVol={};
+  Object.keys(L).map(Number).sort((a,b)=>a-b).forEach(i=>{
+    ((L[String(i)]||{})[SLOT]||[]).forEach(t=>{ if(t.state!=='direct') return;
+      const a=parseKey(t.key); (byVol[a[0]]=byVol[a[0]]||[]).push([i,a[1]]); }); });
+  const end={},first={}; let cold=false;
+  for(const v of Object.keys(byVol)){
+    const arr=byVol[v], c=cache[v];
+    if(!c){ cold=true; }
+    // !!! A TARGET VOLUME THE CONCORDANCE DOES NOT ALLOW GETS NO RANGE.
+    // `check_concordance.py` counts 3,163 targets pointing at a volume the
+    // edition's own map does not pair with that canon volume, and 1,000 of
+    // them are in these maps.  They are DIMMED, not suppressed
+    // (`claude/decision_dim_the_condemned_links.md`), so the paragraph they
+    // name still draws — but a link three criteria condemn must not be the
+    // authority for a run: unguarded, `18Khu01`'s single stray target into
+    // `42KhuA23` expanded to 118 paragraphs of the Jātaka commentary, and
+    // `34KhuA15` to 81.  Refusing the range costs nothing that was there
+    // before and is the "flag rather than guess" rule applied to a range.
+    const ok=!!c && !!VOLGROUP[v] && VOLGROUP[v]===VOLGROUP[state.canonVol];
+    const B=ok?runBounds(v):[]; const n=ok?(c.paras||[]).length:0;
+    const HD=ok?Object.keys(c.sec||{}).map(Number).sort((a,b)=>a-b):[];
+    // !!! THE NEXT TARGET IS THE NEXT TARGET IN THE VOLUME, NOT THE NEXT ONE IN
+    // CANON ORDER.  Taking the next in canon order lets an OUT-OF-ORDER link
+    // — canon ¶j pointing behind canon ¶i — hand ¶j a range that swallows ¶i's
+    // target, and two runs then draw the same paragraph: `20KhuA01#481`
+    // appeared twice on the 18Khu01 page before this.  Bounding every run by
+    // the nearest attested target ABOVE it, whoever claims it, makes the runs
+    // a partition by construction and makes link order irrelevant.
+    const O=[...new Set(arr.map(x=>x[1]))].sort((a,b)=>a-b);
+    for(let k=0;k<arr.length;k++){
+      const ci=arr[k][0], o=arr[k][1], key=v+'#'+o;
+      if(first[key]==null) first[key]=ci;
+      if(end[key]!=null) continue;
+      if(!ok||!n){ end[key]=o; continue; }
+      let nxt=null; for(let z=0;z<O.length;z++) if(O[z]>o){ nxt=O[z]; break; }
+      let b=null; for(let z=0;z<B.length;z++) if(B[z]>o){ b=B[z]; break; }
+      let e;
+      if(nxt==null&&b==null){
+        // NEITHER BOUND EXISTS.  Do not run to the end of the volume — clip at
+        // the next section head of any level, and where there is none at all,
+        // draw the single paragraph, which is exactly what was drawn before.
+        let h=null; for(let z=0;z<HD.length;z++) if(HD[z]>o){ h=HD[z]; break; }
+        e=(h!=null)?h-1:o;
+      } else e=Math.min.apply(null,[nxt,b].filter(x=>x!=null))-1;
+      end[key]=Math.max(o,Math.min(e,n-1));
+    }
+  }
+  const r={end,first};
+  // a cold cache would freeze "no range" into the memo; recompute next pass
+  if(!cold) RUNS[ck]=r;
+  return r;
+}
+function targetsFor(ord,kind){ // kind 'A'|'T' -> list of {key,state,runOf,worktag?}
   const e=state.links[String(ord)]||{}; let arr=(kind==='A'?e.commentary:e.subcommentary)||[];
   // !!! HALF OF WHAT THIS RETURNED WAS NEVER SAID BY THE EDITION (2026-08-03,
   // reader: "when there is no paragraph in the Aṭṭhakathā or the Ṭīkā for a
@@ -1624,9 +1772,24 @@ function targetsFor(ord,kind){ // kind 'A'|'T' -> list of {key,state,worktag?}
   const multi=arr.length>1;
   // `src` is the paragraph this block is being drawn UNDER.  It travels with
   // the target so the band's own tools never have to guess (see hasBand).
-  return arr.map(t=>{const v=parseKey(t.key)[0]; return {key:t.key,state:t.state,
-    src:state.canonVol+'#'+ord,
-    worktag: multi? ((shortWork(VOLWORK[v])||'')+' · '+v) : null};});
+  // `runOf` is the ATTESTED target the paragraph hangs off — the head of the
+  // run and every paragraph drawn after it carry the same value, which is what
+  // lets render() wrap one run in one block and collapse its tail.
+  const R=runsFor(kind), out=[];
+  arr.forEach(t=>{
+    const a=parseKey(t.key), v=a[0], o=a[1];
+    const wt=multi?((shortWork(VOLWORK[v])||'')+' · '+v):null;
+    // A REPEATED TARGET DRAWS ONLY ITS OWN PARAGRAPH.  `18Khu01` ¶1–¶5 all
+    // point at `20KhuA01#39` (Purimapañcasikkhāpadavaṇṇanā glosses five
+    // sikkhāpada at once); the run belongs to the FIRST of them and expanding
+    // it five times would put the same 27 paragraphs on the page five times.
+    const last=(R.first[t.key]===ord && R.end[t.key]!=null)?R.end[t.key]:o;
+    for(let x=o;x<=last;x++){
+      const c=cache[v]; if(c&&c.hide&&c.hide[String(x)]) continue;
+      out.push({key:v+'#'+x,state:t.state,src:state.canonVol+'#'+ord,runOf:t.key,worktag:wt});
+    }
+  });
+  return out;
 }
 // !!! A COMMENTARY BLOCK ARRIVED WITH NO TITLE (2026-08-02, user-reported).
 // The printed edition heads it `7. Aratisuttavaṇṇanā`; the reader drew only
@@ -1651,6 +1814,20 @@ function secNameAt(vol,ord){
   return SECNAME[vol][ord]||null;
 }
 function activeKeys(){return ['canon','A','T'].filter(k=>state.active[k]);}
+// How much of a run is open before the reader asks for the rest, and which runs
+// the reader has already opened.  `OPENRUNS` survives a re-render so that
+// pressing T does not silently re-collapse a commentary the reader opened.
+const RUNOPEN=2; const OPENRUNS=new Set();
+window.toggleRun=function(btn){
+  const key=btn.dataset.run, box=document.getElementById(btn.dataset.box);
+  if(!box) return;
+  if(box.hasAttribute('hidden')){
+    box.removeAttribute('hidden'); OPENRUNS.add(key); btn.textContent=TIP('run_less','Show less');
+  } else {
+    box.setAttribute('hidden',''); OPENRUNS.delete(key);
+    btn.textContent=TIP('run_more','Read more — %s more paragraphs of this section').replace('%s',btn.dataset.n);
+  }
+};
 // !!! AN EMPTY BAND HAS TO SAY WHY IT IS EMPTY (2026-08-01).  Pruning the
 // 22,719 impossible commentary targets put the honest answer — nothing — where
 // a confident wrong one used to be, and `render()` appends the same generic
@@ -1920,18 +2097,34 @@ function render(){
     const keys=activeKeys(); const tmpl='repeat('+keys.length+',minmax(0,1fr))';
     html+='<div class="colhead" style="grid-template-columns:'+tmpl+'">'+keys.map(k=>'<div class="ch"><span class="cdot" style="background:'+META[k].col+'"></span>'+META[k].name+'</div>').join('')+'</div>';
     html+='<div class="grid" style="grid-template-columns:'+tmpl+'">';
+    // the same once-per-page rule the single view uses: a run drawn in one
+    // row must not be drawn again in the next row's cell (see `drawnA`).
+    const cdrawn={A:new Set(),T:new Set()};
     paras.forEach((p,li)=>{ const i=base+li; html+='<div class="rowline">';
       keys.forEach(k=>{ if(k==='canon'){ html+=block('canon',state.canonVol+'#'+i); }
-        else{ const ts=targetsFor(i,k); html+= ts.length? ts.map(t=>block(k,t.key,t)).join('') : '<div class="para empty">·</div>'; } });
+        else{ const ts=targetsFor(i,k).filter(t=>!cdrawn[k].has(t.key));
+              ts.forEach(t=>cdrawn[k].add(t.key));
+              html+= ts.length? ts.map(t=>block(k,t.key,t)).join('') : '<div class="para empty">·</div>'; } });
       html+='</div>'; });
     html+='</div>';
   } else if(state.view==='tabs'){
     const k=state.tab;
     if(k==='canon'){ html+='<div class="stack">'+paras.map((p,li)=>{const i=base+li; if(HIDE[String(i)])return ''; return canonFront(i)+canonHead(i,p,state.canonVol+'#'+i)+block('canon',state.canonVol+'#'+i)+udd(i);}).join('')+'</div>'; }
     else { let buf='',last=null; const fk=state.filter?frontKeyOf(state.filter):null; if(fk){ buf+=layerFront(fk); _topFront=fk; }
-      paras.forEach((p,li)=>{ const i=base+li; targetsFor(i,k).forEach(t=>{ if(t.key===last)return; last=t.key; buf+=block(k,t.key,t); }); }); html+='<div class="stack">'+(buf.trim()?buf:bandNote(k))+'</div>'; }
+      // !!! DEDUP BY KEY, NOT BY "SAME AS THE LAST ONE".  With ranges,
+      // `18Khu01` ¶2 repeats the single target `20KhuA01#39` after ¶1 has
+      // already drawn #39..#65, and comparing against the previous key only
+      // let that repeat through — the tab would have shown #39 twice.
+      const tdrawn=new Set();
+      paras.forEach((p,li)=>{ const i=base+li; targetsFor(i,k).forEach(t=>{ if(tdrawn.has(t.key))return; tdrawn.add(t.key); last=t.key; buf+=block(k,t.key,t); }); }); html+='<div class="stack">'+(buf.trim()?buf:bandNote(k))+'</div>'; }
   } else { // single
     const dedup=!state.active.canon; let lastA=null,lastT=null; let _drew=0,_drewA=0,_drewT=0;
+    // A COMMENTARY PARAGRAPH IS DRAWN AT MOST ONCE PER PAGE.  Before the range
+    // work this was true only when the canon band was OFF (`dedup`), so with
+    // P+A on, `18Khu01` ¶1–¶5 each drew `20KhuA01#39`: the same paragraph five
+    // times, one under each sikkhāpada.  A run makes that five times
+    // twenty-seven, so the dedup has to be by KEY over the whole pass.
+    const drawnA=new Set(), drawnT=new Set();
     const spine=state.active.canon?'canon':(state.active.A?'A':'T');
     // THE BOOK'S OWN FRONT MATTER, FIRST.  Emitted before the stream is walked
     // and then suppressed at its anchor (`_topFront`), so it is drawn exactly
@@ -1978,8 +2171,67 @@ function render(){
         if(band==='A'){ if(nm===lastHeadA) return ''; lastHeadA=nm; }
         else { if(nm===lastHeadT) return ''; lastHeadT=nm; }
         return '<div class="head section band">'+esc(/^\d/.test(nm)?nm:_num+nm)+'</div>'; };
-      if(state.active.A) targetsFor(i,'A').forEach((t,ti)=>{ if(dedup&&t.key===lastA)return; lastA=t.key; _drew++; _drewA++; parts.push(((spine==='A'&&ti>0)?_front(t.key):'')+(state.active.canon?'<div class="subwrap a"><span class="lchip a">Aṭṭhakathā</span>'+_bandHead(t.key,'A'):'<div>')+block('A',t.key,t)+'</div>'); });
-      if(state.active.T) targetsFor(i,'T').forEach((t,ti)=>{ if(dedup&&t.key===lastT)return; lastT=t.key; _drew++; _drewT++; parts.push(((spine==='T'&&ti>0)?_front(t.key):'')+(state.active.canon?'<div class="subwrap t"><span class="lchip t">Ṭīkā</span>'+_bandHead(t.key,'T'):'<div>')+block('T',t.key,t)+'</div>'); });
+      // ONE RUN, ONE BLOCK, AND ITS TAIL BEHIND A CONTROL.  `targetsFor` now
+      // returns every paragraph of the range, each carrying `runOf` — the
+      // attested target it hangs off — so consecutive entries sharing a
+      // `runOf` are one run and get one chip, one heading pass and one
+      // "Read more".  Requested by the reader: some runs are long (the longest
+      // in `18Khu01` is 98 paragraphs), and a band that dumps ninety-eight
+      // paragraphs under one canon line is not readable either.
+      //
+      // The collapse is decided from the DATA — how many paragraphs the run
+      // holds — never from measured layout.  `claude/the_layout_was_an_estimate.md`
+      // records what happens when a scroll aims at a document that has not
+      // finished measuring itself; the tail is `hidden`, so it has no height at
+      // render, and expanding it grows the page BELOW the button, which cannot
+      // move what the reader is looking at.  `toggleRun` does not re-render.
+      const bandHTML=(k)=>{
+        const ts=targetsFor(i,k); if(!ts.length) return '';
+        const cls=(k==='A')?'a':'t', nm=(k==='A')?'Aṭṭhakathā':'Ṭīkā';
+        const drawn=(k==='A')?drawnA:drawnT;
+        let out='', g=0;
+        while(g<ts.length){
+          let e=g+1; while(e<ts.length && ts[e].runOf===ts[g].runOf) e++;
+          let grp=ts.slice(g,e); const g0=g; g=e;
+          const headKey=grp[0].runOf;
+          if(drawn.has(grp[0].key)) continue;
+          if(dedup && grp[0].key===((k==='A')?lastA:lastT)) continue;
+          // runs are a partition (see `O` in runsFor) so this should never
+          // remove anything; it is here because a duplicate on the page is the
+          // one failure a reader sees immediately and it costs one filter.
+          const grpAll=grp.filter(t=>!drawn.has(t.key));
+          if(!grpAll.length) continue;
+          grp=grpAll;
+          grp.forEach(t=>drawn.add(t.key));
+          if(k==='A') lastA=grp[grp.length-1].key; else lastT=grp[grp.length-1].key;
+          _drew+=grp.length; if(k==='A') _drewA+=grp.length; else _drewT+=grp.length;
+          const isOpen=OPENRUNS.has(headKey);
+          const nshow=(grp.length<=RUNOPEN+1)?grp.length:RUNOPEN;
+          let body='', rest='';
+          grp.forEach((t,gi)=>{
+            const blk=((spine===k&&(g0+gi)>0)?_front(t.key):'')
+                     +(state.active.canon?_bandHead(t.key,k):'')+block(k,t.key,t);
+            if(gi<nshow) body+=blk; else rest+=blk;
+          });
+          const hid=grp.length-nshow;
+          const rid='run-'+headKey.replace('#','-')+'-'+i+'-'+k;
+          // The tail is ALWAYS in the DOM and only its `hidden` attribute moves,
+          // so the control never calls render(): nothing above the reader's eye
+          // changes height, and `keepPlace`/`holdAt` are not involved at all.
+          let ctl='';
+          if(hid>0) ctl='<div class="runrest" id="'+rid+'"'+(isOpen?'':' hidden')+'>'+rest+'</div>'
+                       +'<button class="runmore" data-box="'+rid+'" data-run="'+escA(headKey)
+                       +'" data-n="'+hid+'" onclick="toggleRun(this)">'
+                       +esc(isOpen?TIP('run_less','Show less')
+                                  :TIP('run_more','Read more — %s more paragraphs of this section').replace('%s',hid))+'</button>';
+          out += state.active.canon
+            ? '<div class="subwrap '+cls+'"><span class="lchip '+cls+'">'+nm+'</span>'+body+ctl+'</div>'
+            : '<div>'+body+ctl+'</div>';
+        }
+        return out;
+      };
+      if(state.active.A){ const h=bandHTML('A'); if(h) parts.push(h); }
+      if(state.active.T){ const h=bandHTML('T'); if(h) parts.push(h); }
       return head+(parts.length?'<div style="margin-bottom:12px">'+parts.join('')+'</div>':'')+(spine==='canon'?udd(i):''); }).join('')+'</div>';
     // the canon band is off and neither layer drew anything: say why, rather
     // than leaving the reader with the generic hint line and a blank page
