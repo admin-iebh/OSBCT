@@ -1,0 +1,62 @@
+Five items EXCLUDED: the edition does not print them where the entry puts them.
+
+Verified with `_xc/nogroups/verify_page2.py`, which locates every `before`/`after`
+item in the PRINTED LINE STREAM (`_xc/reseg/pline.py`) with a cursor anchored at
+the anchor paragraph's own printed extent.  2,971 of 2,976 items are found on the
+page, in printed order, on the side the entry claims.  These five are not:
+
+  05Kankha  ord800  after  'Bhikkhunīpātimokkhavaṇṇanā'
+      NOT IN THE PRINTED BODY STREAM AT ALL.  The anchor closes on pdf p311 and
+      the next printed lines are `Sādhāraṇapārājika` /
+      `1 -pa- 4. Methunadhammasikkhāpadavaṇṇanā`.
+
+  07ViT07   ord1    after  'Kaṅkhāvitaraṇīpurāṇaṭīkā'
+      printed on pdf p1, p9 and p138 -- title pages.  The anchor closes on p22
+      and the next printed line is `Ganthārambhakathāvaṇṇanā`.
+
+  07ViT07   ord116  after  'Kaṅkhāvitaraṇī-abhinavaṭīkā'
+      printed on pdf p1, p21, p508.  Anchor closes on p139.
+
+  07ViT07   ord303  after  'Bhikkhunīpātimokkhavaṇṇanā'
+      printed on pdf p8, p17, p138.  Anchor closes on p470.
+
+  36KhuA17  ord1    after  'Khuddakanikāya'
+      the COLLECTION name from the title-page stack, which `booktitle/` draws.
+      Not in the printed body stream.
+
+All five are title-page stack lines that the residue reader attached to whatever
+paragraph was current.  They are NOT excluded by any code change -- they are
+drawn now, like the rest -- but they are named here because the page does not
+attest them at that position, and because they are the reason the class-5 fall
+is 2,417 lines and not 2,422.  Repairing them belongs to `booktitle/`, not here.
+
+
+2026-08-04, AFTER MEASUREMENT — THEY ARE NOW EXCLUDED, AND A SIXTH WITH THEM.
+
+Every one of the five is a line the volume's own `booktitle/` stack ALREADY
+draws, on the ordinal immediately before:
+
+    05Kankha  booktitle[799] = ['Bhikkhunīpātimokkhavaṇṇanā']   entry ord800
+    07ViT07   booktitle[0]   = ['Kaṅkhāvitaraṇīpurāṇaṭīkā']     entry ord1
+    07ViT07   booktitle[115] = ['Kaṅkhāvitaraṇī-abhinavaṭīkā']  entry ord116
+    07ViT07   booktitle[302] = ['Bhikkhunīpātimokkhavaṇṇanā']   entry ord303
+    36KhuA17  booktitle[0]   = ['Khuddakanikāya', ...]          entry ord1
+
+so drawing them would print the work's title TWICE, one paragraph apart, in a
+place the edition does not set it.  A sixth item is the same fault and was not
+visible from position alone, because it IS printed above the anchor -- ten pages
+above it, on the title page:
+
+    36KhuA17  ord1  before  '(Paṭhamo bhāgo)'   = booktitle[0] line 3
+
+`block()` therefore drops a `before`/`after` item whose whole text is a line of
+the volume's `booktitle` stack.  MEASURED over all 75 groupless entries in all
+30 volumes: the rule matches those six items and nothing else, so it cannot take
+body text; and a title-stack line is on the page already, drawn by `btl`.
+
+Cost to the census: NONE.  Re-running `check_page_fidelity.py` on the three
+volumes gives byte-identical statistics -- the six items were located elsewhere
+in the volume or nowhere -- and removes exactly 6 corpus segments / 128 letters.
+Browser-checked: 36KhuA17#1 and 07ViT07#1 now draw 0 of their items inside the
+paragraph, while both remain on the page through `booktitle/`.
+

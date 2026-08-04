@@ -1,0 +1,52 @@
+The no-`groups` verse entries: class 5 of the page-fidelity census, before and after
+
+  before = _xc/nogroups/before/ (the census of 2026-08-04, commit 726fd6f7)
+  after  = _xc/nogroups/after/  (the same check, same controls, after the
+           reader2.html gate fix; also copied over _xc/pagefid/census/)
+
+vol          miss b   miss a   delta      dC1    dC2    dC3    dC4 ddigit
+-------------------------------------------------------------------------
+01ViT01         302        0    -302        0      5      0      0      2
+01VinA01        156        0    -156        0      0      0      0      0
+02ViT02          92        0     -92        0      0      0      0      2
+05Kankha          3        1      -2        0      2      0      0      1
+07DiA01           3        0      -3        0      0      0      0      0
+07ViT07           7        0      -7        0      8      0      0     -1
+08DiT01         469        0    -469        0      4      0      0      1
+09DiT02          22       21      -1        0      0      0      0      0
+10MaA01         130        0    -130        0      0      0      0      0
+11MaA02           0        0       0        0      0      0      0      0
+12DiT05          16        1     -15        0      0      0      0      0
+13MaT01         455        0    -455        0      0      0      0      1
+14MaT02          39        0     -39        0      0      0      0      0
+20KhuA01          6        1      -5        0     -2      0      0      0
+22AbhiT01       213        1    -212        0      0      0      0      1
+22KhuA03          2        1      -1        0      0      0      0      0
+23AbhiT02       110        2    -108        0     10      0      0      1
+23KhuA04          2        1      -1        0      0      0      0      0
+24KhuA05          2        1      -1        0      0      0      0      0
+28KhuA09          2        1      -1        0      0      0      0      0
+29KhuA10         21        0     -21        0     -7      0      0      1
+30KhuA11          2        0      -2        0      0      0      0      0
+32KhuA13          3        0      -3        0      0      0      0      0
+33KhuA14          5        1      -4        0      0      0      0      0
+34KhuA15         23        6     -17        0     10      0      0      0
+36KhuA17          2        0      -2        0      3      0      0     -1
+44KhuA25          2        1      -1        0      0      0      0      0
+46KhuA27          1        0      -1        0      0      0      0      0
+48AbhiA01       133        1    -132        0     68      0      0      8
+50AbhiA03       239        5    -234        0      0      0      0      4
+-------------------------------------------------------------------------
+TOTAL(30)                      -2417        0    101      0      0     20
+
+C1 = page-prose set as display verse      C2 = page-verse run together as prose
+C3 = page-prose drawn as uddana/colophon  C4 = page-verse drawn as a heading
+
+newly drawn correctly: prose_ok +2627, verse_ok +63; lone display +119; body +547
+
+CORPUS-WIDE (118 volumes, report.py):
+  the corpus does not carry   2,653 -> 236   (0.20% -> 0.02%)
+  page-prose set as verse    25,783 -> 25,783   unchanged
+  page-verse run as prose    22,300 -> 22,401   +101
+  page-prose as uddana       12,617 -> 12,617   unchanged
+  page-verse as heading      11,446 -> 11,446   unchanged

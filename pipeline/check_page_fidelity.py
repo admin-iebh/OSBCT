@@ -156,6 +156,25 @@ def corpus_stream(vol, control=None):
         elif x is not None:
             add('P', x, o)
 
+    # A RESIDUE LINE THAT IS ALREADY A `booktitle/` STACK LINE IS NOT DRAWN.
+    # block() drops it: the residue reader attaches an unlocated printed line to
+    # whatever paragraph is current, and a book's own title page is exactly what
+    # it cannot locate, so six items corpus-wide are a title-stack line sitting
+    # on the next ordinal.  Mirror the reader or the model over-counts them.
+    _tl = set()
+    for _v in btl.values():
+        for _l in (_v if isinstance(_v, list) else [_v]):
+            _tl.add(letters(str(_l)).lower())
+
+    def keep_frame(x):
+        if x is None:
+            return None
+        if not isinstance(x, list):
+            return None if (isinstance(x, str) and letters(x).lower() in _tl) else x
+        r = [q for q in x
+             if not (isinstance(q, str) and letters(q).lower() in _tl)]
+        return r or None
+
     def blocks(x, o):
         if x is None:
             return
@@ -206,7 +225,24 @@ def corpus_stream(vol, control=None):
         elif so in hidden:
             pass                                # merge-absorbed into a neighbour
         else:
+            # AN ENTRY WITH NO `groups` KEY FRAMES THE PARAGRAPH, IT DOES NOT
+            # SUBSTITUTE FOR IT: `before` + the corpus text + `after`.  That is
+            # what `build_khu_volume.py` writes such an entry FOR and what
+            # `verify_render_vs_pdf.py:render_parts` has always modelled;
+            # `reader2.html` gated the whole verse branch on `vmap.groups` and
+            # so drew neither, which is how the census of 2026-08-04 found
+            # 2,976 printed lines sitting in 30 volumes' side-maps unrendered.
+            # The reader was corrected (block(), the `else if(asSpine)` branch)
+            # and this model follows it.
+            # --- CONTROL: dropframe.  Draw the paragraph WITHOUT its frame,
+            # which is exactly what `reader2.html` did before 2026-08-04.  It
+            # must put the printed lines back into `absent`; if it does not,
+            # this branch is not the thing that carries them.
+            if e and control != 'dropframe':
+                blocks(keep_frame(e.get('before')), o)
             add('P', p.get('text', ''), o)
+            if e and control != 'dropframe':
+                blocks(keep_frame(e.get('after')), o)
         for b in udd.get(so, []):
             if b.get('label'):
                 add('U', b['label'], o)
@@ -673,7 +709,8 @@ def all_vols():
     return out
 
 
-CONTROLS = ('wrongvol', 'allprose', 'allverse', 'shiftclass', 'shiftlines')
+CONTROLS = ('wrongvol', 'allprose', 'allverse', 'shiftclass', 'shiftlines',
+            'dropframe')
 
 
 def main(argv):

@@ -267,7 +267,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=1f2eb841cb18"></script>
+<script src="../i18n.js?v=232f22ccb2b4"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -397,7 +397,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='1f2eb841cb18';
+const BUILD='232f22ccb2b4';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -1574,6 +1574,39 @@ function block(kind, key, opts){
   // standalone-work view and nothing else.
   const asSpine = kind==='canon' || !!(opts&&opts.spine);
   let body;
+  // !!! AN ENTRY WITH NO `groups` KEY DOES NOT SUBSTITUTE FOR THE PARAGRAPH,
+  // IT FRAMES IT (2026-08-04).  `build_khu_volume.py` writes such an entry
+  // DELIBERATELY -- three of its readers say so in terms (`heads_build.close`,
+  // `kat_build.flush`, the residue path): "an entry that carries a `groups`
+  // key -- even an EMPTY one -- makes both `render_parts` and the reader take
+  // the VERSE branch, which renders `before + after` and NOT the corpus text.
+  // Without the key both take the prose branch: `before` + the corpus text +
+  // `after`."  `pipeline/verify_render_vs_pdf.py:render_parts` implements
+  // exactly that.  THIS FILE DID NOT: the gate below is the only test, and
+  // with `groups` absent the whole branch was skipped and `before`/`after`
+  // were never drawn at all.
+  //
+  // MEASURED (`pipeline/check_page_fidelity.py`, census of 2026-08-04): 75
+  // entries in 30 volumes are in that state, holding 2,976 printed lines --
+  // 2,971 of which are verified present on the printed page at the position
+  // the entry gives them (`_xc/nogroups/verify_page2.py`).  They had never
+  // been drawn to any reader.  The gate was over-strict; the data was right.
+  let lead=null;
+  const proseOne=(p)=>{
+    let gn=''; if(lead!==null){ gn=lead; lead=null; }
+    if(p&&typeof p==='object'&&p.gatha)
+      return '<div class="gatha pali">'+gn+p.gatha.map(l=>fmtText(l)).join('<br>')+'</div>';
+    // A NUMBERED PROSE PARAGRAPH INSIDE ANOTHER UNIT'S BLOCK — a printed
+    // unit the corpus spliced into the preceding paragraph, so it has no
+    // ordinal of its own to hang a number beside.  `fmtText` strips a
+    // leading "NN." (that is how ordinary paragraph numbers reach it), so
+    // the number is carried on the entry and drawn here instead of vanishing.
+    if(p&&typeof p==='object'&&p.t!=null)
+      return '<div class="gatha-after pali">'+gn
+        +'<span class="pn k-'+lk+'"'+PNT+'>'+esc(String(p.n))+'.</span>'+fmtText(p.t)+'</div>';
+    return '<div class="gatha-after pali">'+gn+fmtText(p)+'</div>';
+  };
+  const proseBlocks=(x)=> Array.isArray(x) ? x.map(proseOne).join('') : (x!=null?fmtText(x):'');
   if(asSpine && vmap && vmap.groups){
     // a prose entry may also be {gatha:[lines]} — the page sets some suttas as
     // verse -> prose -> verse (e.g. Udāna Lokasutta), which a flat groups list
@@ -1587,22 +1620,6 @@ function block(kind, key, opts){
     // paragraph.  So hand it to the first block, exactly as a verse hands it to
     // its first .gatha.  `before` material is printed ABOVE the number, so it
     // is rendered first and `lead` is only armed afterwards — it never takes it.
-    let lead=null;
-    const proseOne=(p)=>{
-      let gn=''; if(lead!==null){ gn=lead; lead=null; }
-      if(p&&typeof p==='object'&&p.gatha)
-        return '<div class="gatha pali">'+gn+p.gatha.map(l=>fmtText(l)).join('<br>')+'</div>';
-      // A NUMBERED PROSE PARAGRAPH INSIDE ANOTHER UNIT'S BLOCK — a printed
-      // unit the corpus spliced into the preceding paragraph, so it has no
-      // ordinal of its own to hang a number beside.  `fmtText` strips a
-      // leading "NN." (that is how ordinary paragraph numbers reach it), so
-      // the number is carried on the entry and drawn here instead of vanishing.
-      if(p&&typeof p==='object'&&p.t!=null)
-        return '<div class="gatha-after pali">'+gn
-          +'<span class="pn k-'+lk+'"'+PNT+'>'+esc(String(p.n))+'.</span>'+fmtText(p.t)+'</div>';
-      return '<div class="gatha-after pali">'+gn+fmtText(p)+'</div>';
-    };
-    const proseBlocks=(x)=> Array.isArray(x) ? x.map(proseOne).join('') : (x!=null?fmtText(x):'');
     const hasBefore = vmap.before!=null && (!Array.isArray(vmap.before)||vmap.before.length);
     let pre;
     if(vmap.before!=null) pre=proseBlocks(vmap.before);
@@ -1658,6 +1675,39 @@ function block(kind, key, opts){
     let t=pr.text;
     if((c.inc||{})[String(ord)]) t=t.replace(/Namo\s+tassa\s+\S+\s+[Aa]rahato\s+Sammāsambuddhassa\.?\s*/,'');
     body=fmtText(t);
+    // ...AND THE FRAME THE PRINT PUTS ROUND IT, when the volume's verse map
+    // carries a `before`/`after` for this ordinal without a `groups` key.
+    // The paragraph number goes INSIDE with the corpus text: emitted outside
+    // `body` it would stand on a line of its own above the `before` material,
+    // which the printed page never does.
+    if(vmap && (vmap.before!=null || vmap.after!=null)){
+      // !!! NOT A LINE THE TITLE STACK ALREADY DRAWS.  The residue reader in
+      // `build_khu_volume.py` attaches an unlocated printed line to whatever
+      // paragraph is current, and a book's own title page is exactly what it
+      // cannot locate — so six items corpus-wide are a `booktitle/` stack line
+      // sitting on the NEXT ordinal.  Drawn, they print the work's title twice,
+      // one paragraph apart, in a place the edition does not set it:
+      //   05Kankha ord800, 07ViT07 ord1/116/303, 36KhuA17 ord1 (both roles).
+      // Checked against the printed line stream (`_xc/nogroups/verify_page2.py`):
+      // three are on no printed body line at all and three are printed only on
+      // title pages 9 to 460 pdf pages away from the anchor.
+      // MEASURED over all 75 groupless entries in 30 volumes: the rule matches
+      // those six items and NOTHING else, so it cannot take body text — and a
+      // line that is a title-stack line is on the page already, by `btl`.
+      const _nz=t=>String(t||'').toLowerCase().replace(/[^0-9a-zāīūṁṃṅñṇṭḍḷ]/g,'');
+      const _btl=c.btl||{}; const _tl=new Set();
+      for(const _k in _btl){ const _st=_btl[_k];
+        for(const _l of (Array.isArray(_st)?_st:[_st])) _tl.add(_nz(_l)); }
+      const _keep=(x)=>{ if(x==null) return x;
+        if(!Array.isArray(x)) return (typeof x==='string' && _tl.has(_nz(x))) ? null : x;
+        const r=x.filter(q=>!(typeof q==='string' && _tl.has(_nz(q))));
+        return r.length?r:null; };
+      const _b=_keep(vmap.before), _a=_keep(vmap.after);
+      const pre  = _b!=null ? proseBlocks(_b) : '';
+      const post = _a!=null ? proseBlocks(_a) : '';
+      if(pre){ body='<div class="gatha-after pali">'+num+body+'</div>'; num=''; }
+      body=pre+body+post;
+    }
   } else body = (state.reading==='outline'?outlineHTML(pr.text,spans):fmtBold(pr.text,spans));
    // THE PAGE RULE, emitted HERE so that every render path gets it — columns,
    // single and tabs each assemble blocks differently, and `block()` is the one
