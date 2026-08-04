@@ -1,0 +1,104 @@
+Three more Khuddaka commentaries are re-segmented: 21KhuA02, 23KhuA04 and
+24KhuA05 go from 351 paragraphs to 2,934, and five defects in the method had to
+be fixed before they could
+
+The first transfer of the 20KhuA01 method (`75ee5904`) to other volumes, run as
+an experiment with three subjects rather than a rollout.  The method transfers,
+but NOT unchanged: five defects surfaced, three of which would have shipped
+silently corrupted volumes, and each is fixed in `_xc/reseg2/gen.py` as a named,
+asserted patch over the phase-1/2 scripts rather than a rewrite of them.
+
+## What changed
+
+    volume      shipped ¶   now ¶   median chars      longest ¶      mid-sentence breaks
+    21KhuA02      138       1010    2,848 ->   778   78,380 -> 4,936        1.4%
+    23KhuA04       98       1029    4,155 ->   612   66,241 -> 3,674        3.4%
+    24KhuA05      115        895    3,376 ->   615   58,193 -> 3,596        6.0%
+
+    strict refinement   138/138, 98/98, 115/115 exact space-joins; letters delta 0
+    MODE=off control    reproduces all three shipped files exactly, as its own control
+    paragraph ids       1010/1029/895 distinct, 0 collisions (rank-in-group ".K")
+    bold                1291/6020/3798 spans redistributed, 0 unplaceable,
+                        100% substring-identical, both controls fire
+    apparatus           908/867/794 printed notes anchored, 0/1/1 unanchored
+    inbound targets     394 remapped across 7 other volumes' linksk/*.links.json
+    nav.json            320 keys re-keyed
+    search shards       term sets IDENTICAL (0 added, 0 lost) on all three
+
+## Prose mode, measured before anything was applied
+
+Lines per opener at the body column, from the PDF char stream (openers are ONE
+literal leading space; the body column is measured per volume, not assumed):
+
+    18Khu01  (verse, the counter-example)   1.93
+    20KhuA01 (prose, already proven)        8.30
+    21KhuA02   9.40      23KhuA04  10.42      24KhuA05  10.25
+
+All three are further from the verse volume than the one already proven.
+
+## The five defects the transfer exposed
+
+1. `sections_by_print` started its cursor at letter 0, inside the FRONT MATTER.
+   23KhuA04 prints a full contents listing before its body, and the cursor
+   locked onto it: 68 of 89 headings anchored to the contents page — and
+   `check_before` returned **ok on every one of them**, because the contents
+   page really is printed before paragraph 0.  A check that passes on wrong
+   input is not a check.  The cursor now starts at the body.
+2. The same function retried the search FROM ZERO when a heading was not found.
+   That is how one bad match poisoned the cursor for everything after it.  An
+   unlocatable heading is now REFUSED and left at first-of-run (8 vagga headings
+   in 23KhuA04, 4 nipāta headings in 24KhuA05, 7 in 21KhuA02 — none of them is
+   printed in the body at all).
+3. A straddle was decided from a block's two ENDPOINTS.  A block that begins in
+   paragraph P, swallows the whole of P+1 and ends in a gap has no straddling
+   endpoint, so P+1 was neither merged nor hidden and went on rendering itself:
+   24KhuA05 drew `Madhuram imaṁ paguṇaṁ suvibhattaṁ` TWICE.  A straddle is now
+   every paragraph whose printed extent INTERSECTS the block.
+4. A `groups` block moved into `before`/`after` was emitted as a bare LIST — a
+   shape no consumer accepts.  `rebuild_apparatus.py:189` crashed on it, and
+   reader2's `proseOne` would not have drawn it.  **The letter-equivalence check
+   did not see this**: `btxt` fell through to `json.dumps`, whose punctuation the
+   letters filter strips, so the letters matched while the shape was wrong.  118
+   blocks in 21KhuA02, that volume alone in the corpus.  A shape check is now run
+   over every emitted block.
+5. `uddana/` last-of-run does not generalise.  On 21KhuA02 it locates only 27 of
+   113 blocks after their anchor and misses 85, because the Dhammapada
+   commentary closes every vatthu with a colophon that a shipped lump swallows
+   text past.  `uddana/` is now anchored to the paragraph it follows ON THE
+   PAGE; unlocatable blocks are refused and left at last-of-run.
+
+A sixth, smaller one: a no-`groups` verse entry must be carried through in the
+slot its PRINTED POSITION gives it, not the slot the shipped entry used.  Under
+the lumps `before` and `after` were the same place; they are not any more.
+
+## Gates
+
+    verify_render_vs_pdf   21KhuA02  17 lines/17 chunks/39 rev  ->  0 / 0 / 0 / 0
+                           23KhuA04   3 /  2 /  6 / 0  ->  3 / 2 / 6 / 0   (unchanged)
+                           24KhuA05   1 /  1 /  2 / 0  ->  1 / 1 / 2 / 0   (unchanged)
+    check_links / check_ordinal / check_concordance     no measure regressed
+    check_derived                                       all derived artefacts fresh
+    regress.py check       53/55 byte-identical, 2 exempt   [OK]
+    stamp_build.py --write  BUILD 956eed011266 -> 255a05e953fc
+
+The pre-states were MEASURED, by restoring the backups and re-running the
+harness, rather than assumed to be clean.  Two of the three were not clean
+before and are no worse; the third is fixed outright.
+
+## Not verified
+
+* **No browser proof.**  `check_layout.js` needs Playwright, which is not on the
+  device and cannot be installed there.
+* The per-entry semantic check reports 6 "not exactly" on 24KhuA05 and 6 on
+  21KhuA02.  Each is a block that legitimately overruns into a printed GAP the
+  group's extent does not cover; the whole-volume equivalence is the binding
+  proof and it is exact.
+* 24KhuA05's whole-volume equivalence is delta 0 but NOT letter-identical to the
+  shipped render: 3 divergences, 2 moved blocks, and the printed page adjudicates
+  BOTH in favour of the new render.  Enumerated by
+  `_xc/reseg2/render_diff2.py`, not accepted on the first one.
+* reader2.html:1474 gates the verse branch on the SPINE; the A-band path is
+  still untested, exactly as phase 3 §6.2 left it.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01BcgPjfPCGBDwzS1dqi2QK7
