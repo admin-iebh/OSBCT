@@ -1,0 +1,193 @@
+{
+ "vol": "20Khu03",
+ "stat": {
+  "page_lines": 11633,
+  "line_found": 10719,
+  "line_found_fwd": 10464,
+  "line_absent": 914,
+  "page_runs_in_absent_lines": 31,
+  "page_bold_letters_in_absent_lines": 316,
+  "line_found_back": 123,
+  "line_found_any": 132,
+  "page_run_boundary_splits": 90,
+  "page_runs": 630,
+  "page_runs_cls_H": 561,
+  "MISSED": 630,
+  "MISSED_H": 561,
+  "page_runs_cls_P": 69,
+  "page_runs_soft": 2,
+  "MISSED_P": 69,
+  "MISSED_soft": 2,
+  "corpus_runs_outside_page_stream": 2,
+  "pages_total": 510,
+  "pages_kept": 480,
+  "pages_outside_range": 20,
+  "pages_index": 10,
+  "extract_pages": 510,
+  "corpus_page_lo": 21,
+  "corpus_page_hi": 510,
+  "spans_on_verse_branch_ordinals": 5,
+  "chars_on_verse_branch_ordinals": 46,
+  "spans_in_data": 5,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 2,
+  "corpus_letters": 379450,
+  "known_letters": 377487,
+  "data_bold_letters": 46,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 46,
+  "page_bold_letters": 13196
+ },
+ "ex": {
+  "absent": [
+   [
+    467,
+    "Khuddakanikāyetatiyabhāgapotthake"
+   ],
+   [
+    467,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    467,
+    "AĀ"
+   ],
+   [
+    467,
+    "AjinuttaravāsohaṁI"
+   ],
+   [
+    467,
+    "AbhibhūŪ"
+   ],
+   [
+    468,
+    "OGha"
+   ],
+   [
+    470,
+    "PaBa"
+   ],
+   [
+    470,
+    "PupphavassoBha"
+   ],
+   [
+    470,
+    "BaBhīmaratho"
+   ],
+   [
+    472,
+    "VaSa"
+   ],
+   [
+    475,
+    "Khuddakanikāyetatiyabhāgapotthake"
+   ],
+   [
+    475,
+    "Theranāmānaṁanukkamaṇikā"
+   ]
+  ],
+  "missed_H": [
+   [
+    21,
+    "Khuddakanikāya"
+   ],
+   [
+    21,
+    "Therāpadānapāḷi"
+   ],
+   [
+    21,
+    "Buddhavagga"
+   ],
+   [
+    21,
+    "Buddhaapadāna"
+   ],
+   [
+    28,
+    "Paccekabuddhaapadāna"
+   ],
+   [
+    36,
+    "Sāriputtattheraapadāna"
+   ],
+   [
+    54,
+    "Mahāmoggallānattheraapadāna"
+   ],
+   [
+    56,
+    "Mahākassapattheraapadāna"
+   ],
+   [
+    58,
+    "Anuruddhattheraapadāna"
+   ],
+   [
+    59,
+    "Puṇṇamantāṇiputtattheraapadāna"
+   ],
+   [
+    60,
+    "Upālittheraapadāna"
+   ],
+   [
+    72,
+    "Aññāsikoṇḍaññattheraapadāna"
+   ]
+  ],
+  "missed_P": [
+   [
+    52,
+    "Ḍa"
+   ],
+   [
+    53,
+    "Ta"
+   ],
+   [
+    54,
+    "Ta"
+   ],
+   [
+    90,
+    "A"
+   ],
+   [
+    90,
+    "A"
+   ],
+   [
+    91,
+    "A"
+   ],
+   [
+    91,
+    "Ā"
+   ],
+   [
+    92,
+    "I"
+   ],
+   [
+    94,
+    "U"
+   ],
+   [
+    94,
+    "U"
+   ],
+   [
+    118,
+    "Sa"
+   ],
+   [
+    122,
+    "E"
+   ]
+  ]
+ }
+}

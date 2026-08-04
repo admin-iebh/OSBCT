@@ -1,0 +1,199 @@
+{
+ "vol": "28Khu11",
+ "stat": {
+  "page_lines": 11955,
+  "line_found": 11192,
+  "line_found_fwd": 11035,
+  "line_found_any": 137,
+  "line_found_back": 20,
+  "line_absent": 763,
+  "page_runs_in_absent_lines": 54,
+  "page_bold_letters_in_absent_lines": 598,
+  "page_run_boundary_splits": 38,
+  "page_runs": 378,
+  "page_runs_cls_H": 300,
+  "MISSED": 343,
+  "MISSED_H": 300,
+  "page_runs_soft": 3,
+  "MISSED_soft": 2,
+  "page_runs_cls_P": 78,
+  "EXACT": 35,
+  "EXACT_P": 35,
+  "in_data_not_drawn_spine": 35,
+  "in_data_not_drawn_spine_P": 35,
+  "EXACT_soft": 1,
+  "MISSED_P": 43,
+  "corpus_runs": 35,
+  "corpus_runs_outside_page_stream": 1,
+  "pages_total": 456,
+  "pages_kept": 435,
+  "pages_outside_range": 14,
+  "pages_index": 7,
+  "extract_pages": 456,
+  "corpus_page_lo": 15,
+  "corpus_page_hi": 456,
+  "spans_on_verse_branch_ordinals": 48,
+  "chars_on_verse_branch_ordinals": 404,
+  "spans_in_data": 52,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 13,
+  "corpus_letters": 575891,
+  "known_letters": 552416,
+  "data_bold_letters": 451,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 451,
+  "page_bold_letters": 6025
+ },
+ "ex": {
+  "absent": [
+   [
+    111,
+    "Aṭṭhamantaparivajjanīyaṭṭhāna"
+   ],
+   [
+    113,
+    "Aṭṭhamantavināsakapuggala"
+   ],
+   [
+    113,
+    "Navaguyhamantavidhaṁsaka"
+   ],
+   [
+    114,
+    "Aṭṭhapaññāpaṭilābhakāraṇa"
+   ],
+   [
+    115,
+    "Ācariyaguṇa"
+   ],
+   [
+    115,
+    "Upāsakaguṇa"
+   ],
+   [
+    250,
+    "Gihipabbajitasammāpaṭipattipañha"
+   ],
+   [
+    344,
+    "Dhutaṅgapañha"
+   ],
+   [
+    357,
+    "Opammakathāpañha"
+   ],
+   [
+    421,
+    "Nigamana"
+   ],
+   [
+    423,
+    "Khuddakanikāyeekādasamabhāgapotthake"
+   ],
+   [
+    423,
+    "Milindapañhapāḷiyaṁ"
+   ]
+  ],
+  "missed_H": [
+   [
+    15,
+    "Khuddakanikāya"
+   ],
+   [
+    15,
+    "Milindapañhapāḷi"
+   ],
+   [
+    17,
+    "Bāhirakathā"
+   ],
+   [
+    17,
+    "Pubbayogādi"
+   ],
+   [
+    37,
+    "Bāhirakathāniṭṭhitā"
+   ],
+   [
+    38,
+    "Milindapañha"
+   ],
+   [
+    38,
+    "Mahāvagga"
+   ],
+   [
+    38,
+    "Paññattipañha"
+   ],
+   [
+    41,
+    "Vassagaṇanapañha"
+   ],
+   [
+    41,
+    "Vīmaṁsanapañha"
+   ],
+   [
+    42,
+    "Anantakāyapañha"
+   ],
+   [
+    44,
+    "Pabbajjapañha"
+   ]
+  ],
+  "missed_P": [
+   [
+    22,
+    "A"
+   ],
+   [
+    22,
+    "A"
+   ],
+   [
+    22,
+    "Ā"
+   ],
+   [
+    32,
+    "Ā"
+   ],
+   [
+    32,
+    "I"
+   ],
+   [
+    34,
+    "U"
+   ],
+   [
+    45,
+    "Ū"
+   ],
+   [
+    46,
+    "E"
+   ],
+   [
+    48,
+    "O"
+   ],
+   [
+    48,
+    "Ka"
+   ],
+   [
+    53,
+    "Nānādhammānaṁekakiccaabhinipphādanapañha"
+   ],
+   [
+    123,
+    "Bha"
+   ]
+  ]
+ }
+}

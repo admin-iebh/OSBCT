@@ -1,0 +1,183 @@
+{
+ "vol": "37Abhi09",
+ "stat": {
+  "page_lines": 14747,
+  "line_found": 14650,
+  "line_found_fwd": 14604,
+  "line_found_back": 15,
+  "line_found_any": 31,
+  "line_absent": 97,
+  "page_runs_in_absent_lines": 8,
+  "page_bold_letters_in_absent_lines": 77,
+  "page_run_boundary_splits": 103,
+  "page_runs": 1637,
+  "page_runs_cls_H": 692,
+  "MISSED": 705,
+  "MISSED_H": 692,
+  "page_runs_cls_P": 945,
+  "EXACT": 932,
+  "EXACT_P": 932,
+  "in_data_not_drawn_spine": 932,
+  "in_data_not_drawn_spine_P": 932,
+  "page_runs_soft": 5,
+  "EXACT_soft": 2,
+  "MISSED_P": 13,
+  "MISSED_soft": 3,
+  "corpus_runs_outside_page_stream": 2,
+  "corpus_runs": 890,
+  "pages_total": 528,
+  "pages_kept": 498,
+  "pages_outside_range": 27,
+  "pages_index": 3,
+  "extract_pages": 528,
+  "corpus_page_lo": 28,
+  "corpus_page_hi": 528,
+  "spans_on_verse_branch_ordinals": 1159,
+  "chars_on_verse_branch_ordinals": 13830,
+  "spans_in_data": 1569,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 383,
+  "corpus_letters": 694389,
+  "known_letters": 687024,
+  "data_bold_letters": 19210,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 19210,
+  "page_bold_letters": 26371
+ },
+ "ex": {
+  "absent": [
+   [
+    519,
+    "Nahetutika"
+   ],
+   [
+    522,
+    "Paṭṭhānapāḷiyādutiyabhāge"
+   ],
+   [
+    522,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    522,
+    "AnulomaṁgotrabhussaĀ"
+   ],
+   [
+    525,
+    "DānaṁdatvāNa"
+   ],
+   [
+    527,
+    "BhaMa"
+   ],
+   [
+    529,
+    "Ha"
+   ],
+   [
+    529,
+    "Ha"
+   ]
+  ],
+  "missed_H": [
+   [
+    28,
+    "Abhidhammapiṭaka"
+   ],
+   [
+    28,
+    "Dhammānuloma"
+   ],
+   [
+    28,
+    "Tikapaṭṭhānapāḷi"
+   ],
+   [
+    28,
+    "Vitakkattika"
+   ],
+   [
+    28,
+    "Paṭiccavāra"
+   ],
+   [
+    28,
+    "Paccayānuloma"
+   ],
+   [
+    28,
+    "Vibhaṅgavāra"
+   ],
+   [
+    28,
+    "Hetu"
+   ],
+   [
+    34,
+    "Ārammaṇa"
+   ],
+   [
+    37,
+    "Vippayutta"
+   ],
+   [
+    43,
+    "Atthiavigata"
+   ],
+   [
+    44,
+    "Suddha"
+   ]
+  ],
+  "missed_P": [
+   [
+    77,
+    "Ta"
+   ],
+   [
+    77,
+    "I"
+   ],
+   [
+    84,
+    "Pa"
+   ],
+   [
+    86,
+    "U"
+   ],
+   [
+    141,
+    "U"
+   ],
+   [
+    150,
+    "Da"
+   ],
+   [
+    176,
+    "Sahajāta"
+   ],
+   [
+    350,
+    "Va"
+   ],
+   [
+    432,
+    "Ra"
+   ],
+   [
+    433,
+    "Kha"
+   ],
+   [
+    436,
+    "Sa"
+   ],
+   [
+    494,
+    "A"
+   ]
+  ]
+ }
+}

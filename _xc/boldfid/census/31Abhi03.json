@@ -1,0 +1,198 @@
+{
+ "vol": "31Abhi03",
+ "stat": {
+  "page_lines": 5242,
+  "line_found": 5010,
+  "line_found_fwd": 4926,
+  "line_absent": 232,
+  "page_runs_in_absent_lines": 24,
+  "page_bold_letters_in_absent_lines": 208,
+  "line_found_any": 36,
+  "line_found_back": 48,
+  "page_run_boundary_splits": 36,
+  "page_runs": 149,
+  "page_runs_cls_H": 89,
+  "MISSED": 128,
+  "MISSED_H": 89,
+  "page_runs_soft": 9,
+  "MISSED_soft": 8,
+  "page_runs_cls_P": 60,
+  "MISSED_P": 39,
+  "EXACT": 21,
+  "EXACT_P": 21,
+  "in_data_not_drawn_spine": 21,
+  "in_data_not_drawn_spine_P": 21,
+  "EXACT_soft": 1,
+  "corpus_runs": 21,
+  "pages_total": 204,
+  "pages_kept": 194,
+  "pages_outside_range": 8,
+  "pages_index": 2,
+  "extract_pages": 204,
+  "corpus_page_lo": 8,
+  "corpus_page_hi": 203,
+  "spans_on_verse_branch_ordinals": 54,
+  "chars_on_verse_branch_ordinals": 612,
+  "spans_in_data": 54,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 21,
+  "corpus_letters": 238843,
+  "known_letters": 237236,
+  "data_bold_letters": 612,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 612,
+  "page_bold_letters": 2111
+ },
+ "ex": {
+  "absent": [
+   [
+    194,
+    "Dhātukathāpāḷiyā"
+   ],
+   [
+    194,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    194,
+    "AU"
+   ],
+   [
+    194,
+    "AvitakkavicāramattehiādiCa"
+   ],
+   [
+    194,
+    "IddhipādenaJa"
+   ],
+   [
+    195,
+    "JhaMa"
+   ],
+   [
+    195,
+    "Va"
+   ],
+   [
+    195,
+    "PaVedanākkhandho"
+   ],
+   [
+    195,
+    "BaSaddhindriyenaādi"
+   ],
+   [
+    198,
+    "Puggalapaññattipāḷiyā"
+   ],
+   [
+    198,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    198,
+    "AGa"
+   ]
+  ],
+  "missed_H": [
+   [
+    8,
+    "Abhidhammapiṭaka"
+   ],
+   [
+    8,
+    "Dhātukathāpāḷi"
+   ],
+   [
+    8,
+    "Uddesa"
+   ],
+   [
+    8,
+    "Nayamātikā"
+   ],
+   [
+    8,
+    "Abbhantaramātikā"
+   ],
+   [
+    9,
+    "Nayamukhamātikā"
+   ],
+   [
+    9,
+    "Lakkhaṇamātikā"
+   ],
+   [
+    9,
+    "Bāhiramātikā"
+   ],
+   [
+    10,
+    "Paṭhamanaya"
+   ],
+   [
+    10,
+    "Saṅgahāsaṅgahapadaniddesa"
+   ],
+   [
+    10,
+    "Khandha"
+   ],
+   [
+    12,
+    "Āyatana"
+   ]
+  ],
+  "missed_P": [
+   [
+    13,
+    "Ga"
+   ],
+   [
+    13,
+    "Ra"
+   ],
+   [
+    19,
+    "Ta"
+   ],
+   [
+    23,
+    "Da"
+   ],
+   [
+    25,
+    "Ba"
+   ],
+   [
+    26,
+    "Na"
+   ],
+   [
+    35,
+    "Ma"
+   ],
+   [
+    37,
+    "Sa"
+   ],
+   [
+    42,
+    "Dha"
+   ],
+   [
+    46,
+    "Kha"
+   ],
+   [
+    52,
+    "Ka"
+   ],
+   [
+    52,
+    "Pha"
+   ]
+  ]
+ }
+}

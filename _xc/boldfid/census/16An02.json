@@ -1,0 +1,192 @@
+{
+ "vol": "16An02",
+ "stat": {
+  "page_lines": 15346,
+  "line_found": 14431,
+  "line_found_fwd": 14337,
+  "line_absent": 915,
+  "page_runs_in_absent_lines": 34,
+  "page_bold_letters_in_absent_lines": 314,
+  "line_found_any": 67,
+  "line_found_back": 27,
+  "page_run_boundary_splits": 74,
+  "page_runs": 661,
+  "page_runs_cls_H": 606,
+  "MISSED": 661,
+  "MISSED_H": 606,
+  "page_runs_cls_P": 55,
+  "page_runs_soft": 8,
+  "MISSED_P": 55,
+  "MISSED_soft": 8,
+  "pages_total": 570,
+  "pages_kept": 545,
+  "pages_outside_range": 18,
+  "pages_index": 7,
+  "extract_pages": 570,
+  "corpus_page_lo": 19,
+  "corpus_page_hi": 569,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 0,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 0,
+  "corpus_letters": 713494,
+  "known_letters": 713366,
+  "data_bold_letters": 0,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 0,
+  "page_bold_letters": 9293
+ },
+ "ex": {
+  "absent": [
+   [
+    264,
+    "Tatridaṁvagguddānaṁ"
+   ],
+   [
+    533,
+    "Aṅguttaranikāyedutiyaganthe"
+   ],
+   [
+    533,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    533,
+    "AA"
+   ],
+   [
+    534,
+    "AI"
+   ],
+   [
+    534,
+    "ĀU"
+   ],
+   [
+    534,
+    "IE"
+   ],
+   [
+    536,
+    "GaCa"
+   ],
+   [
+    536,
+    "Gha"
+   ],
+   [
+    538,
+    "DhaPa"
+   ],
+   [
+    538,
+    "PaPatthetirajjaṁ"
+   ],
+   [
+    540,
+    "BhaMa"
+   ]
+  ],
+  "missed_H": [
+   [
+    19,
+    "Aṅguttaranikāya"
+   ],
+   [
+    19,
+    "Pañcakanipātapāḷi"
+   ],
+   [
+    19,
+    "Paṭhamapaṇṇāsaka"
+   ],
+   [
+    19,
+    "Sekhabalavagga"
+   ],
+   [
+    19,
+    "Saṁkhittasutta"
+   ],
+   [
+    20,
+    "Vitthatasutta"
+   ],
+   [
+    20,
+    "Dukkhasutta"
+   ],
+   [
+    21,
+    "Yathābhatasutta"
+   ],
+   [
+    21,
+    "Sikkhāsutta"
+   ],
+   [
+    22,
+    "Samāpattisutta"
+   ],
+   [
+    23,
+    "Kāmasutta"
+   ],
+   [
+    24,
+    "Cavanasutta"
+   ]
+  ],
+  "missed_P": [
+   [
+    23,
+    "La"
+   ],
+   [
+    27,
+    "Bha"
+   ],
+   [
+    27,
+    "Bha"
+   ],
+   [
+    42,
+    "Ma"
+   ],
+   [
+    46,
+    "Ma"
+   ],
+   [
+    51,
+    "Ya"
+   ],
+   [
+    52,
+    "Ra"
+   ],
+   [
+    56,
+    "Ka"
+   ],
+   [
+    62,
+    "Va"
+   ],
+   [
+    85,
+    "Va"
+   ],
+   [
+    86,
+    "Sa"
+   ],
+   [
+    87,
+    "Sa"
+   ]
+  ]
+ }
+}

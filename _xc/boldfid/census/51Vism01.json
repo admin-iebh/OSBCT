@@ -1,0 +1,198 @@
+{
+ "vol": "51Vism01",
+ "stat": {
+  "page_lines": 11310,
+  "line_found": 10736,
+  "line_found_fwd": 10425,
+  "line_found_back": 58,
+  "line_found_any": 253,
+  "line_absent": 574,
+  "page_runs_in_absent_lines": 30,
+  "page_bold_letters_in_absent_lines": 290,
+  "page_run_boundary_splits": 49,
+  "page_runs": 1381,
+  "page_runs_cls_H": 119,
+  "MISSED": 174,
+  "MISSED_H": 119,
+  "page_runs_cls_P": 1262,
+  "page_runs_soft": 57,
+  "EXACT": 1207,
+  "EXACT_P": 1207,
+  "EXACT_soft": 40,
+  "in_data_not_drawn_spine": 1207,
+  "in_data_not_drawn_spine_P": 1207,
+  "MISSED_soft": 17,
+  "MISSED_P": 55,
+  "corpus_runs": 1205,
+  "pages_total": 410,
+  "pages_kept": 391,
+  "pages_outside_range": 10,
+  "pages_index": 9,
+  "extract_pages": 410,
+  "corpus_page_lo": 8,
+  "corpus_page_hi": 407,
+  "spans_on_verse_branch_ordinals": 1669,
+  "chars_on_verse_branch_ordinals": 16466,
+  "spans_in_data": 1669,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 272,
+  "corpus_letters": 534213,
+  "known_letters": 532742,
+  "data_bold_letters": 16466,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 16466,
+  "page_bold_letters": 18964
+ },
+ "ex": {
+  "absent": [
+   [
+    378,
+    "Visuddhimaggepaṭhamabhāge"
+   ],
+   [
+    378,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    378,
+    "AA"
+   ],
+   [
+    379,
+    "IddhiE"
+   ],
+   [
+    381,
+    "JhaDha"
+   ],
+   [
+    381,
+    "Ña"
+   ],
+   [
+    381,
+    "TaNakhā"
+   ],
+   [
+    381,
+    "ThaNānattasaññānaṁ"
+   ],
+   [
+    383,
+    "MaLa"
+   ],
+   [
+    383,
+    "YaVasā"
+   ],
+   [
+    385,
+    "SaSa"
+   ],
+   [
+    386,
+    "Visuddhimaggepaṭhamabhāge"
+   ]
+  ],
+  "missed_H": [
+   [
+    8,
+    "Visuddhimaggo"
+   ],
+   [
+    8,
+    "Nidānādikathā"
+   ],
+   [
+    14,
+    "Sīlaniddesa"
+   ],
+   [
+    14,
+    "Sīlasarūpādikathā"
+   ],
+   [
+    16,
+    "Sīlānisaṁsakathā"
+   ],
+   [
+    18,
+    "Sīlappabhedakathā"
+   ],
+   [
+    23,
+    "Pātimokkhasaṁvarasīla"
+   ],
+   [
+    27,
+    "Indriyasaṁvarasīla"
+   ],
+   [
+    29,
+    "Ājīvapārisuddhisīla"
+   ],
+   [
+    36,
+    "Paccayasannissitasīla"
+   ],
+   [
+    41,
+    "Catupārisuddhisampādanavidhi"
+   ],
+   [
+    50,
+    "Paṭhamasīlapañcaka"
+   ]
+  ],
+  "missed_P": [
+   [
+    15,
+    "U"
+   ],
+   [
+    15,
+    "A"
+   ],
+   [
+    17,
+    "Ga"
+   ],
+   [
+    19,
+    "Cha"
+   ],
+   [
+    23,
+    "pātimokkhasaṁvarasīlaṁ"
+   ],
+   [
+    28,
+    "Ja"
+   ],
+   [
+    34,
+    "Ta"
+   ],
+   [
+    36,
+    "paṭisaṅkhāyoniso"
+   ],
+   [
+    37,
+    "Ḍa"
+   ],
+   [
+    37,
+    "Namaṇḍanāyā"
+   ],
+   [
+    55,
+    "khaṇḍaṁ"
+   ],
+   [
+    58,
+    "Cha"
+   ]
+  ]
+ }
+}

@@ -1,0 +1,186 @@
+{
+ "vol": "34Abhi06",
+ "stat": {
+  "page_lines": 9095,
+  "line_found": 8958,
+  "line_found_fwd": 8916,
+  "line_absent": 137,
+  "page_runs_in_absent_lines": 16,
+  "page_bold_letters_in_absent_lines": 206,
+  "line_found_any": 13,
+  "line_found_back": 29,
+  "page_run_boundary_splits": 56,
+  "page_runs": 286,
+  "page_runs_cls_H": 273,
+  "MISSED": 282,
+  "MISSED_H": 273,
+  "page_runs_cls_P": 13,
+  "MISSED_P": 9,
+  "page_runs_soft": 3,
+  "MISSED_soft": 2,
+  "EXACT": 4,
+  "EXACT_P": 4,
+  "in_data_not_drawn_spine": 4,
+  "in_data_not_drawn_spine_P": 4,
+  "EXACT_soft": 1,
+  "corpus_runs": 4,
+  "pages_total": 336,
+  "pages_kept": 322,
+  "pages_outside_range": 13,
+  "pages_index": 1,
+  "extract_pages": 336,
+  "corpus_page_lo": 12,
+  "corpus_page_hi": 334,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 8,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 4,
+  "corpus_letters": 472948,
+  "known_letters": 470634,
+  "data_bold_letters": 78,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 78,
+  "page_bold_letters": 4463
+ },
+ "ex": {
+  "absent": [
+   [
+    328,
+    "Saṅkhārayamakapāḷiyā"
+   ],
+   [
+    328,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    328,
+    "KaTa"
+   ],
+   [
+    328,
+    "CaTassavacīsaṅkhāro"
+   ],
+   [
+    329,
+    "TaYa"
+   ],
+   [
+    330,
+    "Anusayayamakapāḷiyā"
+   ],
+   [
+    330,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    330,
+    "AKa"
+   ],
+   [
+    331,
+    "DaMa"
+   ],
+   [
+    331,
+    "Naniranusayo"
+   ],
+   [
+    333,
+    "Cittayamakapāḷiyā"
+   ],
+   [
+    333,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ]
+  ],
+  "missed_H": [
+   [
+    12,
+    "Abhidhammapiṭaka"
+   ],
+   [
+    12,
+    "Saṅkhārayamakapāḷi"
+   ],
+   [
+    12,
+    "Paṇṇattivārauddesa"
+   ],
+   [
+    12,
+    "Padasodhanavāra"
+   ],
+   [
+    12,
+    "Anuloma"
+   ],
+   [
+    12,
+    "Paccanīka"
+   ],
+   [
+    13,
+    "Padasodhanamūlacakkavāra"
+   ],
+   [
+    13,
+    "Anuloma"
+   ],
+   [
+    13,
+    "Paccanīka"
+   ],
+   [
+    13,
+    "Suddhasaṅkhāravāra"
+   ],
+   [
+    13,
+    "Anuloma"
+   ],
+   [
+    13,
+    "Paccanīka"
+   ]
+  ],
+  "missed_P": [
+   [
+    12,
+    "Ta"
+   ],
+   [
+    12,
+    "Va"
+   ],
+   [
+    39,
+    "Ya"
+   ],
+   [
+    65,
+    "Kha"
+   ],
+   [
+    65,
+    "Sa"
+   ],
+   [
+    331,
+    "Pa"
+   ],
+   [
+    290,
+    "Ka"
+   ],
+   [
+    300,
+    "Ya"
+   ],
+   [
+    303,
+    "Ya"
+   ]
+  ]
+ }
+}

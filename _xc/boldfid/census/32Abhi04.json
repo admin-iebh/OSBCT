@@ -1,0 +1,192 @@
+{
+ "vol": "32Abhi04",
+ "stat": {
+  "page_lines": 12815,
+  "line_found": 12400,
+  "line_found_fwd": 12342,
+  "line_absent": 415,
+  "page_runs_in_absent_lines": 19,
+  "page_bold_letters_in_absent_lines": 180,
+  "line_found_back": 30,
+  "line_found_any": 28,
+  "page_run_boundary_splits": 246,
+  "page_runs": 542,
+  "page_runs_cls_H": 513,
+  "MISSED": 542,
+  "MISSED_H": 513,
+  "page_runs_cls_P": 29,
+  "MISSED_P": 29,
+  "page_runs_soft": 1,
+  "MISSED_soft": 1,
+  "pages_total": 492,
+  "pages_kept": 468,
+  "pages_outside_range": 22,
+  "pages_index": 2,
+  "extract_pages": 492,
+  "corpus_page_lo": 15,
+  "corpus_page_hi": 484,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 0,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 0,
+  "corpus_letters": 592354,
+  "known_letters": 589878,
+  "data_bold_letters": 0,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 0,
+  "page_bold_letters": 8052
+ },
+ "ex": {
+  "absent": [
+   [
+    468,
+    "Pañcattiṁsabhāṇavāraṁ"
+   ],
+   [
+    469,
+    "Kathāvatthupāḷiyā"
+   ],
+   [
+    469,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    469,
+    "AA"
+   ],
+   [
+    469,
+    "AnupubbābhisamayoI"
+   ],
+   [
+    470,
+    "UKa"
+   ],
+   [
+    470,
+    "KaGa"
+   ],
+   [
+    472,
+    "PaPha"
+   ],
+   [
+    472,
+    "ParibhogamayaṁMa"
+   ],
+   [
+    474,
+    "SaSa"
+   ],
+   [
+    474,
+    "SāvakayugaṁHa"
+   ],
+   [
+    475,
+    "Kathāvatthupāḷiyā"
+   ]
+  ],
+  "missed_H": [
+   [
+    15,
+    "Abhidhammapiṭaka"
+   ],
+   [
+    15,
+    "Kathāvatthupāḷi"
+   ],
+   [
+    15,
+    "Puggalakathā"
+   ],
+   [
+    15,
+    "Suddhasaccikaṭṭha"
+   ],
+   [
+    15,
+    "Anulomapaccanīka"
+   ],
+   [
+    18,
+    "Suddhasaccikaṭṭha"
+   ],
+   [
+    18,
+    "Paccanīkānuloma"
+   ],
+   [
+    21,
+    "Okāsasaccikaṭṭha"
+   ],
+   [
+    21,
+    "Anulomapaccanīka"
+   ],
+   [
+    22,
+    "Kālasaccikaṭṭha"
+   ],
+   [
+    22,
+    "Anulomapaccanīka"
+   ],
+   [
+    22,
+    "Avayavasaccikaṭṭha"
+   ]
+  ],
+  "missed_P": [
+   [
+    124,
+    "Ā"
+   ],
+   [
+    138,
+    "Ba"
+   ],
+   [
+    167,
+    "Bha"
+   ],
+   [
+    205,
+    "E"
+   ],
+   [
+    272,
+    "O"
+   ],
+   [
+    308,
+    "A"
+   ],
+   [
+    343,
+    "I"
+   ],
+   [
+    345,
+    "U"
+   ],
+   [
+    359,
+    "Ca"
+   ],
+   [
+    429,
+    "Ā"
+   ],
+   [
+    431,
+    "Ra"
+   ],
+   [
+    443,
+    "Va"
+   ]
+  ]
+ }
+}

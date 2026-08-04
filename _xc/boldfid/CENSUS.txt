@@ -1,0 +1,251 @@
+BOLD FIDELITY CENSUS -- 118 volumes
+
+  printed body lines read from the PDF          1452077
+    located in the data stream                  1347665  (92.81%)
+      by the forward cursor                     1325737
+      by the backward window                       6416
+      by an unanchored search  (SOFT)             15512
+    not located                                  104412  (7.19%)
+      bold runs inside those lines                 5108
+
+  BOLD RUNS ON THE PRINTED PAGE                  327737
+    exactly what the corpus carries              293139  (89.44%)
+    MISSED    - bold on the page, none in the corpus        34463
+    MISALIGNED_part - corpus covers only part of it           132
+    MISALIGNED_long - corpus bolds beyond it                    3
+    SPURIOUS  - bold in the corpus, none on the page           25
+      of the above, resting on a SOFT line match: EXACT 4201  MISSED 619  PART 7  SPUR 10
+
+  the same page runs by WHAT THEY SIT IN
+    P  running prose (where a lemma lives)       297778   missed    4512
+    H  a heading / title / uddana                 29919   missed   29919
+    V  display verse                                 40   missed      32
+
+  THE DATA
+    bold spans in bold/<VOL>.bold.json           512798
+    bold spans in bold/<VOL>.sect.json                8
+    paragraphs carrying at least one span         33076
+    letters the data marks bold                 4335102
+
+  WHAT THE READER DRAWS
+    letters bold in the BAND view               4335102
+    letters bold in the SPINE view                   82
+    page bold runs present in the data but NOT DRAWN in the spine view 293266
+    spans on ordinals whose paragraph text the verse branch replaces   461393
+
+RANKED BY MISSED (page bold the corpus does not carry)
+  vol          MISSED    in P    in H    in V    runs
+  38Abhi10       1167       8    1159       0    2720
+  39Abhi11        961      74     887       0    1838
+  13Sam02         890      59     831       0     890
+  36Abhi08        887       5     882       0    1293
+  14Sam03         863      29     834       0     863
+  17SaT02         816       0     816       0   10381
+  18Khu01         758      78     680       0     760
+  19Khu02         757      71     686       0     759
+  12Sam01         738      64     674       0     739
+  22Khu05         738      95     643       0     738
+  37Abhi09        705      13     692       0    1637
+  15An01          676      42     634       0     676
+  24AbhiT03       673      35     638       0    6622
+  19AnA03         669      32     637       0    5694
+  16An02          661      55     606       0     661
+  20Khu03         630      69     561       0     630
+  06ViT06         587      14     573       0    4726
+  32Abhi04        542      29     513       0     542
+  17An03          539      44     495       0     539
+  16SamA03        515       9     506       0    3158
+  18AnA02         495      72     423       0    5638
+  33Abhi05        467      12     455       0     474
+  02Vin02         457      26     431       0    2357
+  07ViT07         435       4     431       0    5821
+  03VinA03        432      40     392       0    3351
+
+RANKED BY MISSED_P ONLY -- bold in RUNNING PROSE the corpus does not carry
+  43KhuA24       141   of   7171 prose runs   (2.0%)  soft 11
+  48AbhiA01      132   of   2701 prose runs   (4.9%)  soft 4
+  09DiT02        122   of   5733 prose runs   (2.1%)  soft 1
+  23Khu06        107   of    110 prose runs   (97.3%)  soft 15
+  21Khu04        100   of    100 prose runs   (100.0%)  soft 6
+  22Khu05         95   of     95 prose runs   (100.0%)  soft 65
+  29KhuA10        94   of   2366 prose runs   (4.0%)  soft 22
+  40Abhi12        92   of    696 prose runs   (13.2%)  soft 1
+  30KhuA11        91   of   4066 prose runs   (2.2%)  soft 13
+  40KhuA21        81   of   3602 prose runs   (2.2%)  soft 6
+  22AbhiT01       80   of   4548 prose runs   (1.8%)  soft 6
+  18Khu01         78   of     80 prose runs   (97.5%)  soft 17
+  39Abhi11        74   of    951 prose runs   (7.8%)  soft 6
+  07DiA01         73   of   3023 prose runs   (2.4%)  soft 10
+  39KhuA20        73   of   2216 prose runs   (3.3%)  soft 5
+  18AnA02         72   of   5215 prose runs   (1.4%)  soft 2
+  19Khu02         71   of     73 prose runs   (97.3%)  soft 37
+  20Khu03         69   of     69 prose runs   (100.0%)  soft 2
+  27Khu10         66   of    119 prose runs   (55.5%)  soft 4
+  12Sam01         64   of     65 prose runs   (98.5%)  soft 9
+  04Vin04         62   of     67 prose runs   (92.5%)  soft 17
+  41KhuA22        60   of   1324 prose runs   (4.5%)  soft 3
+  42KhuA23        60   of   2460 prose runs   (2.4%)  soft 1
+  10Ma02          59   of     59 prose runs   (100.0%)  soft 6
+  13Sam02         59   of     59 prose runs   (100.0%)  soft 7
+
+RANKED BY SPURIOUS
+  39Abhi11         9
+  05Kankha         2
+  21KhuA02         2
+  24AbhiT03        2
+  01VinA01         1
+  07DiA01          1
+  09DiT02          1
+  23KhuA04         1
+  26Khu09          1
+  30KhuA11         1
+  33Abhi05         1
+  35KhuA16         1
+  40Abhi12         1
+  48AbhiA01        1
+
+RANKED BY MISALIGNED (part + long)
+  22AbhiT01       11   (part 11, long 0)
+  39Abhi11         8   (part 8, long 0)
+  40Abhi12         8   (part 8, long 0)
+  43KhuA24         8   (part 8, long 0)
+  48AbhiA01        8   (part 8, long 0)
+  24Khu07          7   (part 7, long 0)
+  25Khu08          6   (part 6, long 0)
+  05Kankha         5   (part 4, long 1)
+  05Vin05          5   (part 5, long 0)
+  09DiA03          5   (part 5, long 0)
+  26Khu09          5   (part 3, long 2)
+  24AbhiT03        4   (part 4, long 0)
+  46KhuA27         3   (part 3, long 0)
+  01VinA01         2   (part 2, long 0)
+  02ViT02          2   (part 2, long 0)
+  04ViT04          2   (part 2, long 0)
+  06ViT06          2   (part 2, long 0)
+  07DiA01          2   (part 2, long 0)
+  09DiT02          2   (part 2, long 0)
+  10MaA01          2   (part 2, long 0)
+
+VOLUMES WITH NO BOLD DATA AT ALL
+  12: 09Ma01 10Ma02 11Ma03 13Sam02 14Sam03 15An01 16An02 17An03 21Khu04 22Khu05 30Abhi02 32Abhi04
+
+PER VOLUME
+  vol           lines   pruns  EXACT   MISS   PART   LONG    SPUR   spans
+  01ViT01       14484    4658   4621     37      0      0       0    7722
+  01Vin01       11254     833    694    139      0      0       0    2973
+  01VinA01      11260    1928   1789    137      2      0       1    3484
+  02ViT02       14256    5800   5664    134      2      0       0   10642
+  02Vin02       13317    2357   1899    457      1      0       0    7131
+  02VinA02      10072    2222   2101    120      1      0       0    4107
+  03ViT03       14393    5669   5243    425      1      0       0    9926
+  03Vin03       14699     328     32    296      0      0       0      56
+  03VinA03      12982    3351   2919    432      0      0       0    5767
+  04ViT04       11108    4846   4685    159      2      0       0    7528
+  04Vin04       15887     292      5    287      0      0       0      22
+  04VinA04       7809    2369   2136    232      1      0       0    4391
+  05Kankha      10410    1868   1451    412      4      1       2    3149
+  05ViT05        8652    3881   3517    363      1      0       0    6207
+  05Vin05       11812     357     68    284      5      0       0     205
+  06Di01         6839     194      7    187      0      0       0      21
+  06ViT06       17747    4726   4137    587      2      0       0    6866
+  06VinSg06     13727    1018    975     43      0      0       0    1292
+  07Di02         8298     208      7    201      0      0       0      18
+  07DiA01       12723    3173   2956    215      2      0       1    5012
+  07ViT07       13557    5821   5386    435      0      0       0    9421
+  08Di03         7921     442    238    203      1      0       0     270
+  08DiA02       12169    2927   2734    193      0      0       0    4912
+  08DiT01       12116    5650   5486    164      0      0       0    9042
+  09DiA03        7859    2935   2715    215      5      0       0    4362
+  09DiT02       15675    5780   5609    169      2      0       1    7775
+  09Ma01        12647     144      0    144      0      0       0       0
+  10DiT03       13126    7541   7414    127      0      0       0   11208
+  10Ma02        13592     131      0    131      0      0       0       0
+  10MaA01       12179    3071   2937    132      2      0       0    4887
+  11DiT04       10896    6732   6561    170      1      0       0   11013
+  11Ma03        11014     123      0    123      0      0       0       0
+  11MaA02       10176    2863   2799     62      2      0       0    5178
+  12DiT05        8562    5792   5638    154      0      0       0    9222
+  12MaA03       10151    2959   2872     86      1      0       0    4975
+  12Sam01       13928     739      1    738      0      0       0       2
+  13MaA04        7634    2083   1994     88      1      0       0    3637
+  13MaT01       11850    5955   5845    109      1      0       0    9733
+  13Sam02       16836     890      0    890      0      0       0       0
+  14MaT02        9848    6197   6124     73      0      0       0   10836
+  14Sam03       12198     863      0    863      0      0       0       0
+  14SamA01       9847    3622   3289    333      0      0       0    5343
+  15An01        17102     676      0    676      0      0       0       0
+  15MaT03       12839    8206   8076    130      0      0       0   14653
+  15SamA02      10102    3056   2658    398      0      0       0    4598
+  16An02        15346     661      0    661      0      0       0       0
+  16SaT01        9893    6451   6139    312      0      0       0    9923
+  16SamA03      10104    3158   2643    515      0      0       0    4636
+  17An03        16514     539      0    539      0      0       0       0
+  17AnA01       13191    1201   1018    183      0      0       0    1505
+  17SaT02       15268   10381   9565    816      0      0       0   16028
+  18AnA02       13327    5638   5141    495      2      0       0    8573
+  18AnT01        8688    3697   3579    118      0      0       0    6098
+  18Khu01       14274     760      2    758      0      0       0       6
+  19AnA03       13433    5694   5024    669      1      0       0    8379
+  19AnT02       11356    5940   5604    335      1      0       0    9481
+  19Khu02       13167     759      2    757      0      0       0       4
+  20AnT03       10470    4951   4566    384      1      0       0    7626
+  20Khu03       11633     630      0    630      0      0       0       5
+  20KhuA01       7484    1060    922    137      1      0       0    1580
+  21Khu04       12248     428      0    428      0      0       0       0
+  21KhuA02      13847     879    730    149      0      0       2    1291
+  21KhuT01      15095    8263   8181     82      0      0       0   12512
+  22AbhiT01     13079    4704   4457    236     11      0       0    7607
+  22Khu05       12353     738      0    738      0      0       0       0
+  22KhuA03      13912    1617   1320    297      0      0       0    2124
+  23AbhiT02     13246    6247   5918    327      2      0       0   10134
+  23Khu06       12831     177      3    174      0      0       0       3
+  23KhuA04      13217    3096   2962    134      0      0       1    6020
+  24AbhiT03     15705    6622   5945    673      4      0       2   12964
+  24Khu07       13719    2016   1940     69      7      0       0    7733
+  24KhuA05      11878    2662   2489    173      0      0       0    3798
+  25Khu08        9155    1788   1707     75      6      0       0    5842
+  25KhuA06      10633    1902   1844     57      1      0       0    3391
+  25VsmT01      14460    7901   7785    116      0      0       0   12290
+  26Khu09       13153     771    545    221      3      2       1    1101
+  26KhuA07      11239    3877   3787     88      2      0       0    7563
+  26VsmT02      16160    7040   6913    125      2      0       0   11393
+  27Khu10       10683     174     53    121      0      0       0      87
+  27KhuA08      11022    2290   2154    136      0      0       0    3504
+  28Khu11       11955     378     35    343      0      0       0      52
+  28KhuA09       9180    2168   2050    118      0      0       0    3884
+  29Abhi01       8455     176     12    164      0      0       0      33
+  29KhuA10      16652    2584   2270    312      2      0       0    3957
+  30Abhi02      13084     262      0    262      0      0       0       0
+  30KhuA11      18292    4183   3973    208      2      0       1    7197
+  31Abhi03       5242     149     21    128      0      0       0      54
+  31KhuA12      10402    1935   1772    162      1      0       0    3544
+  32Abhi04      12815     542      0    542      0      0       0       0
+  32KhuA13      12135    2991   2929     61      1      0       0    4190
+  33Abhi05       8277     474      7    467      0      0       1      18
+  33KhuA14       9744    2040   1767    273      0      0       0    3192
+  34Abhi06       9095     286      4    282      0      0       0       8
+  34KhuA15      12073    2131   2029    102      0      0       0    2720
+  35Abhi07      10641     262      4    258      0      0       0       8
+  35KhuA16      10692    1859   1752    107      0      0       1    3163
+  36Abhi08      13141    1293    406    887      0      0       0     630
+  36KhuA17      16994    1188    947    241      0      0       0    2075
+  37Abhi09      14747    1637    932    705      0      0       0    1569
+  37KhuA18      12899    1547   1309    238      0      0       0    2882
+  38Abhi10      17292    2720   1553   1167      0      0       0    2303
+  38KhuA19      16251    2422   2203    219      0      0       0    3880
+  39Abhi11      17218    1838    869    961      8      0       9    1722
+  39KhuA20      16489    2310   2143    167      0      0       0    3428
+  40Abhi12      12012     995    596    391      8      0       1    1316
+  40KhuA21      18157    3650   3521    129      0      0       0    5013
+  41KhuA22      10891    1339   1264     75      0      0       0    1830
+  42KhuA23      12788    2497   2400     97      0      0       0    3925
+  43KhuA24      15114    7196   7022    166      8      0       0   11268
+  44KhuA25       4680    2077   2032     43      2      0       0    3186
+  45KhuA26       8322    3693   3650     43      0      0       0    6871
+  46KhuA27      11634    2751   2629    119      3      0       0    4042
+  47KhuA28      11146    3880   3741    138      1      0       0    6358
+  48AbhiA01     15313    2812   2561    243      8      0       1    3643
+  49AbhiA02     14767    3069   2883    185      1      0       0    4387
+  50AbhiA03     14138    3446   3016    429      1      0       0    6110
+  51Vism01      11310    1381   1207    174      0      0       0    1669
+  52Vism02      10704    1588   1410    176      2      0       0    1884

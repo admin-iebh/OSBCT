@@ -1,0 +1,192 @@
+{
+ "vol": "10Ma02",
+ "stat": {
+  "page_lines": 13592,
+  "line_found": 12276,
+  "line_found_fwd": 12083,
+  "line_absent": 1316,
+  "page_runs_in_absent_lines": 36,
+  "page_bold_letters_in_absent_lines": 243,
+  "line_found_back": 96,
+  "line_found_any": 97,
+  "page_run_boundary_splits": 11,
+  "page_runs": 131,
+  "page_runs_cls_H": 72,
+  "MISSED": 131,
+  "MISSED_H": 72,
+  "page_runs_soft": 6,
+  "MISSED_soft": 6,
+  "page_runs_cls_P": 59,
+  "MISSED_P": 59,
+  "pages_total": 475,
+  "pages_kept": 467,
+  "pages_outside_range": 6,
+  "pages_index": 2,
+  "extract_pages": 475,
+  "corpus_page_lo": 7,
+  "corpus_page_hi": 474,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 0,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 0,
+  "corpus_letters": 622899,
+  "known_letters": 622294,
+  "data_bold_letters": 0,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 0,
+  "page_bold_letters": 1184
+ },
+ "ex": {
+  "absent": [
+   [
+    445,
+    "Idaṁvaggānamuddānaṁ"
+   ],
+   [
+    447,
+    "Majjhimapaṇṇāsapāḷiyā"
+   ],
+   [
+    447,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    448,
+    "ĀŪ"
+   ],
+   [
+    448,
+    "ĀsavaṭṭhānīyāO"
+   ],
+   [
+    448,
+    "IddhividhaṁKa"
+   ],
+   [
+    449,
+    "KaCa"
+   ],
+   [
+    449,
+    "GhaJāgariyaṁanuyutto"
+   ],
+   [
+    449,
+    "Ña"
+   ],
+   [
+    449,
+    "CatassopāricariyāṬha"
+   ],
+   [
+    450,
+    "TaDa"
+   ],
+   [
+    450,
+    "Tha"
+   ]
+  ],
+  "missed_H": [
+   [
+    7,
+    "Majjhimanikāya"
+   ],
+   [
+    7,
+    "Majjhimapaṇṇāsapāḷi"
+   ],
+   [
+    7,
+    "Gahapativagga"
+   ],
+   [
+    7,
+    "Kandarakasutta"
+   ],
+   [
+    18,
+    "Aṭṭhakanāgarasutta"
+   ],
+   [
+    22,
+    "Sekhasutta"
+   ],
+   [
+    28,
+    "Potaliyasutta"
+   ],
+   [
+    33,
+    "Kāmādīnavakathā"
+   ],
+   [
+    37,
+    "Jīvakasutta"
+   ],
+   [
+    41,
+    "Upālisutta"
+   ],
+   [
+    55,
+    "U"
+   ],
+   [
+    56,
+    "Kukkuravatikasutta"
+   ]
+  ],
+  "missed_P": [
+   [
+    25,
+    "Ba"
+   ],
+   [
+    27,
+    "Bha"
+   ],
+   [
+    28,
+    "Bha"
+   ],
+   [
+    37,
+    "Ma"
+   ],
+   [
+    40,
+    "Ya"
+   ],
+   [
+    53,
+    "Ra"
+   ],
+   [
+    55,
+    "Pa"
+   ],
+   [
+    55,
+    "Ma"
+   ],
+   [
+    92,
+    "E"
+   ],
+   [
+    123,
+    "Ya"
+   ],
+   [
+    154,
+    "Va"
+   ],
+   [
+    154,
+    "Va"
+   ]
+  ]
+ }
+}

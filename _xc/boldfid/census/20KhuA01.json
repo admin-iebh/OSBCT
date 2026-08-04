@@ -1,0 +1,224 @@
+{
+ "vol": "20KhuA01",
+ "stat": {
+  "page_lines": 7484,
+  "line_found": 6499,
+  "line_found_fwd": 6354,
+  "line_absent": 985,
+  "page_runs_in_absent_lines": 57,
+  "page_bold_letters_in_absent_lines": 331,
+  "line_found_back": 46,
+  "line_found_any": 99,
+  "page_run_boundary_splits": 29,
+  "page_runs": 1060,
+  "page_runs_cls_H": 110,
+  "page_runs_soft": 42,
+  "MISSED": 137,
+  "MISSED_H": 110,
+  "MISSED_soft": 7,
+  "page_runs_cls_V": 3,
+  "MISSED_V": 3,
+  "page_runs_cls_P": 947,
+  "EXACT": 922,
+  "EXACT_P": 922,
+  "in_data_not_drawn_spine": 923,
+  "in_data_not_drawn_spine_P": 923,
+  "MISALIGNED_part": 1,
+  "MISALIGNED_part_P": 1,
+  "MISALIGNED_part_soft": 1,
+  "MISSED_P": 24,
+  "EXACT_soft": 34,
+  "corpus_runs": 912,
+  "pages_total": 266,
+  "pages_kept": 248,
+  "pages_outside_range": 18,
+  "pages_index": 0,
+  "extract_pages": 266,
+  "corpus_page_lo": 18,
+  "corpus_page_hi": 265,
+  "spans_on_verse_branch_ordinals": 97,
+  "chars_on_verse_branch_ordinals": 795,
+  "spans_in_data": 1580,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 389,
+  "corpus_letters": 316987,
+  "known_letters": 316421,
+  "data_bold_letters": 11759,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 11759,
+  "page_bold_letters": 14182
+ },
+ "ex": {
+  "absent": [
+   [
+    234,
+    "Nigamanakathā"
+   ],
+   [
+    235,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    235,
+    "AA"
+   ],
+   [
+    236,
+    "AĀ"
+   ],
+   [
+    236,
+    "AbhikkantaĀrammaṇato"
+   ],
+   [
+    236,
+    "ĀdhipaccaparivāroE"
+   ],
+   [
+    237,
+    "EOKa"
+   ],
+   [
+    237,
+    "ObhāsetvāKevala"
+   ],
+   [
+    237,
+    "KhaGa"
+   ],
+   [
+    237,
+    "KasmāCa"
+   ],
+   [
+    238,
+    "CaChaThaDa"
+   ],
+   [
+    238,
+    "JaÑaDassanaṁ"
+   ]
+  ],
+  "missed_H": [
+   [
+    19,
+    "Khuddakanikāya"
+   ],
+   [
+    19,
+    "Khuddakapāṭhaṭṭhakathā"
+   ],
+   [
+    19,
+    "Ganthārambhakathā"
+   ],
+   [
+    20,
+    "Khuddakavavatthāna"
+   ],
+   [
+    21,
+    "Nidānasodhana"
+   ],
+   [
+    22,
+    "Saraṇattayavaṇṇanā"
+   ],
+   [
+    22,
+    "Buddhavibhāvanā"
+   ],
+   [
+    24,
+    "Saraṇagamanagamakavibhāvanā"
+   ],
+   [
+    25,
+    "Bhedābhedaphaladīpanā"
+   ],
+   [
+    26,
+    "Gamanīyadīpanā"
+   ],
+   [
+    28,
+    "Dhammasaṁghasaraṇavibhāvanā"
+   ],
+   [
+    29,
+    "Anupubbavavatthānakāraṇaniddesa"
+   ]
+  ],
+  "missed_V": [
+   [
+    19,
+    "Buddhaṁsaraṇaṁgacchāmi"
+   ],
+   [
+    19,
+    "Dhammaṁsaraṇaṁgacchāmi"
+   ],
+   [
+    19,
+    "Saṁghaṁsaraṇaṁgacchāmī"
+   ]
+  ],
+  "part": [
+   [
+    20,
+    "MajjhimanikāyoO",
+    "Majjhimanikāyo"
+   ]
+  ],
+  "missed_P": [
+   [
+    20,
+    "Ka"
+   ],
+   [
+    21,
+    "Ta"
+   ],
+   [
+    28,
+    "Ca"
+   ],
+   [
+    44,
+    "Da"
+   ],
+   [
+    46,
+    "I"
+   ],
+   [
+    46,
+    "Na"
+   ],
+   [
+    55,
+    "Ba"
+   ],
+   [
+    80,
+    "Bha"
+   ],
+   [
+    90,
+    "Ma"
+   ],
+   [
+    91,
+    "Ya"
+   ],
+   [
+    95,
+    "Ha"
+   ],
+   [
+    112,
+    "Va"
+   ]
+  ]
+ }
+}

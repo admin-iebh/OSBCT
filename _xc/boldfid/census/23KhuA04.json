@@ -1,0 +1,208 @@
+{
+ "vol": "23KhuA04",
+ "stat": {
+  "page_lines": 13217,
+  "line_found": 11762,
+  "line_found_fwd": 11538,
+  "line_absent": 1455,
+  "page_runs_in_absent_lines": 77,
+  "page_bold_letters_in_absent_lines": 462,
+  "line_found_any": 205,
+  "line_found_back": 19,
+  "page_run_boundary_splits": 27,
+  "page_runs": 3096,
+  "page_runs_cls_H": 103,
+  "page_runs_soft": 74,
+  "MISSED": 134,
+  "MISSED_H": 103,
+  "MISSED_soft": 7,
+  "page_runs_cls_P": 2993,
+  "EXACT": 2962,
+  "EXACT_P": 2962,
+  "in_data_not_drawn_spine": 2962,
+  "in_data_not_drawn_spine_P": 2962,
+  "MISSED_P": 31,
+  "EXACT_soft": 67,
+  "corpus_runs": 2954,
+  "SPURIOUS": 1,
+  "SPURIOUS_soft": 1,
+  "SPURIOUS_P": 1,
+  "corpus_runs_outside_page_stream": 3,
+  "pages_total": 474,
+  "pages_kept": 439,
+  "pages_outside_range": 7,
+  "pages_index": 28,
+  "extract_pages": 474,
+  "corpus_page_lo": 8,
+  "corpus_page_hi": 474,
+  "spans_on_verse_branch_ordinals": 269,
+  "chars_on_verse_branch_ordinals": 2210,
+  "spans_in_data": 6020,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 805,
+  "corpus_letters": 602725,
+  "known_letters": 601807,
+  "data_bold_letters": 45412,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 45412,
+  "page_bold_letters": 47895
+ },
+ "ex": {
+  "absent": [
+   [
+    400,
+    "Nigamanakathā"
+   ],
+   [
+    402,
+    "Udānaṭṭhakathāya"
+   ],
+   [
+    402,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    402,
+    "AA"
+   ],
+   [
+    403,
+    "AA"
+   ],
+   [
+    405,
+    "AA"
+   ],
+   [
+    405,
+    "ApiAbhiññā"
+   ],
+   [
+    407,
+    "AĀ"
+   ],
+   [
+    407,
+    "ĀĀyantiṁ"
+   ],
+   [
+    409,
+    "UU"
+   ],
+   [
+    411,
+    "OKa"
+   ],
+   [
+    413,
+    "KaGaGha"
+   ]
+  ],
+  "missed_H": [
+   [
+    8,
+    "Khuddakanikāya"
+   ],
+   [
+    8,
+    "Udānaṭṭhakathā"
+   ],
+   [
+    8,
+    "Ganthārambhakathā"
+   ],
+   [
+    13,
+    "Bodhivagga"
+   ],
+   [
+    13,
+    "Paṭhamabodhisuttavaṇṇanā"
+   ],
+   [
+    50,
+    "Dutiyabodhisuttavaṇṇanā"
+   ],
+   [
+    51,
+    "Tatiyabodhisuttavaṇṇanā"
+   ],
+   [
+    54,
+    "Huṁhuṅkasuttavaṇṇanā"
+   ],
+   [
+    57,
+    "Brāhmaṇasuttavaṇṇanā"
+   ],
+   [
+    61,
+    "Mahākassapasuttavaṇṇanā"
+   ],
+   [
+    65,
+    "Ajakalāpakasuttavaṇṇanā"
+   ],
+   [
+    71,
+    "Saṅgāmajisuttavaṇṇanā"
+   ]
+  ],
+  "missed_P": [
+   [
+    8,
+    "Ha"
+   ],
+   [
+    8,
+    "Ta"
+   ],
+   [
+    41,
+    "Ta"
+   ],
+   [
+    43,
+    "Taṁ"
+   ],
+   [
+    67,
+    "Ca"
+   ],
+   [
+    249,
+    "Kha"
+   ],
+   [
+    255,
+    "Ma"
+   ],
+   [
+    291,
+    "A"
+   ],
+   [
+    292,
+    "Ka"
+   ],
+   [
+    298,
+    "Ga"
+   ],
+   [
+    302,
+    "Ka"
+   ],
+   [
+    303,
+    "Dhammadharā"
+   ]
+  ],
+  "spurious": [
+   [
+    302,
+    "Udānaṭṭhakathā"
+   ]
+  ]
+ }
+}

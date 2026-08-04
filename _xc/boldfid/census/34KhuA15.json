@@ -1,0 +1,219 @@
+{
+ "vol": "34KhuA15",
+ "stat": {
+  "page_lines": 12073,
+  "line_found": 10361,
+  "line_found_fwd": 10135,
+  "line_absent": 1712,
+  "page_runs_in_absent_lines": 283,
+  "page_bold_letters_in_absent_lines": 921,
+  "line_found_back": 67,
+  "line_found_any": 159,
+  "page_run_boundary_splits": 5,
+  "page_runs": 2131,
+  "page_runs_cls_H": 43,
+  "MISSED": 102,
+  "MISSED_H": 43,
+  "page_runs_cls_V": 4,
+  "MISSED_V": 4,
+  "page_runs_cls_P": 2084,
+  "EXACT": 2029,
+  "EXACT_P": 2029,
+  "in_data_not_drawn_spine": 2029,
+  "in_data_not_drawn_spine_P": 2029,
+  "page_runs_soft": 38,
+  "MISSED_soft": 3,
+  "EXACT_soft": 35,
+  "MISSED_P": 55,
+  "corpus_runs_outside_page_stream": 5,
+  "corpus_runs": 2029,
+  "pages_total": 450,
+  "pages_kept": 408,
+  "pages_outside_range": 6,
+  "pages_index": 36,
+  "extract_pages": 450,
+  "corpus_page_lo": 6,
+  "corpus_page_hi": 449,
+  "spans_on_verse_branch_ordinals": 2577,
+  "chars_on_verse_branch_ordinals": 22529,
+  "spans_in_data": 2720,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 236,
+  "corpus_letters": 486371,
+  "known_letters": 476945,
+  "data_bold_letters": 23882,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 23882,
+  "page_bold_letters": 24949
+ },
+ "ex": {
+  "absent": [
+   [
+    7,
+    "SakkaccasaddhammaratenaBuddha"
+   ],
+   [
+    7,
+    "Sīhenasīlādiguṇoditena"
+   ],
+   [
+    215,
+    "TassapanaAnomadassissaBhagavatoCandavatnāmanagaraṁahosi"
+   ],
+   [
+    353,
+    "Vemattakathā"
+   ],
+   [
+    356,
+    "Avijahitaṭṭhānakathā"
+   ],
+   [
+    356,
+    "Sadhammatākathā"
+   ],
+   [
+    357,
+    "Anantarāyikadhammakathā"
+   ],
+   [
+    358,
+    "Nigamanakathā"
+   ],
+   [
+    360,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    360,
+    "AA"
+   ],
+   [
+    361,
+    "AA"
+   ],
+   [
+    363,
+    "ĀĀ"
+   ]
+  ],
+  "missed_H": [
+   [
+    6,
+    "Khuddakanikāya"
+   ],
+   [
+    6,
+    "Buddhavaṁsaṭṭhakathā"
+   ],
+   [
+    6,
+    "Ganthārambhakathā"
+   ],
+   [
+    11,
+    "Nidānakathā"
+   ],
+   [
+    11,
+    "Bāhiranidāna"
+   ],
+   [
+    11,
+    "Abbhantaranidāna"
+   ],
+   [
+    11,
+    "Ratanacaṅkamanakaṇḍavaṇṇanā"
+   ],
+   [
+    89,
+    "Buddhavaṁsaṭṭhakathāya"
+   ],
+   [
+    90,
+    "Sumedhapatthanākathāvaṇṇanā"
+   ],
+   [
+    106,
+    "Dvattiṁsapubbanimitta"
+   ],
+   [
+    149,
+    "Buddhavaṁsaṭṭhakathāya"
+   ],
+   [
+    149,
+    "Dīpaṅkarabuddhavaṁsavaṇṇanā"
+   ]
+  ],
+  "missed_V": [
+   [
+    6,
+    "Buddhaṁ"
+   ],
+   [
+    6,
+    "dhammaṁ"
+   ],
+   [
+    6,
+    "gaṇaṁ"
+   ],
+   [
+    6,
+    "Buddhavaṁso"
+   ]
+  ],
+  "missed_P": [
+   [
+    25,
+    "Da"
+   ],
+   [
+    28,
+    "Pa"
+   ],
+   [
+    31,
+    "Ba"
+   ],
+   [
+    31,
+    "Ba"
+   ],
+   [
+    32,
+    "Bha"
+   ],
+   [
+    32,
+    "Vuddhodana"
+   ],
+   [
+    33,
+    "Ma"
+   ],
+   [
+    34,
+    "Ra"
+   ],
+   [
+    34,
+    "Ma"
+   ],
+   [
+    37,
+    "Va"
+   ],
+   [
+    37,
+    "Sa"
+   ],
+   [
+    37,
+    "Sa"
+   ]
+  ]
+ }
+}

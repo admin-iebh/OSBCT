@@ -1,0 +1,192 @@
+{
+ "vol": "03ViT03",
+ "stat": {
+  "page_lines": 14393,
+  "line_found": 13565,
+  "line_found_fwd": 13448,
+  "line_absent": 828,
+  "page_runs_in_absent_lines": 33,
+  "page_bold_letters_in_absent_lines": 163,
+  "line_found_back": 20,
+  "line_found_any": 97,
+  "page_run_boundary_splits": 204,
+  "page_runs": 5669,
+  "page_runs_cls_H": 417,
+  "MISSED": 425,
+  "MISSED_H": 417,
+  "page_runs_cls_P": 5252,
+  "EXACT": 5243,
+  "EXACT_P": 5243,
+  "in_data_not_drawn_spine": 5244,
+  "in_data_not_drawn_spine_P": 5244,
+  "page_runs_soft": 80,
+  "EXACT_soft": 78,
+  "MISSED_soft": 2,
+  "MISSED_P": 8,
+  "MISALIGNED_part": 1,
+  "MISALIGNED_part_P": 1,
+  "corpus_runs_outside_page_stream": 5,
+  "corpus_runs": 5238,
+  "pages_total": 561,
+  "pages_kept": 518,
+  "pages_outside_range": 21,
+  "pages_index": 22,
+  "extract_pages": 561,
+  "corpus_page_lo": 22,
+  "corpus_page_hi": 561,
+  "spans_on_verse_branch_ordinals": 9795,
+  "chars_on_verse_branch_ordinals": 82869,
+  "spans_in_data": 9926,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 616,
+  "corpus_letters": 706095,
+  "known_letters": 703912,
+  "data_bold_letters": 84129,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 84129,
+  "page_bold_letters": 95048
+ },
+ "ex": {
+  "absent": [
+   [
+    518,
+    "Sāratthadīpanīṭīkāyatatiyabhāge"
+   ],
+   [
+    518,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    518,
+    "AA"
+   ],
+   [
+    519,
+    "AA"
+   ],
+   [
+    521,
+    "AA"
+   ],
+   [
+    523,
+    "AA"
+   ],
+   [
+    523,
+    "AbhiAmissīkataṁ"
+   ],
+   [
+    525,
+    "AĀ"
+   ],
+   [
+    525,
+    "AssaddhoĀdi"
+   ],
+   [
+    527,
+    "ĀU"
+   ],
+   [
+    527,
+    "ĀḷambaraṁU"
+   ],
+   [
+    527,
+    "IĪ"
+   ]
+  ],
+  "missed_H": [
+   [
+    22,
+    "Vinayapiṭaka"
+   ],
+   [
+    22,
+    "Tatiyobhāgo"
+   ],
+   [
+    22,
+    "Pācittiyakaṇḍa"
+   ],
+   [
+    22,
+    "Musāvādavagga"
+   ],
+   [
+    22,
+    "Musāvādasikkhāpadavaṇṇanā"
+   ],
+   [
+    24,
+    "Omasavādasikkhāpadavaṇṇanā"
+   ],
+   [
+    25,
+    "Pesuññasikkhāpadavaṇṇanā"
+   ],
+   [
+    26,
+    "Padasodhammasikkhāpadavaṇṇanā"
+   ],
+   [
+    27,
+    "Sahaseyyasikkhāpadavaṇṇanā"
+   ],
+   [
+    31,
+    "Dutiyasahaseyyasikkhāpadavaṇṇanā"
+   ],
+   [
+    32,
+    "Dhammadesanāsikkhāpadavaṇṇanā"
+   ],
+   [
+    33,
+    "Bhūtārocanasikkhāpadavaṇṇanā"
+   ]
+  ],
+  "missed_P": [
+   [
+    116,
+    "Chandaṁadatvāgamanasikkhāpadavaṇṇanā"
+   ],
+   [
+    211,
+    "Puthu"
+   ],
+   [
+    233,
+    "Ma"
+   ],
+   [
+    252,
+    "Sa"
+   ],
+   [
+    266,
+    "Pha"
+   ],
+   [
+    371,
+    "Va"
+   ],
+   [
+    419,
+    "Ga"
+   ],
+   [
+    481,
+    "Na"
+   ]
+  ],
+  "part": [
+   [
+    501,
+    "diṭṭhivinicchayoCha",
+    "diṭṭhivinicchayo"
+   ]
+  ]
+ }
+}

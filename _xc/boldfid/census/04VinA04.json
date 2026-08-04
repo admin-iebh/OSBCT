@@ -1,0 +1,207 @@
+{
+ "vol": "04VinA04",
+ "stat": {
+  "page_lines": 7809,
+  "line_found": 6944,
+  "line_found_fwd": 6806,
+  "line_absent": 865,
+  "page_runs_in_absent_lines": 48,
+  "page_bold_letters_in_absent_lines": 633,
+  "line_found_back": 61,
+  "line_found_any": 77,
+  "page_run_boundary_splits": 109,
+  "page_runs": 2369,
+  "page_runs_cls_H": 196,
+  "MISSED": 232,
+  "MISSED_H": 196,
+  "page_runs_cls_P": 2173,
+  "EXACT": 2136,
+  "EXACT_P": 2136,
+  "in_data_not_drawn_spine": 2137,
+  "in_data_not_drawn_spine_P": 2137,
+  "page_runs_soft": 37,
+  "EXACT_soft": 36,
+  "MISSED_P": 36,
+  "MISSED_soft": 1,
+  "MISALIGNED_part": 1,
+  "MISALIGNED_part_P": 1,
+  "corpus_runs": 2136,
+  "pages_total": 303,
+  "pages_kept": 277,
+  "pages_outside_range": 18,
+  "pages_index": 8,
+  "extract_pages": 303,
+  "corpus_page_lo": 12,
+  "corpus_page_hi": 296,
+  "spans_on_verse_branch_ordinals": 4391,
+  "chars_on_verse_branch_ordinals": 36319,
+  "spans_in_data": 4391,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 288,
+  "corpus_letters": 355308,
+  "known_letters": 354868,
+  "data_bold_letters": 36319,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 36319,
+  "page_bold_letters": 41381
+ },
+ "ex": {
+  "absent": [
+   [
+    39,
+    "vuccatipakkhamānattantibhikkhuniyādātabbamānattaṁTaṁpana"
+   ],
+   [
+    43,
+    "Samodhānamānattaṁpanatividhaṁhotiodhānasamodhānaṁ"
+   ],
+   [
+    43,
+    "odhānasamodhānaṁnāmaIdaṁhipunappunaṁmūlāyapaṭikassanena"
+   ],
+   [
+    43,
+    "Agghasamodhānaṁnamamissakasamodhānañca"
+   ],
+   [
+    106,
+    "Nimantanaṁpuggalikañcesayamevaissarosaṁghikaṁpana"
+   ],
+   [
+    109,
+    "Salākabhattepanaanujānāmibhikkhavesalākāyavāpaṭṭikāyavā"
+   ],
+   [
+    114,
+    "satikaraṇatthāyadiyyatitaṁpakkhikaṁnāmaTaṁsalākabhattagatikameva"
+   ],
+   [
+    115,
+    "Uposathikaṁnāmaanvaḍḍhamāseuposathaṅgānisamādiyitvāyaṁ"
+   ],
+   [
+    115,
+    "attanābhuñjatitadevadiyyatiPāṭipadikaṁnāmauposathebahūsaddhā"
+   ],
+   [
+    115,
+    "āgantukabhattaṁEsanayosesesuSacepanetthaāgantukabhattānipi"
+   ],
+   [
+    116,
+    "GamiyabhattepiayamevakathāmaggoAyaṁpanavisesoāgantuko"
+   ],
+   [
+    116,
+    "Gilānabhattampisacesabbesaṁgilānānaṁpahotisabbesaṁdātabbaṁ"
+   ]
+  ],
+  "missed_H": [
+   [
+    12,
+    "Vinayapiṭaka"
+   ],
+   [
+    12,
+    "Cūḷavaggādiaṭṭhakathā"
+   ],
+   [
+    12,
+    "Kammakkhandhaka"
+   ],
+   [
+    12,
+    "Tajjanīyakammakathā"
+   ],
+   [
+    12,
+    "Adhammakammadvādasakakathā"
+   ],
+   [
+    14,
+    "Nappaṭippassambhetabbaaṭṭhārasakādikathā"
+   ],
+   [
+    14,
+    "Niyassakammakathā"
+   ],
+   [
+    14,
+    "Pabbājanīyakammakathā"
+   ],
+   [
+    14,
+    "Paṭisāraṇīyakammakathā"
+   ],
+   [
+    15,
+    "Adhammakammādidvādasakakathā"
+   ],
+   [
+    16,
+    "Kammakkhandhakavaṇṇanāniṭṭhitā"
+   ],
+   [
+    17,
+    "Pārivāsikakkhandhaka"
+   ]
+  ],
+  "missed_P": [
+   [
+    55,
+    "Pa"
+   ],
+   [
+    78,
+    "Ja"
+   ],
+   [
+    123,
+    "Bha"
+   ],
+   [
+    131,
+    "kammaṁvānikkhipatī"
+   ],
+   [
+    133,
+    "I"
+   ],
+   [
+    133,
+    "U"
+   ],
+   [
+    135,
+    "Anatthasaṁhitaṁidaṁattādānan"
+   ],
+   [
+    145,
+    "Ta"
+   ],
+   [
+    149,
+    "Dutiyenauddesenā"
+   ],
+   [
+    157,
+    "Cīvaraṁanubandhanā"
+   ],
+   [
+    159,
+    "O"
+   ],
+   [
+    159,
+    "Asaṅkaccikāāpattī"
+   ]
+  ],
+  "part": [
+   [
+    184,
+    "anadhiṭṭhānaṁAvikappanā",
+    "Avikappanā"
+   ]
+  ]
+ }
+}

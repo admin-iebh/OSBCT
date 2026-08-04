@@ -1,0 +1,163 @@
+{
+ "vol": "11DiT04",
+ "stat": {
+  "page_lines": 10896,
+  "line_found": 10463,
+  "line_found_fwd": 10400,
+  "line_found_back": 20,
+  "line_absent": 433,
+  "page_runs_in_absent_lines": 20,
+  "page_bold_letters_in_absent_lines": 100,
+  "line_found_any": 43,
+  "page_run_boundary_splits": 144,
+  "page_runs": 6732,
+  "page_runs_cls_H": 169,
+  "MISSED": 170,
+  "MISSED_H": 169,
+  "page_runs_cls_P": 6563,
+  "EXACT": 6561,
+  "EXACT_P": 6561,
+  "in_data_not_drawn_spine": 6562,
+  "in_data_not_drawn_spine_P": 6562,
+  "page_runs_soft": 38,
+  "EXACT_soft": 35,
+  "MISSED_soft": 3,
+  "MISSED_P": 1,
+  "MISALIGNED_part": 1,
+  "MISALIGNED_part_P": 1,
+  "corpus_runs": 6552,
+  "pages_total": 395,
+  "pages_kept": 371,
+  "pages_outside_range": 11,
+  "pages_index": 13,
+  "extract_pages": 395,
+  "corpus_page_lo": 11,
+  "corpus_page_hi": 392,
+  "spans_on_verse_branch_ordinals": 11006,
+  "chars_on_verse_branch_ordinals": 96271,
+  "spans_in_data": 11013,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 336,
+  "corpus_letters": 552483,
+  "known_letters": 552325,
+  "data_bold_letters": 96338,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 96338,
+  "page_bold_letters": 100246
+ },
+ "ex": {
+  "absent": [
+   [
+    369,
+    "Mahāvaggaṭīkāya"
+   ],
+   [
+    369,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    369,
+    "AA"
+   ],
+   [
+    370,
+    "AA"
+   ],
+   [
+    372,
+    "AA"
+   ],
+   [
+    374,
+    "UU"
+   ],
+   [
+    376,
+    "KaKa"
+   ],
+   [
+    378,
+    "GaCa"
+   ],
+   [
+    378,
+    "CakkhubhaṇḍaṁCha"
+   ],
+   [
+    380,
+    "TaDa"
+   ],
+   [
+    380,
+    "DaDisācārikavimānaṁ"
+   ],
+   [
+    382,
+    "NaNa"
+   ]
+  ],
+  "missed_H": [
+   [
+    11,
+    "Dīghanikāya"
+   ],
+   [
+    11,
+    "Mahāvaggaṭīkā"
+   ],
+   [
+    11,
+    "Mahāpadānasutta"
+   ],
+   [
+    11,
+    "Pubbenivāsapaṭisaṁyuttakathāvaṇṇanā"
+   ],
+   [
+    18,
+    "Jātiparicchedādivaṇṇanā"
+   ],
+   [
+    21,
+    "Bodhiparicchedavaṇṇanā"
+   ],
+   [
+    21,
+    "Sāvakayugaparicchedavaṇṇanā"
+   ],
+   [
+    22,
+    "Sāvakasannipātaparicchedavaṇṇanā"
+   ],
+   [
+    22,
+    "Upaṭṭhākaparicchedavaṇṇanā"
+   ],
+   [
+    25,
+    "Sambahulavāravaṇṇanā"
+   ],
+   [
+    25,
+    "Sambahulaparicchedavaṇṇanā"
+   ],
+   [
+    28,
+    "Bodhisattadhammatāvaṇṇanā"
+   ]
+  ],
+  "missed_P": [
+   [
+    21,
+    "Gha"
+   ]
+  ],
+  "part": [
+   [
+    104,
+    "SaḷāyatanatoPadassetukāmo",
+    "Saḷāyatanatodassetukāmo"
+   ]
+  ]
+ }
+}

@@ -1,0 +1,192 @@
+{
+ "vol": "17An03",
+ "stat": {
+  "page_lines": 16514,
+  "line_found": 15880,
+  "line_found_fwd": 15754,
+  "line_absent": 634,
+  "page_runs_in_absent_lines": 34,
+  "page_bold_letters_in_absent_lines": 290,
+  "line_found_back": 47,
+  "line_found_any": 79,
+  "page_run_boundary_splits": 67,
+  "page_runs": 539,
+  "page_runs_cls_H": 495,
+  "MISSED": 539,
+  "MISSED_H": 495,
+  "page_runs_soft": 8,
+  "MISSED_soft": 8,
+  "page_runs_cls_P": 44,
+  "MISSED_P": 44,
+  "pages_total": 611,
+  "pages_kept": 581,
+  "pages_outside_range": 23,
+  "pages_index": 7,
+  "extract_pages": 611,
+  "corpus_page_lo": 24,
+  "corpus_page_hi": 610,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 0,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 0,
+  "corpus_letters": 792265,
+  "known_letters": 789714,
+  "data_bold_letters": 0,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 0,
+  "page_bold_letters": 7384
+ },
+ "ex": {
+  "absent": [
+   [
+    582,
+    "Aṅguttaranikāyetatiyaganthe"
+   ],
+   [
+    582,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    582,
+    "AA"
+   ],
+   [
+    583,
+    "AĀ"
+   ],
+   [
+    585,
+    "KaCa"
+   ],
+   [
+    585,
+    "GāmanigamoCha"
+   ],
+   [
+    585,
+    "CaJanapadapadesaṁ"
+   ],
+   [
+    587,
+    "DhaPa"
+   ],
+   [
+    589,
+    "MaYaRa"
+   ],
+   [
+    589,
+    "YavānaṁLa"
+   ],
+   [
+    591,
+    "SaSa"
+   ],
+   [
+    594,
+    "Aṅguttaranikāyetatiyaganthe"
+   ]
+  ],
+  "missed_H": [
+   [
+    24,
+    "Aṅguttaranikāya"
+   ],
+   [
+    24,
+    "Aṭṭhakanipātapāḷi"
+   ],
+   [
+    24,
+    "Paṭhamapaṇṇāsaka"
+   ],
+   [
+    24,
+    "Mettāvagga"
+   ],
+   [
+    24,
+    "Mettāsutta"
+   ],
+   [
+    25,
+    "Paññāsutta"
+   ],
+   [
+    29,
+    "Paṭhamaappiyasutta"
+   ],
+   [
+    29,
+    "Dutiyaappiyasutta"
+   ],
+   [
+    30,
+    "Paṭhamalokadhammasutta"
+   ],
+   [
+    30,
+    "Dutiyalokadhammasutta"
+   ],
+   [
+    32,
+    "Devadattavipattisutta"
+   ],
+   [
+    34,
+    "Uttaravipattisutta"
+   ]
+  ],
+  "missed_P": [
+   [
+    39,
+    "Ca"
+   ],
+   [
+    61,
+    "Pa"
+   ],
+   [
+    73,
+    "Ha"
+   ],
+   [
+    81,
+    "Ya"
+   ],
+   [
+    85,
+    "Ta"
+   ],
+   [
+    138,
+    "Ā"
+   ],
+   [
+    183,
+    "U"
+   ],
+   [
+    189,
+    "Ja"
+   ],
+   [
+    190,
+    "Ta"
+   ],
+   [
+    203,
+    "Da"
+   ],
+   [
+    220,
+    "Pa"
+   ],
+   [
+    221,
+    "U"
+   ]
+  ]
+ }
+}

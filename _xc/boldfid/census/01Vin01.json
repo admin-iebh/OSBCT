@@ -1,0 +1,198 @@
+{
+ "vol": "01Vin01",
+ "stat": {
+  "page_lines": 11254,
+  "line_found": 10839,
+  "line_found_fwd": 10736,
+  "line_absent": 415,
+  "page_runs_in_absent_lines": 26,
+  "page_bold_letters_in_absent_lines": 184,
+  "line_found_back": 41,
+  "line_found_any": 62,
+  "page_run_boundary_splits": 46,
+  "page_runs": 833,
+  "page_runs_cls_H": 101,
+  "MISSED": 139,
+  "MISSED_H": 101,
+  "page_runs_cls_P": 732,
+  "MISSED_P": 38,
+  "page_runs_soft": 41,
+  "MISSED_soft": 4,
+  "EXACT": 694,
+  "EXACT_P": 694,
+  "in_data_not_drawn_spine": 694,
+  "in_data_not_drawn_spine_P": 694,
+  "EXACT_soft": 37,
+  "corpus_runs": 687,
+  "pages_total": 425,
+  "pages_kept": 398,
+  "pages_outside_range": 22,
+  "pages_index": 5,
+  "extract_pages": 425,
+  "corpus_page_lo": 23,
+  "corpus_page_hi": 425,
+  "spans_on_verse_branch_ordinals": 2971,
+  "chars_on_verse_branch_ordinals": 23427,
+  "spans_in_data": 2973,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 173,
+  "corpus_letters": 541296,
+  "known_letters": 537729,
+  "data_bold_letters": 23466,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 23466,
+  "page_bold_letters": 25299
+ },
+ "ex": {
+  "absent": [
+   [
+    406,
+    "Pārājikapāḷiyā"
+   ],
+   [
+    406,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    406,
+    "AA"
+   ],
+   [
+    407,
+    "AĀ"
+   ],
+   [
+    409,
+    "GaCha"
+   ],
+   [
+    409,
+    "Ja"
+   ],
+   [
+    409,
+    "Jha"
+   ],
+   [
+    411,
+    "PaPa"
+   ],
+   [
+    411,
+    "PattoBa"
+   ],
+   [
+    413,
+    "LaSa"
+   ],
+   [
+    416,
+    "Pārājikapāḷiyā"
+   ],
+   [
+    416,
+    "Nānāpāṭhā"
+   ]
+  ],
+  "missed_H": [
+   [
+    24,
+    "Vinayapiṭaka"
+   ],
+   [
+    24,
+    "Pārājikapāḷi"
+   ],
+   [
+    24,
+    "Verañjakaṇḍa"
+   ],
+   [
+    36,
+    "Pārājikakaṇḍa"
+   ],
+   [
+    36,
+    "Paṭhamapārājika"
+   ],
+   [
+    36,
+    "Sudinnabhāṇavāra"
+   ],
+   [
+    48,
+    "Makkaṭīvatthu"
+   ],
+   [
+    50,
+    "Santhatabhāṇavāra"
+   ],
+   [
+    64,
+    "Vinītavatthuuddānagāthā"
+   ],
+   [
+    65,
+    "Vinītavatthu"
+   ],
+   [
+    73,
+    "Dutiyapārājika"
+   ],
+   [
+    92,
+    "Vinītavatthuuddānagāthā"
+   ]
+  ],
+  "missed_P": [
+   [
+    32,
+    "Sa"
+   ],
+   [
+    42,
+    "La"
+   ],
+   [
+    42,
+    "Va"
+   ],
+   [
+    46,
+    "Sa"
+   ],
+   [
+    57,
+    "Da"
+   ],
+   [
+    66,
+    "Pha"
+   ],
+   [
+    90,
+    "Cha"
+   ],
+   [
+    120,
+    "Ta"
+   ],
+   [
+    127,
+    "Ta"
+   ],
+   [
+    188,
+    "A"
+   ],
+   [
+    189,
+    "Bha"
+   ],
+   [
+    189,
+    "A"
+   ]
+  ]
+ }
+}

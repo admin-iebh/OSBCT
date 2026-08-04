@@ -1,0 +1,192 @@
+{
+ "vol": "09Ma01",
+ "stat": {
+  "page_lines": 12647,
+  "line_found": 11650,
+  "line_found_fwd": 11374,
+  "line_absent": 997,
+  "page_runs_in_absent_lines": 27,
+  "page_bold_letters_in_absent_lines": 202,
+  "line_found_any": 203,
+  "line_found_back": 73,
+  "page_run_boundary_splits": 11,
+  "page_runs": 144,
+  "page_runs_cls_H": 93,
+  "MISSED": 144,
+  "MISSED_H": 93,
+  "page_runs_soft": 8,
+  "MISSED_soft": 8,
+  "page_runs_cls_P": 51,
+  "MISSED_P": 51,
+  "pages_total": 449,
+  "pages_kept": 432,
+  "pages_outside_range": 15,
+  "pages_index": 2,
+  "extract_pages": 449,
+  "corpus_page_lo": 16,
+  "corpus_page_hi": 449,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 0,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 0,
+  "corpus_letters": 589360,
+  "known_letters": 579220,
+  "data_bold_letters": 0,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 0,
+  "page_bold_letters": 1847
+ },
+ "ex": {
+  "absent": [
+   [
+    430,
+    "Idaṁvaggānamuddānaṁ"
+   ],
+   [
+    432,
+    "Mūlapaṇṇāsapāḷiyā"
+   ],
+   [
+    432,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    432,
+    "AĀ"
+   ],
+   [
+    432,
+    "AvijjāE"
+   ],
+   [
+    432,
+    "ĀKakusandhoBhagavā"
+   ],
+   [
+    433,
+    "KaCha"
+   ],
+   [
+    433,
+    "KhaTaṇhā"
+   ],
+   [
+    433,
+    "CaTaruṇako"
+   ],
+   [
+    435,
+    "BaRa"
+   ],
+   [
+    435,
+    "YaVedanānaṁnissaraṇaṁ"
+   ],
+   [
+    438,
+    "Mūlapaṇṇāsapāḷiyā"
+   ]
+  ],
+  "missed_H": [
+   [
+    16,
+    "Majjhimanikāya"
+   ],
+   [
+    16,
+    "Mūlapaṇṇāsapāḷi"
+   ],
+   [
+    16,
+    "Mūlapariyāyavagga"
+   ],
+   [
+    16,
+    "Mūlapariyāyasutta"
+   ],
+   [
+    23,
+    "Sabbāsavasutta"
+   ],
+   [
+    24,
+    "Dassanāpahātabbaāsava"
+   ],
+   [
+    27,
+    "Saṁvarāpahātabbaāsava"
+   ],
+   [
+    27,
+    "Paṭisevanāpahātabbaāsava"
+   ],
+   [
+    28,
+    "Adhivāsanāpahātabbaāsava"
+   ],
+   [
+    28,
+    "Parivajjanāpahātabbaāsava"
+   ],
+   [
+    29,
+    "Vinodanāpahātabbaāsava"
+   ],
+   [
+    29,
+    "Bhāvanāpahātabbaāsava"
+   ]
+  ],
+  "missed_P": [
+   [
+    29,
+    "U"
+   ],
+   [
+    34,
+    "Tha"
+   ],
+   [
+    62,
+    "Ga"
+   ],
+   [
+    63,
+    "La"
+   ],
+   [
+    99,
+    "Ja"
+   ],
+   [
+    107,
+    "Ta"
+   ],
+   [
+    114,
+    "Da"
+   ],
+   [
+    159,
+    "I"
+   ],
+   [
+    181,
+    "U"
+   ],
+   [
+    211,
+    "La"
+   ],
+   [
+    211,
+    "A"
+   ],
+   [
+    211,
+    "Bha"
+   ]
+  ]
+ }
+}

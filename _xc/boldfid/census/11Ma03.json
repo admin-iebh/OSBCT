@@ -1,0 +1,192 @@
+{
+ "vol": "11Ma03",
+ "stat": {
+  "page_lines": 11014,
+  "line_found": 9940,
+  "line_found_fwd": 9745,
+  "line_found_back": 152,
+  "line_absent": 1074,
+  "page_runs_in_absent_lines": 20,
+  "page_bold_letters_in_absent_lines": 184,
+  "line_found_any": 43,
+  "page_run_boundary_splits": 12,
+  "page_runs": 123,
+  "page_runs_cls_H": 74,
+  "MISSED": 123,
+  "MISSED_H": 74,
+  "page_runs_cls_P": 49,
+  "page_runs_soft": 4,
+  "MISSED_P": 49,
+  "MISSED_soft": 4,
+  "pages_total": 382,
+  "pages_kept": 374,
+  "pages_outside_range": 7,
+  "pages_index": 1,
+  "extract_pages": 382,
+  "corpus_page_lo": 7,
+  "corpus_page_hi": 381,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 0,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 0,
+  "corpus_letters": 495354,
+  "known_letters": 491416,
+  "data_bold_letters": 0,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 0,
+  "page_bold_letters": 1382
+ },
+ "ex": {
+  "absent": [
+   [
+    358,
+    "Idaṁvaggānamuddānaṁ"
+   ],
+   [
+    359,
+    "Uparipaṇṇāsapāḷiyā"
+   ],
+   [
+    359,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    360,
+    "GaJa"
+   ],
+   [
+    360,
+    "GhaJāneyyanukhosappuriso"
+   ],
+   [
+    360,
+    "Ṭha"
+   ],
+   [
+    360,
+    "CakkhuviññeyyaṁrūpaṁTa"
+   ],
+   [
+    362,
+    "VaSa"
+   ],
+   [
+    362,
+    "SattasaṁghagatāHa"
+   ],
+   [
+    363,
+    "Uparipaṇṇāsapāḷiyā"
+   ],
+   [
+    363,
+    "Nānāpāṭhā"
+   ],
+   [
+    363,
+    "Uparipaṇṇāsapāḷiyā"
+   ]
+  ],
+  "missed_H": [
+   [
+    7,
+    "Majjhimanikāya"
+   ],
+   [
+    7,
+    "Uparipaṇṇāsapāḷi"
+   ],
+   [
+    7,
+    "Devadahavagga"
+   ],
+   [
+    7,
+    "Devadahasutta"
+   ],
+   [
+    24,
+    "Pañcattayasutta"
+   ],
+   [
+    32,
+    "Kintisutta"
+   ],
+   [
+    38,
+    "Sāmagāmasutta"
+   ],
+   [
+    45,
+    "Sunakkhattasutta"
+   ],
+   [
+    54,
+    "Āneñjasappāyasutta"
+   ],
+   [
+    58,
+    "Gaṇakamoggallānasutta"
+   ],
+   [
+    64,
+    "Gopakamoggallānasutta"
+   ],
+   [
+    72,
+    "Mahāpuṇṇamasutta"
+   ]
+  ],
+  "missed_P": [
+   [
+    19,
+    "Ha"
+   ],
+   [
+    22,
+    "Ta"
+   ],
+   [
+    68,
+    "Ca"
+   ],
+   [
+    100,
+    "A"
+   ],
+   [
+    100,
+    "E"
+   ],
+   [
+    100,
+    "A"
+   ],
+   [
+    100,
+    "A"
+   ],
+   [
+    113,
+    "Ā"
+   ],
+   [
+    113,
+    "I"
+   ],
+   [
+    113,
+    "Cha"
+   ],
+   [
+    113,
+    "I"
+   ],
+   [
+    119,
+    "U"
+   ]
+  ]
+ }
+}

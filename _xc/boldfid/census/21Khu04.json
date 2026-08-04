@@ -1,0 +1,192 @@
+{
+ "vol": "21Khu04",
+ "stat": {
+  "page_lines": 12248,
+  "line_found": 10972,
+  "line_found_fwd": 10584,
+  "line_absent": 1276,
+  "page_runs_in_absent_lines": 52,
+  "page_bold_letters_in_absent_lines": 401,
+  "line_found_back": 233,
+  "line_found_any": 155,
+  "page_run_boundary_splits": 51,
+  "page_runs": 428,
+  "page_runs_cls_H": 328,
+  "MISSED": 428,
+  "MISSED_H": 328,
+  "page_runs_cls_P": 100,
+  "MISSED_P": 100,
+  "page_runs_soft": 6,
+  "MISSED_soft": 6,
+  "pages_total": 488,
+  "pages_kept": 469,
+  "pages_outside_range": 15,
+  "pages_index": 4,
+  "extract_pages": 488,
+  "corpus_page_lo": 16,
+  "corpus_page_hi": 488,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 0,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 0,
+  "corpus_letters": 378493,
+  "known_letters": 375935,
+  "data_bold_letters": 0,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 0,
+  "page_bold_letters": 7268
+ },
+ "ex": {
+  "absent": [
+   [
+    436,
+    "Khuddakanikāyecatutthabhāgapotthake"
+   ],
+   [
+    436,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    436,
+    "AA"
+   ],
+   [
+    437,
+    "ĀU"
+   ],
+   [
+    437,
+    "ItthiaṅgepatiṭṭhitāE"
+   ],
+   [
+    439,
+    "CaJa"
+   ],
+   [
+    439,
+    "ChaTiṁsahatthasamuggato"
+   ],
+   [
+    439,
+    "JaThalaṁninnañca"
+   ],
+   [
+    441,
+    "PaPa"
+   ],
+   [
+    443,
+    "LaSa"
+   ],
+   [
+    446,
+    "Khuddakanikāyecatutthabhāgapotthake"
+   ],
+   [
+    446,
+    "Theranāmānaṁanukkamaṇikā"
+   ]
+  ],
+  "missed_H": [
+   [
+    16,
+    "Khuddakanikāya"
+   ],
+   [
+    16,
+    "Therāpadānapāḷi"
+   ],
+   [
+    16,
+    "Sakiṁsammajjakavagga"
+   ],
+   [
+    16,
+    "Sakiṁsammajjakattheraapadāna"
+   ],
+   [
+    17,
+    "Ekadussadāyakattheraapadāna"
+   ],
+   [
+    19,
+    "Ekāsanadāyakattheraapadāna"
+   ],
+   [
+    21,
+    "Sattakadambapupphiyattheraapadāna"
+   ],
+   [
+    22,
+    "Koraṇḍapupphiyattheraapadāna"
+   ],
+   [
+    23,
+    "Ghatamaṇḍadāyakattheraapadāna"
+   ],
+   [
+    23,
+    "Ekadhammassavaniyattheraapadāna"
+   ],
+   [
+    25,
+    "Sucintitattheraapadāna"
+   ],
+   [
+    28,
+    "Sovaṇṇakiṅkaṇiyattheraapadāna"
+   ]
+  ],
+  "missed_P": [
+   [
+    33,
+    "Va"
+   ],
+   [
+    55,
+    "Pa"
+   ],
+   [
+    57,
+    "Ba"
+   ],
+   [
+    58,
+    "Ra"
+   ],
+   [
+    58,
+    "Ta"
+   ],
+   [
+    74,
+    "Sa"
+   ],
+   [
+    75,
+    "Ma"
+   ],
+   [
+    80,
+    "Ī"
+   ],
+   [
+    80,
+    "U"
+   ],
+   [
+    80,
+    "U"
+   ],
+   [
+    82,
+    "E"
+   ],
+   [
+    86,
+    "Ra"
+   ]
+  ]
+ }
+}

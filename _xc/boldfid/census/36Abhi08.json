@@ -1,0 +1,171 @@
+{
+ "vol": "36Abhi08",
+ "stat": {
+  "page_lines": 13141,
+  "line_found": 13021,
+  "line_found_fwd": 12782,
+  "line_absent": 120,
+  "page_runs_in_absent_lines": 78,
+  "page_bold_letters_in_absent_lines": 778,
+  "line_found_any": 187,
+  "line_found_back": 52,
+  "page_run_boundary_splits": 60,
+  "page_runs": 1293,
+  "page_runs_cls_H": 882,
+  "MISSED": 887,
+  "MISSED_H": 882,
+  "page_runs_soft": 33,
+  "MISSED_soft": 20,
+  "page_runs_cls_P": 411,
+  "EXACT": 406,
+  "EXACT_P": 406,
+  "EXACT_soft": 13,
+  "in_data_not_drawn_spine": 406,
+  "in_data_not_drawn_spine_P": 406,
+  "MISSED_P": 5,
+  "corpus_runs": 387,
+  "corpus_runs_outside_page_stream": 2,
+  "pages_total": 497,
+  "pages_kept": 467,
+  "pages_outside_range": 29,
+  "pages_index": 1,
+  "extract_pages": 497,
+  "corpus_page_lo": 30,
+  "corpus_page_hi": 497,
+  "spans_on_verse_branch_ordinals": 448,
+  "chars_on_verse_branch_ordinals": 5274,
+  "spans_in_data": 630,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 170,
+  "corpus_letters": 650390,
+  "known_letters": 582651,
+  "data_bold_letters": 7555,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 7555,
+  "page_bold_letters": 17891
+ },
+ "ex": {
+  "absent": [
+   [
+    59,
+    "Ārammaṇādiduka"
+   ],
+   [
+    110,
+    "BāvīsakaSāsevana"
+   ],
+   [
+    110,
+    "BāvīsakaSavipāka"
+   ],
+   [
+    127,
+    "TerasakaSāsevana"
+   ],
+   [
+    145,
+    "Chakka"
+   ],
+   [
+    146,
+    "Navaka"
+   ],
+   [
+    147,
+    "Chakka"
+   ],
+   [
+    148,
+    "Navaka"
+   ],
+   [
+    150,
+    "Tikādi"
+   ],
+   [
+    154,
+    "Dasaka"
+   ],
+   [
+    157,
+    "Chakkādi"
+   ],
+   [
+    158,
+    "Navaka"
+   ]
+  ],
+  "missed_H": [
+   [
+    30,
+    "Abhidhammapiṭaka"
+   ],
+   [
+    30,
+    "Dhammānuloma"
+   ],
+   [
+    30,
+    "Tikapaṭṭhānapāḷi"
+   ],
+   [
+    30,
+    "Paccayuddesa"
+   ],
+   [
+    30,
+    "Paccayaniddesa"
+   ],
+   [
+    39,
+    "Pucchāvāra"
+   ],
+   [
+    39,
+    "Paccayānuloma"
+   ],
+   [
+    39,
+    "Ekamūlaka"
+   ],
+   [
+    39,
+    "Kusalapada"
+   ],
+   [
+    39,
+    "Akusalapada"
+   ],
+   [
+    40,
+    "Abyākatapada"
+   ],
+   [
+    40,
+    "Kusalābyākatapada"
+   ]
+  ],
+  "missed_P": [
+   [
+    38,
+    "Avigatapaccayo"
+   ],
+   [
+    174,
+    "Ca"
+   ],
+   [
+    179,
+    "U"
+   ],
+   [
+    188,
+    "Va"
+   ],
+   [
+    194,
+    "Sa"
+   ]
+  ]
+ }
+}

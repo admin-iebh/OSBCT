@@ -1,0 +1,219 @@
+{
+ "vol": "40Abhi12",
+ "stat": {
+  "page_lines": 12012,
+  "line_found": 11987,
+  "line_found_fwd": 11900,
+  "line_found_any": 40,
+  "line_found_back": 47,
+  "line_absent": 25,
+  "page_runs_in_absent_lines": 4,
+  "page_bold_letters_in_absent_lines": 56,
+  "page_run_boundary_splits": 102,
+  "page_runs": 995,
+  "page_runs_cls_H": 299,
+  "MISSED": 391,
+  "MISSED_H": 299,
+  "page_runs_cls_P": 696,
+  "EXACT": 596,
+  "EXACT_P": 596,
+  "in_data_not_drawn_spine": 604,
+  "in_data_not_drawn_spine_P": 604,
+  "MISSED_P": 92,
+  "page_runs_soft": 1,
+  "MISSED_soft": 1,
+  "MISALIGNED_part": 8,
+  "MISALIGNED_part_P": 8,
+  "corpus_runs_outside_page_stream": 30,
+  "corpus_runs": 596,
+  "SPURIOUS": 1,
+  "SPURIOUS_soft": 0,
+  "SPURIOUS_P": 1,
+  "pages_total": 439,
+  "pages_kept": 433,
+  "pages_outside_range": 5,
+  "pages_index": 1,
+  "extract_pages": 439,
+  "corpus_page_lo": 5,
+  "corpus_page_hi": 438,
+  "spans_on_verse_branch_ordinals": 62,
+  "chars_on_verse_branch_ordinals": 974,
+  "spans_in_data": 1316,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 639,
+  "corpus_letters": 535511,
+  "known_letters": 515364,
+  "data_bold_letters": 16881,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 16881,
+  "page_bold_letters": 23022
+ },
+ "ex": {
+  "absent": [
+   [
+    447,
+    "Paṭṭhānapāḷiyāpañcamabhāge"
+   ],
+   [
+    447,
+    "Lakkhitabbānaṁanukkamaṇikā"
+   ],
+   [
+    447,
+    "AA"
+   ],
+   [
+    447,
+    "AbyākatoanupādinnupādāniyoKa"
+   ]
+  ],
+  "missed_H": [
+   [
+    5,
+    "Abhidhammapiṭaka"
+   ],
+   [
+    5,
+    "Dhammānuloma"
+   ],
+   [
+    5,
+    "Tikatikapaṭṭhānapāḷi"
+   ],
+   [
+    5,
+    "Kusalattika"
+   ],
+   [
+    5,
+    "Vedanāttika"
+   ],
+   [
+    5,
+    "Sukhāyavedanāyasampayuttapada"
+   ],
+   [
+    5,
+    "Paṭiccādivāra"
+   ],
+   [
+    5,
+    "Paccayacatukkahetu"
+   ],
+   [
+    6,
+    "Paccayacatukkahetuārammaṇa"
+   ],
+   [
+    7,
+    "Paccayacatukkahetu"
+   ],
+   [
+    10,
+    "PaṭiccavāraPaccayacatukka"
+   ],
+   [
+    14,
+    "PaṭiccavāraPaccayacatukka"
+   ]
+  ],
+  "missed_P": [
+   [
+    9,
+    "KusalattikaUpādinnattika"
+   ],
+   [
+    11,
+    "KusalattikaVitakkattika"
+   ],
+   [
+    15,
+    "KusalattikaDassanahetukattika"
+   ],
+   [
+    17,
+    "KusalattikaParittattika"
+   ],
+   [
+    21,
+    "KusalattikaMicchattaniyatattika"
+   ],
+   [
+    23,
+    "KusalattikaAtītattika"
+   ],
+   [
+    25,
+    "KusalattikaAjjhattattika"
+   ],
+   [
+    31,
+    "VitakkattikaKusalattika"
+   ],
+   [
+    35,
+    "SekkhattikaKusalattika"
+   ],
+   [
+    37,
+    "HīnattikaKusalattika"
+   ],
+   [
+    39,
+    "AtītattikaKusalattika"
+   ],
+   [
+    41,
+    "SanidassanattikaKusalattika"
+   ]
+  ],
+  "part": [
+   [
+    170,
+    "SaññojanādidukaHetuduka",
+    "Hetuduka"
+   ],
+   [
+    255,
+    "KusalattikaSappaccayaduka",
+    "Sappaccayaduka"
+   ],
+   [
+    271,
+    "UpādinnattikaHetuduka",
+    "Hetuduka"
+   ],
+   [
+    273,
+    "SekkhattikaHetuduka",
+    "Hetuduka"
+   ],
+   [
+    275,
+    "AtītattikaHetuduka",
+    "Hetuduka"
+   ],
+   [
+    292,
+    "SanidassanattikaSaraṇaduka",
+    "Saraṇaduka"
+   ],
+   [
+    391,
+    "UpādinnattikaHetuduka",
+    "Hetuduka"
+   ],
+   [
+    404,
+    "SanidassanattikaSaraṇaduka",
+    "Saraṇaduka"
+   ]
+  ],
+  "spurious": [
+   [
+    7,
+    "KusalattikaVedanāttika"
+   ]
+  ]
+ }
+}

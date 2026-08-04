@@ -1,0 +1,189 @@
+{
+ "vol": "44KhuA25",
+ "stat": {
+  "page_lines": 4680,
+  "line_found": 4030,
+  "line_found_fwd": 3961,
+  "line_absent": 650,
+  "page_runs_in_absent_lines": 43,
+  "page_bold_letters_in_absent_lines": 308,
+  "line_found_back": 31,
+  "line_found_any": 38,
+  "page_run_boundary_splits": 6,
+  "page_runs": 2077,
+  "page_runs_cls_H": 37,
+  "MISSED": 43,
+  "MISSED_H": 37,
+  "page_runs_cls_P": 2040,
+  "EXACT": 2032,
+  "EXACT_P": 2032,
+  "in_data_not_drawn_spine": 2034,
+  "in_data_not_drawn_spine_P": 2034,
+  "page_runs_soft": 26,
+  "EXACT_soft": 25,
+  "MISSED_P": 6,
+  "MISSED_soft": 1,
+  "MISALIGNED_part": 2,
+  "MISALIGNED_part_P": 2,
+  "corpus_runs_outside_page_stream": 7,
+  "corpus_runs": 2034,
+  "pages_total": 178,
+  "pages_kept": 161,
+  "pages_outside_range": 5,
+  "pages_index": 12,
+  "extract_pages": 178,
+  "corpus_page_lo": 6,
+  "corpus_page_hi": 178,
+  "spans_on_verse_branch_ordinals": 3047,
+  "chars_on_verse_branch_ordinals": 25821,
+  "spans_in_data": 3186,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 147,
+  "corpus_letters": 204918,
+  "known_letters": 203607,
+  "data_bold_letters": 27367,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 27367,
+  "page_bold_letters": 28226
+ },
+ "ex": {
+  "absent": [
+   [
+    144,
+    "Nigamanakathā"
+   ],
+   [
+    146,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    146,
+    "AA"
+   ],
+   [
+    147,
+    "AA"
+   ],
+   [
+    149,
+    "AA"
+   ],
+   [
+    151,
+    "ĀĪU"
+   ],
+   [
+    151,
+    "IUpaddavo"
+   ],
+   [
+    153,
+    "KaGa"
+   ],
+   [
+    153,
+    "KhaGaGhaṭṭayanti"
+   ],
+   [
+    155,
+    "TaThaDaDha"
+   ],
+   [
+    155,
+    "DiṭṭhisaṁghātassaNa"
+   ],
+   [
+    157,
+    "PaPa"
+   ]
+  ],
+  "missed_H": [
+   [
+    6,
+    "Khuddakanikāya"
+   ],
+   [
+    6,
+    "Cūḷaniddesaṭṭhakathā"
+   ],
+   [
+    6,
+    "Pārāyanavagga"
+   ],
+   [
+    6,
+    "Ajitamāṇavasuttaniddesavaṇṇanā"
+   ],
+   [
+    14,
+    "Tissametteyyamāṇavasuttaniddesavaṇṇanā"
+   ],
+   [
+    15,
+    "Puṇṇakamāṇavasuttaniddesavaṇṇanā"
+   ],
+   [
+    22,
+    "Cūḷaniddesaṭṭhakathāya"
+   ],
+   [
+    22,
+    "Mettagūmāṇavasuttaniddesavaṇṇanā"
+   ],
+   [
+    30,
+    "Dhotakamāṇavasuttaniddesavaṇṇanā"
+   ],
+   [
+    32,
+    "Upasīvamāṇavasuttaniddesavaṇṇanā"
+   ],
+   [
+    35,
+    "Nandamāṇavasuttaniddesavaṇṇanā"
+   ],
+   [
+    36,
+    "Hemakamāṇavasuttaniddesavaṇṇanā"
+   ]
+  ],
+  "missed_P": [
+   [
+    22,
+    "Ca"
+   ],
+   [
+    43,
+    "Pa"
+   ],
+   [
+    58,
+    "Bha"
+   ],
+   [
+    77,
+    "Bha"
+   ],
+   [
+    77,
+    "ñāṇasaṁvaro"
+   ],
+   [
+    87,
+    "Da"
+   ]
+  ],
+  "part": [
+   [
+    67,
+    "dasoVa",
+    "daso"
+   ],
+   [
+    114,
+    "upekkhāLa",
+    "upekkhā"
+   ]
+  ]
+ }
+}

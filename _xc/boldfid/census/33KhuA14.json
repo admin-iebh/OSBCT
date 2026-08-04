@@ -1,0 +1,199 @@
+{
+ "vol": "33KhuA14",
+ "stat": {
+  "page_lines": 9744,
+  "line_found": 8781,
+  "line_found_fwd": 8621,
+  "line_absent": 963,
+  "page_runs_in_absent_lines": 52,
+  "page_bold_letters_in_absent_lines": 412,
+  "line_found_any": 114,
+  "line_found_back": 46,
+  "page_run_boundary_splits": 190,
+  "page_runs": 2040,
+  "page_runs_cls_H": 252,
+  "MISSED": 273,
+  "MISSED_H": 252,
+  "page_runs_soft": 73,
+  "MISSED_soft": 30,
+  "page_runs_cls_P": 1788,
+  "EXACT": 1767,
+  "EXACT_P": 1767,
+  "in_data_not_drawn_spine": 1767,
+  "in_data_not_drawn_spine_P": 1767,
+  "EXACT_soft": 43,
+  "MISSED_P": 21,
+  "corpus_runs_outside_page_stream": 4,
+  "corpus_runs": 1767,
+  "pages_total": 370,
+  "pages_kept": 335,
+  "pages_outside_range": 14,
+  "pages_index": 21,
+  "extract_pages": 370,
+  "corpus_page_lo": 14,
+  "corpus_page_hi": 368,
+  "spans_on_verse_branch_ordinals": 2591,
+  "chars_on_verse_branch_ordinals": 21585,
+  "spans_in_data": 3192,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 697,
+  "corpus_letters": 435918,
+  "known_letters": 435202,
+  "data_bold_letters": 27050,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 27050,
+  "page_bold_letters": 34386
+ },
+ "ex": {
+  "absent": [
+   [
+    316,
+    "Nigamanakathā"
+   ],
+   [
+    318,
+    "Apadānaṭṭhakathāyadutiyabhāge"
+   ],
+   [
+    318,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    318,
+    "AA"
+   ],
+   [
+    319,
+    "AA"
+   ],
+   [
+    321,
+    "ĀU"
+   ],
+   [
+    321,
+    "IĪUpagamma"
+   ],
+   [
+    323,
+    "KaKa"
+   ],
+   [
+    325,
+    "ChaJaJhaÑa"
+   ],
+   [
+    325,
+    "ṬhaḌa"
+   ],
+   [
+    327,
+    "DaDhaNa"
+   ],
+   [
+    329,
+    "PaPa"
+   ]
+  ],
+  "missed_H": [
+   [
+    14,
+    "Khuddakanikāya"
+   ],
+   [
+    14,
+    "Apadānaṭṭhakathā"
+   ],
+   [
+    14,
+    "Dutiyobhāgo"
+   ],
+   [
+    14,
+    "Therāpadāna"
+   ],
+   [
+    14,
+    "Sīhāsaniyavagga"
+   ],
+   [
+    14,
+    "Sīhāsanadāyakattheraapadānavaṇṇanā"
+   ],
+   [
+    16,
+    "Ekatthambhīkattheraapadānavaṇṇanā"
+   ],
+   [
+    18,
+    "Nandattheraapadānavaṇṇanā"
+   ],
+   [
+    21,
+    "Cūḷapanthakattheraapadānavaṇṇanā"
+   ],
+   [
+    25,
+    "Pilindavacchattheraapadānavaṇṇanā"
+   ],
+   [
+    28,
+    "Rāhulattheraapadānavaṇṇanā"
+   ],
+   [
+    30,
+    "Upasenavaṅgantaputtattheraapadānavaṇṇanā"
+   ]
+  ],
+  "missed_P": [
+   [
+    35,
+    "Na"
+   ],
+   [
+    68,
+    "Sa"
+   ],
+   [
+    71,
+    "Dha"
+   ],
+   [
+    83,
+    "Ta"
+   ],
+   [
+    92,
+    "Bha"
+   ],
+   [
+    124,
+    "Pha"
+   ],
+   [
+    127,
+    "Ja"
+   ],
+   [
+    159,
+    "A"
+   ],
+   [
+    159,
+    "A"
+   ],
+   [
+    167,
+    "Ba"
+   ],
+   [
+    172,
+    "I"
+   ],
+   [
+    200,
+    "Ta"
+   ]
+  ]
+ }
+}

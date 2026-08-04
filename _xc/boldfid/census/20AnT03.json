@@ -1,0 +1,155 @@
+{
+ "vol": "20AnT03",
+ "stat": {
+  "page_lines": 10470,
+  "line_found": 10165,
+  "line_found_fwd": 10136,
+  "line_absent": 305,
+  "page_runs_in_absent_lines": 17,
+  "page_bold_letters_in_absent_lines": 138,
+  "line_found_back": 5,
+  "line_found_any": 24,
+  "page_run_boundary_splits": 92,
+  "page_runs": 4951,
+  "page_runs_cls_H": 384,
+  "MISSED": 384,
+  "MISSED_H": 384,
+  "page_runs_cls_P": 4567,
+  "EXACT": 4566,
+  "EXACT_P": 4566,
+  "in_data_not_drawn_spine": 4567,
+  "in_data_not_drawn_spine_P": 4567,
+  "page_runs_soft": 22,
+  "EXACT_soft": 22,
+  "MISALIGNED_part": 1,
+  "MISALIGNED_part_P": 1,
+  "corpus_runs": 4567,
+  "pages_total": 405,
+  "pages_kept": 378,
+  "pages_outside_range": 19,
+  "pages_index": 8,
+  "extract_pages": 405,
+  "corpus_page_lo": 20,
+  "corpus_page_hi": 405,
+  "spans_on_verse_branch_ordinals": 7599,
+  "chars_on_verse_branch_ordinals": 69158,
+  "spans_in_data": 7626,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 294,
+  "corpus_letters": 528919,
+  "known_letters": 528694,
+  "data_bold_letters": 69496,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 69496,
+  "page_bold_letters": 77310
+ },
+ "ex": {
+  "absent": [
+   [
+    388,
+    "Ekādasakanipātavaṇṇanāya"
+   ],
+   [
+    389,
+    "Nigamanakathāvaṇṇanā"
+   ],
+   [
+    392,
+    "Aṅguttaraṭīkāyatatiyabhāge"
+   ],
+   [
+    392,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    392,
+    "AA"
+   ],
+   [
+    393,
+    "AA"
+   ],
+   [
+    395,
+    "ĀI"
+   ],
+   [
+    397,
+    "KaKa"
+   ],
+   [
+    399,
+    "TaDa"
+   ],
+   [
+    399,
+    "DaDuppañño"
+   ],
+   [
+    401,
+    "PaPa"
+   ],
+   [
+    403,
+    "PaBa"
+   ]
+  ],
+  "missed_H": [
+   [
+    20,
+    "Suttantapiṭaka"
+   ],
+   [
+    20,
+    "Pañcakādinipāta"
+   ],
+   [
+    20,
+    "Aṅguttaraṭīkā"
+   ],
+   [
+    20,
+    "Pañcakanipāta"
+   ],
+   [
+    20,
+    "Paṭhamapaṇṇāsaka"
+   ],
+   [
+    20,
+    "Sekhabalavagga"
+   ],
+   [
+    20,
+    "Saṁkhittasuttavaṇṇanā"
+   ],
+   [
+    20,
+    "Vitthatasuttādivaṇṇanā"
+   ],
+   [
+    21,
+    "Kāmasuttavaṇṇanā"
+   ],
+   [
+    22,
+    "Cavanasuttavaṇṇanā"
+   ],
+   [
+    22,
+    "Paṭhamaagāravasuttavaṇṇanā"
+   ],
+   [
+    22,
+    "Dutiyaagāravasuttavaṇṇanā"
+   ]
+  ],
+  "part": [
+   [
+    370,
+    "vipphanditaṁBa",
+    "vipphanditaṁ"
+   ]
+  ]
+ }
+}

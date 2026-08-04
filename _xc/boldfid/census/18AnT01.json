@@ -1,0 +1,202 @@
+{
+ "vol": "18AnT01",
+ "stat": {
+  "page_lines": 8688,
+  "line_found": 8407,
+  "line_found_fwd": 8382,
+  "line_found_back": 9,
+  "line_absent": 281,
+  "page_runs_in_absent_lines": 14,
+  "page_bold_letters_in_absent_lines": 97,
+  "line_found_any": 16,
+  "page_run_boundary_splits": 24,
+  "page_runs": 3697,
+  "page_runs_cls_H": 106,
+  "MISSED": 118,
+  "MISSED_H": 106,
+  "page_runs_cls_V": 5,
+  "MISSED_V": 5,
+  "page_runs_cls_P": 3586,
+  "EXACT": 3579,
+  "EXACT_P": 3579,
+  "in_data_not_drawn_spine": 3579,
+  "in_data_not_drawn_spine_P": 3579,
+  "page_runs_soft": 13,
+  "EXACT_soft": 13,
+  "MISSED_P": 7,
+  "corpus_runs_outside_page_stream": 6,
+  "corpus_runs": 3577,
+  "pages_total": 319,
+  "pages_kept": 296,
+  "pages_outside_range": 16,
+  "pages_index": 7,
+  "extract_pages": 319,
+  "corpus_page_lo": 17,
+  "corpus_page_hi": 319,
+  "spans_on_verse_branch_ordinals": 6069,
+  "chars_on_verse_branch_ordinals": 55630,
+  "spans_in_data": 6098,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 210,
+  "corpus_letters": 451331,
+  "known_letters": 449401,
+  "data_bold_letters": 55856,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 55856,
+  "page_bold_letters": 58054
+ },
+ "ex": {
+  "absent": [
+   [
+    306,
+    "Aṅguttaraṭīkāyapaṭhamabhāge"
+   ],
+   [
+    306,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    306,
+    "AA"
+   ],
+   [
+    307,
+    "AA"
+   ],
+   [
+    309,
+    "IĪU"
+   ],
+   [
+    311,
+    "GaCa"
+   ],
+   [
+    311,
+    "JaJha"
+   ],
+   [
+    311,
+    "GhaJātikhettaṁ"
+   ],
+   [
+    313,
+    "DhaNa"
+   ],
+   [
+    313,
+    "NaḷāgāraṁPa"
+   ],
+   [
+    315,
+    "PaBa"
+   ],
+   [
+    315,
+    "PubbacariyāBha"
+   ]
+  ],
+  "missed_H": [
+   [
+    18,
+    "Suttantapiṭaka"
+   ],
+   [
+    18,
+    "Ekakanipāta"
+   ],
+   [
+    18,
+    "Aṅguttaraṭīkā"
+   ],
+   [
+    18,
+    "Ganthārambhakathā"
+   ],
+   [
+    20,
+    "Ganthārambhakathāvaṇṇanā"
+   ],
+   [
+    39,
+    "Rūpādivaggavaṇṇanā"
+   ],
+   [
+    69,
+    "Nettinayavaṇṇanā"
+   ],
+   [
+    89,
+    "Nīvaraṇappahānavaggavaṇṇanā"
+   ],
+   [
+    105,
+    "Akammaniyavaggavaṇṇanā"
+   ],
+   [
+    107,
+    "Adantavaggavaṇṇanā"
+   ],
+   [
+    107,
+    "Paṇihitaacchavaggavaṇṇanā"
+   ],
+   [
+    117,
+    "Accharāsaṅghātavaggavaṇṇanā"
+   ]
+  ],
+  "missed_V": [
+   [
+    18,
+    "nāthaṁ"
+   ],
+   [
+    18,
+    "Dhammaṁ"
+   ],
+   [
+    18,
+    "Saṁghañca"
+   ],
+   [
+    18,
+    "Kassapaṁ"
+   ],
+   [
+    18,
+    "sumedhaṁ"
+   ]
+  ],
+  "missed_P": [
+   [
+    68,
+    "Va"
+   ],
+   [
+    82,
+    "Ba"
+   ],
+   [
+    88,
+    "O"
+   ],
+   [
+    95,
+    "E"
+   ],
+   [
+    217,
+    "U"
+   ],
+   [
+    237,
+    "Cha"
+   ],
+   [
+    242,
+    "Na"
+   ]
+  ]
+ }
+}

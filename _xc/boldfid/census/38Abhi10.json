@@ -1,0 +1,166 @@
+{
+ "vol": "38Abhi10",
+ "stat": {
+  "page_lines": 17292,
+  "line_found": 17174,
+  "line_found_fwd": 17099,
+  "line_found_any": 59,
+  "line_found_back": 16,
+  "line_absent": 118,
+  "page_runs_in_absent_lines": 8,
+  "page_bold_letters_in_absent_lines": 69,
+  "page_run_boundary_splits": 230,
+  "page_runs": 2720,
+  "page_runs_cls_H": 1159,
+  "MISSED": 1167,
+  "MISSED_H": 1159,
+  "page_runs_cls_P": 1561,
+  "EXACT": 1553,
+  "EXACT_P": 1553,
+  "in_data_not_drawn_spine": 1553,
+  "in_data_not_drawn_spine_P": 1553,
+  "MISSED_P": 8,
+  "page_runs_soft": 10,
+  "EXACT_soft": 10,
+  "corpus_runs": 1448,
+  "corpus_runs_outside_page_stream": 8,
+  "pages_total": 620,
+  "pages_kept": 609,
+  "pages_outside_range": 7,
+  "pages_index": 4,
+  "extract_pages": 620,
+  "corpus_page_lo": 8,
+  "corpus_page_hi": 620,
+  "spans_on_verse_branch_ordinals": 1246,
+  "chars_on_verse_branch_ordinals": 14348,
+  "spans_in_data": 2303,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 766,
+  "corpus_letters": 791473,
+  "known_letters": 775080,
+  "data_bold_letters": 28216,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 28216,
+  "page_bold_letters": 39624
+ },
+ "ex": {
+  "absent": [
+   [
+    612,
+    "Paṭṭhānapāḷiyātatiyabhāge"
+   ],
+   [
+    612,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    613,
+    "Icakkhāyatanañca"
+   ],
+   [
+    615,
+    "CaCetanāvipākānaṁ"
+   ],
+   [
+    615,
+    "Jha"
+   ],
+   [
+    617,
+    "Pamaggassa"
+   ],
+   [
+    619,
+    "RaVa"
+   ],
+   [
+    619,
+    "La"
+   ]
+  ],
+  "missed_H": [
+   [
+    9,
+    "Ārammaṇādi"
+   ],
+   [
+    9,
+    "Nahetu"
+   ],
+   [
+    9,
+    "Naārammaṇādi"
+   ],
+   [
+    10,
+    "Napurejāta"
+   ],
+   [
+    11,
+    "Napacchājātādi"
+   ],
+   [
+    11,
+    "Nakammādi"
+   ],
+   [
+    11,
+    "Naāhārādi"
+   ],
+   [
+    12,
+    "Suddha"
+   ],
+   [
+    12,
+    "Paccayānulomapaccanīya"
+   ],
+   [
+    12,
+    "Hetuduka"
+   ],
+   [
+    13,
+    "Paccayapaccanīyānuloma"
+   ],
+   [
+    13,
+    "Nahetuduka"
+   ]
+  ],
+  "missed_P": [
+   [
+    59,
+    "Ā"
+   ],
+   [
+    152,
+    "Sa"
+   ],
+   [
+    192,
+    "U"
+   ],
+   [
+    246,
+    "E"
+   ],
+   [
+    255,
+    "Ca"
+   ],
+   [
+    416,
+    "Pa"
+   ],
+   [
+    585,
+    "A"
+   ],
+   [
+    585,
+    "A"
+   ]
+  ]
+ }
+}

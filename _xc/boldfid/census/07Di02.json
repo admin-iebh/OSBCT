@@ -1,0 +1,197 @@
+{
+ "vol": "07Di02",
+ "stat": {
+  "page_lines": 8298,
+  "line_found": 7854,
+  "line_found_fwd": 7838,
+  "line_absent": 444,
+  "page_runs_in_absent_lines": 14,
+  "page_bold_letters_in_absent_lines": 102,
+  "line_found_back": 7,
+  "line_found_any": 9,
+  "page_run_boundary_splits": 10,
+  "page_runs": 208,
+  "page_runs_cls_H": 162,
+  "MISSED": 201,
+  "MISSED_H": 162,
+  "page_runs_cls_P": 46,
+  "MISSED_P": 39,
+  "EXACT": 7,
+  "EXACT_P": 7,
+  "in_data_not_drawn_spine": 7,
+  "in_data_not_drawn_spine_P": 7,
+  "page_runs_soft": 3,
+  "MISSED_soft": 3,
+  "corpus_runs": 7,
+  "pages_total": 310,
+  "pages_kept": 298,
+  "pages_outside_range": 10,
+  "pages_index": 2,
+  "extract_pages": 310,
+  "corpus_page_lo": 10,
+  "corpus_page_hi": 309,
+  "spans_on_verse_branch_ordinals": 18,
+  "chars_on_verse_branch_ordinals": 189,
+  "spans_in_data": 18,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 7,
+  "corpus_letters": 401294,
+  "known_letters": 400940,
+  "data_bold_letters": 189,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 189,
+  "page_bold_letters": 3228
+ },
+ "ex": {
+  "absent": [
+   [
+    293,
+    "Mahāvaggapāḷiyā"
+   ],
+   [
+    293,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    293,
+    "AI"
+   ],
+   [
+    293,
+    "AggikajaṭilaupamāU"
+   ],
+   [
+    293,
+    "AparihāniyādhammāE"
+   ],
+   [
+    293,
+    "AbbhutādhammāĀnandeO"
+   ],
+   [
+    295,
+    "PaBa"
+   ],
+   [
+    295,
+    "dukkhāBha"
+   ],
+   [
+    295,
+    "ParidevoMa"
+   ],
+   [
+    298,
+    "Mahāvaggapāḷiyā"
+   ],
+   [
+    298,
+    "Nānāpāṭhā"
+   ],
+   [
+    298,
+    "Mahāvaggapāḷiyā"
+   ]
+  ],
+  "missed_H": [
+   [
+    10,
+    "Dīghanikāya"
+   ],
+   [
+    10,
+    "Mahāvaggapāḷi"
+   ],
+   [
+    10,
+    "Mahāpadānasutta"
+   ],
+   [
+    10,
+    "Pubbenivāsapaṭisaṁyuttakathā"
+   ],
+   [
+    19,
+    "Bodhisattadhammatā"
+   ],
+   [
+    22,
+    "Dvattiṁsamahāpurisalakkhaṇā"
+   ],
+   [
+    26,
+    "Vipassīsamaññā"
+   ],
+   [
+    27,
+    "Jiṇṇapurisa"
+   ],
+   [
+    29,
+    "Byādhitapurisa"
+   ],
+   [
+    30,
+    "Kālaṅkatapurisa"
+   ],
+   [
+    32,
+    "Pabbajita"
+   ],
+   [
+    34,
+    "Bodhisattapabbajjā"
+   ]
+  ],
+  "missed_P": [
+   [
+    19,
+    "A"
+   ],
+   [
+    19,
+    "A"
+   ],
+   [
+    53,
+    "Ā"
+   ],
+   [
+    54,
+    "I"
+   ],
+   [
+    58,
+    "U"
+   ],
+   [
+    61,
+    "Pha"
+   ],
+   [
+    63,
+    "E"
+   ],
+   [
+    75,
+    "O"
+   ],
+   [
+    75,
+    "Ba"
+   ],
+   [
+    76,
+    "Bha"
+   ],
+   [
+    81,
+    "Ka"
+   ],
+   [
+    82,
+    "Ka"
+   ]
+  ]
+ }
+}

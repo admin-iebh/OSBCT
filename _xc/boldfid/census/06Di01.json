@@ -1,0 +1,197 @@
+{
+ "vol": "06Di01",
+ "stat": {
+  "page_lines": 6839,
+  "line_found": 6543,
+  "line_found_fwd": 6482,
+  "line_absent": 296,
+  "page_runs_in_absent_lines": 13,
+  "page_bold_letters_in_absent_lines": 128,
+  "line_found_any": 52,
+  "line_found_back": 9,
+  "page_run_boundary_splits": 18,
+  "page_runs": 194,
+  "page_runs_cls_H": 153,
+  "MISSED": 187,
+  "MISSED_H": 153,
+  "page_runs_cls_P": 41,
+  "MISSED_P": 34,
+  "EXACT": 7,
+  "EXACT_P": 7,
+  "in_data_not_drawn_spine": 7,
+  "in_data_not_drawn_spine_P": 7,
+  "page_runs_soft": 8,
+  "MISSED_soft": 8,
+  "corpus_runs": 7,
+  "pages_total": 264,
+  "pages_kept": 246,
+  "pages_outside_range": 18,
+  "pages_index": 0,
+  "extract_pages": 264,
+  "corpus_page_lo": 19,
+  "corpus_page_hi": 264,
+  "spans_on_verse_branch_ordinals": 21,
+  "chars_on_verse_branch_ordinals": 221,
+  "spans_in_data": 21,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 7,
+  "corpus_letters": 333214,
+  "known_letters": 331212,
+  "data_bold_letters": 221,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 221,
+  "page_bold_letters": 3035
+ },
+ "ex": {
+  "absent": [
+   [
+    255,
+    "Sīlakkhandhavaggapāḷiyā"
+   ],
+   [
+    255,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    255,
+    "AA"
+   ],
+   [
+    255,
+    "AccayadesanāĀ"
+   ],
+   [
+    255,
+    "AjitakesakambalavādaI"
+   ],
+   [
+    256,
+    "KaTa"
+   ],
+   [
+    256,
+    "ÑaPubbantāparantakappikā"
+   ],
+   [
+    257,
+    "PhaLa"
+   ],
+   [
+    257,
+    "MaVisūkadassanaṁ"
+   ],
+   [
+    259,
+    "Sīlakkhandhavaggapāḷiyā"
+   ],
+   [
+    259,
+    "Nānāpāṭhā"
+   ],
+   [
+    259,
+    "Sīlakkhandhavaggapāḷiyā"
+   ]
+  ],
+  "missed_H": [
+   [
+    19,
+    "Dīghanikāya"
+   ],
+   [
+    19,
+    "Sīlakkhandhavaggapāḷi"
+   ],
+   [
+    19,
+    "Brahmajālasutta"
+   ],
+   [
+    19,
+    "Paribbājakakathā"
+   ],
+   [
+    21,
+    "Cūḷasīla"
+   ],
+   [
+    24,
+    "Majjhimasīla"
+   ],
+   [
+    26,
+    "Mahāsīla"
+   ],
+   [
+    29,
+    "Pubbantakappika"
+   ],
+   [
+    30,
+    "Sassatavāda"
+   ],
+   [
+    34,
+    "Ekaccasassatavāda"
+   ],
+   [
+    39,
+    "Antānantavāda"
+   ],
+   [
+    41,
+    "Amarāvikkhepavāda"
+   ]
+  ],
+  "missed_P": [
+   [
+    22,
+    "Ta"
+   ],
+   [
+    66,
+    "E"
+   ],
+   [
+    68,
+    "Sa"
+   ],
+   [
+    91,
+    "Pa"
+   ],
+   [
+    91,
+    "U"
+   ],
+   [
+    103,
+    "Ga"
+   ],
+   [
+    105,
+    "Ra"
+   ],
+   [
+    109,
+    "La"
+   ],
+   [
+    122,
+    "Ga"
+   ],
+   [
+    122,
+    "Ca"
+   ],
+   [
+    122,
+    "Ta"
+   ],
+   [
+    155,
+    "Na"
+   ]
+  ]
+ }
+}

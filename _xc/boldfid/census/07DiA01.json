@@ -1,0 +1,231 @@
+{
+ "vol": "07DiA01",
+ "stat": {
+  "page_lines": 12723,
+  "line_found": 10196,
+  "line_found_fwd": 9852,
+  "line_absent": 2527,
+  "page_runs_in_absent_lines": 96,
+  "page_bold_letters_in_absent_lines": 571,
+  "line_found_back": 80,
+  "line_found_any": 264,
+  "page_run_boundary_splits": 98,
+  "page_runs": 3173,
+  "page_runs_cls_P": 3023,
+  "page_runs_soft": 171,
+  "MISSED": 215,
+  "MISSED_P": 73,
+  "MISSED_soft": 10,
+  "page_runs_cls_H": 141,
+  "MISSED_H": 141,
+  "page_runs_cls_V": 9,
+  "MISSED_V": 1,
+  "EXACT": 2956,
+  "EXACT_V": 8,
+  "EXACT_P": 2948,
+  "in_data_not_drawn_spine": 2950,
+  "in_data_not_drawn_spine_P": 2950,
+  "EXACT_soft": 161,
+  "MISALIGNED_part": 2,
+  "MISALIGNED_part_P": 2,
+  "corpus_runs_outside_page_stream": 8,
+  "corpus_runs": 2952,
+  "SPURIOUS": 1,
+  "SPURIOUS_soft": 1,
+  "SPURIOUS_P": 1,
+  "pages_total": 436,
+  "pages_kept": 420,
+  "pages_outside_range": 16,
+  "pages_index": 0,
+  "extract_pages": 436,
+  "corpus_page_lo": 17,
+  "corpus_page_hi": 436,
+  "spans_on_verse_branch_ordinals": 4919,
+  "chars_on_verse_branch_ordinals": 39875,
+  "spans_in_data": 5012,
+  "sect_spans_in_data": 8,
+  "paras_with_bold": 324,
+  "corpus_letters": 498112,
+  "known_letters": 496621,
+  "data_bold_letters": 41087,
+  "spine_bold_letters": 82,
+  "band_bold_letters": 41087,
+  "page_bold_letters": 44634
+ },
+ "ex": {
+  "absent": [
+   [
+    355,
+    "Sīlakkhandhavaggaṭṭhakathāya"
+   ],
+   [
+    355,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    355,
+    "AA"
+   ],
+   [
+    356,
+    "AA"
+   ],
+   [
+    357,
+    "AA"
+   ],
+   [
+    358,
+    "AA"
+   ],
+   [
+    359,
+    "AA"
+   ],
+   [
+    360,
+    "AĀ"
+   ],
+   [
+    361,
+    "ĀĀ"
+   ],
+   [
+    362,
+    "II"
+   ],
+   [
+    363,
+    "UU"
+   ],
+   [
+    364,
+    "EE"
+   ]
+  ],
+  "missed_P": [
+   [
+    435,
+    "Ṭha"
+   ],
+   [
+    406,
+    "Sa"
+   ],
+   [
+    416,
+    "Kha"
+   ],
+   [
+    19,
+    "Dha"
+   ],
+   [
+    20,
+    "Ha"
+   ],
+   [
+    23,
+    "Ga"
+   ],
+   [
+    32,
+    "Ma"
+   ],
+   [
+    32,
+    "Bha"
+   ],
+   [
+    32,
+    "I"
+   ],
+   [
+    33,
+    "Ka"
+   ],
+   [
+    35,
+    "Pha"
+   ],
+   [
+    37,
+    "Sa"
+   ]
+  ],
+  "missed_H": [
+   [
+    17,
+    "Dīghanikāya"
+   ],
+   [
+    17,
+    "Sīlakkhandhavaggaṭṭhakathā"
+   ],
+   [
+    17,
+    "Ganthārambhakathā"
+   ],
+   [
+    18,
+    "Nidānakathā"
+   ],
+   [
+    19,
+    "Paṭhamamahāsaṅgītikathā"
+   ],
+   [
+    43,
+    "Brahmajālasutta"
+   ],
+   [
+    43,
+    "Paribbājakakathāvaṇṇanā"
+   ],
+   [
+    71,
+    "Cūḷasīlavaṇṇanā"
+   ],
+   [
+    95,
+    "Majjhimasīlavaṇṇanā"
+   ],
+   [
+    103,
+    "Mahāsīlavaṇṇanā"
+   ],
+   [
+    108,
+    "Pubbantakappikasassatavādavaṇṇanā"
+   ],
+   [
+    117,
+    "Ekaccasassatavādavaṇṇanā"
+   ]
+  ],
+  "missed_V": [
+   [
+    17,
+    "Ka"
+   ]
+  ],
+  "part": [
+   [
+    37,
+    "alagaddūpamāYa",
+    "alagaddūpamā"
+   ],
+   [
+    169,
+    "gahapatikoBa",
+    "gahapatiko"
+   ]
+  ],
+  "spurious": [
+   [
+    436,
+    "Dīghassa"
+   ]
+  ]
+ }
+}

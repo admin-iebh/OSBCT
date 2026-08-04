@@ -1,0 +1,208 @@
+{
+ "vol": "32KhuA13",
+ "stat": {
+  "page_lines": 12135,
+  "line_found": 10432,
+  "line_found_fwd": 10230,
+  "line_absent": 1703,
+  "page_runs_in_absent_lines": 71,
+  "page_bold_letters_in_absent_lines": 491,
+  "line_found_back": 53,
+  "line_found_any": 149,
+  "page_run_boundary_splits": 17,
+  "page_runs": 2991,
+  "page_runs_cls_H": 26,
+  "MISSED": 61,
+  "MISSED_H": 26,
+  "page_runs_cls_P": 2965,
+  "EXACT": 2929,
+  "EXACT_P": 2929,
+  "in_data_not_drawn_spine": 2930,
+  "in_data_not_drawn_spine_P": 2930,
+  "MISSED_P": 35,
+  "page_runs_soft": 31,
+  "MISSED_soft": 2,
+  "EXACT_soft": 29,
+  "MISALIGNED_part": 1,
+  "MISALIGNED_part_P": 1,
+  "corpus_runs_outside_page_stream": 2,
+  "corpus_runs": 2929,
+  "pages_total": 441,
+  "pages_kept": 406,
+  "pages_outside_range": 4,
+  "pages_index": 31,
+  "extract_pages": 441,
+  "corpus_page_lo": 5,
+  "corpus_page_hi": 440,
+  "spans_on_verse_branch_ordinals": 3935,
+  "chars_on_verse_branch_ordinals": 30619,
+  "spans_in_data": 4190,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 492,
+  "corpus_letters": 517754,
+  "known_letters": 516834,
+  "data_bold_letters": 33268,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 33268,
+  "page_bold_letters": 33878
+ },
+ "ex": {
+  "absent": [
+   [
+    357,
+    "Apadānaṭṭhakathāyapaṭhamabhāge"
+   ],
+   [
+    357,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    357,
+    "AA"
+   ],
+   [
+    358,
+    "AA"
+   ],
+   [
+    360,
+    "AA"
+   ],
+   [
+    362,
+    "ĀU"
+   ],
+   [
+    364,
+    "OKa"
+   ],
+   [
+    366,
+    "GaGaGha"
+   ],
+   [
+    368,
+    "JaJhaÑaṬhaḌa"
+   ],
+   [
+    368,
+    "ṬhaTamato"
+   ],
+   [
+    370,
+    "DaDa"
+   ],
+   [
+    372,
+    "NaNa"
+   ]
+  ],
+  "missed_H": [
+   [
+    5,
+    "Khuddakanikāya"
+   ],
+   [
+    5,
+    "Apadānaṭṭhakathā"
+   ],
+   [
+    5,
+    "Paṭhamobhāgo"
+   ],
+   [
+    5,
+    "Ganthārambhakathā"
+   ],
+   [
+    6,
+    "Nidānakathā"
+   ],
+   [
+    6,
+    "Dūrenidānakathā"
+   ],
+   [
+    7,
+    "Sumedhakathā"
+   ],
+   [
+    62,
+    "Avidūrenidānakathā"
+   ],
+   [
+    95,
+    "Santikenidānakathā"
+   ],
+   [
+    114,
+    "Nidānakathāniṭṭhitā"
+   ],
+   [
+    115,
+    "Therāpadāna"
+   ],
+   [
+    115,
+    "Buddhavagga"
+   ]
+  ],
+  "missed_P": [
+   [
+    7,
+    "I"
+   ],
+   [
+    13,
+    "Tha"
+   ],
+   [
+    18,
+    "Da"
+   ],
+   [
+    19,
+    "Ka"
+   ],
+   [
+    19,
+    "Da"
+   ],
+   [
+    22,
+    "Dha"
+   ],
+   [
+    26,
+    "Na"
+   ],
+   [
+    27,
+    "Na"
+   ],
+   [
+    30,
+    "Pa"
+   ],
+   [
+    31,
+    "Pa"
+   ],
+   [
+    38,
+    "Ya"
+   ],
+   [
+    40,
+    "Ba"
+   ]
+  ],
+  "part": [
+   [
+    321,
+    "KapilavatthaveKa",
+    "Kapilavatthave"
+   ]
+  ]
+ }
+}

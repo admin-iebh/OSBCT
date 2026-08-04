@@ -1,0 +1,197 @@
+{
+ "vol": "12Sam01",
+ "stat": {
+  "page_lines": 13928,
+  "line_found": 13195,
+  "line_found_fwd": 12989,
+  "line_found_back": 83,
+  "line_absent": 733,
+  "page_runs_in_absent_lines": 43,
+  "page_bold_letters_in_absent_lines": 358,
+  "line_found_any": 123,
+  "page_run_boundary_splits": 92,
+  "page_runs": 739,
+  "page_runs_cls_H": 674,
+  "MISSED": 738,
+  "MISSED_H": 674,
+  "page_runs_cls_P": 65,
+  "page_runs_soft": 9,
+  "MISSED_P": 64,
+  "MISSED_soft": 9,
+  "EXACT": 1,
+  "EXACT_P": 1,
+  "in_data_not_drawn_spine": 1,
+  "in_data_not_drawn_spine_P": 1,
+  "corpus_runs": 1,
+  "pages_total": 549,
+  "pages_kept": 503,
+  "pages_outside_range": 37,
+  "pages_index": 9,
+  "extract_pages": 549,
+  "corpus_page_lo": 38,
+  "corpus_page_hi": 548,
+  "spans_on_verse_branch_ordinals": 2,
+  "chars_on_verse_branch_ordinals": 24,
+  "spans_in_data": 2,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 1,
+  "corpus_letters": 593353,
+  "known_letters": 592383,
+  "data_bold_letters": 24,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 24,
+  "page_bold_letters": 9578
+ },
+ "ex": {
+  "absent": [
+   [
+    492,
+    "Lakkhaṇasaṁyuttaṁsamattaṁ"
+   ],
+   [
+    512,
+    "Sagāthāvaggasaṁyuttapāḷiyā"
+   ],
+   [
+    512,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    512,
+    "AĀ"
+   ],
+   [
+    512,
+    "AndhakavindaṁU"
+   ],
+   [
+    512,
+    "AruṇavatīO"
+   ],
+   [
+    513,
+    "KaGa"
+   ],
+   [
+    513,
+    "Ṭha"
+   ],
+   [
+    513,
+    "KokālikaṁTa"
+   ],
+   [
+    513,
+    "GaTāyano"
+   ],
+   [
+    515,
+    "MaRa"
+   ],
+   [
+    515,
+    "YaSakkanāmako"
+   ]
+  ],
+  "missed_H": [
+   [
+    40,
+    "Saṁyuttanikāya"
+   ],
+   [
+    40,
+    "Sagāthāvaggasaṁyuttapāḷi"
+   ],
+   [
+    40,
+    "Devatāsaṁyutta"
+   ],
+   [
+    40,
+    "Naḷavagga"
+   ],
+   [
+    40,
+    "Oghataraṇasutta"
+   ],
+   [
+    41,
+    "Nimokkhasutta"
+   ],
+   [
+    41,
+    "Upanīyasutta"
+   ],
+   [
+    42,
+    "Accentisutta"
+   ],
+   [
+    42,
+    "Katichindasutta"
+   ],
+   [
+    42,
+    "Jāgarasutta"
+   ],
+   [
+    43,
+    "Appaṭividitasutta"
+   ],
+   [
+    43,
+    "Susammuṭṭhasutta"
+   ]
+  ],
+  "missed_P": [
+   [
+    42,
+    "Va"
+   ],
+   [
+    42,
+    "Va"
+   ],
+   [
+    43,
+    "Sa"
+   ],
+   [
+    43,
+    "Sa"
+   ],
+   [
+    48,
+    "E"
+   ],
+   [
+    49,
+    "I"
+   ],
+   [
+    53,
+    "Ca"
+   ],
+   [
+    54,
+    "Sa"
+   ],
+   [
+    57,
+    "Dha"
+   ],
+   [
+    69,
+    "Ra"
+   ],
+   [
+    108,
+    "La"
+   ],
+   [
+    125,
+    "Ha"
+   ]
+  ]
+ }
+}

@@ -1,0 +1,197 @@
+{
+ "vol": "18Khu01",
+ "stat": {
+  "page_lines": 14274,
+  "line_found": 12129,
+  "line_found_fwd": 11594,
+  "line_absent": 2145,
+  "page_runs_in_absent_lines": 86,
+  "page_bold_letters_in_absent_lines": 537,
+  "line_found_back": 164,
+  "line_found_any": 371,
+  "page_run_boundary_splits": 70,
+  "page_runs": 760,
+  "page_runs_cls_H": 680,
+  "MISSED": 758,
+  "MISSED_H": 680,
+  "page_runs_cls_P": 80,
+  "MISSED_P": 78,
+  "page_runs_soft": 17,
+  "MISSED_soft": 17,
+  "EXACT": 2,
+  "EXACT_P": 2,
+  "in_data_not_drawn_spine": 2,
+  "in_data_not_drawn_spine_P": 2,
+  "corpus_runs": 2,
+  "pages_total": 550,
+  "pages_kept": 526,
+  "pages_outside_range": 24,
+  "pages_index": 0,
+  "extract_pages": 550,
+  "corpus_page_lo": 25,
+  "corpus_page_hi": 550,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 6,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 2,
+  "corpus_letters": 414411,
+  "known_letters": 412837,
+  "data_bold_letters": 53,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 53,
+  "page_bold_letters": 12170
+ },
+ "ex": {
+  "absent": [
+   [
+    41,
+    "Kumbhaghosakaseṭṭhivatthu"
+   ],
+   [
+    482,
+    "Khuddakanikāyepaṭhamabhāgapotthake"
+   ],
+   [
+    482,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    482,
+    "AA"
+   ],
+   [
+    483,
+    "AĀ"
+   ],
+   [
+    484,
+    "IU"
+   ],
+   [
+    485,
+    "EO"
+   ],
+   [
+    485,
+    "EsodullabhoKa"
+   ],
+   [
+    486,
+    "KaKa"
+   ],
+   [
+    486,
+    "KassakopaṭijānāsiKha"
+   ],
+   [
+    487,
+    "KhaCa"
+   ],
+   [
+    487,
+    "GaCāturanto"
+   ]
+  ],
+  "missed_H": [
+   [
+    26,
+    "Khuddakanikāya"
+   ],
+   [
+    26,
+    "Khuddakapāṭhapāḷi"
+   ],
+   [
+    26,
+    "Dasasikkhāpada"
+   ],
+   [
+    27,
+    "Dvattiṁsākāra"
+   ],
+   [
+    28,
+    "Kumārapañhā"
+   ],
+   [
+    28,
+    "Maṅgalasutta"
+   ],
+   [
+    29,
+    "Ratanasutta"
+   ],
+   [
+    33,
+    "Tirokuṭṭasutta"
+   ],
+   [
+    34,
+    "Nidhikaṇḍasutta"
+   ],
+   [
+    35,
+    "Mettasutta"
+   ],
+   [
+    36,
+    "Khuddakapāṭhapāḷiniṭṭhitā"
+   ],
+   [
+    38,
+    "Khuddakanikāya"
+   ]
+  ],
+  "missed_P": [
+   [
+    30,
+    "Kha"
+   ],
+   [
+    31,
+    "Ga"
+   ],
+   [
+    35,
+    "Ka"
+   ],
+   [
+    47,
+    "Ca"
+   ],
+   [
+    63,
+    "Pha"
+   ],
+   [
+    63,
+    "Dha"
+   ],
+   [
+    67,
+    "Na"
+   ],
+   [
+    72,
+    "Pa"
+   ],
+   [
+    140,
+    "Pha"
+   ],
+   [
+    164,
+    "Ya"
+   ],
+   [
+    165,
+    "Sa"
+   ],
+   [
+    176,
+    "Ra"
+   ]
+  ]
+ }
+}

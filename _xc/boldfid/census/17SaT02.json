@@ -1,0 +1,147 @@
+{
+ "vol": "17SaT02",
+ "stat": {
+  "page_lines": 15268,
+  "line_found": 14746,
+  "line_found_fwd": 14669,
+  "line_found_back": 27,
+  "line_absent": 522,
+  "page_runs_in_absent_lines": 27,
+  "page_bold_letters_in_absent_lines": 213,
+  "line_found_any": 50,
+  "page_run_boundary_splits": 600,
+  "page_runs": 10381,
+  "page_runs_cls_H": 816,
+  "MISSED": 816,
+  "MISSED_H": 816,
+  "page_runs_cls_P": 9565,
+  "EXACT": 9565,
+  "EXACT_P": 9565,
+  "in_data_not_drawn_spine": 9565,
+  "in_data_not_drawn_spine_P": 9565,
+  "page_runs_soft": 46,
+  "EXACT_soft": 46,
+  "corpus_runs": 9565,
+  "corpus_runs_outside_page_stream": 2,
+  "pages_total": 616,
+  "pages_kept": 565,
+  "pages_outside_range": 36,
+  "pages_index": 15,
+  "extract_pages": 616,
+  "corpus_page_lo": 37,
+  "corpus_page_hi": 616,
+  "spans_on_verse_branch_ordinals": 15919,
+  "chars_on_verse_branch_ordinals": 138624,
+  "spans_in_data": 16028,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 661,
+  "corpus_letters": 751762,
+  "known_letters": 750856,
+  "data_bold_letters": 139599,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 139599,
+  "page_bold_letters": 156601
+ },
+ "ex": {
+  "absent": [
+   [
+    315,
+    "vṭthātuṁnasakkotivuṭṭhānavasībhāvassaanipphāditattāKallaṁjātaṁ"
+   ],
+   [
+    447,
+    "Paṭhamameghasuttādivaṇṇanā"
+   ],
+   [
+    587,
+    "Nigamanakathāvaṇṇanā"
+   ],
+   [
+    587,
+    "Ettāvatāsāratthappakāsiniyā"
+   ],
+   [
+    589,
+    "Saṁyuttaṭīkāyadutiyabhāge"
+   ],
+   [
+    589,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    589,
+    "AA"
+   ],
+   [
+    590,
+    "AA"
+   ],
+   [
+    592,
+    "AA"
+   ],
+   [
+    594,
+    "AĀ"
+   ],
+   [
+    596,
+    "UU"
+   ],
+   [
+    596,
+    "UpāyāsoE"
+   ]
+  ],
+  "missed_H": [
+   [
+    37,
+    "Suttantapiṭaka"
+   ],
+   [
+    37,
+    "Nidānavagga"
+   ],
+   [
+    37,
+    "Saṁyuttaṭīkā"
+   ],
+   [
+    37,
+    "Nidānasaṁyutta"
+   ],
+   [
+    37,
+    "Buddhavagga"
+   ],
+   [
+    37,
+    "Paṭiccasamuppādasuttavaṇṇanā"
+   ],
+   [
+    49,
+    "Vibhaṅgasuttavaṇṇanā"
+   ],
+   [
+    57,
+    "Paṭipadāsuttavaṇṇanā"
+   ],
+   [
+    58,
+    "Vipassīsuttavaṇṇanā"
+   ],
+   [
+    60,
+    "Sikhīsuttādivaṇṇanā"
+   ],
+   [
+    61,
+    "Āhāravagga"
+   ],
+   [
+    61,
+    "Āhārasuttavaṇṇanā"
+   ]
+  ]
+ }
+}

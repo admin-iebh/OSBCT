@@ -1,0 +1,192 @@
+{
+ "vol": "22Khu05",
+ "stat": {
+  "page_lines": 12353,
+  "line_found": 10819,
+  "line_found_fwd": 10249,
+  "line_absent": 1534,
+  "page_runs_in_absent_lines": 54,
+  "page_bold_letters_in_absent_lines": 315,
+  "line_found_back": 153,
+  "line_found_any": 417,
+  "page_run_boundary_splits": 81,
+  "page_runs": 738,
+  "page_runs_cls_H": 643,
+  "MISSED": 738,
+  "MISSED_H": 643,
+  "page_runs_soft": 65,
+  "MISSED_soft": 65,
+  "page_runs_cls_P": 95,
+  "MISSED_P": 95,
+  "pages_total": 522,
+  "pages_kept": 468,
+  "pages_outside_range": 26,
+  "pages_index": 28,
+  "extract_pages": 522,
+  "corpus_page_lo": 27,
+  "corpus_page_hi": 522,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 0,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 0,
+  "corpus_letters": 290162,
+  "known_letters": 288636,
+  "data_bold_letters": 0,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 0,
+  "page_bold_letters": 9691
+ },
+ "ex": {
+  "absent": [
+   [
+    427,
+    "Jātakapāḷiyāpaṭhamabhāge"
+   ],
+   [
+    427,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    428,
+    "ĀKa"
+   ],
+   [
+    428,
+    "EKālaghaso"
+   ],
+   [
+    430,
+    "DaPa"
+   ],
+   [
+    430,
+    "PaPekhuṇāni"
+   ],
+   [
+    432,
+    "SaSa"
+   ],
+   [
+    432,
+    "SāḷūrasaṁghañcaHa"
+   ],
+   [
+    433,
+    "Jātakapāḷiyāpaṭhamabhāge"
+   ],
+   [
+    433,
+    "Nānāpāṭhā"
+   ],
+   [
+    433,
+    "Khuddakanikāye"
+   ],
+   [
+    445,
+    "Ña"
+   ]
+  ],
+  "missed_H": [
+   [
+    27,
+    "Khuddakanikāya"
+   ],
+   [
+    27,
+    "Jātakapāḷi"
+   ],
+   [
+    27,
+    "Ekakanipāta"
+   ],
+   [
+    27,
+    "Apaṇṇakavagga"
+   ],
+   [
+    27,
+    "Apaṇṇakajātaka"
+   ],
+   [
+    27,
+    "Vaṇṇupathajātaka"
+   ],
+   [
+    28,
+    "Serivavāṇijajātaka"
+   ],
+   [
+    28,
+    "Cūḷaseṭṭhijātaka"
+   ],
+   [
+    28,
+    "Taṇḍulanāḷijātaka"
+   ],
+   [
+    28,
+    "Devadhammajātaka"
+   ],
+   [
+    28,
+    "Kaṭṭhahārijātaka"
+   ],
+   [
+    29,
+    "Gāmaṇijātaka"
+   ]
+  ],
+  "missed_P": [
+   [
+    46,
+    "Ā"
+   ],
+   [
+    51,
+    "Ba"
+   ],
+   [
+    72,
+    "Dha"
+   ],
+   [
+    76,
+    "Sa"
+   ],
+   [
+    80,
+    "Ī"
+   ],
+   [
+    87,
+    "Kumbhilajātaka"
+   ],
+   [
+    88,
+    "Ra"
+   ],
+   [
+    90,
+    "Gha"
+   ],
+   [
+    117,
+    "Ā"
+   ],
+   [
+    120,
+    "Ekarājajātaka"
+   ],
+   [
+    125,
+    "E"
+   ],
+   [
+    131,
+    "Ū"
+   ]
+  ]
+ }
+}

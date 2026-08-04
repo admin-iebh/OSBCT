@@ -1,0 +1,146 @@
+{
+ "vol": "45KhuA26",
+ "stat": {
+  "page_lines": 8322,
+  "line_found": 8125,
+  "line_found_fwd": 8096,
+  "line_absent": 197,
+  "page_runs_in_absent_lines": 10,
+  "page_bold_letters_in_absent_lines": 79,
+  "line_found_any": 23,
+  "line_found_back": 6,
+  "page_run_boundary_splits": 18,
+  "page_runs": 3693,
+  "page_runs_cls_H": 42,
+  "MISSED": 43,
+  "MISSED_H": 42,
+  "page_runs_cls_P": 3651,
+  "EXACT": 3650,
+  "EXACT_P": 3650,
+  "in_data_not_drawn_spine": 3650,
+  "in_data_not_drawn_spine_P": 3650,
+  "page_runs_soft": 20,
+  "EXACT_soft": 20,
+  "MISSED_P": 1,
+  "corpus_runs_outside_page_stream": 1,
+  "corpus_runs": 3650,
+  "pages_total": 293,
+  "pages_kept": 282,
+  "pages_outside_range": 6,
+  "pages_index": 5,
+  "extract_pages": 293,
+  "corpus_page_lo": 6,
+  "corpus_page_hi": 292,
+  "spans_on_verse_branch_ordinals": 6665,
+  "chars_on_verse_branch_ordinals": 53271,
+  "spans_in_data": 6871,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 149,
+  "corpus_letters": 437178,
+  "known_letters": 437092,
+  "data_bold_letters": 55160,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 55160,
+  "page_bold_letters": 56137
+ },
+ "ex": {
+  "absent": [
+   [
+    280,
+    "Nigamanakathā"
+   ],
+   [
+    282,
+    "Nettiaṭṭhakathāya"
+   ],
+   [
+    282,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    282,
+    "AA"
+   ],
+   [
+    283,
+    "AA"
+   ],
+   [
+    285,
+    "AA"
+   ],
+   [
+    287,
+    "ĀI"
+   ],
+   [
+    287,
+    "IUgghaṭeti"
+   ],
+   [
+    289,
+    "OKa"
+   ],
+   [
+    291,
+    "GaGhaCha"
+   ]
+  ],
+  "missed_H": [
+   [
+    6,
+    "Khuddakanikāya"
+   ],
+   [
+    6,
+    "Nettiaṭṭhakathā"
+   ],
+   [
+    6,
+    "Ganthārambhakathā"
+   ],
+   [
+    10,
+    "Saṅgahavāravaṇṇanā"
+   ],
+   [
+    19,
+    "Uddesavāravaṇṇanā"
+   ],
+   [
+    24,
+    "Niddesavāravaṇṇanā"
+   ],
+   [
+    24,
+    "Hārasaṅkhepa"
+   ],
+   [
+    34,
+    "Nayasaṅkhepa"
+   ],
+   [
+    36,
+    "Dvādasapada"
+   ],
+   [
+    45,
+    "Paṭiniddesavāra"
+   ],
+   [
+    45,
+    "Desanāhāravibhaṅgavaṇṇanā"
+   ],
+   [
+    66,
+    "Vicayahāravibhaṅgavaṇṇanā"
+   ]
+  ],
+  "missed_P": [
+   [
+    171,
+    "U"
+   ]
+  ]
+ }
+}

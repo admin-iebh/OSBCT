@@ -1,0 +1,276 @@
+{
+ "vol": "39Abhi11",
+ "stat": {
+  "page_lines": 17218,
+  "line_found": 17160,
+  "line_found_fwd": 16802,
+  "line_found_back": 122,
+  "line_found_any": 236,
+  "line_absent": 58,
+  "page_runs_in_absent_lines": 10,
+  "page_bold_letters_in_absent_lines": 105,
+  "page_run_boundary_splits": 221,
+  "page_runs": 1838,
+  "page_runs_cls_H": 887,
+  "MISSED": 961,
+  "MISSED_H": 887,
+  "page_runs_soft": 8,
+  "MISSED_soft": 6,
+  "page_runs_cls_P": 951,
+  "MISSED_P": 74,
+  "EXACT": 869,
+  "EXACT_P": 869,
+  "in_data_not_drawn_spine": 877,
+  "in_data_not_drawn_spine_P": 877,
+  "EXACT_soft": 2,
+  "MISALIGNED_part": 8,
+  "MISALIGNED_part_P": 8,
+  "corpus_runs_outside_page_stream": 23,
+  "corpus_runs": 793,
+  "SPURIOUS": 9,
+  "SPURIOUS_soft": 0,
+  "SPURIOUS_P": 9,
+  "pages_total": 649,
+  "pages_kept": 638,
+  "pages_outside_range": 9,
+  "pages_index": 2,
+  "extract_pages": 649,
+  "corpus_page_lo": 10,
+  "corpus_page_hi": 648,
+  "spans_on_verse_branch_ordinals": 465,
+  "chars_on_verse_branch_ordinals": 5842,
+  "spans_in_data": 1722,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 721,
+  "corpus_letters": 759681,
+  "known_letters": 719755,
+  "data_bold_letters": 22125,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 22125,
+  "page_bold_letters": 36265
+ },
+ "ex": {
+  "absent": [
+   [
+    75,
+    "Nahetuduka"
+   ],
+   [
+    564,
+    "Paccanīyanahetunaārammaṇa"
+   ],
+   [
+    646,
+    "Paṭṭhānapāḷiyācatutthabhāge"
+   ],
+   [
+    646,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    646,
+    "AA"
+   ],
+   [
+    646,
+    "AniyatohetuĀ"
+   ],
+   [
+    646,
+    "AppītikādhipatiU"
+   ],
+   [
+    647,
+    "UKa"
+   ],
+   [
+    647,
+    "KusaloappītikoDa"
+   ],
+   [
+    649,
+    "RaSa"
+   ]
+  ],
+  "missed_H": [
+   [
+    10,
+    "Abhidhammapiṭaka"
+   ],
+   [
+    10,
+    "Dhammānuloma"
+   ],
+   [
+    10,
+    "Dukapaṭṭhānapāḷi"
+   ],
+   [
+    10,
+    "Kilesagocchaka"
+   ],
+   [
+    10,
+    "Kilesaduka"
+   ],
+   [
+    10,
+    "Paṭiccavāra"
+   ],
+   [
+    10,
+    "Paccayānuloma"
+   ],
+   [
+    10,
+    "Vibhaṅgavāra"
+   ],
+   [
+    10,
+    "Hetu"
+   ],
+   [
+    69,
+    "Nahetu"
+   ],
+   [
+    12,
+    "Naārammaṇādi"
+   ],
+   [
+    13,
+    "Napurejātādi"
+   ]
+  ],
+  "missed_P": [
+   [
+    11,
+    "Ca"
+   ],
+   [
+    14,
+    "Va"
+   ],
+   [
+    112,
+    "Ārammaṇa"
+   ],
+   [
+    204,
+    "Nahetu"
+   ],
+   [
+    217,
+    "HetudukaVedanāttika"
+   ],
+   [
+    226,
+    "HetudukaVipākattika"
+   ],
+   [
+    235,
+    "HetudukaUpādinnattika"
+   ],
+   [
+    242,
+    "HetudukaSaṁkiliṭṭhattika"
+   ],
+   [
+    248,
+    "HetudukaVitakkattika"
+   ],
+   [
+    255,
+    "HetudukaPītittika"
+   ],
+   [
+    261,
+    "HetudukaDassanenapahātabbattika"
+   ],
+   [
+    267,
+    "HetudukaDassanenapahātabbahetukattika"
+   ]
+  ],
+  "part": [
+   [
+    458,
+    "SaraṇadukaKusalattika",
+    "Saraṇaduka"
+   ],
+   [
+    459,
+    "SaraṇadukaVedanāttika",
+    "Vedanāttika"
+   ],
+   [
+    473,
+    "SaraṇadukaSanidassanattika",
+    "Sanidassanattika"
+   ],
+   [
+    562,
+    "KusalattikaSahetukaduka",
+    "Kusalattika"
+   ],
+   [
+    626,
+    "KusalattikaSaraṇaduka",
+    "Saraṇaduka"
+   ],
+   [
+    627,
+    "VedanāttikaSaraṇaduka",
+    "Vedanāttika"
+   ],
+   [
+    634,
+    "DassanattikaSaraṇaduka",
+    "Dassanattika"
+   ],
+   [
+    645,
+    "SanidassanattikaSaraṇaduka",
+    "Sanidassanattika"
+   ]
+  ],
+  "spurious": [
+   [
+    28,
+    "SaṁkiliṭṭhadukaPaccayavāraPaccayānulomaVibhaṅgavāra"
+   ],
+   [
+    30,
+    "SaṁkiliṭṭhadukaSaṁsaṭṭhavāra"
+   ],
+   [
+    68,
+    "DassanenapahātabbahetukadukaPaccayavāraPaccayānulomaVibhaṅgavāra"
+   ],
+   [
+    90,
+    "SavitakkadukaPaṭiccavāraPaccayānulomaVibhaṅgavāra"
+   ],
+   [
+    108,
+    "SappītikadukaPaṭiccavāraPaccayānulomaVibhaṅgavāra"
+   ],
+   [
+    128,
+    "UpekkhāsahagatadukaPaccayavāra"
+   ],
+   [
+    136,
+    "KāmāvacaradukaPaṭiccavāraPaccayānulomaVibhaṅgavāra"
+   ],
+   [
+    166,
+    "ArūpāvacaradukaPaṭiccavāraPaccayānulomaVibhaṅgavāra"
+   ],
+   [
+    187,
+    "A"
+   ]
+  ]
+ }
+}

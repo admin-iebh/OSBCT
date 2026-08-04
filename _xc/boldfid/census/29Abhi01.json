@@ -1,0 +1,194 @@
+{
+ "vol": "29Abhi01",
+ "stat": {
+  "page_lines": 8455,
+  "line_found": 8322,
+  "line_found_fwd": 8290,
+  "line_found_back": 17,
+  "line_absent": 133,
+  "page_runs_in_absent_lines": 16,
+  "page_bold_letters_in_absent_lines": 120,
+  "line_found_any": 15,
+  "page_run_boundary_splits": 26,
+  "page_runs": 176,
+  "page_runs_cls_H": 153,
+  "MISSED": 164,
+  "MISSED_H": 153,
+  "page_runs_cls_P": 23,
+  "MISSED_P": 11,
+  "page_runs_soft": 3,
+  "MISSED_soft": 3,
+  "EXACT": 12,
+  "EXACT_P": 12,
+  "in_data_not_drawn_spine": 12,
+  "in_data_not_drawn_spine_P": 12,
+  "corpus_runs": 12,
+  "corpus_runs_outside_page_stream": 1,
+  "pages_total": 325,
+  "pages_kept": 303,
+  "pages_outside_range": 20,
+  "pages_index": 2,
+  "extract_pages": 325,
+  "corpus_page_lo": 19,
+  "corpus_page_hi": 323,
+  "spans_on_verse_branch_ordinals": 33,
+  "chars_on_verse_branch_ordinals": 276,
+  "spans_in_data": 33,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 13,
+  "corpus_letters": 388266,
+  "known_letters": 383965,
+  "data_bold_letters": 276,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 276,
+  "page_bold_letters": 2587
+ },
+ "ex": {
+  "absent": [
+   [
+    318,
+    "Dhammasaṅgaṇīpāḷiyā"
+   ],
+   [
+    318,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    318,
+    "AA"
+   ],
+   [
+    318,
+    "AṭṭhindriyāniĀ"
+   ],
+   [
+    318,
+    "AnupādiṇṇaṁI"
+   ],
+   [
+    319,
+    "ECa"
+   ],
+   [
+    319,
+    "Ja"
+   ],
+   [
+    319,
+    "GaJivhāyatanaṁ"
+   ],
+   [
+    319,
+    "Gha"
+   ],
+   [
+    321,
+    "MaVa"
+   ],
+   [
+    321,
+    "Ra"
+   ],
+   [
+    321,
+    "La"
+   ]
+  ],
+  "missed_H": [
+   [
+    20,
+    "Abhidhammapiṭaka"
+   ],
+   [
+    20,
+    "Dhammasaṅgaṇīpāḷi"
+   ],
+   [
+    20,
+    "Mātikā"
+   ],
+   [
+    20,
+    "Tikamātikā"
+   ],
+   [
+    23,
+    "Dukamātikā"
+   ],
+   [
+    23,
+    "Hetugocchaka"
+   ],
+   [
+    23,
+    "Cūḷantaraduka"
+   ],
+   [
+    24,
+    "Āsavagocchaka"
+   ],
+   [
+    24,
+    "Saññojanagocchaka"
+   ],
+   [
+    25,
+    "Ganthagocchaka"
+   ],
+   [
+    26,
+    "Oghagocchaka"
+   ],
+   [
+    26,
+    "Yogagocchaka"
+   ]
+  ],
+  "missed_P": [
+   [
+    22,
+    "U"
+   ],
+   [
+    32,
+    "Ta"
+   ],
+   [
+    59,
+    "Ka"
+   ],
+   [
+    188,
+    "O"
+   ],
+   [
+    235,
+    "A"
+   ],
+   [
+    241,
+    "Sa"
+   ],
+   [
+    241,
+    "I"
+   ],
+   [
+    259,
+    "Ka"
+   ],
+   [
+    263,
+    "Ta"
+   ],
+   [
+    285,
+    "Ca"
+   ],
+   [
+    294,
+    "Ṭha"
+   ]
+  ]
+ }
+}

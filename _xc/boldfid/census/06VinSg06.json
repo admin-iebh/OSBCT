@@ -1,0 +1,115 @@
+{
+ "vol": "06VinSg06",
+ "stat": {
+  "page_lines": 13727,
+  "line_found": 13706,
+  "line_found_fwd": 13705,
+  "line_absent": 21,
+  "page_runs_in_absent_lines": 2,
+  "page_bold_letters_in_absent_lines": 17,
+  "line_found_back": 1,
+  "page_run_boundary_splits": 32,
+  "page_runs": 1018,
+  "page_runs_cls_H": 41,
+  "MISSED": 43,
+  "MISSED_H": 41,
+  "page_runs_cls_P": 977,
+  "EXACT": 975,
+  "EXACT_P": 975,
+  "in_data_not_drawn_spine": 975,
+  "in_data_not_drawn_spine_P": 975,
+  "MISSED_P": 2,
+  "corpus_runs": 975,
+  "corpus_runs_outside_page_stream": 1,
+  "pages_total": 473,
+  "pages_kept": 468,
+  "pages_outside_range": 5,
+  "pages_index": 0,
+  "extract_pages": 473,
+  "corpus_page_lo": 6,
+  "corpus_page_hi": 473,
+  "spans_on_verse_branch_ordinals": 1292,
+  "chars_on_verse_branch_ordinals": 13400,
+  "spans_in_data": 1292,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 213,
+  "corpus_letters": 740303,
+  "known_letters": 739838,
+  "data_bold_letters": 13400,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 13400,
+  "page_bold_letters": 14493
+ },
+ "ex": {
+  "absent": [
+   [
+    396,
+    "imesucatūsukārnesuekenapiratticchedohotiGaṇoticetthacattārovā"
+   ],
+   [
+    473,
+    "Nigamanakathā"
+   ]
+  ],
+  "missed_H": [
+   [
+    6,
+    "Vinayapiṭaka"
+   ],
+   [
+    6,
+    "Vinayasaṅgahaṭṭhakathā"
+   ],
+   [
+    6,
+    "Ganthārambhakathā"
+   ],
+   [
+    7,
+    "Divāseyyavinicchayakathā"
+   ],
+   [
+    9,
+    "Parikkhāravinicchayakathā"
+   ],
+   [
+    13,
+    "Bhesajjādikaraṇavinicchayakathā"
+   ],
+   [
+    20,
+    "Viññattivinicchayakathā"
+   ],
+   [
+    23,
+    "Kulasaṅgahavinicchayakathā"
+   ],
+   [
+    30,
+    "Macchamaṁsavinicchayakathā"
+   ],
+   [
+    33,
+    "Anāmāsavinicchayakathā"
+   ],
+   [
+    36,
+    "Adhiṭthānavikappanavinicchayakathā"
+   ],
+   [
+    46,
+    "Cīvaravippavāsavinicchayakathā"
+   ]
+  ],
+  "missed_P": [
+   [
+    91,
+    "Mañcapīṭhādisaṁghikasenāsanesupaṭipajjitabbavinicchayakathā"
+   ],
+   [
+    218,
+    "uposatho"
+   ]
+  ]
+ }
+}

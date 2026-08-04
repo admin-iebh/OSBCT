@@ -1,0 +1,207 @@
+{
+ "vol": "33Abhi05",
+ "stat": {
+  "page_lines": 8277,
+  "line_found": 8118,
+  "line_found_fwd": 7969,
+  "line_found_any": 54,
+  "line_found_back": 95,
+  "line_absent": 159,
+  "page_runs_in_absent_lines": 25,
+  "page_bold_letters_in_absent_lines": 276,
+  "page_run_boundary_splits": 102,
+  "page_runs": 474,
+  "page_runs_cls_H": 455,
+  "MISSED": 467,
+  "MISSED_H": 455,
+  "page_runs_soft": 2,
+  "MISSED_soft": 2,
+  "page_runs_cls_P": 19,
+  "MISSED_P": 12,
+  "EXACT": 7,
+  "EXACT_P": 7,
+  "in_data_not_drawn_spine": 7,
+  "in_data_not_drawn_spine_P": 7,
+  "corpus_runs": 8,
+  "corpus_runs_outside_page_stream": 1,
+  "SPURIOUS": 1,
+  "SPURIOUS_soft": 0,
+  "SPURIOUS_P": 1,
+  "pages_total": 282,
+  "pages_kept": 270,
+  "pages_outside_range": 11,
+  "pages_index": 1,
+  "extract_pages": 282,
+  "corpus_page_lo": 12,
+  "corpus_page_hi": 282,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 18,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 9,
+  "corpus_letters": 397985,
+  "known_letters": 391416,
+  "data_bold_letters": 170,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 170,
+  "page_bold_letters": 7000
+ },
+ "ex": {
+  "absent": [
+   [
+    277,
+    "Mūlayamakapāḷiyā"
+   ],
+   [
+    277,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    277,
+    "AKa"
+   ],
+   [
+    278,
+    "Khandhayamakapāḷiyā"
+   ],
+   [
+    278,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    278,
+    "Va"
+   ],
+   [
+    278,
+    "uppajjitthaSa"
+   ],
+   [
+    279,
+    "Āyatanayamakapāḷiyā"
+   ],
+   [
+    279,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    279,
+    "ĀTa"
+   ],
+   [
+    279,
+    "Ka"
+   ],
+   [
+    279,
+    "Gha"
+   ]
+  ],
+  "missed_H": [
+   [
+    12,
+    "Abhidhammapiṭaka"
+   ],
+   [
+    12,
+    "Mūlayamakapāḷi"
+   ],
+   [
+    12,
+    "Na"
+   ],
+   [
+    12,
+    "Mūlavārauddesa"
+   ],
+   [
+    12,
+    "Kusalapadanayacatukka"
+   ],
+   [
+    13,
+    "Akusalapadanayacatukka"
+   ],
+   [
+    14,
+    "Abyākatapadanayacatukka"
+   ],
+   [
+    16,
+    "Nāmapadanayacatukka"
+   ],
+   [
+    17,
+    "Hetuvārādiuddesa"
+   ],
+   [
+    17,
+    "Mūlavāraniddesa"
+   ],
+   [
+    17,
+    "Kusalapadanayacatukka"
+   ],
+   [
+    19,
+    "Akusalapadanayacatukka"
+   ]
+  ],
+  "missed_P": [
+   [
+    24,
+    "Na"
+   ],
+   [
+    42,
+    "Ya"
+   ],
+   [
+    82,
+    "Ca"
+   ],
+   [
+    82,
+    "Ra"
+   ],
+   [
+    82,
+    "Dha"
+   ],
+   [
+    92,
+    "Ya"
+   ],
+   [
+    180,
+    "Ya"
+   ],
+   [
+    206,
+    "Ma"
+   ],
+   [
+    207,
+    "Ya"
+   ],
+   [
+    208,
+    "Ga"
+   ],
+   [
+    208,
+    "Ra"
+   ],
+   [
+    227,
+    "Ta"
+   ]
+  ],
+  "spurious": [
+   [
+    246,
+    "PavattiUppādanirodhavāra"
+   ]
+  ]
+ }
+}

@@ -1,0 +1,192 @@
+{
+ "vol": "15An01",
+ "stat": {
+  "page_lines": 17102,
+  "line_found": 16167,
+  "line_found_fwd": 16013,
+  "line_found_back": 53,
+  "line_found_any": 101,
+  "line_absent": 935,
+  "page_runs_in_absent_lines": 38,
+  "page_bold_letters_in_absent_lines": 307,
+  "page_run_boundary_splits": 89,
+  "page_runs": 676,
+  "page_runs_cls_H": 634,
+  "MISSED": 676,
+  "MISSED_H": 634,
+  "page_runs_cls_P": 42,
+  "page_runs_soft": 4,
+  "MISSED_P": 42,
+  "MISSED_soft": 4,
+  "pages_total": 653,
+  "pages_kept": 613,
+  "pages_outside_range": 31,
+  "pages_index": 9,
+  "extract_pages": 653,
+  "corpus_page_lo": 32,
+  "corpus_page_hi": 653,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 0,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 0,
+  "corpus_letters": 783809,
+  "known_letters": 782963,
+  "data_bold_letters": 0,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 0,
+  "page_bold_letters": 9034
+ },
+ "ex": {
+  "absent": [
+   [
+    601,
+    "Pañcamopaṇṇāsakosamatto"
+   ],
+   [
+    613,
+    "Aṅguttaranikāyepaṭhamaganthe"
+   ],
+   [
+    613,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    613,
+    "AA"
+   ],
+   [
+    614,
+    "AA"
+   ],
+   [
+    614,
+    "AsappurisoI"
+   ],
+   [
+    616,
+    "KaKhaGa"
+   ],
+   [
+    616,
+    "KhīṇāsavoCa"
+   ],
+   [
+    618,
+    "TaDa"
+   ],
+   [
+    618,
+    "DaDveatthavase"
+   ],
+   [
+    620,
+    "PaPa"
+   ],
+   [
+    622,
+    "MaLa"
+   ]
+  ],
+  "missed_H": [
+   [
+    33,
+    "Aṅguttaranikāya"
+   ],
+   [
+    33,
+    "Ekakanipātapāḷi"
+   ],
+   [
+    33,
+    "Rūpādivagga"
+   ],
+   [
+    34,
+    "Nīvaraṇappahānavagga"
+   ],
+   [
+    36,
+    "Akammaniyavagga"
+   ],
+   [
+    38,
+    "Adantavagga"
+   ],
+   [
+    39,
+    "Paṇihitaacchavagga"
+   ],
+   [
+    41,
+    "Accharāsaṅghātavagga"
+   ],
+   [
+    43,
+    "Vīriyārambhādivagga"
+   ],
+   [
+    44,
+    "Kalyāṇamittādivagga"
+   ],
+   [
+    46,
+    "Pamādādivagga"
+   ],
+   [
+    48,
+    "Dutiyapamādādivagga"
+   ]
+  ],
+  "missed_P": [
+   [
+    55,
+    "La"
+   ],
+   [
+    56,
+    "Sa"
+   ],
+   [
+    56,
+    "Sa"
+   ],
+   [
+    57,
+    "Sa"
+   ],
+   [
+    58,
+    "Na"
+   ],
+   [
+    69,
+    "Ja"
+   ],
+   [
+    129,
+    "Ña"
+   ],
+   [
+    129,
+    "Ta"
+   ],
+   [
+    130,
+    "Tha"
+   ],
+   [
+    136,
+    "Da"
+   ],
+   [
+    140,
+    "Dha"
+   ],
+   [
+    142,
+    "Na"
+   ]
+  ]
+ }
+}

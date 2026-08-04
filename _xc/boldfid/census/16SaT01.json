@@ -1,0 +1,161 @@
+{
+ "vol": "16SaT01",
+ "stat": {
+  "page_lines": 9893,
+  "line_found": 9492,
+  "line_found_fwd": 9435,
+  "line_found_back": 12,
+  "line_absent": 401,
+  "page_runs_in_absent_lines": 16,
+  "page_bold_letters_in_absent_lines": 104,
+  "line_found_any": 45,
+  "page_run_boundary_splits": 229,
+  "page_runs": 6451,
+  "page_runs_cls_H": 309,
+  "MISSED": 312,
+  "MISSED_H": 309,
+  "page_runs_cls_P": 6142,
+  "EXACT": 6139,
+  "EXACT_P": 6139,
+  "in_data_not_drawn_spine": 6139,
+  "in_data_not_drawn_spine_P": 6139,
+  "page_runs_soft": 45,
+  "EXACT_soft": 45,
+  "MISSED_P": 3,
+  "corpus_runs": 6138,
+  "pages_total": 394,
+  "pages_kept": 357,
+  "pages_outside_range": 25,
+  "pages_index": 12,
+  "extract_pages": 394,
+  "corpus_page_lo": 25,
+  "corpus_page_hi": 391,
+  "spans_on_verse_branch_ordinals": 9902,
+  "chars_on_verse_branch_ordinals": 84331,
+  "spans_in_data": 9923,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 288,
+  "corpus_letters": 491354,
+  "known_letters": 490977,
+  "data_bold_letters": 84511,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 84511,
+  "page_bold_letters": 90550
+ },
+ "ex": {
+  "absent": [
+   [
+    372,
+    "Saṁyuttaṭīkāyapaṭhamabhāge"
+   ],
+   [
+    372,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    372,
+    "AA"
+   ],
+   [
+    373,
+    "AA"
+   ],
+   [
+    375,
+    "AA"
+   ],
+   [
+    377,
+    "IĪU"
+   ],
+   [
+    379,
+    "KaKa"
+   ],
+   [
+    381,
+    "GhaCha"
+   ],
+   [
+    383,
+    "TaDa"
+   ],
+   [
+    383,
+    "DānapatiDha"
+   ],
+   [
+    385,
+    "NaPa"
+   ],
+   [
+    385,
+    "PaPaṭibhānaṁ"
+   ]
+  ],
+  "missed_H": [
+   [
+    26,
+    "Suttantapiṭaka"
+   ],
+   [
+    26,
+    "Sagāthāvagga"
+   ],
+   [
+    26,
+    "Saṁyuttaṭīkā"
+   ],
+   [
+    26,
+    "Ganthārambhakathāvaṇṇanā"
+   ],
+   [
+    45,
+    "Devatāsaṁyutta"
+   ],
+   [
+    45,
+    "Naḷavagga"
+   ],
+   [
+    45,
+    "Oghataraṇasuttavaṇṇanā"
+   ],
+   [
+    75,
+    "Nettinayavaṇṇanā"
+   ],
+   [
+    86,
+    "Nimokkhasuttavaṇṇanā"
+   ],
+   [
+    88,
+    "Upanīyasuttavaṇṇanā"
+   ],
+   [
+    91,
+    "Accentisuttavaṇṇanā"
+   ],
+   [
+    92,
+    "Katichindasuttavaṇṇanā"
+   ]
+  ],
+  "missed_P": [
+   [
+    92,
+    "Ca"
+   ],
+   [
+    220,
+    "La"
+   ],
+   [
+    315,
+    "Sa"
+   ]
+  ]
+ }
+}

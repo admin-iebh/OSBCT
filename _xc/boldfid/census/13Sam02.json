@@ -1,0 +1,192 @@
+{
+ "vol": "13Sam02",
+ "stat": {
+  "page_lines": 16836,
+  "line_found": 16311,
+  "line_found_fwd": 16207,
+  "line_absent": 525,
+  "page_runs_in_absent_lines": 53,
+  "page_bold_letters_in_absent_lines": 610,
+  "line_found_back": 74,
+  "line_found_any": 30,
+  "page_run_boundary_splits": 84,
+  "page_runs": 890,
+  "page_runs_cls_H": 831,
+  "MISSED": 890,
+  "MISSED_H": 831,
+  "page_runs_soft": 7,
+  "MISSED_soft": 7,
+  "page_runs_cls_P": 59,
+  "MISSED_P": 59,
+  "pages_total": 607,
+  "pages_kept": 586,
+  "pages_outside_range": 20,
+  "pages_index": 1,
+  "extract_pages": 607,
+  "corpus_page_lo": 19,
+  "corpus_page_hi": 605,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 0,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 0,
+  "corpus_letters": 810206,
+  "known_letters": 805560,
+  "data_bold_letters": 0,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 0,
+  "page_bold_letters": 14483
+ },
+ "ex": {
+  "absent": [
+   [
+    61,
+    "Upayavagga"
+   ],
+   [
+    79,
+    "Arahantavagga"
+   ],
+   [
+    85,
+    "Khajjanīyavagga"
+   ],
+   [
+    104,
+    "Theravagga"
+   ],
+   [
+    130,
+    "Pupphavagga"
+   ],
+   [
+    146,
+    "Antavagga"
+   ],
+   [
+    150,
+    "Dhammakathikavagga"
+   ],
+   [
+    157,
+    "Avijjāvagga"
+   ],
+   [
+    163,
+    "Kukkuḷavagga"
+   ],
+   [
+    166,
+    "Diṭṭhivagga"
+   ],
+   [
+    277,
+    "Avijjāvagga"
+   ],
+   [
+    281,
+    "Migajālavagga"
+   ]
+  ],
+  "missed_H": [
+   [
+    19,
+    "Saṁyuttanikāya"
+   ],
+   [
+    19,
+    "Khandhavaggasaṁyuttapāḷi"
+   ],
+   [
+    19,
+    "Khandhasaṁyutta"
+   ],
+   [
+    19,
+    "Nakulapituvagga"
+   ],
+   [
+    19,
+    "Nakulapitusutta"
+   ],
+   [
+    23,
+    "Devadahasutta"
+   ],
+   [
+    26,
+    "Hāliddikānisutta"
+   ],
+   [
+    29,
+    "Dutiyahāliddikānisutta"
+   ],
+   [
+    30,
+    "Samādhisutta"
+   ],
+   [
+    32,
+    "Paṭisallāṇasutta"
+   ],
+   [
+    32,
+    "Upādāparitassanāsutta"
+   ],
+   [
+    34,
+    "Dutiyaupādāparitassanāsutta"
+   ]
+  ],
+  "missed_P": [
+   [
+    26,
+    "O"
+   ],
+   [
+    26,
+    "Ka"
+   ],
+   [
+    27,
+    "Ka"
+   ],
+   [
+    27,
+    "Ga"
+   ],
+   [
+    27,
+    "Ra"
+   ],
+   [
+    30,
+    "Ca"
+   ],
+   [
+    32,
+    "Cha"
+   ],
+   [
+    32,
+    "Ta"
+   ],
+   [
+    39,
+    "Da"
+   ],
+   [
+    51,
+    "Dha"
+   ],
+   [
+    52,
+    "Na"
+   ],
+   [
+    54,
+    "Pa"
+   ]
+  ]
+ }
+}

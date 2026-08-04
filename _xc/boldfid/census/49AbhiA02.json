@@ -1,0 +1,203 @@
+{
+ "vol": "49AbhiA02",
+ "stat": {
+  "page_lines": 14767,
+  "line_found": 14588,
+  "line_found_fwd": 14549,
+  "line_found_back": 15,
+  "line_absent": 179,
+  "page_runs_in_absent_lines": 17,
+  "page_bold_letters_in_absent_lines": 178,
+  "line_found_any": 24,
+  "page_run_boundary_splits": 62,
+  "page_runs": 3069,
+  "page_runs_cls_H": 174,
+  "MISSED": 185,
+  "MISSED_H": 174,
+  "page_runs_cls_P": 2895,
+  "EXACT": 2883,
+  "EXACT_P": 2883,
+  "in_data_not_drawn_spine": 2884,
+  "in_data_not_drawn_spine_P": 2884,
+  "page_runs_soft": 18,
+  "EXACT_soft": 18,
+  "MISSED_P": 11,
+  "MISALIGNED_part": 1,
+  "MISALIGNED_part_P": 1,
+  "corpus_runs_outside_page_stream": 7,
+  "corpus_runs": 2882,
+  "pages_total": 530,
+  "pages_kept": 514,
+  "pages_outside_range": 11,
+  "pages_index": 5,
+  "extract_pages": 530,
+  "corpus_page_lo": 10,
+  "corpus_page_hi": 527,
+  "spans_on_verse_branch_ordinals": 4368,
+  "chars_on_verse_branch_ordinals": 38786,
+  "spans_in_data": 4387,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 301,
+  "corpus_letters": 771744,
+  "known_letters": 770785,
+  "data_bold_letters": 39074,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 39074,
+  "page_bold_letters": 42723
+ },
+ "ex": {
+  "absent": [
+   [
+    384,
+    "idhāpikathitaṁYenañāṇenātiyenapaṭibhānapaṭisambhidāñāṇenaTni"
+   ],
+   [
+    487,
+    "titthāyatanāniPurisapuggalotisattoKmañcapurisotipipuggalotipivutte"
+   ],
+   [
+    516,
+    "Nigamanakathā"
+   ],
+   [
+    518,
+    "Sammohavinodanīaṭṭhakathāya"
+   ],
+   [
+    518,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    518,
+    "AA"
+   ],
+   [
+    519,
+    "AU"
+   ],
+   [
+    519,
+    "ĀdāyoE"
+   ],
+   [
+    519,
+    "UKammāyatanaṁ"
+   ],
+   [
+    521,
+    "DaPa"
+   ],
+   [
+    523,
+    "MaLa"
+   ],
+   [
+    523,
+    "MahicchatāVa"
+   ]
+  ],
+  "missed_H": [
+   [
+    10,
+    "Abhidhammapiṭaka"
+   ],
+   [
+    10,
+    "Sammohavinodanīaṭṭhakathā"
+   ],
+   [
+    10,
+    "Khandhavibhaṅga"
+   ],
+   [
+    10,
+    "Suttantabhājanīyavaṇṇanā"
+   ],
+   [
+    12,
+    "Rūpakkhandhaniddesa"
+   ],
+   [
+    21,
+    "Vedanākkhandhaniddesa"
+   ],
+   [
+    27,
+    "Saññākkhandhaniddesa"
+   ],
+   [
+    28,
+    "Saṅkhārakkhandhaniddesa"
+   ],
+   [
+    29,
+    "Viññāṇakkhandhaniddesa"
+   ],
+   [
+    29,
+    "Pakiṇṇakakathā"
+   ],
+   [
+    36,
+    "Kamādivinicchayakathā"
+   ],
+   [
+    42,
+    "Abhidhammabhājanīyavaṇṇanā"
+   ]
+  ],
+  "missed_P": [
+   [
+    277,
+    "O"
+   ],
+   [
+    324,
+    "A"
+   ],
+   [
+    326,
+    "Ā"
+   ],
+   [
+    327,
+    "I"
+   ],
+   [
+    328,
+    "Ya"
+   ],
+   [
+    461,
+    "I"
+   ],
+   [
+    462,
+    "Ka"
+   ],
+   [
+    463,
+    "Na"
+   ],
+   [
+    470,
+    "Dha"
+   ],
+   [
+    476,
+    "Ā"
+   ],
+   [
+    479,
+    "Ha"
+   ]
+  ],
+  "part": [
+   [
+    490,
+    "paribhavoRa",
+    "paribhavo"
+   ]
+  ]
+ }
+}

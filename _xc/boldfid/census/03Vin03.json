@@ -1,0 +1,177 @@
+{
+ "vol": "03Vin03",
+ "stat": {
+  "page_lines": 14699,
+  "line_found": 14634,
+  "line_found_fwd": 14476,
+  "line_absent": 65,
+  "page_runs_in_absent_lines": 8,
+  "page_bold_letters_in_absent_lines": 159,
+  "line_found_back": 16,
+  "line_found_any": 142,
+  "page_run_boundary_splits": 25,
+  "page_runs": 328,
+  "page_runs_cls_H": 285,
+  "page_runs_soft": 2,
+  "MISSED": 296,
+  "MISSED_H": 285,
+  "MISSED_soft": 2,
+  "page_runs_cls_P": 43,
+  "MISSED_P": 11,
+  "EXACT": 32,
+  "EXACT_P": 32,
+  "in_data_not_drawn_spine": 32,
+  "in_data_not_drawn_spine_P": 32,
+  "corpus_runs": 32,
+  "pages_total": 543,
+  "pages_kept": 529,
+  "pages_outside_range": 14,
+  "pages_index": 0,
+  "extract_pages": 673,
+  "corpus_page_lo": 15,
+  "corpus_page_hi": 673,
+  "spans_on_verse_branch_ordinals": 56,
+  "chars_on_verse_branch_ordinals": 428,
+  "spans_in_data": 56,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 3,
+  "corpus_letters": 759002,
+  "known_letters": 748525,
+  "data_bold_letters": 428,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 428,
+  "page_bold_letters": 6667
+ },
+ "ex": {
+  "absent": [
+   [
+    527,
+    "MahāvaggapāḷiyāAṭṭhakathāya"
+   ],
+   [
+    527,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    550,
+    "Mahāvaggapāḷiyā"
+   ],
+   [
+    550,
+    "Nāmānaṁanukkamaṇikā"
+   ],
+   [
+    555,
+    "Mahāvaggapāḷiyā"
+   ],
+   [
+    555,
+    "Nānāpāṭhā"
+   ],
+   [
+    568,
+    "Mahāvaggapāḷiyā"
+   ],
+   [
+    568,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ]
+  ],
+  "missed_H": [
+   [
+    15,
+    "Vinayapiṭaka"
+   ],
+   [
+    15,
+    "Mahāvaggapāḷi"
+   ],
+   [
+    15,
+    "Mahākhandhaka"
+   ],
+   [
+    15,
+    "Bodhikathā"
+   ],
+   [
+    17,
+    "Ajapālakathā"
+   ],
+   [
+    17,
+    "Mucalindakathā"
+   ],
+   [
+    18,
+    "Rājāyatanakathā"
+   ],
+   [
+    19,
+    "Brahmayācanakathā"
+   ],
+   [
+    24,
+    "Pañcavaggiyakathā"
+   ],
+   [
+    35,
+    "Pabbajjākathā"
+   ],
+   [
+    41,
+    "Mārakathā"
+   ],
+   [
+    42,
+    "Pabbajjūpasampadākathā"
+   ]
+  ],
+  "missed_P": [
+   [
+    149,
+    "Āpattiyāadassaneukkhittakavatthūni"
+   ],
+   [
+    213,
+    "Pañcannaṁappahitepianujānanā"
+   ],
+   [
+    219,
+    "Sattannaṁappahitepianujānanā"
+   ],
+   [
+    439,
+    "Saṁghebhinnecīvaruppādakathā"
+   ],
+   [
+    478,
+    "Adassaneukkhepanīyakammapaṭippassaddhikathā"
+   ],
+   [
+    479,
+    "Appaṭikammeukkhepanīyakammapaṭippassaddhikathā"
+   ],
+   [
+    479,
+    "Appaṭinissaggeukkhepanīyakammapaṭippassaddhikathā"
+   ],
+   [
+    484,
+    "Appaṭinissaggeukkhepanīyakammavivādakathā"
+   ],
+   [
+    488,
+    "Adassaneukkhepanīyakammapaṭippassaddhikathā"
+   ],
+   [
+    488,
+    "Appaṭikammeukkhepanīyakammapaṭippassaddhikathā"
+   ],
+   [
+    489,
+    "Appaṭinissaggeukkhepanīyakammapaṭippassaddhikathā"
+   ]
+  ]
+ }
+}

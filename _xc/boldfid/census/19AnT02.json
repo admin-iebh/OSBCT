@@ -1,0 +1,166 @@
+{
+ "vol": "19AnT02",
+ "stat": {
+  "page_lines": 11356,
+  "line_found": 10945,
+  "line_found_fwd": 10907,
+  "line_found_back": 7,
+  "line_absent": 411,
+  "page_runs_in_absent_lines": 16,
+  "page_bold_letters_in_absent_lines": 101,
+  "line_found_any": 31,
+  "page_run_boundary_splits": 59,
+  "page_runs": 5940,
+  "page_runs_cls_H": 333,
+  "MISSED": 335,
+  "MISSED_H": 333,
+  "page_runs_cls_P": 5607,
+  "EXACT": 5604,
+  "EXACT_P": 5604,
+  "in_data_not_drawn_spine": 5605,
+  "in_data_not_drawn_spine_P": 5605,
+  "page_runs_soft": 28,
+  "EXACT_soft": 28,
+  "MISSED_P": 2,
+  "MISALIGNED_part": 1,
+  "MISALIGNED_part_P": 1,
+  "corpus_runs": 5605,
+  "pages_total": 435,
+  "pages_kept": 408,
+  "pages_outside_range": 17,
+  "pages_index": 10,
+  "extract_pages": 435,
+  "corpus_page_lo": 18,
+  "corpus_page_hi": 435,
+  "spans_on_verse_branch_ordinals": 9472,
+  "chars_on_verse_branch_ordinals": 84950,
+  "spans_in_data": 9481,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 353,
+  "corpus_letters": 572573,
+  "known_letters": 572128,
+  "data_bold_letters": 85062,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 85062,
+  "page_bold_letters": 91726
+ },
+ "ex": {
+  "absent": [
+   [
+    414,
+    "Aṅguttaraṭīkāyadutiyabhāge"
+   ],
+   [
+    414,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    414,
+    "AA"
+   ],
+   [
+    415,
+    "AA"
+   ],
+   [
+    417,
+    "AA"
+   ],
+   [
+    419,
+    "UUŪ"
+   ],
+   [
+    421,
+    "KaKha"
+   ],
+   [
+    421,
+    "KuhanatthaṁGa"
+   ],
+   [
+    423,
+    "TaTha"
+   ],
+   [
+    425,
+    "NaPa"
+   ],
+   [
+    427,
+    "PaPa"
+   ],
+   [
+    427,
+    "PāsādikāPha"
+   ]
+  ],
+  "missed_H": [
+   [
+    18,
+    "Suttantapiṭaka"
+   ],
+   [
+    18,
+    "Dukādinipāta"
+   ],
+   [
+    18,
+    "Aṅguttaraṭīkā"
+   ],
+   [
+    18,
+    "Dukanipāta"
+   ],
+   [
+    18,
+    "Paṭhamapaṇṇāsaka"
+   ],
+   [
+    18,
+    "Kammakāraṇavagga"
+   ],
+   [
+    18,
+    "Vajjasuttavaṇṇanā"
+   ],
+   [
+    19,
+    "Padhānasuttavaṇṇanā"
+   ],
+   [
+    20,
+    "Tapanīyasuttavaṇṇanā"
+   ],
+   [
+    21,
+    "Upaññātasuttavaṇṇanā"
+   ],
+   [
+    21,
+    "Saññojanasuttavaṇṇanā"
+   ],
+   [
+    22,
+    "Kaṇhasuttavaṇṇanā"
+   ]
+  ],
+  "missed_P": [
+   [
+    109,
+    "Pa"
+   ],
+   [
+    246,
+    "Da"
+   ]
+  ],
+  "part": [
+   [
+    255,
+    "virāgoE",
+    "virāgo"
+   ]
+  ]
+ }
+}

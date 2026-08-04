@@ -1,0 +1,192 @@
+{
+ "vol": "14Sam03",
+ "stat": {
+  "page_lines": 12198,
+  "line_found": 11701,
+  "line_found_fwd": 11656,
+  "line_absent": 497,
+  "page_runs_in_absent_lines": 19,
+  "page_bold_letters_in_absent_lines": 251,
+  "line_found_back": 20,
+  "line_found_any": 25,
+  "page_run_boundary_splits": 124,
+  "page_runs": 863,
+  "page_runs_cls_H": 834,
+  "MISSED": 863,
+  "MISSED_H": 834,
+  "page_runs_cls_P": 29,
+  "MISSED_P": 29,
+  "page_runs_soft": 6,
+  "MISSED_soft": 6,
+  "pages_total": 455,
+  "pages_kept": 433,
+  "pages_outside_range": 18,
+  "pages_index": 4,
+  "extract_pages": 455,
+  "corpus_page_lo": 19,
+  "corpus_page_hi": 455,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 0,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 0,
+  "corpus_letters": 571218,
+  "known_letters": 570542,
+  "data_bold_letters": 0,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 0,
+  "page_bold_letters": 12960
+ },
+ "ex": {
+  "absent": [
+   [
+    430,
+    "Manussacutidevanirayādisutta"
+   ],
+   [
+    435,
+    "Mahāvaggasaṁyuttapāḷiyā"
+   ],
+   [
+    435,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    435,
+    "AA"
+   ],
+   [
+    436,
+    "AĀ"
+   ],
+   [
+    436,
+    "ĀUpahaccaparinibbāyī"
+   ],
+   [
+    438,
+    "CaTa"
+   ],
+   [
+    438,
+    "CorakathaṁDa"
+   ],
+   [
+    438,
+    "Ña"
+   ],
+   [
+    440,
+    "PhaMa"
+   ],
+   [
+    442,
+    "SaSa"
+   ],
+   [
+    445,
+    "Mahāvaggasaṁyuttapāḷiyā"
+   ]
+  ],
+  "missed_H": [
+   [
+    19,
+    "Saṁyuttanikāya"
+   ],
+   [
+    19,
+    "Mahāvaggasaṁyuttapāḷi"
+   ],
+   [
+    19,
+    "Maggasaṁyutta"
+   ],
+   [
+    19,
+    "Avijjāvagga"
+   ],
+   [
+    19,
+    "Avijjāsutta"
+   ],
+   [
+    20,
+    "Upaḍḍhasutta"
+   ],
+   [
+    21,
+    "Sāriputtasutta"
+   ],
+   [
+    22,
+    "Jāṇussoṇibrāhmaṇasutta"
+   ],
+   [
+    24,
+    "Kimatthiyasutta"
+   ],
+   [
+    25,
+    "Paṭhamaaññatarabhikkhusutta"
+   ],
+   [
+    25,
+    "Dutiyaaññatarabhikkhusutta"
+   ],
+   [
+    25,
+    "Vibhaṅgasutta"
+   ]
+  ],
+  "missed_P": [
+   [
+    36,
+    "A"
+   ],
+   [
+    36,
+    "A"
+   ],
+   [
+    37,
+    "Ka"
+   ],
+   [
+    38,
+    "Ā"
+   ],
+   [
+    38,
+    "I"
+   ],
+   [
+    38,
+    "Sa"
+   ],
+   [
+    48,
+    "Ma"
+   ],
+   [
+    48,
+    "E"
+   ],
+   [
+    76,
+    "Ka"
+   ],
+   [
+    106,
+    "Cha"
+   ],
+   [
+    144,
+    "Dha"
+   ],
+   [
+    145,
+    "Ta"
+   ]
+  ]
+ }
+}

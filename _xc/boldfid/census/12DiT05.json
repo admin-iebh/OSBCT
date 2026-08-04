@@ -1,0 +1,157 @@
+{
+ "vol": "12DiT05",
+ "stat": {
+  "page_lines": 8562,
+  "line_found": 8306,
+  "line_found_fwd": 8273,
+  "line_found_back": 12,
+  "line_absent": 256,
+  "page_runs_in_absent_lines": 14,
+  "page_bold_letters_in_absent_lines": 103,
+  "line_found_any": 21,
+  "page_run_boundary_splits": 121,
+  "page_runs": 5792,
+  "page_runs_cls_H": 152,
+  "MISSED": 154,
+  "MISSED_H": 152,
+  "page_runs_cls_P": 5640,
+  "EXACT": 5638,
+  "EXACT_P": 5638,
+  "in_data_not_drawn_spine": 5638,
+  "in_data_not_drawn_spine_P": 5638,
+  "page_runs_soft": 20,
+  "EXACT_soft": 20,
+  "MISSED_P": 2,
+  "corpus_runs": 5629,
+  "pages_total": 313,
+  "pages_kept": 299,
+  "pages_outside_range": 9,
+  "pages_index": 5,
+  "extract_pages": 313,
+  "corpus_page_lo": 10,
+  "corpus_page_hi": 313,
+  "spans_on_verse_branch_ordinals": 9132,
+  "chars_on_verse_branch_ordinals": 79361,
+  "spans_in_data": 9222,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 296,
+  "corpus_letters": 441917,
+  "known_letters": 441609,
+  "data_bold_letters": 80172,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 80172,
+  "page_bold_letters": 83846
+ },
+ "ex": {
+  "absent": [
+   [
+    300,
+    "Nigamanakathāvaṇṇanā"
+   ],
+   [
+    302,
+    "Pāthikavaggaṭīkāya"
+   ],
+   [
+    302,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    302,
+    "AA"
+   ],
+   [
+    303,
+    "AA"
+   ],
+   [
+    305,
+    "AĀ"
+   ],
+   [
+    305,
+    "IĪ"
+   ],
+   [
+    307,
+    "KaKa"
+   ],
+   [
+    309,
+    "JaTa"
+   ],
+   [
+    309,
+    "JhaÑaTha"
+   ],
+   [
+    309,
+    "TaDamanādīhi"
+   ],
+   [
+    311,
+    "NaNa"
+   ]
+  ],
+  "missed_H": [
+   [
+    10,
+    "Dīghanikāya"
+   ],
+   [
+    10,
+    "Pāthikavaggaṭīkā"
+   ],
+   [
+    10,
+    "Pāthikasutta"
+   ],
+   [
+    10,
+    "Sunakkhattavatthuvaṇṇanā"
+   ],
+   [
+    13,
+    "Korakhattiyavatthuvaṇṇanā"
+   ],
+   [
+    15,
+    "Acelakaḷāramaṭṭakavatthuvaṇṇanā"
+   ],
+   [
+    16,
+    "Acelapāthikaputtavatthuvaṇṇanā"
+   ],
+   [
+    17,
+    "Iddhipāṭihāriyakathāvaṇṇanā"
+   ],
+   [
+    20,
+    "Aggaññapaññattikathāvaṇṇanā"
+   ],
+   [
+    23,
+    "Udumbarikasutta"
+   ],
+   [
+    23,
+    "Nigrodhaparibbājakavatthuvaṇṇanā"
+   ],
+   [
+    26,
+    "Tapojigucchāvādavaṇṇanā"
+   ]
+  ],
+  "missed_P": [
+   [
+    105,
+    "Ṭha"
+   ],
+   [
+    132,
+    "U"
+   ]
+  ]
+ }
+}

@@ -1,0 +1,186 @@
+{
+ "vol": "16SamA03",
+ "stat": {
+  "page_lines": 10104,
+  "line_found": 9414,
+  "line_found_fwd": 9311,
+  "line_absent": 690,
+  "page_runs_in_absent_lines": 28,
+  "page_bold_letters_in_absent_lines": 246,
+  "line_found_any": 84,
+  "line_found_back": 19,
+  "page_run_boundary_splits": 143,
+  "page_runs": 3158,
+  "page_runs_cls_H": 506,
+  "MISSED": 515,
+  "MISSED_H": 506,
+  "page_runs_cls_P": 2652,
+  "EXACT": 2643,
+  "EXACT_P": 2643,
+  "in_data_not_drawn_spine": 2643,
+  "in_data_not_drawn_spine_P": 2643,
+  "page_runs_soft": 77,
+  "EXACT_soft": 76,
+  "MISSED_P": 9,
+  "MISSED_soft": 1,
+  "corpus_runs": 2643,
+  "pages_total": 420,
+  "pages_kept": 363,
+  "pages_outside_range": 43,
+  "pages_index": 14,
+  "extract_pages": 420,
+  "corpus_page_lo": 24,
+  "corpus_page_hi": 400,
+  "spans_on_verse_branch_ordinals": 4636,
+  "chars_on_verse_branch_ordinals": 39808,
+  "spans_in_data": 4636,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 363,
+  "corpus_letters": 475211,
+  "known_letters": 475165,
+  "data_bold_letters": 39808,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 39808,
+  "page_bold_letters": 51000
+ },
+ "ex": {
+  "absent": [
+   [
+    363,
+    "Nigamanakathā"
+   ],
+   [
+    366,
+    "Saḷāyatanavaggamahāvaggasaṁyuttaṭṭhakathāya"
+   ],
+   [
+    366,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    366,
+    "AA"
+   ],
+   [
+    367,
+    "AA"
+   ],
+   [
+    369,
+    "AA"
+   ],
+   [
+    371,
+    "ĀĀ"
+   ],
+   [
+    371,
+    "ĀraddhoI"
+   ],
+   [
+    373,
+    "EEvaṁvācaṁbhāsati"
+   ],
+   [
+    375,
+    "KaKa"
+   ],
+   [
+    375,
+    "KutoniccaṁGa"
+   ],
+   [
+    377,
+    "ChaJa"
+   ]
+  ],
+  "missed_H": [
+   [
+    24,
+    "Saḷāyatanavagga"
+   ],
+   [
+    24,
+    "Saṁyuttaṭṭhakathā"
+   ],
+   [
+    24,
+    "Saḷāyatanasaṁyutta"
+   ],
+   [
+    24,
+    "Aniccavagga"
+   ],
+   [
+    24,
+    "Ajjhattāniccasuttavaṇṇanā"
+   ],
+   [
+    25,
+    "Ajjhattadukkhasuttādivaṇṇanā"
+   ],
+   [
+    25,
+    "Bāhirāniccasuttādivaṇṇanā"
+   ],
+   [
+    26,
+    "Ajjhattāniccātītānāgatasuttādivaṇṇanā"
+   ],
+   [
+    26,
+    "Yamakavagga"
+   ],
+   [
+    26,
+    "Paṭhamapubbesambodhasuttādivaṇṇanā"
+   ],
+   [
+    26,
+    "Paṭhamanoceassādasuttādivaṇṇanā"
+   ],
+   [
+    27,
+    "Paṭhamābhinandasuttādivaṇṇanā"
+   ]
+  ],
+  "missed_P": [
+   [
+    41,
+    "Ya"
+   ],
+   [
+    64,
+    "E"
+   ],
+   [
+    68,
+    "A"
+   ],
+   [
+    68,
+    "A"
+   ],
+   [
+    69,
+    "Pa"
+   ],
+   [
+    75,
+    "U"
+   ],
+   [
+    167,
+    "E"
+   ],
+   [
+    201,
+    "Ka"
+   ],
+   [
+    264,
+    "Bha"
+   ]
+  ]
+ }
+}

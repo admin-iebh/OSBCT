@@ -1,0 +1,199 @@
+{
+ "vol": "36KhuA17",
+ "stat": {
+  "page_lines": 16994,
+  "line_found": 15403,
+  "line_found_fwd": 15085,
+  "line_absent": 1591,
+  "page_runs_in_absent_lines": 70,
+  "page_bold_letters_in_absent_lines": 460,
+  "line_found_back": 191,
+  "line_found_any": 127,
+  "page_run_boundary_splits": 24,
+  "page_runs": 1188,
+  "page_runs_cls_H": 194,
+  "MISSED": 241,
+  "MISSED_H": 194,
+  "page_runs_cls_P": 994,
+  "EXACT": 947,
+  "EXACT_P": 947,
+  "in_data_not_drawn_spine": 947,
+  "in_data_not_drawn_spine_P": 947,
+  "MISSED_P": 47,
+  "page_runs_soft": 17,
+  "MISSED_soft": 3,
+  "EXACT_soft": 14,
+  "corpus_runs": 947,
+  "corpus_runs_outside_page_stream": 7,
+  "pages_total": 628,
+  "pages_kept": 591,
+  "pages_outside_range": 12,
+  "pages_index": 25,
+  "extract_pages": 628,
+  "corpus_page_lo": 11,
+  "corpus_page_hi": 624,
+  "spans_on_verse_branch_ordinals": 1890,
+  "chars_on_verse_branch_ordinals": 12560,
+  "spans_in_data": 2075,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 174,
+  "corpus_letters": 800468,
+  "known_letters": 786137,
+  "data_bold_letters": 14477,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 14477,
+  "page_bold_letters": 18373
+ },
+ "ex": {
+  "absent": [
+   [
+    549,
+    "Jātakaṭṭhakathāyapaṭhamabhāge"
+   ],
+   [
+    549,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    549,
+    "AA"
+   ],
+   [
+    549,
+    "AAṭṭhaguṇasamupetaṁ"
+   ],
+   [
+    550,
+    "AA"
+   ],
+   [
+    550,
+    "ApiAsaññino"
+   ],
+   [
+    552,
+    "UO"
+   ],
+   [
+    552,
+    "UbbhataṁKa"
+   ],
+   [
+    554,
+    "GaGhaJaJha"
+   ],
+   [
+    554,
+    "CaCha"
+   ],
+   [
+    554,
+    "CeJīvitāvaraṁ"
+   ],
+   [
+    554,
+    "Ña"
+   ]
+  ],
+  "missed_H": [
+   [
+    11,
+    "Khuddakanikāya"
+   ],
+   [
+    11,
+    "Jātakaṭṭhakathā"
+   ],
+   [
+    11,
+    "Paṭhamobhāgo"
+   ],
+   [
+    11,
+    "Ganthārambhakathā"
+   ],
+   [
+    12,
+    "Nidānakathā"
+   ],
+   [
+    12,
+    "Dūrenidānakathā"
+   ],
+   [
+    13,
+    "Sumedhakathā"
+   ],
+   [
+    66,
+    "Avidūrenidānakathā"
+   ],
+   [
+    99,
+    "Santikenidānakathā"
+   ],
+   [
+    120,
+    "Nidānakathāniṭṭhitā"
+   ],
+   [
+    121,
+    "Ekakanipāta"
+   ],
+   [
+    121,
+    "Apaṇṇakavagga"
+   ]
+  ],
+  "missed_P": [
+   [
+    24,
+    "Da"
+   ],
+   [
+    48,
+    "Pa"
+   ],
+   [
+    83,
+    "Jātakaṭṭhakathāya"
+   ],
+   [
+    84,
+    "A"
+   ],
+   [
+    85,
+    "A"
+   ],
+   [
+    85,
+    "A"
+   ],
+   [
+    85,
+    "A"
+   ],
+   [
+    88,
+    "Ā"
+   ],
+   [
+    89,
+    "I"
+   ],
+   [
+    89,
+    "I"
+   ],
+   [
+    94,
+    "E"
+   ],
+   [
+    95,
+    "E"
+   ]
+  ]
+ }
+}

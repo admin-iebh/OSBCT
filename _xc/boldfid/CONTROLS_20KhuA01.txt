@@ -1,0 +1,7 @@
+20KhuA01  base: page_runs=1060  EXACT=922  MISSED=137  MISALIGNED_part=1  MISALIGNED_long=0  SPURIOUS=0
+  nobold       moved   1846 run-verdicts   page_runs=1060  EXACT=0  MISSED=1060  MISALIGNED_part=0  MISALIGNED_long=0  SPURIOUS=0
+  wrongvol     moved   5246 run-verdicts   page_runs=1060  EXACT=1  MISSED=848  MISALIGNED_part=181  MISALIGNED_long=30  SPURIOUS=3404
+  shiftspans   moved   2087 run-verdicts   page_runs=1060  EXACT=0  MISSED=317  MISALIGNED_part=742  MISALIGNED_long=1  SPURIOUS=243
+  halfspans    moved   1062 run-verdicts   page_runs=1060  EXACT=391  MISSED=360  MISALIGNED_part=309  MISALIGNED_long=0  SPURIOUS=0
+  widenspans   moved   1760 run-verdicts   page_runs=1060  EXACT=43  MISSED=136  MISALIGNED_part=1  MISALIGNED_long=880  SPURIOUS=0
+  pageshift    moved   2301 run-verdicts   page_runs=1198  EXACT=0  MISSED=580  MISALIGNED_part=577  MISALIGNED_long=41  SPURIOUS=319

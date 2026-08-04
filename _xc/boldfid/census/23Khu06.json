@@ -1,0 +1,197 @@
+{
+ "vol": "23Khu06",
+ "stat": {
+  "page_lines": 12831,
+  "line_found": 10916,
+  "line_found_fwd": 10215,
+  "line_found_back": 229,
+  "line_found_any": 472,
+  "line_absent": 1915,
+  "page_runs_in_absent_lines": 52,
+  "page_bold_letters_in_absent_lines": 300,
+  "page_run_boundary_splits": 13,
+  "page_runs": 177,
+  "page_runs_cls_H": 67,
+  "MISSED": 174,
+  "MISSED_H": 67,
+  "page_runs_soft": 15,
+  "MISSED_soft": 15,
+  "page_runs_cls_P": 110,
+  "MISSED_P": 107,
+  "EXACT": 3,
+  "EXACT_P": 3,
+  "in_data_not_drawn_spine": 3,
+  "in_data_not_drawn_spine_P": 3,
+  "corpus_runs": 3,
+  "pages_total": 494,
+  "pages_kept": 457,
+  "pages_outside_range": 5,
+  "pages_index": 32,
+  "extract_pages": 494,
+  "corpus_page_lo": 6,
+  "corpus_page_hi": 493,
+  "spans_on_verse_branch_ordinals": 3,
+  "chars_on_verse_branch_ordinals": 22,
+  "spans_in_data": 3,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 2,
+  "corpus_letters": 322277,
+  "known_letters": 319491,
+  "data_bold_letters": 22,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 22,
+  "page_bold_letters": 1178
+ },
+ "ex": {
+  "absent": [
+   [
+    384,
+    "Jātakapāḷiyādutiyabhāge"
+   ],
+   [
+    384,
+    "Lakkhitabbānaṁanukkamaṇikā"
+   ],
+   [
+    384,
+    "AA"
+   ],
+   [
+    384,
+    "AdhammasīloĀ"
+   ],
+   [
+    385,
+    "ĀE"
+   ],
+   [
+    385,
+    "EKālapariyāyaṁ"
+   ],
+   [
+    387,
+    "TaDha"
+   ],
+   [
+    387,
+    "ThaDhīrosatta"
+   ],
+   [
+    387,
+    "DaNa"
+   ],
+   [
+    387,
+    "DevakaññūpamāPa"
+   ],
+   [
+    389,
+    "BhaMa"
+   ],
+   [
+    389,
+    "MaRaṭṭhapālo"
+   ]
+  ],
+  "missed_H": [
+   [
+    6,
+    "Khuddakanikāya"
+   ],
+   [
+    6,
+    "Jātakapāḷi"
+   ],
+   [
+    6,
+    "Cattālīsanipāta"
+   ],
+   [
+    6,
+    "Tesakuṇajātaka"
+   ],
+   [
+    10,
+    "Sarabhaṅgajātaka"
+   ],
+   [
+    17,
+    "Alambusājātaka"
+   ],
+   [
+    21,
+    "Saṅkhapālajātaka"
+   ],
+   [
+    30,
+    "Cūḷasutasomajātaka"
+   ],
+   [
+    35,
+    "Cattālīsanipātaṁniṭṭhitaṁ"
+   ],
+   [
+    35,
+    "Tassuddānaṁ"
+   ],
+   [
+    36,
+    "Paṇṇāsanipāta"
+   ],
+   [
+    36,
+    "Niḷinikājātaka"
+   ]
+  ],
+  "missed_P": [
+   [
+    8,
+    "Sa"
+   ],
+   [
+    12,
+    "Ña"
+   ],
+   [
+    20,
+    "Ma"
+   ],
+   [
+    20,
+    "U"
+   ],
+   [
+    23,
+    "Ha"
+   ],
+   [
+    30,
+    "Sa"
+   ],
+   [
+    37,
+    "Ya"
+   ],
+   [
+    46,
+    "Ya"
+   ],
+   [
+    47,
+    "Ya"
+   ],
+   [
+    55,
+    "Ra"
+   ],
+   [
+    57,
+    "I"
+   ],
+   [
+    58,
+    "Ka"
+   ]
+  ]
+ }
+}

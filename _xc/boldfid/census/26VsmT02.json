@@ -1,0 +1,180 @@
+{
+ "vol": "26VsmT02",
+ "stat": {
+  "page_lines": 16160,
+  "line_found": 15735,
+  "line_found_fwd": 15679,
+  "line_found_back": 8,
+  "line_absent": 425,
+  "page_runs_in_absent_lines": 18,
+  "page_bold_letters_in_absent_lines": 130,
+  "line_found_any": 48,
+  "page_run_boundary_splits": 113,
+  "page_runs": 7040,
+  "page_runs_cls_H": 121,
+  "MISSED": 125,
+  "MISSED_H": 121,
+  "page_runs_cls_P": 6919,
+  "EXACT": 6913,
+  "EXACT_P": 6913,
+  "in_data_not_drawn_spine": 6915,
+  "in_data_not_drawn_spine_P": 6915,
+  "page_runs_soft": 44,
+  "EXACT_soft": 43,
+  "MISSED_P": 4,
+  "MISSED_soft": 1,
+  "MISALIGNED_part": 2,
+  "MISALIGNED_part_P": 2,
+  "corpus_runs": 6897,
+  "pages_total": 568,
+  "pages_kept": 548,
+  "pages_outside_range": 8,
+  "pages_index": 12,
+  "extract_pages": 568,
+  "corpus_page_lo": 9,
+  "corpus_page_hi": 567,
+  "spans_on_verse_branch_ordinals": 11393,
+  "chars_on_verse_branch_ordinals": 105416,
+  "spans_in_data": 11393,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 519,
+  "corpus_letters": 845477,
+  "known_letters": 844059,
+  "data_bold_letters": 105416,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 105416,
+  "page_bold_letters": 108985
+ },
+ "ex": {
+  "absent": [
+   [
+    543,
+    "Nigamanagāthāyo"
+   ],
+   [
+    545,
+    "Visuddhimaggamahāṭīkāyadutiyabhāge"
+   ],
+   [
+    545,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    546,
+    "AA"
+   ],
+   [
+    548,
+    "AA"
+   ],
+   [
+    550,
+    "ĀI"
+   ],
+   [
+    552,
+    "UŪO"
+   ],
+   [
+    554,
+    "KaGa"
+   ],
+   [
+    554,
+    "GaGhanavinibbhogaṁ"
+   ],
+   [
+    556,
+    "JhaṬha"
+   ],
+   [
+    556,
+    "ṬhaTikhiṇaṁ"
+   ],
+   [
+    558,
+    "DhaNa"
+   ]
+  ],
+  "missed_H": [
+   [
+    9,
+    "Visuddhimaggamahāṭīkā"
+   ],
+   [
+    9,
+    "Dutiyobhāgo"
+   ],
+   [
+    9,
+    "Iddhividhaniddesavaṇṇanā"
+   ],
+   [
+    9,
+    "Abhiññākathāvaṇṇanā"
+   ],
+   [
+    17,
+    "Dasaiddhikathāvaṇṇanā"
+   ],
+   [
+    37,
+    "Nandopanandanāgadamanakathāvaṇṇanā"
+   ],
+   [
+    44,
+    "Itidvādasamaparicchedavaṇṇanā"
+   ],
+   [
+    45,
+    "Abhiññāniddesavaṇṇanā"
+   ],
+   [
+    45,
+    "Dibbasotadhātukathāvaṇṇanā"
+   ],
+   [
+    48,
+    "Cetopariyañāṇakathāvaṇṇanā"
+   ],
+   [
+    51,
+    "Pubbenivāsānussatiñāṇakathāvaṇṇanā"
+   ],
+   [
+    64,
+    "Cutūpapātañāṇakathāvaṇṇanā"
+   ]
+  ],
+  "missed_P": [
+   [
+    71,
+    "Ña"
+   ],
+   [
+    159,
+    "E"
+   ],
+   [
+    178,
+    "Ra"
+   ],
+   [
+    482,
+    "Na"
+   ]
+  ],
+  "part": [
+   [
+    152,
+    "visayobhāsanaṁKa",
+    "visayobhāsanaṁ"
+   ],
+   [
+    425,
+    "khayānupassanāBha",
+    "khayānupassanā"
+   ]
+  ]
+ }
+}

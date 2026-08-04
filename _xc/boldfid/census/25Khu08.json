@@ -1,0 +1,232 @@
+{
+ "vol": "25Khu08",
+ "stat": {
+  "page_lines": 9155,
+  "line_found": 8671,
+  "line_found_fwd": 8557,
+  "line_absent": 484,
+  "page_runs_in_absent_lines": 40,
+  "page_bold_letters_in_absent_lines": 501,
+  "line_found_any": 74,
+  "line_found_back": 40,
+  "page_run_boundary_splits": 31,
+  "page_runs": 1788,
+  "page_runs_cls_H": 49,
+  "MISSED": 75,
+  "MISSED_H": 49,
+  "page_runs_cls_P": 1739,
+  "MISSED_P": 26,
+  "EXACT": 1707,
+  "EXACT_P": 1707,
+  "in_data_not_drawn_spine": 1713,
+  "in_data_not_drawn_spine_P": 1713,
+  "page_runs_soft": 20,
+  "EXACT_soft": 19,
+  "MISALIGNED_part": 6,
+  "MISALIGNED_part_P": 6,
+  "MISSED_soft": 1,
+  "corpus_runs": 1713,
+  "pages_total": 346,
+  "pages_kept": 322,
+  "pages_outside_range": 18,
+  "pages_index": 6,
+  "extract_pages": 346,
+  "corpus_page_lo": 6,
+  "corpus_page_hi": 333,
+  "spans_on_verse_branch_ordinals": 5842,
+  "chars_on_verse_branch_ordinals": 41163,
+  "spans_in_data": 5842,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 159,
+  "corpus_letters": 404174,
+  "known_letters": 403634,
+  "data_bold_letters": 41163,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 41163,
+  "page_bold_letters": 43173
+ },
+ "ex": {
+  "absent": [
+   [
+    237,
+    "Caretiaṭṭhacariyāyoiriyāpathacariyāāyatanacariyāsaticariyā"
+   ],
+   [
+    237,
+    "IriyāpathacariyāticatūsuiriyāpathesuĀyatanacariyātichasu"
+   ],
+   [
+    237,
+    "ajjhattikabāhiresuāyatanesuSaticariyāticatūsusatipaṭṭhānesu"
+   ],
+   [
+    237,
+    "SamādhicariyāticatūsujhānesuÑāṇacariyāticatūsuariyasaccesu"
+   ],
+   [
+    237,
+    "MaggacariyāticatūsuariyamaggesuPatticariyāticatūsusāmaññaphalesu"
+   ],
+   [
+    237,
+    "LokatthacariyātiTathāgatesuArahantesuSammāsambuddhesupadesato"
+   ],
+   [
+    262,
+    "Sādhuvihārintipaṭhamenapijhānenasādhuvihāriṁpa"
+   ],
+   [
+    262,
+    "Rājāvaraṭṭhaṁvijitaṁpahāyātirājākhattiyomuddhābhisitto"
+   ],
+   [
+    276,
+    "dvāsaṭṭhidiṭṭhigatāniimānidiṭṭhivisūkāniDiṭṭhīvisūkāniupātivattoti"
+   ],
+   [
+    276,
+    "Pattoniyāmaṁpaṭiladdhamaggotiniyāmāvuccanticattāromaggā"
+   ],
+   [
+    276,
+    "adhigatophassitosacchikatotipattoniyāmaṁPaṭiladdhamaggoti"
+   ],
+   [
+    276,
+    "UppannañāṇomhianaññaneyyotitassaPaccekasambuddhassañāṇaṁ"
+   ]
+  ],
+  "missed_H": [
+   [
+    6,
+    "Khuddakanikāya"
+   ],
+   [
+    6,
+    "Cūḷaniddesapāḷi"
+   ],
+   [
+    6,
+    "Pārāyanavagga"
+   ],
+   [
+    6,
+    "Vatthugāthā"
+   ],
+   [
+    11,
+    "Ajitamāṇavapucchā"
+   ],
+   [
+    12,
+    "Tissametteyyamāṇavapucchā"
+   ],
+   [
+    12,
+    "Puṇṇakamāṇavapucchā"
+   ],
+   [
+    13,
+    "Mettagūmāṇavapucchā"
+   ],
+   [
+    15,
+    "Dhotakamāṇavapucchā"
+   ],
+   [
+    16,
+    "Upasīvamāṇavapucchā"
+   ],
+   [
+    18,
+    "Nandamāṇavapucchā"
+   ],
+   [
+    19,
+    "Hemakamāṇavapucchā"
+   ]
+  ],
+  "missed_P": [
+   [
+    12,
+    "A"
+   ],
+   [
+    12,
+    "A"
+   ],
+   [
+    13,
+    "A"
+   ],
+   [
+    13,
+    "A"
+   ],
+   [
+    16,
+    "Ā"
+   ],
+   [
+    19,
+    "I"
+   ],
+   [
+    19,
+    "U"
+   ],
+   [
+    20,
+    "Pa"
+   ],
+   [
+    20,
+    "E"
+   ],
+   [
+    20,
+    "O"
+   ],
+   [
+    20,
+    "Ka"
+   ],
+   [
+    20,
+    "Ka"
+   ]
+  ],
+  "part": [
+   [
+    97,
+    "PassāmahaṁdevamanussalokeAkiñcanaṁbrāhmaṇamir",
+    "Passāmahaṁdevamanussaloke"
+   ],
+   [
+    106,
+    "EkoahaṁSakkamahantamoghaṁiccāyasmāUpasīvoAnis",
+    "EkoahaṁSakkamahantamoghan"
+   ],
+   [
+    127,
+    "EtābhinandāmivacoMahesinoSukittitaṁGotamanūpa",
+    "AhampiteoghatiṇṇātibrūmiEtābhinandāmivacoMahe"
+   ],
+   [
+    159,
+    "JhāyiṁvirajamāsīnaṁiccāyasmāUdayoKatakiccaṁan",
+    "Jhāyiṁvirajamāsīnan"
+   ],
+   [
+    162,
+    "PahānaṁkāmacchandānaṁUdayātiBhagavāDomanassān",
+    "Pahānaṁkāmacchandānan"
+   ],
+   [
+    177,
+    "DvāhaṁSakkaṁapucchissaṁiccāyasmāMogharājāName",
+    "DvāhaṁSakkaṁapucchissan"
+   ]
+  ]
+ }
+}

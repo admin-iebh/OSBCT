@@ -1,0 +1,192 @@
+{
+ "vol": "30Abhi02",
+ "stat": {
+  "page_lines": 13084,
+  "line_found": 12890,
+  "line_found_fwd": 12695,
+  "line_found_back": 48,
+  "line_found_any": 147,
+  "line_absent": 194,
+  "page_runs_in_absent_lines": 13,
+  "page_bold_letters_in_absent_lines": 103,
+  "page_run_boundary_splits": 45,
+  "page_runs": 262,
+  "page_runs_cls_H": 238,
+  "MISSED": 262,
+  "MISSED_H": 238,
+  "page_runs_soft": 8,
+  "MISSED_soft": 8,
+  "page_runs_cls_P": 24,
+  "MISSED_P": 24,
+  "pages_total": 476,
+  "pages_kept": 461,
+  "pages_outside_range": 13,
+  "pages_index": 2,
+  "extract_pages": 476,
+  "corpus_page_lo": 12,
+  "corpus_page_hi": 474,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 0,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 0,
+  "corpus_letters": 630096,
+  "known_letters": 624574,
+  "data_bold_letters": 0,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 0,
+  "page_bold_letters": 3408
+ },
+ "ex": {
+  "absent": [
+   [
+    466,
+    "Vibhaṅgapāḷiyā"
+   ],
+   [
+    466,
+    "Lakkhitabbapadānaṁanukkamaṇikā"
+   ],
+   [
+    466,
+    "AA"
+   ],
+   [
+    467,
+    "IKa"
+   ],
+   [
+    467,
+    "EGa"
+   ],
+   [
+    467,
+    "Gha"
+   ],
+   [
+    469,
+    "DaPa"
+   ],
+   [
+    469,
+    "NimmānaratīnaṁBa"
+   ],
+   [
+    471,
+    "SaḷāyatanaṁHa"
+   ],
+   [
+    472,
+    "Vibhaṅgapāḷiyā"
+   ],
+   [
+    472,
+    "Nānāpaṭhā"
+   ],
+   [
+    472,
+    "Vibhaṅgapāḷiyā"
+   ]
+  ],
+  "missed_H": [
+   [
+    12,
+    "Abhidhammapiṭaka"
+   ],
+   [
+    12,
+    "Vibhaṅgapāḷi"
+   ],
+   [
+    12,
+    "Khandhavibhaṅga"
+   ],
+   [
+    12,
+    "Suttantabhājanīya"
+   ],
+   [
+    12,
+    "Rūpakkhandha"
+   ],
+   [
+    14,
+    "Vedanākkhandha"
+   ],
+   [
+    16,
+    "Saññākkhandha"
+   ],
+   [
+    18,
+    "Saṅkhārakkhandha"
+   ],
+   [
+    21,
+    "Viññāṇakkhandha"
+   ],
+   [
+    24,
+    "Abhidhammabhājanīya"
+   ],
+   [
+    24,
+    "Rūpakkhandha"
+   ],
+   [
+    26,
+    "Vedanākkhandha"
+   ]
+  ],
+  "missed_P": [
+   [
+    86,
+    "Dha"
+   ],
+   [
+    159,
+    "Pha"
+   ],
+   [
+    249,
+    "U"
+   ],
+   [
+    261,
+    "Sa"
+   ],
+   [
+    261,
+    "Sa"
+   ],
+   [
+    272,
+    "Pa"
+   ],
+   [
+    295,
+    "Karuṇā"
+   ],
+   [
+    335,
+    "O"
+   ],
+   [
+    340,
+    "Ka"
+   ],
+   [
+    409,
+    "Ā"
+   ],
+   [
+    438,
+    "O"
+   ],
+   [
+    441,
+    "Ka"
+   ]
+  ]
+ }
+}

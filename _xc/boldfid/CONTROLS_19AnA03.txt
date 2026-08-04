@@ -1,0 +1,7 @@
+19AnA03  base: page_runs=5694  EXACT=5024  MISSED=669  MISALIGNED_part=1  MISALIGNED_long=0  SPURIOUS=0
+  nobold       moved  10050 run-verdicts   page_runs=5694  EXACT=0  MISSED=5694  MISALIGNED_part=0  MISALIGNED_long=0  SPURIOUS=0
+  wrongvol     moved  10633 run-verdicts   page_runs=5694  EXACT=2  MISSED=5477  MISALIGNED_part=204  MISALIGNED_long=11  SPURIOUS=589
+  shiftspans   moved  10618 run-verdicts   page_runs=5694  EXACT=0  MISSED=861  MISALIGNED_part=4833  MISALIGNED_long=0  SPURIOUS=570
+  halfspans    moved   6660 run-verdicts   page_runs=5694  EXACT=1694  MISSED=2142  MISALIGNED_part=1858  MISALIGNED_long=0  SPURIOUS=0
+  widenspans   moved  10040 run-verdicts   page_runs=5694  EXACT=6  MISSED=668  MISALIGNED_part=0  MISALIGNED_long=5020  SPURIOUS=0
+  pageshift    moved  11183 run-verdicts   page_runs=6207  EXACT=0  MISSED=1650  MISALIGNED_part=4547  MISALIGNED_long=10  SPURIOUS=622

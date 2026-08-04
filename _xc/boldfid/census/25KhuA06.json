@@ -1,0 +1,208 @@
+{
+ "vol": "25KhuA06",
+ "stat": {
+  "page_lines": 10633,
+  "line_found": 9309,
+  "line_found_fwd": 9196,
+  "line_found_back": 33,
+  "line_absent": 1324,
+  "page_runs_in_absent_lines": 70,
+  "page_bold_letters_in_absent_lines": 538,
+  "line_found_any": 80,
+  "page_run_boundary_splits": 21,
+  "page_runs": 1902,
+  "page_runs_cls_P": 1881,
+  "MISSED": 57,
+  "MISSED_P": 36,
+  "page_runs_cls_H": 21,
+  "MISSED_H": 21,
+  "EXACT": 1844,
+  "EXACT_P": 1844,
+  "in_data_not_drawn_spine": 1845,
+  "in_data_not_drawn_spine_P": 1845,
+  "page_runs_soft": 30,
+  "EXACT_soft": 28,
+  "MISSED_soft": 2,
+  "MISALIGNED_part": 1,
+  "MISALIGNED_part_P": 1,
+  "corpus_runs_outside_page_stream": 1,
+  "corpus_runs": 1842,
+  "pages_total": 383,
+  "pages_kept": 357,
+  "pages_outside_range": 4,
+  "pages_index": 22,
+  "extract_pages": 383,
+  "corpus_page_lo": 5,
+  "corpus_page_hi": 383,
+  "spans_on_verse_branch_ordinals": 3024,
+  "chars_on_verse_branch_ordinals": 21480,
+  "spans_in_data": 3391,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 259,
+  "corpus_letters": 481029,
+  "known_letters": 480380,
+  "data_bold_letters": 24002,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 24002,
+  "page_bold_letters": 24528
+ },
+ "ex": {
+  "absent": [
+   [
+    319,
+    "Suttanipātaṭṭhakathāyapaṭhamabhāge"
+   ],
+   [
+    319,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    319,
+    "AA"
+   ],
+   [
+    320,
+    "AA"
+   ],
+   [
+    320,
+    "AtthaAnapekkhā"
+   ],
+   [
+    322,
+    "AA"
+   ],
+   [
+    324,
+    "UU"
+   ],
+   [
+    326,
+    "KaKha"
+   ],
+   [
+    326,
+    "KismiṁlokoKho"
+   ],
+   [
+    326,
+    "KissalokoKhopana"
+   ],
+   [
+    326,
+    "KhaGavipphalaṁ"
+   ],
+   [
+    328,
+    "ChaJaṬhaḌa"
+   ]
+  ],
+  "missed_P": [
+   [
+    5,
+    "Khuddakanikāya"
+   ],
+   [
+    19,
+    "Ra"
+   ],
+   [
+    20,
+    "Ū"
+   ],
+   [
+    23,
+    "Ta"
+   ],
+   [
+    23,
+    "E"
+   ],
+   [
+    23,
+    "E"
+   ],
+   [
+    26,
+    "Ī"
+   ],
+   [
+    27,
+    "U"
+   ],
+   [
+    28,
+    "Ka"
+   ],
+   [
+    31,
+    "AkkodhanovigatakhilohamasmiVivaṭākuṭinibbutoginiAthacepatthayasīpavass"
+   ],
+   [
+    31,
+    "Anutīremahiyekarattivāso"
+   ],
+   [
+    35,
+    "Ta"
+   ]
+  ],
+  "missed_H": [
+   [
+    5,
+    "Suttanipātaṭṭhakathā"
+   ],
+   [
+    5,
+    "Ganthārambhakathā"
+   ],
+   [
+    6,
+    "Uragavagga"
+   ],
+   [
+    6,
+    "Uragasuttavaṇṇanā"
+   ],
+   [
+    28,
+    "Dhaniyasuttavaṇṇanā"
+   ],
+   [
+    46,
+    "Khaggavisāṇasuttavaṇṇanā"
+   ],
+   [
+    123,
+    "Kasibhāradvājasuttavaṇṇanā"
+   ],
+   [
+    146,
+    "Cundasuttavaṇṇanā"
+   ],
+   [
+    153,
+    "Parābhavasuttavaṇṇanā"
+   ],
+   [
+    160,
+    "Aggikabhāradvājasuttavaṇṇanā"
+   ],
+   [
+    179,
+    "Su"
+   ],
+   [
+    179,
+    "Mettasuttavaṇṇanā"
+   ]
+  ],
+  "part": [
+   [
+    26,
+    "anīghoKa",
+    "anīgho"
+   ]
+  ]
+ }
+}

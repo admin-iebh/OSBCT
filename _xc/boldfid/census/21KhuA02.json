@@ -1,0 +1,211 @@
+{
+ "vol": "21KhuA02",
+ "stat": {
+  "page_lines": 13847,
+  "line_found": 13053,
+  "line_found_fwd": 12887,
+  "line_absent": 794,
+  "page_runs_in_absent_lines": 43,
+  "page_bold_letters_in_absent_lines": 402,
+  "line_found_back": 24,
+  "line_found_any": 142,
+  "page_run_boundary_splits": 103,
+  "page_runs": 879,
+  "page_runs_cls_H": 113,
+  "page_runs_soft": 28,
+  "MISSED": 149,
+  "MISSED_H": 113,
+  "MISSED_soft": 11,
+  "page_runs_cls_P": 766,
+  "EXACT": 730,
+  "EXACT_P": 730,
+  "in_data_not_drawn_spine": 730,
+  "in_data_not_drawn_spine_P": 730,
+  "EXACT_soft": 17,
+  "MISSED_P": 36,
+  "corpus_runs": 732,
+  "SPURIOUS": 2,
+  "SPURIOUS_soft": 1,
+  "SPURIOUS_P": 2,
+  "pages_total": 499,
+  "pages_kept": 476,
+  "pages_outside_range": 8,
+  "pages_index": 15,
+  "extract_pages": 499,
+  "corpus_page_lo": 8,
+  "corpus_page_hi": 498,
+  "spans_on_verse_branch_ordinals": 65,
+  "chars_on_verse_branch_ordinals": 556,
+  "spans_in_data": 1291,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 279,
+  "corpus_letters": 678076,
+  "known_letters": 677715,
+  "data_bold_letters": 9635,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 9635,
+  "page_bold_letters": 12150
+ },
+ "ex": {
+  "absent": [
+   [
+    456,
+    "Dhammapadaṭṭhakathāyapaṭhamabhāge"
+   ],
+   [
+    456,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    456,
+    "AA"
+   ],
+   [
+    457,
+    "AA"
+   ],
+   [
+    457,
+    "AmattaññuṁI"
+   ],
+   [
+    457,
+    "AsāreU"
+   ],
+   [
+    459,
+    "KaCa"
+   ],
+   [
+    459,
+    "KhaGa"
+   ],
+   [
+    459,
+    "ChaJaJha"
+   ],
+   [
+    459,
+    "CaJhāyino"
+   ],
+   [
+    459,
+    "ÑaḌa"
+   ],
+   [
+    461,
+    "NaPa"
+   ]
+  ],
+  "missed_H": [
+   [
+    8,
+    "Khuddakanikāya"
+   ],
+   [
+    8,
+    "Dhammapadaṭṭhakathā"
+   ],
+   [
+    8,
+    "Ganthārambhakathā"
+   ],
+   [
+    9,
+    "Yamakavagga"
+   ],
+   [
+    9,
+    "Cakkhupālattheravatthu"
+   ],
+   [
+    23,
+    "Maṭṭhakuṇḍalīvatthu"
+   ],
+   [
+    32,
+    "Tissattheravatthu"
+   ],
+   [
+    36,
+    "Kāḷayakkhinīvatthu"
+   ],
+   [
+    41,
+    "Kosambakavatthu"
+   ],
+   [
+    49,
+    "Mahākāḷattheravatthu"
+   ],
+   [
+    56,
+    "Devadattavatthu"
+   ],
+   [
+    59,
+    "Sāriputtattheravatthu"
+   ]
+  ],
+  "missed_P": [
+   [
+    25,
+    "Va"
+   ],
+   [
+    27,
+    "Va"
+   ],
+   [
+    27,
+    "Sa"
+   ],
+   [
+    27,
+    "Sa"
+   ],
+   [
+    45,
+    "Ha"
+   ],
+   [
+    52,
+    "U"
+   ],
+   [
+    60,
+    "Dha"
+   ],
+   [
+    78,
+    "Ma"
+   ],
+   [
+    91,
+    "Ta"
+   ],
+   [
+    111,
+    "Ā"
+   ],
+   [
+    115,
+    "Pa"
+   ],
+   [
+    151,
+    "Ka"
+   ]
+  ],
+  "spurious": [
+   [
+    414,
+    "Dhammapadaṭṭhakathā"
+   ],
+   [
+    30,
+    "Manopubbaṅgamādhammāmanoseṭṭhāmanomayā"
+   ]
+  ]
+ }
+}

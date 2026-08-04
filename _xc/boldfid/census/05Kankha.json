@@ -1,0 +1,245 @@
+{
+ "vol": "05Kankha",
+ "stat": {
+  "page_lines": 10410,
+  "line_found": 9587,
+  "line_found_fwd": 9456,
+  "line_absent": 823,
+  "page_runs_in_absent_lines": 57,
+  "page_bold_letters_in_absent_lines": 471,
+  "line_found_back": 50,
+  "line_found_any": 81,
+  "page_run_boundary_splits": 41,
+  "page_runs": 1868,
+  "page_runs_cls_H": 386,
+  "MISSED": 412,
+  "MISSED_H": 386,
+  "page_runs_soft": 33,
+  "MISSED_soft": 3,
+  "page_runs_cls_P": 1482,
+  "EXACT": 1451,
+  "EXACT_P": 1451,
+  "in_data_not_drawn_spine": 1456,
+  "in_data_not_drawn_spine_P": 1456,
+  "MISSED_P": 26,
+  "MISALIGNED_long": 1,
+  "MISALIGNED_long_P": 1,
+  "EXACT_soft": 29,
+  "MISALIGNED_part": 4,
+  "MISALIGNED_part_P": 4,
+  "corpus_runs": 1458,
+  "corpus_runs_outside_page_stream": 389,
+  "SPURIOUS": 2,
+  "SPURIOUS_soft": 1,
+  "SPURIOUS_P": 2,
+  "pages_total": 416,
+  "pages_kept": 383,
+  "pages_outside_range": 19,
+  "pages_index": 14,
+  "extract_pages": 416,
+  "corpus_page_lo": 20,
+  "corpus_page_hi": 416,
+  "spans_on_verse_branch_ordinals": 0,
+  "chars_on_verse_branch_ordinals": 0,
+  "spans_in_data": 3149,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 692,
+  "corpus_letters": 484839,
+  "known_letters": 472104,
+  "data_bold_letters": 28801,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 28801,
+  "page_bold_letters": 30499
+ },
+ "ex": {
+  "absent": [
+   [
+    20,
+    "Bhikkhupātimokkhapāḷi"
+   ],
+   [
+    138,
+    "RjānotiidaṁBimbisāraṁyevasandhāyavuttaṁaññepanatathā"
+   ],
+   [
+    378,
+    "Kaṅkhāvitaraṇīaṭṭhakathāya"
+   ],
+   [
+    378,
+    "Saṁvaṇṇitapadānaṁanukkamaṇikā"
+   ],
+   [
+    378,
+    "AA"
+   ],
+   [
+    379,
+    "AA"
+   ],
+   [
+    381,
+    "AĀ"
+   ],
+   [
+    381,
+    "ĀĀvasathacīvaraṁ"
+   ],
+   [
+    383,
+    "UE"
+   ],
+   [
+    385,
+    "KhaGaGaGha"
+   ],
+   [
+    387,
+    "TaTaTha"
+   ],
+   [
+    389,
+    "NaPa"
+   ]
+  ],
+  "missed_H": [
+   [
+    20,
+    "Dvemātikāpāḷi"
+   ],
+   [
+    20,
+    "Bha"
+   ],
+   [
+    20,
+    "Nidānuddesa"
+   ],
+   [
+    21,
+    "Pārājikuddesa"
+   ],
+   [
+    22,
+    "Saṁghādisesuddesa"
+   ],
+   [
+    26,
+    "Aniyatuddesa"
+   ],
+   [
+    27,
+    "Nissaggiyapācittiya"
+   ],
+   [
+    33,
+    "Suddhapācittiya"
+   ],
+   [
+    46,
+    "Paṭidesanīya"
+   ],
+   [
+    47,
+    "Sekhiya"
+   ],
+   [
+    54,
+    "Adhikaraṇasamatha"
+   ],
+   [
+    55,
+    "Bhikkhupātimokkhaṁniṭṭhitaṁ"
+   ]
+  ],
+  "missed_P": [
+   [
+    20,
+    "pattakallan"
+   ],
+   [
+    114,
+    "Na"
+   ],
+   [
+    119,
+    "I"
+   ],
+   [
+    125,
+    "Sa"
+   ],
+   [
+    140,
+    "Sa"
+   ],
+   [
+    147,
+    "A"
+   ],
+   [
+    147,
+    "A"
+   ],
+   [
+    149,
+    "Ca"
+   ],
+   [
+    154,
+    "Ā"
+   ],
+   [
+    156,
+    "E"
+   ],
+   [
+    157,
+    "O"
+   ],
+   [
+    157,
+    "Pa"
+   ]
+  ],
+  "long": [
+   [
+    393,
+    "Ra",
+    "Rahonisajjasikkhāpada"
+   ]
+  ],
+  "part": [
+   [
+    56,
+    "pubbakaraṇanti",
+    "pubbakaraṇan"
+   ],
+   [
+    56,
+    "pubbakiccanti",
+    "pubbakiccan"
+   ],
+   [
+    56,
+    "pattakallanti",
+    "pattakallan"
+   ],
+   [
+    315,
+    "saṅghāṭikaṇṇaggahaṇaṁSantiṭṭheyyavā",
+    "saṅghāṭikaṇṇaggahaṇaṁ"
+   ]
+  ],
+  "spurious": [
+   [
+    379,
+    "Anupakhajjasikkhāpada"
+   ],
+   [
+    393,
+    "Rājāno"
+   ]
+  ]
+ }
+}

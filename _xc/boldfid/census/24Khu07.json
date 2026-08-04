@@ -1,0 +1,238 @@
+{
+ "vol": "24Khu07",
+ "stat": {
+  "page_lines": 13719,
+  "line_found": 12464,
+  "line_found_fwd": 12165,
+  "line_absent": 1255,
+  "page_runs_in_absent_lines": 77,
+  "page_bold_letters_in_absent_lines": 765,
+  "line_found_any": 216,
+  "line_found_back": 83,
+  "page_run_boundary_splits": 20,
+  "page_runs": 2016,
+  "page_runs_cls_H": 20,
+  "MISSED": 69,
+  "MISSED_H": 20,
+  "page_runs_cls_P": 1996,
+  "EXACT": 1940,
+  "EXACT_P": 1940,
+  "in_data_not_drawn_spine": 1947,
+  "in_data_not_drawn_spine_P": 1947,
+  "page_runs_soft": 134,
+  "EXACT_soft": 129,
+  "MISSED_P": 49,
+  "MISALIGNED_part": 7,
+  "MISALIGNED_part_P": 7,
+  "MISALIGNED_part_soft": 3,
+  "MISSED_soft": 2,
+  "corpus_runs": 1945,
+  "pages_total": 485,
+  "pages_kept": 457,
+  "pages_outside_range": 4,
+  "pages_index": 24,
+  "extract_pages": 485,
+  "corpus_page_lo": 5,
+  "corpus_page_hi": 485,
+  "spans_on_verse_branch_ordinals": 7733,
+  "chars_on_verse_branch_ordinals": 50255,
+  "spans_in_data": 7733,
+  "sect_spans_in_data": 0,
+  "paras_with_bold": 210,
+  "corpus_letters": 590221,
+  "known_letters": 589778,
+  "data_bold_letters": 50255,
+  "spine_bold_letters": 0,
+  "band_bold_letters": 50255,
+  "page_bold_letters": 51188
+ },
+ "ex": {
+  "absent": [
+   [
+    111,
+    "Nāññenavisuddhimicchatītidhonoaññenaasuddhimaggena"
+   ],
+   [
+    111,
+    "Nahisorajjatinovirajjatītisabbebālaputhujjanārajjanti"
+   ],
+   [
+    226,
+    "Sabbevimediṭṭhiparibbasanā"
+   ],
+   [
+    260,
+    "Vivādajātesunavaggasārī"
+   ],
+   [
+    260,
+    "Santoasantesuupekkhakoso"
+   ],
+   [
+    260,
+    "Anuggahouggahaṇantimaññe"
+   ],
+   [
+    260,
+    "Vissajjaganthānimunīdhaloketiganthāticattāroganthā"
+   ],
+   [
+    260,
+    "idaṁsaccābhinivesokāyaganthoVissajjātiganthevossajjitvāvissajjaAtha"
+   ],
+   [
+    260,
+    "ābandhelaggelaggitepalibuddhebandhanephoṭayitvāvissajjaMunīti"
+   ],
+   [
+    260,
+    "monaṁvuccatiñāṇaṁpasaṅgajālamaticcasomuniIdhātiimissādiṭṭhiyā"
+   ],
+   [
+    260,
+    "Vivādajātesunavaggasārītivivādajātesusañjātesunibbattesu"
+   ],
+   [
+    260,
+    "Santoasantesuupekkhakosotisantotirāgassasantattāsantodosassa"
+   ]
+  ],
+  "missed_H": [
+   [
+    5,
+    "Khuddakanikāya"
+   ],
+   [
+    5,
+    "Mahāniddesapāḷi"
+   ],
+   [
+    5,
+    "Aṭṭhakavagga"
+   ],
+   [
+    5,
+    "Kāmasuttaniddesa"
+   ],
+   [
+    21,
+    "Guhaṭṭhakasuttaniddesa"
+   ],
+   [
+    51,
+    "Duṭṭhaṭṭhakasuttaniddesa"
+   ],
+   [
+    68,
+    "Suddhaṭṭhakasuttaniddesa"
+   ],
+   [
+    82,
+    "Paramaṭṭhakasuttaniddesa"
+   ],
+   [
+    94,
+    "Jarāsuttaniddesa"
+   ],
+   [
+    111,
+    "Tissametteyyasuttaniddesa"
+   ],
+   [
+    128,
+    "Pasūrasuttaniddesa"
+   ],
+   [
+    144,
+    "Māgaṇḍiyasuttaniddesa"
+   ]
+  ],
+  "missed_P": [
+   [
+    39,
+    "Da"
+   ],
+   [
+    55,
+    "Ha"
+   ],
+   [
+    76,
+    "Pha"
+   ],
+   [
+    81,
+    "O"
+   ],
+   [
+    102,
+    "Bha"
+   ],
+   [
+    103,
+    "A"
+   ],
+   [
+    105,
+    "Ca"
+   ],
+   [
+    106,
+    "Ka"
+   ],
+   [
+    107,
+    "Ga"
+   ],
+   [
+    107,
+    "Ā"
+   ],
+   [
+    115,
+    "I"
+   ],
+   [
+    126,
+    "U"
+   ]
+  ],
+  "part": [
+   [
+    130,
+    "TevādakāmāparisaṁvigayhaBālaṁdahantīmithuañña",
+    "TevādakāmāparisaṁvigayhaBālaṁdahantīmithuañña"
+   ],
+   [
+    166,
+    "TassanatthipurakkhataṁVītataṇhopurābhedā",
+    "Vītataṇhopurābhedā"
+   ],
+   [
+    222,
+    "EttāvataggampivadantihekeYakkhassasuddhiṁidha",
+    "EttāvataggampivadantihekeYakkhassasuddhiṁidha"
+   ],
+   [
+    226,
+    "ParassacedhammamanānujānaṁBālomakohotinihīnap",
+    "ParassacedhammamanānujānaṁBālomakohotinihīnap"
+   ],
+   [
+    244,
+    "SīluttamāsaññamenāhusuddhiṁVataṁsamādāyaupaṭṭ",
+    "SīluttamāsaññamenāhusuddhiṁVataṁsamādāyaupaṭṭ"
+   ],
+   [
+    248,
+    "TamūpanissāyajigucchitaṁvāAthavāpidiṭṭhiṁvasu",
+    "TamūpanissāyajigucchitaṁvāAthavāpidiṭṭhiṁvasu"
+   ],
+   [
+    356,
+    "NamediṭṭhoitopubbeiccāyasmāSāriputtoNasutouda",
+    "NamediṭṭhoitopubbeiccāyasmāSāriputtoNasutouda"
+   ]
+  ]
+ }
+}
