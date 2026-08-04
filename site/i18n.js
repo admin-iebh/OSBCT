@@ -60,6 +60,13 @@ window.I18N = {
   run_more:{en:'Read more — %s more paragraphs of this section',
             es:'Leer más — %s párrafos más de esta sección'},
   run_less:{en:'Show less',es:'Mostrar menos'},
+  // !!! A TAB OPENED BEFORE A DEPLOY NEVER LEARNED THERE HAD BEEN ONE
+  // (2026-08-04).  The reader photographed a fault that had already been fixed
+  // and shipped, because his tab was still running the previous document; see
+  // `checkBuildLive` in reader2.html.  This is that tab saying so.
+  newbuild:{en:'This page is not the version now published — what you are reading may be out of date.',
+            es:'Esta página no es la versión publicada ahora — lo que estás leyendo puede estar desactualizado.'},
+  newbuild_btn:{en:'Load the current version',es:'Cargar la versión actual'},
   lang_toggle:{en:'Cambiar a español',es:'Switch to English'},
 
   // landing
