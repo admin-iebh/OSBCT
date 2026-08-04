@@ -1,0 +1,1 @@
+21KhuA02   body  12659  miss     0 ( 0.00%)  digit  315  edge  1517   V-as-P   320  V-as-H   52  P-as-V    17  P-as-U    0  pV   656 pP  11955

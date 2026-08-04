@@ -1,0 +1,1 @@
+18Khu01    body  11421  miss    11 ( 0.10%)  digit 2648  edge  2448   V-as-P   767  V-as-H  140  P-as-V   137  P-as-U   23  pV  3244 pP   5939

@@ -1,0 +1,1 @@
+19AnA03    body   9515  miss     2 ( 0.02%)  digit  776  edge  3277   V-as-P     2  V-as-H  137  P-as-V     5  P-as-U   11  pV   271 pP   8798

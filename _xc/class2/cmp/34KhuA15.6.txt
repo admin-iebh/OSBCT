@@ -1,0 +1,1 @@
+34KhuA15   body   9841  miss     6 ( 0.06%)  digit 1199  edge  3180   V-as-P   589  V-as-H   14  P-as-V     8  P-as-U  133  pV  1203 pP   7839

@@ -1,0 +1,1 @@
+33KhuA14   body   8372  miss     1 ( 0.01%)  digit  702  edge  1797   V-as-P   316  V-as-H  172  P-as-V     0  P-as-U    0  pV   712 pP   7205

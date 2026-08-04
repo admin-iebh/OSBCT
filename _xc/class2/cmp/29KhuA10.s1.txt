@@ -1,0 +1,1 @@
+29KhuA10   body  12754  miss     0 ( 0.00%)  digit  747  edge  4831   V-as-P  3102  V-as-H  131  P-as-V     2  P-as-U    0  pV  4160 pP   8446

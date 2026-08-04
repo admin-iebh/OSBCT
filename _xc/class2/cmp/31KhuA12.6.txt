@@ -1,0 +1,1 @@
+31KhuA12   body   8058  miss     1 ( 0.01%)  digit  890  edge  2810   V-as-P  1127  V-as-H   41  P-as-V    50  P-as-U    1  pV  2005 pP   5572

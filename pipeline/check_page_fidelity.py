@@ -296,14 +296,78 @@ def page_geometry(lines):
     return body, W
 
 
+def body_measure(lines, body, W):
+    """How far a FULL prose line of this volume actually reaches.
+
+    `W` is the physical width of the set page -- a hard maximum reached by a
+    handful of lines.  It is NOT the width a normal line runs to, and taking
+    `W - SHORT` for "short" was this instrument's largest error: in 40KhuA21
+    W is 78, so `W - 12` is 66, and the MEDIAN body line of that volume ends
+    at 67.  Half of its running prose scored as short, and any inset prose
+    opener within RUNTOL of a gatha was swept into the gatha.
+
+    Measured instead from the volume's own body-column lines: the 75th
+    percentile of their end column, which is 67-72 across the corpus.
+    """
+    be = sorted(l[2] + len(l[3]) for l in lines if l[2] == body)
+    if len(be) < 200:
+        return W - 6
+    return be[int(len(be) * 0.75)]
+
+
+def display_column(lines, body, Bm):
+    """The column at which THIS volume sets display matter, MEASURED.
+
+    `body + INSET` is right for a prose volume and wrong for a verse one.
+    20Khu03 sets its first pada at 3 and its second at 6; 18Khu01 sets 6 and 9;
+    40KhuA21 sets 4 and 8.  Fixing the display column at body+8 puts an
+    all-verse volume's whole text into the paragraph-opener band, where only
+    the hanging-first-pada extension can rescue it -- and that extension is
+    precisely the rule that misreads prose openers.  So the column is measured
+    and the extension is then allowed to be strict.
+
+    The measurement consults no corpus and no volume name: the leftmost column
+    at or right of which the volume's lines are OVERWHELMINGLY short of its own
+    body measure.  In a volume of running prose no such column exists short of
+    body+INSET -- the opener band there is full-width prose -- and the default
+    stands.  In an all-verse volume it is found at once (20Khu03: 2).
+    """
+    thr = Bm - 8
+    n = len(lines)
+    for d in range(body + 2, body + INSET):
+        a = [l for l in lines if l[2] >= d]
+        if len(a) < 0.02 * n:
+            break
+        if sum(1 for l in a if l[2] + len(l[3]) <= thr) >= 0.90 * len(a):
+            return d
+    return body + INSET
+
+
 INSET = 8       # leading spaces that put a line unambiguously OFF the body column
 NEAR = 3        # a small inset: one leading space -- the paragraph-opener class
 SHORT = 12      # how far short of the measure a small-inset line must stop
 RUNTOL = 7      # indent step allowed between two lines of one display block
 HANG = 2        # how far a hanging first pada must sit left of its block
+OPEN0 = 2       # LEFT EDGE of the opener band.  Not NEAR: 31KhuA12 hangs its
+                # numbered first pada at body+2 and sets the second at body+7,
+                # so a band starting at body+3 saw the second pada standing
+                # alone, called it a lone display line, and left 144 printed
+                # lines of Therigatha unjudged.
+
+# A printed number at the head of a line.  It does NOT by itself mean verse --
+# this edition numbers its prose paragraphs too, and 32KhuA13's numbered lines
+# have a median end column of 66 against its gatha's 53 -- so it is consulted
+# only where geometry has already narrowed the question to one line (R3).
+VNUM = re.compile(u'^[\u2018\u201c\u2019\u201d(\\[]{0,2}\\d{1,4}\\s*[.\u2013-]')
+
+# PAGEFID_SHARP=0 selects the PRE-SHARPENING page side, kept so that the effect
+# of the change can be measured as a difference within ONE code version rather
+# than against a remembered number.  PAGEFID_RULES is a bitmask over R2 and R3.
+SHARP = os.environ.get('PAGEFID_SHARP', '1') != '0'
+RULES = int(os.environ.get('PAGEFID_RULES', '3'))
 
 
-def page_classes(lines, body, W, control=None):
+def page_classes(lines, body, W, Bm=None, DCOL=None, control=None):
     """Per printed line: 'disp' | 'open' | 'body', and verse-block membership.
 
     Read off the page only.  Nothing here consults the corpus, which is the
@@ -331,31 +395,145 @@ def page_classes(lines, body, W, control=None):
     is a centred title or a one-line colophon and is not judged as either.
     Everything that is not display is page-PROSE, short last lines included:
     at the body column, left-aligned, there is no ambiguity.
+
+    SHARPENED 2026-08-04.  What the page side was getting wrong, measured:
+
+      * "short" was `W - SHORT`, and W is the 99.5th percentile of end columns
+        -- a hard maximum, not the width a line runs to.  40KhuA21's W is 78,
+        so `W - 12` is 66, and the MEDIAN body line of that volume ends at 67.
+        Half its running prose scored as short.  It is now `body_measure() - 8`.
+      * the display column was fixed at `body + INSET`.  20Khu03 sets its first
+        pada at 3 and its second at 6; 18Khu01 sets 6 and 9; 40KhuA21 sets 4
+        and 8.  It is now measured (`display_column`).
+      * a single short inset line was display on its own geometry, so every
+        one-line paragraph and every prose lead-in that introduces a quotation
+        was swept into the gatha printed under it.  Nothing in the opener band
+        is display now without a SECOND line agreeing (R2, R3).
     """
-    cls, disp = [], []
-    for l in lines:
-        ind, end = l[2], l[2] + len(l[3])
-        d = ((ind >= body + INSET and end <= W - 6)
-             or (ind >= body + NEAR and end <= W - SHORT))
-        disp.append(d)
-        cls.append('disp' if d else ('open' if ind >= body + NEAR else 'body'))
-    verse = [False] * len(lines)
+    if Bm is None:
+        Bm = body_measure(lines, body, W)
+    if DCOL is None:
+        DCOL = display_column(lines, body, Bm)
+    n = len(lines)
+    ind = [l[2] for l in lines]
+    end = [l[2] + len(l[3]) for l in lines]
+    pg = [l[0] for l in lines]
+
+    if not SHARP:
+        disp = [((ind[i] >= body + INSET and end[i] <= W - 6)
+                 or (ind[i] >= body + NEAR and end[i] <= W - SHORT))
+                for i in range(n)]
+        cls = ['disp' if disp[i] else
+               ('open' if ind[i] >= body + NEAR else 'body') for i in range(n)]
+        verse = [False] * n
+        i = 0
+        while i < n:
+            if not disp[i]:
+                i += 1
+                continue
+            j = i + 1
+            while (j < n and disp[j] and pg[j] == pg[j - 1]
+                   and abs(ind[j] - ind[j - 1]) <= RUNTOL):
+                j += 1
+            a_ = i
+            if (i > 0 and not disp[i - 1] and pg[i - 1] == pg[i]
+                    and body + NEAR <= ind[i - 1]
+                    and HANG <= ind[i] - ind[i - 1] <= RUNTOL):
+                a_ = i - 1
+            if j - a_ >= 2:
+                for k in range(a_, j):
+                    verse[k] = True
+            i = j
+        if control == 'shiftlines':
+            verse = verse[3:] + verse[:3]
+            cls = cls[3:] + cls[:3]
+        return cls, verse, lines
+
+    short_op = [end[i] <= Bm - 8 for i in range(n)]
+
+    # R0  THE DISPLAY COLUMN.  A line set at or right of the volume's own
+    #     measured display column, and short of the page, is display.  The
+    #     only rule that needs no second line.
+    disp = [((ind[i] >= body + INSET and end[i] <= W - 6)
+             or (DCOL <= ind[i] < body + INSET and short_op[i]))
+            for i in range(n)]
+
+    # R1 WAS TRIED, MEASURED, AND IS NOT HERE -- recorded because it is the
+    #    natural thing to reach for and it is what the old page side did.  It
+    #    reads a short line one step left of a display line as the hanging
+    #    first pada and admits it.  It ADMITS PROSE LEAD-INS: `Taṁ sutvā
+    #    tāpaso nava2 gāthā abhāsi–` (40KhuA21 p8) sits one step left of a
+    #    gatha exactly as a hanging pada does.  Measured, it takes 40KhuA21
+    #    from class2 57 / class1 49 to 73 / 214, and 18Khu01 from 845 to 1084.
+    #    The hanging pada is reached instead by R2, where it is one line of a
+    #    run, and by R3, where it carries the verse number at the body column
+    #    -- both of which require a second line's agreement.
+
+    # R2  A GATHA SET IN THE OPENER BAND.  40KhuA21 p22 sets pada 1 at the body
+    #     column and padas 2-4 at 4; 31KhuA12 p117 sets pada 1 at 2 and pada 2
+    #     at 7.  No R0 line is anywhere near either.  A RUN of two or more short
+    #     opener-band lines is display; ONE such line standing alone is a
+    #     paragraph opener -- which is the distinction the old page side could
+    #     not draw, and the whole of its class-2 noise.
+    orun = [False] * n
+    if RULES & 1:
+        cand = [(body + OPEN0 <= ind[i] < DCOL) and short_op[i] and not disp[i]
+                for i in range(n)]
+        i = 0
+        while i < n:
+            if not cand[i]:
+                i += 1
+                continue
+            j = i + 1
+            while (j < n and cand[j] and pg[j] == pg[j - 1]
+                   and abs(ind[j] - ind[j - 1]) <= RUNTOL):
+                j += 1
+            if j - i >= 2:
+                for k in range(i, j):
+                    orun[k] = True
+            i = j
+        for i in range(n):
+            if orun[i]:
+                disp[i] = True
+
+    # R3  THE NUMBERED PADA AT THE BODY COLUMN.  Where padas 2-4 hang right,
+    #     pada 1 carries the verse number and sits at the body column itself.
+    #     Admitted only when it CARRIES that number, is short, and the line
+    #     below it is already display within the hang -- without the number
+    #     this admits every prose lead-in that introduces a quotation
+    #     (`gāthamāha–`, 40KhuA21 p8).  It moves no fault count: such a line
+    #     differs from the corpus in its digits and is already counted under
+    #     `digit_only`.  It is here so that the page MODEL is right.
+    if RULES & 2:
+        bhang = [False] * n
+        for i in range(n):
+            if disp[i] or ind[i] >= body + OPEN0 or not short_op[i]:
+                continue
+            if not VNUM.match(lines[i][3]):
+                continue
+            j = i + 1
+            if (j < n and disp[j] and pg[j] == pg[i]
+                    and HANG <= ind[j] - ind[i] <= RUNTOL):
+                bhang[i] = True
+        for i in range(n):
+            if bhang[i]:
+                disp[i] = True
+
+    cls = ['disp' if disp[i] else
+           ('open' if ind[i] >= body + NEAR else 'body') for i in range(n)]
+
+    verse = [False] * n
     i = 0
-    while i < len(lines):
+    while i < n:
         if not disp[i]:
             i += 1
             continue
         j = i + 1
-        while (j < len(lines) and disp[j] and lines[j][0] == lines[j - 1][0]
-               and abs(lines[j][2] - lines[j - 1][2]) <= RUNTOL):
+        while (j < n and disp[j] and pg[j] == pg[j - 1]
+               and abs(ind[j] - ind[j - 1]) <= RUNTOL):
             j += 1
-        a = i
-        if (i > 0 and not disp[i - 1] and lines[i - 1][0] == lines[i][0]
-                and body + NEAR <= lines[i - 1][2]
-                and HANG <= lines[i][2] - lines[i - 1][2] <= RUNTOL):
-            a = i - 1
-        if j - a >= 2:
-            for k in range(a, j):
+        if j - i >= 2:
+            for k in range(i, j):
                 verse[k] = True
         i = j
     # CONTROL: slide the page's own verdict three lines out of register with
@@ -473,7 +651,9 @@ def run(vol, control=None, verbose=False):
         return None
 
     body, W = page_geometry(lines)
-    pcls, pverse, lines = page_classes(lines, body, W, control)
+    Bm = body_measure(lines, body, W)
+    DCOL = display_column(lines, body, Bm)
+    pcls, pverse, lines = page_classes(lines, body, W, Bm, DCOL, control)
 
     buf, spans = [], []
     pos = 0
@@ -671,7 +851,8 @@ def run(vol, control=None, verbose=False):
                head_pages=[min(head), max(head)] if head else None,
                tail_pages=[min(tail), max(tail)] if tail else None,
                printed_lines=len(lines), lines_out_of_extent=outside,
-               body_col=body, measure=W, corpus_segments=len(segs),
+               body_col=body, measure=W, body_measure=Bm, display_col=DCOL,
+               sharp=bool(SHARP), rules=RULES, corpus_segments=len(segs),
                corpus_letters=len(C), stats=dict(stat))
     if verbose:
         res['rows'] = rows

@@ -1,0 +1,1 @@
+01ViT01    body  13465  miss     0 ( 0.00%)  digit  179  edge  1568   V-as-P   370  V-as-H   15  P-as-V   171  P-as-U    1  pV   593 pP  12864

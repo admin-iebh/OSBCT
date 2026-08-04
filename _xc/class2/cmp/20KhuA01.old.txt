@@ -1,0 +1,1 @@
+20KhuA01   body   6124  miss     1 ( 0.02%)  digit   78  edge  1053   V-as-P   295  V-as-H   22  P-as-V    86  P-as-U    2  pV   504 pP   5634
