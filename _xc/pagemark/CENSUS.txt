@@ -1,0 +1,135 @@
+PAGE-MARKER CENSUS — 118 volumes, 30506 printed pages judged
+
+  marker on the exact letter the page turns at     10349   33.9%
+  marker LATE                                      19865   65.1%
+  marker EARLY                                       292    1.0%
+  no marker drawn for that printed page at all        75
+  page whose first line could not be located           0
+
+  page break falls INSIDE a corpus paragraph       19727   64.7%
+  page break falls BETWEEN two paragraphs          10779   35.3%
+
+DRIFT OF A LATE MARKER (19865 of them)
+              lines   chars
+  p10            2     104
+  p25            4     204
+  median         9     455
+  p75           15     818
+  p90           22    1157
+  p99           29    1579
+  max        15408  720230
+  mean        32.9  1619.0
+  a late marker sits at or before the page it names for 19865 of 30506 pages
+
+  lines late:  0=0  1-2=2397  3-5=4200  6-10=4855  11-20=5987  21-40=2306  >40=120
+
+WORST VOLUMES by share of printed pages whose marker is not exact
+vol           pages  exact%    late   medln   maxln  inside%
+46KhuA27        129   11.6%     114      14      28   88.4%
+43KhuA24        124   12.1%     109       9      28   87.1%
+24Khu07         207   12.6%     177      12    1201   87.4%
+09DiT02          75   13.3%      65      10      28   86.7%
+36KhuA17        174   13.8%     149      14      27   86.2%
+38Abhi10        603   14.1%     466       6   15408   71.5%
+37KhuA18        219   15.1%     185      11      29   84.5%
+10MaA01         147   16.3%     123      11      29   83.0%
+21KhuT01        177   16.4%     148      13      31   83.1%
+02VinA02        152   16.4%     127      11      51   82.9%
+26VsmT02        352   16.8%     293      12      29   83.0%
+11MaA02         167   16.8%     139      12      30   82.6%
+45KhuA26        113   16.8%      94      10      29   82.3%
+13MaT01         130   16.9%     108      12      74   82.3%
+37Abhi09        479   17.1%     367       6    1339   75.6%
+22KhuA03        232   17.7%     191      13      27   81.9%
+10Ma02          365   17.8%     264      13    5023   82.2%
+26Khu09         265   18.1%     217      10      34   81.9%
+11Ma03          308   18.2%     222      12    8626   81.8%
+04Vin04         348   18.4%     283      10      30   81.6%
+
+BEST VOLUMES
+23Khu06         374   99.7%
+20Khu03         441   99.5%
+21Khu04         415   99.5%
+22Khu05         397   99.2%
+19Khu02         429   99.1%
+18Khu01         381   67.5%
+29Abhi01        291   61.5%
+27KhuA08        302   57.0%
+31Abhi03        178   56.7%
+30KhuA11        257   56.0%
+
+RE-SEGMENTED vs NOT
+  re-segmented (20KhuA01, 21KhuA02, 23KhuA04, 24KhuA05) vols=  4 pages=  1373 exact= 25.1%  inside= 74.7%  median late lines=7
+  everything else                    vols=114 pages= 29133 exact= 34.3%  inside= 64.2%  median late lines=9
+    20KhuA01    pages=  214 exact= 28.5% inside= 71.5%
+    21KhuA02    pages=  434 exact= 24.0% inside= 75.8%
+    23KhuA04    pages=  379 exact= 24.8% inside= 74.9%
+    24KhuA05    pages=  346 exact= 24.6% inside= 75.1%
+
+lines not located anywhere in the corpus: 48714 of 1309694 (3.72%)
+
+LIKE FOR LIKE — the Khuddaka commentaries only (the family the four re-segmented volumes belong to)
+vol           pages  exact%  inside%   medln
+20KhuA01        214   28.5%    71.5%       6   <-- re-segmented
+21KhuA02        434   24.0%    75.8%       9   <-- re-segmented
+22KhuA03        232   17.7%    81.9%      13 
+23KhuA04        379   24.8%    74.9%       6   <-- re-segmented
+24KhuA05        346   24.6%    75.1%       6   <-- re-segmented
+25KhuA06        190   25.3%    74.7%      12 
+26KhuA07        262   46.6%    52.7%       5 
+27KhuA08        302   57.0%    42.4%       6 
+28KhuA09        248   47.6%    52.0%       5 
+29KhuA10        330   25.2%    74.5%      10 
+30KhuA11        257   56.0%    43.6%      13 
+31KhuA12        150   44.7%    54.7%      11 
+32KhuA13        151   41.1%    58.9%       8 
+33KhuA14        245   38.0%    61.6%       6 
+34KhuA15        235   34.5%    65.1%      11 
+35KhuA16        165   25.5%    73.9%      10 
+36KhuA17        174   13.8%    86.2%      14 
+37KhuA18        219   15.1%    84.5%      11 
+38KhuA19        340   20.6%    79.4%       8 
+39KhuA20        334   33.8%    65.9%       7 
+40KhuA21        387   39.0%    60.7%       7 
+41KhuA22        195   33.3%    66.2%       6 
+42KhuA23        343   44.9%    55.1%       6 
+43KhuA24        124   12.1%    87.1%       9 
+44KhuA25         70   34.3%    64.3%       8 
+45KhuA26        113   16.8%    82.3%      10 
+46KhuA27        129   11.6%    88.4%      14 
+47KhuA28        146   20.5%    78.8%      13 
+  re-segmented       pages= 1373 exact= 25.1%  inside= 74.7%
+  not re-segmented   pages= 5341 exact= 33.4%  inside= 66.2%
+
+LATE THOUGH THE BREAK IS AT A PARAGRAPH BOUNDARY — the residue the simple mechanism does not explain
+  430 pages over 64 volumes
+   40Abhi12     96
+   39Abhi11     93
+   38Abhi10     87
+   37Abhi09     35
+   36Abhi08     21
+   24AbhiT03    9
+   50AbhiA03    7
+   06ViT06      5
+
+PAGES WITH NO MARKER AT ALL (75)
+   16SaT01      6
+   23KhuA04     6
+   07ViT07      5
+   24KhuA05     5
+   05Vin05      3
+   47KhuA28     3
+   01ViT01      2
+   01VinA01     2
+   03ViT03      2
+   04ViT04      2
+
+THE WORST SINGLE DRIFTS
+   38Abhi10     printed p.593   marker  15408 printed lines /  720230 chars late
+   38Abhi10     printed p.538   marker  14519 printed lines /  675582 chars late
+   38Abhi10     printed p.520   marker  13246 printed lines /  620831 chars late
+   38Abhi10     printed p.497   marker  13215 printed lines /  617618 chars late
+   38Abhi10     printed p.511   marker  13079 printed lines /  612098 chars late
+   36Abhi08     printed p.440   marker  10958 printed lines /  529217 chars late
+   36Abhi08     printed p.410   marker  10531 printed lines /  502842 chars late
+   38Abhi10     printed p.420   marker  10444 printed lines /  485834 chars late

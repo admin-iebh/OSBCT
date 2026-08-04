@@ -210,6 +210,57 @@ def _parts(txt, sp):
     return out
 
 
+_NUMRE = re.compile(r'^\s*\d+(-\d+)?\.\s*')
+
+
+def _spine_ranges(text, vmap):
+    """Which character ranges of a paragraph's own text does the SPINE draw?
+
+    Mirrors `block()` in `reader2.html` branch for branch.  Returns a list of
+    (start, end) in the ORIGINAL text's coordinates -- the reader works in the
+    number-stripped string, so the strip length is added back.
+    """
+    text = text or ''
+    if not isinstance(vmap, dict) or 'groups' not in vmap:
+        return [(0, len(text))]
+    stripped = _NUMRE.sub('', text)
+    off = len(text) - len(stripped)
+    blocks = []
+
+    def push(x):
+        if x is None:
+            return
+        if not isinstance(x, list):
+            blocks.append(str(x))
+            return
+        for q in x:
+            if isinstance(q, dict):
+                if 'gatha' in q:
+                    blocks.extend(str(l) for l in q['gatha'])
+                elif q.get('t') is not None:
+                    blocks.append(str(q['t']))
+            else:
+                blocks.append(str(q))
+
+    push(vmap.get('before'))
+    for g in (vmap.get('groups') or []):
+        blocks.extend(str(l) for l in g)
+    push(vmap.get('after'))
+    cur, out = 0, []
+    for b in blocks:
+        b2 = _NUMRE.sub('', b)
+        if not b2:
+            continue
+        i = stripped.find(b2, cur)
+        if i < 0:
+            i = stripped.find(b2)
+        if i < 0:
+            continue
+        cur = i + len(b2)
+        out.append((i + off, cur + off))
+    return out
+
+
 def corpus_bold(vol, control=None):
     """THE DATA STREAM: every paragraph's own text, in ordinal order, with the
     bold the maps put on it -- and, beside it, whether the reader DRAWS it.
@@ -228,10 +279,25 @@ def corpus_bold(vol, control=None):
       DRAWN -- does the reader put them on the page?      (`SPINE` / `BAND`)
 
     `SPINE` is what a reader gets opening the volume from the tree, `BAND` what
-    they get with it hanging under a canon paragraph.  `block()` calls
-    `fmtBold` -- the ONLY path that takes paragraph spans -- in its third
-    branch alone, and the first two swallow every `asSpine` paragraph, so
-    `SPINE` carries the `sections` gatha spans and nothing else.
+    they get with it hanging under a canon paragraph.  UNTIL 2026-08-04 `block()`
+    called `fmtBold` -- the only path that takes paragraph spans -- in its third
+    branch alone, and the first two swallowed every `asSpine` paragraph, so
+    `SPINE` carried the `sections` gatha spans and nothing else: 82 bold letters
+    corpus-wide against 4,335,102 in the band.  That is now fixed and THIS MODEL
+    IS UPDATED WITH IT, because a model of a reader that no longer exists reports
+    a fault that no longer exists.  `_spine_ranges` mirrors the reader exactly:
+
+      * plain branch (no `verse/` entry, or one with no `groups` key) -- the
+        paragraph text is drawn through `fmtBold`, so ALL of it is spine-drawn;
+      * verse branch (`groups` present) -- the corpus text is not drawn at all;
+        `before`/`groups`/`after` come from the printed line stream and are
+        located in the number-stripped corpus text by a forward-only `indexOf`,
+        so only the located ranges are spine-drawn.
+
+    A block that cannot be located carries no spans to the screen, and those
+    spans still count as `in_data_not_drawn_spine`.  MEASURED over all 118
+    volumes (`_xc/boldspine/predict.py`): 396,434 of the 461,393 spans on
+    verse-branch ordinals are located, 64,959 are not.
 
     THE VERSE MAP IS NOT DRAWN FROM HERE.  A `verse/` entry's `groups` /
     `before` / `after` hold the printed lines a second time, and emitting them
@@ -287,9 +353,12 @@ def corpus_bold(vol, control=None):
                   if k == 'gatha' else [])
             for t, ps in _parts(e.get('l'), sp):
                 segs.append((cls, t, o, ps, 1))
-        for t, ps in _parts(p.get('text', ''),
-                            [tuple(x) for x in bm.get(so, [])]):
-            segs.append(('P', t, o, ps, 0))
+        _pt = p.get('text', '')
+        _sr = _spine_ranges(_pt, vm.get(so))
+        for (t, ps), (_t2, qs) in zip(
+                _parts(_pt, [tuple(x) for x in bm.get(so, [])]),
+                _parts(_pt, _sr)):
+            segs.append(('P', t, o, ps, qs))
         for b in udd.get(so, []):
             if b.get('label'):
                 for t, _x in _parts(b['label'], []):
@@ -309,10 +378,24 @@ def corpus_bold(vol, control=None):
             lb = cm[max(0, min(b, len(text)))]
             for k in range(la, min(lb, len(s2))):
                 fd[k] = 1
+        # `dsp` is 1/0 for the paths that are all-or-nothing (a `sections`
+        # gatha is drawn in the spine, a book title carries no spans), and a
+        # LIST OF CHARACTER RANGES for the paragraph text, which since
+        # 2026-08-04 is drawn in the spine wholly on the plain branch and
+        # partly -- exactly where the printed block locates -- on the verse one.
+        if isinstance(dsp, int):
+            sd = [dsp] * len(s2)
+        else:
+            sd = [0] * len(s2)
+            for a, b in dsp:
+                la = cm[max(0, min(a, len(text)))]
+                lb = cm[max(0, min(b, len(text)))]
+                for k in range(la, min(lb, len(s2))):
+                    sd[k] = 1
         spans.append((pos, pos + len(s2), cls, o))
         buf.append(s2)
         DATA += fd
-        SPINE += [x * dsp for x in fd]
+        SPINE += [x * y for x, y in zip(fd, sd)]
         BAND += fd
         pos += len(s2)
     hasgroups = set(int(k) for k, v in vm.items()
