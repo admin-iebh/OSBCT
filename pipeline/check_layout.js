@@ -19,8 +19,22 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
 
 const HOMAGE=/[Nn]amo\s+tassa\s+\S+\s+[Aa]rahato\s+Sammāsambuddhassa/;
 
+// !!! JSDOM DOES NOT FETCH `<script src>`, so the reader this file boots was
+// missing `i18n.js` and `panel.js` -- every `TIP(...)` fell through to its
+// hard-coded English default and the word panel was absent.  A proof run against
+// a reader missing two of its scripts is a proof of a different reader.  They are
+// inlined here, from the same bytes the browser would load; `?v=` cache-busting
+// query strings are stripped.
+function inlineScripts(html){
+  return html.replace(/<script src="([^"]+)"[^>]*><\/script>/g,(m,u)=>{
+    const f=resolve(u);
+    let t=null; try{ t=fs.readFileSync(f,'utf8'); }catch(e){}
+    if(t==null){ console.log('  !! could not inline '+u+' ('+f+')'); return m; }
+    return '<script>'+t+'</script>';
+  });
+}
 function boot(){
-  const dom=new JSDOM(fs.readFileSync(R+'/'+(process.env.OSBCT_READER||'reader2.html'),'utf8'),{runScripts:'dangerously',pretendToBeVisual:true,url:'http://x/',beforeParse(w){w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=()=>{};w.fetch=u=>{const f=resolve(u);let t=null;try{t=fs.readFileSync(f,'utf8');}catch(e){}return Promise.resolve({ok:t!=null,status:t!=null?200:404,json:()=>Promise.resolve(t?JSON.parse(t):{}),text:()=>Promise.resolve(t||'')});};}});
+  const dom=new JSDOM(inlineScripts(fs.readFileSync(R+'/'+(process.env.OSBCT_READER||'reader2.html'),'utf8')),{runScripts:'dangerously',pretendToBeVisual:true,url:'http://x/',beforeParse(w){w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=()=>{};w.fetch=u=>{const f=resolve(u);let t=null;try{t=fs.readFileSync(f,'utf8');}catch(e){}return Promise.resolve({ok:t!=null,status:t!=null?200:404,json:()=>Promise.resolve(t?JSON.parse(t):{}),text:()=>Promise.resolve(t||'')});};}});
   return dom.window;
 }
 
@@ -127,6 +141,142 @@ function gradeStream(doc, txt, issues){
   if(/_{6,}/.test(txt)) issues.push(['rule-leaked-into-body','a ______ separator is rendered']);
 }
 
+// !!! THE PAGE RULE IS DRAWN WHERE THE PAGE TURNS (2026-08-04).  A paragraph
+// carries its page BREAKS now (`pbreak/<VOL>.json`), not one page, so a rule can
+// sit INSIDE a paragraph's text.  Three things are asserted, and the second is
+// the only one that is not circular:
+//   (a) two adjacent rules never carry the same number -- that is the LASTPG
+//       guarantee, and it is what a mid-paragraph rule can break by drawing a
+//       page the next paragraph then draws again;
+//   (b) the letters that FOLLOW a mid-paragraph rule are the letters the PRINTED
+//       page opens with.  The fixture is `_xc/pagemark/expect/<VOL>.json`, built
+//       from `pline` + the running header and from nothing in the corpus or in
+//       `pbreak/`, so this compares the rendered DOM against the printed page;
+//   (c) a rule drawn ABOVE a heading group (the `pgPre` path, offset -1) is
+//       followed by a heading and not by body text.
+// Rules are located by walking the paragraph's own child nodes, so a rule that
+// escaped its paragraph is not silently graded as if it were inside one.
+const LETT=t=>String(t||'').replace(/[^0-9A-Za-zĀāĪīŪūṀṁṂṃṄṅÑñṬṭḌḍṆṇḶḷ]/g,'');
+const NODIG=t=>String(t||'').replace(/[0-9]/g,'');
+// The letters that FOLLOW `node` inside `root`, in document order, skipping every
+// `.pgrule`'s own text (its "page NN" is not corpus text and a second rule may
+// legitimately stand right after the first).
+function textAfter(root, node, want){
+  const doc=root.ownerDocument;
+  const w=doc.createTreeWalker(root, 0x04 /* TEXT */);
+  let seen=false, out='';
+  while(w.nextNode()){
+    const t=w.currentNode;
+    if(!seen){ if(node.contains(t)) seen=true; continue; }
+    if(node.contains(t)) continue;
+    const pe=t.parentElement;
+    if(pe && pe.closest && pe.closest('.pgrule')) continue;
+    out+=LETT(t.nodeValue);
+    if(out.length>=want) break;
+  }
+  // a rule with no text nodes of its own still has to start the scan
+  if(!seen){
+    const w2=doc.createTreeWalker(root, 0x04);
+    let after=false;
+    while(w2.nextNode()){
+      const t=w2.currentNode;
+      if(!after){
+        if(node.compareDocumentPosition(t)&doc.defaultView.Node.DOCUMENT_POSITION_FOLLOWING) after=true;
+        else continue;
+      }
+      const pe=t.parentElement;
+      if(pe && pe.closest && pe.closest('.pgrule')) continue;
+      out+=LETT(t.nodeValue);
+      if(out.length>=want) break;
+    }
+  }
+  return out;
+}
+
+function gradePages(doc, vol, expect, issues){
+  const stream=[...doc.querySelectorAll('#scroll .pgrule')];
+  let prev=null, adj=0;
+  for(const r of stream){
+    const n=(r.textContent.match(/page\s+(\d+)/)||[])[1];
+    if(n!=null && prev===n) adj++;
+    prev=n;
+  }
+  if(adj) issues.push(['page-rule-repeated', adj+' adjacent rule(s) carry the page already drawn']);
+  if(!expect || !Object.keys(expect).length) return;
+  let mid=0, midbad=0, midend=0, midshort=0, pre=0, prebad=0;
+  for(const p of doc.querySelectorAll('#scroll .para')){
+    if(!(p.id||'').includes('-'+vol+'-')) continue;
+    // !!! THE RULE IS NO LONGER A DIRECT CHILD OF `.para`.  The spine's verse
+    // branch draws its page rules INSIDE the `.gatha` / `.gatha-after` div whose
+    // string it cuts, so `:scope > .pgrule` found 14 of 40Abhi12's rules and
+    // `nextSibling` found NOTHING after them: 14 of 14 reported misplaced with an
+    // EMPTY `got` -- a checker failing because it was looking in the wrong place,
+    // not a reader drawing in the wrong place.  Both the search and the text that
+    // follows are now taken in DOCUMENT ORDER over the whole paragraph.
+    for(const r of p.querySelectorAll('.pgrule')){
+      const n=(r.textContent.match(/page\s+(\d+)/)||[])[1]; if(n==null) continue;
+      const want=expect[n]; if(!want) continue;
+      const got=textAfter(p, r, 80);
+      mid++;
+      // DIGIT-TOLERANT.  The rendered side carries FOOTNOTE MARKERS the printed
+      // line stream does not: `21KhuA02` p.272's only miss was
+      // `Piṇḍapātikassabhikkhuno` against `...bhikkhuno1`, the marker digit and
+      // nothing else.  Digits are removed from BOTH sides before the compare, so
+      // the letters must still agree exactly -- this tolerates a marker, not a
+      // different line.
+      // COMPARE OVER THE SHORTER OF THE TWO.  `want` is a whole printed LINE and
+      // some are shorter than 24 letters; `got` runs on into the next line, so a
+      // fixed 24-letter window failed a rule standing exactly where it should
+      // (`21KhuA02` p.20: want `Athanaṁmāṇavoāha`, got the same 16 letters and
+      // then the following line).  Short lines are counted apart, since a 6-letter
+      // anchor discriminates much less than a 24-letter one.
+      const _W=NODIG(want), _G=NODIG(got), _L=Math.min(24,_W.length);
+      if(_W.length<10) midshort++;
+      if(!got.length || !_L || _W.slice(0,_L)!==_G.slice(0,_L)) {
+        midbad++;
+        if(!got.length) midend++;
+        if(midbad<=6) issues.push(['page-rule-misplaced',
+          vol+' p.'+n+' want '+want.slice(0,24)+' got '+got.slice(0,24)]);
+      }
+    }
+  }
+  // (c) the above-heading rules: emitted outside any .para, immediately before a
+  //     heading group.  Counted rather than failed when absent, because whether
+  //     the volume has any is a property of its hide map.
+  for(const r of stream){
+    if(r.closest('.para')) continue;
+    const nx=r.nextElementSibling;
+    if(nx && /(^|\s)head(\s|$)/.test(nx.className||'')) pre++;
+  }
+  // A rule with NOTHING after it is the reader's bounded END-OF-PARAGRAPH FLUSH,
+  // taken when the printed line could not be located among the drawn strings.  It
+  // is still counted as misplaced -- it is late -- but it is reported apart, so a
+  // known bounded fallback is never mistaken for a rule drawn on the wrong letters.
+  // !!! ASCENDING PAGE ORDER, over THIS VOLUME's paragraphs in document order.
+  // The fault this whole repair began from showed itself as `page 73` drawn
+  // immediately above `page 63` in 40Abhi12: two records for one ordinal written
+  // out of order by the locator's `findany` fallback.  Nothing asserted that, so
+  // it shipped.  Restricted to `-vol-` paragraphs because #scroll can hold more
+  // than one volume and two layers legitimately interleave their numbering.
+  {
+    let seq=[], back=0, first=null;
+    for(const p of doc.querySelectorAll('#scroll .para')){
+      if(!(p.id||'').includes('-'+vol+'-')) continue;
+      for(const r of p.querySelectorAll('.pgrule')){
+        const v=(r.textContent.match(/page\s+(\d+)/)||[])[1];
+        if(v!=null) seq.push(+v);
+      }
+    }
+    for(let i=1;i<seq.length;i++) if(seq[i]<seq[i-1]){ back++; if(first===null) first=seq[i-1]+' then '+seq[i]; }
+    if(back) issues.push(['page-rule-out-of-order', back+' descent(s) in '+seq.length+' rules, first '+first]);
+    else if(seq.length) issues.push(['#page-rules-ascending', seq.length+' rules, 0 descents']);
+  }
+  if(mid) issues.push(['#page-rules-inside-paragraphs',
+      mid+' checked, '+midbad+' misplaced ('+midend+' flushed at end of paragraph, '
+      +(midbad-midend)+' on the wrong letters; '+midshort+' anchored on a line under 10 letters)']);
+  if(pre) issues.push(['#page-rules-above-a-heading', String(pre)]);
+}
+
 // paragraph rules — graded ONCE over the union of every paragraph any opening
 // put on screen, so a volume spread over four hosts is judged as one book.
 function gradeParas(paras, vol, vmap, issues){
@@ -194,6 +344,7 @@ function gradeParas(paras, vol, vmap, issues){
 }
 
 async function checkVolume(vol, inc){
+  let EXPECT={}; try{ EXPECT=JSON.parse(fs.readFileSync('_xc/pagemark/expect/'+vol+'.json','utf8')); }catch(e){}
   const w=boot(); let err=null; w.addEventListener('error',e=>err=e.message);
   await wait(700);
   const layer=layerOf(vol), kind=LAYERKIND[layer], sel=LAYERSEL[layer];
@@ -237,6 +388,7 @@ async function checkVolume(vol, inc){
     for(const e of doc.querySelectorAll('#scroll [id^="sec-'+vol+'-"]')) secSeen.add(e.id);
     incEls=Math.max(incEls, doc.querySelectorAll('#scroll .incipit').length);
     gradeStream(doc, txt, issues);
+    gradePages(doc, vol, EXPECT, issues);
   }
   if(!renders) return done({vol, skipped:refusal||'nothing rendered (nav shape not driveable headlessly)', issues:[]});
   if(dead.length) issues.push(['host-rendered-nothing', dead.join(', ')]);
@@ -296,6 +448,12 @@ async function checkVolume(vol, inc){
     let inc={}; try{ inc=JSON.parse(fs.readFileSync(`${R}/incipit/${v}.json`,'utf8')); }catch(e){}
     const r=await checkVolume(v,inc);
     if(r.skipped){ skipped++; console.log(`  ~  ${v.padEnd(11)} ${r.skipped}`); continue; }
+    // rows whose name opens with '#' are COUNTS, not defects: they say how much
+    // the page-rule assertion actually examined, which a run that examined
+    // nothing would otherwise report as a clean pass.
+    const info=r.issues.filter(i=>String(i[0]).startsWith('#'));
+    r.issues=r.issues.filter(i=>!String(i[0]).startsWith('#'));
+    if(info.length) console.log('       '+info.map(i=>i.join(' ')).join('   '));
     if(r.issues.length){ bad++;
       console.log(`  FAIL ${v.padEnd(11)} ${r.paras} ¶, incipit x${r.incEls}${cov(r)}`);
       const seen=new Set();

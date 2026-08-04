@@ -27,9 +27,28 @@ over the PDF with the glyph-errata register applied, so running heads and the
 footnote apparatus are already gone.  The corpus side is the paragraph array in
 ordinal order, which is what the spine draws and what carries `printed`.
 
+RE-RUN OF 2026-08-04, AFTER THE REPAIR.  `--pbreak` models the marker where
+`site/reader/pbreak/<VOL>.json` puts it -- a page that turns inside a paragraph
+now has a rule at that character -- and `--folio` fixes the DENOMINATOR, which
+was wrong: the original run could only see printed pages that a paragraph STARTS
+on (`pr_of`), and 15,709 printed pages have no paragraph starting on them at all.
+Both default OFF, so the pre-repair figure is still reproducible from this file.
+
+TWO THINGS THIS CANNOT SAY ON ITS OWN, and they are not the same size:
+
+  1. With `--pbreak` the marker position for a mid-paragraph break is READ OUT
+     of the map that `derive.py` wrote from the same locator this file uses.  For
+     those pages the comparison is CIRCULAR and proves only that the reader model
+     applies the map.  The independent leg is `--twoside`: the page's position
+     recomputed from the END of the LAST located line of the PREVIOUS page rather
+     than from the START of the FIRST line of this one.  Two anchors, opposite
+     sides of the same break; agreement is evidence, and it is reported.
+  2. Nothing here is browser-verified.  `pipeline/check_layout.js` is.
+
   python3 _xc/pagemark/census.py <VOL> [...]
   python3 _xc/pagemark/census.py --all --out DIR --budget 32     # resumable
   python3 _xc/pagemark/census.py <VOL> --controls
+  python3 _xc/pagemark/census.py --all --pbreak --folio --twoside --out DIR
 """
 import sys, os, json, bisect, collections, time
 
@@ -38,6 +57,8 @@ sys.path.insert(0, os.path.join(ROOT, 'pipeline'))
 sys.path.insert(0, os.path.join(ROOT, '_xc', 'reseg'))
 import check_page_fidelity as CPF                      # noqa: E402
 import pline                                           # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import folio as FOLIO                                  # noqa: E402
 
 letters = CPF.letters
 Index = CPF.Index
@@ -53,7 +74,18 @@ def jload(p, d=None):
         return d
 
 
-def run(vol, control=None):
+def rawletters(s):
+    """raw char index -> letter index, for the paragraph's own text."""
+    out, n = [], 0
+    for ch in (s or ''):
+        out.append(n)
+        if letters(ch):
+            n += 1
+    out.append(n)
+    return out
+
+
+def run(vol, control=None, pbreak=False, usefolio=False, twoside=False):
     S = os.path.join(ROOT, 'site')
     c = jload('%s/%s.json' % (S, vol))
     if not c:
@@ -62,6 +94,30 @@ def run(vol, control=None):
     if not paras:
         return None
     hide = jload('%s/reader/hide/%s.json' % (S, vol), {}) or {}
+    PB = (jload('%s/reader/pbreak/%s.json' % (S, vol), {}) or {}) if pbreak else {}
+    # !!! THE MODEL MUST NOT FLATTER ITSELF.  On an ordinal whose verse map has a
+    # `groups` key the spine does NOT draw `pr.text`, so a record that carries no
+    # `drawnIndex` (3 elements) is not drawn at its raw offset at all -- the reader
+    # flushes it at the END of the paragraph.  Scoring it at the raw offset would
+    # credit the map with a placement the reader never makes.
+    VMAP = jload('%s/reader/verse/%s.json' % (S, vol), {}) or {}
+    if control == 'nopbreak':
+        PB = {}
+    elif control == 'shiftbreak':      # every break claims the NEXT one's offset
+        allr = sorted(((int(k), r) for k, v in PB.items() for r in v),
+                      key=lambda x: (x[0], x[1][0]))
+        offs = [r[0] for _, r in allr]
+        offs = offs[1:] + offs[:1]
+        nb = collections.defaultdict(list)
+        for (o, r), no in zip(allr, offs):
+            # KEEP elements 3-4.  Dropping them would turn every addressed verse
+            # record into an unaddressed one and the control would fire for two
+            # reasons at once; it must move the OFFSET and nothing else.
+            nb[str(o)].append([no, r[1], r[2]] + list(r[3:]))
+        PB = dict(nb)
+    elif control == 'slidebreak':      # every break 400 characters later
+        PB = {k: [[r[0] + 400 if r[0] > 0 else r[0], r[1], r[2]] + list(r[3:])
+                  for r in v] for k, v in PB.items()}
 
     # --- CONTROLS act on the CORPUS side only; the printed page is never touched.
     if control == 'shiftprinted':          # every paragraph claims the next one's page
@@ -81,12 +137,13 @@ def run(vol, control=None):
             out.append(dict(p, printed=last))
         paras = out
 
-    buf, starts = [], []
+    buf, starts, r2l = [], [], []
     pos = 0
     for p in paras:
         s = letters(p.get('text', '') or '')
         starts.append(pos)
         buf.append(s)
+        r2l.append(rawletters(p.get('text', '') or ''))
         pos += len(s)
     C = ''.join(buf)
     ends = [starts[i] + len(buf[i]) for i in range(len(paras))]
@@ -120,19 +177,48 @@ def run(vol, control=None):
     for p in paras:
         if p.get('pdf_page') and p.get('printed') is not None:
             pr_of.setdefault(p['pdf_page'], p['printed'])
+    # !!! THE DENOMINATOR WAS WRONG.  `pr_of` holds only the pdf pages a paragraph
+    # STARTS on, so every printed page that opens and closes inside one paragraph
+    # was invisible to this census -- 15,709 of 46,215 corpus-wide.  With --folio
+    # the running header supplies the rest, overridden by the corpus wherever the
+    # corpus has an opinion, so no page the reader cites is renumbered.
+    if usefolio:
+        F = dict(FOLIO.folio(vol))
+        F.update(pr_of)
+        pr_of = F
     # --- where the reader draws the rule: first NON-HIDDEN paragraph whose
     #     `printed` differs from the one before it, in ordinal order
     marker = {}
+    st_unaddressed = [0]
+    abovehead = set()
     last = object()
     for i, p in enumerate(paras):
         if hide.get(str(i)):
             continue
-        v = p.get('printed')
-        if v is None:
-            continue
-        if v != last:
+        recs = PB.get(str(i)) or []
+        for r in recs:                       # `pgPre`: above the heading group
+            if r[0] < 0 and r[1] != last:
+                marker.setdefault(r[1], starts[i])
+                abovehead.add(r[1])
+                last = r[1]
+        hd = next((r for r in recs if r[0] == 0), None)
+        v = hd[1] if hd else p.get('printed')
+        if v is not None and v != last:
             marker.setdefault(v, starts[i])
             last = v
+        _vm = VMAP.get(str(i))
+        _isverse = bool(_vm) and _vm.get('groups') is not None
+        for r in sorted((r for r in recs if r[0] > 0), key=lambda x: x[0]):
+            if _isverse and len(r) < 5:
+                marker.setdefault(r[1], ends[i])      # end-of-paragraph flush
+                st_unaddressed[0] += 1
+                last = r[1]
+                continue
+            j = r[0]
+            lm = r2l[i]
+            off = lm[j] if j < len(lm) else lm[-1]
+            marker.setdefault(r[1], starts[i] + off)
+            last = r[1]
     # --- where each printed page actually begins: the located position of the
     #     first line of the first pdf page carrying that printed number
     truepos, trueline = {}, {}
@@ -144,6 +230,27 @@ def run(vol, control=None):
             continue
         truepos[pg] = loc[k]
         trueline[pg] = k
+    # --- THE INDEPENDENT ANCHOR: the same break seen from the page BEFORE it.
+    # `truepos` is the START of the first located line of the page; `otherpos` is
+    # the END of the last located line of the page before.  Nothing derived the
+    # second from the first, so agreement is corroboration and not arithmetic.
+    otherpos = {}
+    if twoside:
+        endof = {}
+        for k, l in enumerate(lines):
+            if loc[k] >= 0:
+                endof[l[0]] = loc[k] + len(letters(l[3]))
+        firstpdf = {}
+        for k, l in enumerate(lines):
+            pg = pr_of.get(l[0])
+            if pg is not None and pg not in firstpdf and loc[k] >= 0:
+                firstpdf[pg] = l[0]
+        for pg, pdfp in firstpdf.items():
+            q = pdfp - 1
+            while q >= 1 and q not in endof:
+                q -= 1
+            if q >= 1:
+                otherpos[pg] = endof[q]
 
     st2 = collections.Counter()
     rows = []
@@ -153,11 +260,23 @@ def run(vol, control=None):
             st2['page_unlocated'] += 1
             continue
         tp = truepos[pg]
+        if twoside and pg in otherpos:
+            st2['twoside_pages'] += 1
+            if otherpos[pg] == tp:
+                st2['twoside_agree'] += 1
         if pg not in marker:
             st2['marker_missing'] += 1
             rows.append([pg, None, tp, None, None, 'MISSING'])
             continue
         mp = marker[pg]
+        if pg in abovehead:
+            st2['pages'] += 1
+            k = max(0, bisect.bisect_right(starts, tp) - 1)
+            st2['break_inside_paragraph' if (starts[k] < tp < ends[k])
+                else 'break_at_boundary'] += 1
+            st2['ABOVEHEAD'] += 1
+            rows.append([pg, mp, tp, mp - tp, None, 'ABOVEHEAD'])
+            continue
         d = mp - tp
         # is the true page break INSIDE a paragraph, or between two?
         k = max(0, bisect.bisect_right(starts, tp) - 1)
@@ -180,6 +299,7 @@ def run(vol, control=None):
         else:
             st2['EXACT'] += 1
             rows.append([pg, mp, tp, 0, 0, 'EXACT'])
+    st2['verse_unaddressed_flushed_at_end'] = st_unaddressed[0]
     st2['lines_total'] = len(lines)
     st2['lines_unlocated'] = sum(1 for x in loc if x < 0)
     st2['paras'] = len(paras)
@@ -187,8 +307,8 @@ def run(vol, control=None):
     return dict(st2), rows
 
 
-def one(vol, out=None, control=None):
-    r = run(vol, control)
+def one(vol, out=None, control=None, **kw):
+    r = run(vol, control, **kw)
     if r is None:
         print('SKIP', vol)
         return None
@@ -198,17 +318,19 @@ def one(vol, out=None, control=None):
                   open(os.path.join(out, vol + '.json'), 'w', encoding='utf-8'),
                   ensure_ascii=False)
     n = s.get('pages', 0) or 1
-    print('%-11s pages=%5d EXACT=%5d (%5.1f%%) LATE=%5d EARLY=%4d MISSING=%4d '
-          'inside=%5d boundary=%5d  medianlate=%s'
+    print('%-11s pages=%5d EXACT=%5d (%5.1f%%) LATE=%5d EARLY=%4d ABOVEHEAD=%4d '
+          'MISSING=%4d inside=%5d boundary=%5d  medianlate=%s'
           % (vol, s.get('pages', 0), s.get('EXACT', 0), 100.0 * s.get('EXACT', 0) / n,
-             s.get('LATE', 0), s.get('EARLY', 0), s.get('marker_missing', 0),
+             s.get('LATE', 0), s.get('EARLY', 0), s.get('ABOVEHEAD', 0),
+             s.get('marker_missing', 0),
              s.get('break_inside_paragraph', 0), s.get('break_at_boundary', 0),
              (sorted(r[4] for r in rows if r[5] == 'LATE')[s.get('LATE', 0) // 2]
               if s.get('LATE', 0) else 0)))
     return s
 
 
-CONTROLS = ['shiftprinted', 'roundprinted', 'lumped', 'nohide']
+CONTROLS = ['shiftprinted', 'roundprinted', 'lumped', 'nohide',
+            'nopbreak', 'shiftbreak', 'slidebreak']
 
 
 def main(a):
@@ -223,10 +345,15 @@ def main(a):
     shard = None
     if '--shard' in a:
         i = a.index('--shard'); shard = tuple(int(x) for x in a[i + 1].split(':')); del a[i:i + 2]
+    KW = {}
+    for fl, kw in (('pbreak', 'pbreak'), ('folio', 'usefolio'), ('twoside', 'twoside')):
+        if '--' + fl in a:
+            a.remove('--' + fl)
+            KW[kw] = True
     if '--controls' in a:
         a.remove('--controls')
         for v in [x for x in a if not x.startswith('--')]:
-            base = run(v)
+            base = run(v, **KW)
             if base is None:
                 continue
             bs, brows = base
@@ -235,7 +362,7 @@ def main(a):
                   % (v, bs.get('pages', 0), bs.get('EXACT', 0), bs.get('LATE', 0),
                      bs.get('marker_missing', 0)))
             for cn in CONTROLS:
-                r = run(v, cn)
+                r = run(v, cn, **KW)
                 if r is None:
                     continue
                 cs, crows = r
@@ -256,7 +383,7 @@ def main(a):
             left += 1
             continue
         try:
-            one(v, out)
+            one(v, out, **KW)
         except Exception as e:
             print('ERR', v, type(e).__name__, e)
     if left:

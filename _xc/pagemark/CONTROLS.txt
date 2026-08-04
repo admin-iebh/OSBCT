@@ -1,0 +1,58 @@
+NEGATIVE CONTROLS FOR THE PAGE-MARKER CENSUS — 2026-08-04
+
+`nopbreak`, `shiftbreak` and `slidebreak` were WRITTEN AND NEVER RUN until now.
+All three fire on every volume tried, so none is vacuous.  `shiftbreak` and
+`slidebreak` preserve elements 3-4 of a record (the drawn address) so that they
+move the OFFSET and nothing else; without that they would have turned every
+addressed verse record into an unaddressed one and fired for two reasons.
+
+Run: python3 _xc/pagemark/census.py --controls VOL... --pbreak --folio
+
+40Abhi12  honest: 430 pages, EXACT 314, LATE 14, MISSING 0
+   shiftprinted   pages whose verdict moved:   412   (EXACT 314 -> 6)
+   roundprinted   pages whose verdict moved:   351   (EXACT 314 -> 83)
+   lumped         pages whose verdict moved:   216   (EXACT 314 -> 81)
+   nohide         pages whose verdict moved:    98   (EXACT 314 -> 406)
+   nopbreak       pages whose verdict moved:   330   (EXACT 314 -> 90)
+   shiftbreak     pages whose verdict moved:   280   (EXACT 314 -> 91)
+   slidebreak     pages whose verdict moved:   224   (EXACT 314 -> 90)
+21KhuA02  honest: 447 pages, EXACT 444, LATE 0, MISSING 0
+   shiftprinted   pages whose verdict moved:   338   (EXACT 444 -> 15)
+   roundprinted   pages whose verdict moved:   332   (EXACT 444 -> 105)
+   lumped         pages whose verdict moved:   111   (EXACT 444 -> 131)
+   nohide         pages whose verdict moved:     1   (EXACT 444 -> 445)
+   nopbreak       pages whose verdict moved:   343   (EXACT 444 -> 104)
+   shiftbreak     pages whose verdict moved:   342   (EXACT 444 -> 105)
+   slidebreak     pages whose verdict moved:   340   (EXACT 444 -> 104)
+38Abhi10  honest: 603 pages, EXACT 449, LATE 29, MISSING 0
+   shiftprinted   pages whose verdict moved:   549   (EXACT 449 -> 1)
+   roundprinted   pages whose verdict moved:   540   (EXACT 449 -> 75)
+   lumped         pages whose verdict moved:   256   (EXACT 449 -> 121)
+   nohide         pages whose verdict moved:    86   (EXACT 449 -> 522)
+   nopbreak       pages whose verdict moved:   438   (EXACT 449 -> 85)
+   shiftbreak     pages whose verdict moved:   418   (EXACT 449 -> 86)
+   slidebreak     pages whose verdict moved:   364   (EXACT 449 -> 85)
+18Khu01  honest: 443 pages, EXACT 344, LATE 95, MISSING 3
+   shiftprinted   pages whose verdict moved:   344   (EXACT 344 -> 30)
+   roundprinted   pages whose verdict moved:   156   (EXACT 344 -> 261)
+   lumped         pages whose verdict moved:   139   (EXACT 344 -> 100)
+   nohide         pages whose verdict moved:     0   (EXACT 344 -> 344)
+   nopbreak       pages whose verdict moved:   134   (EXACT 344 -> 257)
+   shiftbreak     pages whose verdict moved:    87   (EXACT 344 -> 257)
+   slidebreak     pages whose verdict moved:    87   (EXACT 344 -> 257)
+26Khu09  honest: 418 pages, EXACT 417, LATE 1, MISSING 0
+   shiftprinted   pages whose verdict moved:   195   (EXACT 417 -> 176)
+   roundprinted   pages whose verdict moved:   217   (EXACT 417 -> 118)
+   lumped         pages whose verdict moved:    20   (EXACT 417 -> 220)
+   nohide         pages whose verdict moved:     0   (EXACT 417 -> 417)
+   nopbreak       pages whose verdict moved:   369   (EXACT 417 -> 48)
+   shiftbreak     pages whose verdict moved:   369   (EXACT 417 -> 48)
+   slidebreak     pages whose verdict moved:   369   (EXACT 417 -> 48)
+01Vin01  honest: 380 pages, EXACT 373, LATE 4, MISSING 0
+   shiftprinted   pages whose verdict moved:   257   (EXACT 373 -> 58)
+   roundprinted   pages whose verdict moved:   267   (EXACT 373 -> 77)
+   lumped         pages whose verdict moved:    71   (EXACT 373 -> 133)
+   nohide         pages whose verdict moved:     1   (EXACT 373 -> 374)
+   nopbreak       pages whose verdict moved:   301   (EXACT 373 -> 73)
+   shiftbreak     pages whose verdict moved:   301   (EXACT 373 -> 73)
+   slidebreak     pages whose verdict moved:   300   (EXACT 373 -> 73)

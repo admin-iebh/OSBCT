@@ -220,6 +220,7 @@ sup.fnm{color:var(--accent);font-size:9.5px;font-weight:700;vertical-align:super
 .pgrule{display:flex;align-items:center;gap:10px;margin:16px 0 12px;font-family:'Inter',sans-serif;font-size:10.5px;letter-spacing:.06em;color:var(--faint);text-transform:lowercase}
 .pgrule:before,.pgrule:after{content:'';flex:1;height:1px;background:var(--line)}
 .pgrule a{color:inherit;text-decoration:none}.pgrule a:hover{color:var(--accent)}
+.para .pgrule{margin:9px 0 7px}
 .pgmk{font-family:'Inter',sans-serif;font-size:10px;color:var(--faint);text-decoration:none;border:1px solid var(--line);border-radius:7px;padding:1px 6px}.pgmk:hover{color:var(--accent)}
 .appx{margin:7px 0 0;padding:6px 11px;border-left:2px solid var(--line);background:var(--app);border-radius:0 8px 8px 0;font-family:'Inter',sans-serif;font-size:11.5px;line-height:1.5;color:var(--mut)}
 .appx .mk{font-weight:700;color:var(--accent);margin-right:5px}.appx i{font-family:'Gentium Plus',serif;font-style:italic;color:var(--fg)}
@@ -267,7 +268,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=91e407e79f73"></script>
+<script src="../i18n.js?v=d41f8bb64750"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -397,7 +398,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='91e407e79f73';
+const BUILD='d41f8bb64750';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -538,7 +539,7 @@ async function jget(url,fallback,required){
 }
 async function loadVol(vol){
   if(cache[vol]) return cache[vol];
-  const [d,bold,sbold,app,udd,sec,hide,verse,inc,btl]=await Promise.all([
+  const [d,bold,sbold,app,udd,sec,hide,verse,inc,btl,pbk]=await Promise.all([
     jget('../'+vol+'.json',{paragraphs:[]},true),
     jget('bold/'+vol+'.bold.json',{}),
     jget('bold/'+vol+'.sect.json',{}),
@@ -548,8 +549,19 @@ async function loadVol(vol){
     jget('hide/'+vol+'.json',{}),
     jget('verse/'+vol+'.json',{}),
     jget('incipit/'+vol+'.json',{}),
-    jget('booktitle/'+vol+'.json',{})]);
-  return cache[vol]={paras:d.paragraphs||[],headings:d.headings||[],bold,sbold,app,udd,sec,hide,verse,inc,btl};
+    jget('booktitle/'+vol+'.json',{}),
+    // !!! A PARAGRAPH CARRIES ITS PAGE BREAKS, NOT ONE PAGE (2026-08-04).
+    // `printed` is the folio the paragraph BEGINS on, so the rule below could
+    // only ever be drawn at a paragraph boundary -- and MEASURED over 118
+    // volumes, 64.7% of page breaks fall INSIDE a paragraph, leaving only 33.9%
+    // of markers on the letter the page turns at.  `pbreak/<VOL>.json` is
+    // {ord: [[rawOffset, printed, pdfPage], ...]}, rawOffset being a character
+    // offset into the paragraph's RAW `text` -- the same address space
+    // `bold/<VOL>.bold.json` uses, so `_xc/reseg/redistribute.py`'s arithmetic
+    // carries it through a re-segmentation unchanged.  -1 means "above this
+    // ordinal's heading group"; 0 means "at its head".
+    jget('pbreak/'+vol+'.json',{})]);
+  return cache[vol]={paras:d.paragraphs||[],headings:d.headings||[],bold,sbold,app,udd,sec,hide,verse,inc,btl,pbk};
 }
 async function loadLinks(vol){ if(!(vol in linkCache)) linkCache[vol]=await jget('linksk/'+vol+'.links.json',{}); return linkCache[vol]; }
 async function loadRev(vol){ if(!(vol in revCache)) revCache[vol]=await jget('linksk/'+vol+'.rev.json',{}); return revCache[vol]; }
@@ -1096,9 +1108,22 @@ async function _openCanon(canonVol, scrollKey){
 // ---------- rendering ----------
 const SIG={'Sī':'Sīhaḷa (Sinhalese)','Syā':'Syāma (Thai)','Kaṁ':'Kamboja (Cambodian)','I':'PTS / English','Ka':'some Burmese mss','Ka-Sī':'Ka + Sīhaḷa','katthaci':'in some copies','sabbattha':'in all copies','bahūsu':'in many copies'};
 function fmtText(t){return esc((t||'').replace(/^\s*\d+(-\d+)?\.\s*/,'')).replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');}
-function fmtBold(t,spans){
+function fmtBold(t,spans,brks){
   const text=t||''; const stripped=text.replace(/^\s*\d+(-\d+)?\.\s*/,''); const off=text.length-stripped.length;
   let sp=(spans||[]).map(a=>[a[0]-off,a[1]-off]).filter(a=>a[1]>0&&a[0]<stripped.length).map(a=>[Math.max(0,a[0]),Math.min(stripped.length,a[1])]).sort((a,b)=>a[0]-b[0]);
+  // !!! THE PAGE TURNS INSIDE THE PARAGRAPH.  `brks` is [[rawOffset, ruleHtml], ...]
+  // and the offsets live in the SAME address space as the bold spans, so the
+  // leading-number strip moves both by the same `off`.  The text is CUT at each
+  // break and every piece drawn by `_boldRange` -- which is what keeps the bold:
+  // a span straddling a page turn is drawn as bold on both sides of the rule.
+  // With no breaks this is the original loop, character for character, so a
+  // volume with an empty map renders byte-identically to before.
+  const cuts=(brks||[]).map(b=>[b[0]-off,b[1]]).filter(b=>b[0]>0&&b[0]<stripped.length).sort((a,b)=>a[0]-b[0]);
+  if(cuts.length){
+    let out='',prev=0;
+    for(const c of cuts){ out+=_boldRange(stripped,sp,prev,c[0])+c[1]; prev=c[0]; }
+    return out+_boldRange(stripped,sp,prev,stripped.length);
+  }
   let html='',cur=0; for(const s of sp){ if(s[0]<cur) continue; html+=esc(stripped.slice(cur,s[0]))+'<b class="lemma">'+esc(stripped.slice(s[0],s[1]))+'</b>'; cur=s[1]; }
   html+=esc(stripped.slice(cur));
   return html.replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');
@@ -1354,14 +1379,38 @@ function facs(vol,kind,pr){
 // THE PAGE RULE — a horizontal line carrying the printed page number, drawn
 // where the edition turns the leaf, as `reader.html` and buddha-dhamma.net do.
 // User-requested 2026-07-29t.  It opens the PDF at the corrected leaf.
-function pageRule(vol,kind,pr){
+function pageRule(vol,kind,pr){ return pageRuleAt(vol,kind,pr.printed,pr.pdf_page); }
+// ...AND IT IS ADDRESSED BY THE PAGE, NOT BY THE PARAGRAPH.  A page that turns
+// INSIDE a paragraph has no paragraph to take its number from, so the rule is
+// built from (printed folio, pdf page) directly and `pageRule` is the old
+// paragraph-shaped call kept for the paths that still start at a boundary.
+function pageRuleAt(vol,kind,n0,pdfp){
   const folder=LAYERFOLDER[VOLLAYER[vol]]||FOLDER[kind]||'pali-unicode';
-  const n=(pr.printed!=null?pr.printed:'?');
-  const href=pr.pdf_page?(R2+'/'+folder+'/'+vol+'.pdf#page='+truePdfPage(vol,pr.pdf_page)):null;
+  const n=(n0!=null?n0:'?');
+  const href=pdfp?(R2+'/'+folder+'/'+vol+'.pdf#page='+truePdfPage(vol,pdfp)):null;
   const inner='page '+n+(href?' ⧉':'');
   return '<div class="pgrule"><span>'+(href
     ? '<a target="_blank" rel="noopener" href="'+href+'" title="'+escA(TIP('tip_view_page','View printed page'))+' '+n+'">'+inner+'</a>'
     : inner)+'</span></div>';
+}
+// THE PAGE RULE ABOVE AN ORDINAL'S HEADING GROUP.  A printed page that opens on
+// a HIDDEN paragraph turns above the heading that paragraph's material is
+// re-drawn as, not below it.  This is the SECOND fault the census of 2026-08-04
+// reported and did not diagnose: 430 pages over 64 volumes drawn late although
+// the break IS at a paragraph boundary, 96 of them in `40Abhi12` and 93 in
+// `39Abhi11`.  The cause is `hide/<VOL>.json` -- `40Abhi12` suppresses 714 of
+// its 2,413 paragraphs, and ord16/17 (`1. Kusalattika  2. Vipakattika`,
+// `1-7. Paticcadivara Paccayacatukka`, the whole of what printed page 4 opens
+// with) are re-drawn as the `sections/` heading group of ord18.  The rule was
+// emitted by `block()`, which runs BELOW that heading.  `pbreak/` records these
+// as offset -1 and the render loops call this before `canonHead`.
+function pgPre(vol,kind,ord){
+  const c=cache[vol]; if(!c) return '';
+  const a=(c.pbk||{})[String(ord)]; if(!a) return '';
+  let h='';
+  for(const b of a){ if(b[0]>=0) continue; if(LASTPG[vol]===b[1]) continue;
+    h+=pageRuleAt(vol,kind,b[1],b[2]); LASTPG[vol]=b[1]; }
+  return h;
 }
 function toolsFor(kind,vol,pr,sutta){
   const name=META[kind].name, cite=name+', '+(sutta||'')+' §'+(pr.n!=null?pr.n:'')+' (p.'+(pr.printed!=null?pr.printed:'?')+')';
@@ -1515,6 +1564,7 @@ function block(kind, key, opts){
   const pr=c.paras[ord]; if(!pr) return '<div class="para empty">·</div>';
   pr._key=key; pr._ord=ord; pr._src=(opts&&opts.src)||null;
   const spans=c.bold[String(ord)]||[]; const app=c.app[String(ord)]||[];
+  const _pbk=(c.pbk||{})[String(ord)]||[];
   const lk=LAYERKIND[VOLLAYER[vol]]||kind;
   const cls='para'+(lk==='canon'?' canon':' l-'+lk);
   // !!! THE PARAGRAPH'S PROVENANCE BELONGS IN A TOOLTIP, NOT IN FRONT OF THE
@@ -1618,18 +1668,78 @@ function block(kind, key, opts){
   // them.
   const _sTxt=(pr.text||'').replace(/^\s*\d+(-\d+)?\.\s*/,'');
   const _sOff=(pr.text||'').length-_sTxt.length;
+  // THE HEAD RULE IS DECIDED BEFORE THE BODY IS BUILT.  The body now emits the
+  // rules for the pages that turn INSIDE this paragraph and carries LASTPG on to
+  // the last of them; deciding the head rule afterwards would draw `page 4`
+  // below `page 5`.
+  let rule='';
+  { const hd=_pbk.find(b=>b[0]===0);
+    const _pg=hd?hd[1]:pr.printed, _pp=hd?hd[2]:pr.pdf_page;
+    if(_pg!=null && LASTPG[vol]!==_pg){ rule=pageRuleAt(vol,kind,_pg,_pp); LASTPG[vol]=_pg; } }
+  // [rawOffset, ruleHtml, drawnIndex|null, drawnOffset] -- TWO ADDRESSES for one
+  // break, because the band and the spine draw different strings.  The band cuts
+  // `pr.text` at `rawOffset` (`fmtBold`); the spine's VERSE branch does not draw
+  // `pr.text` at all and cuts the drawn string `drawnIndex` at `drawnOffset`.
+  const _mid=_pbk.filter(b=>b[0]>0).map(b=>{ LASTPG[vol]=b[1];
+    return [b[0],pageRuleAt(vol,kind,b[1],b[2]),(b.length>4?b[3]:null),(b.length>4?b[4]:0),b[1]]; });
+  // !!! THE VERSE BRANCH IS THE MAJORITY OF THE REPAIR, NOT AN EDGE CASE: 31,247
+  // of 35,385 mid-paragraph breaks corpus-wide sit on an ordinal whose verse map
+  // carries `groups`.  Addressed by the index of the `fmtLine` call the page opens
+  // before and the offset inside that drawn string, so the rule is flushed BY
+  // COUNTER and never depends on locating the drawn line in the corpus text.  What
+  // that replaced located nothing in `40Abhi12`, dropped all 18 of its rules to the
+  // end-of-body flush, and stacked `page 73` immediately above `page 63`.
+  // ORDERED BY THE PAGE, NOT BY THE ADDRESS.  Page order and drawn order agree
+  // in every ordinal but one (`31KhuA12`), where the locator placed the earlier
+  // page's line at the later drawn index and the reader drew `page 200` above
+  // `page 189`.  Ordering the queue on the page number makes ASCENDING PAGE ORDER
+  // TRUE BY CONSTRUCTION: an entry whose index has already gone by is drawn at
+  // once, above the current line -- early rather than backwards.
+  const _vQ=_mid.filter(b=>b[2]!=null).map(b=>[b[2],b[3],b[1],b[4]]).sort((a,b)=>a[3]-b[3]||a[0]-b[0]||a[1]-b[1]);
+  // ...and the breaks whose printed line is not among the drawn strings at all.
+  // THEY CARRY THEIR PAGE NUMBER because they must not be flushed BELOW a rule
+  // for a LATER page: an ordinal holding both an addressed and an unaddressed
+  // record drew `page 87` inside the block and `page 85` after it, 10 such
+  // descents corpus-wide in 35,018 mid-paragraph records (18Khu01 ord522, ord532,
+  // ord542, ord568; 31KhuA12 x2; 14SamA01, 21KhuT01, 22AbhiT01, 36KhuA17 x1).
+  // That descent IS the fault this repair began from, in a smaller form.
+  const _brQ=_mid.filter(b=>b[2]==null).map(b=>[b[4],b[1]]).sort((a,b)=>a[0]-b[0]);
   const _sSp=(spans||[]).map(a=>[a[0]-_sOff,a[1]-_sOff]).filter(a=>a[1]>0&&a[0]<_sTxt.length)
               .map(a=>[Math.max(0,a[0]),Math.min(_sTxt.length,a[1])]).sort((a,b)=>a[0]-b[0]);
-  let _sCur=0, _sOn=false;
+  let _sCur=0, _sOn=false, _lineIx=0;
+  // a piece of an already-number-stripped string: `_boldRange` with no spans,
+  // without re-stripping a leading number off a piece that only starts with a
+  // digit because the page turned in front of it.
+  const fmtPiece=(x)=>esc(String(x==null?'':x)).replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');
   const fmtLine=(l)=>{
     const s=String(l==null?'':l);
-    if(!_sOn||!_sSp.length) return fmtText(s);
+    const ix=_lineIx++;
+    // THE PAGE RULES ADDRESSED TO THIS DRAWN STRING.  `_vQ` is ordered, so
+    // everything at or before this call is taken now: offset 0 (or a stale index,
+    // which cannot happen but is not left to draw itself later) goes ABOVE the
+    // line; a positive offset CUTS it, because an `after` entry is a whole printed
+    // paragraph and the page turns inside it 71 times in `40Abhi12` alone.
+    let pre='', cuts=[];
+    while(_vQ.length && _vQ[0][0]<=ix){ const q=_vQ.shift();
+      // drain the unlocated rules for EARLIER pages first, so the end-of-paragraph
+      // fallback is late but never OUT OF ORDER
+      while(_brQ.length && _brQ[0][0]<q[3]) pre+=_brQ.shift()[1];
+      if(q[0]<ix||q[1]<=0) pre+=q[2]; else cuts.push([q[1],q[2]]); }
+    // !!! LOCATE EVEN WITH NO BOLD.  The guard used to be `!_sOn||!_sSp.length`,
+    // which is right for bold and wrong for the page rule.  With no spans
+    // `_boldRange(...,i,i+b.length)` is `fmtText(s)` character for character.
+    if(!_sOn && !cuts.length) return pre+fmtText(s);
     const b=s.replace(/^\s*\d+(-\d+)?\.\s*/,'');
-    if(!b) return fmtText(s);
-    let i=_sTxt.indexOf(b,_sCur); if(i<0) i=_sTxt.indexOf(b);
-    if(i<0) return fmtText(s);
-    _sCur=i+b.length;
-    return _boldRange(_sTxt,_sSp,i,i+b.length);
+    if(!b) return pre+fmtText(s);
+    const noff=s.length-b.length;
+    let i=-1;
+    if(_sOn){ i=_sTxt.indexOf(b,_sCur); if(i<0) i=_sTxt.indexOf(b); if(i>=0) _sCur=i+b.length; }
+    if(!cuts.length) return pre+((i>=0&&_sSp.length)?_boldRange(_sTxt,_sSp,i,i+b.length):fmtText(s));
+    let out='',prev=0;
+    for(const c of cuts){ const q=Math.max(prev,Math.min(b.length,c[0]-noff));
+      out+=(i>=0?_boldRange(_sTxt,_sSp,i+prev,i+q):fmtPiece(b.slice(prev,q)))+c[1]; prev=q; }
+    out+=(i>=0?_boldRange(_sTxt,_sSp,i+prev,i+b.length):fmtPiece(b.slice(prev)));
+    return pre+out;
   };
   const proseOne=(p)=>{
     let gn=''; if(lead!==null){ gn=lead; lead=null; }
@@ -1711,6 +1821,13 @@ function block(kind, key, opts){
     // suppressed outside once it has been placed inside a block — in the first
     // .gatha for a verse, in the first prose block for a prose unit
     if(vmap.groups.length || (isProse && lead===null)) num='';
+    // a rule whose printed line is not among the drawn ones cannot be placed
+    // inside the block; it goes at the end of the paragraph rather than being
+    // dropped, which is late but bounded by this paragraph instead of the next.
+    // `_vQ` can still hold an index past the last `fmtLine` call -- a break the
+    // page opens with after everything drawn -- and it is flushed here too.
+    if(_vQ.length){ body+=_vQ.map(x=>x[2]).join(''); _vQ.length=0; }
+    if(_brQ.length){ body+=_brQ.map(x=>x[1]).join(''); _brQ.length=0; }
   } else if(asSpine){
     // The homage that opens a book is rendered as an .incipit above this
     // paragraph (see incHTML), so remove the copy the extraction swallowed into
@@ -1722,16 +1839,19 @@ function block(kind, key, opts){
     // an incipit exists.  `fmtBold` with no spans is `fmtText` character for
     // character (same number strip, same escape, same footnote-marker <sup>),
     // so a volume with an empty bold map renders byte-identically to before.
-    let _bs=spans||[];
+    let _bs=spans||[], _bm=_mid;
     if((c.inc||{})[String(ord)]){
       const _m=t.match(/Namo\s+tassa\s+\S+\s+[Aa]rahato\s+Sammāsambuddhassa\.?\s*/);
       if(_m){ const _i=_m.index,_n=_m[0].length;
         t=t.slice(0,_i)+t.slice(_i+_n);
-        _bs=_bs.filter(x=>!(x[1]>_i&&x[0]<_i+_n)).map(x=>x[0]>=_i+_n?[x[0]-_n,x[1]-_n]:x); }
+        _bs=_bs.filter(x=>!(x[1]>_i&&x[0]<_i+_n)).map(x=>x[0]>=_i+_n?[x[0]-_n,x[1]-_n]:x);
+        // a page turn inside the excised homage has nowhere left to go; one after
+        // it moves back by the same number of characters
+        _bm=_bm.filter(x=>!(x[0]>_i&&x[0]<_i+_n)).map(x=>x[0]>=_i+_n?[x[0]-_n,x[1]]:x); }
     }
     // The outline reading mode restructures a paragraph into units and is the
     // BAND's presentation; the spine keeps its own shape and only gains the bold.
-    body=fmtBold(t,_bs);
+    body=fmtBold(t,_bs,_bm);
     // ...AND THE FRAME THE PRINT PUTS ROUND IT, when the volume's verse map
     // carries a `before`/`after` for this ordinal without a `groups` key.
     // The paragraph number goes INSIDE with the corpus text: emitted outside
@@ -1765,14 +1885,17 @@ function block(kind, key, opts){
       if(pre){ body='<div class="gatha-after pali">'+num+body+'</div>'; num=''; }
       body=pre+body+post;
     }
-  } else body = (state.reading==='outline'?outlineHTML(pr.text,spans):fmtBold(pr.text,spans));
-   // THE PAGE RULE, emitted HERE so that every render path gets it — columns,
+  } else body = (state.reading==='outline'
+      // the outline mode restructures the paragraph into units and has no
+      // character offsets left to cut at, so its rules go after the body
+      ? outlineHTML(pr.text,spans)+_mid.map(x=>x[1]).join('')
+      : fmtBold(pr.text,spans,_mid));
+   // THE PAGE RULE is emitted HERE so that every render path gets it — columns,
    // single and tabs each assemble blocks differently, and `block()` is the one
    // place all three go through.  Tracked PER VOLUME, because in the columns
    // view three volumes' blocks interleave and one shared counter would make
-   // each of them suppress the others' page turns.
-   let rule='';
-   if(pr.printed!=null && LASTPG[vol]!==pr.printed){ rule=pageRule(vol,kind,pr); LASTPG[vol]=pr.printed; }
+   // each of them suppress the others' page turns.  `rule` is computed at the
+   // TOP of this function now; see the note there.
    return rule+'<div class="'+cls+'" id="p-'+key.replace('#','-')+'">'+toolsFor(kind,vol,pr,pr.sutta)+st+wt+num+body+appBlock(app,vol)+'</div>';
 }
 // !!! A CANON PARAGRAPH'S COMMENTARY IS A RANGE, NOT A POINT (2026-08-04,
@@ -2273,7 +2396,7 @@ function render(){
   if(_work){
     const wk=state.active.A?'A':'T';
     html+='<div class="stack">'+paras.map((p,li)=>{ const i=base+li; if(HIDE[String(i)])return '';
-      return canonFront(i)+canonHead(i,p,SP+'#'+i)+block(wk,SP+'#'+i,{spine:true})+udd(i); }).join('')+'</div>';
+      return canonFront(i)+pgPre(SP,wk,i)+canonHead(i,p,SP+'#'+i)+block(wk,SP+'#'+i,{spine:true})+udd(i); }).join('')+'</div>';
   } else if(state.view==='columns'){
     const keys=activeKeys(); const tmpl='repeat('+keys.length+',minmax(0,1fr))';
     html+='<div class="colhead" style="grid-template-columns:'+tmpl+'">'+keys.map(k=>'<div class="ch"><span class="cdot" style="background:'+META[k].col+'"></span>'+META[k].name+'</div>').join('')+'</div>';
@@ -2290,7 +2413,7 @@ function render(){
     html+='</div>';
   } else if(state.view==='tabs'){
     const k=state.tab;
-    if(k==='canon'){ html+='<div class="stack">'+paras.map((p,li)=>{const i=base+li; if(HIDE[String(i)])return ''; return canonFront(i)+canonHead(i,p,state.canonVol+'#'+i)+block('canon',state.canonVol+'#'+i)+udd(i);}).join('')+'</div>'; }
+    if(k==='canon'){ html+='<div class="stack">'+paras.map((p,li)=>{const i=base+li; if(HIDE[String(i)])return ''; return canonFront(i)+pgPre(state.canonVol,'canon',i)+canonHead(i,p,state.canonVol+'#'+i)+block('canon',state.canonVol+'#'+i)+udd(i);}).join('')+'</div>'; }
     else { let buf='',last=null; const fk=state.filter?frontKeyOf(state.filter):null; if(fk){ buf+=layerFront(fk); _topFront=fk; }
       // !!! DEDUP BY KEY, NOT BY "SAME AS THE LAST ONE".  With ranges,
       // `18Khu01` ¶2 repeats the single target `20KhuA01#39` after ¶1 has
@@ -2324,7 +2447,7 @@ function render(){
       const _front=(key)=>{ const _tv=parseKey(key)[0], _tc=cache[_tv];
         const _hasSec=!!(_tc && _tc.sec && Object.keys(_tc.sec).length);
         return layerFront(key)+(_hasSec?'':emitHead(paraOf(key),key)); };
-      let head = spine==='canon'? (canonFront(i)+canonHead(i,p,state.canonVol+'#'+i)) : (()=>{const ts=targetsFor(i,spine); if(!ts[0]) return '';
+      let head = spine==='canon'? (canonFront(i)+pgPre(state.canonVol,'canon',i)+canonHead(i,p,state.canonVol+'#'+i)) : (()=>{const ts=targetsFor(i,spine); if(!ts[0]) return '';
         // !!! THE HEAD MUST OBEY THE SAME DEDUP AS THE BLOCK.  Several canon
         // paragraphs routinely point at ONE commentary paragraph; the block is
         // drawn once (`dedup`), so a head drawn per canon ordinal appeared

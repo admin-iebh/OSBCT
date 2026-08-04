@@ -1,0 +1,72 @@
+PAGE-MARKER CENSUS AFTER THE pbreak REPAIR — 118 volumes
+2026-08-04.  Supersedes CENSUS.txt, which judged 30,506 pages because it could
+only see the pdf pages a paragraph STARTS on.  The denominator here is every
+printed page whose first line can be located in the corpus.
+
+  denominator (locatable printed pages)            46216
+  printed pages seen but NOT locatable              5455   (no ground truth, not judged)
+
+                                                  BEFORE     AFTER
+                                                (no map)  (pbreak)
+  marker on the exact letter the page turns at    10309     43301
+  marker LATE                                     19905      2092
+  marker EARLY                                      292       292
+  marker above a heading group (judged apart)         0       462
+  NO marker drawn for that printed page           15710        69
+
+  EXACT as a share of the denominator             22.3%     93.7%
+  EXACT as a share of pages actually judged       33.8%     93.8%
+
+  page break falls INSIDE a corpus paragraph       35394    76.6%
+  page break falls BETWEEN two paragraphs          10753    23.3%
+
+RESIDUE — what is still not exact after the repair
+  LATE                                              2092    4.53%
+  EARLY                                              292    0.63%
+  ABOVEHEAD (drawn above a heading group)             462    1.00%
+  no marker at all                                    69    0.15%
+  of which: verse records with NO drawn address, modelled at the END of
+            their paragraph, which is what the reader does with them    1981
+
+THE INDEPENDENT LEG — `--twoside`
+  With `--pbreak` the marker is read out of the same map derive.py wrote from
+  the same locator, so agreement proves only that the reader applies the map.
+  `--twoside` recomputes the break from the END of the previous page's last
+  located line -- nothing derived one from the other.
+    pages with a two-sided comparison                 46098
+    the two sides agree exactly                       45407   98.50%
+
+WORST VOLUMES AFTER THE REPAIR, by share of judged pages not exact
+vol           pages   exact%    was%     late  abovehd  nomarker
+22KhuA03        455    35.6%    9.0%     292       1       0
+36KhuA17        538    51.9%    4.5%     258       0       0
+37KhuA18        408    53.7%    8.1%     188       0       0
+38KhuA19        515    64.1%   13.6%     184       0       0
+39KhuA20        504    69.6%   22.4%     152       0       0
+40Abhi12        430    73.0%   20.9%      14      92       0
+38Abhi10        603    74.5%   14.1%      29      73       0
+18Khu01         446    77.1%   57.6%      95       0       3
+36Abhi08        464    78.7%   20.9%      63      19       1
+39Abhi11        635    80.2%   27.2%       8      93       0
+48AbhiA01       453    84.5%    7.9%      69       1       0
+37Abhi09        493    86.4%   16.6%       4      33       0
+40KhuA21        553    86.6%   27.3%      73       0       0
+11Ma03          352    86.9%   15.9%      13       0       3
+04VinA04        258    88.4%   25.2%      15       0      14
+41KhuA22        332    89.5%   19.6%      32       0       2
+10Ma02          437    90.2%   14.9%       4       0       3
+22AbhiT01       219    90.4%   17.4%      18       1       2
+09Ma01          412    90.5%   15.8%       8       0       6
+49AbhiA02       507    90.9%    9.7%      45       1       0
+
+BEST-IMPROVED VOLUMES
+01ViT01         460    97.8% <-    1.5%   (+96.3 points)
+46KhuA27        345    99.4% <-    4.3%   (+95.1 points)
+45KhuA26        275    99.6% <-    6.9%   (+92.7 points)
+24Khu07         407    98.5% <-    6.4%   (+92.1 points)
+21KhuT01        344    99.4% <-    8.1%   (+91.3 points)
+02VinA02        309    99.0% <-    8.1%   (+90.9 points)
+43KhuA24        416    94.5% <-    3.6%   (+90.9 points)
+09DiT02         500    92.4% <-    2.0%   (+90.4 points)
+06VinSg06       462   100.0% <-   10.0%   (+90.0 points)
+47KhuA28        323    99.1% <-    9.3%   (+89.8 points)
