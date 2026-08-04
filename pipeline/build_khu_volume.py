@@ -4739,12 +4739,105 @@ def join_floating(lines):
     return out
 
 
+# THE VERSE PATH'S COLUMNS.  Same columns the kathā path already reads, and the
+# same ones `check_page_fidelity.py` reads off the printed page: the body
+# column, one leading space for a paragraph OPENER, three for DISPLAY.
+PADAIN  = 8      # display: set this far right of the body column
+NEARIN  = 3      # a paragraph opener's inset -- and, when the line also stops
+                 #   SHORT of the measure, the inset of a display line: this
+                 #   edition sets many of its quoted gāthās at body+7
+SHORTOF = 12     # how far short of the measure such a line must stop
+ENDPAD  = 6      # how far short of it a deeply-indented line must stop
+CENTIN  = 16     # unambiguously centred -- a colophon or a title
+RUNSTEP = 7      # indent step allowed between two DEEP-indented lines of one
+                 #   display block
+ALIGN   = 2      # ...and between two lines when either is only short-and-inset
+
+
 def items_for(pages, p0, p1):
-    """('centre',txt,pg) | ('verse',n,txt,pg) | ('pada',txt,pg) | ('prose',txt,pg)"""
+    """('centre',txt,pg) | ('verse',n,txt,pg) | ('pada',txt,pg) | ('prose',txt,pg)
+    and, in a book that HAS a prose column, ('popen'|'pcont',txt,pg).
+
+    DOES THIS BOOK HAVE A PROSE COLUMN?  Measured, never declared: the book's
+    body column (`kat_book_body`, the kathā path's own measurement) against the
+    column at which the book sets its verse NUMBERS.  In the nine canon verse
+    books the numbers stand at 3-6 and the body column measures 8-11 -- the
+    "body" of such a book IS its pāda column, it has no prose column at all,
+    and the branch below must not fire.  In the seven Jātaka commentaries the
+    body column is 0 and the numbers stand at 4: running commentary prose at
+    the margin, gāthās inset.  The measurement separates 9 books from 7 with
+    nothing near the boundary.
+
+    WITHOUT THIS the function had no notion of a body column: it took the
+    LEFTMOST VERSE NUMBER ON EACH PAGE for one and called everything within 12
+    columns of it a pāda, so the Jātaka commentary's running prose became
+    pādas of the gāthā above it (25,783 printed lines corpus-wide, 80% of them
+    here); and a page carrying no verse number at all fell into the
+    colophon-page branch, where EVERY line became a centred item and was drawn
+    in the uddāna style (12,617 lines, 79% of them here).  One missing
+    measurement, two branches -- see `_xc/jat/`.
+    """
+    from collections import Counter
     items = []
+    _vc = Counter()
+    for pg in range(p0, p1 + 1):
+        for ind, t in page_lines(pages, pg):
+            if VERSE.match(t) and ind < 20:
+                _vc[ind] += 1
+    body0 = kat_book_body(pages, p0, p1)
+    prose_col = bool(_vc) and body0 + NEARIN <= _vc.most_common(1)[0][0]
+    # THE MEASURE: the physical width of the set page, as the 99.5th percentile
+    # of end columns over the whole book -- the same statistic
+    # `check_page_fidelity.py:page_geometry` takes, and for the same reason: a
+    # line that stops well short of it is display, however small its inset.
+    _ends = sorted(ind + len(t) for pg in range(p0, p1 + 1)
+                   for ind, t in page_lines(pages, pg))
+    W = _ends[min(len(_ends) - 1, int(len(_ends) * 0.995))] if _ends else 72
+    vopen = None            # the indent of the open display block's number
     for pg in range(p0, p1 + 1):
         lines = join_floating(page_lines(pages, pg))
         if not lines:
+            continue
+        if prose_col:
+            # Read off the indent, page by page, with ONE piece of state
+            # carried across the page break: a gāthā whose pādas continue onto
+            # the next page.
+            strong = [ind >= body0 + PADAIN and ind + len(t) <= W - ENDPAD
+                      for ind, t in lines]
+            disp = [strong[k] or (ind >= body0 + NEARIN
+                                  and ind + len(t) <= W - SHORTOF)
+                    for k, (ind, t) in enumerate(lines)]
+            for i, (ind, t) in enumerate(lines):
+                m = VERSE.match(t)
+                if HOMAGE.search(t):
+                    items.append(('homage', t, pg)); vopen = None
+                elif ind >= body0 + CENTIN:
+                    # a colophon or a centred title: NOT judged as prose by the
+                    # page-fidelity check either, and left exactly where it is
+                    # -- `(Sattamo bhāgo)` and its four siblings live here.
+                    items.append(('centre', t, pg)); vopen = None
+                elif m and HEADTXT.match(head_body(m.group(2))):
+                    items.append(('centre', t, pg)); vopen = None
+                elif m:
+                    items.append(('verse', int(m.group(1)), m.group(2), pg))
+                    vopen = ind
+                elif disp[i] and (
+                        (i > 0 and disp[i - 1]
+                         and abs(ind - lines[i - 1][0])
+                         <= (RUNSTEP if strong[i] and strong[i - 1] else ALIGN))
+                        or (i + 1 < len(lines) and disp[i + 1]
+                            and abs(lines[i + 1][0] - ind)
+                            <= (RUNSTEP if strong[i] and strong[i + 1] else ALIGN))
+                        or (strong[i] and vopen is not None and vopen <= ind)):
+                    # a pāda: either one line of a display BLOCK, or set under
+                    # a verse number and no further left than it.  A display
+                    # line standing ALONE is neither, and falls through to the
+                    # prose branch rather than being called verse.
+                    items.append(('pada', t, pg))
+                else:
+                    items.append(('popen' if ind >= body0 + NEARIN else 'pcont',
+                                  t, pg))
+                    vopen = None
             continue
         vind = [i for i, t in lines if VERSE.match(t) and i < 20]
         if not vind:
@@ -7223,6 +7316,9 @@ def build():
         # a centred COLOPHON or uddāna label opens a tail; everything in the body
         # column after it belongs to that tail until the next verse number.
         in_tail = False
+        # Does this book have a prose column?  `items_for` says so by emitting
+        # the paragraph kinds at all; nothing is declared per volume.
+        _pcol = any(it[0] in ('popen', 'pcont') for it in items)
         items_extra = []
 
         def flush():
@@ -7263,9 +7359,20 @@ def build():
                     if _j is not None and _j != cur_ord:
                         del e[_k]
                         continue
-                    _xs = [x for x in _xs
-                           if not (isinstance(x, str)
-                                   and _cwhole.get(_sq(x), cur_ord) != cur_ord)]
+                    _keep = []
+                    for x in _xs:
+                        if isinstance(x, str):
+                            if _cwhole.get(_sq(x), cur_ord) == cur_ord:
+                                _keep.append(x)
+                            continue
+                        if isinstance(x, dict) and 'gatha' in x:
+                            _g = [l for l in x['gatha']
+                                  if _cwhole.get(_sq(l), cur_ord) == cur_ord]
+                            if _g:
+                                _keep.append({'gatha': _g})
+                            continue
+                        _keep.append(x)
+                    _xs = _keep
                     if _xs:
                         e[_k] = _xs
                     else:
@@ -7310,7 +7417,8 @@ def build():
 
         for it in items:
             kind = it[0]
-            if kind in ('pada', 'prose', 'centre') and it[1].strip() == title:
+            if kind in ('pada', 'prose', 'popen', 'pcont', 'centre') \
+                    and it[1].strip() == title:
                 # The book's own name, printed large above the homage.  It is set
                 # at its own indent and so is not reliably classified as centred:
                 # on 20Khu03 p21 it sits at indent 11 against a body column of 3
@@ -7433,7 +7541,7 @@ def build():
                     open_before[str(o)] = list(pend_before)
                     pend_before = []
                 in_tail = False
-            elif kind in ('pada', 'prose'):
+            elif kind in ('pada', 'prose', 'popen', 'pcont'):
                 if not opened:
                     # THE SAME DEFECT ON THE VERSE PATH, and the same fix.  A
                     # 'prose' item printed before the book's first unit was
@@ -7452,9 +7560,14 @@ def build():
                         else:
                             pend_open.append({'l': it[1], 'k': 'gatha'})
                     else:
+                        # A CONTINUATION LINE JOINS ITS PARAGRAPH; an OPENER
+                        # starts one.  On a book with a prose column the page
+                        # says which is which (`pcont`/`popen`); elsewhere the
+                        # only prose the path sees is PROSEOPEN's, unchanged.
                         _po = pend_open[-1] if pend_open else None
-                        if (_po is not None and _po['k'] == 'prose'
-                                and not PROSEOPEN.match(it[1])):
+                        _join = (kind == 'pcont' if kind in ('popen', 'pcont')
+                                 else not PROSEOPEN.match(it[1]))
+                        if _po is not None and _po['k'] == 'prose' and _join:
                             _po['l'] = hyjoin(_po['l'], it[1])
                         else:
                             pend_open.append({'l': it[1], 'k': 'prose'})
@@ -7462,15 +7575,26 @@ def build():
                     # same precedence as in the centred branch: a heading is open,
                     # so this is its opener and belongs to the heading's own verse,
                     # not to the previous section's closing block
-                    pend_before.append(it[1])
-                elif in_tail and pend_centre:
+                    if (kind == 'pcont' and pend_before
+                            and isinstance(pend_before[-1], str)):
+                        pend_before[-1] = hyjoin(pend_before[-1], it[1])
+                    else:
+                        pend_before.append(it[1])
+                elif (in_tail and pend_centre
+                      and kind not in ('popen', 'pcont')):
                     _add_line(pend_centre[-1]['lines'], it[1])
                 elif cur_plain is not None and kind == 'pada':
                     # continuation pādas of a spliced verse that was emitted as
                     # its own block rather than folded into the paragraph
                     _add_line(cur_plain['lines'], it[1])
                 elif kind == 'pada':
-                    if cur_groups:
+                    if _pcol and cur_after:
+                        _lb = cur_after[-1]
+                        if isinstance(_lb, dict) and 'gatha' in _lb:
+                            _add_line(_lb['gatha'], it[1])
+                        else:
+                            cur_after.append({'gatha': [it[1]]})
+                    elif cur_groups:
                         cur_groups[-1].append(it[1])
                 elif cur_ord is not None:
                     # LINE-END HYPHENATION.  20Khu03 p342 sets
@@ -7480,8 +7604,9 @@ def build():
                     # FABRICATES words ("abhiṇhaṁ" + "ovadatīti." ->
                     # "abhiṇhaṁovadatīti.").  The harness joins intra-word hyphens
                     # the same way, so the two agree.
-                    prev = cur_after[-1] if cur_after else ''
-                    if prev.endswith('-'):
+                    prev = (cur_after[-1] if cur_after
+                            and isinstance(cur_after[-1], str) else '')
+                    if prev and (prev.endswith('-') or kind == 'pcont'):
                         cur_after[-1] = hyjoin(prev, it[1])
                     else:
                         cur_after.append(it[1])
@@ -7547,7 +7672,7 @@ def build():
                     in_tail = True
                 else:
                     pend_centre.append({'label': None, 'lines': [t], 'app': []})
-                    in_tail = True
+                    in_tail = not _pcol
         flush()
         if pend_centre:
             place_centre(pend_centre, cur_ord)
