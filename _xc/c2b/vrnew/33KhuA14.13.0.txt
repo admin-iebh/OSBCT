@@ -1,0 +1,1 @@
+33KhuA14 [0-727) pdf 13-316: PDF-lines-missing 1 | PDF-chunks-missing(minw=4) 0 | render-not-in-PDF 2 | rendered-too-often 0 | PDF-reading-order 1

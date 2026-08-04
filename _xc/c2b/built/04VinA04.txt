@@ -1,0 +1,9 @@
+verse entries 300 | sections 127 | uddana anchors 55 | hidden 0 | incipits 2
+   Cūḷavaggādi-aṭṭhakathā KATHĀ  printed units 186 / corpus ¶ 186   headings 80   colophons 21   prose ¶ 396   gāthā blocks 12   [OK]
+   Parivāra-aṭṭhakathā    KATHĀ  printed units 114 / corpus ¶ 114   headings 82   colophons 46   prose ¶ 448   gāthā blocks 21   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/04VinA04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/04VinA04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/04VinA04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/04VinA04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/04VinA04.json

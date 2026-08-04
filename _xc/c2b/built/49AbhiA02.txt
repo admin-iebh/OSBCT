@@ -1,0 +1,8 @@
+verse entries 326 | sections 125 | uddana anchors 100 | hidden 7 | incipits 1
+   Vibhaṅgaṭṭhakathā      KATHĀ  printed units 325 / corpus ¶ 325   headings 155   colophons 129   prose ¶ 1515   gāthā blocks 132   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/49AbhiA02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/49AbhiA02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/49AbhiA02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/49AbhiA02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/49AbhiA02.json

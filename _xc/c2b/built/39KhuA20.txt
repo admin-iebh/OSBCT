@@ -1,0 +1,8 @@
+verse entries 1149 | sections 70 | uddana anchors 69 | hidden 0 | incipits 1
+   Jātakaṭṭhakathā nipātas pdf 6 / corpus 6 / expected 6   verses paired 1149   corpus splices repaired 0   corpus ¶ never matched 0   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/39KhuA20.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/39KhuA20.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/39KhuA20.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/39KhuA20.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/39KhuA20.json

@@ -1,0 +1,8 @@
+verse entries 476 | sections 270 | uddana anchors 99 | hidden 14 | incipits 1
+   Mahāvaggapāḷi          KATHĀ  printed units 476 / corpus ¶ 476   headings 292   colophons 133   prose ¶ 1474   gāthā blocks 38   [OK]
+   leaked corpus headings hidden: [128, 192, 198, 380, 431, 433, 435, 447, 457, 459, 461]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/03Vin03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/03Vin03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/03Vin03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/03Vin03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/03Vin03.json

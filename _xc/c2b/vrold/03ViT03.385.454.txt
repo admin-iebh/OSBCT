@@ -1,0 +1,1 @@
+03ViT03 [454-593) pdf 385-475: PDF-lines-missing 26 | PDF-chunks-missing(minw=4) 9 | render-not-in-PDF 0 | rendered-too-often 0

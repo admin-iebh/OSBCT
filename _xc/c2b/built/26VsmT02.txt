@@ -1,0 +1,8 @@
+verse entries 520 | sections 94 | uddana anchors 55 | hidden 1 | incipits 1
+   Visuddhimaggamahāṭīkā  KATHĀ  printed units 520 / corpus ¶ 520   headings 109   colophons 68   prose ¶ 1587   gāthā blocks 43   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/26VsmT02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/26VsmT02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/26VsmT02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/26VsmT02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/26VsmT02.json

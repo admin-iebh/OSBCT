@@ -1,0 +1,8 @@
+verse entries 331 | sections 39 | uddana anchors 42 | hidden 3 | incipits 1
+   Cariyāpiṭakaṭṭhakathā  KATHĀ  printed units 326 / corpus ¶ 326   headings 43   colophons 49   prose ¶ 1039   gāthā blocks 153   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/35KhuA16.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/35KhuA16.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/35KhuA16.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/35KhuA16.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/35KhuA16.json

@@ -1,0 +1,9 @@
+verse entries 722 | sections 676 | uddana anchors 84 | hidden 0 | incipits 2
+   Khandhavaggasaṁyuttapāḷi KATHĀ  printed units 361 / corpus ¶ 361   headings 362   colophons 80   prose ¶ 847   gāthā blocks 11   [OK]
+   Saḷāyatanavaggasaṁyuttapāḷi KATHĀ  printed units 361 / corpus ¶ 361   headings 371   colophons 97   prose ¶ 959   gāthā blocks 21   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/13Sam02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/13Sam02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/13Sam02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/13Sam02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/13Sam02.json

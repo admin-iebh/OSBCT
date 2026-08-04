@@ -1,0 +1,11 @@
+verse entries 3 | sections 345 | uddana anchors 350 | hidden 3 | incipits 4
+   Bhikkhupātimokkhapāḷi        HEADS  printed lines   940 / located   940   residue   0   corpus ¶  251   headings   10   colophons   37   unconfirmed ¶ 0   [OK]
+   Bhikkhunīpātimokkhapāḷi      HEADS  printed lines  1215 / located  1215   residue   0   corpus ¶  340   headings    8   colophons   42   unconfirmed ¶ 0   [OK]
+   Kaṅkhāvitaraṇī-aṭṭhakathā    HEADS  printed lines  5484 / located  5483   residue   1   corpus ¶  208   headings  220   colophons  177   unconfirmed ¶ 0   [OK]
+   Bhikkhunīpātimokkhavaṇṇanā   HEADS  printed lines  1365 / located  1363   residue   2   corpus ¶  131   headings  141   colophons  148   unconfirmed ¶ 0   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/05Kankha.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/05Kankha.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/05Kankha.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/05Kankha.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/05Kankha.json

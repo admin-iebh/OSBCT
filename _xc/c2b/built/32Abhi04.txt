@@ -1,0 +1,8 @@
+verse entries 918 | sections 255 | uddana anchors 243 | hidden 0 | incipits 1
+   Kathāvatthupāḷi        KATHĀ  printed units 918 / corpus ¶ 918   headings 481   colophons 304   prose ¶ 2432   gāthā blocks 44   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/32Abhi04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/32Abhi04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/32Abhi04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/32Abhi04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/32Abhi04.json

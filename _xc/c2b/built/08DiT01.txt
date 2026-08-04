@@ -1,0 +1,8 @@
+verse entries 306 | sections 122 | uddana anchors 25 | hidden 2 | incipits 1
+   Sīlakkhandhavaggaṭīkā  KATHĀ  printed units 303 / corpus ¶ 303   headings 151   colophons 30   prose ¶ 1012   gāthā blocks 34   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/08DiT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/08DiT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/08DiT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/08DiT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/08DiT01.json

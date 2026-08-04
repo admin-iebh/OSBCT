@@ -1,0 +1,1 @@
+50AbhiA03 [688-883) pdf 353-512: PDF-lines-missing 20 | PDF-chunks-missing(minw=4) 18 | render-not-in-PDF 46 | rendered-too-often 0 | PDF-reading-order 2

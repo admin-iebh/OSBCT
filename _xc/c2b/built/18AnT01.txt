@@ -1,0 +1,8 @@
+verse entries 218 | sections 88 | uddana anchors 29 | hidden 4 | incipits 1
+   Ekakanipāta-aṅguttaraṭīkā KATHĀ  printed units 218 / corpus ¶ 218   headings 103   colophons 35   prose ¶ 735   gāthā blocks 63   [OK]
+   leaked corpus headings hidden: [158]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/18AnT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/18AnT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/18AnT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/18AnT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/18AnT01.json

@@ -1,0 +1,13 @@
+verse entries 818 | sections 450 | uddana anchors 305 | hidden 12 | incipits 4
+   Ganthārambhakathā + Bāhiranidānavaṇṇanā HEADS  printed lines   788 / located   788   residue   0   corpus ¶    8   headings    9   colophons    5   unconfirmed ¶ 0   [OK]
+   Verañjakaṇḍavaṇṇanā    KATHĀ  printed units 357 / corpus ¶ 357   headings 217   colophons 188   prose ¶ 630   gāthā blocks 41   [OK]
+   Bhikkhunīvibhaṅgavaṇṇanā KATHĀ  printed units 93 / corpus ¶ 93   headings 78   colophons 79   prose ¶ 105   gāthā blocks 3   [OK]
+   Mahāvaggavaṇṇanā       KATHĀ  printed units 168 / corpus ¶ 168   headings 114   colophons 43   prose ¶ 238   gāthā blocks 14   [OK]
+   Cūḷavaggavaṇṇanā       KATHĀ  printed units 102 / corpus ¶ 102   headings 47   colophons 15   prose ¶ 112   gāthā blocks 3   [OK]
+   Parivāravaṇṇanā        KATHĀ  printed units 92 / corpus ¶ 92   headings 75   colophons 13   prose ¶ 115   gāthā blocks 10   [OK]
+   leaked corpus headings hidden: [165, 419]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/06ViT06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/06ViT06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/06ViT06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/06ViT06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/06ViT06.json

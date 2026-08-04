@@ -1,0 +1,11 @@
+verse entries 4857 | sections 245 | uddana anchors 188 | hidden 1 | incipits 4
+   Therāpadānapāḷi      verses mapped 2072 (n resets per vagga; no book-level total)
+   Therī-apadānapāḷi    verses mapped 1359 (n resets per vagga; no book-level total)
+   Buddhavaṁsapāḷi      verses mapped 1070 (n resets per vagga; no book-level total)
+   Cariyāpiṭakapāḷi     verses mapped 356 (n resets per vagga; no book-level total)
+   leaked corpus headings hidden: [3138]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/21Khu04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/21Khu04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/21Khu04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/21Khu04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/21Khu04.json

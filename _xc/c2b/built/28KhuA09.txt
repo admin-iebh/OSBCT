@@ -1,0 +1,8 @@
+verse entries 1070 | sections 52 | uddana anchors 57 | hidden 5 | incipits 1
+   Petavatthu-aṭṭhakathā  KATHĀ  printed units 1066 / corpus ¶ 1066   headings 57   colophons 82   prose ¶ 937   gāthā blocks 17   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/28KhuA09.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/28KhuA09.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/28KhuA09.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/28KhuA09.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/28KhuA09.json

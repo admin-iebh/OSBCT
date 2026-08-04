@@ -1,0 +1,1 @@
+22KhuA03 [0-331) pdf 12-468: PDF-lines-missing 28 | PDF-chunks-missing(minw=4) 15 | render-not-in-PDF 32 | rendered-too-often 0 | PDF-reading-order 4

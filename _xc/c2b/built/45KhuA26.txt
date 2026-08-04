@@ -1,0 +1,8 @@
+verse entries 150 | sections 39 | uddana anchors 35 | hidden 3 | incipits 1
+   Netti-aṭṭhakathā       KATHĀ  printed units 146 / corpus ¶ 146   headings 40   colophons 36   prose ¶ 899   gāthā blocks 42   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/45KhuA26.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/45KhuA26.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/45KhuA26.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/45KhuA26.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/45KhuA26.json

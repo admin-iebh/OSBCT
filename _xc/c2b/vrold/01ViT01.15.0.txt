@@ -1,0 +1,1 @@
+01ViT01 [0-12) pdf 15-209: PDF-lines-missing 31 | PDF-chunks-missing(minw=4) 26 | render-not-in-PDF 0 | rendered-too-often 0 | PDF-reading-order 1

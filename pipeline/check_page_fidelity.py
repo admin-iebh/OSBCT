@@ -244,6 +244,28 @@ def corpus_stream(vol, control=None):
             if e and control != 'dropframe':
                 blocks(keep_frame(e.get('after')), o)
         for b in udd.get(so, []):
+            # !!! A `plain` BLOCK IN THE UDDĀNA MAP IS NOT DRAWN AS AN UDDĀNA,
+            # AND THIS MODEL SAID IT WAS.  `uddanaHTML` has two shapes:
+            #   b.plain  -> `<div class="head …">` for its head and ONE
+            #               `<div class="para … pali">` holding `lines.join(' ')`
+            #               — an ordinary body paragraph and an ordinary heading;
+            #   otherwise-> `<div class="udd-label">` and `<div class="udd-verse">`,
+            #               which is the centred italic uddāna style.
+            # Everything here was tagged 'U'.  The `plain` shape is what
+            # `kat_build.tail_add` gives PROSE printed after a book's last
+            # numbered unit (and what the Jātaka repair, `722d8e6b`, already
+            # emitted), so that prose scored as PROSE_AS_UDDANA — class 3 — on
+            # volumes where the reader draws it as plain prose all along.
+            # MEASURED: correcting it moves 2,262 printed lines out of class 3
+            # over the 118 volumes, 1,837 of them in `35KhuA16` alone, WITHOUT
+            # any volume data changing.  The reader was right and the instrument
+            # was wrong, which is the third time this week.
+            if b.get('plain'):
+                if b.get('head'):
+                    add('H', b['head'], o)
+                if b.get('lines'):
+                    add('P', ' '.join(b['lines']), o)
+                continue
             if b.get('label'):
                 add('U', b['label'], o)
             for l in b.get('lines', []):

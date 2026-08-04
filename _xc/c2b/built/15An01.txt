@@ -1,0 +1,11 @@
+verse entries 952 | sections 493 | uddana anchors 129 | hidden 0 | incipits 4
+   Ekakanipātapāḷi        KATHĀ  printed units 323 / corpus ¶ 323   headings 45   colophons 28   prose ¶ 330   gāthā blocks 0   [OK]
+   Dukanipātapāḷi         KATHĀ  printed units 195 / corpus ¶ 195   headings 32   colophons 25   prose ¶ 251   gāthā blocks 1   [OK]
+   Tikanipātapāḷi         KATHĀ  printed units 159 / corpus ¶ 159   headings 178   colophons 50   prose ¶ 765   gāthā blocks 36   [OK]
+   Catukkanipātapāḷi      KATHĀ  printed units 275 / corpus ¶ 275   headings 311   colophons 90   prose ¶ 1040   gāthā blocks 71   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/15An01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/15An01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/15An01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/15An01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/15An01.json

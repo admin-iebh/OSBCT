@@ -1,0 +1,15 @@
+verse entries 517 | sections 515 | uddana anchors 81 | hidden 0 | incipits 1
+   Pañcakanipātaṭṭhakathā KATHĀ  printed units 176 / corpus ¶ 176   headings 206   colophons 32   prose ¶ 260   gāthā blocks 0   [OK]
+   Chakkanipātaṭṭhakathā  KATHĀ  printed units 83 / corpus ¶ 83   headings 97   colophons 15   prose ¶ 173   gāthā blocks 1   [OK]
+   Sattakanipātaṭṭhakathā KATHĀ  printed units 50 / corpus ¶ 50   headings 60   colophons 11   prose ¶ 121   gāthā blocks 1   [OK]
+   Aṭṭhakanipātaṭṭhakathā KATHĀ  printed units 68 / corpus ¶ 68   headings 80   colophons 12   prose ¶ 173   gāthā blocks 3   [OK]
+   Navakanipātaṭṭhakathā  KATHĀ  printed units 40 / corpus ¶ 40   headings 47   colophons 8   prose ¶ 76   gāthā blocks 1   [OK]
+   Dasakanipātaṭṭhakathā  KATHĀ  printed units 90 / corpus ¶ 90   headings 106   colophons 22   prose ¶ 161   gāthā blocks 2   [OK]
+   Ekādasakanipātaṭṭhakathā KATHĀ  printed units 10 / corpus ¶ 10   headings 15   colophons 4   prose ¶ 47   gāthā blocks 3   [OK]
+   leaked corpus headings hidden: []
+   BOOKTITLE NOT derived for 'Chakkanipātaṭṭhakathā': its first page does not open with a title stack (['Chakkanipāta', '1. Paṭhamapaṇṇāsaka', '1. Āhuneyyavagga', '1. Paṭhama-āhuneyyasuttavaṇṇanā'])
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/19AnA03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/19AnA03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/19AnA03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/19AnA03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/19AnA03.json

@@ -1,0 +1,12 @@
+verse entries 674 | sections 284 | uddana anchors 286 | hidden 11 | incipits 5
+   Pācittiyakaṇḍa         KATHĀ  printed units 176 / corpus ¶ 176   headings 104   colophons 106   prose ¶ 256   gāthā blocks 2   [OK]
+   Bhikkhunīvibhaṅgavaṇṇanā KATHĀ  printed units 53 / corpus ¶ 53   headings 28   colophons 22   prose ¶ 65   gāthā blocks 2   [OK]
+   Mahāvaggavaṇṇanā       KATHĀ  printed units 212 / corpus ¶ 212   headings 103   colophons 100   prose ¶ 438   gāthā blocks 5   [OK]
+   Cūḷavaggavaṇṇanā       KATHĀ  printed units 135 / corpus ¶ 135   headings 50   colophons 52   prose ¶ 239   gāthā blocks 1   [OK]
+   Parivāravaṇṇanā        KATHĀ  printed units 97 / corpus ¶ 97   headings 64   colophons 52   prose ¶ 206   gāthā blocks 1   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/05ViT05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/05ViT05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/05ViT05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/05ViT05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/05ViT05.json

@@ -1,0 +1,1 @@
+12DiT05 [0-301) pdf 9-301: PDF-lines-missing 43 | PDF-chunks-missing(minw=4) 3 | render-not-in-PDF 6 | rendered-too-often 0 | PDF-reading-order 2

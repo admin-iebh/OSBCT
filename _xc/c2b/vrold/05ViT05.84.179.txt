@@ -1,0 +1,1 @@
+05ViT05 [179-233) pdf 84-100: PDF-lines-missing 23 | PDF-chunks-missing(minw=4) 17 | render-not-in-PDF 0 | rendered-too-often 0

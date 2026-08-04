@@ -1,0 +1,8 @@
+verse entries 319 | sections 116 | uddana anchors 103 | hidden 8 | incipits 1
+   Sāratthadīpanīṭīkā     KATHĀ  printed units 314 / corpus ¶ 314   headings 127   colophons 121   prose ¶ 1164   gāthā blocks 61   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/02ViT02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/02ViT02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/02ViT02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/02ViT02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/02ViT02.json

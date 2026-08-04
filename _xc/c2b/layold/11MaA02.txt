@@ -1,0 +1,7 @@
+OSBCT reader build: d41f8bb64750
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 290 rules, 0 descents   #page-rules-inside-paragraphs 290 checked, 13 misplaced (0 flushed at end of paragraph, 13 on the wrong letters; 1 anchored on a line under 10 letters)
+  FAIL 11MaA02     253 ¶, incipit x1
+        - page-rule-misplaced :: 11MaA02 p.42 want KasmāpanaBhagavāSuddhoda got 1SabbaphāliphullamivaSyā
+
+0 clean, 0 PARTIAL, 1 with layout issues, 0 not driveable headlessly

@@ -1,0 +1,9 @@
+verse entries 1000 | sections 852 | uddana anchors 237 | hidden 91 | incipits 1
+   Tikapaṭṭhānapāḷi       KATHĀ  printed units 1000 / corpus ¶ 1000   headings 1479   colophons 177   prose ¶ 2783   gāthā blocks 0   [OK]
+        CORPUS SPLICE (recorded, not corrected): printed unit 41 at p373 is inside corpus ord831, the paragraph of unit 40 — 'Nevavipākanavipākadhammadhammaṁ paṭicca'
+   leaked corpus headings hidden: [52, 53, 74, 88, 106, 238, 239, 244, 246, 248, 252, 253, 280, 289, 299, 343, 344, 349, 351, 353, 357, 358, 368, 373, 382, 416, 417, 421, 423, 426, 430, 431, 470, 564, 687, 688, 694, 697, 706, 729, 730, 755, 780, 788, 789, 809, 814, 839, 844, 845, 847, 852, 853, 869, 872, 876, 881, 883, 884, 886, 888, 890, 894, 896, 897, 928, 931, 935, 936, 948, 950, 964, 968, 970, 971, 977, 979, 987, 991, 993, 997, 999, 1000, 1038, 1042, 1048, 1049, 1052, 1058, 1059, 1083]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/36Abhi08.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/36Abhi08.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/36Abhi08.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/36Abhi08.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/36Abhi08.json

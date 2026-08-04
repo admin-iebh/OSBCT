@@ -1,0 +1,8 @@
+verse entries 462 | sections 52 | uddana anchors 52 | hidden 0 | incipits 1
+   Uparipaṇṇāsapāḷi       KATHĀ  printed units 462 / corpus ¶ 462   headings 58   colophons 64   prose ¶ 1092   gāthā blocks 27   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/11Ma03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/11Ma03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/11Ma03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/11Ma03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/11Ma03.json

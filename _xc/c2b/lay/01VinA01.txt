@@ -1,0 +1,7 @@
+OSBCT reader build: d41f8bb64750
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 319 rules, 0 descents   #page-rules-inside-paragraphs 319 checked, 15 misplaced (0 flushed at end of paragraph, 15 on the wrong letters; 1 anchored on a line under 10 letters)   #page-rules-ascending 319 rules, 0 descents   #page-rules-inside-paragraphs 319 checked, 15 misplaced (0 flushed at end of paragraph, 15 on the wrong letters; 1 anchored on a line under 10 letters)   #page-rules-ascending 319 rules, 0 descents   #page-rules-inside-paragraphs 319 checked, 15 misplaced (0 flushed at end of paragraph, 15 on the wrong letters; 1 anchored on a line under 10 letters)   #page-rules-ascending 319 rules, 0 descents   #page-rules-inside-paragraphs 319 checked, 15 misplaced (0 flushed at end of paragraph, 15 on the wrong letters; 1 anchored on a line under 10 letters)   #page-rules-ascending 319 rules, 0 descents   #page-rules-inside-paragraphs 319 checked, 15 misplaced (0 flushed at end of paragraph, 15 on the wrong letters; 1 anchored on a line under 10 letters)
+  FAIL 01VinA01    159 ¶, incipit x1  [5 host volumes walked]
+        - page-rule-misplaced :: 01VinA01 p.113 want Nakhopanetaṁevaṁdaṭṭhabb got 1Vi31Khu177piṭṭhādīsu1Kh
+
+0 clean, 0 PARTIAL, 1 with layout issues, 0 not driveable headlessly

@@ -1,0 +1,7 @@
+OSBCT reader build: d41f8bb64750
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 362 rules, 0 descents   #page-rules-inside-paragraphs 362 checked, 23 misplaced (0 flushed at end of paragraph, 23 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 08DiT01     313 ¶, incipit x1
+        - page-rule-misplaced :: 08DiT01 p.189 want mettākaruṇāsamaṅgitāvīti got 1Khu119123piṭṭhesu1Saṁ33
+
+0 clean, 0 PARTIAL, 1 with layout issues, 0 not driveable headlessly

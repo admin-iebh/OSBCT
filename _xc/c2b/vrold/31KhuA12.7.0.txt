@@ -1,0 +1,1 @@
+31KhuA12 [0-590) pdf 7-312: PDF-lines-missing 0 | PDF-chunks-missing(minw=4) 0 | render-not-in-PDF 0 | rendered-too-often 0

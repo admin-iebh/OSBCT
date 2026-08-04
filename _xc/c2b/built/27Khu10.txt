@@ -1,0 +1,9 @@
+verse entries 271 | sections 47 | uddana anchors 22 | hidden 0 | incipits 2
+   Nettipāḷi              KATHĀ  printed units 151 / corpus ¶ 151   headings 41   colophons 21   prose ¶ 793   gāthā blocks 168   [OK]
+   Peṭakopadesapāḷi       KATHĀ  printed units 120 / corpus ¶ 120   headings 8   colophons 3   prose ¶ 779   gāthā blocks 117   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/27Khu10.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/27Khu10.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/27Khu10.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/27Khu10.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/27Khu10.json

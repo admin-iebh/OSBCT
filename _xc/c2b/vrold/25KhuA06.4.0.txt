@@ -1,0 +1,1 @@
+25KhuA06 [0-264) pdf 4-318: PDF-lines-missing 20 | PDF-chunks-missing(minw=4) 1 | render-not-in-PDF 2 | rendered-too-often 0 | PDF-reading-order 2

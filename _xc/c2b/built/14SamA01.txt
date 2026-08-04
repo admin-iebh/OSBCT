@@ -1,0 +1,9 @@
+verse entries 254 | sections 254 | uddana anchors 47 | hidden 0 | incipits 1
+   Sagāthāvaggasaṁyuttaṭṭhakathā KATHĀ  printed units 254 / corpus ¶ 254   headings 291   colophons 61   prose ¶ 898   gāthā blocks 50   [OK]
+        CORPUS SPLICE (recorded, not corrected): printed unit 64 at p114 is inside corpus ord59, the paragraph of unit 62 — '65. Catutthe kiṁsu saṁyojanoti kiṁsaṁyojano kiṁbandhano.'
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/14SamA01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/14SamA01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/14SamA01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/14SamA01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/14SamA01.json

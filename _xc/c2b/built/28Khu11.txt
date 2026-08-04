@@ -1,0 +1,8 @@
+verse entries 258 | sections 236 | uddana anchors 236 | hidden 3 | incipits 1
+   Milindapañhapāḷi       KATHĀ  printed units 258 / corpus ¶ 258   headings 288   colophons 300   prose ¶ 1582   gāthā blocks 77   [OK]
+   leaked corpus headings hidden: [38, 98, 162]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/28Khu11.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/28Khu11.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/28Khu11.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/28Khu11.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/28Khu11.json

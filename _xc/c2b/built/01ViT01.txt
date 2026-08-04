@@ -1,0 +1,9 @@
+verse entries 29 | sections 24 | uddana anchors 25 | hidden 3 | incipits 1
+   Ganthārambhakathā + Bāhiranidānavaṇṇanā HEADS  printed lines  5586 / located  5585   residue   1   corpus ¶   12   headings   10   colophons   13   unconfirmed ¶ 0   [OK]
+   Verañjakaṇḍavaṇṇanā    KATHĀ  printed units 23 / corpus ¶ 23   headings 17   colophons 19   prose ¶ 585   gāthā blocks 85   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/01ViT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/01ViT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/01ViT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/01ViT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/01ViT01.json

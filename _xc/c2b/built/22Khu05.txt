@@ -1,0 +1,15 @@
+verse entries 2968 | sections 518 | uddana anchors 519 | hidden 17 | incipits 1
+   Jātakapāḷi   nipātas pdf 16 / corpus 16 / expected 16   verses paired 2968   corpus splices repaired 7   corpus ¶ never matched 0   [OK]
+        SPLICE: printed verse 109 (p80) was merged into corpus ord257 — 'Sobhati maccho Gaṅgeyyo, atho sobhati Yāmuno4.'
+        SPLICE: printed verse 145 (p86) was merged into corpus ord292 — 'Name namantassa bhaje bhajantaṁ,'
+        SPLICE: printed verse 57 (p188) was merged into corpus ord1037 — 'Yo ca2 yācanajīvāno, kāle yācaṁ hi yācati3.'
+        SPLICE: printed verse 18 (p214) was merged into corpus ord1252 — 'No ce labhetha nipakaṁ sahāyaṁ,'
+        SPLICE: printed verse 188 (p356) was merged into corpus ord2414 — 'Himaccaye Hemavatāya tīre,'
+        SPLICE: printed verse 125 (p400) was merged into corpus ord2740 — 'Kāsissa rañño mahesī bhadante,'
+        SPLICE: printed verse 228 (p410) was merged into corpus ord2843 — 'Daharā viyalaṅkāraṁ, dhāreti apiḷandhanaṁ.'
+   leaked corpus headings hidden: [294, 508, 874, 1396, 1410, 1529, 1555, 1603, 1866, 1901, 2014, 2227, 2437, 2467, 2591, 2679, 2839]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/22Khu05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/22Khu05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/22Khu05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/22Khu05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/22Khu05.json

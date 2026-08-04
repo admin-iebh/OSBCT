@@ -1,0 +1,10 @@
+verse entries 335 | sections 41 | uddana anchors 39 | hidden 0 | incipits 1
+   Cūḷaniddesapāḷi      verses mapped 174 / 174
+   Cūḷaniddesapāḷi    NIDDESA  printed lemmas 161 / corpus ¶ 161   headings 24   colophons 25   prose ¶ 969   gāthā blocks 199   [OK]
+   leaked corpus headings hidden: []
+   BOOKTITLE NOT derived for 'Cūḷaniddesapāḷi': its first page does not open with a title stack (['Pārāyanavagga', '1. Ajitamāṇavapucchāniddesa', '1. Kenassu nivuto loko, (iccāyasmā Ajito,)', 'Kenassu nappakāsati.'])
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/25Khu08.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/25Khu08.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/25Khu08.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/25Khu08.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/25Khu08.json

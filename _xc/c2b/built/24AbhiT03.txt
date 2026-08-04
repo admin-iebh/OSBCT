@@ -1,0 +1,18 @@
+verse entries 936 | sections 555 | uddana anchors 536 | hidden 67 | incipits 10
+   Dhātukathāpakaraṇamūlaṭīkā KATHĀ  printed units 26 / corpus ¶ 26   headings 25   colophons 13   prose ¶ 55   gāthā blocks 0   [OK]
+   Puggalapaññattipakaraṇamūlaṭīkā KATHĀ  printed units 70 / corpus ¶ 70   headings 10   colophons 10   prose ¶ 80   gāthā blocks 0   [OK]
+   Kathāvatthupakaraṇamūlaṭīkā KATHĀ  printed units 223 / corpus ¶ 223   headings 209   colophons 204   prose ¶ 240   gāthā blocks 0   [OK]
+   Yamakapakaraṇamūlaṭīkā KATHĀ  printed units 48 / corpus ¶ 48   headings 40   colophons 41   prose ¶ 103   gāthā blocks 0   [OK]
+        N MISMATCH: printed 10 at p163 pairs with corpus ord357 whose n is None
+   Paṭṭhānapakaraṇamūlaṭīkā KATHĀ  printed units 119 / corpus ¶ 119   headings 48   colophons 61   prose ¶ 200   gāthā blocks 9   [OK]
+   Dhātukathāpakaraṇa-anuṭīkā KATHĀ  printed units 26 / corpus ¶ 26   headings 25   colophons 11   prose ¶ 72   gāthā blocks 0   [OK]
+   Puggalapaññattipakaraṇa-anuṭīkā KATHĀ  printed units 56 / corpus ¶ 56   headings 10   colophons 10   prose ¶ 75   gāthā blocks 0   [OK]
+   Kathāvatthupakaraṇa-anuṭīkā KATHĀ  printed units 208 / corpus ¶ 208   headings 203   colophons 200   prose ¶ 280   gāthā blocks 6   [OK]
+   Yamakapakaraṇa-anuṭīkā KATHĀ  printed units 48 / corpus ¶ 48   headings 39   colophons 41   prose ¶ 129   gāthā blocks 0   [OK]
+   Paṭṭhānapakaraṇa-anuṭīkā KATHĀ  printed units 112 / corpus ¶ 112   headings 47   colophons 53   prose ¶ 204   gāthā blocks 1   [OK]
+   leaked corpus headings hidden: [0, 1, 12, 16, 22, 25, 27, 29, 31, 33, 35, 37, 190, 311, 371, 397, 423, 425, 427, 428, 440, 476, 534, 535, 549, 555, 558, 560, 562, 564, 566, 568, 570, 813, 874, 925, 927, 929, 930, 942, 975]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/24AbhiT03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/24AbhiT03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/24AbhiT03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/24AbhiT03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/24AbhiT03.json

@@ -1,0 +1,11 @@
+verse entries 465 | sections 352 | uddana anchors 62 | hidden 0 | incipits 1
+   Dukanipātaṭṭhakathā    KATHĀ  printed units 140 / corpus ¶ 140   headings 32   colophons 24   prose ¶ 234   gāthā blocks 18   [OK]
+   Tikanipātaṭṭhakathā    KATHĀ  printed units 137 / corpus ¶ 137   headings 156   colophons 20   prose ¶ 471   gāthā blocks 14   [OK]
+   Catukkanipātaṭṭhakathā KATHĀ  printed units 188 / corpus ¶ 188   headings 220   colophons 33   prose ¶ 436   gāthā blocks 20   [OK]
+   leaked corpus headings hidden: []
+   BOOKTITLE NOT derived for 'Tikanipātaṭṭhakathā': its first page does not open with a title stack (['Tikanipāta', '1. Paṭhamapaṇṇāsaka', '1. Bālavagga   1. Bhayasuttavaṇṇanā', '1. Tikanipātassa paṭhame bhayānīti-ādīsu bhayanti cittutrāso.'])
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/18AnA02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/18AnA02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/18AnA02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/18AnA02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/18AnA02.json

@@ -1,0 +1,1 @@
+50AbhiA03 [0-64) pdf 13-37: PDF-lines-missing 23 | PDF-chunks-missing(minw=4) 11 | render-not-in-PDF 0 | rendered-too-often 0

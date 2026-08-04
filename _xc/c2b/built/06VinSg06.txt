@@ -1,0 +1,8 @@
+verse entries 326 | sections 34 | uddana anchors 46 | hidden 1 | incipits 1
+   Vinayasaṅgahaṭṭhakathā KATHĀ  printed units 326 / corpus ¶ 326   headings 37   colophons 87   prose ¶ 1439   gāthā blocks 207   [OK]
+   leaked corpus headings hidden: [81]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/06VinSg06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/06VinSg06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/06VinSg06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/06VinSg06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/06VinSg06.json

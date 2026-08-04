@@ -1,0 +1,9 @@
+verse entries 1242 | sections 231 | uddana anchors 296 | hidden 7 | incipits 2
+   Pācittiyapāḷi          KATHĀ  printed units 655 / corpus ¶ 655   headings 201   colophons 203   prose ¶ 1564   gāthā blocks 110   [OK]
+   Bhikkhunīvibhaṅga      KATHĀ  printed units 587 / corpus ¶ 587   headings 242   colophons 144   prose ¶ 1028   gāthā blocks 83   [OK]
+   leaked corpus headings hidden: [107, 377, 424, 435, 477, 483, 1215]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/02Vin02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/02Vin02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/02Vin02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/02Vin02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/02Vin02.json

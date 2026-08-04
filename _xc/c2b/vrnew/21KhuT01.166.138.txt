@@ -1,0 +1,1 @@
+21KhuT01 [138-287) pdf 166-522: PDF-lines-missing 11 | PDF-chunks-missing(minw=4) 0 | render-not-in-PDF 0 | rendered-too-often 0 | PDF-reading-order 1

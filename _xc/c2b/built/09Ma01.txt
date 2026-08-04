@@ -1,0 +1,10 @@
+verse entries 511 | sections 75 | uddana anchors 73 | hidden 0 | incipits 1
+   Mūlapaṇṇāsapāḷi        KATHĀ  printed units 511 / corpus ¶ 511   headings 81   colophons 88   prose ¶ 1253   gāthā blocks 12   [OK]
+        CORPUS SPLICE (recorded, not corrected): printed unit 42 at p37 is inside corpus ord40, the paragraph of unit 41 — 'Tassa mayhaṁ brāhmaṇa etadahosi “ye kho keci samaṇā vā'
+        CORPUS SPLICE (recorded, not corrected): printed unit 43 at p38 is inside corpus ord40, the paragraph of unit 41 — 'Tassa mayhaṁ brāhmaṇa etadahosi “ye kho keci samaṇā vā'
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/09Ma01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/09Ma01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/09Ma01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/09Ma01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/09Ma01.json

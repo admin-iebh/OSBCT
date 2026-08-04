@@ -1,0 +1,11 @@
+verse entries 623 | sections 214 | uddana anchors 22 | hidden 4 | incipits 3
+   Saṅkhārayamakapāḷi     KATHĀ  printed units 159 / corpus ¶ 159   headings 132   colophons 7   prose ¶ 242   gāthā blocks 0   [OK]
+   Anusayayamakapāḷi      KATHĀ  printed units 348 / corpus ¶ 348   headings 45   colophons 20   prose ¶ 819   gāthā blocks 0   [OK]
+        CORPUS SPLICE (recorded, not corrected): printed unit 24 at p78 is inside corpus ord185, the paragraph of unit 23 — 'Yattha kāmarāgānusayo ca paṭighānusayo ca mānānusayo ca'
+   Cittayamakapāḷi        KATHĀ  printed units 116 / corpus ¶ 116   headings 93   colophons 2   prose ¶ 174   gāthā blocks 0   [OK]
+   leaked corpus headings hidden: [18, 79, 129, 164]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/34Abhi06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/34Abhi06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/34Abhi06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/34Abhi06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/34Abhi06.json

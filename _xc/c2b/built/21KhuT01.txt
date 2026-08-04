@@ -1,0 +1,9 @@
+verse entries 280 | sections 70 | uddana anchors 38 | hidden 4 | incipits 2
+   Nettiṭīkā              KATHĀ  printed units 130 / corpus ¶ 130   headings 33   colophons 30   prose ¶ 654   gāthā blocks 25   [OK]
+   Nettivibhāvinī         KATHĀ  printed units 144 / corpus ¶ 144   headings 42   colophons 10   prose ¶ 1313   gāthā blocks 117   [OK]
+   leaked corpus headings hidden: [138]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/21KhuT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/21KhuT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/21KhuT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/21KhuT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/21KhuT01.json

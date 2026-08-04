@@ -1,0 +1,8 @@
+verse entries 661 | sections 73 | uddana anchors 120 | hidden 1 | incipits 1
+   Pārājikapāḷi           KATHĀ  printed units 661 / corpus ¶ 661   headings 117   colophons 158   prose ¶ 1867   gāthā blocks 100   [OK]
+   leaked corpus headings hidden: [574]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/01Vin01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/01Vin01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/01Vin01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/01Vin01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/01Vin01.json

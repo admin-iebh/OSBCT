@@ -1,0 +1,1 @@
+13MaT01 [0-169) pdf 17-411: PDF-lines-missing 33 | PDF-chunks-missing(minw=4) 4 | render-not-in-PDF 8 | rendered-too-often 0 | PDF-reading-order 1

@@ -1,0 +1,8 @@
+verse entries 243 | sections 15 | uddana anchors 57 | hidden 3 | incipits 1
+   Suttanipātaṭṭhakathā   KATHĀ  printed units 232 / corpus ¶ 232   headings 18   colophons 91   prose ¶ 747   gāthā blocks 132   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/25KhuA06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/25KhuA06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/25KhuA06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/25KhuA06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/25KhuA06.json

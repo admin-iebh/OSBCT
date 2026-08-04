@@ -1,0 +1,8 @@
+verse entries 287 | sections 270 | uddana anchors 270 | hidden 9 | incipits 1
+   Sagāthāvaggasaṁyuttaṭīkā KATHĀ  printed units 287 / corpus ¶ 287   headings 306   colophons 316   prose ¶ 941   gāthā blocks 37   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/16SaT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/16SaT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/16SaT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/16SaT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/16SaT01.json

@@ -1,0 +1,14 @@
+verse entries 340 | sections 293 | uddana anchors 291 | hidden 2 | incipits 1
+   Pañcakanipāta-aṅguttaraṭīkā KATHĀ  printed units 127 / corpus ¶ 127   headings 121   colophons 118   prose ¶ 209   gāthā blocks 6   [OK]
+   Chakkanipāta-aṅguttaraṭīkā KATHĀ  printed units 61 / corpus ¶ 61   headings 72   colophons 72   prose ¶ 167   gāthā blocks 4   [OK]
+   Sattakanipāta-aṅguttaraṭīkā KATHĀ  printed units 37 / corpus ¶ 37   headings 45   colophons 44   prose ¶ 127   gāthā blocks 7   [OK]
+   Aṭṭhakanipāta-aṅguttaraṭīkā KATHĀ  printed units 34 / corpus ¶ 34   headings 43   colophons 43   prose ¶ 166   gāthā blocks 13   [OK]
+   Navakanipāta-aṅguttaraṭīkā KATHĀ  printed units 28 / corpus ¶ 28   headings 34   colophons 32   prose ¶ 104   gāthā blocks 11   [OK]
+   Dasakanipāta-aṅguttaraṭīkā KATHĀ  printed units 47 / corpus ¶ 47   headings 51   colophons 50   prose ¶ 130   gāthā blocks 7   [OK]
+   Ekādasakanipāta-aṅguttaraṭīkā KATHĀ  printed units 5 / corpus ¶ 5   headings 10   colophons 10   prose ¶ 42   gāthā blocks 5   [OK]
+   leaked corpus headings hidden: [343]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/20AnT03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/20AnT03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/20AnT03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/20AnT03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/20AnT03.json

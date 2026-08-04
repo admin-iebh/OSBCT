@@ -6548,6 +6548,7 @@ def kat_build(pages, paras, title, p0, p1, o0, o1,
            if str(o) not in hide and paras[o].get('n') is None]
     _runs2 = unnum_runs(items, paras, _un)
     suppress, reclass, unnum_ords, unspan = set(), set(), set(), {}
+    unnum_mixed = set()
     for o in _un:
         raw = (paras[o].get('text') or '').strip()
         r = _runs2.get(o)
@@ -6589,6 +6590,51 @@ def kat_build(pages, paras, title, p0, p1, o0, o1,
                 if items[i][0] in ('head', 'colo', 'udd'):
                     _rc(i)
             continue
+        # !!! THE RUN WAS MEASURED AS A WHOLE AND NEVER SPLIT, AND THAT IS THE
+        # WHOLE OF CENSUS CLASS 2 IN THE COMMENTARIES.  The two tests above ask
+        # only whether the run holds ANY body prose; a run that holds BOTH a
+        # printed gāthā and the prose around it answers yes, so the entire run
+        # was suppressed and the CORPUS paragraph drawn in its place -- one flat
+        # string, the printed line breaks of the gāthā thrown away.  29KhuA10's
+        # opening `Ganthārambhakathā` (28 printed verse lines, the reader's own
+        # report) is ord2, an unnumbered paragraph whose run is exactly that
+        # shape, and so are the verses quoted inside 32KhuA13's stories.  The
+        # measurement that was missing is DOES THE PRINT SET ANY OF THIS AS
+        # DISPLAY -- `kat_items` has always answered it, and only the emitter
+        # threw the answer away (the same sentence the `not opened` branch below
+        # already carries for the pre-first-unit case).
+        #
+        # WHAT A MIXED RUN GETS IS WHAT A NUMBERED UNIT GETS, and nothing new:
+        # the paragraph stays VISIBLE and stays an anchor, its printed items are
+        # NOT suppressed, and its entry carries a `groups` key -- so the reader
+        # takes the verse branch and draws `before`/`after` from the printed
+        # stream instead of `pr.text`, in printed order, with the gāthā as its
+        # own block.  Hiding the paragraph instead was tried and REJECTED: a
+        # hidden ordinal keeps neither its bold spans (which are offsets into
+        # `pr.text`) nor its link and search identity, and `unnum_runs` has
+        # already PROVED the printed run reproduces the paragraph exactly, so
+        # every drawn line is a substring of it and the spine's locator finds
+        # them all.
+        #
+        # `C2MIXED=0` restores the old behaviour and is the negative control.
+        if 'vline' in kinds and os.environ.get('C2MIXED', '1') != '0':
+            unnum_mixed.add(o)
+            for i in used:
+                if items[i][0] in ('head', 'colo', 'udd'):
+                    # not suppressed here, so the reclass is LIVE: a structural
+                    # item the corpus proves is body text is drawn as a display
+                    # line, which is what its printed indent already said.
+                    _rc(i)
+            if skipped:
+                unspan[o] = list(skipped)
+                suppress.update(skipped)
+                report.setdefault('unnum_spanning', []).append(
+                    {'ord': o, 'heads': [items[i][1] for i in skipped],
+                     'pg': [items[i][2] for i in skipped]})
+            report.setdefault('unnum_mixed', []).append(
+                {'ord': o, 'lines': len(used),
+                 'vlines': sum(1 for i in used if items[i][0] == 'vline')})
+            continue
         unnum_ords.add(o)
         suppress.update(used)
         for i in used:
@@ -6601,7 +6647,7 @@ def kat_build(pages, paras, title, p0, p1, o0, o1,
                 {'ord': o, 'heads': [items[i][1] for i in skipped],
                  'pg': [items[i][2] for i in skipped]})
     unnum_at = {}
-    for o in unnum_ords:
+    for o in unnum_ords | unnum_mixed:
         unnum_at[_runs2[o][0]] = o
     report.setdefault('unnumbered', []).extend(sorted(unnum_ords))
     # !!! A CORPUS PARAGRAPH WHOSE NUMBER THE EXTRACTION COULD NOT PARSE IS
@@ -6855,6 +6901,34 @@ def kat_build(pages, paras, title, p0, p1, o0, o1,
             cur = _uo
             after, groups = [], []
             open_prose = False; open_gatha = None
+            # !!! AN UNNUMBERED CORPUS PARAGRAPH CLOSES THE BOOK'S TAIL.
+            # `tail_open` diverts everything after a heading that has no
+            # numbered unit into the uddāna stream, where `tail_add` joins a
+            # whole section into ONE `plain` block.  That is right for a
+            # colophon's neighbourhood and wrong the moment the CORPUS holds
+            # the material as paragraphs of its own: those paragraphs anchor
+            # here, so the text belongs in this ordinal's `after`, drawn as
+            # prose and gāthā in printed order.  35KhuA16 is the case — its
+            # closing `Uddānagāthāvaṇṇanā` is ord336/337, about 1,800 printed
+            # lines, and left in the tail they came out as two joined blocks
+            # carrying no page rule at all (65 of 284 misplaced under
+            # `check_layout`).  The heading keeps its place, in `sections`
+            # above the paragraph it opens.
+            # SCOPED TO A MIXED ANCHOR, AND MEASURED BEFORE SCOPING.  Applied
+            # to every unnumbered anchor it moves ONE heading in each of 18
+            # shipped volumes from the uddāna stream into `sections` — where a
+            # `plain` block already draws it as a heading, so the need is not
+            # measured, only the change.  A MIXED anchor is different in kind:
+            # its corpus text is not drawn at all (the entry carries `groups`),
+            # so material left in the tail is the ONLY copy and is joined into
+            # one block.  `C2TAIL=0` restores the old behaviour and is the
+            # negative control.
+            if (tail_open and _uo in unnum_mixed
+                    and os.environ.get('C2TAIL', '1') != '0'):
+                if tail_head is not None:
+                    pend_heads.append({'l': tail_head, 'k': tail_hk})
+                    tail_head = tail_hk = None
+                tail_open = False
             if not opened:
                 opened = True
                 if pend_open:

@@ -1,0 +1,8 @@
+verse entries 598 | sections 597 | uddana anchors 98 | hidden 0 | incipits 1
+   Mahāvaggasaṁyuttapāḷi  KATHĀ  printed units 598 / corpus ¶ 598   headings 716   colophons 230   prose ¶ 1549   gāthā blocks 16   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/14Sam03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/14Sam03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/14Sam03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/14Sam03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/14Sam03.json

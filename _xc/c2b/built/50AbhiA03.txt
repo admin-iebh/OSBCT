@@ -1,0 +1,12 @@
+verse entries 854 | sections 355 | uddana anchors 328 | hidden 28 | incipits 5
+   Dhātukathā-aṭṭhakathā  KATHĀ  printed units 54 / corpus ¶ 54   headings 26   colophons 16   prose ¶ 71   gāthā blocks 9   [OK]
+   Puggalapaññatti-aṭṭhakathā KATHĀ  printed units 145 / corpus ¶ 145   headings 11   colophons 9   prose ¶ 252   gāthā blocks 12   [OK]
+   Kathāvatthu-aṭṭhakathā KATHĀ  printed units 388 / corpus ¶ 388   headings 275   colophons 251   prose ¶ 510   gāthā blocks 11   [OK]
+   Yamakappakaraṇaṭṭhakathā KATHĀ  printed units 78 / corpus ¶ 78   headings 45   colophons 39   prose ¶ 139   gāthā blocks 2   [OK]
+   Paṭṭhānappakaraṇaṭṭhakathā KATHĀ  printed units 185 / corpus ¶ 185   headings 66   colophons 60   prose ¶ 433   gāthā blocks 41   [OK]
+   leaked corpus headings hidden: [0, 47, 50, 52, 54, 56, 58, 60, 62, 497, 542, 544, 547, 549, 606, 691, 726, 727, 747, 814]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/50AbhiA03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/50AbhiA03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/50AbhiA03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/50AbhiA03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/50AbhiA03.json

@@ -1,0 +1,8 @@
+OSBCT reader build: d41f8bb64750
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 191 rules, 0 descents   #page-rules-inside-paragraphs 191 checked, 2 misplaced (2 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)   #page-rules-ascending 191 rules, 0 descents   #page-rules-inside-paragraphs 191 checked, 2 misplaced (2 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)   #page-rules-ascending 191 rules, 0 descents   #page-rules-inside-paragraphs 191 checked, 2 misplaced (2 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)   #page-rules-ascending 191 rules, 0 descents   #page-rules-inside-paragraphs 191 checked, 2 misplaced (2 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)   #page-rules-ascending 191 rules, 0 descents   #page-rules-inside-paragraphs 191 checked, 2 misplaced (2 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 05ViT05     682 ¶, incipit x5  [5 host volumes walked]
+        - page-rule-repeated :: 2 adjacent rule(s) carry the page already drawn
+        - page-rule-misplaced :: 05ViT05 p.227 want Adhikaraṇavūpasamanasama got 
+
+0 clean, 0 PARTIAL, 1 with layout issues, 0 not driveable headlessly

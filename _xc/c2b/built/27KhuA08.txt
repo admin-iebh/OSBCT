@@ -1,0 +1,8 @@
+verse entries 1387 | sections 85 | uddana anchors 133 | hidden 12 | incipits 1
+   Vimānavatthu-aṭṭhakathā KATHĀ  printed units 1382 / corpus ¶ 1382   headings 95   colophons 164   prose ¶ 1078   gāthā blocks 26   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/27KhuA08.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/27KhuA08.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/27KhuA08.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/27KhuA08.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/27KhuA08.json

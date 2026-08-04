@@ -1,0 +1,7 @@
+OSBCT reader build: d41f8bb64750
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 184 rules, 0 descents   #page-rules-inside-paragraphs 184 checked, 9 misplaced (0 flushed at end of paragraph, 9 on the wrong letters; 1 anchored on a line under 10 letters)   #page-rules-ascending 184 rules, 0 descents   #page-rules-inside-paragraphs 184 checked, 9 misplaced (0 flushed at end of paragraph, 9 on the wrong letters; 1 anchored on a line under 10 letters)   #page-rules-ascending 184 rules, 0 descents   #page-rules-inside-paragraphs 184 checked, 9 misplaced (0 flushed at end of paragraph, 9 on the wrong letters; 1 anchored on a line under 10 letters)
+  FAIL 23AbhiT02   513 ¶, incipit x2  [3 host volumes walked]
+        - page-rule-misplaced :: 23AbhiT02 p.134 want visesapaccayotitassaphas got 1Abhi2142piṭṭhe1Dī248piṭ
+
+0 clean, 0 PARTIAL, 1 with layout issues, 0 not driveable headlessly

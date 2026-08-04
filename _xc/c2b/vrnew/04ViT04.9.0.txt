@@ -1,0 +1,1 @@
+04ViT04 [0-10) pdf 9-47: PDF-lines-missing 28 | PDF-chunks-missing(minw=4) 22 | render-not-in-PDF 0 | rendered-too-often 0 | PDF-reading-order 1

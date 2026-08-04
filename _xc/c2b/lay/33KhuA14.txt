@@ -1,0 +1,7 @@
+OSBCT reader build: d41f8bb64750
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 209 rules, 0 descents   #page-rules-inside-paragraphs 209 checked, 7 misplaced (2 flushed at end of paragraph, 5 on the wrong letters; 0 anchored on a line under 10 letters)   #page-rules-ascending 209 rules, 0 descents   #page-rules-inside-paragraphs 209 checked, 7 misplaced (2 flushed at end of paragraph, 5 on the wrong letters; 0 anchored on a line under 10 letters)   #page-rules-ascending 209 rules, 0 descents   #page-rules-inside-paragraphs 209 checked, 7 misplaced (2 flushed at end of paragraph, 5 on the wrong letters; 0 anchored on a line under 10 letters)   #page-rules-ascending 209 rules, 0 descents   #page-rules-inside-paragraphs 209 checked, 7 misplaced (2 flushed at end of paragraph, 5 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 33KhuA14    724 ¶, incipit x1  [4 host volumes walked]
+        - page-rule-misplaced :: 33KhuA14 p.20 want TenakhopanasamayenaSatth got 1ParivārassaIKa1Añjanīva
+
+0 clean, 0 PARTIAL, 1 with layout issues, 0 not driveable headlessly

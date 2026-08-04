@@ -1,0 +1,12 @@
+verse entries 363 | sections 276 | uddana anchors 275 | hidden 3 | incipits 1
+   Dukanipāta-aṅguttaraṭīkā KATHĀ  printed units 110 / corpus ¶ 110   headings 31   colophons 29   prose ¶ 246   gāthā blocks 8   [OK]
+        CORPUS SPLICE (recorded, not corrected): printed unit 191 at p83 is inside corpus ord110, the paragraph of unit 187 — '200. Dukkassa vaḍḍhi etesanti dukkhavaḍḍhikā. Ye hi dukkhaṁ'
+   Tikanipāta-aṅguttaraṭīkā KATHĀ  printed units 113 / corpus ¶ 113   headings 129   colophons 130   prose ¶ 427   gāthā blocks 14   [OK]
+        N MISMATCH: printed 54 at p145 pairs with corpus ord159 whose n is None
+   Catukkanipāta-aṅguttaraṭīkā KATHĀ  printed units 140 / corpus ¶ 140   headings 167   colophons 168   prose ¶ 477   gāthā blocks 40   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/19AnT02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/19AnT02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/19AnT02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/19AnT02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/19AnT02.json

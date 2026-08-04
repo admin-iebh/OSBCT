@@ -1,0 +1,1 @@
+35KhuA16 [0-339) pdf 5-333: PDF-lines-missing 21 | PDF-chunks-missing(minw=4) 0 | render-not-in-PDF 1 | rendered-too-often 0 | PDF-reading-order 1

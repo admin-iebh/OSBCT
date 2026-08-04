@@ -1,0 +1,1 @@
+06ViT06 [8-387) pdf 56-377: PDF-lines-missing 20 | PDF-chunks-missing(minw=4) 12 | render-not-in-PDF 2 | rendered-too-often 0

@@ -1,0 +1,8 @@
+verse entries 485 | sections 51 | uddana anchors 51 | hidden 0 | incipits 1
+   Majjhimapaṇṇāsapāḷi    KATHĀ  printed units 485 / corpus ¶ 485   headings 57   colophons 62   prose ¶ 1048   gāthā blocks 32   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/10Ma02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/10Ma02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/10Ma02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/10Ma02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/10Ma02.json

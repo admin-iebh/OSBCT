@@ -1,0 +1,11 @@
+verse entries 151 | sections 153 | uddana anchors 151 | hidden 0 | incipits 1
+   Ganthārambhakathā + Nidānakathā HEADS  printed lines  3097 / located  3092   residue   5   corpus ¶   12   headings    7   colophons    4   unconfirmed ¶ 0   [OK]
+   Jātakaṭṭhakathā nipātas pdf 1 / corpus 1 / expected 1   verses paired 147   corpus splices repaired 0   corpus ¶ never matched 1   [CHECK]
+        UNCONSUMED corpus ordinals: [113]
+   leaked corpus headings hidden: []
+   BOOKTITLE NOT derived for 'Jātakaṭṭhakathā': its first page does not open with a title stack (['1. Ekakanipāta', '1. Apaṇṇakavagga', '1. Apaṇṇakajātakavaṇṇanā', 'Imaṁ tāva apaṇṇakadhammadesanaṁ Bhagavā Sāvatthiṁ upanissāya'])
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/36KhuA17.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/36KhuA17.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/36KhuA17.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/36KhuA17.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/36KhuA17.json

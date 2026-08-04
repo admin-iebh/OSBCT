@@ -1,0 +1,1 @@
+45KhuA26 [0-154) pdf 5-281: PDF-lines-missing 24 | PDF-chunks-missing(minw=4) 0 | render-not-in-PDF 0 | rendered-too-often 0 | PDF-reading-order 1

@@ -1,0 +1,9 @@
+verse entries 437 | sections 140 | uddana anchors 87 | hidden 5 | incipits 2
+   Dhammasaṅgaṇīmūlaṭīkā  KATHĀ  printed units 236 / corpus ¶ 236   headings 89   colophons 51   prose ¶ 453   gāthā blocks 6   [OK]
+   Dhammasaṅgaṇī-anuṭīkā  KATHĀ  printed units 195 / corpus ¶ 195   headings 76   colophons 47   prose ¶ 502   gāthā blocks 10   [OK]
+   leaked corpus headings hidden: [0, 261]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/22AbhiT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/22AbhiT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/22AbhiT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/22AbhiT01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/22AbhiT01.json

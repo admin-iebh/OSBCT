@@ -1,0 +1,9 @@
+verse entries 710 | sections 190 | uddana anchors 10 | hidden 4 | incipits 2
+   Dhammayamakapāḷi       KATHĀ  printed units 228 / corpus ¶ 228   headings 159   colophons 8   prose ¶ 337   gāthā blocks 0   [OK]
+   Indriyayamakapāḷi      KATHĀ  printed units 482 / corpus ¶ 482   headings 89   colophons 6   prose ¶ 1409   gāthā blocks 0   [OK]
+   leaked corpus headings hidden: [32, 99, 164, 416]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/35Abhi07.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/35Abhi07.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/35Abhi07.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/35Abhi07.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/35Abhi07.json

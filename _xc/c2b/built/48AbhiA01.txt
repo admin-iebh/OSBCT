@@ -1,0 +1,8 @@
+verse entries 322 | sections 86 | uddana anchors 50 | hidden 5 | incipits 1
+   Aṭṭhasālinī-aṭṭhakathā KATHĀ  printed units 310 / corpus ¶ 310   headings 104   colophons 63   prose ¶ 1142   gāthā blocks 95   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/48AbhiA01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/48AbhiA01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/48AbhiA01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/48AbhiA01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/48AbhiA01.json

@@ -1,0 +1,1 @@
+20AnT03 [128-189) pdf 99-167: PDF-lines-missing 22 | PDF-chunks-missing(minw=4) 14 | render-not-in-PDF 0 | rendered-too-often 0

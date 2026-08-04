@@ -1,0 +1,7 @@
+OSBCT reader build: d41f8bb64750
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 236 rules, 0 descents   #page-rules-inside-paragraphs 236 checked, 14 misplaced (0 flushed at end of paragraph, 14 on the wrong letters; 0 anchored on a line under 10 letters)   #page-rules-ascending 236 rules, 0 descents   #page-rules-inside-paragraphs 236 checked, 14 misplaced (0 flushed at end of paragraph, 14 on the wrong letters; 0 anchored on a line under 10 letters)   #page-rules-ascending 236 rules, 0 descents   #page-rules-inside-paragraphs 236 checked, 14 misplaced (0 flushed at end of paragraph, 14 on the wrong letters; 0 anchored on a line under 10 letters)   #page-rules-ascending 236 rules, 0 descents   #page-rules-inside-paragraphs 236 checked, 14 misplaced (0 flushed at end of paragraph, 14 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 31KhuA12    587 ¶, incipit x1  [4 host volumes walked]
+        - page-rule-misplaced :: 31KhuA12 p.24 want 17Dhammātherīgāthāvaṇṇan got 1GehaṁgatāSī
+
+0 clean, 0 PARTIAL, 1 with layout issues, 0 not driveable headlessly

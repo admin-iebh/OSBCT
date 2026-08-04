@@ -1,0 +1,8 @@
+verse entries 360 | sections 141 | uddana anchors 17 | hidden 0 | incipits 1
+   Pāthikavaggapāḷi       KATHĀ  printed units 360 / corpus ¶ 360   headings 148   colophons 22   prose ¶ 1001   gāthā blocks 62   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/08Di03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/08Di03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/08Di03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/08Di03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/08Di03.json

@@ -1,0 +1,8 @@
+verse entries 354 | sections 51 | uddana anchors 50 | hidden 0 | incipits 1
+   Majjhimapaṇṇāsaṭṭhakathā KATHĀ  printed units 354 / corpus ¶ 354   headings 56   colophons 106   prose ¶ 980   gāthā blocks 59   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/12MaA03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/12MaA03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/12MaA03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/12MaA03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/12MaA03.json

@@ -1,0 +1,8 @@
+OSBCT reader build: d41f8bb64750
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-inside-paragraphs 315 checked, 7 misplaced (0 flushed at end of paragraph, 7 on the wrong letters; 1 anchored on a line under 10 letters)
+  FAIL 21KhuT01    283 ¶, incipit x2
+        - page-rule-misplaced :: 21KhuT01 p.154 want PadānukkamoPiṭṭhaṅkoPadā got Ādikalyāṇatādiguṇasampat
+        - page-rule-out-of-order :: 1 descent(s) in 315 rules, first 157 then 152
+
+0 clean, 0 PARTIAL, 1 with layout issues, 0 not driveable headlessly

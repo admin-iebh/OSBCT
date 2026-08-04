@@ -1,0 +1,8 @@
+verse entries 210 | sections 16 | uddana anchors 16 | hidden 2 | incipits 1
+   Mahāniddesapāḷi    NIDDESA  printed lemmas 210 / corpus ¶ 210   headings 17   colophons 18   prose ¶ 1261   gāthā blocks 279   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/24Khu07.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/24Khu07.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/24Khu07.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/24Khu07.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/24Khu07.json

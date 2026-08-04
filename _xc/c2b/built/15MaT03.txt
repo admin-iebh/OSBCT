@@ -1,0 +1,10 @@
+verse entries 639 | sections 106 | uddana anchors 88 | hidden 5 | incipits 2
+   Majjhimapaṇṇāsaṭīkā    KATHĀ  printed units 332 / corpus ¶ 332   headings 56   colophons 54   prose ¶ 756   gāthā blocks 16   [OK]
+        CORPUS SPLICE (recorded, not corrected): printed unit 3 at p13 is inside corpus ord3, the paragraph of unit 2 — 'Kārakabhāvanti paṭipattiyaṁ paṭipajjanakabhāvaṁ. Mayampi nām'
+   Uparipaṇṇāsaṭīkā       KATHĀ  printed units 307 / corpus ¶ 307   headings 64   colophons 48   prose ¶ 720   gāthā blocks 8   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/15MaT03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/15MaT03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/15MaT03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/15MaT03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/15MaT03.json

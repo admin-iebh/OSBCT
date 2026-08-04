@@ -1,0 +1,39 @@
+CONTROLS AND VERDICTS MOVED — class-2 mixed-run repair, 2026-08-04
+=================================================================
+
+1. `C2MIXED=0` — the builder's own negative control on this change.
+   Replayed builder-vs-SHIPPED over all 112 eligible kathā volumes:
+   **112/112 byte-identical on all five side-maps.**  With it ON, the census
+   moves **7,778 printed-line verdicts** out of class 2.
+   (`_xc/c2b/replay0`, `_xc/c2b/replayTAIL2`)
+
+2. `C2TAIL=0` — negative control on the tail-anchor reset.
+   With `C2MIXED=0` it is inert: 112/112 byte-identical.  Applied to EVERY
+   unnumbered anchor (not only a mixed one) it moves one heading in each of 18
+   shipped volumes — measured, and that is why it is scoped to a mixed anchor.
+   With it OFF and `C2MIXED=1`, `35KhuA16` draws its closing
+   Uddānagāthāvaṇṇanā as two joined uddāna blocks and `check_layout` reports
+   65 of 284 page rules misplaced against 0 in the baseline.
+
+3. `check_page_fidelity` — its own six, on the REPAIRED `32KhuA13`
+   (12,805 printed lines), scored by printed lines changing verdict:
+       wrongvol    10456      allverse    8454      shiftclass  3497
+       shiftlines   1026      allprose     903      dropframe      0 — VACUOUS
+   `dropframe` is vacuous on this volume BECAUSE the repair removed its
+   no-`groups` frame entries (that is what the control is for).  On
+   `34KhuA15`, which still has five, it fires on 7 of 13,021 lines.
+
+4. The `plain`-block instrument fix — the pre-fix code IS the control.
+   Same data, both instruments: class 3 corpus-wide 3,061 -> 225.
+   **2,836 printed-line verdicts moved with no volume data changed.**
+
+5. `verify_render_vs_pdf` over all 67 books of the 39 changed volumes,
+   old data vs new: 4 books move.
+       01VinA01  rev 15 -> 14        35KhuA16  rev 1 -> 0
+       12DiT05   42/2/4/0 -> 43/3/6/0
+       46KhuA27  0/0/0/0 -> 1/0/2/0
+   Totals lines/chunks/rev/dup 1409/504/345/2 -> 1411/505/347/2.
+
+6. `check_layout.js` under jsdom over all 39 changed volumes, old vs new:
+   **identical** — 752 misplaced page rules on both sides, no new fault kind.
+   (pbreak must be RE-DERIVED first; see the doc.)

@@ -1,0 +1,1 @@
+10MaA01 [0-197) pdf 17-415: PDF-lines-missing 42 | PDF-chunks-missing(minw=4) 9 | render-not-in-PDF 22 | rendered-too-often 0 | PDF-reading-order 2

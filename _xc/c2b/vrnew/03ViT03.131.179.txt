@@ -1,0 +1,1 @@
+03ViT03 [179-240) pdf 131-151: PDF-lines-missing 23 | PDF-chunks-missing(minw=4) 17 | render-not-in-PDF 0 | rendered-too-often 0

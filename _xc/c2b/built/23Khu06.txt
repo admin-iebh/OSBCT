@@ -1,0 +1,10 @@
+verse entries 3675 | sections 27 | uddana anchors 50 | hidden 0 | incipits 1
+   Jātakapāḷi   nipātas pdf 6 / corpus 6 / expected 6   verses paired 3675   corpus splices repaired 2   corpus ¶ never matched 0   [OK]
+        SPLICE: printed verse 90 (p65) was merged into corpus ord515 — 'Ḍayhamānena gattena, niccaṁ santarabāhiraṁ.'
+        SPLICE: printed verse 140 (p165) was merged into corpus ord1375 — 'Mūgova tuṇhimāsīno, na attha’manusāsati.'
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/23Khu06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/23Khu06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/23Khu06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/23Khu06.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/23Khu06.json

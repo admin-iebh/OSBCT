@@ -1,0 +1,9 @@
+verse entries 890 | sections 59 | uddana anchors 34 | hidden 0 | incipits 2
+   Dhātukathāpāḷi         KATHĀ  printed units 518 / corpus ¶ 518   headings 57   colophons 15   prose ¶ 539   gāthā blocks 13   [OK]
+   Puggalapaññattipāḷi    KATHĀ  printed units 372 / corpus ¶ 372   headings 22   colophons 22   prose ¶ 514   gāthā blocks 0   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/31Abhi03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/31Abhi03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/31Abhi03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/31Abhi03.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/31Abhi03.json

@@ -1,0 +1,1 @@
+11MaA02 [0-256) pdf 5-325: PDF-lines-missing 36 | PDF-chunks-missing(minw=4) 3 | render-not-in-PDF 8 | rendered-too-often 0 | PDF-reading-order 3

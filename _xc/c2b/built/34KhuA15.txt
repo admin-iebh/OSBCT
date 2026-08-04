@@ -1,0 +1,8 @@
+verse entries 891 | sections 33 | uddana anchors 30 | hidden 31 | incipits 1
+   Buddhavaṁsaṭṭhakathā   KATHĀ  printed units 874 / corpus ¶ 874   headings 42   colophons 63   prose ¶ 943   gāthā blocks 90   [OK]
+   leaked corpus headings hidden: [0, 917]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/34KhuA15.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/34KhuA15.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/34KhuA15.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/34KhuA15.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/34KhuA15.json
