@@ -98,6 +98,10 @@ Daṇḍābhighātādibhavaṁ anekaṁ.                    ind 15
 page-prose at indent 0. The discriminator is therefore **not** the hyphen. It is
 **whether the continuation line leaves the display run**.
 
+> **§5 and §6 below were written before the pages were read and are superseded by §9.**
+> The join rule §5 proposes is not wrong, but it repairs the symptom and leaves the
+> fault. Read §9 first.
+
 ## 5. What this means for the repair
 
 The rule that survives the measurement is narrow:
@@ -132,6 +136,306 @@ python3 _xc/hy1/probe.py                      # the 8 reverse misses, with text
 python3 _xc/hy1/census.py 150                 # resumable; repeat until 118/118
 python3 _xc/hy1/shape.py 46KhuA27 12DiT05 01VinA01 03ViT03 27KhuA08
 ```
+
+## 9. The pages were read, and §5 is the wrong repair
+
+The reader's objection, and it is correct: **the way to decide if something is verse is
+to see it in the PDF. A hyphen cannot decide that.** §6.2 used the hyphen as a
+classifier. §5 above then proposed a join rule which, while it does not misuse the
+hyphen, repairs only the visible break.
+
+Both witness pages read, in full, from `pline` (`_xc/hy1/page.py`):
+
+**`46KhuA27` p189** — 27 printed lines, **no verse on the page**. Every paragraph opens
+at indent 4 and continues at indent 0; the sutta quotations are block-indented at 8/9
+then 4. The hyphen line is the opening line of an ordinary prose paragraph:
+
+```
+ind4      Apica pavattimācikkhanto Bhagavā sahetukaṁ ācikkhi, nivattiñca sa-
+ind0  upāyaṁ. Iti pavattinivattitadubhayahetūnaṁ etapparamato cattāreva vuttāni.
+```
+
+**`12DiT05` p300** — 25 printed lines, **no verse on the page**. Three consecutive
+one-line word glosses sit at indent 4 — lemma, then meaning, the ordinary commentary
+shape — and the third runs over:
+
+```
+ind4      Mahāṭṭhakathāya sāranti dīghanikāyamahā-aṭṭhakathāyaṁ atthasāraṁ.
+ind4      Ekūnasaṭṭhimattoti thokaṁ ūnabhāvato matta-saddaggahaṇaṁ.
+ind4      Mūlakaṭṭhakathāsāranti pubbe vuttaṁ dīghanikāyamahā-
+ind0  aṭṭhakathāsārameva puna nigamanavasena vadati. Atha vā
+```
+
+**The hyphen is not a cause and not a test.** It is only what made one misclassification
+*visible*: the word ran past the line end, so the bad block boundary cut a word in half
+where it could be seen. Every other line in that stack is misclassified exactly as badly
+and leaves no trace. A join rule fixes the visible break and leaves the three glosses on
+p300 still drawn as verse.
+
+**The two witnesses fail at different instruments:**
+
+| | page-side classifier | builder | scored |
+|---|---|---|---|
+| `46KhuA27` p189 | prose — **correct** | verse | `PROSE_AS_VERSE`, class 1 |
+| `12DiT05` p300 | verse — **wrong** | verse | `verse_ok`, **invisible** |
+
+The second is the **fifth** time this week the checker, not the corpus, was the thing
+that was wrong.
+
+**The real cause behind both is a display column, not a hyphen**: short prose lines
+stacked at the paragraph-opening indent are taken for a stack of pādas, because indent
+plus shortness is the whole of the evidence. That is the `_kat_cols` / `display_column`
+family `0db4a917` addressed in the opposite direction, it produces **class 1**, and it
+belongs with the handoff's item 2 (9,155), not item 1.
+
+### What §4's 67 are actually good for
+
+Useless as a rule, useful as a **finder**. The hyphen is a cheap mechanical way to
+surface candidate misclassifications for reading — 67 corpus-wide across 38 volumes,
+small enough to read one by one.
+
+`_xc/hy1/review_build.py` + `review_html.py` put each of the 67 back on its printed page
+with the edition's own indents and write **no verdict**. `_xc/hy1/review.html`.
+
+**Correction to §4.** It reported "68 of 69 continue into another page-verse line" as if
+that settled them. Three were verified by eye — `46KhuA27` p7, `01VinA01` p15,
+`03ViT03` p193, all genuine verse. **The other 65 were inferred from the continuation
+line's indent, which is the same weak geometric evidence that just failed on p300.**
+They are candidates, not findings.
+
+The review sheet carries its own control: it contains `12DiT05` p300 (known prose,
+classifier wrong) and `46KhuA27` p7 (known verse, classifier right), and the two are
+distinguishable at a glance.
+
+## 10. The reader read the sheet, and found three things in it
+
+### 10.1 My sheet carried 25 lines of back matter. It should have carried none.
+
+The reader's first two verdicts were not verse-or-prose answers at all:
+
+> `01Vin01` — these are alternative readings that belong to an Appendix. The
+> **Nānāpāṭhā is an Appendix and should not be included in corpus. This rule
+> applies to all books.**
+> `03Vin03` — all the **Lakkhitabbapadānaṁ anukkamaṇikā** should not be included
+> in the corpus. This rule applies for all books.
+
+**The rule is already honoured by the corpus.** Measured: `01Vin01` prints 425 pages
+and announces an appendix in the heading of 32 of them; the corpus anchors no
+paragraph past p403. `03Vin03` prints 673, announces on 159, and the corpus stops at
+p523. **Appendix pages the corpus anchors onto: 0 and 0.**
+
+**The fault was mine.** `census.py` collected candidates from `r['rows']`, which is the
+raw printed stream and still holds the front contents and the back index/appendix that
+`check_page_fidelity` separates out as `head_pages` / `tail_pages`. **25 of the 67 were
+back matter** — Nānāpāṭhā, anukkamaṇikā, padānukkama — and the reader spent two of his
+verdicts on pages the instrument had already set aside. `review_build.py` now excludes
+them against `_xc/hy1/edgepg.json`; the excluded 25 are kept in `review_dropped.json`
+rather than dropped silently. **The body candidate set is 42 across 22 volumes, not 67.**
+
+Note for whoever reads the counts: 4 of the 25 carry a `VERSE_AS_PROSE` verdict
+(`01Vin01` p417, `07Di02` p302, `10MaA01` p440, `48AbhiA01` p518, `51Vism01` p395).
+They are **not** in the volumes' class-2 totals — `summarise()` subtracts `edge_lines` —
+but any probe that reads `rows` directly will pick them up, as this one did.
+
+### 10.2 The verse candidates are verse, and the classifier is right on them
+
+`01VinA01`, `03ViT03`, `06ViT06` — all confirmed genuine verse by the reader, with the
+compound genuinely broken across the pāda. **The page-side classifier is right on these**,
+and §4's caution stands: they were candidates, and they came back clean.
+
+### 10.3 The real fault under them is the stanza, and it is bigger than the hyphen
+
+> These are verses but please notice that there is **a blank line after the first four
+> lines** … In the corpus I don't see those blank lines separating those group of verses.
+
+Read on the data, it is worse than a missing blank line. `06ViT06`'s entire
+Ganthārambhakathā — the page the reader screenshotted — is **one flat prose paragraph**:
+
+```
+"Paññāvisuddhāya dayāya sabbe, Vimocitā yena vineyyasattā. Taṁ cakkhubhūtaṁ
+sirasā namitvā, Lokassa lokantagatassa dhammaṁ. Saṁghañca sīlādiguṇehi yutta-
+Mādāya sabbesu padesu sāraṁ. Saṅkhepakāmena mamāsayena, …"
+```
+
+Not the stanza breaks alone — **every printed line break is gone**, and the volume's
+`verse/` side-map has no entry for that ordinal at all (its keys begin at `8`; this is
+index 1). That is the no-`groups` frame shape of
+`claude/the_run_was_judged_as_a_whole_and_never_split.md` §1, still standing in the ṭīkā
+layer. `06ViT06` carries **151 class-2 lines**.
+
+So the reader's three verse volumes are not a hyphen problem and not a class-1 problem.
+They are **class 2**, the handoff's item 1 — reached from the opposite direction.
+
+### 10.4 A corpus-wide text corruption: 8,790 broken words
+
+> There should not be blank line between `āgata-` and `aññenaññapaṭicaraṇavasena`.
+> The same between `pana` and `musāvādena`.
+
+`05ViT05` ¶100 in the corpus reads `pāḷiyaṁ āgata- aññenaññapaṭicaraṇavasena`.
+`hyjoin` decides a line-end hyphen three ways and **none of them leaves a hyphen
+followed by a space inside a word**: peyyāla keeps it and spaces off, a junction before
+a vowel keeps it closed up (`āgata-aññenañña…`), a soft break drops it
+(`yutta-` + `Mādāya` → `yuttaMādāya`). Where the corpus has `- `, `hyjoin` never ran and
+the plain `prev + ' ' + t` path did.
+
+**Corpus-wide: 8,790 occurrences across 109 volumes** (`_xc/hy1/hyspace.py`).
+Worst: `09DiT02` 265, `22AbhiT01` 261, `26VsmT02` 243, `23AbhiT02` 238, `24AbhiT03` 230.
+
+**Control** (`_xc/hy1/hyverify.py`), because a count over the corpus is worth nothing
+until the page confirms it: for a sample of 300 occurrences over 5 volumes, look for a
+printed line that ENDS with the flagged hyphen and a next line that BEGINS with the
+continuation. **296 of 300 confirmed a real printed line break — 98.7%.** The 4
+unconfirmed are the matcher's limits (page-boundary breaks, footnote markers), not
+evidence the corpus is right.
+
+This is a **text** fault, not a layout one: the word is broken in `site/<VOL>.json`
+itself. It is upstream of every render question in this document.
+
+## 11. The pages can be rendered and read directly, and the sheet's page numbers were wrong
+
+### 11.1 "Can you see the PDF pages as I see them?" — yes
+
+`pdftoppm -r 115 -png` renders any page of any of the 118 volumes and it can be read
+directly, layout, bold, footnotes and all. **This was available the whole time and was not
+being used**; every judgement in §§1–10 was made from the extracted line stream instead.
+The reader was asked to hand-adjudicate 67 pages that could have been read here.
+`_xc/hy1/pg/`.
+
+### 11.2 The sheet's page numbers pointed at the wrong pages
+
+`pline`'s page index is neither the pdftotext page nor the number printed on the page,
+and the relation differs per volume — it is anchored to the text extent the PDF declares
+in its `Subject`. The sheet labelled the pline index "PDF p", so:
+
+| candidate | sheet said | pdftotext | **printed on the page** |
+|---|---:|---:|---:|
+| `07ViT07` | p507 | 509 | **488** |
+| `07DiA01` | p170 | 170 | **154** |
+| `07DiA01` | p135 | 135 | **119** |
+| `06ViT06` | p564 | 566 | **537** |
+
+The reader went to p507 and p170 and correctly reported he could not find them.
+`_xc/hy1/resolve.py` now locates each candidate's own text in `extract.raw_pages` —
+matching on the **ASCII skeleton**, because `raw_pages` returns legacy VZTimes bytes and
+a diacritic is a different character on each side — and records both numbers in
+`_xc/hy1/pagemap.json`. All 30 distinct pages resolve.
+
+### 11.3 The blank line is on the page and every instrument throws it away — **WRONG, see §12**
+
+The reader's stanza objection has a mechanical cause. `pdftotext -layout` **preserves the
+blank lines** between stanzas — they are in the text layer. `pline.stream()` returns
+**zero** empty lines: they are filtered out at extraction.
+
+So `check_page_fidelity`, `check_bold_fidelity`, `_xc/pagemark` and the reseg tools all
+read a printed line stream with the stanza boundaries already deleted. **The evidence for
+the fault the reader found is discarded before any instrument can see it** — which is why
+no check has ever reported it, and why it took screenshots.
+
+This is the fifth item on the §9 list of "the checker was the thing that was wrong", and
+the largest: it is not a wrong rule but a missing input, and it is upstream of class 2,
+class 4 and the verse side-maps alike.
+
+### 11.4 Adjudicated so far, from the rendered pages
+
+| candidate | printed | verdict | note |
+|---|---:|---|---|
+| `07DiA01` p170 | 154 | **verse** | couplet cited from Ummādantījātaka (fn 6); `ti-ādīsu` straddles the verse→prose boundary |
+| `20KhuA01` p232 | 215 | **verse** | two 4-line stanzas, blank line between them plainly on the page |
+| `12DiT05` p300 | 291 | **prose** | three one-line glosses at the paragraph indent (§9) |
+
+`07DiA01` p154 and `12DiT05` p300 are the **same shape** — a run's last line ending
+mid-word with prose below — and they get **opposite** answers. Shape decides nothing.
+Only the page does, which is the reader's original objection, now demonstrated twice.
+
+## 12. §11.3 was wrong twice, and the real signal is 6.0 points
+
+**§11.3 claimed the blank line is in the text layer and `pline` discards it. Both
+halves are false.**
+
+**First**, `pline` does not discard the blank lines it receives. `_build()` enumerates
+`d['body']` and emits only non-blank lines **carrying their original index `j`**, so a
+blank line survives as a jump in `j`. On `20KhuA01` p232 the jumps `26 -> 28` and
+`28 -> 30` are exactly the two blank lines before the colophon. The information was
+never thrown away; nothing reads it, which is a different fault.
+
+**Second**, and this is why the first mattered less than it looked: **the stanza break is
+not in the `-layout` stream at all.** On the same page, pdftotext p233:
+
+```
+ 4   Evampi atthakusalena Tathāgatena,
+ 5   Dhammissarena kathitaṁ karaṇīyamatthaṁ.
+ 6   Katvānubhuyya paramaṁ hadayassa santiṁ,
+ 7   Santaṁ padaṁ abhisamenti samattapaññā.
+ 8   Tasmā hi taṁ amatamabbhutamariyakantaṁ,      <- the page sets a gap here
+ 9   Santaṁ padaṁ abhisamecca viharitukāmo1.
+```
+
+Eight verse lines contiguous, no blank line between the stanzas, while the rendered page
+plainly shows one. The gap is typographic leading, below the threshold at which `-layout`
+breaks a line. **So there was nothing to discard**, and the reader's stanza fault could
+not have been found from the line stream by anyone.
+
+### 12.1 It is in the coordinates, and it is a constant
+
+`pdftotext -bbox` gives every word's `y`. Grouped into lines, the leading is bimodal:
+
+| page | body leading | break leading | Δ |
+|---|---:|---:|---:|
+| `20KhuA01` p233 | 17.2 | 23.2 | **+6.0** |
+| `06ViT06` p28 | 15.3 | 21.3 | **+6.0** |
+| `06ViT06` p566 | 17.9 | 23.9 | **+6.0** |
+| `12DiT05` p300 | 18.5 | 24.5 | **+6.0** |
+| `46KhuA27` p7 | 17.0 | 23.0 | **+6.0** |
+| `46KhuA27` p189 | 16.7 | 22.7 | **+6.0** |
+
+The body leading differs per volume and per page; **the space before a new block is 6.0
+points, exactly, on all six.** That is a fixed space-before in the source, and it marks a
+paragraph break and a stanza break alike.
+
+### 12.2 Measured over all 118 volumes, not over the six that suggested it
+
+`_xc/hy1/leadcensus2.py`, 235 pages sampled at random from every volume, 1,231
+inter-line gaps larger than the page's own body leading:
+
+```
+ +6.0 pt   419  ############################################################
+ +5.9 pt    88  ############
+ +6.1 pt    50  #######
++16.5 pt    26  ###
++15.0 pt    23  ###
++17.1 pt    21  ###
+```
+
+**602 of 1,231 gaps (48.9%) sit at body+6.0 ±1.0**, and there is no competing mode near
+it — the remainder is a long tail from +15 upward, which is heading and section spacing.
+**114 of 118 volumes show the +6.0 mode.**
+
+*(An earlier run reported 52% and listed deltas of +15 to +26 as failures. That statistic
+was wrong: it took each page's second mode, so a page whose only break is a heading gap
+scored the heading and counted as a miss. `leadcensus.py` is kept beside `leadcensus2.py`
+as the record of the error.)*
+
+The four not showing it — `07Di02`, `21Khu04`, `23Khu06`, `26KhuA07` — were sampled at
+**two pages each**, so absence here is very likely sampling. **They must be sampled
+properly before anything is built on this**, and if the mode is genuinely absent in a
+volume that is a finding in itself.
+
+### 12.3 Why this matters more than anything else in this document
+
+Every classification fault in §§1–11 comes from the same poverty of evidence: **indent and
+line length are all the instruments have**, which is why short prose glosses at a
+paragraph indent read as pādas (`12DiT05` p300) and why `_kat_cols` and `display_column`
+have needed repair after repair.
+
+The 6.0pt space is an **independent** signal. It does not consult indent, it needs no
+volume-specific flag, it is measured per page like `display_column_pages`, and it marks
+exactly the boundary the corpus keeps losing. It is available on every one of the 118
+volumes and no instrument in this project has ever read it.
+
+**Not built.** This is a measurement, not a repair. What it licenses:
+a block-boundary map per printed page, which would give the stanza grouping the reader
+asked for, the paragraph breaks of §10.4, and a second instrument for the position work
+(handoff item 3) that is not derived from the corpus.
 
 ## 8. Not done
 

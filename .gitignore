@@ -165,3 +165,12 @@ _xfer/
 _xc/hy1/cen/
 _xc/hy1/cache/
 _xc/hy1/*.rows.json
+_xc/hy1/review.json
+_xc/hy1/review.html
+_xc/hy1/review_dropped.json
+_xc/hy1/edgepg.json
+_xc/hy1/pagemap.json
+_xc/hy1/offsets.json
+# Page renders from pdftoppm, 5 MB. Regenerated from the PDFs in seconds and the
+# PDFs themselves are already out of the repo by the pali/ atthakatha/ tika/ rules.
+_xc/hy1/pg/
