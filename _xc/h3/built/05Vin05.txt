@@ -1,0 +1,9 @@
+verse entries 500 | sections 215 | uddana anchors 183 | hidden 19 | incipits 1
+   Parivārapāḷi           KATHĀ  printed units 500 / corpus ¶ 500   headings 253   colophons 274   prose ¶ 1554   gāthā blocks 110   [OK]
+        CORPUS SPLICE (recorded, not corrected): printed unit 39 at p32 is inside corpus ord38, the paragraph of unit 38 — 'Eḷakalomāni paṭiggahetvā tiyojanaṁ atikkāmentassa nissaggiya'
+   leaked corpus headings hidden: [0, 133, 159, 191, 197, 206, 256, 259, 310, 312, 317, 319, 323]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/05Vin05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/05Vin05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/05Vin05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/05Vin05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/05Vin05.json

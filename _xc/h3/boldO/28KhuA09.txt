@@ -1,0 +1,1 @@
+28KhuA09    lines= 10312 abs= 2331 pruns=  2181 EXACT=  2050 MISS=  131 PART=    0 LONG=    0 SPUR=    0 notdrawn=   96

@@ -72,7 +72,7 @@
 "05Vin05": {
 "site/05Vin05.json": "5e590c8083c982e5f902c09cf1ed548198d80b71ec4265fa3d1a55bd24a88195",
 "site/reader/hide/05Vin05.json": "8a1c5249d7e1f460add742419ff0f3add00c6d919dffb3c9bf43d2d449778864",
-"site/reader/verse/05Vin05.json": "43207e844cc1b16aa084b13ef21b8da5233bac79c21a53b7f85dd13100daab4c"
+"site/reader/verse/05Vin05.json": "f2102b321d22709e368fc32bc55dad30de419aad5719f41be7368eb6b0cdc46b"
 },
 "06Di01": {
 "site/06Di01.json": "7480ac58273a64abf70b9336745518d85f0d7f9609da214190b216db46a1e8e4",
@@ -92,7 +92,7 @@
 "07Di02": {
 "site/07Di02.json": "efcba523c6f471fc21cfe4de43ff70861f8e90be2b9fcc33bd45a59067574c18",
 "site/reader/hide/07Di02.json": "cd981e81670118e68460421c7f8e4d6a30cf1b1b35db8b287db5279636619b27",
-"site/reader/verse/07Di02.json": "981683b9d0afbaceb000c10a21b12a9793a6c07313828d79944856d74346ba3d"
+"site/reader/verse/07Di02.json": "f9f0704b5362fb0af72a5613429a7205d933ddb0c82f2a88dd348ed86616b923"
 },
 "07DiA01": {
 "site/07DiA01.json": "ce354593a1540b1d3f1cb4e8104e17d6625c5d85215d2a81857c7585299c1b1f",
@@ -177,7 +177,7 @@
 "12Sam01": {
 "site/12Sam01.json": "47528a6ad4755eba20b649606d716e6883b6dc32ec25cf3e96f0fb02e715d515",
 "site/reader/hide/12Sam01.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
-"site/reader/verse/12Sam01.json": "945953cf8e55bdef4f552c16bcd9704e43631027e81ce5f234259f96edc03cc0"
+"site/reader/verse/12Sam01.json": "76424ed0937855021368ef259f2a29d35dbf186b2e635dc2eedbdac46cc6d111"
 },
 "13MaA04": {
 "site/13MaA04.json": "5f7948764983fe9c60b3d23caf05191676ee422baf184c37126742908aaefb3a",
@@ -287,7 +287,7 @@
 "20AnT03": {
 "site/20AnT03.json": "8895e40a978c3e5be210d97ce0eec95f15f1fdd1c09ca766e4c87ef0b6d146a4",
 "site/reader/hide/20AnT03.json": "4e18a8e96f824d70721ddac324f32ce64d62462cf54be726859df05eae2037b1",
-"site/reader/verse/20AnT03.json": "4d12236034a64d7aa92f435d8648db093e4c0a0e87995b9c58398c6403bfcea4"
+"site/reader/verse/20AnT03.json": "c8eaac559200a20cc04d21282302b73cd2c575d1b9eeacbb201600b20c507bc8"
 },
 "20Khu03": {
 "site/20Khu03.json": "fdfed70398532ed8304b102f40c9d5bf5a9adb16059a6602c494d9e67b5bf30c",
@@ -307,7 +307,7 @@
 "21KhuA02": {
 "site/21KhuA02.json": "a973f1aaa8b82cc8949d37718d6da0913bc151361e2e44d1dbd953f77ce17fa4",
 "site/reader/hide/21KhuA02.json": "94b3c483444908766ce11b1daf499af3789f252a8e2145b09d5ad1f104073dfb",
-"site/reader/verse/21KhuA02.json": "b93ca9a52fd58467f596763e8c1f0113e57c72b87063a2571c3657f2aa56b3c8"
+"site/reader/verse/21KhuA02.json": "b46f3508ddd978936890c3b68d3e886a6cb9ed1738e1f237947967c71218e653"
 },
 "21KhuT01": {
 "site/21KhuT01.json": "c218fd2baf28b1777f2c9b2f6c2fc21b9d3267d9c131539bd7326a6eed106c55",
@@ -342,7 +342,7 @@
 "23KhuA04": {
 "site/23KhuA04.json": "06044005ecea07afbfc352f365a0b1cfd711eddd1d30534cf46b0847301d2c7d",
 "site/reader/hide/23KhuA04.json": "7c4c60a8abdb4dfc959c8f799184d937243e6e43fed54c1e4b6e13bf4a77b319",
-"site/reader/verse/23KhuA04.json": "171fe13e84d7be2e2b4a3cd5e95e8153b8137820c2feb695fa48a13b31851836"
+"site/reader/verse/23KhuA04.json": "a5b4154e69d63dda603da9ae832dba27201118178e41cda46f68245faac70537"
 },
 "24AbhiT03": {
 "site/24AbhiT03.json": "2083bb2c978f16687b90173d53eccdd67398b1b2095e1cbb486bd665a2b46349",
@@ -392,12 +392,12 @@
 "27Khu10": {
 "site/27Khu10.json": "954aec54878776296b6a6aa900b81c6a33b27ccded9358967132294736f878bb",
 "site/reader/hide/27Khu10.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
-"site/reader/verse/27Khu10.json": "799adb350b2f172ef6d43dfbc19d9fe057c749c36dba206c5b586e72199496c3"
+"site/reader/verse/27Khu10.json": "7ab643898b95bc2428ee63bf8326cdd62f256d84844965a8d3849a8db8578b8a"
 },
 "27KhuA08": {
 "site/27KhuA08.json": "7fa4dcfbd93d44b8183c1bd9ffb7a72e5ed9ce24ed7a78bfb5db44c1cdd5501d",
 "site/reader/hide/27KhuA08.json": "1e0fe98b47888cf20ff9bfd9794a77f875cc2cbf0c44fda7748bac1b893c593e",
-"site/reader/verse/27KhuA08.json": "8e6b2f3f9477959a383b4beffaccf8472bc8643a7e6b35c4aeb390e7c22be548"
+"site/reader/verse/27KhuA08.json": "a5223c59c77ea1842ebe3e3444a5328e2e5ac919803c0ba49274b8ee533e5488"
 },
 "28Khu11": {
 "site/28Khu11.json": "e84743a8c9454bb4c51c090a30726a7e4c1816f0dd09657cc5ad5d459de32dfd",
@@ -407,7 +407,7 @@
 "28KhuA09": {
 "site/28KhuA09.json": "d28fa552a09734989058f421c2c1f219fca2c6d2a36060a178a8f3cf17413ea2",
 "site/reader/hide/28KhuA09.json": "13ea57f526e48f20256014ecc9f2a9baf5e9ed440570bdea160ce4a93b103121",
-"site/reader/verse/28KhuA09.json": "a6f595de5e0f039bdd04b20bfddb4d8de20ceecb804d31666deb01421c1b2d44"
+"site/reader/verse/28KhuA09.json": "1e42684e106ac8b673a5b4dcc40fea6fd467bd58d4bb420811d1f82b1fc7368f"
 },
 "29Abhi01": {
 "site/29Abhi01.json": "dc8b85c98c558689dec57ed2a5b3ffd718f6f176dbc5b1b55294ee2d76d7e34b",
@@ -427,7 +427,7 @@
 "30KhuA11": {
 "site/30KhuA11.json": "1a176f675180221ca21eada3116e10332a74d6bbee523a735e76ace6b6090736",
 "site/reader/hide/30KhuA11.json": "45608e389acf6f415ac2b8d7f30fa5fee8974ede949b2c289c889e3f6f6b7d74",
-"site/reader/verse/30KhuA11.json": "887ebbf0a9027d4ff9e5ceb370b35d5ed687fae335199e81a4894efa8a98759a"
+"site/reader/verse/30KhuA11.json": "d0793520c8cdfbae04ce67dd5fabde57d1b8a3a2c70394185351b41bf927df8f"
 },
 "31Abhi03": {
 "site/31Abhi03.json": "29d01b1105b1248d58472e7b4af183bb1be45db7ddcfa689c2d4f9bc6f7cda71",
@@ -437,7 +437,7 @@
 "31KhuA12": {
 "site/31KhuA12.json": "62bafc504f48bb51741306b22ac083e248006ce6e58724460b3d9391d0e881eb",
 "site/reader/hide/31KhuA12.json": "c40a9af036ee22f921ae7f702268ef079f8121caa41648713184719e130d0292",
-"site/reader/verse/31KhuA12.json": "e97d12e7bda6a94db749e44be40e5fc0fb6d0ccf3928eef5824e7ef354c57890"
+"site/reader/verse/31KhuA12.json": "7e17143226a5757e0288e1f675d03827461049e62b39be05aa8116c744a81702"
 },
 "32Abhi04": {
 "site/32Abhi04.json": "58241d76a5a320fac5ec6a8e0de2273f35c89d1f589c4768b4698144767e1bec",
@@ -452,7 +452,7 @@
 "33Abhi05": {
 "site/33Abhi05.json": "0a0afa105f6e1688206fc04355f210d53b942d68f4ad4c8a03f31394ddf6f0a0",
 "site/reader/hide/33Abhi05.json": "59fadb6fd1ac290e1c40146b7c1a57a5dcb92b78fab71bde92365c5c12f41d48",
-"site/reader/verse/33Abhi05.json": "fad6fe13472fe7c2bc9efefb8aeca0efb9d0c1cc86b4ecbabcc88f1158e3aea3"
+"site/reader/verse/33Abhi05.json": "d45106bfb281aaa0dcdd8ed2cf0105fcbaa6eee99fc62fed1627a309ee710088"
 },
 "33KhuA14": {
 "site/33KhuA14.json": "f637000c251d2c59a25e77bab8392011afb415f917229500b47cd727cbffaf00",
@@ -462,12 +462,12 @@
 "34Abhi06": {
 "site/34Abhi06.json": "929d89088c72ec931109cfb34f23ef08280bd3047e42e8860a3bd8a0af8e727e",
 "site/reader/hide/34Abhi06.json": "e774099e2633a425ce8300fb41a9e760cfc8f928cc86ec4d66db4caee9c8399a",
-"site/reader/verse/34Abhi06.json": "de1aac198ba7b6656d9740e3555d5b1e492982ecd8b5a9ffa97f2e86f43ac3bc"
+"site/reader/verse/34Abhi06.json": "4b41289a8bc120c10a7e92b2c950fc689816780430ada0ed4f3c86748d776715"
 },
 "34KhuA15": {
 "site/34KhuA15.json": "a88ddc8b0c690a1a19e8da26d12141055f384bdcb2e70db59110914c666955cc",
 "site/reader/hide/34KhuA15.json": "3d1e445520ea38bdcc61f73da614b7fecbc25003657b2da8cb842ca53e7f7ec4",
-"site/reader/verse/34KhuA15.json": "31ff5d97c2691a9f9ced30c694a0159e9758140f6ab7dc7a2b570d49200a90f9"
+"site/reader/verse/34KhuA15.json": "afd841f8d3dd986c0b0b7d09c9fb1e809b852e7fa2c50ee3ac81614704862320"
 },
 "35Abhi07": {
 "site/35Abhi07.json": "bb85864421bcd9d86897c696c279537827b4b76511745549bb24cf6a4a4070ca",
@@ -567,7 +567,7 @@
 "48AbhiA01": {
 "site/48AbhiA01.json": "380cfd8aef0fbb324768646869f3f5c4270aba82c22a8814c4deb2d80d9c4fd3",
 "site/reader/hide/48AbhiA01.json": "0e83a50f73118dbe9d8916ad23e4ba2d13a48bb8217e12a9fc73e7ef243011ee",
-"site/reader/verse/48AbhiA01.json": "291fbb19ce493096d5e7aa2cef9caabef96c662c6d05b41c789e30f81756b206"
+"site/reader/verse/48AbhiA01.json": "0c80a17cd2b73859d8a8a2a1939d18a0f2692ffd71c2962a050c826a4767cc66"
 },
 "49AbhiA02": {
 "site/49AbhiA02.json": "e6a91d63e2a2fb662a13bf86ba89c245414d5f3ec0db6f51336e88d7c0ba53aa",

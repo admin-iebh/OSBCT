@@ -1,0 +1,12 @@
+verse entries 753 | sections 377 | uddana anchors 25 | hidden 9 | incipits 5
+   Mūlayamakapāḷi         KATHĀ  printed units 99 / corpus ¶ 99   headings 12   colophons 5   prose ¶ 99   gāthā blocks 2   [OK]
+   Khandhayamakapāḷi      KATHĀ  printed units 211 / corpus ¶ 211   headings 159   colophons 8   prose ¶ 375   gāthā blocks 0   [OK]
+   Āyatanayamakapāḷi      KATHĀ  printed units 254 / corpus ¶ 254   headings 146   colophons 8   prose ¶ 655   gāthā blocks 0   [OK]
+   Dhātuyamakapāḷi        KATHĀ  printed units 19 / corpus ¶ 19   headings 31   colophons 3   prose ¶ 113   gāthā blocks 0   [OK]
+   Saccayamakapāḷi        KATHĀ  printed units 170 / corpus ¶ 170   headings 145   colophons 8   prose ¶ 299   gāthā blocks 0   [OK]
+   leaked corpus headings hidden: [148, 203, 329, 432, 512, 586, 615, 677, 726]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/33Abhi05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/33Abhi05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/33Abhi05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/33Abhi05.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/33Abhi05.json

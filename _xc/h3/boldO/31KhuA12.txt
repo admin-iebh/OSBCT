@@ -1,0 +1,1 @@
+31KhuA12    lines= 11747 abs= 2251 pruns=  1949 EXACT=  1772 MISS=  176 PART=    1 LONG=    0 SPUR=    0 notdrawn=   94

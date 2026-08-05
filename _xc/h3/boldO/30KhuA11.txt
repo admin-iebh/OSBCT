@@ -1,0 +1,1 @@
+30KhuA11    lines= 20342 abs= 3673 pruns=  4201 EXACT=  3973 MISS=  226 PART=    2 LONG=    0 SPUR=    1 notdrawn=  322

@@ -1,0 +1,1 @@
+27KhuA08    lines= 11022 abs= 1546 pruns=  2290 EXACT=  2154 MISS=  136 PART=    0 LONG=    0 SPUR=    0 notdrawn=  118

@@ -365,6 +365,72 @@ def display_column(lines, body, Bm):
     return body + INSET
 
 
+# PAGEFID_PAGECOL=0 selects the VOLUME-WIDE display column, kept for the same
+# reason PAGEFID_SHARP is kept: so the effect of making the column per-page is
+# a difference INSIDE one code version.
+PAGECOL = os.environ.get('PAGEFID_PAGECOL', '1') != '0'
+
+# reporting only: how many of the volume's pages named a column of their own
+PGSTAT = [0, 0]
+PGLOW, PGTOT = {}, {}
+
+PGMIN = 4       # a page must set at least this many lines at the candidate
+                # column before the page is allowed to name one.  Without it a
+                # single centred title on a page of prose names the column: at
+                # 30 lines a page, `0.02 * n` is 0.6, so ONE line passed the
+                # size test and its own shortness passed the 90% test.
+PGDENS = 5.0    # LINES PER INSET LINE.  The gate that separates a page whose
+                # inset lines are PARAGRAPH OPENERS from one whose inset lines
+                # are PADAS, and it is measured, not named: over the corpus a
+                # prose page runs 8.3-10.4 lines per opener-band line and a
+                # verse page 1.93.  Nothing here consults a volume name --
+                # 18Khu01 sets its padas at one space and is judged by this
+                # same measurement as every other volume.
+
+
+def display_column_pages(lines, body, Bm, DCOL):
+    """The display column MEASURED PER PRINTED PAGE, never above the volume's.
+
+    One number per volume cannot see a page that sets its gatha at 4 in a
+    volume whose column is 8, and that is exactly what 30KhuA11 does.  Its
+    p252 prints
+
+        659. “Yathapi bhaddo ajanno, dhure yutto dhurassaho.      <- indent 0
+             Mathito atibharena, samyugam nativattati.           <- indent 5
+
+    -- the numbered first pada at the body column and the second hanging at 5,
+    ALTERNATING.  R2 wants a RUN of two opener-band lines and never sees one
+    because a numbered line sits between every pair; R3 wants the line below to
+    be display already, which only R2 could have made it.  Each rule waits for
+    the other and 130 printed lines of Therigatha go unread.  With the page's
+    own column at 2 the second padas are R0 display on their own geometry, R3
+    then admits the numbered first padas, and the block is verse.
+
+    The measurement may only move the column LEFT of the volume's, and only on
+    evidence the page itself carries: at least PGMIN lines at the column, at
+    least one line in PGDENS of the page (so a page of prose with three inset
+    openers cannot name a column), and 90% of them short of the body measure --
+    the same test `display_column` makes, on the page instead of the volume.
+    """
+    thr = Bm - 8
+    out = {}
+    by = collections.defaultdict(list)
+    for l in lines:
+        by[l[0]].append(l)
+    for p, pl in by.items():
+        n = len(pl)
+        got = DCOL
+        for d in range(body + 2, DCOL):
+            a = [l for l in pl if l[2] >= d]
+            if len(a) < PGMIN or len(a) * PGDENS < n:
+                break
+            if sum(1 for l in a if l[2] + len(l[3]) <= thr) >= 0.90 * len(a):
+                got = d
+                break
+        out[p] = got
+    return out
+
+
 INSET = 8       # leading spaces that put a line unambiguously OFF the body column
 NEAR = 3        # a small inset: one leading space -- the paragraph-opener class
 SHORT = 12      # how far short of the measure a small-inset line must stop
@@ -440,6 +506,14 @@ def page_classes(lines, body, W, Bm=None, DCOL=None, control=None):
     ind = [l[2] for l in lines]
     end = [l[2] + len(l[3]) for l in lines]
     pg = [l[0] for l in lines]
+    if PAGECOL:
+        pcol = display_column_pages(lines, body, Bm, DCOL)
+        dc = [pcol[pg[i]] for i in range(n)]
+        PGSTAT[0] = sum(1 for v in pcol.values() if v < DCOL)
+        PGSTAT[1] = len(pcol)
+    else:
+        dc = [DCOL] * n
+        PGSTAT[0], PGSTAT[1] = 0, len(set(pg))
 
     if not SHARP:
         disp = [((ind[i] >= body + INSET and end[i] <= W - 6)
@@ -477,7 +551,7 @@ def page_classes(lines, body, W, Bm=None, DCOL=None, control=None):
     #     measured display column, and short of the page, is display.  The
     #     only rule that needs no second line.
     disp = [((ind[i] >= body + INSET and end[i] <= W - 6)
-             or (DCOL <= ind[i] < body + INSET and short_op[i]))
+             or (dc[i] <= ind[i] < body + INSET and short_op[i]))
             for i in range(n)]
 
     # R1 WAS TRIED, MEASURED, AND IS NOT HERE -- recorded because it is the
@@ -499,7 +573,17 @@ def page_classes(lines, body, W, Bm=None, DCOL=None, control=None):
     #     not draw, and the whole of its class-2 noise.
     orun = [False] * n
     if RULES & 1:
-        cand = [(body + OPEN0 <= ind[i] < DCOL) and short_op[i] and not disp[i]
+        # THE BAND IS THE WHOLE OPENER BAND, NOT `< dc[i]`.  With a per-page
+        # column the two rules split a single printed block between them: on a
+        # page whose column falls to 4, a gatha set at 3 and 5 has its second
+        # line taken by R0 and leaves the first standing alone, so a run that
+        # WAS two lines becomes two singletons and the block is lost.  A line
+        # R0 has already admitted still counts as a member of the run; only
+        # the rest need marking.  Making the band independent of the column is
+        # also what makes `disp` MONOTONE as the column falls -- lowering it
+        # can now only ADD display, never take it away, which is the property
+        # that lets a per-page column be trusted.
+        cand = [(body + OPEN0 <= ind[i] < body + INSET) and short_op[i]
                 for i in range(n)]
         i = 0
         while i < n:
@@ -676,6 +760,7 @@ def run(vol, control=None, verbose=False):
     Bm = body_measure(lines, body, W)
     DCOL = display_column(lines, body, Bm)
     pcls, pverse, lines = page_classes(lines, body, W, Bm, DCOL, control)
+    PGLOW[vol], PGTOT[vol] = PGSTAT[0], PGSTAT[1]
 
     buf, spans = [], []
     pos = 0
@@ -874,6 +959,8 @@ def run(vol, control=None, verbose=False):
                tail_pages=[min(tail), max(tail)] if tail else None,
                printed_lines=len(lines), lines_out_of_extent=outside,
                body_col=body, measure=W, body_measure=Bm, display_col=DCOL,
+               page_col=bool(PAGECOL), pages_lowered=PGLOW.get(vol, 0),
+               pages_total=PGTOT.get(vol, 0),
                sharp=bool(SHARP), rules=RULES, corpus_segments=len(segs),
                corpus_letters=len(C), stats=dict(stat))
     if verbose:

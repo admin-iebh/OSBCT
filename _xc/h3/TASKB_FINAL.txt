@@ -1,0 +1,27 @@
+vol            c2 A     c2 B    d c1   d c3   d c4  pages lowered
+07ViT07         305      304      +0     +0     +0  79/504  DCOLv=8
+21KhuA02         24       16      +0     +0     +0  39/491  DCOLv=8
+23KhuA04         41       28      +0     +0     +0  12/467  DCOLv=8
+27Khu10         212      199      +0     +0     +0  96/380  DCOLv=8
+07Di02           29        9      +0     +0     +0  35/300  DCOLv=8
+20AnT03          51       21      +0     +0     +0  57/386  DCOLv=8
+05Vin05         100       57      +1     +0     +0  101/424  DCOLv=8
+34KhuA15        475      426      +0     +0     +0  153/444  DCOLv=8
+12Sam01         175       49      +3     +0     +0  142/511  DCOLv=8
+28KhuA09        365       64      +6     +0     +1  110/355  DCOLv=8
+27KhuA08        387       85      +2     +0     +1  175/423  DCOLv=8
+31KhuA12        445      138      +1     +0     +0  130/387  DCOLv=8
+30KhuA11        902      130      +4     +0     +0  190/679  DCOLv=8
+volumes moved: 13
+
+VERSE_AS_PROSE        4326 ->      2341  -1985
+PROSE_AS_VERSE         654 ->       671  +17
+PROSE_AS_UDDANA         10 ->        10  +0
+VERSE_AS_HEADING      1645 ->      1647  +2
+lone_display          5096 ->      5096  +0
+page_verse           21578 ->     21578  +0
+page_prose          164798 ->    164798  +0
+absent               19760 ->     19760  +0
+partial               6086 ->      6086  +0
+digit_only           15120 ->     15120  +0
+printed             227342 ->    227342  +0

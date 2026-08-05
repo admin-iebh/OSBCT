@@ -1,0 +1,8 @@
+verse entries 549 | sections 68 | uddana anchors 68 | hidden 3 | incipits 1
+   Therīgāthā-aṭṭhakathā  KATHĀ  printed units 523 / corpus ¶ 523   headings 85   colophons 86   prose ¶ 702   gāthā blocks 81   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/31KhuA12.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/31KhuA12.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/31KhuA12.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/31KhuA12.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/31KhuA12.json

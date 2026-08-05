@@ -1,0 +1,10 @@
+verse entries 1062 | sections 79 | uddana anchors 84 | hidden 2 | incipits 1
+   Theragāthā-aṭṭhakathā  KATHĀ  printed units 1018 / corpus ¶ 1018   headings 97   colophons 109   prose ¶ 1309   gāthā blocks 107   [OK]
+        CORPUS SPLICE (recorded, not corrected): printed unit 1164 at p490 is inside corpus ord976, the paragraph of unit 1163 — 'Añjanīva navā cittā, pūtikāyo alaṅkato.'
+        CORPUS SPLICE (recorded, not corrected): printed unit 1263 at p525 is inside corpus ord1074, the paragraph of unit 1262 — 'So me dhammamadesesi, muni dukkhassa pāragū.'
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/30KhuA11.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/30KhuA11.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/30KhuA11.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/30KhuA11.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/30KhuA11.json

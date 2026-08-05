@@ -5539,11 +5539,70 @@ def _kat_cols(lines, body0):
     # ONE NUMBER PER VOLUME and cannot see a page that sets its gatha at 4-6,
     # which is the same mistake this function makes.  Until it can, the two
     # sides cannot be compared on the pages that matter.
-    if os.environ.get('C2COL', '0') == '1':
+    # APPLIED, AND SEPARATED BY A MEASUREMENT RATHER THAN BY A VOLUME NAME.
+    # `hanging` is true of a page of numbered gatha AND of a matika list, and
+    # geometry cannot tell them apart -- 29Abhi01 p32 sets `107. Nirutti
+    # dhamma. (1314)` at 5 with its pair at 10, which is the same shape as
+    # 30KhuA11 p9's `267. "Alankata suvasana,` at 4 with its second pada at 9.
+    # WHAT SEPARATES THEM IS THE CAESURA.  A pada carries a comma at the break
+    # -- `Majjhe mahapathe nari, turiye naccati nattaki.` -- and a matika entry
+    # does not: `Niruttipatha dhamma. (1314)`, `Indriyam sotam.`,
+    # `nirodhasamapattiya nanam.`.  This is the same measurement that proved
+    # the class-1 lines were gatha at `1757a61a` (129 of 138 carried it), used
+    # here on the other side of the glass.
+    if os.environ.get('C2COL', '1') == '1' and _pada_page(lines, pbody):
         body = body0 if pbody > body0 + 2 else pbody
     else:
         body = pbody if hanging else (body0 if pbody > body0 + 2 else pbody)
     return numc, body, hanging
+
+
+CAESURA = re.compile(r'\w[\u2019\u201d\'"]?[,;] +\w')
+PADA_END = re.compile(r'[,;][\u2019\u201d\'"]?\s*\d*\s*$')
+MARGINREF = re.compile(r'\s*\([\d,\s.\u2013-]+\)\s*$')
+
+
+def _pada_page(lines, pbody):
+    """Does this page set PADAS at its hanging column, or a MATIKA list?
+
+    Read off the page's own text: a pada is a half-verse and the edition sets
+    the caesura with a comma, so a run of padas carries one and a run of
+    matika entries does not.  Judged over the page's hanging lines only, and
+    refused outright when there are fewer than three of them -- one or two
+    short lines are a colophon or a title and decide nothing.
+
+    RESERVED, AND THIS IS WHAT KEEPS IT RESERVED: 35Abhi07's Yamaka matika
+    pairs (`Sotam indriyam. . Indriyam sotam.`), 26Khu09's Patisambhida
+    matika, and 29Abhi01's Dukamatika are the non-gatha display class the
+    reader has not yet ruled on.  None of them carries a caesura, so none of
+    them moves.
+    """
+    h = [t for i, t in lines if i == pbody and len(t.split()) >= 3]
+    if len(h) < 3:
+        return False
+    # A PADA IS MARKED EITHER WAY, and BOTH have to be counted.  In the eight-
+    # syllable metres the caesura falls inside the printed line and is set with
+    # a comma (`Majjhe mahapathe nari, turiye naccati nattaki.`); in the
+    # eleven-syllable ones each printed line IS one pada and the comma falls at
+    # its END (`Panaya passitva satova jhayati,`).  Counting only the internal
+    # comma refused 317 repairs on 17 pages of 30KhuA11 alone -- p168's
+    # Indavajira stanzas -- which is the whole of the Therigatha shape the
+    # reader reported.  A matika entry is marked NEITHER way: it is a closed
+    # nominal phrase that ends in a full stop.
+    # THE MARGIN NUMBER IS STRIPPED FIRST, and leaving it in was a real fault:
+    # 29Abhi01's Tikamatika sets `Kusala dhamma. (363, 985, 1384)`, and the
+    # commas INSIDE the parenthesised reference list matched the caesura test,
+    # so the gate admitted 118 of that volume's mātikā entries -- the reserved
+    # non-gatha class -- while refusing them everywhere the list happened to
+    # hold one number.  A caesura is a mark in the TEXT.
+    hh = [MARGINREF.sub('', t).rstrip() for t in h]
+    n = sum(1 for t in hh if CAESURA.search(t) or PADA_END.search(t))
+    # A QUARTER, and the margin is not a tuned one: measured over the pages
+    # this decides, a page of padas scores 33-100% and a page of matika 0%.
+    # 29Abhi01 p32 (`Niruttipatha dhamma. (1314)`), 26Khu09 p12
+    # (`nirodhasamapattiya nanam.`) and 35Abhi07's Yamaka pairs
+    # (`Indriyam sotam.`) are all exactly 0.
+    return n * 4 >= len(h)
 
 
 def it_text(t):
