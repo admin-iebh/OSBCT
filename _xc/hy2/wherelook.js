@@ -51,7 +51,13 @@ const VOL=process.argv[2]||'19Khu02', MAX=+(process.argv[3]||8);
       .filter(p=>!box.contains(p));
     const chars=shown.reduce((s,p)=>s+p.textContent.length,0);
     const idx=canon?+canon.slice(('p-'+VOL+'-').length):null;
-    rows.push({printed:idx!=null&&paras[idx]?paras[idx].n:'?', idx,
+    // !!! THE PRINTED NUMBER IS NOT UNIQUE WITHIN A VOLUME EITHER.  19Khu02
+    // prints ¶618 three times -- Vimānavatthu p48, Petavatthu p195, Theragāthā
+    // p309 -- so "19Khu02 ¶618" still sends the reader to one of three places.
+    // A locator is only a locator with the book and vagga on it.
+    const P=idx!=null?paras[idx]:null;
+    rows.push({printed:P?P.n:'?', idx,
+               book:P?(P.book||''):'', vagga:P?(P.vagga||''):'', page:P?P.printed:'',
                band:wrap.className.indexOf('t')>=0?'T':'A',
                shown:shown.length, hidden:+btn.dataset.n, chars,
                first:(shown[0]?shown[0].textContent:'').slice(0,60)});
@@ -61,8 +67,9 @@ const VOL=process.argv[2]||'19Khu02', MAX=+(process.argv[3]||8);
   // Node's console.log understands %s but NOT printf width specifiers, so
   // '%-9s' prints literally.  padEnd, not a format string.
   const P=(v,n)=>String(v).padEnd(n);
-  console.log(P('printed ¶',10)+P('band',5)+P('shown',6)+P('hidden',7)+P('chars',7)+'first line shown');
+  console.log(P('¶',7)+P('pg',6)+P('band',5)+P('shown',6)+P('hid',5)+P('chars',7)
+              +P('book',24)+'vagga');
   rows.slice(0,MAX).forEach(r=>console.log(
-    P(r.printed,10)+P(r.band,5)+P(r.shown,6)+P(r.hidden,7)+P(r.chars,7)
-    +r.first.replace(/\s+/g,' ')));
+    P(r.printed,7)+P('p'+r.page,6)+P(r.band,5)+P(r.shown,6)+P(r.hidden,5)+P(r.chars,7)
+    +P(r.book,24)+r.vagga));
 })();
