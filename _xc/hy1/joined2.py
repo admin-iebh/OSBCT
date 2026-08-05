@@ -22,6 +22,11 @@ LEADNUM = re.compile(r'^\s*\d+\s*\.?\s*')
 n = lambda s: NRM.sub('', s or '')
 strip = lambda s: n(LEADNUM.sub('', s or ''))
 B = '_xc/hy1/blocks2'
+# A DECORATIVE RULE IS NOT A PRINTED LINE OF TEXT.  39Abhi11 sets a parenthetical
+# and an ornamental rule ('____') under it; the block map groups the two, and
+# counting the rule made 120 lines look lost on a volume where nothing is.  The
+# repair correctly does not move them; the MEASURE was wrong.
+RULE = re.compile(r'^[\s_\-–—=.]*$')
 sys.path.insert(0, os.path.abspath('_xc/hy1'))
 import adjudicate as A
 A.B = B
@@ -72,6 +77,10 @@ def scan(vol):
             if k != 'display' or len(b) < 2:
                 continue
             st['blocks'] += 1
+            b = [l for l in b if not RULE.match(l[3] or '')]
+            if len(b) < 2:
+                st['rule_only'] += 1
+                continue
             per = [strip(l[3]) for l in b]
             have = sum(1 for t in per if t and t in D)
             joined = strip(' '.join(l[3] for l in b))
@@ -112,6 +121,7 @@ if __name__ == '__main__':
           % (tot['JOINED'], tot['lines_lost']))
     print('   partly present                 : %d' % tot['partial'])
     print('   not in the verse map at all    : %d' % tot['absent'])
+    print('   block was text + a rule only   : %d  (not a fault; see RULE)' % tot['rule_only'])
     print()
     for v, j, l, nb in sorted(rows, key=lambda z: -z[2])[:14]:
         print('   %-10s joined %5d  lines lost %5d  of %5d display blocks' % (v, j, l, nb))

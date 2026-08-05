@@ -917,6 +917,60 @@ volumes are measured; `pbreak/` is re-derived; and `regress`, `check_links`,
 `pbreak` records address a sequence of `fmtLine` calls — both are sensitive to exactly this
 change.
 
+## 20. `39Abhi11` explained, the fault re-measured, and the repair caught over-splitting
+
+### 20.1 `39Abhi11`'s 120 lines were decorative rules
+
+Its "joined" blocks are a parenthetical and the ornamental rule beneath it:
+
+```
+(Evaṁ itare dve gaṇanāpi Sahajātavāropi kātabbo.)
+____
+```
+
+The block map groups the two; the rule is not a printed line of text. **The repair was
+right not to move them and the MEASURE was wrong.** `joined2.py` now drops rule-only lines.
+
+**Re-measured corpus-wide: 299 blocks, 492 printed lines** — not the 672 / 865 of §16, and
+§16's figure is superseded. 8,780 blocks were text-plus-a-rule and are not a fault.
+
+### 20.2 The repair over-splits block quotations — caught by measure against repair
+
+Coverage run: `27Khu10` +50 (measured 27), `28KhuA09` +11 (measured 11, exact),
+**`34KhuA15` +260 where the measure predicted 18.** That disagreement is the finding.
+
+Reading what moved: `34KhuA15` ord14 goes from 142 to 371 drawn lines, and the extra breaks
+fall **inside prose, at printed wraps**:
+
+```
+ON | Katamaṁ Tathāgatassa Yamakapāṭihīre ñāṇaṁ? Idha Tathāgato
+ON | Yamakapāṭihīraṁ karoti asādhāraṇaṁ sāvakehi uparimakāyato aggikkhandho pavattati,
+```
+
+`Idha Tathāgato` / `Yamakapāṭihīraṁ karoti` is one sentence cut at a line end.
+
+**The cause is a distinction §15.4 already named and this patch then lost.** `display` means
+*the page sets this block apart*. A **block quotation** is set apart and its internal breaks
+are still **wraps**; a stanza or a mātikā list is set apart and its breaks are
+**structural**. The rule "every printed line inside a display block keeps its break" treats
+the two alike, so it repairs the lists and damages the quotations.
+
+**The discriminator is the right edge, and it is not yet measured.** A wrapped line runs to
+the block's right margin; a stanza or list line stops short, ragged. `pdftotext -bbox`
+gives `xMax` per word and `blockmap.py` **stores only `xMin`** — so the evidence exists in
+the PDF and is thrown away one step before it is needed, which is precisely the §12 shape
+again.
+
+### 20.3 State
+
+**Nothing is applied.** `BLOCKBREAK` stays off. The repair is correct on the dyad shape it
+was built for (`29Abhi01` +178, `35Abhi07` +162, `28KhuA09` +11, letters identical, control
+volume unmoved) and wrong on block quotations until the right edge is measured.
+
+Next: add `xMax` to the block map, split `display` into *ragged* and *justified*, and
+re-run this diff. The measure predicting 18 while the repair delivered 260 is what caught
+this; keeping an independent measure of the same fault is what made that possible.
+
 ## 8. Not done
 
 The repair itself. The four ordinals' emission paths in `build_khu_volume.py` are
