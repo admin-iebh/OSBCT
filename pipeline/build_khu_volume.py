@@ -5504,7 +5504,45 @@ def _kat_cols(lines, body0):
     pbody = min(twice) if twice else (min(oth) if oth else (num[0] if num else 0))
     numc = num[0] if num else None
     hanging = numc is not None and numc < pbody and len(num) >= 3
-    body = pbody if hanging else (body0 if pbody > body0 + 2 else pbody)
+    # !!! A PAGE OF NUMBERED GĀTHĀ IS NOT A HANGING LIST, AND THIS TOOK THE
+    # PĀDA INDENT FOR THE BODY COLUMN.  `hanging` is true of any page carrying
+    # three or more numbered lines set LEFT of its own commonest indent, and
+    # that is the shape of 26Khu09's mātikā list — but it is equally the shape
+    # of a page of numbered verse, where the number hangs left by its own width
+    # (`267. "Alaṅkatā suvasanā,` at 4 with its second pāda at 9, 30KhuA11 p9).
+    # Taking `pbody` there put the body column AT the pādas, so `body + 8` was
+    # 17 and NOTHING on the page was display: every pāda of that page came out
+    # `pcont`, running prose.
+    # THE RULE IS THE ONE THE OTHER BRANCH ALREADY STATES: a page whose commonest
+    # indent sits more than two columns right of the BOOK's body column has no
+    # body column of its own, so the book's stands.
+    # MEASURED OVER THE 19 VOLUMES IT MOVES, AGAINST THE PRINTED PAGE
+    # (`_xc/h2/`): class 2 falls 3,340 -> 1,968.  Class 1 rises 726 -> 1,027,
+    # AND 89% OF THAT RISE IS THE INSTRUMENT, NOT THE CORPUS: those lines
+    # average 48.7 characters against a body measure of 70 and a `verse_ok`
+    # mean of 50.0, sit at indent 4-6, and 129 of 138 carry a pada comma at the
+    # caesura.  They are gatha.  `check_page_fidelity` scores them prose because
+    # its `display_column` is ONE NUMBER PER VOLUME (8 here) and cannot see a
+    # page that sets its gatha at 4 -- the same mistake this function made, on
+    # the other side of the glass.
+    # MEASURED AND HELD, NOT REFUSED: `C2COL=1` applies it, and the DEFAULT IS
+    # OFF.  It moves 19 volumes and `regress.py check` goes red on three of them
+    # (26Khu09, 27Khu10, 29Abhi01) -- and 29Abhi01 is the one the handoff named
+    # as needing its own page-by-page proof: 35 sections and 164 verse entries
+    # move there for a measured page gain of ONE printed line.  26Khu09 is the
+    # matika list this exception was written for and nets zero.  34KhuA15 is a
+    # measured net LOSS of 11.  Turning it on globally would mean re-baselining
+    # a gate on evidence that does not exist yet, so it stays off until the
+    # blocker below is cleared.
+    #
+    # THE BLOCKER IS THE INSTRUMENT.  `check_page_fidelity.display_column` is
+    # ONE NUMBER PER VOLUME and cannot see a page that sets its gatha at 4-6,
+    # which is the same mistake this function makes.  Until it can, the two
+    # sides cannot be compared on the pages that matter.
+    if os.environ.get('C2COL', '0') == '1':
+        body = body0 if pbody > body0 + 2 else pbody
+    else:
+        body = pbody if hanging else (body0 if pbody > body0 + 2 else pbody)
     return numc, body, hanging
 
 

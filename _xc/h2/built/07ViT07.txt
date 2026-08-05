@@ -1,0 +1,12 @@
+verse entries 11 | sections 370 | uddana anchors 371 | hidden 16 | incipits 4
+   Kaṅkhāvitaraṇīpurāṇaṭīkā     HEADS  printed lines  2681 / located  2674   residue   7   corpus ¶  100   headings  108   colophons  108   unconfirmed ¶ 1   [OK]
+        UNCONFIRMED ord22   'Dukkhena vattabbo dubbaco. Vuccamāno na sahati.'
+   Bhikkhunīpātimokkhavaṇṇanā   HEADS  printed lines   167 / located   167   residue   0   corpus ¶   15   headings   16   colophons   18   unconfirmed ¶ 0   [OK]
+   Kaṅkhāvitaraṇī-abhinavaṭīkā  HEADS  printed lines  8763 / located  8760   residue   3   corpus ¶  187   headings  195   colophons  214   unconfirmed ¶ 0   [OK]
+   Bhikkhunīpātimokkhavaṇṇanā   HEADS  printed lines   663 / located   662   residue   1   corpus ¶  118   headings  106   colophons  119   unconfirmed ¶ 0   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/07ViT07.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/07ViT07.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/07ViT07.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/07ViT07.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/07ViT07.json

@@ -1,0 +1,9 @@
+verse entries 517 | sections 517 | uddana anchors 65 | hidden 0 | incipits 2
+   Sagāthāvaggasaṁyuttapāḷi KATHĀ  printed units 271 / corpus ¶ 271   headings 306   colophons 69   prose ¶ 708   gāthā blocks 352   [OK]
+   Nidānavaggasaṁyuttapāḷi KATHĀ  printed units 246 / corpus ¶ 246   headings 282   colophons 78   prose ¶ 890   gāthā blocks 20   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/12Sam01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/12Sam01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/12Sam01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/12Sam01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/12Sam01.json

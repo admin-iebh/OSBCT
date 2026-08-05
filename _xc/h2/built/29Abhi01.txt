@@ -1,0 +1,8 @@
+verse entries 1780 | sections 160 | uddana anchors 134 | hidden 0 | incipits 1
+   Dhammasaṅgaṇīpāḷi      KATHĀ  printed units 1780 / corpus ¶ 1780   headings 184   colophons 178   prose ¶ 2061   gāthā blocks 0   [OK]
+   leaked corpus headings hidden: []
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/29Abhi01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/29Abhi01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/29Abhi01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/29Abhi01.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/29Abhi01.json
