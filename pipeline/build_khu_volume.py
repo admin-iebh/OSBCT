@@ -1369,7 +1369,7 @@ SPEC = {
    # "6-7. Evaṁ Bhagavā rañño Māgadhassa…"), with the continuation returning to
    # the body column.  The commentary's own display gāthā sit at indent 13-16
    # with pāda commas.
-   'books': [('Khuddakapāṭhaṭṭhakathā', 19, 234, 0, 109, None, 'katha')],
+   'books': [('Khuddakapāṭhaṭṭhakathā', 19, 234, 0, 673, None, 'katha')],
    # The numbers restart in every one of the nine works — five resets in the
    # corpus (ord44, ord64, ord78, ord96, and the 4-5 pair at ord68).
    'n_scope': 'vagga',
@@ -1379,7 +1379,7 @@ SPEC = {
    # reader would otherwise draw as the closing paragraphs of the body.  Hidden,
    # NOT deleted: the edition's own text stays in the corpus.  Recorded in
    # advance on 2026-07-28p.
-   'backmatter': [107, 108],
+   'backmatter': [671, 672],
    # THE COLOPHON FRAME, READ AS A HEADING NINE TIMES — the 12MaA03 shape
    # exactly.  The edition closes every suttavaṇṇanā with a TWO-LINE colophon
    # whose first line is the genitive frame and whose second carries the stop
@@ -1424,7 +1424,7 @@ SPEC = {
    # the body column).  The DEFAULT geometric test — the line after the number
    # sits at a strictly greater indent — separates the two exactly, and
    # `printed units 127 / corpus ¶ 127` on the first run is the check.
-   'books': [('Dhammapadaṭṭhakathā', 8, 454, 0, 138, None, 'katha')],
+   'books': [('Dhammapadaṭṭhakathā', 8, 454, 0, 1010, None, 'katha')],
    # The Dhammapada's numbers do NOT reset per vagga — they run 1-115 straight
    # through the eight vaggas, none missing, and only verses 1 and 2 are
    # numbered twice in the corpus.  Measured, not assumed.
@@ -1976,7 +1976,7 @@ SPEC = {
    # 112 suttas in four nipātas.  ONE book, printed 9-363, one homage page.
    # CORPUS REBUILT 2026-07-28p: 109 ¶ -> 115.  Bad pages 34 -> 2.  (Its re-key
    # needed a hand-made baseline; see that entry.)
-   'books': [('Itivuttakaṭṭhakathā', 9, 363, 0, 115, None, 'katha')],
+   'books': [('Itivuttakaṭṭhakathā', 9, 363, 0, 895, None, 'katha')],
    # The sutta numbers run 1-112 straight through the four nipātas — measured,
    # not assumed: no descent anywhere in the corpus.  (23KhuA04, the Udāna
    # commentary of the same Paramatthadīpanī, restarts per vagga and is
@@ -2035,7 +2035,7 @@ SPEC = {
    # page whose only long line is the footnote RULE — the same false positive
    # 52Vism02 produced.  The shipped corpus began at printed p13: the whole
    # Ganthārambhakathā, pp8-12, was missing.
-   'books': [('Udānaṭṭhakathā', 8, 400, 0, 98, None, 'katha')],
+   'books': [('Udānaṭṭhakathā', 8, 400, 0, 1029, None, 'katha')],
    # The Māradhītaro verse's last pāda, closing a block quotation with the
    # citation dash (p232).  **The SAME pāda 47KhuA28 needed**, and the literal
    # differs only in its footnote marker — `…icche”ti3–` there, `…icche”ti2–`
