@@ -1258,6 +1258,80 @@ themselves; read `31KhuA12` ord210 and `30KhuA11` on the rendered page, which is
 instrument that settles it; then the two real mid-sentence lines; then `pbreak/` re-derived
 and the full gate set old-against-new.
 
+## 24. §23.1 reconciled: the repair reaches a population the measure EXCLUDES by design
+
+The two big movers were read on the printed page, which is the only thing that settles it.
+
+### 24.1 Both pages are pure gāthā, and the corpus had them flat
+
+`pdftoppm -r 110 -png`, `_xc/hy1/pg/mv_*`.
+
+- **`31KhuA12` raw p157 = printed p150** (Therīgāthā-aṭṭhakathā): **thirteen couplets**, every
+  line a pāda with the caesura comma, a visible gap between couplets. `Koṇḍaññānandanandādī,
+  tiṭṭhanti Rāhulo Jino. / Sukhito sahito saṁgho, hatadabbā ca titthiyā.` …
+- **`30KhuA11` raw p388 = printed p381** (Theragāthā-aṭṭhakathā): the same shape, thirteen
+  couplets.
+
+With the flag off, **all of it is inside one drawn line.** `31KhuA12` ord210 spans **printed
+pages 153–169 — seventeen pages in a single ordinal** — and 218 drawn lines carry it.
+
+**These are correct repairs.** They are the class-2 fault — page-verse drawn as prose — at
+scale, and the block map restores both the pāda lines and the couplet grouping. The +571 and
++558 are not over-reach.
+
+### 24.2 Why `joined2.py` cannot see them, measured
+
+Run on exactly these two volumes:
+
+| | |
+|---|---:|
+| display blocks of >1 printed line | 3,441 |
+| drawn as separate lines (kept) | 2,769 |
+| **JOINED — all the measure claims as a fault** | **4 blocks / 42 printed lines** |
+| partly present | 60 |
+| **not in the verse map at all** | **489** |
+
+The repair adds **1,129** drawn lines to these two volumes. The measure counts **42**. The
+gap is the 489 — and §16.2 set that population aside *explicitly*: "a block the page sets
+apart may legitimately live in `sections/` or `uddana/`, or be front matter… the number means
+only 'not in `verse/`'." It was never claimed as a fault and it was never counted. **It is
+where most of the fault actually is**, and the pages above are the proof.
+
+**A second, smaller cause of the divergence:** `joined2.py` reads `B = '_xc/hy1/blocks2'` —
+the pre-`xMax` map — and the SHIPPED `site/reader/verse/`, while the repair reads `blocks3/`
+and a freshly built side-map. The measure and the repair are not reading the same inputs.
+Both should be moved to `blocks3/` before the numbers are compared again.
+
+**So §23.1's "4.4×" is not evidence of damage.** It is evidence that `joined2.py` measures a
+strict subset of what the repair fixes. The corpus-wide 492 is a **floor, not the fault.**
+
+### 24.3 Two hypotheses of mine, both refuted before they reached the page
+
+Recorded because this project's standing failure is asserting from a partial view.
+
+1. **"The added lines fall only on even raw pages."** They do not. I read the top eight
+   entries of a `Counter.most_common` and those happened to be recto pages; the full
+   distribution is continuous over 153–169, odd and even alike.
+2. **"The edition has mirrored margins, so a volume-wide `vol_margin` misjudges one side."**
+   Plausible, and false. Modal `xMin` is **63 on both verso and recto** in all four volumes
+   checked (`31KhuA12`, `30KhuA11`, `35Abhi07`, `29Abhi01`), shift **+0.0**.
+
+### 24.4 State
+
+Unchanged: **nothing applied**, `BLOCKBREAK` off, live builder and `site/` untouched.
+
+**What is now settled:** the blocker (§22), the sweep over all 101 `katha` volumes (§23), and
+the reconciliation of the measure with the repair (§24).
+
+**What remains before applying:** the two real mid-sentence lines (`32KhuA13`
+`…seyyathāpi nāma`, `24KhuA05` `…Ācariyadhammapālena katā`); `bbgate`'s trailing-digit false
+positive; moving `joined2.py` onto `blocks3/` and re-measuring so the two agree; `pbreak/`
+re-derived; and the full gate set old-against-new — `regress`, `check_links`, `check_ordinal`,
+`check_concordance`, `check_bold_fidelity`, `check_layout`, `verify_render_vs_pdf`.
+
+**And one thing worth putting in front of the reader:** `31KhuA12` ord210 holds seventeen
+printed pages. That is handoff item 5, under-segmentation, showing up here on its own.
+
 ## 8. Not done
 
 The repair itself. The four ordinals' emission paths in `build_khu_volume.py` are
