@@ -1,0 +1,21 @@
+{
+ "vol": "32KhuA13",
+ "ok": true,
+ "drawn_off": 1890,
+ "drawn_on": 2006,
+ "delta": 116,
+ "ordinals_moved": 4,
+ "new": 101,
+ "mid_sentence": 2,
+ "bad_sample": [
+  "Pāde chaviṁ pakappesi, na hi kammaṁ vinassatī”ti.6",
+  "Svāhaṁ ajja kathaṁ vajjaṁ, ahaṁ niccomhi sassatoti. Atha kho Bhagavā taṁ brahmānaṁ saṁvejetvā seyyathāpi nāma"
+ ],
+ "letters_identical": true,
+ "maps_identical": {
+  "sections": true,
+  "uddana": true,
+  "hide": true,
+  "incipit": true
+ }
+}

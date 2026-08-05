@@ -1,0 +1,18 @@
+{
+ "vol": "20AnT03",
+ "ok": true,
+ "drawn_off": 1191,
+ "drawn_on": 1198,
+ "delta": 7,
+ "ordinals_moved": 1,
+ "new": 8,
+ "mid_sentence": 0,
+ "bad_sample": [],
+ "letters_identical": true,
+ "maps_identical": {
+  "sections": true,
+  "uddana": true,
+  "hide": true,
+  "incipit": true
+ }
+}

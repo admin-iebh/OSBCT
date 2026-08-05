@@ -1,0 +1,18 @@
+{
+ "vol": "03VinA03",
+ "ok": true,
+ "drawn_off": 1771,
+ "drawn_on": 1774,
+ "delta": 3,
+ "ordinals_moved": 1,
+ "new": 5,
+ "mid_sentence": 0,
+ "bad_sample": [],
+ "letters_identical": true,
+ "maps_identical": {
+  "sections": true,
+  "uddana": true,
+  "hide": true,
+  "incipit": true
+ }
+}

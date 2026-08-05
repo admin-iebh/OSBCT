@@ -1,0 +1,18 @@
+{
+ "vol": "04Vin04",
+ "ok": true,
+ "drawn_off": 1910,
+ "drawn_on": 1911,
+ "delta": 1,
+ "ordinals_moved": 1,
+ "new": 2,
+ "mid_sentence": 0,
+ "bad_sample": [],
+ "letters_identical": true,
+ "maps_identical": {
+  "sections": true,
+  "uddana": true,
+  "hide": true,
+  "incipit": true
+ }
+}

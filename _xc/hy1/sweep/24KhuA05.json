@@ -1,0 +1,20 @@
+{
+ "vol": "24KhuA05",
+ "ok": true,
+ "drawn_off": 1309,
+ "drawn_on": 1312,
+ "delta": 3,
+ "ordinals_moved": 1,
+ "new": 4,
+ "mid_sentence": 1,
+ "bad_sample": [
+  "Saddhammanirato lokaṁ, dhammeneva pasāsatūti. Iti Badaratitthavihāravāsinā Ācariyadhammapālena katā"
+ ],
+ "letters_identical": true,
+ "maps_identical": {
+  "sections": true,
+  "uddana": true,
+  "hide": true,
+  "incipit": true
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "vol": "44KhuA25",
+ "ok": true,
+ "drawn_off": 674,
+ "drawn_on": 674,
+ "delta": 0,
+ "ordinals_moved": 0,
+ "new": 0,
+ "mid_sentence": 0,
+ "bad_sample": [],
+ "letters_identical": true,
+ "maps_identical": {
+  "sections": true,
+  "uddana": true,
+  "hide": true,
+  "incipit": true
+ }
+}

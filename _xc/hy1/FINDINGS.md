@@ -1188,6 +1188,76 @@ changed, nothing run with `--write`. The blocker of the 08-06 handoff item 1 is 
 Item 2 — the remaining `katha` volumes, then `pbreak/` re-derived and the full gate set run
 old-against-new — is now unblocked and not started.
 
+## 23. The sweep: all 101 `katha` volumes, and the repair delivers 4.4× the measured fault
+
+`_xc/hy1/sweep.py` (driver, resumable, budgeted) + `sweep_one.py` (one volume per
+**subprocess** — the builder carries module-level state and 101 reloads in one interpreter
+is a contamination nobody would see in the output). Results in `_xc/hy1/sweep/`.
+
+**101 of 101 recorded, 0 errors, 0 timeouts.**
+
+| | |
+|---|---:|
+| volumes that move | **24 of 101** |
+| drawn lines added | **+2,159** |
+| new drawn lines | 2,416 |
+| **`letters identical` failures** | **0** |
+| **`sections`/`uddana`/`hide`/`incipit` changed** | **0** |
+| mid-sentence flags | **4**, in 3 volumes |
+
+### 23.1 THE DISAGREEMENT, and it is the §20.2 signature again
+
+**§20.1 re-measured the fault at 492 printed lines. The repair delivers 2,159.** That is
+**4.4×**, and a measure and a repair disagreeing by that much is exactly what caught the
+`34KhuA15` damage last time (predicted 18, delivered 260). **It is not a success until it is
+explained.** Two candidates, and they are distinguishable by shape:
+
+| | new lines | ordinals moved | per ordinal |
+|---|---:|---:|---:|
+| `29Abhi01` — the dyad shape the patch was built for | 337 | 159 | **1.1** |
+| `35Abhi07` | 160 | 35 | 4.6 |
+| **`31KhuA12`** | 587 | **12** | **48.9** |
+| **`30KhuA11`** | 567 | **13** | **43.6** |
+
+A handful of ordinals exploding is a different fault from the one measured. `31KhuA12` ord210
+goes **218 → 395** drawn lines. Read: some of what it adds is plainly right — quoted gāthā
+with pāda commas (`“Ekadā lokapajjoto, Vesāliyaṁ mahāvane.` …) that had been run together as
+prose, which is §21.3's `34KhuA15` finding and the class-2 fault itself. But the rest are
+**whole commentary paragraphs** that the flag-off build had collapsed into one enormous drawn
+line, now separated. Restoring a paragraph boundary is defensible, but it is **not the fault
+§16/§20.1 measured**, and `joined2.py` does not count it — which is why the two numbers
+disagree.
+
+**Neither reading is established here.** What is established is that the delta is dominated
+by a shape nobody has measured, in two volumes, and that `joined2.py` and the repair are no
+longer measuring the same thing. Until they are reconciled the +2,159 must not be quoted as
+the fault repaired.
+
+### 23.2 The four mid-sentence flags, read
+
+| volume | line ends | verdict |
+|---|---|---|
+| `27Khu10` | `Tatridaṁ uddānaṁ` | **gate false positive**, verified on the page in §21.4 |
+| `32KhuA13` | `…kammaṁ vinassatī”ti.6` | **gate false positive** — a trailing FOOTNOTE MARKER digit after the full stop. The gate's terminator test reads the last character and a marker is not one. `check_page_fidelity` already handles this as `digit_only`; `bbgate` does not. |
+| `32KhuA13` | `…seyyathāpi nāma` | **REAL** — genuinely mid-sentence |
+| `24KhuA05` | `…Ācariyadhammapālena katā` | **REAL** — a colophon cut mid-clause |
+
+So the gate's own count is 4 and the real number is **2**, in 2 volumes, both new and neither
+investigated. `bbgate` should strip trailing digits before testing; that is a one-line change
+and it is **not made here**, because changing a gate in the same session as the thing it
+gates is how §21.4's numbers came to need re-reading.
+
+### 23.3 State
+
+**Nothing applied.** `BLOCKBREAK` off, live builder untouched, `site/` untouched, nothing run
+with `--write`. The sweep is a measurement.
+
+**Before anything is applied, in order:** reconcile §23.1 — either `joined2.py` is
+under-counting a real second fault or the repair is over-reaching, and the two volumes name
+themselves; read `31KhuA12` ord210 and `30KhuA11` on the rendered page, which is the only
+instrument that settles it; then the two real mid-sentence lines; then `pbreak/` re-derived
+and the full gate set old-against-new.
+
 ## 8. Not done
 
 The repair itself. The four ordinals' emission paths in `build_khu_volume.py` are

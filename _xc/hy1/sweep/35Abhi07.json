@@ -1,0 +1,18 @@
+{
+ "vol": "35Abhi07",
+ "ok": true,
+ "drawn_off": 1746,
+ "drawn_on": 1871,
+ "delta": 125,
+ "ordinals_moved": 35,
+ "new": 160,
+ "mid_sentence": 0,
+ "bad_sample": [],
+ "letters_identical": true,
+ "maps_identical": {
+  "sections": true,
+  "uddana": true,
+  "hide": true,
+  "incipit": true
+ }
+}

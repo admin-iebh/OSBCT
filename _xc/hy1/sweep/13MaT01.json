@@ -1,0 +1,18 @@
+{
+ "vol": "13MaT01",
+ "ok": true,
+ "drawn_off": 1587,
+ "drawn_on": 1587,
+ "delta": 0,
+ "ordinals_moved": 0,
+ "new": 0,
+ "mid_sentence": 0,
+ "bad_sample": [],
+ "letters_identical": true,
+ "maps_identical": {
+  "sections": true,
+  "uddana": true,
+  "hide": true,
+  "incipit": true
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "vol": "52Vism02",
+ "ok": true,
+ "drawn_off": 2448,
+ "drawn_on": 2452,
+ "delta": 4,
+ "ordinals_moved": 1,
+ "new": 5,
+ "mid_sentence": 0,
+ "bad_sample": [],
+ "letters_identical": true,
+ "maps_identical": {
+  "sections": true,
+  "uddana": true,
+  "hide": true,
+  "incipit": true
+ }
+}
