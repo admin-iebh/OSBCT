@@ -845,6 +845,78 @@ rather than my cache of part of it.
 
 `03ViT03`'s 175 remain genuinely unexplained and are the only thing outstanding here.
 
+## 19. The repair, built and measured — NOT applied
+
+`pipeline/build_khu_volume_bb.py`, a copy of the builder patched behind
+**`BLOCKBREAK=1`** (off by default, so the file is its own negative control). The live
+`build_khu_volume.py` is untouched, and nothing was run with `--write`.
+
+**The rule.** Every printed line inside a block the page sets apart keeps its own drawn
+line. Inside a prose paragraph the break is a wrap and joining stays right. It only ever
+ADDS a break, never removes one, and a line the map cannot address leaves the existing
+decision alone.
+
+### 19.1 Two wrong versions of the patch first
+
+**(a) Keyed on the wrong page axis.** The cursor read `pline`'s ACCEPTED-page index; the
+builder's item stream carries the **raw pdftotext page** (`pdf_pages()` splits `-layout` on
+`\f`, `page_lines(pages, i)` takes `pages[i-1]`). Result: **88% of lines unmatched, zero
+display lines found** — and the negative control still passed, because a flag that never
+fires is identical to a flag that is off. `_xc/hy1/blocks2/` is already keyed by the raw
+page, so the §18 join is not needed at this site at all. Fixed: unmatched 5,341 → **1**.
+
+**(b) Required the line to START a block.** It fired 166 times and changed nothing,
+because `add_prose` already opens a new entry when `not open_prose`. Tracing one dyad
+showed why the condition was wrong:
+
+```
+unit    pg=33  'Nirutti dhammā. (1314)'         <- becomes the ordinal itself
+pcont   pg=33  'Niruttipathā dhammā. (1314)'    <- joined onto it
+```
+
+A dyad is **one block of two lines whose first line is the `unit`**, so the line that must
+survive is the block's *second*. The rule is every line in a display block, not the opener.
+
+### 19.2 Measured
+
+Built twice in one process, flag off against flag on, and the side-maps diffed
+(`_xc/hy1/bbdiff.py`). The builder's own `prose ¶` summary counter does not move and is
+not the measure — the artefact is.
+
+| volume | drawn lines | ordinals changed | letters | other maps |
+|---|---|---:|---|---|
+| `29Abhi01` | 1,884 → **2,062** (+178) | 159 | **identical** | identical |
+| `35Abhi07` | 1,746 → **1,908** (+162) | 69 | **identical** | identical |
+| `39Abhi11` | 5,503 → 5,503 (+0) | 0 | identical | identical |
+| `20KhuA01` | 911 → 911 (+0) | 0 | identical | identical |
+
+**`letters identical` is the point**: no text is added or lost, only printed line breaks
+restored. `sections`, `uddana`, `hide` and `incipit` are byte-identical on every volume.
+
+```
+OFF | Kusalā dhammā. (363, 985, 1384) Akusalā dhammā. (365, 427, 986, 1385) Abyākatā…
+ON  | Kusalā dhammā. (363, 985, 1384)
+ON  | Akusalā dhammā. (365, 427, 986, 1385)
+ON  | Abyākatā dhammā. (431, 583, 987, 1386)
+```
+
+**`20KhuA01` not moving is the control** — a volume §16 measured at 0 joined blocks must
+not move, and does not.
+
+### 19.3 Coverage is partial and the gap is named
+
+The measured fault is **865 printed lines**; this delivers **340** on two volumes.
+**`39Abhi11` does not move although §16 measured 120 lost lines there, and it is `katha`
+mode like the two that do.** Unexplained. `20Khu03` and `21Khu04` are `verse` mode, which
+this patch does not touch at all.
+
+**Not applied, and it should not be until:** `39Abhi11` is explained; the remaining `katha`
+volumes are measured; `pbreak/` is re-derived; and `regress`, `check_links`,
+`check_ordinal`, `check_concordance`, `check_bold_fidelity`, `check_layout` and
+`verify_render_vs_pdf` are run old-against-new. Bold spans are offsets into `pr.text` and
+`pbreak` records address a sequence of `fmtLine` calls — both are sensitive to exactly this
+change.
+
 ## 8. Not done
 
 The repair itself. The four ordinals' emission paths in `build_khu_volume.py` are
