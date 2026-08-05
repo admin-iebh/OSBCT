@@ -5052,15 +5052,17 @@ class _BBCursor:
         try:
             sys.path.insert(0, os.path.join(ROOT, '_xc', 'hy1'))
             import adjudicate as _A
-            _A.B = os.path.join(ROOT, '_xc/hy1/blocks2')
-            BL = json.load(open(os.path.join(ROOT, '_xc/hy1/blocks2/%s.json' % vol),
+            import ragged as _R
+            _A.B = os.path.join(ROOT, '_xc/hy1/blocks3')
+            BL = json.load(open(os.path.join(ROOT, '_xc/hy1/blocks3/%s.json' % vol),
                                 encoding='utf-8'))
             margin = _A.vol_margin(vol, BL)
+            edge = _R.vol_measure(vol, BL, _A.judge_page, margin)
             for pg, pd in BL.items():
                 rows = []
-                for k, b in _A.judge_page(pd, margin)[2]:
+                for k, sh, b in _R.annotate(_A.judge_page(pd, margin)[2], edge):
                     for i, l in enumerate(b):
-                        rows.append((_bb_key(l[3]), 1 if i == 0 else 0, k))
+                        rows.append((_bb_key(l[3]), 1 if i == 0 else 0, k, sh))
                 self.pages[int(pg)] = rows
         except Exception as e:
             sys.stderr.write('BLOCKBREAK: no map for %s (%s)\n' % (vol, e))
@@ -5076,9 +5078,18 @@ class _BBCursor:
             return None
         j = self.cur.get(pg, 0)
         for x in range(j, len(rows)):
-            if rows[x][0] == k or (k and k in rows[x][0]):
+            # EXACT, never substring.  A substring test let a short item key
+            # match INSIDE a longer printed line, so the line was broken at the
+            # end of the match and a fragment was drawn: 35Abhi07 p86 prints
+            # '26. Na cakkhu na cakkhundriyam. . Na indriya na sotindriyam.' as
+            # ONE line and the patch produced '...Na indriya na'.  `letters
+            # identical` cannot see that -- it compares the concatenation -- and
+            # bbgate.py caught it as a drawn line ending mid-sentence.
+            # An unmatched line simply leaves the existing decision alone, so
+            # this under-repairs rather than damages.
+            if rows[x][0] == k:
                 self.cur[pg] = x + 1
-                return (bool(rows[x][1]), rows[x][2])
+                return (bool(rows[x][1]), rows[x][2], rows[x][3])
         return None
 
 
@@ -7450,14 +7461,21 @@ def kat_build(pages, paras, title, p0, p1, o0, o1,
         _np = kind == 'popen'
         if BLOCKBREAK and _BB is not None:
             _f = _BB.at(it[2], it[1])
-            # EVERY printed line inside a display block keeps its break, not
-            # only the line that opens the block.  Requiring `_f[0]` (block
-            # start) was wrong for the shape this repairs: a Dhammasangani dyad
-            # is ONE block of two lines whose first line is the `unit` itself,
-            # so the line that must survive is the block's SECOND.
+            # EVERY printed line inside a RAGGED display block keeps its break.
+            #
+            # Not the block opener only: a Dhammasangani dyad is ONE block of two
+            # lines whose first line is the `unit` itself, so the line that must
+            # survive is the block's SECOND.
+            #
+            # And not every display block: a BLOCK QUOTATION is set apart too and
+            # its internal breaks are WRAPS.  Without the ragged/justified test
+            # this cut 34KhuA15 ord14 from 142 to 371 drawn lines, breaking prose
+            # mid-sentence ('Idha Tathagato' / 'Yamakapatihiram karoti').
+            #
             # Only ever ADDS a break, never removes one; a line the map cannot
             # address leaves the existing decision alone.
-            if _f is not None and _f[1] in ('display', 'display?'):
+            if _f is not None and _f[1] in ('display', 'display?') \
+                    and _f[2] == 'ragged':
                 _np = True
         add_prose(it[1], _np)
 

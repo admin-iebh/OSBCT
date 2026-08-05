@@ -971,6 +971,82 @@ Next: add `xMax` to the block map, split `display` into *ragged* and *justified*
 re-run this diff. The measure predicting 18 while the repair delivered 260 is what caught
 this; keeping an independent measure of the same fault is what made that possible.
 
+## 21. The right edge measured, and a gate that catches what `letters identical` cannot
+
+### 21.1 `blocks3/` records `xMax`
+
+`blockmap.py` stored only `xMin`. It now stores the right edge too
+(`_xc/hy1/blocks3/`, all 118 volumes; `blocks/` and `blocks2/` kept as controls).
+
+### 21.2 Ragged vs justified needs TWO signals
+
+`_xc/hy1/ragged.py`. Neither alone works, and each covers the other's failing case:
+
+1. **The right edge, against the VOLUME's prose measure.** Not the block's own widest
+   line — a stanza's longest pāda then defines the edge and its siblings sit within
+   tolerance, and *all four* control cases failed. Not the page's either — that fails on a
+   page carrying no prose at all (`29Abhi01` p14 is fourteen dyads, `35Abhi07` p74 one
+   hanging stack), and the fallback measures the list. **Third time a page-level statistic
+   has failed for want of its reference class on that page**, after `vol_margin` and the
+   body-leading mode. Measured: `20KhuA01` p233's stanza lines end at 298–342 against a
+   volume measure of 411; `34KhuA15` p51's quoted prose ends at 367–434.
+2. **The line ending.** A wrapped line ends mid-sentence; a structural one ends at a
+   boundary. `35Abhi07` p74's mātikā items run 346–407 against 411 — half "full" by width —
+   and every one ends in a full stop. Width alone misjudges them; the ending alone misjudges
+   `06ViT06` p28, whose pāda ends in a line-break hyphen.
+
+**Control: 10 of 10** on cases settled by reading the page.
+
+### 21.3 §20.2 was too harsh on `34KhuA15`
+
+Most of that volume's +260 was **legitimate**: quoted gāthā inside a commentary paragraph
+that had been run together as prose — the class-2 fault itself.
+
+```
+"Yatheva lokamhi Vipassi-ādayo,
+Sabbaññubhāvaṁ munayo idhāgatā.
+Tathā ayaṁ Sakyamunīpi āgato,
+Tathāgato vuccati tena cakkhumā"ti. (1)
+```
+
+The one case I sampled *was* real damage, and I generalised from it to the whole +260.
+With the ragged test in place: `34KhuA15` **0 of 275 new lines end mid-sentence**, and the
+flagged case is no longer split.
+
+### 21.4 `bbgate.py` — a gate independent of the thing it checks
+
+`letters identical` compares the **concatenation** of drawn lines, so it cannot see a break
+put in the wrong place. `_xc/hy1/bbgate.py` reads the produced side-map, not the block map,
+and asks whether any newly created drawn line ends mid-sentence.
+
+| volume | drawn | new lines | mid-sentence |
+|---|---|---:|---:|
+| `29Abhi01` | 1,884 → 2,062 | 337 | 0 |
+| `35Abhi07` | 1,746 → 1,874 | 165 | **3** |
+| `34KhuA15` | 3,204 → 3,455 | 275 | 0 |
+| `27Khu10` | 2,853 → 2,903 | 75 | **2** |
+| `28KhuA09` | 2,622 → 2,633 | 20 | 0 |
+| `20KhuA01`, `06ViT06` | unmoved | 0 | 0 |
+
+**872 new drawn lines, 5 flagged.**
+
+`27Khu10`'s two are gate false positives, verified on the page: `Tatridaṁ uddānaṁ` is a
+real printed line at p9 ind26 that simply ends without punctuation, and
+`…evamevaṁ tathāvidho` is a pāda.
+
+**`35Abhi07`'s three are real and UNEXPLAINED.** The page prints
+`26. Na cakkhu na cakkhundriyaṁ. . Na indriyā na sotindriyaṁ.` as ONE line and the patch
+draws `Na cakkhu na cakkhundriyaṁ. . Na indriyā na` — a fragment. Tightening the cursor
+from substring to exact match did **not** change it, so the cause is elsewhere and is not
+yet found.
+
+### 21.5 State
+
+`BLOCKBREAK` off. Negative control passes (flag off is byte-identical to the live builder).
+Letters identical on every volume; `sections`/`uddana`/`hide`/`incipit` unchanged; control
+volumes unmoved. **Not applied**, and the three `35Abhi07` fragments are the blocker before
+anything else — a repair that draws a fragment of a printed line is worse than the fault.
+
 ## 8. Not done
 
 The repair itself. The four ordinals' emission paths in `build_khu_volume.py` are

@@ -26,7 +26,7 @@ WORD = re.compile(r'<word xMin="([\d.]+)" yMin="([\d.]+)" xMax="([\d.]+)" yMax="
 PAGE = re.compile(r'<page width="[\d.]+" height="[\d.]+">(.*?)</page>', re.S)
 TAG = re.compile(r'<[^>]+>')
 THRESH = 3.0
-OUT = '_xc/hy1/blocks2'   # blocks/ is the pre-clustering build, kept as its own control
+OUT = '_xc/hy1/blocks3'   # blocks/ pre-clustering, blocks2/ pre-xMax; both kept as controls
 
 
 def vol_pages(pdf):
@@ -35,19 +35,31 @@ def vol_pages(pdf):
 
 
 def lines_of(body):
+    """(y, xMin, text, xMax) per printed line.
+
+    xMax is the RIGHT EDGE and it is the whole point of this version.  Without it
+    a block quotation -- set apart from running prose, but internally WRAPPED --
+    cannot be told from a stanza or a matika list, whose line breaks are
+    structural.  The BLOCKBREAK patch treated the two alike and cut 34KhuA15's
+    prose mid-sentence.  A wrapped line runs to the block's right margin; a
+    stanza or list line stops short."""
     g = collections.defaultdict(list)
     for m in WORD.finditer(body):
-        g[round(float(m.group(2)), 1)].append((float(m.group(1)), TAG.sub('', m.group(5))))
+        g[round(float(m.group(2)), 1)].append(
+            (float(m.group(1)), TAG.sub('', m.group(5)), float(m.group(3))))
     rows = []
     for y in sorted(g):
         w = sorted(g[y])
         if rows and y - rows[-1][0] < 3.0:
             rows[-1][3].extend([y] * len(w))
             rows[-1][1] = min(rows[-1][1], w[0][0])
-            rows[-1][2] += ' ' + ' '.join(t for _, t in w)
+            rows[-1][2] += ' ' + ' '.join(t for _, t, _x in w)
+            rows[-1][4] = max(rows[-1][4], max(x for _, _t, x in w))
         else:
-            rows.append([y, w[0][0], ' '.join(t for _, t in w), [y] * len(w)])
-    return [(collections.Counter(ys).most_common(1)[0][0], x0, t) for y, x0, t, ys in rows]
+            rows.append([y, w[0][0], ' '.join(t for _, t, _x in w), [y] * len(w),
+                         max(x for _, _t, x in w)])
+    return [(collections.Counter(ys).most_common(1)[0][0], x0, t, round(xm, 1))
+            for y, x0, t, ys, xm in rows]
 
 
 def main():
@@ -87,10 +99,10 @@ def main():
             near = [g for g in Lb if abs(g - band) <= 0.5]
             base = round(sum(near) / len(near), 1)
             marks, starts = [], 0
-            for i, (y, x0, t) in enumerate(rows):
+            for i, (y, x0, t, xm) in enumerate(rows):
                 st = 1 if i == 0 or (rows[i][0] - rows[i - 1][0]) > base + THRESH else 0
                 starts += st
-                marks.append([y, round(x0, 1), st, t])
+                marks.append([y, round(x0, 1), st, t, xm])
             out[pi] = {'body': base, 'lines': marks}
             stats['pages'] += 1; stats['starts'] += starts; stats['lines'] += len(rows)
         json.dump(out, open(dst, 'w', encoding='utf-8'), ensure_ascii=False)
