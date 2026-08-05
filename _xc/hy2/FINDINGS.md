@@ -275,4 +275,95 @@ Peyyāla is excluded from the deletion set by construction (`-pa- ` keeps its sp
 4. Only then the 111→**18** of §3A, each read on the page first, and the ~1,400 consonant
    cases, which remain unadjudicated.
 
-**Nothing has been written. No corpus file changed.**
+## 9. The offset audit: only `bold/` moves
+
+`_xc/hy2/offsets_audit.py`, which decides by **slicing**, not by field name.
+
+| artefact | holds | action |
+|---|---|---|
+| `bold/` | **`[start,end]` offsets** into `paragraphs[].text` — 7,540 pairs on `09DiT02`, e.g. `[0,17]` = `Sīlakkhandhavagga` | **must shift** |
+| `verse/` `sections/` `uddana/` `incipit/` `booktitle/` | verbatim drawn-line strings | see §9.1 — **no change needed** |
+| `apparatus/` `links/` `linksk/` `hide/` `xrefs/` `ord/` `pbreak/` | no offsets, no verbatim paragraph text | none |
+
+### 9.1 The side-maps already hold the closed form
+
+`_xc/hy2/sidecheck.py`. Those maps are produced by `build_khu_volume.py`, which **has**
+`hyjoin`; the paragraph text is produced by `extract.py`, which has none. So the two layers
+were already inconsistent:
+
+| volume | occurrences | side-map ALREADY closed | side-map has the same break |
+|---|---:|---:|---:|
+| `09DiT02` | 210 | **207** | **0** |
+| `22AbhiT01` | 211 | **188** | **0** |
+| `01ViT01` | 140 | **79** | **0** |
+
+**Not once does a side-map carry the broken form.** The repair does not change the corpus so
+much as make the paragraph text agree with what the reader is already shown.
+
+## 10. Read on the printed page before writing
+
+`01ViT01` raw p20 = printed **p5** (`_xc/hy2/pg_01ViT01-020.png`), rendered and read:
+
+```
+antarāyanibandhanasakalasaṁkilesaviddhaṁsanāya pahoti, bhayādi-
+upaddavañca nivāreti. Tasmā suvuttaṁ “saṁvaṇṇanārambhe
+```
+
+One word, `bhayādi-upaddavañca`, broken across two printed lines. The corpus had
+`bhayādi- upaddavañca`. The same page also shows the two cases the migration must **not**
+touch, and does not: the peyyāla `“yo kappa -pa- mahākāruṇikassa tassā”ti` (masked out), and
+the consonant case `bhūmantarapaccayākārasamayantara- / kathānaṁ`, which needs the hyphen
+*dropped* and belongs to the un-adjudicated ~1,400.
+
+## 11. APPLIED — and a defect I wrote to the corpus and had to restore
+
+**`_xc/hy2/migrate.py`. 7,291 deletions, 4,612 paragraphs, 101 volumes. 127,867 bold spans
+shifted.**
+
+### 11.1 The defect, and the control that caught it
+
+The first write used a **per-paragraph fallback** for the bold key: `str(i)` if present, else
+`str(p['n'])`. `50AbhiA03`'s map is **index**-keyed; paragraph index 348 carries `n=366`, has
+no key `'348'`, so it fell through to `'366'` — a real key belonging to paragraph index 366 —
+and that paragraph's spans were shifted by **a different paragraph's deletions**.
+
+`check_bold_fidelity` caught it: `50AbhiA03` moved **EXACT 3018 → 3017, PART 1 → 2**. One
+span in 202,995, and the gate found it.
+
+The corpus was restored from `HEAD` before anything else was done. *(`git checkout` cannot
+do it here — the sandbox cannot unlink, so restoration is `git show HEAD:<path>` written back
+in place, truncate-and-write. 185 files, verified by `hyspace.py` returning to 8,790.)*
+
+The convention is now decided **once per volume** by which mapping makes the spans slice
+cleanly, with **no fallback**; a volume whose convention cannot be decided is skipped and
+said to be skipped.
+
+### 11.2 Measured, warm cache both sides
+
+`check_bold_fidelity` on the nine most affected volumes, run twice each side because the
+gate differs on a cold pdfminer cache (08-05 hazard).
+
+| | |
+|---|---:|
+| **EXACT / MISS / PART / LONG / SPUR** | **unchanged on all nine — 0 metrics moved** |
+| `notdrawn` | **7,435 → 2,458 (−4,977)** |
+
+`notdrawn` is a bold run the checker could not locate in the drawn text. Closing the hyphen
+makes the paragraph text agree with the side-map, so **4,977 bold runs that could not be
+placed now can be**. That is an improvement the gate measured against the printed page, not
+against the corpus.
+
+Internal control, in the script and run every time: for each span the selected substring must
+be identical before and after, except where a deleted space lay **inside** the span, in which
+case it must equal the old substring minus that space. **0 unexplained.** The one inside-span
+case corpus-wide is `04VinA04` ord160, `'tvā puna- upa'` → `'tvā puna-upa'`.
+
+### 11.3 State
+
+| | before | after |
+|---|---:|---:|
+| hyphen-space occurrences | **8,790** in 109 volumes | **1,501** in 96 volumes |
+
+The 1,501 remaining are the consonant branch of §2 — **not a residue, a different and
+unadjudicated question**. `extract.py:204` is still uncorrected, so a future extraction would
+reintroduce the fault; that is hygiene and is not done here.

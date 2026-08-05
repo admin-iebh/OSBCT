@@ -1,0 +1,9 @@
+43KhuA24    lines= 16962 abs= 3536 pruns=  7201 EXACT=  7022 MISS=  171 PART=    8 LONG=    0 SPUR=    0 notdrawn=  279
+45KhuA26    lines=  8512 abs=  355 pruns=  3695 EXACT=  3650 MISS=   45 PART=    0 LONG=    0 SPUR=    0 notdrawn=  108
+46KhuA27    lines= 12487 abs= 1650 pruns=  2762 EXACT=  2628 MISS=  130 PART=    4 LONG=    0 SPUR=    0 notdrawn=  238
+47KhuA28    lines= 12241 abs= 2073 pruns=  3888 EXACT=  3741 MISS=  146 PART=    1 LONG=    0 SPUR=    0 notdrawn=  214
+49AbhiA02   lines= 14944 abs=  287 pruns=  3082 EXACT=  2883 MISS=  198 PART=    1 LONG=    0 SPUR=    0 notdrawn=  146
+50AbhiA03   lines= 14498 abs=  543 pruns=  3450 EXACT=  3017 MISS=  431 PART=    2 LONG=    0 SPUR=    0 notdrawn=   31
+09DiT02     lines= 16104 abs=  781 pruns=  5784 EXACT=  5609 MISS=  173 PART=    2 LONG=    0 SPUR=    1 notdrawn=  720
+22AbhiT01   lines= 13467 abs=  658 pruns=  4709 EXACT=  4456 MISS=  241 PART=   12 LONG=    0 SPUR=    0 notdrawn=  514
+01ViT01     lines= 15488 abs= 1462 pruns=  4663 EXACT=  4621 MISS=   42 PART=    0 LONG=    0 SPUR=    0 notdrawn=  208
