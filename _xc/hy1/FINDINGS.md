@@ -795,12 +795,55 @@ skip) and back matter are excluded, as they are from every other body measure.
 must not be applied to a volume whose lines it cannot address. Diagnosing those 26 comes
 before any builder change.
 
+> **§18.2's numbers are wrong and §18.4 replaces them.** The denominator was mine, not the
+> instrument's: the 26 "low" volumes are an artefact of my own edge filter. The true figure
+> is **99.93%**.
+
 ### 18.3 Control
 
 The join is checked where the answer is known independently: on `06ViT06` p28 it places a
 block start on `Paññāvisuddhāya`, `Saṁghañca`, `Samantapāsādikasaññitāya`, `Saññā nimittaṁ`
 and the prose below — **the reader's own hand-drawn structure, in `pline`'s indexing**, and
 no start anywhere else in the stanzas.
+
+## 18.4 The 26 low-alignment volumes were my filter, not the join
+
+The residue on `18AnA02` is the edition's own **word index** — two columns of
+`headword  page  headword  page`, which `-layout` renders as one line and the bbox word
+order does not. **75.1% of the 16,277 unaligned lines across the 26 are that shape.**
+
+The corpus is not carrying those pages, and the reader's appendix rule holds everywhere
+checked: `18AnA02`'s corpus ends at printed page 414 and its index begins at 415;
+`42KhuA23` ends at 391, index from 395; `23Khu06` 383 against 494.
+
+**So why were they counted as body?** `_xc/hy1/edgepg.json` recorded only `head_pages` and
+`tail_pages`, and all 26 report `tail_pages: None`. That looked like a gate defect and was
+not: `check_page_fidelity` does not find these indexes as a *tail* at all — it names them
+**interior gaps** matching `INDEXRE` and subtracts them as `index_lines`. `18AnA02` prints
+`tail_pages None` and `edge 3316` in the same line, which is what gave it away. The gate
+was right; my filter read one of its two mechanisms.
+
+`_xc/hy1/edge2.py` records head, tail **and** the named index gaps. Re-measured:
+
+| | |
+|---|---:|
+| body lines aligned | **1,353,130 of 1,354,117 — 99.93%** |
+| volumes below 99% | **1** (`03ViT03`, 98.74%, 175 lines, none index-like) |
+
+| block kind | lines | |
+|---|---:|---:|
+| prose | 1,159,914 | 85.7% |
+| display | 121,915 | 9.0% |
+| display? | 41,378 | 3.1% |
+| other | 29,923 | 2.2% |
+
+**The lesson is the session's own, again.** I read one of an instrument's two mechanisms,
+concluded from it, and reported a defect in someone else's work that was mine — the same
+shape as §11.3 (one layer of the corpus) and §15.2 (`paragraph['text']` without the
+side-map). The check that caught it was running the gate itself and reading its output
+rather than my cache of part of it.
+
+`03ViT03`'s 175 remain genuinely unexplained and are the only thing outstanding here.
 
 ## 8. Not done
 
