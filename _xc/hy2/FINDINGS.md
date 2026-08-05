@@ -196,3 +196,83 @@ reproduce, the repair is a migration problem before it is a hyphen problem, and 
 different and larger job than §10.4 implies.
 
 Nothing has been patched, and this is the reason.
+
+## 7. Reproducibility measured over all 118 volumes — and the answer changes the repair
+
+`_xc/hy2/repro.py` / `repro_sweep.py` → `_xc/hy2/repro/`. Compared two ways, because the
+first way alone is misleading: paragraph text **at the same index**, and paragraph text
+**present anywhere** in `extract.py`'s output.
+
+| | |
+|---|---:|
+| identical at the same index (text AND segmentation) | **25** |
+| text coverage 100% | 25 |
+| text coverage 95–100% | **32** |
+| text coverage 50–95% | **56** |
+| **text coverage under 50%** | **5** |
+| paragraph-count mismatch | 83 |
+
+**The same-index figure is the wrong measure and 66 volumes "failing" it is an artefact.**
+`40Abhi12` scores 0% same-index and 97% coverage: the text is all there, offset by a handful
+of segmentation differences. What `extract.py` no longer reproduces is the **paragraph
+segmentation** — which is expected, because the re-segmentation work has been rewriting those
+boundaries since phase 1.
+
+Genuinely not produced at all — **five volumes**:
+
+| | coverage | extract.py | shipped |
+|---|---:|---:|---:|
+| `20KhuA01` | 0.4% | 63 | 673 |
+| `23KhuA04` | 1.2% | 92 | 1,029 |
+| `24KhuA05` | 1.3% | 106 | 895 |
+| `21KhuA02` | 3.1% | 127 | 1,010 |
+| `07ViT07` | 4.0% | 18 | 420 |
+
+Four of those five are exactly the volumes the 08-05 handoff lists as **"once unbuildable"**
+and fixed at `85901cb6` with SPEC book bounds following the re-segmentation. They are not a
+new mystery; they are the volumes whose paragraph set is now owned downstream.
+
+### 7.1 So the repair is a CORPUS MIGRATION, not a builder patch
+
+Patching `extract.py:204` and re-running would **undo the re-segmentation on 93 volumes**.
+That is not a repair, it is a regression, and it is the most important thing this section
+establishes.
+
+The hyphen-space fix does not need re-extraction. It is a **pure string transformation on
+`paragraphs[].text`** — delete one character — and it should be applied to the shipped
+corpus in place. `extract.py:204` should still be corrected so the fault is not reintroduced
+by any future extraction, but that is hygiene, not the repair.
+
+## 8. What the migration costs: 128,054 bold spans
+
+`_xc/hy2/exposure.py`. Bold is stored as `[start, end]` **character offsets into
+`paragraphs[].text`** — verified rather than assumed: `35Abhi07` ord32 span `[3, 10]` is
+exactly `Pavatti`, `[16, 26]` exactly `Uppādavāra`. Deleting a character therefore moves
+every span that begins after it.
+
+| | |
+|---|---:|
+| vowel-branch deletions | **7,291** in 4,612 paragraphs, 101 volumes |
+| of those paragraphs, carrying bold | 4,334 |
+| bold spans in them | 202,995 |
+| **spans that must shift** | **128,054** |
+
+This is mechanical and exactly determined — for each deleted index `h`, every offset `> h`
+in that paragraph decrements by one — but it is 128k edits and it must be right, because a
+span off by one bolds the wrong letters and **`check_bold_fidelity` compares against the
+page, so it will catch it**. That is the control, and it already exists.
+
+Peyyāla is excluded from the deletion set by construction (`-pa- ` keeps its space).
+
+### 8.1 The order this implies
+
+1. Write the migration as a **standalone, idempotent script over `site/*.json` plus
+   `site/reader/bold/*.bold.json`**, dry-run first, reporting per volume.
+2. Check whether anything **else** is keyed to text offsets — `apparatus/`, `linksk/`,
+   `incipit/`, `hide/` were not audited here and **must be** before a write.
+3. Run `check_bold_fidelity` old-against-new. It reads the printed page, so it is a real
+   control and not a corpus-derived one.
+4. Only then the 111→**18** of §3A, each read on the page first, and the ~1,400 consonant
+   cases, which remain unadjudicated.
+
+**Nothing has been written. No corpus file changed.**
