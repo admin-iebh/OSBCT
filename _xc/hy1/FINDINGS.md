@@ -650,6 +650,54 @@ whether it is *gāthā* is a different question that no geometry can answer. §6
 them and so did I when I called the adjudicator's output a verse verdict. The label the
 side-maps carry should say layout; genre needs the caesura, the commentary, or the reader.
 
+## 16. The joined line break, measured corpus-wide
+
+The reader's `29Abhi01` report generalises. Measured with the block map
+(`_xc/hy1/joined2.py`), over all 118 volumes:
+
+| | |
+|---|---:|
+| display blocks of more than one printed line | **52,265** |
+| drawn as separate lines — correct | **37,306** |
+| **JOINED into one drawn line** | **672**, costing **865 printed lines** |
+| partly present | 377 |
+| not in the verse map at all | 13,910 |
+
+Concentrated in the Abhidhamma canon: `29Abhi01` 183 lines, `35Abhi07` 122,
+`39Abhi11` 120, `38Abhi10` 44, `40Abhi12` 16. `20Khu03` 44 and `27Khu10` 42 follow.
+
+**It is not uniform within a volume.** `35Abhi07` ¶3 keeps its nineteen lines as nineteen
+`after` entries; ¶4, the next paragraph, is one flat string. So this is not a volume flag
+but something decided per paragraph.
+
+### 16.1 Two wrong measurements preceded this one, and both are discarded
+
+- **`dyad.py`** matched a 24-character prefix. On a text as formulaic as the
+  Dhammasaṅgaṇī it matched `cittapassaddhi` to `cittapāguññatā`; every number it produced
+  was wrong.
+- **`joined.py`** matched whole corpus entries against whole printed blocks by equality.
+  The block carries the paragraph number the entry omits, so **1,812 of 1,884 entries
+  failed to match** and the 4% that matched were a sample of nothing. It also asked the
+  wrong question: a *prose* paragraph's line breaks are not structural — the page wraps it
+  and the reader reflows it — so joining them is correct, and a break is only lost where
+  the page sets the lines apart.
+- **`joined2.py`** iterates DISPLAY BLOCKS instead, and asks of each whether the corpus
+  draws its N printed lines as N drawn lines. Its own walker was wrong once too: an entry
+  in `after` is **either a string or a dict `{"gatha": [...]}`**, and handling only strings
+  made `20KhuA01` report 184 blocks "not in the verse map" when its stanzas are plainly
+  there.
+
+**Control:** `20KhuA01` — a volume whose verse is known-good — reports **111 kept, 0
+joined**. A measure of this fault that cannot show a clean volume as clean is not
+measuring the fault.
+
+### 16.2 Not yet examined
+
+The **13,910 blocks with no verse-map entry at all** are the larger number and are *not*
+claimed as a fault here. A block the page sets apart may legitimately live in `sections/`
+(a heading) or `uddana/`, or be front matter. Until each is traced to the map that owns
+it, the number means only "not in `verse/`".
+
 ## 8. Not done
 
 The repair itself. The four ordinals' emission paths in `build_khu_volume.py` are
