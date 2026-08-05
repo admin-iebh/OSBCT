@@ -325,6 +325,56 @@ def derive(vol):
     return {str(k): out[k] for k in sorted(out)}, dict(stt)
 
 
+# !!! THE MAP MUST RECORD WHAT IT WAS DERIVED FROM, BECAUSE NOTHING ELSE CAN TELL.
+# A `pbreak` record's `drawnIndex` addresses a sequence of `fmtLine` calls that
+# exists only for the verse map in force WHEN THE MAP WAS DERIVED.  Change the
+# builder so that an ordinal moves onto the verse branch and every record on it
+# still addresses `pr.text`, which that branch never draws: `29KhuA10` went from
+# 3 misplaced page rules to 253 that way, and `32KhuA13` from 0 to 115.
+#
+# AND THAT DAMAGE IS INVISIBLE TO A STRUCTURAL CHECK.  Measured over all 118
+# volumes: 1,982 records sit on a verse ordinal carrying NO drawn address, and
+# every one is legitimate -- `verse_line_not_among_drawn`, the residue this
+# derivation already reports.  A stale record has exactly that shape.  So the
+# absence of an address cannot be graded, and the only honest question is the
+# literal one: is this map the one these sources produce?
+#
+# The three sources are the ones `derive()` reads.  The PDF is not among them:
+# `pline.stream` reads the printed page, which does not change.
+STAMP_SOURCES = ('site/%s.json', 'site/reader/verse/%s.json', 'site/reader/hide/%s.json')
+
+
+def stamp_of(vol):
+    """{relative path: sha256} of every corpus file `derive()` reads for `vol`.
+
+    A source that does not exist is stamped `None`, not omitted -- so that
+    CREATING one later (a volume that gains a verse map) reads as stale, which
+    is exactly what it is.
+    """
+    import hashlib
+    out = {}
+    for pat in STAMP_SOURCES:
+        rel = pat % vol
+        p = os.path.join(ROOT, rel)
+        out[rel] = (hashlib.sha256(open(p, 'rb').read()).hexdigest()
+                    if os.path.exists(p) else None)
+    return out
+
+
+def write_stamp(outdir, vol):
+    """Record `vol`'s source fingerprint beside the map, in `<outdir>/_stamp.json`.
+
+    A sidecar, not a key inside the map: the 118 map files are fetched by the
+    reader and must not grow a field it would have to skip.  Read-modify-write
+    of one small file, so deriving one volume never disturbs the other 117.
+    """
+    p = os.path.join(outdir, '_stamp.json')
+    cur = jload(p, {}) or {}
+    cur[vol] = stamp_of(vol)
+    json.dump({k: cur[k] for k in sorted(cur)}, open(p, 'w', encoding='utf-8'),
+              ensure_ascii=False, indent=0, sort_keys=True)
+
+
 def one(vol, outdir=None):
     r = derive(vol)
     if r is None:
@@ -334,6 +384,7 @@ def one(vol, outdir=None):
     if outdir:
         json.dump(m, open(os.path.join(outdir, vol + '.json'), 'w', encoding='utf-8'),
                   ensure_ascii=False)
+        write_stamp(outdir, vol)
     print('%-11s pages=%5d  already-right=%5d  inside-¶=%5d  boundary-wrong-no=%4d'
           '  written=%5d on %5d ord  [above-head %d, verse %d addressed %d'
           ' (%d inside a drawn string, %d unlocated), midword %d, off-corpus %d,'

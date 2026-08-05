@@ -175,6 +175,170 @@ def _pdfblanks_content():
     return True, '%d volumes, identical to a fresh build' % len(cur)
 
 
+def _pbreak_load_derive():
+    """`_xc/pagemark/derive.py` as a module, or None if it cannot be imported."""
+    import importlib.util as il
+    dp = os.path.join(ROOT, '_xc/pagemark/derive.py')
+    if not os.path.exists(dp):
+        return None
+    if os.path.dirname(dp) not in sys.path:
+        sys.path.insert(0, os.path.dirname(dp))
+    try:
+        sp = il.spec_from_file_location('_pm_derive', dp)
+        m = il.module_from_spec(sp)
+        sp.loader.exec_module(m)
+        return m
+    except Exception:
+        return None
+
+
+def _pbreak_content(deep=False):
+    """Is `site/reader/pbreak/` still the map its sources produce?
+
+    WHY THIS EXISTS.  `pbreak` is the only derived artefact whose staleness is
+    invisible BOTH to an mtime screen and to any structural grading of its own
+    contents, and it has already cost this project a shipped regression: after
+    `17b3f2bd` moved ordinals onto the verse branch, `29KhuA10` went from 3
+    misplaced page rules to **253** and `32KhuA13` from 0 to 115, and no gate
+    said a word.  A record's `drawnIndex` addresses the flat sequence of
+    `fmtLine` calls the reader makes for THAT ordinal's verse entry; change the
+    verse entry and the address means something else, or nothing.
+
+    WHY NOT AN MTIME SCREEN.  `pbreak/` is 118 files and `site/reader/verse/` is
+    212MB of them; a rebuild of ONE volume's side-maps makes the whole directory
+    look stale, so the screen would be red on nearly every working day and would
+    be answered with --force.
+
+    WHY NOT A STRUCTURAL CHECK ALONE.  Measured over all 118 volumes: 1,982
+    records sit on a verse ordinal carrying NO drawn address, and every one is
+    legitimate -- `verse_line_not_among_drawn`, residue the derivation reports
+    itself.  A record left stale by an ordinal MOVING onto the verse branch has
+    exactly that shape.  The absence of an address cannot be graded, so absence
+    is not graded here.
+
+    THREE SIGNALS, WEAKEST LAST.
+
+    1. STAMP -- `derive.py` records the sha256 of the three corpus files it
+       reads (`site/<VOL>.json`, `verse/`, `hide/`) in `pbreak/_stamp.json`.
+       Exact, 0.3s, and the only one of the three that catches the `29KhuA10`
+       shape.  A volume with a map and no stamp is STALE, not exempt.
+    2. STRUCTURE -- a `drawnIndex` past the end of the sequence the current
+       verse entry would draw, a `drawnOffset` past the end of that string, or
+       a drawn address on an ordinal that is no longer a verse ordinal.  0 on
+       all 118 today.  This one needs no stamp, so it still speaks if the
+       sidecar is deleted or hand-written.
+    3. AGREEMENT (--deep, ~15s) -- a 5-field record carries TWO addresses for
+       the same printed page opening, `rawOffset` into `pr.text` and
+       (`drawnIndex`, `drawnOffset`) into the drawn stream.  They must land on
+       the same letters.  8,586 of 8,591 agree on the first 30 volumes; the
+       five that do not are repeated pada openings, so the tolerance is a
+       fraction, not zero.
+    """
+    D = _pbreak_load_derive()
+    if D is None:
+        return True, 'cannot import _xc/pagemark/derive.py -- pbreak NOT CHECKED'
+    pd = os.path.join(ROOT, 'site/reader/pbreak')
+    if not os.path.isdir(pd):
+        return False, 'site/reader/pbreak/ does not exist'
+    vols = sorted(os.path.basename(f)[:-5] for f in glob.glob(os.path.join(pd, '*.json'))
+                  if not os.path.basename(f).startswith('_'))
+    stamps = {}
+    sp = os.path.join(pd, '_stamp.json')
+    if os.path.exists(sp):
+        try:
+            stamps = json.load(open(sp, encoding='utf-8'))
+        except Exception:
+            stamps = {}
+    unstamped, drifted, hard, disagree, pairs = [], [], [], 0, 0
+    loud = []
+    for v in vols:
+        want = D.stamp_of(v)
+        got = stamps.get(v)
+        if got is None:
+            unstamped.append(v)
+        elif got != want:
+            who = [k for k in want if want.get(k) != (got or {}).get(k)]
+            drifted.append((v, who))
+        try:
+            m = json.load(open(os.path.join(pd, v + '.json'), encoding='utf-8'))
+        except Exception:
+            hard.append((v, '?', 'unreadable map'))
+            continue
+        vp = os.path.join(ROOT, 'site/reader/verse', v + '.json')
+        vm = json.load(open(vp, encoding='utf-8')) if os.path.exists(vp) else {}
+        paras = None
+        vpairs = vdis = 0
+        for o, recs in m.items():
+            e = vm.get(str(o))
+            verse = bool(e) and e.get('groups') is not None
+            seq = D.flat_drawn(e) if verse else None
+            for r in recs:
+                if len(r) < 5:
+                    continue
+                if not verse:
+                    hard.append((v, o, 'drawn address on an ordinal the verse branch no longer draws'))
+                    continue
+                if not (0 <= r[3] < len(seq)):
+                    hard.append((v, o, 'drawnIndex %s but the verse entry draws %d strings'
+                                 % (r[3], len(seq))))
+                    continue
+                if not (0 <= r[4] <= len(seq[r[3]])):
+                    hard.append((v, o, 'drawnOffset %s past the end of a %d-character string'
+                                 % (r[4], len(seq[r[3]]))))
+                    continue
+                if not deep:
+                    continue
+                if paras is None:
+                    paras = json.load(open(os.path.join(ROOT, 'site', v + '.json'),
+                                           encoding='utf-8'))['paragraphs']
+                if not (0 <= int(o) < len(paras)):
+                    continue
+                drawn = ''.join(c for c in (seq[r[3]][r[4]:] + ' ' + ' '.join(seq[r[3] + 1:r[3] + 4]))
+                                if D.letters(c))
+                raw = ''.join(c for c in ((paras[int(o)].get('text') or '')[r[0]:r[0] + 240])
+                              if D.letters(c))
+                if len(drawn) < 30 or len(raw) < 30:
+                    continue
+                pairs += 1
+                vpairs += 1
+                if drawn[:30] != raw[:30]:
+                    disagree += 1
+                    vdis += 1
+        # PER VOLUME, NOT CORPUS-WIDE.  One stale volume is a few hundred records
+        # against 30,000 good ones, so a corpus rate would barely move; and the
+        # honest rate is not zero.  MEASURED over all 118: 30,376 agree, 46 do
+        # not (0.151%), the worst volume 34KhuA15 at 2.49% and only four above
+        # 1% -- repeated pada openings, where the printed stream and the corpus
+        # order two identical lines differently.  10% is four times the worst
+        # honest reading and far below a stale map, where the addresses are not
+        # merely reordered but meaningless (`29KhuA10`: 253 of ~453).
+        if vpairs and vdis >= 5 and vdis * 10 > vpairs:
+            loud.append((v, vdis, vpairs))
+    msgs = []
+    if unstamped:
+        msgs.append('%d volume(s) have a map and NO stamp (%s) -- derive.py has not run '
+                    'since the stamp was added; re-derive or run '
+                    '`python3 _xc/pagemark/stamp_existing.py --write`'
+                    % (len(unstamped), ', '.join(unstamped[:6])))
+    if drifted:
+        msgs.append('%d volume(s) DERIVED FROM SOURCES THAT HAVE SINCE CHANGED: %s'
+                    % (len(drifted),
+                       '; '.join('%s (%s)' % (v, ', '.join(sorted(who)))
+                                 for v, who in drifted[:6])))
+    if hard:
+        msgs.append('%d record(s) address a verse stream that no longer exists, e.g. %s ord %s: %s'
+                    % (len(hard), hard[0][0], hard[0][1], hard[0][2]))
+    if loud:
+        msgs.append('%d volume(s) whose two addresses no longer name the same page '
+                    'opening (>10%%): %s'
+                    % (len(loud), ', '.join('%s %d/%d' % x for x in loud[:6])))
+    if msgs:
+        return False, ' | '.join(msgs)
+    return True, ('%d volumes stamped and structurally sound%s'
+                  % (len(vols), ', %d of %d two-address records agree'
+                     % (pairs - disagree, pairs) if deep and pairs else ''))
+
+
 # (label, artefact, sources, rebuild command, content-check fn or None)
 DERIVED = [
     ('pageindex', 'site/reader/pageindex.json', ['site/*.json'],
@@ -185,6 +349,13 @@ DERIVED = [
      'python3 pipeline/build_pdfblanks.py --write', 'deep:%s' % '_pdfblanks_content'),
     ('search index', 'site/index', ['site/*.json'],
      'python3 pipeline/build_search_index.py', None),
+    # NOT an mtime screen: see `_pbreak_content`.  212MB of verse maps means any
+    # side-map rebuild makes the directory look stale, and the failure this
+    # catches (`29KhuA10`, 3 misplaced page rules -> 253) leaves the mtimes fine.
+    ('pbreak', 'site/reader/pbreak', ['site/reader/verse/*.json'],
+     'python3 _xc/pagemark/derive.py <VOL> --out site/reader/pbreak'
+     '   (move the old file away first -- derive.py SKIPS an existing output)',
+     _pbreak_content),
 ]
 
 # ADVISORY, NOT BLOCKING (added 2026-07-31b).  These are derived from the corpus
@@ -232,8 +403,14 @@ def run(quiet=False, deep=False):
                        'older than %s — MAY be stale; confirm with --deep, which rebuilds and '
                        'compares' % (os.path.relpath(who, ROOT) if who else '?'))
         elif content is not None:
-            good, why = content()
-            kind = 'content'
+            # A content check may want to know whether this is a deep run.  Only
+            # `_pbreak_content` does; the others keep their zero-argument form,
+            # so the flag is passed by inspection rather than by convention.
+            try:
+                good, why = content(deep) if content is _pbreak_content else content()
+            except TypeError:
+                good, why = content()
+            kind = 'content+deep' if (content is _pbreak_content and deep) else 'content'
         else:
             good = amt >= smt and amt > 0
             kind = 'mtime'
