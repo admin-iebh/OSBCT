@@ -581,6 +581,75 @@ stanzas lower down and the map separates them correctly.
 
 `_xc/hy1/verdicts.json`.
 
+## 15. The reserved class is decided, and the reader found two more faults of mine
+
+### 15.1 Decided: all four are PROSE
+
+The reader, on the four pages of §13:
+
+> `35Abhi07` p74 — *It is prose.*
+> `29Abhi01` p14 — *These are not verses. They are just lines from the Mātikā or matrix of
+> Suttanta dyads. From 107 to 120 each are dyads, two lines of text.*
+> `26Khu09` p4 — *These are not verses. They are just prose statements.*
+> `18Khu01` — *These are not verses… the ten precepts in prose.*
+
+**The reserved non-gāthā class is not gāthā and does not need a class of its own. It is
+prose whose printed line breaks carry meaning.** The open question in the handoff since
+`0db4a917` is closed.
+
+### 15.2 Two corrections to §10.3 and §14, both found by the reader
+
+**(a) `35Abhi07` is NOT flat, and my evidence was the wrong layer.** I read
+`paragraph['text']`, found one run-on string, and reported the printed line breaks lost.
+The `verse/` side-map holds an `after` array for that ordinal with **one entry per printed
+line**:
+
+```
+"Na cakkhu na cakkhundriyaṁ. . Na cakkhundriyaṁ na cakkhu.",
+"Na sotaṁ na sotindriyaṁ. . Na sotindriyaṁ na sotaṁ.",  …
+```
+
+The reader draws it correctly. `check_page_fidelity`'s **page** side calls these lines
+verse; the reader says prose and the corpus already treats them as prose — so a share of
+`35Abhi07`'s 208 class-2 lines are **false positives of the checker**, not corpus faults.
+This is the same error as §11.3: one layer inspected, a conclusion drawn about the whole.
+`06ViT06` ord1 was checked at the right layer (no `verse/` entry, `sections/` holds only
+three headings) and **is** genuinely flat — that finding stands.
+
+**(b) `29Abhi01`'s dyads ARE joined, exactly as the reader said.** Verified line by line:
+
+```
+page   :  107. Nirutti dhammā. (1314)          x84.2
+          Niruttipathā dhammā. (1314)          x109.4
+corpus :  "Dhātukusalatā ca. (1340) Manasikārakusalatā ca. (1341)"   -- one string
+```
+
+### 15.3 The block map had a real defect, and this page exposed it
+
+On `29Abhi01` p33 the within-dyad leading is **14.6** on 11 lines and **14.5** on 3.
+`blockmap.py` rounded to 0.1 and took `most_common(1)`, so the 14 body lines split across
+two keys and **lost to the block gap at 24.6 (13)**. `base` became the gap, nothing
+exceeded `base + 3`, and a page of 14 dyads came out as **one block**.
+
+`blockgap.py` already clustered to 0.5pt for exactly this reason; `blockmap.py` did not.
+Fixed by clustering, then averaging the cluster. **112 of 118 volumes change**, so the
+defect was corpus-wide and the numbers in §14 were measured on a broken map. The old build
+is kept at `_xc/hy1/blocks/` as its own negative control; the current one is
+`_xc/hy1/blocks2/`.
+
+Re-run on the corrected map: `29Abhi01` p33 now yields one block per dyad. Controls hold —
+shuffle moves 19.6–34.2%, flat 11.8–26.0%, no vacuous volume, adjudicator **5/5** on the
+settled cases, and the 42 verdicts are unchanged at 29 / 12 / 1.
+
+### 15.4 `display` is a statement about layout, not about genre
+
+The corrected map labels each Dukamātikā dyad `display` — correctly, because the page sets
+it off from running prose with a hanging indent. **The reader says it is prose.** Both are
+right, and the words must not be conflated: `display` means *the page sets this apart*, and
+whether it is *gāthā* is a different question that no geometry can answer. §6.2 conflated
+them and so did I when I called the adjudicator's output a verse verdict. The label the
+side-maps carry should say layout; genre needs the caesura, the commentary, or the reader.
+
 ## 8. Not done
 
 The repair itself. The four ordinals' emission paths in `build_khu_volume.py` are

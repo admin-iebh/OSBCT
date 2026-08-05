@@ -16,7 +16,7 @@ which THIS PAGE opens its prose paragraphs.
 """
 import json, os, sys, collections
 
-B = '_xc/hy1/blocks'
+B = '_xc/hy1/blocks2'
 
 
 def page_blocks(pg):

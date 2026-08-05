@@ -26,7 +26,7 @@ WORD = re.compile(r'<word xMin="([\d.]+)" yMin="([\d.]+)" xMax="([\d.]+)" yMax="
 PAGE = re.compile(r'<page width="[\d.]+" height="[\d.]+">(.*?)</page>', re.S)
 TAG = re.compile(r'<[^>]+>')
 THRESH = 3.0
-OUT = '_xc/hy1/blocks'
+OUT = '_xc/hy1/blocks2'   # blocks/ is the pre-clustering build, kept as its own control
 
 
 def vol_pages(pdf):
@@ -76,7 +76,16 @@ def main():
             Lb = [g for g in L if 5 < g < 80]
             if len(Lb) < 4:
                 continue
-            base = collections.Counter(Lb).most_common(1)[0][0]
+            # CLUSTER before taking the mode.  Rounding to 0.1 splits one
+            # physical leading across neighbouring keys, and on 29Abhi01 p33 the
+            # 14 body lines split 11/3 into 14.6 and 14.5 and LOST to the block
+            # gap at 24.6 -- so `base` became the gap, nothing exceeded base+3,
+            # and a page of 14 dyads came out as ONE block.  blockgap.py already
+            # clustered to 0.5pt; blockmap.py did not.
+            cl = collections.Counter(round(g * 2) / 2.0 for g in Lb)
+            band = cl.most_common(1)[0][0]
+            near = [g for g in Lb if abs(g - band) <= 0.5]
+            base = round(sum(near) / len(near), 1)
             marks, starts = [], 0
             for i, (y, x0, t) in enumerate(rows):
                 st = 1 if i == 0 or (rows[i][0] - rows[i - 1][0]) > base + THRESH else 0

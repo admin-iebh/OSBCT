@@ -14,7 +14,7 @@
 """
 import json, os, sys, random, collections
 random.seed(3)
-B = '_xc/hy1/blocks'
+B = '_xc/hy1/blocks2'
 vols = sys.argv[1:] or ['06ViT06', '20KhuA01', '12DiT05', '46KhuA27', '29Abhi01', '23Khu06']
 
 
