@@ -753,6 +753,55 @@ is how the last four regressions happened.
 **What is ready:** the fault measured (672 blocks, 865 printed lines), the cause located to
 two lines, and the evidence built and controlled.
 
+## 18. The block map joined to `pline` — the boundary is now addressable
+
+The block map was keyed by pdftotext page and bbox line order. Every instrument in this
+project reads `pline.stream()`, whose pages count only what `split_page` **accepts** and
+whose lines exclude the running head and the footnote apparatus. Until the two are joined
+the boundary cannot be used by anything. `_xc/hy1/blockjoin.py`, output `_xc/hy1/bjoin2/`:
+one entry per `pline` item, `[block_start, block_kind]`.
+
+**Page axis** — rebuilt exactly as `pline._build` does it: `split_page` over `raw_pages`
+with the same glyph-errata patch and the same assertion, recording each accepted page's raw
+index. Not an offset: `07ViT07`'s would have been wrong by two.
+
+**Line axis** — `pline`'s lines are a *subsequence* of the bbox lines, so they are aligned
+in order by normalised text, never by position.
+
+### 18.1 Digits had to be dropped from the alignment key
+
+First run: **94.57%**. The residue was systematic. A superscript footnote marker has its
+own x and a smaller y, so in the bbox word order it lands wherever that x falls — `pline`
+reads `viharitukāmo1.` from `-layout` while the bbox line reads `1 Santaṁ … viharitukāmo .`
+Keeping the digit made those two strings unequal and cost ~8% of the alignment on some
+volumes. Dropping digits from the key — which `check_page_fidelity` already does, reporting
+them separately as `digit_only` — took it to **97.86%**, and on body pages to 98.8–100%.
+
+### 18.2 Measured over all 118 volumes
+
+**1,421,684 of 1,447,441 body lines aligned — 98.22%.** Front matter (the alphabet tables,
+which are Burmese script in the same font and which §3 of the project instructions says to
+skip) and back matter are excluded, as they are from every other body measure.
+
+| block kind of an aligned body line | lines | |
+|---|---:|---:|
+| prose | 1,218,458 | 85.7% |
+| display | 122,065 | 8.6% |
+| display? (single-line block, undecided) | 41,814 | 2.9% |
+| other | 39,347 | 2.8% |
+
+**26 volumes align below 97%** — worst `18AnA02` 94.25%, `12MaA03` 95.38%, `11MaA02` and
+`09DiA03` 95.58%. **This is a stated limit, not a rounding error**, and the repair of §17
+must not be applied to a volume whose lines it cannot address. Diagnosing those 26 comes
+before any builder change.
+
+### 18.3 Control
+
+The join is checked where the answer is known independently: on `06ViT06` p28 it places a
+block start on `Paññāvisuddhāya`, `Saṁghañca`, `Samantapāsādikasaññitāya`, `Saññā nimittaṁ`
+and the prose below — **the reader's own hand-drawn structure, in `pline`'s indexing**, and
+no start anywhere else in the stanzas.
+
 ## 8. Not done
 
 The repair itself. The four ordinals' emission paths in `build_khu_volume.py` are
