@@ -4,7 +4,7 @@ import json, os, re, sys, time, collections, importlib, subprocess
 
 sys.path.insert(0, os.path.abspath('pipeline'))
 WORD = re.compile(r'[A-Za-zĀĪŪāīūṁṃṅñÑṬṭḌḍṆṇḶḷ-]+')
-OUT = '_xc/hy2/live'
+OUT = '_xc/hy2/live2'
 
 
 def one(vol):
@@ -27,14 +27,21 @@ def one(vol):
                     continue
                 mid.add(w)
     d = json.load(open('site/%s.json' % vol, encoding='utf-8'))
-    low = '\n'.join((p.get('text') or '') for p in d['paragraphs']).casefold()
+    body = '\n'.join((p.get('text') or '') for p in d['paragraphs'])
+    # WHOLE TOKENS, not substrings.  The first version of this test asked
+    # `closed.casefold() in body.casefold()`, and every one of the 111 hits it
+    # reported was a substring of an ordinary word: `UdanaTtha` casefolds to
+    # `udanattha`, which sits inside `Udanatthakathayam` -- Udana-atthakatha,
+    # sandhi-joined, exactly as Pali does it.  Not corruption; my matcher.
+    toks = collections.Counter(w.casefold().strip('-')
+                               for w in WORD.findall(body))
     hits = {}
     for w in mid:
         c = w.replace('-', '')
         if len(c) < 8:
             continue
-        if c.casefold() in low and w.casefold() not in low:
-            hits[w] = low.count(c.casefold())
+        if toks.get(c.casefold()) and not toks.get(w.casefold()):
+            hits[w] = toks[c.casefold()]
     return {'vol': vol, 'midline': len(mid), 'corrupt_types': len(hits),
             'corrupt_tokens': sum(hits.values()), 'hits': hits}
 

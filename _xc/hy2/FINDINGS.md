@@ -56,7 +56,52 @@ hyphen, and the comparison was case-sensitive — the continuation half is usual
 and therefore capitalised, so `Vā-saddo` missed a mid-line `vā-saddo` and the KEEP count was
 zero.)*
 
-## 3. The larger finding: `hyjoin` is corrupting the corpus TODAY
+## 3. RETRACTED — §3 as first written was my matcher, not the corpus
+
+> **The whole of §3 below was wrong and is kept as the record of the error.
+> The corrected measurement is §3A.**
+
+I reported **111 live corruptions across 28 volumes, 77% of them the `-Ṭṭha`
+cross-reference siglum**, and said it blocked requirement 2. **None of that was true.**
+
+`livecheck.py` asked `closed.casefold() in body.casefold()` — a **substring** test. Every
+`-Ṭṭha` hit was a substring of an ordinary word: `UdānaṬṭha` casefolds to `udānaṭṭha`, which
+sits inside **`Udānaṭṭhakathāyaṁ`** — *Udāna-aṭṭhakathā*, sandhi-joined, exactly as Pāḷi does
+it and exactly as the edition prints it. `09DiT02` contains the string `UdānaṬṭha` **zero**
+times as a token and five times as a fragment of that ordinary word.
+
+This is the project's own recurring failure, made by me: a count taken over the corpus and
+reported before the thing counted was looked at. The check that caught it was opening one
+occurrence and reading its context — which should have come before the sweep, not after.
+
+## 3A. Corrected, on WHOLE TOKENS
+
+`livesweep.py` now matches against the token multiset of the paragraph text.
+
+| | first (substring) | **corrected (token)** |
+|---|---:|---:|
+| volumes affected | 28 | **10** |
+| distinct words | 62 | **13** |
+| occurrences | 111 | **18** |
+| of which the `-Ṭṭha` siglum | 86 | **0** |
+
+`_xc/hy2/live/` holds the wrong run and `_xc/hy2/live2/` the corrected one; both are kept,
+the first as the negative control it should have been.
+
+What actually remains is small and ordinary:
+
+| word, as the page sets it | in the corpus | |
+|---|---|---:|
+| `dhamma-saṅgītiyā` | `dhammasaṅgītiyā` | 7 |
+| `Buddha-bhāsitaṁ` | `Buddhabhāsitaṁ` | 6 |
+| `Kasi-vāṇijjā`, `puññakaro-hamasmi`, `Micchādiṭṭhika-tivedī`, `Dubbā-sara-bhūtiṇakādīnaṁ`, `Veḷuriyaka-rodāyoti` | | 1 each |
+
+**18 occurrences is not a corpus-wide fault and does not block anything.** Each needs a page
+read before it is even called a fault — the same compound may legitimately appear hyphenated
+in one place and closed up in another, and this test cannot tell those apart. **The claim
+that the cross-reference apparatus is being corrupted is withdrawn in full.**
+
+## 3B. What §3 was, before the retraction
 
 If the consonant branch is wrong, it is wrong wherever `hyjoin` **runs** — not only on the
 paths that bypass it. Test (`_xc/hy2/livecheck.py`, swept by `livesweep.py` → `_xc/hy2/live/`):
@@ -114,3 +159,40 @@ list, and adds no rule the edition has not itself demonstrated. It leaves `unkno
 **Not established here:** that the vowel branch is right in every case — only that it is the
 builder's own existing rule and that nothing contradicts it; and any number for how many of
 the 1,521 are edition hyphens. Nothing has been repaired.
+
+## 6. The bypass site is located, and it is NOT in `build_khu_volume.py`
+
+`pipeline/extract.py:204`, the paragraph accumulator:
+
+```python
+elif cur is not None: cur['text']+=' '+st
+```
+
+**A plain space, with no hyphen decision of any kind.** That is where all 8,790 come from,
+and it confirms §10.4's diagnosis while correcting its location: the fault is not that
+`hyjoin` was skipped on one of `build_khu_volume.py`'s paths, but that the **paragraph text
+is built by a different module that has no `hyjoin` at all.**
+
+The two layers divide cleanly:
+
+| artefact | built by | hyphen handling |
+|---|---|---|
+| `site/<VOL>.json` `paragraphs[].text` | `pipeline/extract.py` | **none** |
+| `site/reader/verse/<VOL>.json` drawn lines | `pipeline/build_khu_volume.py` | `hyjoin`, 11 call sites |
+
+### 6.1 A blocker that must be settled before any repair
+
+`pipeline/README.md` states plainly:
+
+> "Several auxiliary scripts (font injection, index build, apparatus attachment, concordance
+> parsing, link generation) **were run in a scratch environment and are being consolidated
+> back into this directory.** … The published corpus does not depend on re-running them."
+
+So it is **not established that `extract.py` as it stands regenerates the shipped
+`site/<VOL>.json`.** Patching line 204 is worthless — or worse — if the file that produced
+the corpus is not this one. **Establish reproducibility first**: run `extract.py` on one
+volume and diff its paragraph text against the shipped `site/<VOL>.json`. If it does not
+reproduce, the repair is a migration problem before it is a hyphen problem, and that is a
+different and larger job than §10.4 implies.
+
+Nothing has been patched, and this is the reason.
