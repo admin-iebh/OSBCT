@@ -1,0 +1,11 @@
+verse entries 3657 | sections 508 | uddana anchors 452 | hidden 3 | incipits 4
+   Vimānavatthupāḷi     verses mapped 1031 / 1289
+   Petavatthupāḷi       verses mapped 814 / 814
+   Theragāthāpāḷi       verses mapped 1288 / 1288
+   Therīgāthāpāḷi       verses mapped 524 / 524
+   leaked corpus headings hidden: [388, 390, 857]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/19Khu02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/19Khu02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/19Khu02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/19Khu02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/19Khu02.json

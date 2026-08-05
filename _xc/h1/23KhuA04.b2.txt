@@ -1,0 +1,8 @@
+verse entries 196 | sections 81 | uddana anchors 80 | hidden 11 | incipits 1
+   Udānaṭṭhakathā         KATHĀ  printed units 92 / corpus ¶ 92   headings 90   colophons 89   prose ¶ 316   gāthā blocks 146   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/23KhuA04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/23KhuA04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/23KhuA04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/23KhuA04.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/23KhuA04.json

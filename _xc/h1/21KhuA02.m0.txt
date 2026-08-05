@@ -1,0 +1,8 @@
+verse entries 136 | sections 95 | uddana anchors 90 | hidden 4 | incipits 1
+   Dhammapadaṭṭhakathā    KATHĀ  printed units 127 / corpus ¶ 127   headings 103   colophons 106   prose ¶ 11   gāthā blocks 9   [OK]
+   leaked corpus headings hidden: [0]
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/verse/21KhuA02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/sections/21KhuA02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/uddana/21KhuA02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/hide/21KhuA02.json
+  wrote /sessions/rcw-01bcgpjfpcgbdwzs1dqi2qk7/mnt/OSBCT/site/reader/incipit/21KhuA02.json
