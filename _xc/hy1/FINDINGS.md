@@ -437,6 +437,150 @@ a block-boundary map per printed page, which would give the stanza grouping the 
 asked for, the paragraph breaks of §10.4, and a second instrument for the position work
 (handoff item 3) that is not derived from the corpus.
 
+## 13. The reserved non-gāthā class, located and verified on the page
+
+Five page references were given to the reader for this decision. **Two were wrong and
+three were unverified**, and the labelling sent him to the wrong pages for two more.
+Recorded in full because the pattern is the one this project keeps paying for: pages
+chosen by keyword and reported without being looked at.
+
+**Fault 1 — pages chosen by keyword.** `26Khu09` was located by searching for `Mātikā`,
+which matched the **front-matter contents heading** (`Mātikā … Piṭṭhaṅka`, printed p**vi**),
+not the doctrinal mātikā. `35Abhi07` was located by searching `Yamaka`, which matched
+first a closing colophon and then the volume's title page.
+
+**Fault 2 — a single line's skeleton is not a page.** `resolve.py` matched one line;
+`1. Kusalā kusalā dhammā` occurs both on `35Abhi07`'s first text page and in its contents,
+so it returned the contents. `_xc/hy1/locate2.py` scores **every** raw page by how many of
+the pline page's line skeletons it holds and requires the winner to beat the runner-up
+(35Abhi07: 29 vs 10). **Re-run over the 30 candidate pages of §11.2: 0 disagreements**, so
+those resolutions stand.
+
+**Fault 3 — the number given was the one not to give.** The table led with the pdftotext
+page and left `printed` blank wherever the running head did not parse — which is exactly
+the opening pages that were chosen. The reader navigated by the number offered and landed
+on printed p10 of `35Abhi07` (prose, ¶39–40) and printed p33 of `29Abhi01` (prose,
+¶102–109), and reasonably asked what the problem was. **The printed number is the only one
+worth leading with.**
+
+### Corrected, each one read from the rendered page
+
+| shape | volume | **printed** | pdftotext | what is on it |
+|---|---|---:|---:|---|
+| Yamaka pairs | `35Abhi07` Indriyayamakapāḷi | **74** | 83 | `3. Na cakkhu na cakkhundriyaṁ.` + ~18 hanging short lines |
+| Dukamātikā | `29Abhi01` Dhammasaṅgaṇīpāḷi | **14** | 33 | `107. Nirutti dhammā. (1314)` / `Niruttipathā dhammā. (1314)` |
+| Paṭisambhidā mātikā | `26Khu09` Paṭisambhidāmaggapāḷi | **4** | 13 | numbered entries 52–72, one short line each |
+| Refuge lists | `18Khu01` Khuddakapāṭhapāḷi | opening, unnumbered | 26 | Saraṇattaya, three triads |
+| `(Sattamo bhāgo)` | `42KhuA23` | **not verified** | — | still located by keyword only |
+
+`42KhuA23` is left explicitly unverified rather than guessed a fourth time. Its densest
+page-verse page (pline p59, `927. Kathaṁ hi lokāpacito samāno,`) is **genuine gāthā** with
+pāda commas, so it is not the reserved shape and the `(Sattamo bhāgo)` case is elsewhere.
+
+### What the verified pages show
+
+All four are the same shape: **a numbered opening line and a hanging stack of short,
+uniform lines**, one doctrinal item per line, with the 6.0pt break between units. On
+`35Abhi07` p74 the lines end in `.` and carry the peyyāla ` . ` internally; a pāda's comma
+is absent from every one. That absence is what `_pada_page` scores, and it scores these
+exactly 0 — the negative test that is currently protecting them.
+
+**The 6.0pt break of §12 is present on all four**, one block per numbered unit, so the
+block map groups them correctly whatever they are called. The open decision is the label
+alone.
+
+## 14. The block map — built, controlled, and it answers the 42
+
+### 14.1 §12's "6.0 points" was too narrow
+
+Sampled properly (40 pages each, `_xc/hy1/lead4.py`), the four volumes of §12.2 split two
+ways. `07Di02` and `26KhuA07` do carry the +6.0 mode — their absence was sampling, as
+suspected. **`21Khu04` and `23Khu06` do not**, and the reason is not noise:
+
+- `20Khu03` p120 sets **15.5** inside a couplet and **31.0** between stanzas — a whole
+  **skipped line**, 2× the leading, not a 6.0pt space. `21Khu04` p61 the same (14.4 / 28.8),
+  while *also* using 6.0 before its colophon lines.
+- `23Khu06` p60 sets **15.7** and **25.7** — a 10.0pt space.
+- `29Abhi01` p120 separates its *paragraphs* by 32.3 over a body of 16.1 — again a skipped
+  line.
+
+Per-volume measurement over all 118 (`_xc/hy1/blockgap.py`): **112 volumes' commonest gap
+is 6.0**, and six are not — `20Khu03` 14.0, `21Khu04` 13.5, `23Khu06` 10.0, `29Abhi01`
+16.0, `31Abhi03` 17.0, `42KhuA23` 15.5.
+
+**An instrument defect of my own, found on the way.** `lead.py` took a line's y from its
+first word, and a superscript footnote marker has a smaller `yMin` than the text it sits
+on — so the same block gap measured 9.1 on a line opening with a marker and 10.0 on one
+without (`23Khu06` p60). Line y is now the **modal** word y and the wobble is gone.
+
+### 14.2 The rule that needs no constant
+
+```
+a new block begins wherever the leading exceeds THAT PAGE's own body leading by
+more than 3.0 pt
+```
+
+This catches the 6.0pt space, the skipped line and the heading gap alike, is measured per
+page exactly as `display_column_pages` measures its column, and consults no volume name.
+`_xc/hy1/blockmap.py`, all 118 volumes, ~1 minute: 14–23% of printed lines start a block.
+
+### 14.3 It reproduces the reader's own hand-drawn breaks
+
+The reader wrote out where `06ViT06` p28's blank lines belong. The map, from coordinates
+alone, marks a block start at `Paññāvisuddhāya`, `Saṁghañca`, `Samantapāsādikasaññitāya`,
+`Saññā nimittaṁ` and the prose below — **exactly his four groups and no others.** On
+`20KhuA01` p233 it splits the two stanzas at `Tasmā hi taṁ`; on `12DiT05` p300 it makes the
+three one-line glosses three separate blocks, which is §9's verdict reached again from
+evidence that never touches indent.
+
+### 14.4 Controls
+
+`_xc/hy1/blockctl.py`. **The first version of the shuffle control was vacuous by
+construction** — it counted marks, and a count is permutation-invariant, so it returned a
+number identical to the honest run on every volume and would have on any input at all.
+Rescored by verdicts moved per line:
+
+| vol | th=1 | th=3 | th=8 | th=20 | shuffle moved | flat moved |
+|---|---:|---:|---:|---:|---:|---:|
+| `06ViT06` | 3661 | 3642 | 2485 | 1334 | 4572 (22.8%) | 2990 (14.9%) |
+| `29Abhi01` | 2654 | 2643 | 2265 | 639 | 3188 (33.3%) | 2320 (24.3%) |
+| `23Khu06` | 4699 | 4564 | 4239 | 988 | 5194 (32.6%) | 4071 (25.5%) |
+
+Both controls fire hard. **No volume is vacuous.** The 0.5% difference between th=1.0 and
+th=3.0 is the bimodality proving itself: there is almost nothing between body+1 and body+3.
+
+### 14.5 Verse-vs-prose from the block, not from a column
+
+With a boundary in hand the discriminator is the **shape of a block**, and it needs no
+`display_column` and no line-length test:
+
+| block shape | verdict |
+|---|---|
+| continuations return to the left margin | **prose** |
+| every line at one x, right of the margin | **display** |
+| first line **hangs left** of the rest | **display** — a numbered verse item |
+| first line indented **further right** than the rest | **prose** — a block quotation |
+
+The margin is a constant of the **volume**, not the page: computed per page it fails on any
+page the display dominates (`06ViT06` p28 is 14 verse lines against 4 of prose, so the
+modal x was the verse indent and every stanza came out prose) and on a title page with no
+prose at all (`46KhuA27` p7).
+
+Control: **5 of 5** on the cases already settled by reading the page.
+
+### 14.6 The 42 candidates, adjudicated
+
+**29 display, 12 prose, 1 unresolved** (`07DiA01` p154, whose needle fails on a superscript
+— already read by eye in §11.4 and it is verse).
+
+Spot-checked against renders: `07ViT07` printed 488 → display, matching the reader's own
+screenshot of numbered stanzas; `40KhuA21` p450 → prose, an 11-line block quotation;
+`51Vism01` printed 227 → prose, and `check_page_fidelity` had called that line page-verse,
+so it is **a genuine class-1 fault the map catches**. That page also carries two real
+stanzas lower down and the map separates them correctly.
+
+`_xc/hy1/verdicts.json`.
+
 ## 8. Not done
 
 The repair itself. The four ordinals' emission paths in `build_khu_volume.py` are
