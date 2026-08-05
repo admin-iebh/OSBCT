@@ -358,7 +358,56 @@ be identical before and after, except where a deleted space lay **inside** the s
 case it must equal the old substring minus that space. **0 unexplained.** The one inside-span
 case corpus-wide is `04VinA04` ord160, `'tvā puna- upa'` → `'tvā puna-upa'`.
 
-### 11.3 State
+### 11.3 REVERTED. The migration breaks the builder's paragraph matching.
+
+**`check_bold_fidelity` passing was not enough, and I nearly stopped there.** The gate reads
+the shipped side-maps and the printed page; it does not ask whether the BUILDER still
+reproduces those side-maps from the repaired text. It does not.
+
+Measured by restoring one volume's pre-migration text, rebuilding, restoring the migrated
+text, rebuilding, and comparing — so the two numbers differ in nothing but the repair:
+
+| `09DiT02` | drawn lines |
+|---|---:|
+| shipped side-map | 2,012 |
+| fresh build from **pre**-migration text | **2,012 — exact** |
+| fresh build from **post**-migration text | **4,489** |
+| attributable to the migration | **+2,477 (+123%)** |
+| pre-existing staleness | **0** |
+
+**Before the repair the builder reproduced the shipped side-map exactly. After it, it does
+not.** And the extra lines are not a finding — they are a collapse:
+
+```
+ordinals   84 -> 81          three ordinals LOST
+ord 7     144 -> 3,178       +3,034 lines, one per printed line
+```
+
+The builder failed to locate three paragraph boundaries, merged their content into ord 7, and
+fell back to emitting every printed line separately. Closing the hyphen in
+`paragraphs[].text` stopped the builder matching its own printed-line join. Also measured:
+`01ViT01` +573, `20KhuA01` +60, `43KhuA24` −70; `35Abhi07` unchanged.
+
+**All 185 corpus files were reverted to `481c7221` in place**, verified by `hyspace.py`
+returning to 8,790 and `20KhuA01` returning to 911 drawn lines.
+
+### 11.4 What this costs and what it teaches
+
+`notdrawn` falling 7,435 → 2,458 was real and is now given up with the revert. It was also
+**not the whole picture**, and reporting it as success would have been wrong: the same change
+that let 4,977 bold runs find their place destroyed three paragraph boundaries in one volume.
+
+**The missing control is named.** Every gate run was against the *shipped* artefacts. None
+asked *does the builder still produce them*. That control now exists as a procedure and must
+run on any text-level change:
+
+> restore pre, build, restore post, build, diff the side-maps.
+
+**The repair is not abandoned, but it is not a text edit alone.** It must be made together
+with whatever in `build_khu_volume.py` matches paragraph text to printed lines, and the pair
+measured as one change. Locating that matcher is the next step and is not done here.
+
+### 11.5 State
 
 | | before | after |
 |---|---:|---:|
