@@ -5024,6 +5024,11 @@ def nid_is_colo(t):
 # ---------------------------------------------------------------------------
 BLOCKBREAK = os.environ.get('BLOCKBREAK') == '1'
 _BB_NRM = re.compile(r'[^A-Za-z\u0100-\u1EFF]')
+# Deliberately the SAME set bbgate.py tests, including the hyphen: a line-break
+# hyphen is evidence of word continuity across a real printed break (FINDINGS 17,
+# build_khu_volume.py:6975) and must not withhold the break.  Keeping one set
+# means the gate cannot pass on a technicality of a second definition.
+_BB_TERM = ('.', ',', ';', ':', '?', '!', '\u2013', '\u2014', '\u201D', '\u2019', ')', '-')
 
 
 def _bb_key(s):
@@ -5062,7 +5067,27 @@ class _BBCursor:
                 rows = []
                 for k, sh, b in _R.annotate(_A.judge_page(pd, margin)[2], edge):
                     for i, l in enumerate(b):
-                        rows.append((_bb_key(l[3]), 1 if i == 0 else 0, k, sh))
+                        # PER-LINE VETO.  `sh` is a verdict about the BLOCK, and a
+                        # ragged block can still contain a wrapped line:
+                        #   35Abhi07 printed p78 -- an 18-line matika stack, one item
+                        #     per line, EXCEPT `anannataññassamitindriyam` which is
+                        #     too long for the measure and wraps onto a second line.
+                        #     Block 'ragged' is right; applied to that line it is not.
+                        #   35Abhi07 printed p79 items 37, 38 -- two-line blocks whose
+                        #     ONLY body line (block_shape drops the last) falls 13pt
+                        #     short of the volume measure because the next word,
+                        #     `cakkhundriyam`, is ~47pt wide.  MINFULL then fails and
+                        #     a plainly wrapped block is called 'ragged'.  TOL cannot
+                        #     absorb that without destroying stanza detection.
+                        # Both are answered by the signal ragged.py already uses but
+                        # AGGREGATES: a wrapped line does not end at a boundary.  Used
+                        # per line it is right on all three.  It only ever WITHHOLDS a
+                        # break, so it under-repairs rather than damages -- the cost is
+                        # the two real 27Khu10 lines that end without punctuation
+                        # (FINDINGS 21.4), whose breaks are simply not restored.
+                        prv = (b[i - 1][3] or '').rstrip()[-1:] if i else ''
+                        rows.append((_bb_key(l[3]), 1 if i == 0 else 0, k, sh,
+                                     bool(i == 0 or prv in _BB_TERM)))
                 self.pages[int(pg)] = rows
         except Exception as e:
             sys.stderr.write('BLOCKBREAK: no map for %s (%s)\n' % (vol, e))
@@ -5089,7 +5114,7 @@ class _BBCursor:
             # this under-repairs rather than damages.
             if rows[x][0] == k:
                 self.cur[pg] = x + 1
-                return (bool(rows[x][1]), rows[x][2], rows[x][3])
+                return (bool(rows[x][1]), rows[x][2], rows[x][3], rows[x][4])
         return None
 
 
@@ -7474,8 +7499,12 @@ def kat_build(pages, paras, title, p0, p1, o0, o1,
             #
             # Only ever ADDS a break, never removes one; a line the map cannot
             # address leaves the existing decision alone.
+            # _f[3] is the PER-LINE veto: the previous printed line must end at a
+            # boundary.  `_f[2] == 'ragged'` is a verdict about the whole block and
+            # a ragged block can still hold a wrapped line -- the three 35Abhi07
+            # fragments, which were the blocker.  See _BBCursor.__init__.
             if _f is not None and _f[1] in ('display', 'display?') \
-                    and _f[2] == 'ragged':
+                    and _f[2] == 'ragged' and _f[3]:
                 _np = True
         add_prose(it[1], _np)
 

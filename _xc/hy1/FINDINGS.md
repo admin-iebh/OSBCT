@@ -1047,6 +1047,147 @@ Letters identical on every volume; `sections`/`uddana`/`hide`/`incipit` unchange
 volumes unmoved. **Not applied**, and the three `35Abhi07` fragments are the blocker before
 anything else — a repair that draws a fragment of a printed line is worse than the fault.
 
+## 22. The blocker is found: the shape is judged per BLOCK and applied per LINE
+
+2026-08-05, continuing. HEAD at start `e1cb3e43`. **Reproduced first**: `bbgate.py 35Abhi07`
+gives `1746 → 1874 (+128), 165 new, 3 MID-SENTENCE`, exactly §21.4.
+
+### 22.1 It is not the cursor, and both streams agree
+
+`_xc/hy1/frag.py`. The suspicion in §21.4 was that a printed line was arriving split. It is
+not. The needle `Na indriyā na` appears on **239** lines of the builder's `-layout` item
+stream and on **239** lines of `blocks3/`, and `35Abhi07` raw p86 line 33 is one line in
+both. The exact-match cursor of §21.4 was already correct; tightening it changed nothing
+because there was nothing there to tighten.
+
+### 22.2 The three are two shapes, and both are `block_shape` applied to a line
+
+`_xc/hy1/frag3.py` puts each fragment back in its block with the block's own verdict.
+Volume prose measure 410.9, so "full" is `xMax ≥ 385.9`.
+
+**Shape A — a wrapped line inside a genuinely ragged block.** Raw p87, printed **p78**: an
+18-line hanging stack, `full=0.88 term=0.94`, verdict `ragged` — **and that verdict is
+right**. Sixteen of the items are one line each. One is not:
+
+```
+  13  xMax=405.0  FULL | Na cakkhu na cakkhundriyaṁ. . Na indriyā na paññindriyaṁ.
+  14  xMax=331.5       | Na cakkhu na cakkhundriyaṁ. . Na indriyā na       <- wraps
+  15  xMax=240.5       | anaññātaññassāmītindriyaṁ.
+  16  xMax=399.0  FULL | Na cakkhu na cakkhundriyaṁ. . Na indriyā na aññindriyaṁ.
+```
+
+`anaññātaññassāmītindriyaṁ` is too long for the measure, so that one item runs to a second
+line. The block is ragged; **that line is not**.
+
+**Shape B — the width test has no resolution on a two-line block.** Raw p88, printed
+**p79**, items 37 and 38, each `full=0.00 term=0.00`:
+
+```
+   0  x=84.2   xMax=372.3 | 37. Na somanassaṁ na somanassindriyaṁ. . Na indriyā na
+   1  x=103.7  xMax=362.3 | cakkhundriyaṁ -pa-. Na indriyā na aññātāvindriyaṁ.
+```
+
+`block_shape` drops the last line as "short in both shapes", so on a two-line block the
+width test runs on **one** line — and a wrapped line ends short by up to one word width.
+Here the next word is `cakkhundriyaṁ`, **~47pt**, against `TOL = 25.0`. `full` is therefore
+0.00, `MINFULL` fails, and a plainly wrapped block is called `ragged`. **Raising `TOL` is
+not the repair**: 47pt of tolerance would call every stanza justified and destroy §21.2's
+10/10.
+
+### 22.3 Read on the printed page, per the standing method
+
+`pdftoppm -r 115 -png -f 87 -l 88`, `_xc/hy1/pg/frag_35Abhi07-08{7,8}.png`, both read in
+full.
+
+- **p78** — the 18-line stack is one doctrinal item per line, at one indent, no hanging
+  indent, and `anaññātaññassāmītindriyaṁ` visibly overruns onto a second line. Structural
+  everywhere except there.
+- **p79** — items 32–43, each a numbered sentence set as a hanging-indent unit of **two
+  wrapped lines**. The structural boundary is *between* items, which the block map already
+  finds correctly from the leading. The break *inside* an item is typography.
+
+The page settles it: on p79 the patch was restoring a break the edition never made.
+
+### 22.4 Why only three, when twelve items on p79 wrap
+
+**A hypothesis I had, and measured, and it was wrong.** `bbgate.py` computes new lines with
+`x not in set(da[k])`, so I expected the Yamaka's formulaic repetition to be collapsing a
+much larger fault into three visible strings. `_xc/hy1/bbgate2.py` recounts on multisets
+(`Counter(ON) - Counter(OFF)` per ordinal) and returns **165 new / 3 mid-sentence — identical
+to the set gate.** The dedup theory is refuted; each fragment occurs exactly once.
+
+The real reason is that the other ten items on p79 wrap *later*, at `xMax ≥ 385.9`, so
+`full = 1.00`, `justified`, and the patch correctly left them alone. **Items 37 and 38 are
+the two whose first line happens to fall 13pt short.** The fault was never rare — it was
+narrowly *exposed*, by one long word. `bbgate2.py` is kept: the set/multiset agreement is
+worth having on record, and on a less formulaic volume the two could diverge.
+
+### 22.5 The repair — per-line veto, and it is the signal `ragged.py` already has
+
+`ragged.py` uses the line ending as signal 2 but **aggregates it over the block** (`term`,
+a fraction). Used per line it is right on all three:
+
+> a break is restored before a line only if the PREVIOUS printed line ends at a boundary,
+> or the line opens a block.
+
+Implemented in `_BBCursor.__init__` (`build_khu_volume_bb.py`), where the rest of the
+geometry is read; the builder condition gains `and _f[3]`. The terminator set `_BB_TERM` is
+deliberately **the same tuple `bbgate.py` tests, hyphen included** — a line-break hyphen is
+evidence of word continuity across a real printed break (§17, live builder `:6975`) and must
+not withhold anything.
+
+It only ever **withholds** a break, so it under-repairs rather than damages.
+
+### 22.6 Measured
+
+| volume | drawn, before this fix | after | new lines | MID-SENTENCE |
+|---|---|---|---:|---:|
+| `35Abhi07` | 1746 → 1874 | 1746 → **1871** | 160 | **3 → 0** |
+| `29Abhi01` | 1884 → 2062 | unchanged | 337 | 0 |
+| `34KhuA15` | 3204 → 3455 | 3204 → **3455** | 275 | 0 |
+| `27Khu10` | 2853 → 2903 | 2853 → **2902** | 74 | **2 → 1** |
+| `28KhuA09` | 2622 → 2633 | unchanged | 20 | 0 |
+| `20KhuA01`, `06ViT06`, `39Abhi11` | unmoved | unmoved | 0 | 0 |
+
+**Total +614 drawn lines, 866 new, 1 mid-sentence.** The cost of the veto is **4 drawn
+lines**: 3 on `35Abhi07` and 1 on `27Khu10`.
+
+`27Khu10`'s survivor is `Tatridaṁ uddānaṁ`, already verified on the page in §21.4 as a
+**gate false positive** — a real printed line that ends without punctuation. It survives the
+veto because the line after it *opens a block*, which is structural whatever the previous
+line ends in. Its companion (`…evamevaṁ tathāvidho`, a pāda, also a false positive) is the
+one legitimate break now withheld.
+
+**Controls.** Flag off is byte-identical to the live `build_khu_volume.py` (asserted in
+process, not assumed). `letters identical: True` on all seven volumes;
+`sections`/`uddana`/`hide`/`incipit` identical on all seven; `20KhuA01`, `06ViT06` and
+`39Abhi11` unmoved. Spot-check on the artefact: p78's wrapped item is drawn whole as one
+line, and items 37 and 38 likewise.
+
+### 22.7 What this costs the gate, said plainly
+
+`bbgate.py` now tests the same signal the rule uses. It still reads the **produced
+side-map** rather than the block map, so it can still catch a cursor or emission error — but
+it can **no longer independently falsify this rule**, and a clean `bbgate` run is from here
+on weaker evidence than it was in §21.4. §20.2's lesson was that keeping an independent
+measure is what catches the damage. The independent measure this rule now needs is the
+printed page, which is where §22.3 went, and it should be spot-read on each new volume
+rather than trusted from the gate.
+
+### 22.8 One pre-existing fragment, NOT caused by BLOCKBREAK
+
+`35Abhi07` draws `Na anaññātaññassāmīti na indriyaṁ. . Na indriyā na` as a line ending
+mid-word — **identically with the flag off**, so it is in the shipped corpus today. Raw p90
+row 25. `bbgate` cannot see it (it reports only lines the patch creates). Not investigated
+here; recorded so it is not later mistaken for damage from this work.
+
+### 22.9 State
+
+**Nothing applied.** `BLOCKBREAK` stays off, the live builder is untouched, no corpus file
+changed, nothing run with `--write`. The blocker of the 08-06 handoff item 1 is cleared.
+Item 2 — the remaining `katha` volumes, then `pbreak/` re-derived and the full gate set run
+old-against-new — is now unblocked and not started.
+
 ## 8. Not done
 
 The repair itself. The four ordinals' emission paths in `build_khu_volume.py` are
