@@ -273,7 +273,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=0c8695e80f90"></script>
+<script src="../i18n.js?v=0a8273232249"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -403,7 +403,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='0c8695e80f90';
+const BUILD='0a8273232249';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -2176,7 +2176,44 @@ function activeKeys(){return ['canon','A','T'].filter(k=>state.active[k]);}
 // How much of a run is open before the reader asks for the rest, and which runs
 // the reader has already opened.  `OPENRUNS` survives a re-render so that
 // pressing T does not silently re-collapse a commentary the reader opened.
-const RUNOPEN=2; const OPENRUNS=new Set();
+// !!! THE CUT IS A CHARACTER BUDGET, NOT A PARAGRAPH COUNT (2026-08-05, reader:
+// "after how much text does it go?").  It was `RUNOPEN=2` -- show two
+// paragraphs, whatever they are -- and a paragraph is not a unit of length in
+// this corpus.  Measured over all 89,512 of them: median 237 characters, p90
+// 1,891, p99 18,406, longest 191,160; and the per-VOLUME medians differ 24-fold
+// on their own (30KhuA11 97, 09DiT02 2,368).  So "two paragraphs" was anywhere
+// from about two hundred characters to most of a book, and where the control
+// landed had almost nothing to do with how much text you had been shown.
+//
+// 1,500 is derived, not picked: it is about the 70th percentile of what two
+// CONSECUTIVE paragraphs are corpus-wide (p70 1,406, p75 1,734), so the typical
+// run still shows roughly what it showed before while the atypical one stops
+// showing fifty times that.  It leaves the `18Khu01` fixture at 2 shown / 17
+// hidden, which matters: `check_reader_range.js` still asserts something true
+// rather than having been retuned to fit a new number.
+//
+// Characters, never rendered height -- `claude/the_layout_was_an_estimate.md`.
+// The tail is `hidden` and has no height at render; that is the whole reason
+// expanding cannot move what the reader is looking at, and a rule that measured
+// the page would give it one.
+const RUNCHARS=1500; const OPENRUNS=new Set();
+function paraLen(key){
+  const [v,o]=parseKey(key); const c=cache[v]; const pr=c&&c.paras&&c.paras[o];
+  return pr?String(pr.text||'').length:0;
+}
+// Whole paragraphs only, at least one however long it is, and never a control
+// that hides a single paragraph which would itself have fitted -- the button
+// then costs the reader more than it saves.
+function runShow(grp){
+  let n=1, tot=paraLen(grp[0].key);
+  for(let z=1;z<grp.length;z++){
+    const L=paraLen(grp[z].key);
+    if(tot+L>RUNCHARS) break;
+    tot+=L; n=z+1;
+  }
+  if(grp.length-n===1 && paraLen(grp[grp.length-1].key)<=RUNCHARS) n=grp.length;
+  return n;
+}
 window.toggleRun=function(btn){
   const key=btn.dataset.run, box=document.getElementById(btn.dataset.box);
   if(!box) return;
@@ -2565,7 +2602,7 @@ function render(){
           if(k==='A') lastA=grp[grp.length-1].key; else lastT=grp[grp.length-1].key;
           _drew+=grp.length; if(k==='A') _drewA+=grp.length; else _drewT+=grp.length;
           const isOpen=OPENRUNS.has(headKey);
-          const nshow=(grp.length<=RUNOPEN+1)?grp.length:RUNOPEN;
+          const nshow=runShow(grp);
           let body='', rest='';
           grp.forEach((t,gi)=>{
             const blk=((spine===k&&(g0+gi)>0)?_front(t.key):'')
