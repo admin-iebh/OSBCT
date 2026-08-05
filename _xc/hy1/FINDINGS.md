@@ -698,6 +698,61 @@ claimed as a fault here. A block the page sets apart may legitimately live in `s
 (a heading) or `uddana/`, or be front matter. Until each is traced to the map that owns
 it, the number means only "not in `verse/`".
 
+## 17. The cause, located to two lines
+
+`35Abhi07` and `29Abhi01` are both `'katha'` mode in `SPEC`, so the live path is
+`kat_build`. Its `add_prose` (`build_khu_volume.py:6951`) decides every printed line:
+
+```python
+if new_para or not open_prose or prev is None:
+    after.append(t)          # a NEW drawn line -- the printed break is KEPT
+    ...
+joined = hyjoin(prev, t)     # otherwise JOINED -- the printed break is LOST
+```
+
+and `new_para` is nothing but the line's kind (`:7367`):
+
+```python
+add_prose(it[1], kind == 'popen')
+```
+
+`kat_items` assigns that kind. In the sibling `nid_items` the rule is visible in one line
+(`:5044`):
+
+```python
+items.append(('popen' if ind >= base + 3 else 'pcont', t, pg))
+```
+
+**Whether a printed line survives as its own line is decided by its indent, and by nothing
+else.** `vline` → a gāthā block, breaks kept. `popen` → a new entry, break kept. `pcont` →
+joined, break lost. That is the same poverty of evidence behind every fault in this
+document: three one-line glosses at a paragraph indent read as pādas (§9), short prose
+stacked at the paragraph indent read as verse (§11.4), and here the second line of a
+Dukamātikā dyad read as a continuation and swallowed.
+
+**One rule at this site is already correct and should be preserved:** `:6975` forces
+`new_para = False` when the previous line ends in a hyphen, because a hyphen means a word
+split across lines and not a paragraph boundary. That is the §6.2 hyphen, used correctly —
+as evidence about *word continuity*, which is all it can testify to, and never about genre.
+
+### 17.1 What the repair would be, and why it is not made here
+
+The block map supplies exactly the missing evidence: a printed line that begins a new line
+**inside a block the page sets apart** is structural, and `new_para` must be true for it;
+inside a prose paragraph the break is a wrap and joining is right. That is a statement the
+builder can act on and it needs no display column.
+
+It is **not applied** in this session, and the reason is the standing rule. It is a builder
+change, so it requires: the block map joined to `pline`'s page/line indexing; a rebuild of
+the affected volumes; `pbreak/` re-derived (`check_derived` will otherwise report drift);
+`regress`, `check_links`, `check_ordinal`, `check_concordance`, `check_bold_fidelity` and
+`check_layout` re-run; and the whole measured against the printed page before anything is
+written. A builder change made at the end of a long session, on a map built the same day,
+is how the last four regressions happened.
+
+**What is ready:** the fault measured (672 blocks, 865 printed lines), the cause located to
+two lines, and the evidence built and controlled.
+
 ## 8. Not done
 
 The repair itself. The four ordinals' emission paths in `build_khu_volume.py` are
