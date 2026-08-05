@@ -155,6 +155,11 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
    the theme and clears AA in both: light 4.52-5.04, dark 5.95-7.98. */
 .lbtn.noav{opacity:.42;border-style:dashed}
 .jbtn.none{color:var(--mut);border-color:var(--line);border-style:dashed;opacity:.55;cursor:default}
+/* CONDEMNED, NOT ABSENT.  `.none` above is grey, dashed and dead.  This keeps
+   the band's colour and its click -- the link resolves -- and says so with
+   weight alone, so the two states cannot be read as the same state. */
+.jbtn.dim{opacity:.5;border-style:dotted;font-weight:500}
+.jbtn.dim:hover{opacity:1}
 .lbtn.on{color:var(--panel)}.lbtn.on[data-k=canon]{background:var(--canon);border-color:var(--canon)}.lbtn.on[data-k=A]{background:var(--comm);border-color:var(--comm)}.lbtn.on[data-k=T]{background:var(--tika);border-color:var(--tika)}
 .viewtog,.rctrl{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
 .viewtog button,.rctrl button{font:inherit;font-size:12px;color:var(--mut);background:var(--panel);border:none;padding:6px 11px;cursor:pointer}
@@ -268,7 +273,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=0e6b648402fc"></script>
+<script src="../i18n.js?v=0c8695e80f90"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -398,7 +403,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='0e6b648402fc';
+const BUILD='0c8695e80f90';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -1462,27 +1467,37 @@ function bandsFor(vol){
 // `targetsFor` now carries that paragraph's key as `src`, so the block's own
 // tools read the very record that produced them.  No rev map, no cache race,
 // no unknown.
-function hasBand(key,tg,src){
+// !!! ONE SOURCE OF TRUTH FOR "WHICH DIRECT TARGETS DOES THIS PARAGRAPH HAVE".
+// `hasBand` had four branches and the `direct`-only filter once went on only
+// one of them, so the canon Aratisutta and its own commentary block gave two
+// answers from one fact (see the note further down).  Dimming needs the ENTRY,
+// not just the boolean, and writing a second four-branch walker to fetch it
+// would rebuild that bug on purpose.  So the walk lives here once: `hasBand`
+// and `dimOf` are both thin readers of it.
+//   null    -- not known yet (a map is still cold)
+//   'self'  -- this band IS the paragraph's own, or its spine; no entry exists
+//   []      -- known, and there are none
+function directTargets(key,tg,src){
   const SLOT={A:'commentary',T:'subcommentary'};
   const [vol,ord]=parseKey(key); const {mine,bands}=bandsFor(vol);
-  const spine=bands[0]; if(tg===mine) return true;
+  const spine=bands[0]; if(tg===mine) return 'self';
   if(src&&mine!==spine){
     const [sv,so]=parseKey(src);
     const sl=(sv===state.canonVol&&state.links)?state.links:linkCache[sv];
     if(sl){
-      if(tg===(bandsFor(sv).bands[0])) return true;   // the paragraph it came from
-      return ((sl[String(so)]||{})[SLOT[tg]]||[]).filter(t=>t.state==='direct').length>0;
+      if(tg===(bandsFor(sv).bands[0])) return 'self';   // the paragraph it came from
+      return ((sl[String(so)]||{})[SLOT[tg]]||[]).filter(t=>t.state==='direct');
     }
   }
   if(mine===spine){
     const links=(vol===state.canonVol&&state.links)?state.links:linkCache[vol];
     if(!links) return null;
-    if(tg===spine) return true;
-    return ((links[String(ord)]||{})[SLOT[tg]]||[]).filter(t=>t.state==='direct').length>0;
+    if(tg===spine) return 'self';
+    return ((links[String(ord)]||{})[SLOT[tg]]||[]).filter(t=>t.state==='direct');
   }
   const rev=revCache[vol]; if(!rev) return null;
-  const c=(rev[String(ord)]||{}).canon; if(!c) return false;
-  if(tg===spine) return true;
+  const c=(rev[String(ord)]||{}).canon; if(!c) return [];
+  if(tg===spine) return 'self';
   // !!! AND THE SAME FILTER HERE (2026-08-03, reader: "you removed the T from
   // the Aratisutta, only A remains, but in the A of the Aratisutta there is a
   // T button").  `hasBand` has TWO branches -- the spine's own paragraph, and
@@ -1492,7 +1507,39 @@ function hasBand(key,tg,src){
   // same canon record through the other branch, still offered one.  Two
   // answers from one fact.
   const [cv,co]=parseKey(c); const links=(cv===state.canonVol&&state.links)?state.links:linkCache[cv]; if(!links) return null;
-  return ((links[String(co)]||{})[SLOT[tg]]||[]).filter(t=>t.state==='direct').length>0;
+  return ((links[String(co)]||{})[SLOT[tg]]||[]).filter(t=>t.state==='direct');
+}
+function hasBand(key,tg,src){
+  const r=directTargets(key,tg,src);
+  return r===null?null:(r==='self'?true:r.length>0);
+}
+// The condemnation of a link, or null.  `pipeline/mark_condemned.py` writes it
+// onto the link entry at BUILD TIME and this only reads it -- deliberately, per
+// `claude/decision_dim_the_condemned_links.md`: a verdict computed here from a
+// second map can come back null on a cold cache and silently show a condemned
+// link as though nothing were wrong, which is the one direction that must not
+// fail.  If the entry is in hand, so is its verdict.
+function dimOf(key,tg,src){
+  const r=directTargets(key,tg,src);
+  if(!r||r==='self'||!r.length) return null;
+  return r[0].dim||null;
+}
+// Short enough for a chip, specific enough to be checkable.  The two condemned
+// families do NOT share wording: a wrong volume and a wrong sutta inside the
+// right volume are different things to a reader, and the reason must name WHICH
+// check fired.  Only `ordinal` is built so far; `concordance` is the 3,163 and
+// is not wired yet, so an unknown `why` says the honest minimum rather than
+// guessing at one of the two.
+function dimReason(d){
+  if(!d) return '';
+  if(d.why==='ordinal'){
+    let s=TIP('dim_ordinal','The linked passage states it is glossing sutta %1 of the vagga, not sutta %2.')
+            .replace('%1',d.says).replace('%2',d.expected);
+    if(d.name==='concurs') s+=' '+TIP('dim_name_concurs','The section name agrees it is the wrong passage.');
+    else if(d.name==='dissents') s+=' '+TIP('dim_name_dissents','The section name disagrees with this verdict.');
+    return s+' '+TIP('dim_opens','It still opens.');
+  }
+  return TIP('dim_generic','An independent check is against this link.')+' '+TIP('dim_opens','It still opens.');
 }
 // cross-layer jump buttons — only for bands this work actually has, and
 // only where this paragraph really has one
@@ -1516,6 +1563,14 @@ function jbtns(kind,key,src){
     if(h===false) return '<button class="jbtn none" disabled title="'
       + escA(TIP('band_para','No %s passage could be identified for this paragraph.').replace('%s',NAME[tg]))
       + '">'+tg+'</button>';
+    // DIMMED, NOT SUPPRESSED.  The button keeps its colour and its click; only
+    // the weight drops and the tooltip changes.  `.jbtn.none` is grey, dashed
+    // and disabled and means "there is nothing here"; this is a different
+    // statement -- "there is something here and the evidence is against it" --
+    // and it must not be mistaken for the other at a glance.
+    const d=dimOf(key,tg,src);
+    if(d) return '<button class="jbtn dim" style="color:'+COL[tg]+';border-color:'+COL[tg]+'" title="'
+      + escA(dimReason(d))+'" onclick="jumpFrom(\''+key+'\',\''+tg+'\')">'+tg+'</button>';
     return '<button class="jbtn" style="color:'+COL[tg]+';border-color:'+COL[tg]+'" title="'
       + escA(TIP('tip_goto','Go to'))+' '+NAME[tg]+'" onclick="jumpFrom(\''+key+'\',\''+tg+'\')">'+tg+'</button>';
   }).join('');
