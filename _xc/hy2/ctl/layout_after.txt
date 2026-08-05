@@ -1,0 +1,148 @@
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 305 rules, 0 descents   #page-rules-inside-paragraphs 305 checked, 5 misplaced (1 flushed at end of paragraph, 4 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 01Vin01     661 ¶, incipit x1
+        - page-rule-repeated :: 1 adjacent rule(s) carry the page already drawn
+        - page-rule-misplaced :: 01Vin01 p.70 want Sāvatthiyācaturomuṭṭhīdv got 1Khittacittassavedanāṭṭa
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 319 rules, 0 descents   #page-rules-inside-paragraphs 319 checked, 3 misplaced (0 flushed at end of paragraph, 3 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 02Vin02     1242 ¶, incipit x2
+        - page-rule-repeated :: 2 adjacent rule(s) carry the page already drawn
+        - page-rule-misplaced :: 02Vin02 p.43 want paṭhamassacajhānassalābh got 1ArahattaphalañcaSyā
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 433 rules, 0 descents   #page-rules-inside-paragraphs 433 checked, 16 misplaced (0 flushed at end of paragraph, 16 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 03Vin03     476 ¶, incipit x1
+        - page-rule-misplaced :: 03Vin03 p.55 want Māgadhikākulaputtāsamaṇe got 1ApalokāmaKa1BhagavāteKa
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 433 rules, 0 descents   #page-rules-inside-paragraphs 433 checked, 15 misplaced (0 flushed at end of paragraph, 15 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 04Vin04     454 ¶, incipit x1
+        - page-rule-misplaced :: 04Vin04 p.79 want Tassuddānaṁ got 1AnuppannānijāyantiSīSyā
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 289 rules, 0 descents   #page-rules-inside-paragraphs 289 checked, 4 misplaced (2 flushed at end of paragraph, 2 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 05Vin05     500 ¶, incipit x1
+        - page-rule-misplaced :: 05Vin05 p.5 want Tassuddānaṁ got Methunādinnādānañcamanus
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 167 rules, 0 descents   #page-rules-inside-paragraphs 167 checked, 0 misplaced (0 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)
+  ok   06Di01      559 ¶, incipit x1
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 219 rules, 0 descents   #page-rules-inside-paragraphs 219 checked, 3 misplaced (0 flushed at end of paragraph, 3 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 07Di02      441 ¶, incipit x1
+        - page-rule-misplaced :: 07Di02 p.123 want pādesirasāvandatītiAthak got itthannāmobhanteMallosap
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 210 rules, 0 descents   #page-rules-inside-paragraphs 210 checked, 1 misplaced (0 flushed at end of paragraph, 1 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 08Di03      360 ¶, incipit x1
+        - page-rule-misplaced :: 08Di03 p.149 want Jūtappamādassachaādīnavā got 4KuvaṁKaSīI
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 314 rules, 0 descents   #page-rules-inside-paragraphs 314 checked, 9 misplaced (0 flushed at end of paragraph, 9 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 09Ma01      511 ¶, incipit x1
+        - page-rule-repeated :: 6 adjacent rule(s) carry the page already drawn
+        - page-rule-misplaced :: 09Ma01 p.119 want Sāvatthiṁpiṇḍāyapāvisimh got aññatitthiyānaṁparibbāja
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 338 rules, 0 descents   #page-rules-inside-paragraphs 338 checked, 14 misplaced (0 flushed at end of paragraph, 14 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 10Ma02      485 ¶, incipit x1
+        - page-rule-repeated :: 9 adjacent rule(s) carry the page already drawn
+        - page-rule-misplaced :: 10Ma02 p.51 want sampajjamānaṁkukkuravata got assūnipavattesiAthakhoBh
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 260 rules, 0 descents   #page-rules-inside-paragraphs 260 checked, 17 misplaced (0 flushed at end of paragraph, 17 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 11Ma03      462 ¶, incipit x1
+        - page-rule-repeated :: 9 adjacent rule(s) carry the page already drawn
+        - page-rule-misplaced :: 11Ma03 p.19 want āneñjaṁTayidaṁbhikkhaveT got samaṇabrāhmaṇāsaññiṁattā
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 376 rules, 0 descents   #page-rules-inside-paragraphs 376 checked, 2 misplaced (1 flushed at end of paragraph, 1 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 12Sam01     517 ¶, incipit x2
+        - page-rule-misplaced :: 12Sam01 p.146 want Gaṅgāyasotasmiṁgahītanāv got Taṁtepurāṇaṁvatasīlavatt
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 428 rules, 0 descents   #page-rules-inside-paragraphs 428 checked, 0 misplaced (0 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)
+  ok   13Sam02     722 ¶, incipit x2
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 303 rules, 0 descents   #page-rules-inside-paragraphs 303 checked, 1 misplaced (0 flushed at end of paragraph, 1 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 14Sam03     598 ¶, incipit x1
+        - page-rule-misplaced :: 14Sam03 p.115 want Phāsuvihārasutta got aṭṭhikasaññāsahagataṁupe
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 445 rules, 0 descents   #page-rules-inside-paragraphs 445 checked, 2 misplaced (1 flushed at end of paragraph, 1 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 15An01      952 ¶, incipit x4
+        - page-rule-misplaced :: 15An01 p.265 want Cittegahapatirakkhitekāy got 
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 424 rules, 0 descents   #page-rules-inside-paragraphs 424 checked, 0 misplaced (0 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)
+  ok   16An02      497 ¶, incipit x3
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 481 rules, 0 descents   #page-rules-inside-paragraphs 481 checked, 0 misplaced (0 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)
+  ok   17An03      426 ¶, incipit x4
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 174 rules, 0 descents   #page-rules-inside-paragraphs 174 checked, 87 misplaced (8 flushed at end of paragraph, 79 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 18Khu01     1867 ¶, incipit x5
+        - page-rule-repeated :: 1 adjacent rule(s) carry the page already drawn
+        - page-rule-misplaced :: 18Khu01 p.79 want samayenaBhagavāsattāhaṁe got 1SuriyovaSīSyāKaṁI
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 4 rules, 0 descents   #page-rules-inside-paragraphs 4 checked, 3 misplaced (2 flushed at end of paragraph, 1 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 19Khu02     3657 ¶, incipit x4
+        - page-rule-misplaced :: 19Khu02 p.33 want Tassuddānaṁ got 1BhadditthitācaSyā2Nandā
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 4 rules, 0 descents   #page-rules-inside-paragraphs 4 checked, 3 misplaced (2 flushed at end of paragraph, 1 on the wrong letters; 1 anchored on a line under 10 letters)
+  FAIL 20Khu03     4461 ¶, incipit x1
+        - page-rule-repeated :: 1 adjacent rule(s) carry the page already drawn
+        - page-rule-misplaced :: 20Khu03 p.59 want Tassuddānaṁ got 
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 3 rules, 0 descents   #page-rules-inside-paragraphs 3 checked, 1 misplaced (1 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 21Khu04     4857 ¶, incipit x4
+        - page-rule-misplaced :: 21Khu04 p.73 want ItthaṁsudaṁāyasmāSālamaṇ got 
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 1 rules, 0 descents   #page-rules-inside-paragraphs 1 checked, 0 misplaced (0 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)
+  ok   22Khu05     2968 ¶, incipit x1
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 5 rules, 0 descents   #page-rules-inside-paragraphs 5 checked, 5 misplaced (0 flushed at end of paragraph, 5 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 23Khu06     3675 ¶, incipit x1
+        - page-rule-misplaced :: 23Khu06 p.114 want Pañcasatāpañcasatā1dijak got 1SuyyatiKa1SīIpotthakesu
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 375 rules, 0 descents   #page-rules-inside-paragraphs 375 checked, 0 misplaced (0 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)
+  ok   24Khu07     210 ¶, incipit x1
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 249 rules, 0 descents   #page-rules-inside-paragraphs 249 checked, 1 misplaced (0 flushed at end of paragraph, 1 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 25Khu08     335 ¶, incipit x1
+        - page-rule-misplaced :: 25Khu08 p.21 want Pārāyanatthutigāthā got 3PārāyaṇaṁtvevaSīṬṭha
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 370 rules, 0 descents   #page-rules-inside-paragraphs 370 checked, 1 misplaced (1 flushed at end of paragraph, 0 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 26Khu09     404 ¶, incipit x1
+        - page-rule-misplaced :: 26Khu09 p.222 want ṄaPariyādānaṭṭhaniddesa got 
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 271 rules, 0 descents   #page-rules-inside-paragraphs 271 checked, 3 misplaced (0 flushed at end of paragraph, 3 on the wrong letters; 0 anchored on a line under 10 letters)
+  FAIL 27Khu10     271 ¶, incipit x2
+        - page-rule-misplaced :: 27Khu10 p.3 want Tatridaṁuddānaṁ got Taṇhācaavijjāpicalobhodo
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 325 rules, 0 descents   #page-rules-inside-paragraphs 325 checked, 15 misplaced (0 flushed at end of paragraph, 15 on the wrong letters; 1 anchored on a line under 10 letters)
+  FAIL 28Khu11     258 ¶, incipit x1
+        - page-rule-misplaced :: 28Khu11 p.237 want ñāyaṁdhammaṁkusalantiYad got 1PicchitaṁSīI1Rājagahikā
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
+       #page-rules-ascending 116 rules, 0 descents   #page-rules-inside-paragraphs 116 checked, 5 misplaced (3 flushed at end of paragraph, 2 on the wrong letters; 2 anchored on a line under 10 letters)
+  FAIL 29Abhi01    1780 ¶, incipit x1
+        - page-rule-misplaced :: 29Abhi01 p.66 want Cattāribrahmavihārajhānā got 
+OSBCT reader build: 0e6b648402fc
+OSBCT nav loaded: layers= 3 canon nikāyas= Vinayapiṭaka, Dīghanikāya, Majjhimanikāya, Saṁyuttanikāya, Aṅguttaranikāya, Khuddakanikāya, Abhidhammapiṭaka
