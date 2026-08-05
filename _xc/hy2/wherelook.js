@@ -29,8 +29,14 @@ function boot(){
 const VOL=process.argv[2]||'19Khu02', MAX=+(process.argv[3]||8);
 (async()=>{
   const w=boot(); await wait(400);
-  const st=w.eval('state'); st.active.A=true; st.active.T=true;
-  await w.openKey(VOL+'#0','canon'); await wait(1200);
+  // PRESS THE BUTTON, do not set state.active — the handler clears the filter,
+  // calls ensureBandVols and re-renders through keepPlace.  Setting the flag
+  // renders nothing and reports zero controls, which is what the first version
+  // of this file did.
+  await w.openKey(VOL+'#0','canon'); await wait(1500);
+  const ab=[...w.document.querySelectorAll('.lbtn')].find(b=>b.dataset.k==='A');
+  if(!ab){ console.log('no A layer button'); process.exit(1); }
+  ab.click(); await wait(4000);
   const doc=w.document;
   const paras=JSON.parse(fs.readFileSync('site/'+VOL+'.json','utf8')).paragraphs;
   const rows=[];
@@ -52,7 +58,11 @@ const VOL=process.argv[2]||'19Khu02', MAX=+(process.argv[3]||8);
   });
   rows.sort((a,b)=>b.hidden-a.hidden);
   console.log('%s — %d Read-more controls on the opened page\n', VOL, rows.length);
-  console.log('%-9s %-5s %-6s %-7s %-7s %s','printed ¶','band','shown','hidden','chars','first line shown');
-  rows.slice(0,MAX).forEach(r=>console.log('%-9s %-5s %-6s %-7s %-7s %s',
-    r.printed, r.band, r.shown, r.hidden, r.chars, r.first.replace(/\s+/g,' ')));
+  // Node's console.log understands %s but NOT printf width specifiers, so
+  // '%-9s' prints literally.  padEnd, not a format string.
+  const P=(v,n)=>String(v).padEnd(n);
+  console.log(P('printed ¶',10)+P('band',5)+P('shown',6)+P('hidden',7)+P('chars',7)+'first line shown');
+  rows.slice(0,MAX).forEach(r=>console.log(
+    P(r.printed,10)+P(r.band,5)+P(r.shown,6)+P(r.hidden,7)+P(r.chars,7)
+    +r.first.replace(/\s+/g,' ')));
 })();
