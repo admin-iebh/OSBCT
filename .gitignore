@@ -154,3 +154,14 @@ _xc/linksk_named/
 # sandbox and this machine. Six of these were swept into commit 649b0059 before
 # this line existed.
 _xfer/
+
+# The 2026-08-05 line-break-hyphen measurement. Same reasoning as the _xc/ and
+# _vocab/freq/ rules above: 118 census shards plus two full row dumps, 2.8 MB,
+# regenerated exactly by `_xc/hy1/census.py` and `check_page_fidelity --dump`
+# from the PDFs and site/. The FINDINGS and the three probe scripts beside them
+# ARE tracked -- they are how the numbers can be re-run; only the output is not.
+# Written as `*` on the contents, not on the directory, because git cannot
+# re-include anything under an excluded directory (see the lookup_eval note).
+_xc/hy1/cen/
+_xc/hy1/cache/
+_xc/hy1/*.rows.json
