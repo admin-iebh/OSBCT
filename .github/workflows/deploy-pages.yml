@@ -36,24 +36,45 @@ jobs:
         uses: actions/checkout@v4
       - name: Configure Pages
         uses: actions/configure-pages@v5
-      # !!! THE ARTIFACT WAS OVER THE LIMIT AND THE DEPLOY FAILED (8c86ae0,
-      # 2026-08-06, "All jobs have failed" after 11m31s).  `site/` is 1.62 GB
-      # and GitHub Pages publishes at most 1 GB.  Two things account for the
-      # excess and a reader fetches neither: 478 MB of `.bak*`/`.pre*` working
-      # history, and 362 MB of plain JSON in `lookup_eval/dpd/` whose `.gz`
-      # sibling is what `panel.js` actually requests.  1.62 - 0.478 - 0.362 =
-      # 0.80 GB.
-      #
-      # This prunes the CHECKOUT, never the repository: the history stays,
-      # only the uploaded copy is smaller.  It prints what it removes, so the
-      # deploy log says why the published tree differs from the repo.
-      - name: Prune what is not served, so the artifact fits
-        run: python3 pipeline/prune_for_pages.py --write
+      # !!! A PRUNE STEP STOOD HERE FOR ONE COMMIT AND ITS PREMISE WAS WRONG.
+      # It was added believing `site/` to be 1.62 GB against a 1 GB cap.  That
+      # was a measurement of the LOCAL WORKING TREE, which carries untracked
+      # build output.  What CI checks out is **0.81 GB in 26,576 files** —
+      # already under the cap.  `lookup_eval/dpd/*.json` is gitignored already
+      # (see .gitignore:140, which records that this was solved once before);
+      # only the `.gz` is tracked.  Of 1,751 backup files, 18 are tracked.
+      # The step saved ~16 MB and was removed rather than left as an
+      # unjustified moving part in the one workflow that publishes the site.
+      # `pipeline/prune_for_pages.py` is kept, unwired, as the record.
 
       - name: Upload site/ as the Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./site
+      # !!! THE REAL CAUSE OF THE FAILING DEPLOYS, AND IT IS A CLOCK.
+      # `actions/deploy-pages` waits for GitHub to finish publishing and gives
+      # up after `timeout`, whose default is 600000 ms — ten minutes — with
+      # "Timeout reached, aborting!".  Measured on this repository:
+      #
+      #   #110 8c86ae0  FAILED   11m41s
+      #   #111 9afc115  ok        9m36s
+      #   #112 abeedfb  FAILED   11m40s
+      #   #105/#107/#108 ok      ~2m
+      #
+      # Both failures sit at ten minutes plus overhead and the slow success at
+      # 9m36s, just under.  It is a race, not a fault: 26,576 files take
+      # GitHub a variable time to publish and sometimes that is longer than
+      # the action will wait.
+      #
+      # #112 is what rules out every content explanation, including the one I
+      # gave first: it changed A SINGLE MARKDOWN FILE.  The site bytes were
+      # identical to #111, which had just succeeded.
+      #
+      # 30 minutes costs nothing when the deploy is quick — the action returns
+      # as soon as Pages reports done — and it removes a coin-flip from the
+      # only step that publishes anything.
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          timeout: 1800000
