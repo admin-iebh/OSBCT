@@ -2857,6 +2857,26 @@ function tipNode(){
   return TIPEL;
 }
 function tipHide(){ if(TIPEL) TIPEL.style.display='none'; }
+// !!! THE GEOMETRY IS A PURE FUNCTION SO IT CAN BE ASSERTED.  jsdom has no
+// layout engine -- every `getBoundingClientRect` comes back zeroed -- so a gate
+// that hovered an element and read the tooltip's position would compare 0 with
+// 0 and pass on any rule whatsoever.  Feeding synthetic rectangles to this is
+// the only non-vacuous way to check the placement.  `pipeline/check_tipplace.js`.
+//
+// `above` is a PREFERENCE, not a command: each side still yields to the other
+// when its own side has no room, so nothing can be pushed off the viewport.
+function tipPlace(r, b, vw, vh, above){
+  const M=6, GAP=7;
+  let left=r.left+r.width/2-b.width/2;
+  left=Math.max(M, Math.min(left, vw-b.width-M));       // clamp inside the viewport
+  const fitsAbove = r.top-GAP-b.height >= M;
+  const fitsBelow = r.bottom+GAP+b.height <= vh-M;
+  let top;
+  if(above) top = fitsAbove ? r.top-GAP-b.height : (fitsBelow ? r.bottom+GAP : M);
+  else      top = fitsBelow ? r.bottom+GAP : (fitsAbove ? r.top-GAP-b.height : M);
+  if(top<M) top=M;
+  return {left:left, top:top};
+}
 function tipShow(el){
   const txt=el.getAttribute('data-tip'); if(!txt){ tipHide(); return; }
   const d=tipNode();
@@ -2865,13 +2885,18 @@ function tipShow(el){
   // flipped, and it cannot be measured while display:none
   d.style.visibility='hidden'; d.style.display='block'; d.style.left='0px'; d.style.top='0px';
   const r=el.getBoundingClientRect(), b=d.getBoundingClientRect();
-  const vw=document.documentElement.clientWidth, vh=document.documentElement.clientHeight, M=6;
-  let left=r.left+r.width/2-b.width/2;
-  left=Math.max(M, Math.min(left, vw-b.width-M));      // clamp inside the viewport
-  let top=r.bottom+7;
-  if(top+b.height>vh-M) top=r.top-b.height-7;          // no room below: go above
-  if(top<M) top=M;
-  d.style.left=left+'px'; d.style.top=top+'px'; d.style.visibility='visible';
+  // !!! BELOW IS THE WRONG DEFAULT INSIDE THE WORD PANEL (2026-08-05, reader,
+  // with a screenshot).  The panel is a narrow column whose tab strip sits at
+  // the top, so `r.bottom+7` is not empty space -- it is the panel's own first
+  // content, and hovering the Abhidhāna tab drew its tooltip straight over the
+  // `wl_eval` notice and the DPD source line beneath it.  Nothing was wrong
+  // with the tooltip; it was pointed at the text it was explaining.
+  // Above the tab is the panel header, which the reader is not reading.
+  // `data-tip-above` lets anything else opt in without naming a container here.
+  const above = el.hasAttribute('data-tip-above') || !!(el.closest && el.closest('#wl'));
+  const p=tipPlace(r, b, document.documentElement.clientWidth,
+                   document.documentElement.clientHeight, above);
+  d.style.left=p.left+'px'; d.style.top=p.top+'px'; d.style.visibility='visible';
 }
 (function(){
   const tgt=e=>e.target&&e.target.closest?e.target.closest('[data-tip]'):null;
