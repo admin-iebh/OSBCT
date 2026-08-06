@@ -47,10 +47,17 @@ identifiers:
   - type: doi
     value: "10.5281/zenodo.21495338"
     description: "Zenodo concept DOI — all versions; resolves to the latest"
-  # v2.2.0 (2 August 2026) has NO DOI recorded here.  It was tagged and, so far
-  # as this file knows, never deposited.  Left as a gap rather than filled with
-  # a guess: an invented DOI in a citation file is worse than a missing one.
-  # If it was deposited, add it; if it was not, the v2.3.0 deposit supersedes it.
+  # !!! EVERY DEPOSIT IS LISTED HERE, and the list is now complete.  v2.2.0 was
+  # missing from this file for four days -- not because it was never deposited,
+  # but because nothing added the line.  It exists: 10.5281/zenodo.21760727.
+  # Checked against the Zenodo record's own Versions panel, 2026-08-06, which is
+  # also where the concept DOI above was confirmed as `Cite all versions`.
+  - type: doi
+    value: "10.5281/zenodo.21826574"
+    description: "Zenodo archive of v2.3.0 (6 August 2026)"
+  - type: doi
+    value: "10.5281/zenodo.21760727"
+    description: "Zenodo archive of v2.2.0 (2 August 2026)"
   - type: doi
     value: "10.5281/zenodo.21727002"
     description: "Zenodo archive of v2.1.0 (31 July 2026)"
