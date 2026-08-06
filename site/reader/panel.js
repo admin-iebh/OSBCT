@@ -810,11 +810,25 @@ var CSS = ''
 + '#wl .wl-tabs button[aria-selected=true]{background:var(--panel);color:var(--accent)}'
 + '#wl .wl-tabs button.dis{opacity:.42;cursor:default}'
 + '#wl .wl-tabs button .wl-n{font-weight:400;opacity:.7}'
-+ '#wl .wl-tabs button[data-tip]:hover::after{content:attr(data-tip);position:absolute;'
-+ 'top:calc(100% + 5px);left:0;z-index:70;width:max-content;max-width:min(260px,70vw);'
-+ 'white-space:normal;text-align:left;font:400 12px/1.4 Inter,system-ui,sans-serif;'
-+ 'color:#fff;background:#3a3126;padding:6px 8px;border-radius:5px;'
-+ 'box-shadow:0 2px 8px rgba(0,0,0,.3);pointer-events:none}'
+// !!! THE SECOND TOOLTIP LIVED HERE, AND IT IS WHY THE READER SAW TWO
+// (2026-08-05, screenshot: the DPD tab drawing "Digital Pāḷi Dictionary
+// (Bodhirasa) — CC BY-NC-SA 4.0" twice at once).
+//
+// This rule drew a CSS-only tooltip from `data-tip` with `::after`.  reader2's
+// delegated `mouseover` handler ALSO fires on every `[data-tip]` and draws
+// `#tiptip` from the same attribute.  One attribute, two renderers, both
+// correct on their own terms and both visible together.  Moving `#tiptip`
+// above the tab did not fix it — it separated them, which is how the second
+// one became obvious.
+//
+// The `::after` is the weaker of the two and it is the one that goes: it is
+// `position:absolute` inside the panel so the panel's own overflow can clip
+// it, it is pinned `top:calc(100% + 5px)` with no flip and no viewport
+// clamping, and being a pseudo-element it cannot be inspected by any gate.
+// `#tiptip` is rendered on <body>, cannot be clipped, flips and clamps, and
+// prefers ABOVE inside `#wl` so it no longer covers the panel's own notice.
+//
+// Nothing replaces this rule: the tabs keep `data-tip` and reader2 draws it.
   // !!! THE PANEL FOLLOWS THE READER'S OWN TEXT SIZE.  This was 13.5px, flat,
   // so the A- / A+ buttons in the top bar moved the canon text and did nothing
   // at all to the pane holding the definitions -- the one place a reader who

@@ -95,6 +95,20 @@ const rect=(l,t,w,h)=>({left:l,top:t,width:w,height:h,right:l+w,bottom:t+h});
   out.setAttribute('data-tip-above','');
   ok('5. anything may opt in with data-tip-above', out.hasAttribute('data-tip-above'), true);
 
+  // 6. ONE ATTRIBUTE, ONE RENDERER.
+  // The reader saw TWO tooltips and the cause was not placement: panel.js
+  // carried `#wl .wl-tabs button[data-tip]:hover::after{content:attr(data-tip)}`
+  // — a CSS-only tooltip — while reader2's delegated mouseover drew `#tiptip`
+  // from the same attribute.  Both fired.  Moving one of them above the tab
+  // separated them and made the duplicate obvious rather than fixing it.
+  //
+  // jsdom computes no pseudo-elements, so no DOM assertion can see a `::after`
+  // tooltip; this has to be a source check or it cannot be a check at all.
+  const srcs=['site/reader/panel.js','site/reader/reader2.html'];
+  const renderers=srcs.filter(f=>/content\s*:\s*attr\(data-tip\)/.test(fs.readFileSync(f,'utf8')));
+  ok('6. no CSS rule renders data-tip — #tiptip is the only renderer',
+     renderers.length===0, renderers);
+
   console.log('\n%d passed, %d failed', pass, fail);
   process.exit(fail?1:0);
 })();
