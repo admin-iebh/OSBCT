@@ -607,8 +607,35 @@ function resolveTyped(q) {
     if (best !== null) return best;
     if (o[w] !== undefined) return w;
     var lc = w.toLowerCase();
-    return o[lc] !== undefined ? lc : null;
+    if (o[lc] !== undefined) return lc;
+    // !!! AND IF THE CORPUS DOES NOT HAVE IT, ASK THE DICTIONARIES BEFORE
+    // SAYING NO.  Everything above this line queries `lookup/freq/`, which is
+    // the set of words that OCCUR IN THE TIPIṬAKA.  So the search box was
+    // gated on the corpus while the panel it opens is mostly dictionaries, and
+    // a headword the edition never inflects bare could not be typed at all.
+    // That is the `atappaka` report of 2026-08-05: the word is in the
+    // Abhidhāna and in the APD, the corpus has only `atappakaṁ`, `atappake`,
+    // `atappakena`, `atappako`, and the box answered "not found".
+    // A word the reader can read in a dictionary must be a word the reader can
+    // type. Only reached when the corpus has already missed, so it costs
+    // nothing on the common path.
+    return inDicts(w).then(function (hit) {
+      if (hit) return w;
+      return lc === w ? null : inDicts(lc).then(function (h2) { return h2 ? lc : null; });
+    });
   }).catch(function () { return null; });
+}
+// Is this word a KEY in any dictionary the panel serves?  Not "does it look
+// like a word" and not a fold search -- an exact key, which is what `lookup`
+// will go on to fetch.  PED ships publicly; `lem` and `dpd` are the evaluation
+// store and `elook` already returns null when that is switched off, so this
+// answers "no" for a reader who has turned those sources off, which is right.
+function inDicts(w) {
+  return Promise.all([
+    look('ped', w).catch(function () { return null; }),
+    elook('lem', w).catch(function () { return null; }),
+    elook('dpd', w).catch(function () { return null; })
+  ]).then(function (r) { return !!(r[0] || r[1] || r[2]); });
 }
 function look(set, key) {
   return manifest().then(function () {
@@ -1325,8 +1352,30 @@ function lookup(word, paraEl, inPanel) {
         : Promise.resolve([]);
       // the evaluation store: form -> {h: DPD headwords, b: base lemmas},
       // then one fetch per headword and per lemma
+      // !!! THE EVALUATION STORE WAS ENTERED THROUGH `form` AND NOWHERE ELSE,
+      // AND `form` HOLDS ONLY WHAT THE CORPUS INFLECTS (2026-08-05, reader:
+      // "when I search atappaka it does not find anything, however this word is
+      // in the Tipiṭaka Pāḷi-Myanmā Abhidhāna").
+      //
+      // `atappaka` IS in the store — `lookup_eval/lem/ata.json`, with its
+      // Abhidhāna gloss and its APD entry. What `form` carries is `atappakaṁ`,
+      // `atappake`, `atappakena`, `atappakañca`, `atappakataraṁ`: the surface
+      // forms the edition happens to inflect. The bare headword is not a
+      // surface form, so `fr` was null and the two sets that DO hold the word
+      // were never asked. The dictionary was keyed by exactly the thing the
+      // reader typed, and the one path in was keyed by something else.
+      //
+      // Measured over the whole store, this is not one word:
+      //     34,821 of 52,757 lemma entries — 66.0% — unreachable
+      //     57,198 of 74,146 DPD headwords — 77.1% — unreachable
+      //
+      // The repair is to treat a `form` miss as "then the word may BE a lemma
+      // or a headword", which is what a reader typing a dictionary word means.
+      // It reuses the machinery below unchanged: the two extra fetches happen
+      // only on the miss path, and `lem`/`dpd` misses are already filtered out,
+      // so a word in neither still ends as null exactly as before.
       var pEval = elook('form', word).then(function (fr) {
-        if (!fr) return null;
+        if (!fr) fr = {h: [word], b: [word]};
         return Promise.all([
           Promise.all((fr.h || []).map(function (h) {
             return elook('dpd', h).then(function (e) { return {h: h, e: e}; }); })),
