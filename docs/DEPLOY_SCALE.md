@@ -63,6 +63,24 @@ to be.** The cap is `cap_bytes: 150000`; the DPD shards average **3.8 KB** and 9
 under 10 KB. They are numerous because the adaptive prefix splits much more finely than
 the cap requires, not because they are full.
 
+## 2a. The two questions, which are not the same question
+
+An earlier draft of this listed three *places* to move the files — R2, jsDelivr, a second
+Cloudflare Pages project — and then three *options* A/B/C in which A was resharding. That
+conflated two different decisions and is worth separating once:
+
+| | question | answers |
+|---|---|---|
+| **Do we move the files at all?** | | **A** stays on GitHub Pages and makes fewer files |
+| **If we move them, where to?** | | **B** Cloudflare R2 · **C** jsDelivr |
+
+**Resharding is not a hosting choice.** It changes nothing about where anything lives; it
+merges tiny shards into fewer, larger ones so GitHub Pages has less to publish.
+
+**A second Cloudflare Pages project is not on the list** because it fails on arrival: the
+free plan caps at **20,000 files** and the dictionary stores alone are 24,433. It would
+need resharding first, at which point resharding has already solved the problem.
+
 ## 3. Option A — reshard into fewer, larger files
 
 Raise the effective shard size in `_panel/build_lookup.py` and `_panel/build_eval.py` and
