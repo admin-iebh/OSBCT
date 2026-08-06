@@ -70,11 +70,28 @@ jobs:
       # gave first: it changed A SINGLE MARKDOWN FILE.  The site bytes were
       # identical to #111, which had just succeeded.
       #
-      # 30 minutes costs nothing when the deploy is quick — the action returns
-      # as soon as Pages reports done — and it removes a coin-flip from the
-      # only step that publishes anything.
+      # !!! AND THE TIMEOUT CANNOT BE RAISED.  Setting `timeout: 1800000` was
+      # tried at 14f16795 and run #113 answered it in its own annotations:
+      #
+      #   Warning: timeout value is greater than the allowed maximum
+      #            - timeout set to the maximum of 600000 milliseconds.
+      #   Timeout reached, aborting!
+      #
+      # 600000 is the MAXIMUM, not merely the default.  Ten minutes is a
+      # ceiling.  The input is therefore left unset — passing it only earns
+      # the warning and changes nothing.
+      #
+      # The artifact itself is fine: #113 produced `github-pages`, 216 MB,
+      # successfully.  What runs out of clock is Pages PUBLISHING it, and the
+      # variable is the file count — 26,576 of them, most of it the dictionary
+      # shards (lookup_eval/dpd 11,229, lem 5,244; lookup/gloss 4,103).
+      #
+      # So the only real remedy is fewer, larger files.  The shard cap is
+      # 150,000 bytes (`site/lookup/index.json` `cap_bytes`); raising it would
+      # cut the count several-fold and is a change to the store builders, not
+      # to this workflow.  Until then a failed run is worth simply re-running:
+      # #111 published the same tree in 9m36s and #105/#107/#108 in about two
+      # minutes, so it is marginal rather than broken.
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          timeout: 1800000
