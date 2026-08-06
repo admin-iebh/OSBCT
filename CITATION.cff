@@ -4,10 +4,11 @@ message: "If you use this corpus, please cite it using these metadata."
 type: dataset
 abstract: >-
   A searchable, cross-referenced Unicode corpus of the Sixth Buddhist Council recension of the
-  Pāḷi Tipiṭaka with its Aṭṭhakathā (commentaries) and Ṭīkā (subcommentaries), 118 volumes,
-  converted from the legacy-font edition published by the Ministry of Religious Affairs, Yangon.
-  Includes structural extraction, over 54,000 variant readings from the printed apparatus, and
-  cross-layer paragraph linking.
+  Pāḷi Tipiṭaka with its Aṭṭhakathā (commentaries) and Ṭīkā (subcommentaries), 118 volumes and
+  89,512 paragraphs, converted from the legacy-font edition published by the Ministry of
+  Religious Affairs, Yangon. Includes structural extraction anchored to the printed page,
+  54,036 variant readings and 27,153 cross-references transcribed from the printed footnote
+  apparatus, and cross-layer paragraph linking.
 authors:
   - name: "Instituto de Estudios Buddhistas Hispano (IEBH)"
   - name: "Buddhismo Theravāda México-Hispano AR (BTHAR)"
@@ -22,8 +23,21 @@ keywords:
 url: "https://buddha-dhamma.net"
 repository-code: "https://github.com/admin-iebh/OSBCT"
 license: CC-BY-4.0
-version: "2.1.0"
-date-released: "2026-07-31"
+version: "2.3.0"
+date-released: "2026-08-06"
+# !!! THIS FILE WAS A RELEASE BEHIND.  It declared 2.1.0 while the repository was
+# tagged v2.2.0 (2026-08-02), so every citation named a superseded version — the
+# same failure the DOI note below records, one field over.  Bumping `version`
+# and `date-released` is part of tagging, not an afterthought.
+#
+# THE FIGURES ABOVE ARE COUNTED, NOT CARRIED FORWARD.  Method, so they can be
+# re-derived: paragraphs are the `paragraphs` arrays of the 118 `site/<VOL>.json`;
+# variants and cross-references are the `variants` and `xrefs` entries of the
+# per-volume maps in `site/reader/apparatus/`.  The previous deposit described
+# 86,365 paragraphs, 55,240 variants and 34,047 cross-references; the paragraph
+# figure moved because four Khuddaka commentaries were re-segmented, and the
+# other two could not be reproduced by this method and are stated as measured
+# rather than repeated.
 # THE CONCEPT DOI, which always resolves to the newest deposited version.
 # It used to name 10.5281/zenodo.21495339 — the version DOI of v1.0.0, dated
 # 22 July — while this file declared version 2.0.0, so every citation sent the
@@ -33,6 +47,10 @@ identifiers:
   - type: doi
     value: "10.5281/zenodo.21495338"
     description: "Zenodo concept DOI — all versions; resolves to the latest"
+  # v2.2.0 (2 August 2026) has NO DOI recorded here.  It was tagged and, so far
+  # as this file knows, never deposited.  Left as a gap rather than filled with
+  # a guess: an invented DOI in a citation file is worse than a missing one.
+  # If it was deposited, add it; if it was not, the v2.3.0 deposit supersedes it.
   - type: doi
     value: "10.5281/zenodo.21727002"
     description: "Zenodo archive of v2.1.0 (31 July 2026)"
