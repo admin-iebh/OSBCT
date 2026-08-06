@@ -21,9 +21,24 @@ permissions:
   pages: write
   id-token: write
 
+# !!! DO NOT CANCEL A PAGES DEPLOYMENT IN FLIGHT.
+# This was `cancel-in-progress: true`, and on a Pages workflow that is a trap.
+# The `github-pages` environment allows ONE deployment in progress at a time.
+# Cancelling a run mid-deploy can leave that slot held by a deployment which
+# never completes, and every run afterwards then waits for a slot that is never
+# freed and dies at the ten-minute maximum.
+#
+# The run list says exactly that happened here.  #108 published in 1m52s.  #109
+# was CANCELLED at 5m34s by this setting.  #110 was the first "Timeout reached,
+# aborting!" at 11m41s, and #112 and #113 the same — while the site itself did
+# not change: 26,576 files then and now, 8 files different in total.
+#
+# `false` means a push that arrives during a deploy waits its turn instead of
+# killing it.  Queueing costs a few minutes; a stuck lock costs every deploy
+# after it.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
