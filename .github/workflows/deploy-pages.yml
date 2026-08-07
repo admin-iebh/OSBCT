@@ -101,12 +101,27 @@ jobs:
       # variable is the file count — 26,576 of them, most of it the dictionary
       # shards (lookup_eval/dpd 11,229, lem 5,244; lookup/gloss 4,103).
       #
-      # So the only real remedy is fewer, larger files.  The shard cap is
-      # 150,000 bytes (`site/lookup/index.json` `cap_bytes`); raising it would
-      # cut the count several-fold and is a change to the store builders, not
-      # to this workflow.  Until then a failed run is worth simply re-running:
-      # #111 published the same tree in 9m36s and #105/#107/#108 in about two
-      # minutes, so it is marginal rather than broken.
+      # !!! FIXED 2026-08-07, AND NOT BY RESHARDING.  The paragraph that stood
+      # here said "the only real remedy is fewer, larger files" and pointed at
+      # the shard cap.  That was measured and found wrong: `CAP` is a ceiling
+      # the sharder never merges against, so raising it merges nothing
+      # (DEPLOY_SCALE §3a).  The remedy taken instead was to stop PUBLISHING the
+      # stores at all.
+      #
+      # This workflow uploads `./site` and nothing else, so moving `lookup/` and
+      # `lookup_eval/` OUT of site/ — to `stores/` in this same repository —
+      # removes them from the artifact without removing them from the project.
+      # They are served from https://dict.buddha-dhamma.net (Cloudflare R2);
+      # `site/reader/panel.js` names that origin in two lines.  Because they are
+      # still tracked here, they are still inside the Zenodo deposit, so an
+      # archived copy years from now still has a working dictionary panel.
+      # That is the whole argument for Option D over Option B alone.
+      #
+      # MEASURED AFTER THE MOVE: `git ls-files site/` = 1,977, down from 26,576.
+      # The clock should stop being a race.  If a run still times out at ~11m40s
+      # with 1,977 files, the file count was NOT the cause and DEPLOY_SCALE §1a's
+      # other two shapes are where to look — an unacquired runner, or a pending
+      # deployment holding the environment.
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

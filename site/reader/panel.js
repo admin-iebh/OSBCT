@@ -94,8 +94,14 @@ if (!ON) return;
 // or is excluded by §9 as a voice however it is licensed (DPD).  They are
 // worth reading and they are not the project's to publish, so they sit behind
 // their own switch, off unless asked for, each banner'd where it is shown, and
-// their data lives in site/lookup_eval/ which is gitignored.  ?wl=1 alone is
-// still Edition + PED and nothing else.
+// their data lives in stores/lookup_eval/, served from the R2 bucket.  ?wl=1
+// alone is still Edition + PED and nothing else.
+//
+// (This said "site/lookup_eval/ which is gitignored" until 2026-08-07.  Both
+// halves had stopped being true: the store is tracked -- force-added past the
+// .gitignore rule when it was published -- and it has moved to stores/.
+// Corrected here rather than left, because panel.js already carries one
+// contradiction of this kind on the record and does not need a second.)
 if (q.has('wle')) {
   try { localStorage.setItem('osbct-wle', q.get('wle') === '0' ? '0' : '1'); } catch (e) {}
 }
@@ -103,7 +109,8 @@ if (q.has('wle')) {
 // them off and the choice sticks.  The licences this was waiting on are
 // settled -- DPD is CC BY-NC-SA 4.0, the Abhidhāna and PEU are a Gift of
 // Dhamma, free distribution only -- and each notice travels with its source in
-// the panel (`.wl-rights`).  `site/lookup_eval/` is tracked and deployed.
+// the panel (`.wl-rights`).  `stores/lookup_eval/` is tracked, and served from
+// the R2 bucket rather than deployed with the site -- DEPLOY_SCALE §6a.
 var EVAL = true;
 try { if (localStorage.getItem('osbct-wle') === '0') EVAL = false; } catch (e) {}
 if (q.get('wle') === '1') EVAL = true;

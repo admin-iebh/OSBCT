@@ -10,11 +10,14 @@
 # ---------------------------------------------------------------------------
 # WHAT THIS DOES *NOT* DO, AND THAT IS DELIBERATE
 #
-# It does not move, delete or rewrite a single file in the repository.  At the
-# point this script runs, `site/lookup/` and `site/lookup_eval/` are exactly
-# where they have always been and Pages is still publishing them.  This is a
+# It does not move, delete or rewrite a single file in the repository.  It is a
 # COPY to a second place, so that the second place can be tested before
-# anything depends on it.  The relocation is step 4 of 6a and comes later.
+# anything depends on it.
+#
+# Where it copies FROM is detected below, because the stores moved on
+# 2026-08-07: they were at `site/lookup/` and `site/lookup_eval/` while Pages
+# still published them, and are at `stores/` now that it does not.  The script
+# works either side of that move and prints which it found.
 #
 # Re-running is cheap and is the intended way to update a dictionary:
 # `--checksum` sends only what actually changed.  That is the answer to "can we
@@ -73,20 +76,20 @@ if ! command -v rclone >/dev/null 2>&1; then
   exit 1
 fi
 
-if [ ! -d "$ROOT/site/lookup" ] || [ ! -d "$ROOT/site/lookup_eval" ]; then
-  # After step 4 of 6a the stores live at stores/ instead.  Say so rather than
-  # uploading nothing and reporting success, which is the failure this project
-  # keeps meeting.
-  if [ -d "$ROOT/stores/lookup" ]; then
-    echo "The stores have been relocated to stores/.  Edit SRC below." >&2
-  else
-    echo "Cannot find the stores under $ROOT/site/." >&2
-  fi
+# Where the stores live.  DETECTED, not assumed, so this script works before
+# the relocation of 6a step 4 and after it -- and says which it found, rather
+# than uploading nothing and reporting success, which is the failure this
+# project keeps meeting.
+if   [ -d "$ROOT/stores/lookup" ] && [ -d "$ROOT/stores/lookup_eval" ]; then STORE=stores
+elif [ -d "$ROOT/site/lookup" ]   && [ -d "$ROOT/site/lookup_eval" ];   then STORE=site
+else
+  echo "Cannot find lookup/ and lookup_eval/ under $ROOT/stores/ or $ROOT/site/." >&2
   exit 1
 fi
+echo "==> stores found under ${STORE}/"
 
 echo "==> uploading to ${REMOTE}:${BUCKET}"
-echo "    source: $ROOT/site/{lookup,lookup_eval}"
+echo "    source: $ROOT/${STORE}/{lookup,lookup_eval}"
 echo
 
 # !!! THE SOURCE OF TRUTH IS `git ls-files`, NOT THE FILESYSTEM.
@@ -116,22 +119,22 @@ TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
 for pair in "lookup" "lookup_eval"; do
-  SRC="$ROOT/site/$pair"
+  SRC="$ROOT/$STORE/$pair"
   DST="${REMOTE}:${BUCKET}/$pair"
 
   # -z because 164 shard names are not ASCII and 458 contain a space; plain
   # `git ls-files` would octal-escape and quote those and every one would then
   # fail to upload.  Paths are made relative to SRC, which is what --files-from
   # expects.
-  git -C "$ROOT" ls-files -z "site/$pair" \
+  git -C "$ROOT" ls-files -z "$STORE/$pair" \
     | tr '\0' '\n' \
-    | sed "s|^site/$pair/||" > "$TMP/$pair.all"
+    | sed "s|^$STORE/$pair/||" > "$TMP/$pair.all"
 
   # A filename containing a newline would silently split into two useless
   # entries here.  None does today; check rather than trust, because the
   # failure would be a missing shard nobody notices.
   n_lines=$(wc -l < "$TMP/$pair.all" | tr -d ' ')
-  n_files=$(git -C "$ROOT" ls-files -z "site/$pair" | tr -dc '\0' | wc -c | tr -d ' ')
+  n_files=$(git -C "$ROOT" ls-files -z "$STORE/$pair" | tr -dc '\0' | wc -c | tr -d ' ')
   if [ "$n_lines" != "$n_files" ]; then
     echo "!! $pair: $n_lines lines from $n_files files -- a path contains a newline." >&2
     exit 1
@@ -169,7 +172,7 @@ echo
 echo "==> counting what landed"
 for pair in "lookup" "lookup_eval"; do
   n=$(rclone size "${REMOTE}:${BUCKET}/$pair" --json | python3 -c 'import json,sys;print(json.load(sys.stdin)["count"])')
-  local_n=$(cd "$ROOT" && git ls-files "site/$pair" | wc -l | tr -d ' ')
+  local_n=$(cd "$ROOT" && git ls-files "$STORE/$pair" | wc -l | tr -d ' ')
   echo "    $pair : $n in the bucket, $local_n tracked in git"
   if [ "$n" != "$local_n" ]; then
     echo "    !! MISMATCH.  Do not proceed to the origin gate until this is explained." >&2

@@ -4,7 +4,7 @@
 WHAT THIS IS, AND WHY IT IS SEPARATE FROM build_lookup.py
 `build_lookup.py` writes what a public build may carry: the edition's own
 glosses, corpus counts, and the public-domain PED.  This writes everything
-else, into `site/lookup_eval/`, for the reader to consult on their own machine
+else, into `stores/lookup_eval/`, for the reader to consult on their own machine
 while the licences are still open questions:
 
   DPD          Digital Pāḷi Dictionary (Bodhirasa) — CC BY-NC-SA.  §9 also
@@ -29,7 +29,7 @@ while the licences are still open questions:
 
 NOTHING HERE MAY REACH A PUBLIC BUILD.  The output directory is gitignored and
 the panel keeps it behind a second flag, off by default; every tab carries its
-own attribution and an evaluation banner.  `site/lookup/` stays what ships.
+own attribution and an evaluation banner.  `stores/lookup/` stays what ships.
 
 Sharding, the shard-name scheme and the 150 kB cap are `build_lookup.py`'s, so
 one lookup routine in the panel serves both.
@@ -44,7 +44,7 @@ import sources
 import zawgyi
 from build_lookup import write_shards, fold
 
-OUT = os.path.join(REPO, 'site', 'lookup_eval')
+OUT = os.path.join(REPO, 'stores', 'lookup_eval')
 GD = os.environ.get('GD_DIR', '/mnt/user-data/uploads/GoldenDict')
 PCED = os.environ.get('PCED_DIR', os.path.join(REPO, '..', 'src/pced/dictionary'))
 PM12E = os.environ.get('PM12E', os.path.join(REPO, '..', 'src/dl/pm12e/pm12e.csv'))
@@ -548,7 +548,7 @@ json.dump({
     'purpose': 'EVALUATION ONLY. Local build; must not reach a public site. '
                'Every source here has an unresolved redistribution licence or '
                'is excluded by §9 as a voice.',
-    'shard_key': "same as site/lookup/: adaptive prefix of fold(key), padded "
+    'shard_key': "same as stores/lookup/: adaptive prefix of fold(key), padded "
                  "with '_', shortest that names a shard in this manifest",
     'sets': {'form': n_form, 'dpd': n_dpd, 'lem': n_lem},
     'largest_bytes': {'form': b_form, 'dpd': b_dpd, 'lem': b_lem},

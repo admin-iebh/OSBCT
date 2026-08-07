@@ -113,12 +113,25 @@ _panel/data/
 # The shipped word-lookup data, built by `_panel/build_lookup.py`: ~5,900 JSON
 # shards, 138 MB. Generated exactly from _gloss/by_volume/, _vocab/freq/, the
 # PCED dataset's public-domain PED, and DPD's synonym index used as a
-# build-time filter only. Same reasoning as _vocab/freq/ and _gloss/by_volume/:
-# an intermediate that regenerates. It is under site/ because that is where the
-# reader fetches it from, and it goes into the repo the day it is published --
-# at which point this rule goes and the licence note in
-# site/lookup/index.json is the thing to re-read first.
-site/lookup/
+# build-time filter only.
+#
+# MOVED 2026-08-07 from site/lookup/ to stores/lookup/ -- DEPLOY_SCALE §6a, the
+# reader's D+B decision. It is no longer "under site/ because that is where the
+# reader fetches it from", which is what this comment used to say: the reader
+# now fetches it from https://dict.buddha-dhamma.net/, and it stays in the
+# repository so that it stays inside the Zenodo deposit. Pages publishes site/
+# and nothing else, so moving it out is what drops the deploy from 26,576 files
+# to 1,977.
+#
+# !!! THIS RULE IS ALREADY STALE AND IS KEPT ONLY BECAUSE REMOVING IT IS A
+# SEPARATE DECISION. The comment it carried said "it goes into the repo the day
+# it is published -- at which point this rule goes". It WAS published, and the
+# rule did not go: all 7,319 files are tracked, force-added past this line.
+# Ignore rules do not affect already-tracked files, so the rule has no effect
+# today and is a trap for whoever next runs a clean rebuild. Reported, not
+# resolved, per working principle 5. The licence note in stores/lookup/index.json
+# is still the thing to re-read first.
+stores/lookup/
 
 # The EVALUATION lookup data and its sources, built by `_panel/build_eval.py`.
 # DPD (CC BY-NC-SA, and excluded as a voice by §9 whatever its licence), the
@@ -126,21 +139,36 @@ site/lookup/
 # maintainers, and the Ministry question of §8), PPN, and the PCED English and
 # Burmese dictionaries. NONE OF IT MAY ENTER A PUBLIC REPO OR A PUBLIC BUILD.
 # The panel keeps it behind its own flag (?wle=1), off by default, and
-# site/lookup/ -- Edition + counts + the public-domain PED -- is what ships.
+# stores/lookup/ -- Edition + counts + the public-domain PED -- is what ships.
 # Regenerated exactly by build_eval.py from ~/GoldenDict plus _dictsrc/.
-# !!! `site/lookup_eval/` (no star) excludes the DIRECTORY, and git cannot
+#
+# MOVED 2026-08-07 from site/lookup_eval/ to stores/lookup_eval/, with the rest
+# of the stores. Every path below moved with it; the STRUCTURE is unchanged and
+# the note about the star still governs it.
+#
+# !!! `stores/lookup_eval/` (no star) excludes the DIRECTORY, and git cannot
 # re-include anything under an excluded directory -- so a `!.../dpd/**` line
 # below it silently does nothing.  The star excludes the CONTENTS instead,
 # which is what makes the negations below work at all.
-site/lookup_eval/*
-!site/lookup_eval/index.json
-!site/lookup_eval/form/
-!site/lookup_eval/lem/
-# DPD is published GZIPPED and only gzipped: 379.2 MB of .json would put the
-# site 120 MB over the GitHub Pages 1 GB cap, 43.7 MB of .json.gz leaves it at
-# ~826 MB.  The .json stay on disk so a rebuild need not start from nothing.
-!site/lookup_eval/dpd/
-site/lookup_eval/dpd/*.json
+stores/lookup_eval/*
+!stores/lookup_eval/index.json
+!stores/lookup_eval/form/
+!stores/lookup_eval/lem/
+# DPD is published GZIPPED and only gzipped.  The size argument this line was
+# written on has been retired -- the 1 GB Pages cap was never the binding
+# constraint (DEPLOY_SCALE §1a: CI checks out 833 MB, and bytes were never the
+# problem; the file count and the ten-minute clock were).  The rule STANDS on
+# its own terms regardless: 379.2 MB of .json against 43.7 MB of .json.gz, for
+# data the panel never requests uncompressed, since index.json lists `dpd` in
+# its `gz` array.  The .json stay on disk so a rebuild need not start from
+# nothing.
+#
+# 2026-08-07: r2_upload.sh uploaded all 11,229 of them to the bucket because it
+# walked the filesystem instead of `git ls-files`.  They were deleted and the
+# script now takes its file list from git.  This rule is why they were never
+# meant to leave this machine.
+!stores/lookup_eval/dpd/
+stores/lookup_eval/dpd/*.json
 _dictsrc/
 
 # Build-run stdout/stderr from _panel/ scripts (eval rebuilds, precision sweeps).

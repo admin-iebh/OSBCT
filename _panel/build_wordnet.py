@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""WordNet 3.1 -> site/lookup/wn/, sharded exactly as build_lookup.py shards.
+"""WordNet 3.1 -> stores/lookup/wn/, sharded exactly as build_lookup.py shards.
 
 WHY THIS EXISTS
     The panel's reference tabs are written in the technical English of
@@ -26,7 +26,7 @@ SOURCE AND LICENCE -- CHECKED, NOT REPEATED
     modification and distribution "for any purpose and without fee or royalty"
     on ONE condition that matters here: the copyright notice and disclaimer
     must "appear on ALL copies".  So the notice travels with the data --
-    `site/lookup/wn/LICENSE` -- and the panel shows the attribution line.  The
+    `stores/lookup/wn/LICENSE` -- and the panel shows the attribution line.  The
     file is headed "WordNet Release 3.0" because Princeton carried the same
     licence text forward unchanged; the data is 3.1.
 
@@ -47,12 +47,12 @@ MORPHOLOGY
     live in panel.js, tried only after the exact key misses.
 
 OUTPUT
-    site/lookup/wn/<shard>.json   value is EITHER a list of senses
+    stores/lookup/wn/<shard>.json   value is EITHER a list of senses
                                   [[pos, def, [examples], [synonyms]], ...]
                                   OR a string, the lemma this form is an
                                   inflection of.
-    site/lookup/wn/LICENSE        Princeton's notice, verbatim
-    site/lookup/index.json        `sets.wn` and `shards.wn` merged in, leaving
+    stores/lookup/wn/LICENSE        Princeton's notice, verbatim
+    stores/lookup/index.json        `sets.wn` and `shards.wn` merged in, leaving
                                   every other set untouched -- this file is
                                   built by build_lookup.py from sources that
                                   are not all present in every session, so it
@@ -62,8 +62,8 @@ import collections, glob, json, os, re, sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(ROOT)
-OUT = os.path.join(REPO, 'site', 'lookup', 'wn')
-MANIFEST = os.path.join(REPO, 'site', 'lookup', 'index.json')
+OUT = os.path.join(REPO, 'stores', 'lookup', 'wn')
+MANIFEST = os.path.join(REPO, 'stores', 'lookup', 'index.json')
 CAP = 150_000                      # the same ceiling build_lookup.py keeps
 
 FOLD = {'ā': 'a', 'ī': 'i', 'ū': 'u', 'ṁ': 'm', 'ṃ': 'm', 'ṅ': 'n', 'ñ': 'n',
@@ -264,7 +264,7 @@ def main():
         'aliases': aliases,
         'source': 'WordNet 3.1, Princeton University — Princeton WordNet '
                   'licence (permissive; the copyright notice must travel with '
-                  'the data, and does: site/lookup/wn/LICENSE). English→English '
+                  'the data, and does: stores/lookup/wn/LICENSE). English→English '
                   'only: it explains the English of the reference tabs and is '
                   'not a Pāḷi authority (§9 untouched).',
         'note': 'single-word alphabetic lemmas only (%d multi-word headwords '

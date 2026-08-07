@@ -35,7 +35,7 @@ same check that measurement used — the row's bold lemma is actually a phrase o
 the paragraph on screen — which the reader's browser can run at click time for
 nothing.  That test is what `lemma_stems` in each row is for.
 
-OUTPUT  site/lookup/{gloss,freq,ped,forms}/<shard>.json + index.json
+OUTPUT  stores/lookup/{gloss,freq,ped,forms}/<shard>.json + index.json
 Sharding follows _vocab/freq/: adaptive prefix, split until no shard exceeds
 the byte cap.
 """
@@ -43,7 +43,7 @@ import json, os, re, sys, glob, gzip, struct, collections
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(ROOT)
-OUT = os.path.join(REPO, 'site', 'lookup')
+OUT = os.path.join(REPO, 'stores', 'lookup')
 DPD_DIR = os.environ.get('DPD_DIR', '/mnt/user-data/uploads/GoldenDict/dpd')
 PCED_DIR = os.environ.get('PCED_DIR', os.path.join(REPO, '..', 'src/pced/dictionary'))
 CAP = 150_000            # bytes; _vocab/freq/'s own ceiling

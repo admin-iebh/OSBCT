@@ -64,12 +64,12 @@ function sample(n){
   const load=d=>{const out={};for(const f of fs.readdirSync(d)){if(!f.endsWith('.json'))continue;
     let x=null;try{x=JSON.parse(fs.readFileSync(path.join(d,f),'utf8'));}catch(e){continue}
     for(const k of Object.keys(x)) out[k]=1;} return out;};
-  const form=load('site/lookup_eval/form'), lem=load('site/lookup_eval/lem');
+  const form=load(path.join(STORE,'lookup_eval/form')), lem=load(path.join(STORE,'lookup_eval/lem'));
   // !!! ABSENT FROM `freq` TOO, or the sample is not a sample of the fault.
   // `resolveTyped` queries `lookup/freq/` first, so a lemma that also happens
   // to occur in the corpus was always reachable and proves nothing.  Filtering
   // on both is what makes every word here an instance of what was broken.
-  const freq=load('site/lookup/freq');
+  const freq=load(path.join(STORE,'lookup/freq'));
   const broken=Object.keys(lem)
     .filter(k=>!form[k] && !freq[k] && /^[a-zāīūṁṅñṭḍṇḷ]{5,}$/.test(k)).sort();
   const step=Math.max(1,Math.floor(broken.length/n));

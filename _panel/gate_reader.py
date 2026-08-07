@@ -8,7 +8,7 @@ prototype cannot see whether the shipped reader opens a panel at all.
 
 So this one drives `site/reader/reader2.html?wl=1&#<VOL>/<id>` in real Chromium,
 clicks words in the rendered canon text and asserts what the panel shows against
-`site/lookup/` directly:
+`stores/lookup/` directly:
 
   1. THE FLAG.  Without `?wl=1` the panel does not exist: no #wl node, no
      lookup/ request.  A feature behind a flag has to be OFF when the flag is.
@@ -34,8 +34,8 @@ from playwright.sync_api import sync_playwright
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(ROOT)
-LOOKUP = os.path.join(REPO, 'site', 'lookup')
-ELOOKUP = os.path.join(REPO, 'site', 'lookup_eval')
+LOOKUP = os.path.join(REPO, 'stores', 'lookup')
+ELOOKUP = os.path.join(REPO, 'stores', 'lookup_eval')
 BASE = os.environ.get('GATE_BASE', 'http://localhost:8932')
 SEED = 20260802
 VOLS = os.environ.get('GATE_VOLS', '09Ma01,08Di03,18Khu01,37Abhi09,05Vin05').split(',')
@@ -347,7 +347,7 @@ def run_gate(EVAL_ON=False):
                 fails.append(f'default-tabs check: {e}')
             f2.close()
         else:
-            print('  note: 1c NOT EXERCISED — site/lookup_eval/ absent, so the '
+            print('  note: 1c NOT EXERCISED — stores/lookup_eval/ absent, so the '
                   'default tab row cannot be checked here')
 
         # the evaluation store must not be touched with ?wle=0
@@ -1147,7 +1147,7 @@ def check_version():
 #
 # !!! THE OLD DPD ASSERTION WAS VACUOUS AND REPORTED SUCCESS.  Assertion 6
 # compares the DPD tab's badge against `elook('dpd', h)` -- BOTH SIDES READ THE
-# SAME STORE.  With `site/lookup_eval/dpd/` absent (it is gitignored, so it is
+# SAME STORE.  With `stores/lookup_eval/dpd/` absent (it is gitignored, so it is
 # absent on any clean checkout, which is what Actions publishes) the store gave
 # 0, the tab showed 0, and the gate reported 0 failures while the tab the whole
 # exercise is about did not exist.  Same shape as assertion 14 iterating an
@@ -1697,14 +1697,14 @@ def run_design(pin=None):
         # --- A4 / A5 -------------------------------------------------------
         # !!! A4 IS ONLY EXERCISED WHEN THE ABHIDHĀNA IS PRESENT.  `.wl-my` is
         # drawn by the Abhidhāna renderer, which lives behind ?wle=1 and reads
-        # site/lookup_eval/ -- gitignored, so absent on any clean checkout.
+        # stores/lookup_eval/ -- gitignored, so absent on any clean checkout.
         # With the flag off there is no Burmese in the panel at all, and a
         # silent skip here would be assertion 14's empty list over again: a pass
         # reporting success for a check it never ran.  So SAY SO, and make it a
         # failure only where the data to run it exists.
         if base['my'] is None:
             msg = ('A4 NOT EXERCISED: no .wl-my in the panel — Burmese is drawn '
-                   'only under ?wle=1 with site/lookup_eval/ present')
+                   'only under ?wle=1 with stores/lookup_eval/ present')
             if EMAN is not None:
                 fails.append(msg + ', and the evaluation store IS present here')
             else:
@@ -1900,7 +1900,7 @@ def run_design_negative_controls():
          ' rel="stylesheet">'),
     ]
     # !!! A CONTROL FOR AN ASSERTION THAT CANNOT RUN IS NOT A CONTROL.  A4 is
-    # only exercised when the Abhidhāna is present (site/lookup_eval/, behind
+    # only exercised when the Abhidhāna is present (stores/lookup_eval/, behind
     # ?wle=1), so on a clean checkout breaking `.wl-my` cannot make the design
     # pass fail — and counting that as "did not fire" would be reporting a
     # tooling gap as a defect, while counting it as "fired" would be worse.
@@ -1910,7 +1910,7 @@ def run_design_negative_controls():
         cases = [c for c in cases if not c[0].startswith('A4')]
         for c in skipped:
             print(f'  NOT EXERCISABLE HERE: {c[0]} — A4 needs the evaluation '
-                  f'store; run this with site/lookup_eval/ present')
+                  f'store; run this with stores/lookup_eval/ present')
 
     bad = 0
     for name, path, find, repl in cases:
@@ -2611,7 +2611,7 @@ def run_wordnet():
       b. WordNet is ATTRIBUTED on screen and says it is not a Pāḷi authority.
          §9's attribution obligation is not limited to the Abhidhāna, and this
          source is admitted only because it never speaks about Pāḷi;
-      c. Princeton's licence travels with the data (`site/lookup/wn/LICENSE`),
+      c. Princeton's licence travels with the data (`stores/lookup/wn/LICENSE`),
          which is the one condition that licence imposes;
       d. BACK returns to the Pāḷi word with its own tabs -- the English view is
          a detour, not a destination;
@@ -2631,10 +2631,10 @@ def run_wordnet():
     fails = []
     lic = os.path.join(LOOKUP, 'wn', 'LICENSE')
     if not os.path.exists(lic):
-        fails.append("site/lookup/wn/LICENSE is missing — Princeton's licence "
+        fails.append("stores/lookup/wn/LICENSE is missing — Princeton's licence "
                      "requires the notice to travel with every copy of the data")
     elif 'Princeton' not in io.open(lic, encoding='utf-8', errors='replace').read():
-        fails.append('site/lookup/wn/LICENSE does not name Princeton — it is '
+        fails.append('stores/lookup/wn/LICENSE does not name Princeton — it is '
                      'not the notice the licence asks for')
 
     FIND = """(word) => {
