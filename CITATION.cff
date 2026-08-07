@@ -25,6 +25,20 @@ repository-code: "https://github.com/admin-iebh/OSBCT"
 license: CC-BY-4.0
 version: "2.4.0"
 date-released: "2026-08-07"
+# !!! BUMPING THIS FILE ALONE DOES NOTHING TO THE DEPOSIT. `.zenodo.json` EXISTS
+# IN THE REPOSITORY ROOT, AND WHEN IT DOES, ZENODO IGNORES THIS FILE ENTIRELY --
+# not "prefers", ignores. Zenodo's own documentation says so.
+#
+# So the release checklist is BOTH files, every time:
+#     .zenodo.json  -> "version", and the "New in x.y.z" paragraph of "description"
+#     CITATION.cff  -> "version", "date-released", and the new DOI once minted
+#
+# Found on 2026-08-07 with the v2.4.0 tag not yet cut: this file had been bumped
+# to 2.4.0 and `.zenodo.json` still said 2.3.0, so the deposit would have been
+# minted describing the previous release while this file described the current
+# one. That is the THIRD time this project's citation metadata has been a
+# release behind -- see the two notes below -- and the first time the cause was
+# that the wrong file was being maintained.
 # 2026-08-07, v2.4.0: the corpus figures in the abstract are DELIBERATELY
 # unchanged. No text changed in that release -- it moved the dictionary stores
 # out of site/ to a bucket and gave the reader a fallback to the copy inside
