@@ -503,11 +503,50 @@ function ungzip(buf) {
   if (flg & 2) p += 2;
   return rawInflate(b, p);
 }
+// !!! THE ARCHIVE MUST BE ABLE TO READ ITS OWN DICTIONARIES.  Added 2026-08-07.
+//
+// The stores moved to an R2 bucket the same day, and `BASE`/`EBASE` below name
+// it absolutely.  That alone would have defeated the very argument that chose
+// Option D over Option B (DEPLOY_SCALE §5a): the stores stay tracked so they
+// stay inside the Zenodo deposit -- and a release tarball does carry all 24,599
+// of them, checked with `git archive`, there is no export-ignore -- but a reader
+// unpacking that deposit in ten years would have every shard on disk beside a
+// panel that looks for them at a domain which may no longer exist.  Empty tabs,
+// no error, and the files sitting right there.  We would have preserved the data
+// and taught the reader to ignore it.
+//
+// So: try the bucket, and on ANY failure -- 404, DNS, CORS, offline -- retry once
+// against the path the files occupy inside the repository itself.  panel.js is
+// loaded by site/reader/reader2.html, so relative URLs resolve from site/reader/
+// and '../../stores/lookup/' is the store in an unpacked archive.  On the live
+// site the same path cannot climb above the document root, resolves to
+// /stores/lookup/, and 404s harmlessly -- so this branch is inert in production
+// and only ever runs where it is needed.
+//
+// It costs a second request per MISS, never per hit.
+var ABASE = '../../stores/lookup/';
+var AEBASE = '../../stores/lookup_eval/';
+function altUrl(url) {
+  // BASE and EBASE are declared below this point; `var` hoists the declaration
+  // but not the value, and altUrl only ever runs at fetch time, long after they
+  // are assigned.  Guarded anyway rather than relying on that, because a null
+  // prefix would make indexOf match at 0 and rewrite every URL.
+  if (BASE && url.indexOf(BASE) === 0) return ABASE + url.slice(BASE.length);
+  if (EBASE && url.indexOf(EBASE) === 0) return AEBASE + url.slice(EBASE.length);
+  return null;   // already relative, or something else entirely: no second try
+}
 function jfetch(url, gz) {
   if (CACHE[url]) return CACHE[url];
+  return CACHE[url] = jfetch1(url, gz).then(function (v) {
+    if (v !== null && v !== undefined) return v;
+    var alt = altUrl(url);
+    return alt ? jfetch1(alt, gz) : null;
+  });
+}
+function jfetch1(url, gz) {
   var u = (gz ? url + '.gz' : url);
   u += (u.indexOf('?') >= 0 ? '&' : '?') + 'v=' + WLV;
-  return CACHE[url] = fetch(u).then(function (r) {
+  return fetch(u).then(function (r) {
     if (!r.ok) return null;
     if (!gz) return r.json();
     // !!! SNIFF THE BODY, DO NOT TRUST THE URL.  A .gz can arrive here in
