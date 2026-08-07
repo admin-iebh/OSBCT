@@ -23,8 +23,15 @@ keywords:
 url: "https://buddha-dhamma.net"
 repository-code: "https://github.com/admin-iebh/OSBCT"
 license: CC-BY-4.0
-version: "2.3.0"
-date-released: "2026-08-06"
+version: "2.4.0"
+date-released: "2026-08-07"
+# 2026-08-07, v2.4.0: the corpus figures in the abstract are DELIBERATELY
+# unchanged. No text changed in that release -- it moved the dictionary stores
+# out of site/ to a bucket and gave the reader a fallback to the copy inside
+# this deposit. 118 volumes, 89,512 paragraphs, 54,036 variants and 27,153
+# cross-references are the same numbers, re-stated rather than re-counted, and
+# that is the correct treatment: a citation of v2.3.0 and a citation of v2.4.0
+# name the same text.
 # !!! THIS FILE WAS A RELEASE BEHIND.  It declared 2.1.0 while the repository was
 # tagged v2.2.0 (2026-08-02), so every citation named a superseded version — the
 # same failure the DOI note below records, one field over.  Bumping `version`
@@ -52,6 +59,13 @@ identifiers:
   # but because nothing added the line.  It exists: 10.5281/zenodo.21760727.
   # Checked against the Zenodo record's own Versions panel, 2026-08-06, which is
   # also where the concept DOI above was confirmed as `Cite all versions`.
+  # !!! v2.4.0's line goes here ONCE ZENODO HAS MINTED IT, and not before.
+  # Writing a guessed DOI into this file would be worse than omitting it: a
+  # citation would resolve to nothing, or to somebody else's record. The
+  # deposit is created by the GitHub release; take the version DOI from the
+  # Zenodo record's Versions panel and add it here, then commit.
+  # This file has been a release behind twice already -- see the note above --
+  # so the omission is deliberate and marked, not forgotten.
   - type: doi
     value: "10.5281/zenodo.21826574"
     description: "Zenodo archive of v2.3.0 (6 August 2026)"
