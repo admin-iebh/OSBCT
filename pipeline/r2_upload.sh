@@ -89,37 +89,80 @@ echo "==> uploading to ${REMOTE}:${BUCKET}"
 echo "    source: $ROOT/site/{lookup,lookup_eval}"
 echo
 
-# Three passes, because the content type differs and rclone applies
-# --header-upload to everything it touches in one run.
+# !!! THE SOURCE OF TRUTH IS `git ls-files`, NOT THE FILESYSTEM.
 #
-# Pass order matters only in that `*.json` does NOT match `*.json.gz` in
-# rclone's globbing, so the two passes do not overlap.  Verified by the counts
-# printed at the end: 13,369 .json + 11,229 .json.gz + 1 LICENSE = 24,599.
+# CORRECTED 2026-08-07, AFTER THIS SCRIPT SHIPPED THE BUG IT WAS WARNED ABOUT.
+# The first version walked the directory with --include globs.  That uploaded
+# 11,229 files that are DELIBERATELY GITIGNORED: `site/lookup_eval/dpd/*.json`,
+# the uncompressed originals kept locally so a rebuild need not start from
+# nothing.  Only the `.gz` is tracked and only the `.gz` is ever fetched --
+# `index.json` lists `dpd` in its `gz` array, so the panel never asks for them.
+#
+# lookup_eval landed 28,509 objects against 17,280 tracked.  28,509 is exactly
+# the count on disk.  DEPLOY_SCALE 1a states this hazard in as many words --
+# "measuring the working tree counts 11,229 files and ~360 MB that are never
+# deployed" -- and this script was written after that sentence and walked into
+# it anyway.  The count check below is what caught it.
+#
+# So every pass is now driven by a FILE LIST derived from git, and the
+# filesystem is only ever read for the bytes of files git already named.  What
+# Pages publishes and what the bucket serves are then the same set by
+# construction rather than by coincidence.
+#
+# Three passes still, because the content type differs per kind and rclone
+# applies --header-upload to everything it touches in one run.
+
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
 
 for pair in "lookup" "lookup_eval"; do
   SRC="$ROOT/site/$pair"
   DST="${REMOTE}:${BUCKET}/$pair"
 
-  echo "--> $pair : plain .json (application/json)"
+  # -z because 164 shard names are not ASCII and 458 contain a space; plain
+  # `git ls-files` would octal-escape and quote those and every one would then
+  # fail to upload.  Paths are made relative to SRC, which is what --files-from
+  # expects.
+  git -C "$ROOT" ls-files -z "site/$pair" \
+    | tr '\0' '\n' \
+    | sed "s|^site/$pair/||" > "$TMP/$pair.all"
+
+  # A filename containing a newline would silently split into two useless
+  # entries here.  None does today; check rather than trust, because the
+  # failure would be a missing shard nobody notices.
+  n_lines=$(wc -l < "$TMP/$pair.all" | tr -d ' ')
+  n_files=$(git -C "$ROOT" ls-files -z "site/$pair" | tr -dc '\0' | wc -c | tr -d ' ')
+  if [ "$n_lines" != "$n_files" ]; then
+    echo "!! $pair: $n_lines lines from $n_files files -- a path contains a newline." >&2
+    exit 1
+  fi
+
+  grep    -e '\.json$'                    "$TMP/$pair.all" > "$TMP/$pair.json"  || true
+  grep    -e '\.json\.gz$'                "$TMP/$pair.all" > "$TMP/$pair.gz"    || true
+  grep -v -e '\.json$' -e '\.json\.gz$'   "$TMP/$pair.all" > "$TMP/$pair.other" || true
+
+  echo "--> $pair : plain .json (application/json)  [$(wc -l < "$TMP/$pair.json" | tr -d ' ') files]"
   rclone copy "$SRC" "$DST" \
-    --include "*.json" \
+    --files-from "$TMP/$pair.json" \
     --header-upload "Content-Type: application/json; charset=utf-8" \
     --header-upload "Cache-Control: $CACHE" \
     --checksum --transfers 32 --checkers 32 --stats 10s
 
-  echo "--> $pair : gzipped shards (application/gzip, NO Content-Encoding)"
+  echo "--> $pair : gzipped shards (application/gzip, NO Content-Encoding)  [$(wc -l < "$TMP/$pair.gz" | tr -d ' ') files]"
   rclone copy "$SRC" "$DST" \
-    --include "*.json.gz" \
+    --files-from "$TMP/$pair.gz" \
     --header-upload "Content-Type: application/gzip" \
     --header-upload "Cache-Control: $CACHE" \
     --checksum --transfers 32 --checkers 32 --stats 10s
 
-  echo "--> $pair : everything else (LICENSE and any stray file)"
-  rclone copy "$SRC" "$DST" \
-    --exclude "*.json" --exclude "*.json.gz" \
-    --header-upload "Content-Type: text/plain; charset=utf-8" \
-    --header-upload "Cache-Control: $CACHE" \
-    --checksum --transfers 8 --checkers 8 --stats 10s
+  if [ -s "$TMP/$pair.other" ]; then
+    echo "--> $pair : everything else (LICENSE and any stray file)  [$(wc -l < "$TMP/$pair.other" | tr -d ' ') files]"
+    rclone copy "$SRC" "$DST" \
+      --files-from "$TMP/$pair.other" \
+      --header-upload "Content-Type: text/plain; charset=utf-8" \
+      --header-upload "Cache-Control: $CACHE" \
+      --checksum --transfers 8 --checkers 8 --stats 10s
+  fi
 done
 
 echo
