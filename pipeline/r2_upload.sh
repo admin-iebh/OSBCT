@@ -168,6 +168,23 @@ for pair in "lookup" "lookup_eval"; do
   fi
 done
 
+# --- files at the STORE ROOT, not inside either store ------------------------
+# Currently just index.html, which exists because R2 returns "Object not found"
+# for a bare visit to the domain: public buckets do not list at the root and R2
+# has NO index-document support, so the page is served only because a URL
+# rewrite on the zone maps `/` to `/index.html`.  If the root 404s again, check
+# that rule before re-uploading anything.
+git -C "$ROOT" ls-files -z --  "$STORE/*" ":(exclude)$STORE/lookup/*" ":(exclude)$STORE/lookup_eval/*" \
+  | tr '\0' '\n' | sed "s|^$STORE/||" > "$TMP/root.all"
+if [ -s "$TMP/root.all" ]; then
+  echo "--> store root : [$(wc -l < "$TMP/root.all" | tr -d ' ') files]"
+  rclone copy "$ROOT/$STORE" "${REMOTE}:${BUCKET}" \
+    --files-from "$TMP/root.all" \
+    --header-upload "Content-Type: text/html; charset=utf-8" \
+    --header-upload "Cache-Control: $CACHE" \
+    --checksum --transfers 4 --checkers 4 --stats 10s
+fi
+
 echo
 echo "==> counting what landed"
 for pair in "lookup" "lookup_eval"; do

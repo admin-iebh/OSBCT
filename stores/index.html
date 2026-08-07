@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>OSBCT dictionary data</title>
+<!--
+  Served at the root of the R2 bucket behind dict.buddha-dhamma.net.
+
+  R2 has NO index-document support: it will not serve this file at `/` on its
+  own, and a bare visit to the domain returns "Object not found". A URL-rewrite
+  rule on the zone maps `/` to `/index.html`. If this page stops appearing at
+  the root, that rule is what to look at -- the object itself is uploaded by
+  pipeline/r2_upload.sh along with the stores.
+
+  Kept in the repository, like everything else under stores/, so it travels
+  inside the Zenodo deposit rather than existing only in a bucket.
+-->
+<style>
+  :root { color-scheme: light dark; }
+  body { margin: 0; padding: 3rem 1.5rem; background: #faf9f7; color: #1f1c19;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  main { max-width: 34rem; margin: 0 auto; }
+  h1 { font-size: 1.35rem; font-weight: 600; margin: 0 0 1.25rem; }
+  p { margin: 0 0 1rem; }
+  .muted { color: #57534e; font-size: 0.9rem; }
+  a { color: #1a5fb4; }
+  hr { border: 0; border-top: 1px solid #e7e5e4; margin: 2rem 0 1.25rem; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #1c1a17; color: #ece9e4; }
+    .muted { color: #a8a29e; }
+    a { color: #8ab4f8; }
+    hr { border-top-color: #3a3733; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>OSBCT dictionary data</h1>
+
+  <p>This domain serves the word-lookup data for the <strong>Official Sixth
+  Buddhist Council Tipiṭaka</strong>. It is a data origin, not a website: the
+  reader fetches dictionary shards from it in the background, and there is
+  nothing here to browse.</p>
+
+  <p>The edition itself, with the reader, is at
+  <a href="https://buddha-dhamma.net/">buddha-dhamma.net</a>.</p>
+
+  <hr>
+
+  <p class="muted">The same data is kept in the project’s repository and inside
+  its archived deposit, and the reader falls back to that copy if this domain
+  cannot be reached. An archived copy of the corpus therefore still has working
+  dictionaries, with or without this bucket.</p>
+
+  <p class="muted">Concept DOI
+  <a href="https://doi.org/10.5281/zenodo.21495338">10.5281/zenodo.21495338</a>.</p>
+</main>
+</body>
+</html>
