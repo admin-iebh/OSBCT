@@ -409,9 +409,35 @@ measured as one change. Locating that matcher is the next step and is not done h
 
 ### 11.5 State
 
+> **CORRECTED 2026-08-07. THIS TABLE DESCRIBED A STATE THAT NO LONGER EXISTED WHEN IT WAS
+> WRITTEN, AND IT CONTRADICTED §11.3 DIRECTLY, twelve lines above it.**
+>
+> §11.3 records that **all 185 corpus files were reverted to `481c7221`**. The "after"
+> column below is the *migrated* state — the one that was reverted — presented as the
+> current one. **An agent reading §11.5 alone would believe the migration is in place and
+> plan from it.**
+>
+> **Measured 2026-08-07, twice, by two independent implementations** — `_xc/hy1/hyspace.py`
+> and a separate recount written without reference to it, so a shared bug in one would not
+> produce the same number in the other:
+>
+> | | |
+> |---|---:|
+> | hyphen-space occurrences **now** | **8,790 in 109 volumes** |
+>
+> That is the pre-migration figure exactly, which is what §11.3 says the revert restored.
+> **The repair is NOT in place.** The 8,790 words are still broken, and the work remains as
+> §11.3 leaves it: the text edit cannot land without the change to whatever in
+> `build_khu_volume.py` matches paragraph text to printed lines, measured as one change.
+>
+> The original table is kept below per working principle 3. It is not wrong about what it
+> measured — it is wrong about *when*.
+
 | | before | after |
 |---|---:|---:|
 | hyphen-space occurrences | **8,790** in 109 volumes | **1,501** in 96 volumes |
+
+*(The row above is the state DURING the migration, now reverted. See the correction.)*
 
 The 1,501 remaining are the consonant branch of §2 — **not a residue, a different and
 unadjudicated question**. `extract.py:204` is still uncorrected, so a future extraction would
