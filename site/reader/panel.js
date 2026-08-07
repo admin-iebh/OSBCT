@@ -533,13 +533,34 @@ function jfetch(url, gz) {
     });
   }).catch(function () { return null; });
 }
-// !!! The shard data lives at site/lookup/, and this file runs from
-// site/reader/ — a bare 'lookup/…' resolves to /reader/lookup/ and every fetch
-// 404s in silence, which is exactly what the first run of gate_reader.py found:
-// the panel opened, the header was right, and every count was empty.  Same '../'
-// convention reader2 already uses for '../<VOL>.json'.
-var BASE = '../lookup/';
-var EBASE = '../lookup_eval/';
+// !!! THE SHARD DATA IS NO LONGER SERVED FROM THIS SITE.  Changed 2026-08-07
+// per docs/DEPLOY_SCALE.md §6a — the reader's decision D+B: the stores stay in
+// the repository (so they stay inside the Zenodo deposit) but move out of
+// site/, and are served from a Cloudflare R2 bucket.  Pages then publishes
+// ~2,000 files instead of 26,576, which is what the ten-minute publish ceiling
+// was actually failing on.
+//
+// THESE TWO LINES ARE THE WHOLE SWITCH, AND REVERTING IS EDITING THEM BACK.
+// The previous values are kept here deliberately, not in the history alone:
+//
+//     var BASE  = '../lookup/';
+//     var EBASE = '../lookup_eval/';
+//
+// The old comment, still true of the relative form and the reason it had '../':
+// this file runs from site/reader/, so a bare 'lookup/…' resolved to
+// /reader/lookup/ and every fetch 404'd in silence — which is exactly what the
+// first run of gate_reader.py found: the panel opened, the header was right,
+// and every count was empty.
+//
+// PROVEN AGAINST THE REAL BUCKET before this line changed, not after:
+// `node pipeline/check_r2_origin.js https://dict.buddha-dhamma.net` — 38 passed,
+// 0 failed, including the three negative controls.  R2 serves the .gz shards
+// OPAQUE (Content-Type: application/gzip, no Content-Encoding), the same state
+// GitHub Pages serves them in, so jfetch's magic-byte branch is unchanged.
+// The 164 non-ASCII and 458 space-containing shard names survive the round
+// trip intact; both were probed on purpose.
+var BASE = 'https://dict.buddha-dhamma.net/lookup/';
+var EBASE = 'https://dict.buddha-dhamma.net/lookup_eval/';
 // The manifest names the shards; without it shardName() guesses a 2-character
 // prefix that mostly does not exist.  Nothing may look anything up until it has
 // landed, so every lookup waits on the same promise.
