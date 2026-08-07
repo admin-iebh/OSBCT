@@ -43,13 +43,19 @@ Exit 0 = no measure regressed.
 import json, os, re, sys, glob, collections
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, 'pipeline'))
 SITE = os.path.join(ROOT, 'site')
 LINKS = os.path.join(SITE, 'reader', 'linksk')
 BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                     'links_baseline.json')
 TOL = 0.001          # a tenth of a percentage point of float noise
 
-RANGE = re.compile(r'^\s*(\d+)\s*[-–]\s*(\d+)\s*\.')
+# !!! THE RANGE READER LIVES IN ONE PLACE NOW.  This file used the naive
+# `(\d+)-(\d+)` form, so `234-5.` read as the empty range and a link correctly
+# pointing at it for n=235 was counted a MISS.  576 of the corpus's 2,572 leading
+# ranges are abbreviated (22.4%), so `n_match` -- the rate this ratchet exists to
+# defend -- was understated.  Reader, 2026-08-07: the rule holds "for all books".
+from printed_range import expand_range
 LEAD = re.compile(r'^[\d\s.,\-–()]+')
 TAIL = re.compile(r'(vaṇṇanā|vaṇṇanaṁ|vaṇṇana)$')
 KIND = re.compile(r'(suttanta|sutta|vagga|nipāta|pāḷi|kathā|desanā|dvaya|ṁ)+$')
@@ -129,9 +135,8 @@ def measure(load=None):
                     reach.add(key)
                     n = t.get('n')
                     if n is not None:
-                        m = RANGE.match(q.get('text') or '')
-                        if q.get('n') == n or (m and int(m.group(1)) <= n
-                                               <= int(m.group(2))):
+                        r = expand_range(q.get('text') or '')
+                        if q.get('n') == n or (r and r[0] <= n <= r[1]):
                             nok += 1
                         else:
                             nbad += 1

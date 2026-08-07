@@ -69,7 +69,9 @@ def P(v):
     return _pc[v]
 
 
-RANGE = re.compile(r'^\s*(\d+)\s*[-–]\s*(\d+)\s*\.')
+# the abbreviated upper bound (`234-5.` = 234-235) -- see printed_range.py
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from printed_range import expand_range
 LEAD = re.compile(r'^[\d\s.,\-–()]+')
 TAIL = re.compile(r'(vaṇṇanā|vaṇṇanaṁ|vaṇṇana)$')
 KIND = re.compile(r'(suttanta|sutta|vagga|nipāta|pāḷi|kathā|desanā|dvaya|ṁ)+$')
@@ -148,8 +150,8 @@ def place(v, a, b, n):
         q = ps[j]
         if q.get('n') == n:
             return j, 'direct'
-        m = RANGE.match(q.get('text') or '')
-        if m and int(m.group(1)) <= n <= int(m.group(2)):
+        r = expand_range(q.get('text') or '')
+        if r and r[0] <= n <= r[1]:
             return j, 'direct'
         if q.get('n') is not None and q['n'] <= n:
             best = j

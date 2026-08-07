@@ -64,6 +64,7 @@ import json, os, re, sys, collections
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'pipeline'))
 import ordinal_words
+from printed_range import expand_range
 
 SITE = os.path.join(ROOT, 'site')
 LINKS = os.path.join(SITE, 'reader', 'linksk')
@@ -384,9 +385,9 @@ def build(src, tgt, apply=False):
         # self-contradiction `check_links.py` was written to catch, and this
         # placement was not made by the number in the first place.
         cn, tp = C[i].get('n'), A[o]
-        m = re.match(r'^\s*(\d+)\s*[-–]\s*(\d+)\s*\.', tp.get('text') or '')
+        r = expand_range(tp.get('text') or '')   # `234-5.` = 234-235
         carries = cn is not None and (tp.get('n') == cn or
-                                      (m and int(m.group(1)) <= cn <= int(m.group(2))))
+                                      (r and r[0] <= cn <= r[1]))
         rec = {'key': key, 'state': 'direct', 'n': cn if carries else None,
                'by': by}
         old = [x for x in e.get('commentary', []) if x['key'].startswith(tgt + '#')]
