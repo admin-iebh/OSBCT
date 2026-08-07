@@ -82,13 +82,15 @@ identifiers:
   # but because nothing added the line.  It exists: 10.5281/zenodo.21760727.
   # Checked against the Zenodo record's own Versions panel, 2026-08-06, which is
   # also where the concept DOI above was confirmed as `Cite all versions`.
-  # !!! v2.4.0's line goes here ONCE ZENODO HAS MINTED IT, and not before.
-  # Writing a guessed DOI into this file would be worse than omitting it: a
-  # citation would resolve to nothing, or to somebody else's record. The
-  # deposit is created by the GitHub release; take the version DOI from the
-  # Zenodo record's Versions panel and add it here, then commit.
-  # This file has been a release behind twice already -- see the note above --
-  # so the omission is deliberate and marked, not forgotten.
+  # Minted 2026-08-07 and taken from the record's own Versions panel, not
+  # guessed. Zenodo listed it as "Version 2.3.0" on arrival, which is the
+  # erratum in docs/DEPOSIT_ERRATA.md showing through: the deposited
+  # `.zenodo.json` said 2.3.0 because the tag was cut before the fix. The
+  # record's metadata was corrected in place afterwards; the DOI below is
+  # unaffected by that edit and is the citable identifier for v2.4.0.
+  - type: doi
+    value: "10.5281/zenodo.21840816"
+    description: "Zenodo archive of v2.4.0 (7 August 2026)"
   - type: doi
     value: "10.5281/zenodo.21826574"
     description: "Zenodo archive of v2.3.0 (6 August 2026)"
