@@ -1,5 +1,17 @@
 # Setting up the R2 bucket — the checklist
 
+> **DONE 2026-08-07. THIS IS NOW HISTORY, NOT INSTRUCTIONS.** Every step below was carried
+> out and shipped in v2.4.0. The bucket exists, the custom domain is live, the stores are at
+> **`stores/`** and not at `site/`, and Pages publishes 1,977 files.
+>
+> The checklist is kept in the present tense **as it was written**, because it is the record
+> of how the migration was done and of the two hazards found along the way — not because any
+> of it is still to do. Where the steps say "the stores are still at `site/lookup/`", read
+> that as describing the state *at the time of the step*.
+>
+> **Still to do from this file: the appendix at the foot** — the 118 PDFs are served from the
+> rate-limited `r2.dev` development URL, and that repair has not been started.
+
 **Written 2026-08-07.** This is steps 1–3 of `docs/DEPLOY_SCALE.md` §6a, written out as
 things to do rather than as a decision. **Nothing in this checklist moves, deletes or
 rewrites a file in the repository.** At the end of it the stores are still at

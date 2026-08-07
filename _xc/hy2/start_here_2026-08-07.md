@@ -56,6 +56,63 @@ the move.
   None contains `% # ? + &`. All survive the round trip byte-identical. Both are probed on
   purpose now; the space case was first hit by accident.
 
+## Later the same day — v2.4.0 shipped, and one thing was nearly lost in it
+
+<!-- Appended after the block above was written. The session continued past it. -->
+
+**v2.4.0 is released and deposited.** DOI `10.5281/zenodo.21840816`; concept DOI unchanged
+at `10.5281/zenodo.21495338`. Notes: `docs/RELEASE_NOTES_v2.4.0.md`. **No text changed** —
+118 volumes and 89,512 paragraphs, re-counted rather than carried forward, so v2.3.0 and
+v2.4.0 name the same corpus.
+
+**The thing that was nearly lost, and it is the whole argument of §5a.** Option D keeps the
+stores in the repository so they stay inside the deposit — and `git archive` confirms all
+24,599 are in the tarball. But `panel.js` had been pointed at the bucket **with no
+fallback**, so an unpacked deposit would have held every shard on disk beside a reader
+looking for a domain that may not exist in ten years. Empty tabs, no error, files right
+there. **Preserving the data and teaching the reader to ignore it is worse than not
+preserving it, because it looks fine.** `jfetch` now retries against
+`../../stores/lookup/` on any failure; the branch is inert in production, where that path
+cannot climb above the document root.
+
+`pipeline/check_archive_fallback.js` is the gate. **It compares rather than asserts**, and
+that is the point: its first version asserted "every word resolves with the bucket gone",
+failed on 2 of 4, and both turned out to be the pre-existing `sāmugiya` defect. It would
+have blocked a release for somebody else's bug. It now runs each word twice — bucket
+answering, bucket refused — and requires the results to be **identical**, so a pre-existing
+defect cancels and only a fallback regression shows. Five controls, two of which exist only
+to prove the two runs really differ.
+
+**`stores/index.html`** answers the bare domain, which returned "Object not found" — correct
+R2 behaviour, since public buckets do not list at the root. **R2 has no index-document
+support**, checked before writing the file: the object alone does nothing, and a URL-rewrite
+rule on the zone maps `/` to `/index.html`. If the root 404s again, look at the rule, not the
+upload.
+
+**Two more errors, both mine, both on the record.**
+
+5. **`.zenodo.json` was still on 2.3.0 while `CITATION.cff` had been bumped.** Zenodo ignores
+   `CITATION.cff` *entirely* when a `.zenodo.json` exists — not deprioritised, ignored. The
+   version bump had been done carefully on the file Zenodo does not read. Third time this
+   project's citation metadata has been a release behind, and the first time the cause was
+   effort spent in the wrong place rather than an omission.
+6. **And it was caught too late.** The tag was already cut at the commit before the fix, so
+   **the deposited tarball declares 2.3.0**. The Zenodo record's metadata was corrected in
+   place (which does not affect the DOI); the archived files could not be. Written up in
+   **`docs/DEPOSIT_ERRATA.md`** with the commands to verify every sentence of it.
+   `git diff v2.4.0..HEAD` touches **two metadata files and nothing else** — no corpus, no
+   reader, no gate — so the deposit is sound *as a corpus*.
+
+**The rule that follows, now written in `CITATION.cff` and the erratum:** a release touches
+**both** metadata files, and **the tag is cut last**, after every one of them is committed
+and pushed — not between two of them.
+
+**Deliberately not done:** Zenodo's *Edit published files* would let the zip be replaced and
+the inconsistency erased. A published DOI whose files quietly change afterwards is a worse
+property for a preservation corpus than a published DOI with a documented erratum — the md5
+would move under anyone who had already verified it. Immutable-and-annotated over
+mutable-and-tidy.
+
 ## Errors made this session, and where they are recorded
 
 Per working principle 5. All four were caught by an instrument rather than by reasoning.
