@@ -233,6 +233,21 @@ default, gear for the rest, hidden never meaning absent. `panel.js` only.
 - **Git cannot commit unaided in the sandbox**: `mv` `.git/index.lock`, `.git/HEAD.lock`,
   `.git/packed-refs.lock` aside around each call. Confirmed again all session — every commit
   emitted `unable to unlink` warnings and succeeded anyway.
+- **AND THAT WORKAROUND LEAVES A NEW LOCK BEHIND EVERY TIME, WHICH EVENTUALLY BLOCKS THE
+  READER'S OWN GIT.** Moving the lock aside only gets git *past* it; git then creates a
+  fresh `HEAD.lock` it also cannot unlink. Fourteen accumulated on 2026-08-07, going back to
+  2 August, and one of them stopped the reader committing on his own machine with
+  *"Another git process seems to be running in this repository"*. **Clear them on the host
+  at the end of every session**, not just around each call:
+
+  ```
+  find .git -maxdepth 2 -name '*.lock*' -size 0 -delete
+  ```
+
+  `-size 0` is the guard: a lock genuinely held by a running process has content and is left
+  alone. **Use `find`, not a shell glob** — zsh refuses to run the whole command when any
+  pattern matches nothing, so a single stale pattern silently cancels the cleanup. That
+  happened too, on the same day, and made a completed cleanup look like a failed one.
 - **`rm` AND `mv` both fail in the sandbox** with *Operation not permitted*. The 08-06 note
   said `mv` works as the workaround for `rm`; it does for `.git` lock files and **not** for
   ordinary files. That is why five `.bak` files are still on disk.
