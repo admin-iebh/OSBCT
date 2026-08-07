@@ -39,6 +39,15 @@ date-released: "2026-08-07"
 # one. That is the THIRD time this project's citation metadata has been a
 # release behind -- see the two notes below -- and the first time the cause was
 # that the wrong file was being maintained.
+#
+# !!! AND IT WAS CAUGHT TOO LATE. The v2.4.0 tag had already been cut at the
+# commit before the fix, so the DEPOSITED tarball declares 2.3.0 in
+# `.zenodo.json` while declaring 2.4.0 here. The Zenodo record's metadata was
+# corrected in place (which does not affect the DOI); the archived files could
+# not be. Recorded, not hidden: `docs/DEPOSIT_ERRATA.md`.
+#
+# The ordering that would have prevented it: CUT THE TAG LAST, after every
+# metadata file is committed and pushed -- not between two of them.
 # 2026-08-07, v2.4.0: the corpus figures in the abstract are DELIBERATELY
 # unchanged. No text changed in that release -- it moved the dictionary stores
 # out of site/ to a bucket and gave the reader a fallback to the copy inside
