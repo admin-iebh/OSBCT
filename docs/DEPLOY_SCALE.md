@@ -9,9 +9,15 @@ rather than re-derived under pressure the next time a deploy fails.
 > described. The corrections are marked inline and the original wording is kept beside
 > them, per working principle 3 — the record is not overwritten.**
 >
-> **The recommendation in §6 was reached on those numbers and is therefore SUSPENDED, not
-> merely amended. It must be re-decided, not inherited.** A fourth option that neither §2a
-> nor §6 considered is added as §5a.
+> **The recommendation in §6 was reached on those numbers and was therefore SUSPENDED, not
+> merely amended.** A fourth option that neither §2a nor §6 considered is added as §5a.
+>
+> **THAT SUSPENSION IS NOW LIFTED. Decided 2026-08-07: D + B** — relocate the stores out of
+> `site/` and keep them in the repo, and serve them from Cloudflare R2. **§6a is the
+> instruction; everything below it in §6 is the superseded record.** This paragraph is here
+> because the note above it said "must be re-decided" for one day and an agent reading this
+> file top-to-bottom would act on the first thing it read — the same drift the project
+> instructions record for §9.
 >
 > In short: the shards are not 4% full, they are 10–22% full; §3's lever does not exist;
 > the failure list in §1 conflates three unrelated causes; and the 1 GB size cap that
@@ -311,8 +317,82 @@ lines. **Files are only removed from `site/` once the new origin is proven.**
 gzip magic bytes since a host may or may not set `Content-Encoding: gzip`, and localhost
 never does. **Test against the real bucket, not a local server.**
 
-## 6. Recommendation — SUSPENDED, and to be re-decided
+## 6. Recommendation — DECIDED 2026-08-07: **D + B**
 
+> **THE SUSPENSION IS LIFTED. The reader decided across A / B / C / D on the corrected
+> figures: relocate the stores out of `site/` and keep them in the repo (§5a, Option D),
+> and serve them from a Cloudflare R2 bucket (§4, Option B).** The suspension note and the
+> struck-through original below are kept as the record of how the first choice was made and
+> why it did not survive — they are not the instruction. **This section is the instruction.**
+
+### 6a. The decision, and the order it must be done in
+
+**D and B are one plan with two halves, and the halves answer different questions.**
+Relocation decides what Pages *publishes*; R2 decides what the reader *fetches*. Keeping
+them distinct is the whole point of §2a and §5a, and the order below follows from it:
+**the origin is proven before anything moves.**
+
+1. **Create the bucket and bind the custom domain.** The reader's, not the agent's — it
+   needs his Cloudflare account. Working name `dict.buddha-dhamma.net`; the final name is
+   his.
+2. **Upload the stores with every file left exactly where it is.** `site/lookup/` and
+   `site/lookup_eval/` are unchanged on disk and still published by Pages at this point.
+   Nothing has been risked yet.
+3. **Point `BASE` and `EBASE` at the bucket** — `site/reader/panel.js:541-542`, two lines —
+   and **run the gate against the real bucket.** See §6b: this is the step that can fail,
+   and the only step that can.
+4. **Only if step 3 is green: relocate.** `site/lookup/` → `stores/lookup/`,
+   `site/lookup_eval/` → `stores/lookup_eval/`, and update the references in
+   `_panel/build_lookup.py`, `_panel/build_eval.py`, `_panel/build_wordnet.py`,
+   `_panel/gate_reader.py`, `pipeline/check_lookup_reach.js` and
+   `.github/workflows/deploy-pages.yml`. Pages drops from 26,576 files to ~2,000.
+5. **Separate commits per step**, so any one of them reverts alone.
+
+**Reversibility, which is why this shape was chosen.** Step 3 reverts by editing two lines
+back. Step 4 is a `git mv` **inside the same repository** — the stores never leave the
+project, so even the total loss of the bucket years from now is repaired by those same two
+lines. That is the property Option B alone does *not* have, and §5a is where it is argued.
+
+### 6b. What the trial must actually test, because it is the only thing that can fail
+
+`jfetch` (`site/reader/panel.js:499`) **sniffs the gzip magic bytes** rather than trusting
+the URL, because a `.gz` can arrive in either of two states and which one is the *host's*
+choice, not ours:
+
+- **opaque** — `Content-Type: application/gzip`, no `Content-Encoding`; the browser hands
+  over compressed bytes and the panel inflates them itself;
+- **already inflated** — the host sets `Content-Encoding: gzip`, the browser inflates in the
+  network layer, and ordinary JSON arrives.
+
+**`python3 -m http.server` never sets that header, so localhost and every gate we have are
+blind to the second case.** That is exactly the class of test-rig-versus-real-host
+difference this project has been bitten by before. **The gate must read the bytes that come
+back from the bucket, not from a local server**, and it must exercise both a `.gz` shard and
+a plain `index.json`. Whether R2 sets the header depends on how the objects are uploaded —
+so record which was chosen and test the one that was chosen.
+
+### 6c. What this decision does NOT do
+
+- **It does not reshard.** Option A stays unbuilt, and §3a's re-pricing stands. Shard sizes
+  are unchanged, so **per-lookup bytes are unchanged** — the panel-latency regression that
+  §3 accepted as A's cost is simply not paid here. The one new cost is a DNS lookup and TLS
+  handshake to a second origin on the first lookup of a session, once, then the connection
+  is reused. **Measure it rather than assume it.**
+- **It does not lift the licensing ceiling, only the file-count one.** R2 has no file limit,
+  so adding dictionaries becomes technically free — but §9 still governs which dictionaries
+  may speak, and **DOP's redistribution basis is still unconfirmed** (§"DOP" in the
+  2026-08-06 handoff). Serving a text from the project's own bucket is still the project
+  redistributing it.
+- **It does not remove the `WLV` obligation — it sharpens it.** `panel.js:346` versions every
+  fetch `?v=WLV` and it must be bumped whenever the data is rebuilt, as must the `?v=` on
+  reader2.html's `<script>` tag. That is already true today; a CDN edge cache in front of the
+  stores makes forgetting it last longer. **A gate that fails the build when the stores
+  changed and `WLV` did not is owed and not yet written.**
+
+---
+
+> **Superseded by §6a above, and kept per working principle 3.**
+>
 > **This recommendation was reached on §2's "4% full" and §3's "~7,700 files at 64 KB".
 > Both are corrected above; neither survives. The reasoning is kept verbatim below because
 > it is the record of how the choice was made, but it must NOT be acted on as it stands.**
