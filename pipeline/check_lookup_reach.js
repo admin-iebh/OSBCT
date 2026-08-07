@@ -18,7 +18,31 @@
 //
 //   node pipeline/check_lookup_reach.js [N]
 const fs=require('fs'),path=require('path');const {JSDOM}=require('jsdom');const R='site/reader';
-const resolve=u=>{u=String(u).split('?')[0];if(u.startsWith('../'))return path.join('site',u.slice(3));if(u.startsWith('http')){try{u=new URL(u).pathname.replace(/^\//,'');}catch(e){}return path.join(R,u);}return path.join(R,u);};
+// !!! THE STORES MOVED, TWICE OVER, AND THIS RESOLVER HAD TO LEARN BOTH MOVES.
+// 2026-08-07, DEPLOY_SCALE §6a: panel.js now names an ABSOLUTE origin
+// (https://dict.buddha-dhamma.net/lookup/...) instead of '../lookup/', and the
+// stores move from site/ to stores/.  This function is the offline stub's whole
+// notion of where a URL lives, so both changes land here.
+//
+// It was run against the changed panel.js BEFORE being fixed, and reported
+// 0 passed, 6 failed -- "No entry for atappaka in the corpus or the
+// dictionaries", the exact sentence this gate exists to catch.  That is the
+// negative control for the fix, and it is recorded because a resolver that has
+// only ever been seen to pass proves nothing.
+//
+// STORE is detected, not assumed, so this file works before the relocation,
+// after it, and if the two lines in panel.js are ever reverted.
+const STORE=fs.existsSync('stores/lookup/index.json')?'stores':'site';
+const isStore=p=>/^lookup(_eval)?\//.test(p);
+const resolve=u=>{
+  u=String(u).split('?')[0];
+  if(u.startsWith('../')){const p=u.slice(3);return path.join(isStore(p)?STORE:'site',p);}
+  if(u.startsWith('http')){
+    let p=u;try{p=new URL(u).pathname.replace(/^\//,'');}catch(e){}
+    return isStore(p)?path.join(STORE,p):path.join(R,p);
+  }
+  return path.join(R,u);
+};
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 function inlineScripts(html){
   return html.replace(/<script src="([^"]+)"[^>]*><\/script>/g,(m,u)=>{
