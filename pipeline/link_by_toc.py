@@ -273,20 +273,47 @@ def place(src, tgt, vagga=None):
     # canon section paired with -- see the note beside its use below.
     unclaimed = {}
     if vagga is not None:
-        vs = [x for x in vs if tocnum(x[2]) and tocnum(x[2])[0] == vagga]
+        # `vagga` is (lo, hi) inclusive, or a bare int
+        lo, hi = vagga if isinstance(vagga, tuple) else (vagga, vagga)
+        vs = [x for x in vs if tocnum(x[2]) and lo <= tocnum(x[2])[0] <= hi]
         if not vs:
-            raise SystemExit('no vagga %s in %s' % (vagga, src))
+            raise SystemExit('no vagga %s-%s in %s' % (lo, hi, src))
     # the commentary's own vagga head bounds the region it covers; front matter
     # (Ganthārambhakathā .. Santikenidānakathā) lies before it and is not a target
     avs = vaggas(tgt) or [(0, len(A) - 1, '')]
     out, gaps, notes, unpaired, unsure = {}, [], [], [], []
     for (ca, cb, clbl) in vs:
-        cvn = tocnum(clbl)
-        av = [x for x in avs if tocnum(x[2]) == cvn] or \
-             ([avs[0]] if len(avs) == 1 else [])
+        cvn, cvs = tocnum(clbl), stem(clbl)
+        # !!! THE VAGGA IS PAIRED BY NAME, WITH THE NUMBER AS CONFIRMATION --
+        # the same order as the sections, and for a demonstrated reason.
+        # `33KhuA14` prints `10.` TWICE: once for `10. Sudhāvagga` (p. 114) and
+        # again for `10. Bhikkhadāyivagga` (p. 120), where the canon has
+        # Sudhā = 10 and Bhikkhadāyi = 11.  Keyed on the number, the second
+        # silently overwrote the first, so canon vagga 10 would have been paired
+        # with the Bhikkhadāyi commentary and canon vagga 11 with nothing --
+        # one wrong pairing and one whole vagga reported as having no commentary
+        # at all.  The names are unambiguous where the printed numbers are not.
+        #
+        # The number disagreement is REPORTED, never corrected: working
+        # principle 3.  Which side carries the misprint is a question about the
+        # printed page and is not decided here.
+        av = [x for x in avs if stem(x[2]) == cvs and len(cvs) >= 4]
+        how = 'name'
         if not av:
-            notes.append(('NO VAGGA', clbl, 'not in %s' % tgt))
+            av = [x for x in avs if tocnum(x[2]) == cvn]
+            how = 'number'
+        if not av and len(avs) == 1:
+            av, how = [avs[0]], 'sole'
+        if not av:
+            notes.append(('NO VAGGA', clbl, 'no vagga of that name or number in %s' % tgt))
             continue
+        if len(av) > 1:
+            notes.append(('VAGGA AMBIGUOUS', clbl,
+                          '%d candidates in %s, skipped' % (len(av), tgt)))
+            continue
+        if how == 'name' and tocnum(av[0][2]) != cvn:
+            notes.append(('VAGGA NUMBER DIFFERS', clbl,
+                          '%s prints %s' % (tgt, av[0][2])))
         aa, ab, albl = av[0]
         csec = sections_in(src, ca, cb)
         asec = sections_in(tgt, aa, ab)
@@ -459,7 +486,8 @@ if __name__ == '__main__':
     vg = None
     if '--vagga' in argv:
         k = argv.index('--vagga')
-        vg = int(argv[k + 1])
+        spec = argv[k + 1]
+        vg = tuple(int(x) for x in spec.split('-')) if '-' in spec else int(spec)
         del argv[k:k + 2]          # !!! the VALUE too, or it reads as a volume
     a = [x for x in argv if not x.startswith('-')]
     if len(a) != 2:
@@ -470,7 +498,9 @@ if __name__ == '__main__':
      foreign, dest) = build(src, tgt, vg, '--apply' in sys.argv)
     C, A = paras(src), paras(tgt)
     print('%s -> %s%s   wrote %s'
-          % (src, tgt, '  vagga %d' % vg if vg else '', dest))
+          % (src, tgt,
+             ('  vagga %s' % ('%d-%d' % vg if isinstance(vg, tuple) else vg))
+             if vg else '', dest))
     for x in notes:
         print('  %-12s %-46s %s' % x)
     for a0, b0, l in unpaired:
