@@ -218,8 +218,14 @@ default, gear for the rest, hidden never meaning absent. `panel.js` only.
 6. **Position** — unmeasured for 114 of 118 volumes. The largest thing outstanding.
 7. **The verse branch for band blocks** — a fidelity gap against the printed page, so it does
    not expire if the display question is answered "leave it".
-8. **`FINDINGS.md` §11.5 is stale and contradicts §11.3.** Still not corrected; still the
-   reader's to confirm.
+8. ~~**`FINDINGS.md` §11.5 is stale and contradicts §11.3.**~~ **CORRECTED 2026-08-07.**
+   It reported the *migrated* state — "1,501 in 96 volumes" — as the current one, twelve
+   lines below §11.3's record that all 185 files were reverted. **Measured twice, by two
+   independent implementations** (`_xc/hy1/hyspace.py` and a separate recount written
+   without reference to it, so a shared bug could not produce the same number): **8,790 in
+   109 volumes**, exactly the pre-migration figure. The original table is kept with a line
+   saying what it actually describes. **The hyphen repair is NOT in place** and remains as
+   §11.3 leaves it.
 
 ## Hazards
 
