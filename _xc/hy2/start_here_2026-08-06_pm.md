@@ -1,5 +1,16 @@
 # START HERE — after 2026-08-06
 
+> **SUPERSEDED 2026-08-07. READ `_xc/hy2/start_here_2026-08-07.md` FIRST.**
+>
+> This file is still correct about almost everything, and its §1a evidence on the
+> verbatim-repeat question must not be lost. But its headline task — the A/B/C/D decision —
+> **was made and executed on 2026-08-07: D + B.** The stores are in `stores/`, served from
+> `dict.buddha-dhamma.net`, `site/` is 1,977 files, and run #126 published in 2m01s.
+>
+> This pointer exists because this file says "that decision is the next real piece of work",
+> and an agent reading it top-to-bottom would act on that. Same drift the project
+> instructions record for §9 and `DEPLOY_SCALE.md` §6.
+
 <!-- SESSION END 2026-08-06 evening. Read this block, then §"Next, in order".
      Two files are uncommitted: this one, and `_xc/reshard/PILOT.md`. -->
 

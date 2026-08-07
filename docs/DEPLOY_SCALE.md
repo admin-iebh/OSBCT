@@ -325,6 +325,33 @@ never does. **Test against the real bucket, not a local server.**
 > struck-through original below are kept as the record of how the first choice was made and
 > why it did not survive — they are not the instruction. **This section is the instruction.**
 
+### 6a-done. EXECUTED 2026-08-07. What was measured
+
+All eight steps below were carried out the same day. Recorded here so the next reader knows
+this is history, not a plan:
+
+| | |
+|---|---:|
+| `git ls-files site/` | **1,977**, from 26,576 |
+| `git ls-files stores/` | 24,599, still tracked, still in the deposit |
+| objects in the bucket | 24,599 — matches git exactly |
+| `check_r2_origin.js` | **38 passed, 0 failed**, before and after the relocation |
+| deploy run #126 | **2m 01s, success** |
+| `https://buddha-dhamma.net/lookup/index.json` | **404** — the stores really are unpublished |
+| the reader, live | word lookup works |
+
+**R2 serves the `.gz` shards OPAQUE**, the same state Pages served them in, so `jfetch`'s
+branch is unchanged in production — §6b's whole question, answered.
+
+**One 2-minute run is not proof.** #123 published all 26,576 files in 2m05s on a healthy day
+(§1a). What changed is that the ceiling should now be unreachable rather than un-hit. **If a
+run still times out at ~11m40s with 1,977 files, the file count was never the cause** —
+go to §1a's other two shapes.
+
+Two hazards were found in the shard filenames and are recorded in
+`pipeline/check_r2_origin.js`: **164 are not ASCII and 458 contain a space.** Neither is
+named anywhere in §4 or §5a. All survive the round trip byte-identical.
+
 ### 6a. The decision, and the order it must be done in
 
 **D and B are one plan with two halves, and the halves answer different questions.**
