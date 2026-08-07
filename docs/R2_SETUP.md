@@ -214,6 +214,48 @@ what actually drops the Pages deploy from 26,576 files to about 2,000.
 
 ---
 
+---
+
+## Appendix — the PDFs are on the development URL, and that is a live defect
+
+**Found 2026-08-07 while checking whether the domain was in the account. Not this task, not
+urgent, but not to be lost either.**
+
+`osbct-pdfs` has **no custom domain** and its **Public Development URL is enabled**, and the
+site depends on it. `site/downloads.html` and `site/reader/reader2.html` both point at
+
+```
+https://pub-825764a1384f4cc8bb611b95a1a636ff.r2.dev
+```
+
+So all 118 Unicode PDFs are served today over the path Cloudflare's own documentation calls
+**rate-limited and not recommended for production**, with caching, WAF and access controls
+unavailable by design.
+
+**Why this is worse here than it would be elsewhere.** §1 of the project instructions makes
+the PDFs the final authority, and the reader's standing requirement is that a link takes
+him "to the exact and complete passage that is commented". A rate-limited origin fails that
+**quietly and only under load**: the reader clicks through, gets nothing, and no error
+reaches anyone who could act on it. It is the silent-failure shape this project keeps
+meeting, one layer out.
+
+**The fix is the same move as this document describes**, and `site/DOWNLOADS-R2-SETUP.md`
+already anticipated it — it offers the custom domain as an alternative and the site took the
+development URL instead:
+
+1. Connect **`files.buddha-dhamma.net`** to `osbct-pdfs` (§5 above; the zone is in the
+   account, confirmed 2026-08-07).
+2. Change `R2_BASE` in `site/downloads.html`, and the same constant in
+   `site/reader/reader2.html`, to that domain.
+3. Then **disable the Public Development URL** — but not before step 2 is deployed, or the
+   PDFs vanish from the live site in the interval.
+4. Update `site/DOWNLOADS-R2-SETUP.md`, whose step 1 currently presents the `r2.dev`
+   subdomain as the primary route. That instruction is how this happened.
+
+**Not measured:** whether the rate limit has ever actually been hit. Cloudflare does not
+publish the threshold. So this is a known-bad configuration, not an observed outage — stated
+that way deliberately, per working principle 2.
+
 ## Sources
 
 - [Public buckets and custom domains](https://developers.cloudflare.com/r2/buckets/public-buckets/)
