@@ -311,9 +311,33 @@ def place(src, tgt, vagga=None):
             if k not in paired_a:
                 for n in numbers_in(tgt, a0, a1):
                     unclaimed.setdefault(n, al)
-        for ci, ai in pairs:
+        for k, (ci, ai) in enumerate(pairs):
             c0, c1, cl = csec[ci]
             a0, a1, al = asec[ai]
+            # !!! THE SPAN REACHES BACK OVER UNPAIRED COMMENTARY SECTIONS.
+            # Reader, 2026-08-07: "paragraph 5 of the Apadānapāḷi is commented
+            # and the A is dimmed.  You missed that?"  He is right and the cause
+            # was here.  `32KhuA13` ord 11 (p. 111) quotes canon 5 in full and
+            # glosses it word by word -- it IS the commentary on canon 5 -- but
+            # it sits under `Abbhantaranidānavaṇṇanā`, the commentary's own
+            # introduction to the Therāpadāna, which no canon section faces.  So
+            # it paired with nothing, its numbers fell outside every span, and
+            # canon 5 was reported `cannot_establish`.
+            #
+            # THAT WAS A FACT ABOUT THE PAIRING PROCEDURE, NOT ABOUT THE PAGE,
+            # and it reached the reader as a dimmed chip -- which on screen is
+            # indistinguishable from "not commented".  A verdict of "we cannot
+            # tell" must never be produced by the instrument's own bookkeeping.
+            #
+            # A commentary opens a work with material of its own before it
+            # reaches the first named unit, and that material still glosses
+            # canon paragraphs.  So the search span starts after the PREVIOUS
+            # paired section ends, absorbing anything unpaired in between,
+            # rather than at this section's own head.  Assertion 7 of
+            # `check_toc_links.py` -- targets advance monotonically -- is the
+            # guard: if absorbing a gap ever pulled a link backwards out of
+            # order, the gate fails.
+            a0 = (asec[pairs[k - 1][1]][1] + 1) if k else aa
             avail = numbers_in(tgt, a0, a1)
             for j in range(c0, c1 + 1):
                 n = C[j].get('n')

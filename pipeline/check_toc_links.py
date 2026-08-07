@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Ratchet for `link_by_toc.py`: seven assertions over one canon vagga.
+"""Ratchet for `link_by_toc.py`: eight assertions over one canon vagga.
 
 WHY THIS FILE EXISTS SEPARATELY.  The placement in `link_by_toc.py` was written
 and looked right, and running these checks against it found two defects it could
@@ -29,13 +29,23 @@ THE ASSERTIONS.  Each is written so that it can only pass for a real reason.
   5  no paragraph is both linked and verdicted     -- the states are exclusive
   6  at most one commentary record per paragraph   -- no superseded guesses
   7  targets advance monotonically through the vagga
+  8  no verdict of silence over a number the commentary actually carries
 
-!!! ASSERTION 7 IS THE ONE THAT CATCHES A PLAUSIBLE WRONG ANSWER.  1-6 are
-satisfied by any self-consistent map, including one that pairs the right sections
-and then scatters inside them.  A commentary follows its canon in order, so an
-inversion means two links crossed -- the signature of a number matched in the
-wrong section.  It is the only assertion here that tests the SHAPE of the result
-rather than its bookkeeping.
+!!! ASSERTION 7 CATCHES A PLAUSIBLE WRONG ANSWER.  1-6 are satisfied by any
+self-consistent map, including one that pairs the right sections and then
+scatters inside them.  A commentary follows its canon in order, so an inversion
+means two links crossed -- the signature of a number matched in the wrong
+section.  It tests the SHAPE of the result rather than its bookkeeping.
+
+!!! ASSERTION 8 WAS ADDED AFTER ASSERTIONS 1-7 WERE ALL GREEN OVER A FILE THAT
+WAS WRONG.  The reader opened Apadāna 5, saw the A chip dimmed, and asked how it
+had been missed.  `32KhuA13` p. 111 quotes canon 5 in full and glosses it word by
+word; the builder had written canon 5 out as `cannot_establish` because the
+commentary section holding it paired with nothing, and every assertion stayed
+green because all seven audit the links that WERE made.  Nothing looked at what
+was not linked -- which is precisely where a claim about the edition's silence
+lives.  A verdict is an assertion about the printed page and needs an instrument
+pointed at the printed page, not at the builder's own bookkeeping.
 
 Usage:
   python3 pipeline/check_toc_links.py 20Khu03 32KhuA13 --vagga 1
@@ -138,6 +148,54 @@ def check(src, tgt, vg, new, old):
            if a <= int(k) <= b and e.get('commentary')]
     inv = sum(1 for i in range(1, len(seq)) if seq[i] < seq[i - 1])
     add('targets advance monotonically', not inv, '%d inversions' % inv)
+
+    # !!! THE ASSERTION THAT THE OTHER SEVEN COULD NOT MAKE, AND THE ONLY ONE
+    # THAT TESTS THE VERDICT ITSELF.
+    #
+    # Reader, 2026-08-07: "paragraph 5 of the Apadānapāḷi is commented and the A
+    # is dimmed.  You missed that?"  He was right.  `32KhuA13` ord 11 quotes
+    # canon 5 in full and glosses it word by word, and canon 5 was nonetheless
+    # written out as `cannot_establish` because the commentary section holding
+    # it paired with nothing.  ALL SEVEN ASSERTIONS ABOVE WERE GREEN while that
+    # was in the file, because every one of them checks the bookkeeping of the
+    # links that WERE made.  None of them looks at what was NOT linked, which is
+    # exactly where a claim about the edition's silence lives.
+    #
+    # So: a paragraph declared not_commented or cannot_establish must not have
+    # its number carried ANYWHERE in the commentary's region for this vagga --
+    # not merely absent from the section it was paired with.  The search is
+    # deliberately wider than the placer's, so the placer cannot satisfy it by
+    # construction.  A gate that only re-asks the question the builder already
+    # asked is not an independent check.
+    av = T.vaggas(tgt) or [(0, len(A) - 1, '')]
+    cvn = T.tocnum(lbl)
+    reg = [x for x in av if T.tocnum(x[2]) == cvn] or (av if len(av) == 1 else [])
+    wrong = []
+    if reg:
+        r0, r1 = reg[0][0], reg[0][1]
+        held = {}
+        for j in range(r0, min(r1, len(A) - 1) + 1):
+            if A[j].get('n') is not None:
+                held.setdefault(A[j]['n'], j)
+            rg = T.expand_range(A[j].get('text') or '')
+            if rg:
+                for x in range(rg[0], rg[1] + 1):
+                    held.setdefault(x, j)
+        for k, e in new.items():
+            if not (a <= int(k) <= b):
+                continue
+            w = (e.get('verdict') or {}).get('why')
+            if w not in ('not_commented', 'cannot_establish'):
+                continue
+            n = (e.get('verdict') or {}).get('n')
+            if n is not None and n in held:
+                wrong.append((k, n, held[n], A[held[n]].get('printed')))
+    add('no verdict of silence over a number the commentary carries',
+        not wrong,
+        '%d paragraphs declared uncommented whose number IS in %s%s'
+        % (len(wrong), tgt,
+           '' if not wrong else '  e.g. n=%s at ord %s, printed p.%s'
+           % (wrong[0][1], wrong[0][2], wrong[0][3])))
     return out
 
 
@@ -194,17 +252,28 @@ def selftest():
         d[x]['commentary'][0], d[y]['commentary'][0] = \
             d[y]['commentary'][0], d[x]['commentary'][0]
 
+    def false_silence(d):
+        # the reader's canon-5 defect, reproduced: a paragraph the commentary
+        # demonstrably glosses, written out as silence.  Moving it from linked
+        # to not_commented leaves the accounting and the ordering untouched, so
+        # only the assertion that reads the commentary itself can object.
+        k = linked[5]
+        n = d[k]['commentary'][0]['n']
+        d[k]['commentary'] = []
+        d[k]['verdict'] = {'why': 'not_commented', 'n': n}
+
     cases = [('out of scope', out_of_scope, 0),
              ('number not carried', wrong_number, 1),
              ('ineligible volume', foreign, 2),
              ('verdict lost', lost_verdict, 3),
              ('states overlap', both_states, 4),
              ('superseded record', superseded, 5),
-             ('links crossed', crossed, 6)]
+             ('links crossed', crossed, 6),
+             ('silence over a gloss', false_silence, 7)]
     print('SELFTEST')
     clean = check(src, tgt, vg, base, old)
     fails = [n for n, ok, d in clean if not ok]
-    print('  %-22s %s' % ('unmutated input', 'all 7 green' if not fails
+    print('  %-22s %s' % ('unmutated input', 'all 8 green' if not fails
                           else 'NOT GREEN: %s' % fails))
     bad = bool(fails)
     for name, fn, idx in cases:
