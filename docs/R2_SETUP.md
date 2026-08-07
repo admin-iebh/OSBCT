@@ -68,14 +68,44 @@ rclone config
 - region: leave blank
 - endpoint: **`https://<ACCOUNT_ID>.r2.cloudflarestorage.com`**
 
-Then check it answers:
-
-```
-rclone tree osbct-r2: --max-depth 1
-```
-
 **If the token is scoped to one bucket** (step 2), add `no_check_bucket = true` to that
 remote in `rclone config file`, or rclone errors when it tries to check the bucket exists.
+
+Writing the file directly is less error-prone than the wizard, because the wizard never
+asks about `no_check_bucket` and the menu numbers move between rclone versions.
+`rclone config file` prints the path; the remote is:
+
+```
+[osbct-r2]
+type = s3
+provider = Cloudflare
+access_key_id = <ACCESS KEY ID>
+secret_access_key = <SECRET ACCESS KEY>
+endpoint = https://<ACCOUNT_ID>.r2.cloudflarestorage.com
+acl = private
+no_check_bucket = true
+```
+
+### Verify with a round trip, not with a bucket listing
+
+**CORRECTED 2026-08-07, having first been written wrong here.** This step said to check the
+remote with `rclone tree osbct-r2:`. **That fails on a correctly-scoped token**, because
+listing *buckets* is an account-level operation and the token in step 2 grants object
+access to one bucket. The failure looks like a credentials problem and is not one — which
+is exactly the sort of wrong diagnosis this project has lost afternoons to.
+
+`rclone ls osbct-r2:osbct-dict` is no better on its own: the bucket is empty at this point,
+so success and silent failure both print nothing. **Prove it with a round trip**, which
+exercises write, list, read and delete and leaves the bucket clean:
+
+```
+echo "osbct r2 test $(date)" > /tmp/r2test.txt
+rclone copy /tmp/r2test.txt osbct-r2:osbct-dict/
+rclone ls   osbct-r2:osbct-dict          # expect: one line, r2test.txt
+rclone cat  osbct-r2:osbct-dict/r2test.txt   # expect: the line you wrote
+rclone delete osbct-r2:osbct-dict/r2test.txt
+rclone ls   osbct-r2:osbct-dict          # expect: nothing
+```
 
 ---
 
