@@ -55,8 +55,14 @@
    with its copyright information shown. **Parked by the reader:** the verbatim-repeat
    display and `none` vs `dim`.
 
-**Corrections owed to the record, none of them made yet:** `docs/DEPLOY_SCALE.md` §2 and
-§3; `FINDINGS.md` §11.5 (stale, contradicts §11.3); this file's hazard list, which says
+**`docs/DEPLOY_SCALE.md` IS NOW CORRECTED (2026-08-07).** §2 and §3 are struck through with
+§2b and §3a beside them, §1a separates the three failure causes, **§5a adds Option D —
+relocate the stores out of `site/` and keep them in the repo, which preserves the Zenodo
+deposit** — and **§6 is SUSPENDED pending a fresh decision across A / B / C / D.** That
+decision is the next real piece of work and it belongs to the reader.
+
+**Corrections still owed:** `FINDINGS.md` §11.5 (stale, contradicts §11.3); this file's
+hazard list, which says
 `gh` is installed and authenticated — **it is not present in every sandbox, and was not in
 this one**; and `site/reader/panel.js:14`, which says the Abhidhāna, PEU and PPN are not
 shipped while line 104 says every visitor gets every tab.
