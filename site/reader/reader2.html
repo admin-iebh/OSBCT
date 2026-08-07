@@ -273,7 +273,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=a1a5de8aee10"></script>
+<script src="../i18n.js?v=1e7e28f2c125"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -392,7 +392,7 @@ function bhagaRoman(t){
 }
 const esc=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const escA=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const R2='https://pub-825764a1384f4cc8bb611b95a1a636ff.r2.dev';
+const R2='https://files.buddha-dhamma.net';
 const FOLDER={canon:'pali-unicode',A:'atthakatha-unicode',T:'tika-unicode'};
 let toastT=null;
 function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),1500);}
@@ -403,7 +403,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='a1a5de8aee10';
+const BUILD='1e7e28f2c125';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -1527,19 +1527,56 @@ function dimOf(key,tg,src){
 // Short enough for a chip, specific enough to be checkable.  The two condemned
 // families do NOT share wording: a wrong volume and a wrong sutta inside the
 // right volume are different things to a reader, and the reason must name WHICH
-// check fired.  Only `ordinal` is built so far; `concordance` is the 3,163 and
-// is not wired yet, so an unknown `why` says the honest minimum rather than
-// guessing at one of the two.
-function dimReason(d){
-  if(!d) return '';
+// check fired.
+//
+// `concordance` wired 2026-08-07.  Both families are now built, and an unknown
+// `why` still falls through to `dim_generic` -- which says the honest minimum
+// rather than guessing at one of the two, and must stay for exactly that reason
+// the next time a third check is added.
+//
+// A verdict names its own evidence.  `ordinal` quotes what the target passage
+// SAYS about itself; `concordance` names the volume the link reaches and the
+// volumes the edition pairs this one with, because "wrong volume" without the
+// volume is an accusation the reader cannot check, and §5 of the project
+// instructions makes the relation many-to-many -- there is rarely one right
+// answer to put in its place, so the allowed set is shown rather than a single
+// correction that would misrepresent the concordance.
+function oneReason(d){
   if(d.why==='ordinal'){
     let s=TIP('dim_ordinal','The linked passage states it is glossing sutta %1 of the vagga, not sutta %2.')
             .replace('%1',d.says).replace('%2',d.expected);
     if(d.name==='concurs') s+=' '+TIP('dim_name_concurs','The section name agrees it is the wrong passage.');
     else if(d.name==='dissents') s+=' '+TIP('dim_name_dissents','The section name disagrees with this verdict.');
-    return s+' '+TIP('dim_opens','It still opens.');
+    return s;
   }
-  return TIP('dim_generic','An independent check is against this link.')+' '+TIP('dim_opens','It still opens.');
+  if(d.why==='concordance'){
+    // `no such layer` is a different fault from `outside` and check_concordance
+    // keeps them apart: one is a link aimed at the wrong volume, the other is a
+    // link into a layer the edition says this volume does not have at all --
+    // not mis-aimed but manufactured.  0 of these exist today; the branch is
+    // here so that the first one is never shown in the other's words.
+    if(d.kind==='no such layer')
+      return TIP('dim_conc_nolayer','The concordance gives this volume no %1 at all, so this link points into a layer the edition does not record.')
+               .replace('%1',LAYERNAME(d.layer));
+    const allow=(d.allowed||[]);
+    let s=TIP('dim_conc_outside','The concordance does not pair this volume with %1.').replace('%1',d.target);
+    if(allow.length) s+=' '+TIP('dim_conc_allowed','It gives its %1 as %2.')
+                              .replace('%1',LAYERNAME(d.layer)).replace('%2',allow.join(', '));
+    return s;
+  }
+  return TIP('dim_generic','An independent check is against this link.');
+}
+function LAYERNAME(l){
+  return l==='subcommentary'?TIP('layer_tika','Ṭīkā'):TIP('layer_atthakatha','Aṭṭhakathā');
+}
+// BOTH verdicts are shown when both fired.  `mark_condemned.py` puts the
+// primary in `why` and the rest in `also` rather than overwriting -- 3 links
+// carry one today -- and showing only the first here would throw away at
+// display time precisely what the build took care to keep.
+function dimReason(d){
+  if(!d) return '';
+  const parts=[oneReason(d)].concat((d.also||[]).map(oneReason));
+  return parts.join(' ')+' '+TIP('dim_opens','It still opens.');
 }
 // cross-layer jump buttons — only for bands this work actually has, and
 // only where this paragraph really has one

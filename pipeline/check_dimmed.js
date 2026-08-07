@@ -6,19 +6,28 @@
 // shallowest case is not an assertion about the feature.
 //
 // So this does not merely load a page and find no error.  It picks a paragraph
-// the build has marked condemned, boots the real reader over the real data, and
-// requires FOUR things that can each fail on their own:
+// from EACH condemned family, boots the real reader over the real data, and
+// requires FIVE things that can each fail on their own:
 //
 //   1. a `.jbtn.dim` button exists on that paragraph
 //   2. it is NOT disabled -- dimmed means "the evidence is against it", never
 //      "there is nothing here", and `.jbtn.none` is the other statement
-//   3. its tooltip names the ordinal check and carries BOTH numbers
-//   4. a control paragraph with an UNCONDEMNED link in the same volume has a
-//      jump button and it is NOT dimmed
+//   3. its tooltip carries that family's OWN evidence: for `ordinal`, the check
+//      by name and both numbers; for `concordance`, the volume the link reaches
+//      and the volumes the edition does pair this one with
+//   4. the two families' tooltips are NOT THE SAME TEXT, and neither has fallen
+//      through to `dim_generic`
+//   5. a control paragraph with an UNCONDEMNED link has a jump button and it is
+//      NOT dimmed
 //
-// (4) is the part that matters.  Without it the whole file passes on a build
-// that dims every link, or none, or crashes before drawing any -- the vacuous
-// pass this project has now shipped eight times.
+// (4) AND (5) ARE THE TWO THAT MATTER, and they fail in opposite directions.
+// Without (5) the whole file passes on a build that dims every link, or none,
+// or crashes before drawing any -- the vacuous pass this project has now
+// shipped eight times.  Without (4) it passes on a build where both families
+// say the same generic sentence, which is a real regression with no visible
+// symptom: a generic tooltip is still a tooltip, still sits on a dimmed button,
+// and still tells the reader the link opens.  It just stops telling him WHICH
+// check fired, which is the entire content of the decision.
 //
 //   node pipeline/check_dimmed.js
 const fs=require('fs'),path=require('path');const {JSDOM}=require('jsdom');const R='site/reader';
@@ -44,69 +53,118 @@ function boot(){
 // --- pick the fixture from the DATA, never hard-code an ordinal ------------
 // A hard-coded paragraph number silently stops testing the feature the moment
 // the links are rebuilt and that ordinal is no longer condemned.
+//
+// EXTENDED 2026-08-07 for the second condemned family.  `why:'concordance'`
+// (1,162 visible chips) joins `why:'ordinal'` (316), and the requirement the
+// handoff states is that they are dimmed WITH WORDING DISTINCT FROM THE 320.
+// "Distinct" is not a property of one tooltip, so it cannot be asserted by
+// looking at one: the gate must hold both at once and compare them.  Hence a
+// fixture per family rather than the first dim it meets.
+//
+// Volumes are searched independently per family, because nothing guarantees
+// one volume carries both -- requiring that would make the gate skip silently
+// on a build where it should run, which is the vacuous pass this file was
+// written against.
 function fixture(){
   const D='site/reader/linksk';
+  const want={ordinal:null,concordance:null};
+  let clean=null, cleanVol=null;
   for(const f of fs.readdirSync(D).sort()){
     if(!f.endsWith('.links.json')) continue;
     const vol=f.slice(0,-'.links.json'.length);
     const d=JSON.parse(fs.readFileSync(path.join(D,f),'utf8'));
-    let dim=null, clean=null;
     for(const si of Object.keys(d).sort((a,b)=>a-b)){
       for(const layer of ['commentary','subcommentary']){
-        for(const e of d[si][layer]||[]){
-          if(e.state!=='direct') continue;
-          const tg = layer==='commentary'?'A':'T';
-          if(e.dim && !dim) dim={ord:si,tg:tg,d:e.dim};
-          if(!e.dim && !clean) clean={ord:si,tg:tg};
-        }
+        // Only the FIRST direct entry becomes a chip -- `dimOf` reads r[0].dim.
+        // Picking any other would give the gate a fixture the reader never
+        // draws, and it would then assert against a button that is not there.
+        const ents=(d[si][layer]||[]).filter(e=>e.state==='direct');
+        if(!ents.length) continue;
+        const e=ents[0], tg = layer==='commentary'?'A':'T';
+        if(e.dim){ if(!want[e.dim.why]) want[e.dim.why]={vol,ord:si,tg,d:e.dim}; }
+        else if(!clean){ clean={vol,ord:si,tg}; cleanVol=vol; }
       }
     }
-    if(dim&&clean) return {vol,dim,clean};
+    if(want.ordinal&&want.concordance&&clean) break;
   }
-  return null;
+  return {ordinal:want.ordinal,concordance:want.concordance,clean,cleanVol};
 }
 
 (async()=>{
   const fx=fixture();
-  if(!fx){ console.log('FAIL  no volume carries both a condemned and an uncondemned link'); process.exit(1); }
-  console.log('fixture: %s  condemned ¶%s %s (says %s, expected %s, name %s)  control ¶%s %s',
-    fx.vol, fx.dim.ord, fx.dim.tg, fx.dim.d.says, fx.dim.d.expected, fx.dim.d.name, fx.clean.ord, fx.clean.tg);
+  const fails=[];
+  for(const fam of ['ordinal','concordance'])
+    if(!fx[fam]) fails.push('no `'+fam+'` fixture in any volume -- that family is not being tested at all, '
+      +'which is the vacuous pass this file exists to prevent. Run pipeline/mark_condemned.py --write.');
+  if(!fx.clean) fails.push('no uncondemned link anywhere -- the discrimination control cannot run');
+  if(fails.length){ fails.forEach(f=>console.log('  FAIL '+f)); console.log('\ncheck_dimmed: FAIL'); process.exit(1); }
+
+  for(const fam of ['ordinal','concordance'])
+    console.log('fixture '+fam.padEnd(12)+' '+fx[fam].vol+' ¶'+fx[fam].ord+' '+fx[fam].tg+'  '+JSON.stringify(fx[fam].d));
+  console.log('fixture '+'control'.padEnd(12)+' '+fx.clean.vol+' ¶'+fx.clean.ord+' '+fx.clean.tg);
+
   const w=boot();
   await wait(400);
-  await w.openKey(fx.vol+'#'+fx.dim.ord,'canon');
-  await wait(700);
-
-  const fails=[];
-  const btnsOf=(ord)=>{
-    const el=w.document.getElementById('p-'+fx.vol+'-'+ord);
+  const btnsOf=(vol,ord)=>{
+    const el=w.document.getElementById('p-'+vol+'-'+ord);
     return el?Array.from(el.querySelectorAll('.jbtn')):null;
   };
-  const D=btnsOf(fx.dim.ord);
-  if(!D) fails.push('condemned paragraph ¶'+fx.dim.ord+' did not render');
-  else{
+  const tips={};
+
+  // --- 1-3, ONCE PER FAMILY ------------------------------------------------
+  for(const fam of ['ordinal','concordance']){
+    const F=fx[fam];
+    await w.openKey(F.vol+'#'+F.ord,'canon');
+    await wait(700);
+    const D=btnsOf(F.vol,F.ord);
+    if(!D){ fails.push(fam+': paragraph ¶'+F.ord+' did not render'); continue; }
     const b=D.find(x=>x.classList.contains('dim'));
-    if(!b) fails.push('1. no .jbtn.dim on the condemned paragraph (buttons: '
-                      +D.map(x=>x.textContent+'['+x.className+']').join(' ')+')');
-    else{
-      if(b.disabled||b.classList.contains('none'))
-        fails.push('2. the dimmed button is disabled -- that is the "nothing here" state, not this one');
-      const tip=b.getAttribute('title')||b.getAttribute('data-tip')||'';
-      if(!/sutta/i.test(tip)) fails.push('3. tooltip does not name the ordinal check: '+JSON.stringify(tip));
-      if(tip.indexOf(String(fx.dim.d.says))<0||tip.indexOf(String(fx.dim.d.expected))<0)
-        fails.push('3. tooltip is missing one of the two numbers: '+JSON.stringify(tip));
-      if(!fails.length) console.log('  dimmed tooltip: %s', JSON.stringify(tip));
+    if(!b){ fails.push('1. '+fam+': no .jbtn.dim on the condemned paragraph (buttons: '
+                       +D.map(x=>x.textContent+'['+x.className+']').join(' ')+')'); continue; }
+    if(b.disabled||b.classList.contains('none'))
+      fails.push('2. '+fam+': the dimmed button is disabled -- that is the "nothing here" state, not this one');
+    const tip=b.getAttribute('title')||b.getAttribute('data-tip')||'';
+    tips[fam]=tip;
+    // 3. the tooltip must carry THIS family's own evidence, so the reader can
+    //    check the accusation instead of taking it on trust.
+    if(fam==='ordinal'){
+      if(!/sutta/i.test(tip)) fails.push('3. ordinal: tooltip does not name the ordinal check: '+JSON.stringify(tip));
+      if(tip.indexOf(String(F.d.says))<0||tip.indexOf(String(F.d.expected))<0)
+        fails.push('3. ordinal: tooltip is missing one of the two numbers: '+JSON.stringify(tip));
+    }else{
+      if(tip.indexOf(F.d.target)<0)
+        fails.push('3. concordance: tooltip does not name the volume the link reaches ('+F.d.target+'): '+JSON.stringify(tip));
+      if(F.d.kind==='outside'&&(F.d.allowed||[]).length&&tip.indexOf(F.d.allowed[0])<0)
+        fails.push('3. concordance: tooltip does not name the volumes the concordance does allow: '+JSON.stringify(tip));
     }
+    console.log('  %s tooltip: %s', fam, JSON.stringify(tip));
   }
-  // --- the control.  Without this the file passes on a build that dims all. ---
-  await w.openKey(fx.vol+'#'+fx.clean.ord,'canon');
+
+  // --- 4. THE WORDING MUST DIFFER.  This is the assertion the handoff asks
+  //     for, and the only one that catches both families collapsing into
+  //     `dim_generic` -- a regression every other check here would pass,
+  //     because a generic tooltip is still a tooltip, still sits on a dimmed
+  //     button, and still says the link opens.
+  if(tips.ordinal&&tips.concordance){
+    if(tips.ordinal===tips.concordance)
+      fails.push('4. the two condemned families produce IDENTICAL wording -- a wrong volume and a wrong sutta '
+                 +'inside the right volume are being told to the reader in the same words');
+    else console.log('  wording differs between the two families: ok');
+    for(const fam of Object.keys(tips))
+      if(/An independent check is against this link|Una comprobaci/i.test(tips[fam]))
+        fails.push('4. '+fam+' fell through to dim_generic -- its own branch of dimReason did not fire');
+  }
+
+  // --- 5. the control.  Without this the file passes on a build that dims all.
+  await w.openKey(fx.clean.vol+'#'+fx.clean.ord,'canon');
   await wait(500);
-  const C=btnsOf(fx.clean.ord);
-  if(!C) fails.push('4. control paragraph ¶'+fx.clean.ord+' did not render');
-  else if(!C.length) fails.push('4. control paragraph has no jump button at all');
+  const C=btnsOf(fx.clean.vol,fx.clean.ord);
+  if(!C) fails.push('5. control paragraph ¶'+fx.clean.ord+' did not render');
+  else if(!C.length) fails.push('5. control paragraph has no jump button at all');
   else if(C.every(x=>x.classList.contains('dim')))
-    fails.push('4. EVERY button on the control paragraph is dimmed -- the dimming is not discriminating');
+    fails.push('5. EVERY button on the control paragraph is dimmed -- the dimming is not discriminating');
   else console.log('  control ¶%s: %s', fx.clean.ord, C.map(x=>x.textContent+'['+x.className+']').join(' '));
 
   if(fails.length){ fails.forEach(f=>console.log('  FAIL '+f)); console.log('\ncheck_dimmed: FAIL'); process.exit(1); }
-  console.log('\ncheck_dimmed: PASS (4 assertions, incl. the discrimination control)');
+  console.log("\ncheck_dimmed: PASS (5 assertions over 2 condemned families, incl. the wording and discrimination controls)");
 })();
