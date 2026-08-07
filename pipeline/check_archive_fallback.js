@@ -149,12 +149,22 @@ async function runAll(words, mode, tally) {
     doc.getElementById('wlb').innerHTML = ''; doc.getElementById('wlt').innerHTML = '';
     q.hidden = false; q.value = word;
     q.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-    let none = true, tabs = '', st = '';
-    for (let i = 0; i < 60; i++) { await wait(100);
+    // Settle rather than first-answer -- see the long note in
+    // check_lookup_reach.js.  Breaking on `(none||tabs)` catches an interim
+    // state for any word whose only content is in the gzipped `dpd` store, and
+    // that is what made THIS file's first version fail on 2 of 4 words.
+    let none = true, tabs = '', st = '', prev = null, stable = 0;
+    for (let i = 0; i < 80; i++) { await wait(100);
       st = doc.getElementById('wl') ? doc.getElementById('wl').dataset.state : '';
       none = !!doc.querySelector('#wlb .wl-none');
       tabs = (doc.getElementById('wlt') || {}).textContent || '';
-      if (st !== 'loading' && (none || tabs)) break; }
+      const counted = !!doc.querySelector('#wlt .wl-n');
+      const sig = st + '|' + none + '|' + tabs + '|' +
+                  ((doc.getElementById('wlb') || {}).textContent || '').length;
+      if (st !== 'loading' && counted && (none || tabs)) {
+        stable = (sig === prev) ? stable + 1 : 0; prev = sig;
+        if (stable >= 2) break;
+      } else { prev = null; stable = 0; } }
     const body = ((doc.getElementById('wlb') || {}).textContent || '').slice(0, 200);
     results[word] = { none: none, tabs: tabs.trim(), body: body };
   }
@@ -210,5 +220,5 @@ const ok = (w, c, g) => { if (c) { pass++; console.log('  ok   ' + w); }
   }
   console.log('\nGreen. An unpacked deposit behaves exactly as the live site does.');
   console.log('NOTE: this says nothing about whether a given word resolves CORRECTLY --');
-  console.log('that is check_lookup_reach.js, which currently reports one known failure.');
+  console.log('that is check_lookup_reach.js, which now reports 0 failures.');
 })();

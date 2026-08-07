@@ -138,13 +138,30 @@ Per working principle 5. All four were caught by an instrument rather than by re
 
 ## Open items created or confirmed this session
 
-1. **`check_lookup_reach.js` fails on `sāmugiya`, and it is NOT from this work.** Verified
-   by restoring `panel.js` from `65c478ab~1` and re-running: identical word, identical
-   output. **Observation, not diagnosis:** the word reaches the store — four tabs draw,
-   `DPDAbhidhānaAPDGloss` — while the panel simultaneously reports `wl_none`, its no-entry
-   state. Something resolves partially. **Do not close this until it is understood**: a
-   panel that draws tabs and says "no entry" in the same breath is the confident-wrong-
-   answer shape.
+1. ~~**`check_lookup_reach.js` fails on `sāmugiya`.**~~ **CLOSED the same day, and it was
+   never a reader defect — the gate could not serve one of the stores.**
+
+   `check_lookup_reach`'s jsdom fetch stub read every file as **UTF-8 text** and offered
+   only `json()` and `text()`. `jfetch` reaches for `r.arrayBuffer()` on any `.gz`, got
+   `undefined`, threw, and the throw was swallowed by jfetch's own `.catch(() => null)`.
+   **The entire `dpd` store — the one store published gzipped — was silently invisible
+   inside that gate.** Every word with content elsewhere passed and hid it. `sāmugiya` is
+   the one word in the sample whose *only* content is DPD (`DPD 1 | Abhidhāna(dis) |
+   APD(dis) | Gloss(dis)`), so it alone reported "no entry". **6 passed, 0 failed** after
+   the stub was given an `arrayBuffer()`.
+
+   **The lesson is worth more than the fix.** A test rig that cannot serve one of the
+   stores will accuse the program of exactly the fault the rig has, and will do so *in the
+   program's own words* — which is why it read as a reader bug for days and was written
+   into this file as one.
+
+   **And the first diagnosis was wrong.** It was called a race, and the poll loop was
+   rewritten to wait for the panel to settle. That rewrite was run and **still failed**,
+   which is what sent the search back to the stub. The settle logic was kept — waiting for
+   the panel's own completion signal beats breaking on its first utterance — but it is
+   labelled in the file as *not the fix*, so the next reader does not inherit a false
+   account. Guessing twice and checking twice is what got there; the checking is the part
+   to repeat.
 2. **The 118 PDFs are served from the `r2.dev` development URL.** `osbct-pdfs` has no custom
    domain and its Public Development URL is enabled; `site/downloads.html` and
    `site/reader/reader2.html` both point at
@@ -168,6 +185,15 @@ Per working principle 5. All four were caught by an instrument rather than by re
 5. **Five `.bak` files** in `_panel/` and `pipeline/` from this session's `sed` runs. They
    are gitignored and harmless. The sandbox cannot delete files (`rm` and `mv` both return
    *Operation not permitted*), so: `rm _panel/*.bak pipeline/*.bak` on the reader's machine.
+
+6. **A downloadable package that runs locally, PDFs included.** Asked for by the reader on
+   2026-08-07, for later. **Most of it already works** — the archive fallback means an
+   unpacked checkout is a working offline reader, and there is no CDN dependency anywhere in
+   `site/`. Two things remain: the **PDFs are not in the repository** (they are in the
+   `osbct-pdfs` bucket, ~386 MB, and §2's distribution permission must be confirmed before
+   bundling them), and a **launcher**, because the server must sit at the repository root —
+   serve `site/` instead and the reader loads with empty dictionary tabs and no error.
+   Measurements and the build plan: `docs/OFFLINE_PACKAGE.md`.
 
 ## Still open from the previous handoff — unchanged unless noted
 

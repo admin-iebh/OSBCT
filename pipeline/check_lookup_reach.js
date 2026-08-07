@@ -54,9 +54,34 @@ function boot(){
     {runScripts:'dangerously',pretendToBeVisual:true,url:'http://x/?wl=1',beforeParse(w){
       w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});
       w.scrollTo=()=>{}; w.Element.prototype.scrollIntoView=()=>{};
-      w.fetch=u=>{const f=resolve(u);let t=null;try{t=fs.readFileSync(f,'utf8');}catch(e){}
-        return Promise.resolve({ok:t!=null,status:t!=null?200:404,
-          json:()=>Promise.resolve(t?JSON.parse(t):{}),text:()=>Promise.resolve(t||'')});};}});
+      // !!! THIS STUB COULD NOT SERVE A GZIPPED SHARD, AND THAT IS WHY THIS
+      // GATE HAS BEEN REPORTING A FAILURE THAT DOES NOT EXIST.
+      //
+      // Diagnosed 2026-08-07.  It read every file as UTF-8 TEXT and offered
+      // only `json()` and `text()`.  `jfetch` reaches for `r.arrayBuffer()` on
+      // any `.gz`, got `undefined`, threw, and the throw was swallowed by
+      // jfetch's own `.catch(() => null)` -- so the ENTIRE `dpd` store, the one
+      // store published gzipped, was silently invisible inside this gate.
+      //
+      // Every word whose content lives elsewhere passed and hid it.  `sāmugiya`
+      // is the one in the sample whose ONLY content is DPD -- measured:
+      // `DPD 1 | Abhidhāna(dis) | APD(dis) | Gloss(dis)` -- so it alone reported
+      // "no entry", and was carried in the handoff for days as an open reader
+      // defect that "must not be closed until it is understood".
+      //
+      // The reader was never wrong.  A test rig that cannot serve one of the
+      // stores will accuse the program of exactly the fault the rig has, and it
+      // will do so in the program's own words.
+      //
+      // Returning a Buffer and slicing a real ArrayBuffer out of it is the whole
+      // fix.  `check_archive_fallback.js` had it right from the start; this
+      // file did not, and the two are now the same shape.
+      w.fetch=u=>{const f=resolve(u);let b=null;try{b=fs.readFileSync(f);}catch(e){}
+        return Promise.resolve({ok:b!=null,status:b!=null?200:404,
+          json:()=>Promise.resolve(b?JSON.parse(b.toString('utf8')):{}),
+          text:()=>Promise.resolve(b?b.toString('utf8'):''),
+          arrayBuffer:()=>Promise.resolve(b?b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength)
+                                            :new ArrayBuffer(0))});};}});
   return dom.window;
 }
 // --- the sample, taken from the store itself -------------------------------
@@ -117,12 +142,34 @@ const ok=(w,c,g)=>{ if(c){pass++;console.log('  ok   '+w);} else {fail++;console
     // reported 7/7 against the very build that has the bug.
     // The miss has a MARKER — `<p class="wl-none">` — and a hit renders TABS
     // into `#wlt` while a miss explicitly clears it.  Assert both.
-    let none=true, tabs='', st='';
-    for(let i=0;i<60;i++){ await wait(100);
+    // Wait for the COUNTS before asserting, not for the first thing the panel
+    // says.  `.wl-n` is the count span on a tab button, so its presence means
+    // the sections have reported; two identical consecutive reads after that.
+    //
+    // !!! HONEST NOTE ON WHY THIS IS HERE.  This loop was rewritten on
+    // 2026-08-07 in the belief that a RACE was causing the `sāmugiya` failure.
+    // It was not.  The cause was the fetch stub above, which could not serve a
+    // gzipped shard at all, and the settle logic did not fix the failure
+    // because there was no race to fix -- the first version of this rewrite was
+    // run and still failed, which is what sent the search back to the stub.
+    //
+    // It is kept because waiting for the panel's own completion signal is
+    // better than breaking on its first utterance, and because a real race
+    // would be invisible until it bit.  But it is not the fix, and labelling it
+    // as one would leave the next reader with a false account of what happened.
+    //
+    // If the counts never arrive the loop simply runs out and the assertion is
+    // made on what is there -- which for a genuinely absent word is `none` true
+    // and no tabs, and still a correct FAIL.
+    let none=true, tabs='', st='', prev=null, stable=0;
+    for(let i=0;i<80;i++){ await wait(100);
       st=doc.getElementById('wl')?doc.getElementById('wl').dataset.state:'';
       none=!!doc.querySelector('#wlb .wl-none');
       tabs=(doc.getElementById('wlt')||{}).textContent||'';
-      if(st!=='loading'&&(none||tabs)) break; }
+      const counted=!!doc.querySelector('#wlt .wl-n');
+      const sig=st+'|'+none+'|'+tabs+'|'+((doc.getElementById('wlb')||{}).textContent||'').length;
+      if(st!=='loading'&&counted&&(none||tabs)){ stable=(sig===prev)?stable+1:0; prev=sig;
+        if(stable>=2) break; } else { prev=null; stable=0; } }
     const body=(doc.getElementById('wlb')||{}).textContent||'';
     ok('"'+word+'" resolves through the search box', !none && tabs.trim().length>0,
        {state:st, wl_none:none, tabs:tabs.slice(0,50), body:body.slice(0,50)});
