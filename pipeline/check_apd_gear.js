@@ -122,6 +122,13 @@ const ok=(c,label,detail)=>{ console.log((c?'  ok    ':'  FAIL  ')+label+(detail
   ok(w.localStorage.getItem('osbct-apdgear')===before,
      'in-place open leaves the gear state alone');
 
+  // 3b. the jump strip lists ONLY the open sections (reader, 2026-08-09) —
+  //     a closed section is already its own one-line header, and the strip
+  //     said everything twice
+  const jump1=[...body().querySelectorAll('.wl-jump a')].map(a=>a.textContent.trim());
+  ok(jump1.length===2 && /Concise/i.test(jump1[0]) && /PED|P-E/i.test(jump1[1]),
+     'jump strip lists only the open sections', jump1.join(' | ')||'(no strip)');
+
   // 4. the gear: §9 note present; no checkbox for CPED or PED
   const gear=body().querySelector('.wl-gear');
   ok(!!gear,'the gear exists');
@@ -142,6 +149,9 @@ const ok=(c,label,detail)=>{ console.log((c?'  ok    ':'  FAIL  ')+label+(detail
   ok(!!pop2 && !pop2.hidden,'the popover stays open across the re-render');
   const ncpSec=body().querySelector('#wl-s-NCP');
   ok(!!ncpSec && !ncpSec.classList.contains('wl-off'),'the ticked section renders open');
+  const jump2=[...body().querySelectorAll('.wl-jump a')].map(a=>a.textContent.trim());
+  ok(jump2.length===3 && jump2.some(t=>/New Concise/i.test(t)),
+     'the ticked section joins the jump strip', jump2.join(' | '));
 
   // 6. the choice holds on the next word
   await w.WL.lookup('bhagavā',para);

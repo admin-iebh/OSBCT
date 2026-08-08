@@ -2177,9 +2177,16 @@ function viewDict(d) {
          }).join('')
        + '</div></div>';
   }
-  if (have.length > 1) {
+  // ONLY THE OPEN SECTIONS (reader, 2026-08-09: "shouldn't the list of
+  // dictionaries in this word show only the ones selected in the gear?").
+  // A closed section already IS its own one-line header carrying label and
+  // count, so listing it here too said everything twice.  The strip keeps
+  // its jump role for the sections actually open — which is where an entry
+  // can be long enough to need jumping past.
+  var openHave = have.filter(function (t) { return gearOpen(t.id); });
+  if (openHave.length > 1) {
     h += '<div class="wl-jump"><span class="wl-cite">' + esc(T('wl_jump')) + '</span> '
-       + have.map(function (t) {
+       + openHave.map(function (t) {
            return '<a href="#wl-s-' + t.id + '">' + esc(t.label)
                 + ' <span class="wl-cite">' + t.n + '</span></a>';
          }).join(' · ') + '</div>';
