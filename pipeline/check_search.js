@@ -127,12 +127,21 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
      'reader: book from booktitle/', wheres.slice(0,3).join(' | ')||'no .sr-where at all');
   ok(!wheres.some(t=>t.includes('Pubbenivāsa')),'reader: corpus book field not printed');
 
-  // 3. single word, exact term.
+  // 3. single word, exact term — its 8 volumes span all three layers, so it
+  // also carries the ORDER assertion: canon rows first, then aṭṭhakathā, then
+  // ṭīkā (2026-08-08, user request; volume order alone leads with 01ViT01, a
+  // ṭīkā).  Sections stay above, untouched.
   const t3=truth(['yamakasalanam']);
+  const t3c=truth(['yamakasalanam'],'pali-unicode');
   await w.doSearch('yamakasālānaṁ');
   dd=w.document.getElementById('sdrop');
   ok(heads(dd).some(h=>h.startsWith(t3.phrTot.toLocaleString()+' occurrence')),
      'reader: single-word count unchanged', 'want '+t3.phrTot+' | '+heads(dd).join(' / '));
+  const seq=[...dd.querySelectorAll('.sresult .sr-lay')].map(e=>e.textContent.split(/[\s¶]/)[0]);
+  const LR={'Pāḷi':0,'Aṭṭhakathā':1,'Ṭīkā':2};
+  ok(t3c.phrParas>0 && seq.length>0 && seq[0]==='Pāḷi'
+     && seq.every((x,i)=>i===0||LR[seq[i-1]]<=LR[x]),
+     'reader: rows ordered Pāḷi → Aṭṭhakathā → Ṭīkā', seq.join(','));
 
   // 4. `*` wildcard, alone and in a phrase.  `\S*` in text: the star must not
   // cross a word boundary.
@@ -210,6 +219,13 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
   await sq('yamakasal*');
   ok(t4.phrTot>0&&st().startsWith(t4.phrTot.toLocaleString()+' occurrence'),
      'search: wildcard word', 'want '+t4.phrTot+' | '+st());
+
+  await sq('yamakasālānaṁ');
+  const sseq=[...s.document.querySelectorAll('.hit .lay')].map(e=>e.textContent);
+  const LR2={'Tipiṭaka':0,'Aṭṭhakathā':1,'Ṭīkā':2};
+  ok(t3c.phrParas>0 && sseq.length>0 && sseq[0]==='Tipiṭaka'
+     && sseq.every((x,i)=>i===0||LR2[sseq[i-1]]<=LR2[x]),
+     'search: rows ordered Tipiṭaka → Aṭṭhakathā → Ṭīkā', sseq.join(','));
 
   s.document.getElementById('layer').value='tika-unicode';
   await sq('yamakasālānaṁ antare');
