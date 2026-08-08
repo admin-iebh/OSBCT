@@ -179,6 +179,37 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
   ok(!!dd.querySelector('.sr-helpbox'),'reader: help box opens');
   if(typeof w.setSHelp==='function'){ w.setSHelp(); await wait(600); }
 
+  // 6b. per-layer caps: `arati` = 80 canon paragraphs, EXACTLY the old global
+  // cap, so the reader saw only Pāḷi rows however far he scrolled
+  // (2026-08-08, user-reported with a screenshot).  Reader caps 30/layer.
+  const rP=truth(['arati'],'pali-unicode').phrParas,
+        rA=truth(['arati'],'atthakatha-unicode').phrParas,
+        rT=truth(['arati'],'tika-unicode').phrParas;
+  await w.doSearch('arati');
+  dd=w.document.getElementById('sdrop');
+  const rcnt={};
+  for(const e of dd.querySelectorAll('.sresult .sr-lay')) { const k=e.textContent.split(/[\s¶]/)[0]; rcnt[k]=(rcnt[k]||0)+1; }
+  ok(rcnt['Pāḷi']===Math.min(30,rP)&&rcnt['Aṭṭhakathā']===Math.min(30,rA)&&rcnt['Ṭīkā']===Math.min(30,rT),
+     'reader: every layer draws up to its own cap',
+     JSON.stringify(rcnt)+' want '+[Math.min(30,rP),Math.min(30,rA),Math.min(30,rT)].join('/'));
+
+  // 6c. a chip click must not close the dropdown.  In the browser the chip's
+  // onclick REPAINTS the dropdown before the document-level outside-click
+  // listener runs (microtasks run between listeners of one event), so that
+  // listener saw a DETACHED target, `contains()` said "outside", and the box
+  // hid mid-use (2026-08-08, user-reported).  jsdom dispatches listeners
+  // without the microtask gap, so the race is SIMULATED: an event whose
+  // target is detached but whose composedPath — captured at dispatch — still
+  // holds the search div.
+  dd.hidden=false;
+  { const sdiv=w.document.querySelector('.search');
+    const ghost=w.document.createElement('span');
+    const ev=new w.Event('click',{bubbles:true});
+    ev.composedPath=()=>[ghost,dd,sdiv,w.document.body,w.document];
+    Object.defineProperty(ev,'target',{value:ghost});
+    w.document.dispatchEvent(ev); }
+  ok(dd.hidden===false,'reader: chip click cannot close the dropdown','hidden='+dd.hidden);
+
   // 7. markInEl: phrase as one run; words apart each marked; wildcard extent.
   const doc=w.document;
   const el1=doc.createElement('div'); el1.textContent='idha yamakasālānaṁ antare pupphitā';
@@ -221,11 +252,26 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
      'search: wildcard word', 'want '+t4.phrTot+' | '+st());
 
   await sq('yamakasālānaṁ');
+  // `Pāḷi`, not `Tipiṭaka` — the two UIs must name the layer alike
+  // (2026-08-08, user request)
   const sseq=[...s.document.querySelectorAll('.hit .lay')].map(e=>e.textContent);
-  const LR2={'Tipiṭaka':0,'Aṭṭhakathā':1,'Ṭīkā':2};
-  ok(t3c.phrParas>0 && sseq.length>0 && sseq[0]==='Tipiṭaka'
+  const LR2={'Pāḷi':0,'Aṭṭhakathā':1,'Ṭīkā':2};
+  ok(t3c.phrParas>0 && sseq.length>0 && sseq[0]==='Pāḷi'
      && sseq.every((x,i)=>i===0||LR2[sseq[i-1]]<=LR2[x]),
-     'search: rows ordered Tipiṭaka → Aṭṭhakathā → Ṭīkā', sseq.join(','));
+     'search: rows ordered Pāḷi → Aṭṭhakathā → Ṭīkā', sseq.join(','));
+
+  // per-layer caps: `arati` holds 80/70/29 paragraphs by layer, so a global
+  // cap after canon-first ordering starved the other layers entirely
+  // (2026-08-08, user-reported with a screenshot).  search.html caps 70/layer.
+  const aP=truth(['arati'],'pali-unicode').phrParas,
+        aA=truth(['arati'],'atthakatha-unicode').phrParas,
+        aT=truth(['arati'],'tika-unicode').phrParas;
+  await sq('arati');
+  const scnt={};
+  for(const e of s.document.querySelectorAll('.hit .lay')) scnt[e.textContent]=(scnt[e.textContent]||0)+1;
+  ok(scnt['Pāḷi']===Math.min(70,aP)&&scnt['Aṭṭhakathā']===Math.min(70,aA)&&scnt['Ṭīkā']===Math.min(70,aT),
+     'search: every layer draws up to its own cap',
+     JSON.stringify(scnt)+' want '+[Math.min(70,aP),Math.min(70,aA),Math.min(70,aT)].join('/'));
 
   s.document.getElementById('layer').value='tika-unicode';
   await sq('yamakasālānaṁ antare');

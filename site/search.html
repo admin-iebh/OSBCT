@@ -63,7 +63,7 @@
     <input id="q" type="search" data-i18n-ph="search_ph" placeholder="Search Pāḷi — words, a phrase, * wildcard; diacritics optional" autocomplete="off">
     <select id="layer">
       <option value="" data-i18n="opt_all">All layers</option>
-      <option value="pali-unicode" data-i18n="opt_pali">Tipiṭaka only</option>
+      <option value="pali-unicode" data-i18n="opt_pali">Pāḷi only</option>
       <option value="atthakatha-unicode" data-i18n="opt_atth">Aṭṭhakathā only</option>
       <option value="tika-unicode" data-i18n="opt_tika">Ṭīkā only</option>
     </select>
@@ -74,7 +74,7 @@
 <script>
 // cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
 // rewrites it, so a rebuild can never be invisible to a returning browser.
-const BUILD='545c464597b1';
+const BUILD='ff3032eeea81';
 function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
 
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded',()=>{document.getElementById('theme
   inside longer words. Results show the book, the printed page and the paragraph;
   click a result to open it in the reader at the marked word.
 </footer>
-<script src="i18n.js?v=545c464597b1"></script>
+<script src="i18n.js?v=ff3032eeea81"></script>
 <script>
 const FOLD={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
 const fold=s=>s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLD[c]||c);
@@ -240,7 +240,7 @@ function sectionHits(ft,lf){
     return ea-eb || la.length-lb.length || la.localeCompare(lb);
   });
   const shown=rows.slice(0,40);
-  const layName={'canon':'Tipiṭaka','commentary':'Aṭṭhakathā','subcommentary':'Ṭīkā'};
+  const layName={'canon':'Pāḷi','commentary':'Aṭṭhakathā','subcommentary':'Ṭīkā'};
   const body=shown.map(r=>{
     const lab=NAMES.labels[r[0]], vol=NAMES.vols[r[1]];
     const href='reader/reader2.html?q='+encodeURIComponent(el('q').value.trim())+'#'+vol+'#'+r[2];
@@ -316,6 +316,11 @@ async function run(){
   const wordRxs=words.map(w=>new RegExp(wpat(w),'g'));
   // `phrVols`: volumes with PHRASE hits only, so the status line cannot claim
   // volumes that merely carry the words apart
+  // !!! THE ROW CAP IS PER LAYER, NOT GLOBAL (2026-08-08, same fix as
+  // reader2.html): canon-first ordering plus one shared cap starved the
+  // Aṭṭhakathā and Ṭīkā rows on any word with a cap's worth of canon
+  // paragraphs.  70 per layer for phrase rows, 35 for the not-adjacent list.
+  const CAPP=70, CAPA=35; const nPhr={}, nAnd={};
   let phrOut=[], andOut=[], total=0, andTotal=0, phrParas=0; const phrVols=new Set();
   for(const vi of vis){
     const sh=await shard(vi);
@@ -325,13 +330,14 @@ async function run(){
       return mm; });
     const pis=[...maps[0].keys()].filter(pi=>maps.every(mm=>mm.has(pi))).sort((a,b)=>a-b);
     for(const pi of pis){ const p=sh.paras[pi];
+      const _lay=LAYERS[vi];
       if(words.length>1){
         const c=phCount(fold(p.text));
-        if(c>0){ total+=c; phrParas++; phrVols.add(vi); if(phrOut.length<200) phrOut.push({lay:LAYERS[vi],vol:VOLS[vi],p}); }
-        else    { andTotal++; if(andOut.length<100) andOut.push({lay:LAYERS[vi],vol:VOLS[vi],p}); }
+        if(c>0){ total+=c; phrParas++; phrVols.add(vi); if((nPhr[_lay]=(nPhr[_lay]||0)+1)<=CAPP) phrOut.push({lay:_lay,vol:VOLS[vi],p}); }
+        else    { andTotal++; if((nAnd[_lay]=(nAnd[_lay]||0)+1)<=CAPA) andOut.push({lay:_lay,vol:VOLS[vi],p}); }
       } else {
         total+=maps[0].get(pi); phrParas++; phrVols.add(vi);
-        if(phrOut.length<200) phrOut.push({lay:LAYERS[vi],vol:VOLS[vi],p});
+        if((nPhr[_lay]=(nPhr[_lay]||0)+1)<=CAPP) phrOut.push({lay:_lay,vol:VOLS[vi],p});
       }
     }
   }
@@ -340,7 +346,9 @@ async function run(){
   // word-lookup pane (2026-08-08, user request)
   status(`${total.toLocaleString()} ${(window.t?t('s_occ'):'occurrence(s)')} in ${phrParas.toLocaleString()} paragraph(s), ${phrVols.size.toLocaleString()} volume(s)`+
          (andTotal?` — and ${andTotal.toLocaleString()} paragraph(s) with all ${words.length} words, not adjacent`:'')+`.`);
-  const layName={'pali-unicode':'Tipiṭaka','atthakatha-unicode':'Aṭṭhakathā','tika-unicode':'Ṭīkā'};
+  // `Pāḷi`, as the reader's own chips say — the two UIs must not name the same
+  // layer two different things (2026-08-08, user request)
+  const layName={'pali-unicode':'Pāḷi','atthakatha-unicode':'Aṭṭhakathā','tika-unicode':'Ṭīkā'};
   // the book for every row DRAWN, resolved from `booktitle/` (cached per vol)
   const drawVols=[...new Set(phrOut.concat(andOut).map(h=>h.vol))];
   const btMap={};

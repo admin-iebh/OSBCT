@@ -94,7 +94,7 @@ window.I18N = {
   search_ph:{en:'Search Pāḷi — words, a phrase, * wildcard; diacritics optional',
              es:'Buscar en Pāḷi — palabras, una frase, comodín *; diacríticos opcionales'},
   opt_all:{en:'All layers',es:'Todas las capas'},
-  opt_pali:{en:'Tipiṭaka only',es:'Solo Tipiṭaka'},
+  opt_pali:{en:'Pāḷi only',es:'Solo Pāḷi'},
   opt_atth:{en:'Aṭṭhakathā only',es:'Solo Aṭṭhakathā'},
   opt_tika:{en:'Ṭīkā only',es:'Solo Ṭīkā'},
   search_btn:{en:'Search',es:'Buscar'},

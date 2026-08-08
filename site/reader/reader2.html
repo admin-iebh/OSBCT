@@ -293,7 +293,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=545c464597b1"></script>
+<script src="../i18n.js?v=ff3032eeea81"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -430,7 +430,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='545c464597b1';
+const BUILD='ff3032eeea81';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -3367,7 +3367,18 @@ function setSLayer(v){ sLayer=v; doSearch($('#sq').value); }
 function setSHelp(){ sHelp=!sHelp; doSearch($('#sq').value); }
 $('#sq').addEventListener('input',e=>{clearTimeout(sTimer);sTimer=setTimeout(()=>doSearch(e.target.value),180);});
 $('#sq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';$('#sdrop').hidden=true;}});
-document.addEventListener('click',e=>{const s=$('.search'); if(s&&!s.contains(e.target))$('#sdrop').hidden=true;});
+// !!! CLICKING A CHIP CLOSED THE DROPDOWN AND LOOKED LIKE A LOST SEARCH
+// (2026-08-08, user-reported: "if one clicks on the label Aṭṭhakathā the
+// searched word disappears").  The chip's onclick repaints `dd.innerHTML`, and
+// MICROTASKS RUN BETWEEN LISTENERS OF THE SAME EVENT — every await in
+// `doSearch` resolves from cache, so the whole repaint completes before this
+// document-level listener fires.  By then `e.target` is the DETACHED old chip,
+// `contains()` says "outside", and the dropdown was hidden mid-use.
+// `composedPath()` is captured at DISPATCH time and still holds the original
+// ancestry, so it is the test that cannot be lied to by a repaint.
+document.addEventListener('click',e=>{const s=$('.search'); if(!s) return;
+  const path=e.composedPath?e.composedPath():[];
+  if(!s.contains(e.target)&&!path.includes(s))$('#sdrop').hidden=true;});
 async function doSearch(q){
   // !!! AN EARLIER KEYSTROKE MUST NOT PAINT OVER A LATER ONE (2026-07-30n,
   // user-reported).  This function awaits the term map, the name index and one
@@ -3488,11 +3499,18 @@ async function doSearch(q){
     while((m=phRxG.exec(f))){ if(!m[0]){phRxG.lastIndex++;continue;} n++; } return n; };
   const wordRxs=words.map(w=>new RegExp(wpat(w),'g'));
   const phRxA=new RegExp(phSrc,'g');
-  // counted over EVERYTHING, not the 80 drawn rows — the head must say how
+  // counted over EVERYTHING, not the drawn rows — the head must say how
   // much there IS, like the word-lookup pane does (2026-08-08, user request)
   // `phrVols` counts volumes with PHRASE hits only — the head must not claim
   // three volumes for a phrase found in one because two others carry the
   // words apart
+  // !!! THE ROW CAP IS PER LAYER, NOT GLOBAL (2026-08-08, user-reported:
+  // "scrolls down and only Pāḷi").  Canon-first ordering plus one shared cap
+  // of 80 meant a word with ≥80 canon paragraphs — `arati` has EXACTLY 80 —
+  // drew no Aṭṭhakathā or Ṭīkā row at all.  30 per layer for phrase rows, 14
+  // per layer for the not-adjacent list; the totals count everything as
+  // before.
+  const CAPP=30, CAPA=14; const nPhr={}, nAnd={};
   let phrRows=[], andRows=[], total=0, andTotal=0, phrParas=0; const phrVols=new Set();
   for(const vi of vis){ const sh=await shard(vi);
     if(my!==sSeq) return;
@@ -3501,13 +3519,14 @@ async function doSearch(q){
       return mm; });
     const pis=[...maps[0].keys()].filter(pi=>maps.every(mm=>mm.has(pi))).sort((a,b)=>a-b);
     for(const pi of pis){ const p=sh.paras[pi];
+      const _lay=TERMS.layers[vi];
       if(words.length>1){
         const f=foldS(p.text), c=phCount(f);
-        if(c>0){ total+=c; phrParas++; phrVols.add(vi); if(phrRows.length<80) phrRows.push({vi,p,f}); }
-        else    { andTotal++; if(andRows.length<40) andRows.push({vi,p,f}); }
+        if(c>0){ total+=c; phrParas++; phrVols.add(vi); if((nPhr[_lay]=(nPhr[_lay]||0)+1)<=CAPP) phrRows.push({vi,p,f}); }
+        else    { andTotal++; if((nAnd[_lay]=(nAnd[_lay]||0)+1)<=CAPA) andRows.push({vi,p,f}); }
       } else {
         total+=maps[0].get(pi); phrParas++; phrVols.add(vi);
-        if(phrRows.length<80) phrRows.push({vi,p,f:foldS(p.text)});
+        if((nPhr[_lay]=(nPhr[_lay]||0)+1)<=CAPP) phrRows.push({vi,p,f:foldS(p.text)});
       }
     }
   }
