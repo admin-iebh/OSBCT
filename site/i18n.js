@@ -9,6 +9,7 @@ window.I18N = {
   nav_errata:{en:'Errata',es:'Erratas'},
   btn_errata:{en:'Errata',es:'Erratas'},
   theme_toggle:{en:'Toggle light / dark',es:'Cambiar claro / oscuro'},
+  ver_updated:{en:'updated',es:'actualizado'},
 
   // TOOLTIPS.  These were the last English strings left in the Spanish
   // interface (2026-07-30f): `applyI18n` has always supported
@@ -163,10 +164,22 @@ window.osbctSetLang=function(l){ localStorage.setItem('osbct-lang',l); location.
 // where that drift becomes visible instead of silent.  BUMPING THIS LINE
 // IS PART OF TAGGING, beside CITATION.cff and .zenodo.json (the checklist
 // there names this file now).
-window.OSBCT_VERSION='v2.5.0';
+window.OSBCT_VERSION='v2.6.0';
 document.addEventListener('DOMContentLoaded',function(){
   var els=document.querySelectorAll('.sitever');
   for(var i=0;i<els.length;i++) els[i].textContent=window.OSBCT_VERSION;
+  // the TOOLTIP carries the last-updated date (2026-08-09, reader request),
+  // read from build.json, which stamp_build.py dates on EVERY stamp — true
+  // by construction, not by memory.  The reader page lives one level down.
+  if(!els.length) return;
+  var base=location.pathname.indexOf('/reader/')>=0?'../':'';
+  fetch(base+'build.json?v='+Date.now()).then(function(r){return r.ok?r.json():null;})
+    .then(function(b){
+      if(!b||!b.date) return;
+      var word=(window.t?t('ver_updated'):'updated');
+      for(var i=0;i<els.length;i++)
+        els[i].title=window.OSBCT_VERSION+' — '+word+' '+b.date;
+    }).catch(function(){});
 });
 window.applyI18n=function(){
   const lang=osbctLang(); document.documentElement.lang=lang;

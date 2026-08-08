@@ -143,8 +143,14 @@ for rp in READERS:
 # file is the only thing in the site that must never be served stale, and it is
 # 30 bytes.
 if '--write' in sys.argv:
+    # `date` rides beside the hash (2026-08-09, reader request): the version
+    # chip's tooltip shows when the site was last updated, and because this
+    # line runs on EVERY stamp, the date is true by construction — nobody has
+    # to remember to bump it, which is how the citation files fell behind.
+    import datetime
     with open(os.path.join(SITE, 'build.json'), 'w', encoding='utf-8') as fh:
-        json.dump({'build': stamp}, fh)
+        json.dump({'build': stamp,
+                   'date': datetime.date.today().isoformat()}, fh)
     print('   site/build.json      %s' % stamp)
 
 # Version every <script src="…i18n.js"> so a new stamp forces a re-fetch.
