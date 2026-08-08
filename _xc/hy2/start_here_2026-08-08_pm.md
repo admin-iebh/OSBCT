@@ -280,7 +280,11 @@ is about.
 ## Still open from the previous handoff — unchanged
 
 Parked by the reader: the verbatim-repeat display (5,376 of 22,527), `none` vs
-`dim`, the APD tab's defaults and gear, capping the concordance tooltip.
+`dim`, ~~the APD tab's defaults and gear~~ **(DONE 2026-08-09 as decided on
+08-06: CPED+PED open, gear for the rest, §9 note, one-line collapsed headers
+with counts, `osbct-apdgear`; gate `pipeline/check_apd_gear.js`, 14 assertions,
+selftest fails 9/14 on the pre-gear panel; panel.js script tag bumped to
+20260809a, WLV unchanged)**, capping the concordance tooltip.
 
 BLOCKBREAK still off; the hyphen repair (8,790 words, 109 volumes); classes 1
 and 2 suspect; **position, unmeasured for 114 of 118 volumes**; the verse branch

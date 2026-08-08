@@ -116,6 +116,31 @@ try { if (localStorage.getItem('osbct-wle') === '0') EVAL = false; } catch (e) {
 if (q.get('wle') === '1') EVAL = true;
 if (q.get('wle') === '0') EVAL = false;
 
+// ------------------------------------------------------ the APD tab's gear --
+// DECIDED BY THE READER, 2026-08-06, implemented 2026-08-09: two sections open
+// by default, in this order — CPED then PED — and a gear to choose one or
+// more of the others.  Edition, Abhidhāna and DPD are NOT in the gear: the
+// first two because they ARE §9's authority, DPD because §9 excludes it as a
+// voice however it is licensed; the popover says so in one line so the
+// absence reads as deliberate.  HIDDEN MUST NOT MEAN ABSENT: a switched-off
+// section that has a hit for this word still draws a one-line collapsed
+// header with its count, opening in place on click, for that word only.
+// State persists here, beside `osbct-wle`.
+var GEARKEY = 'osbct-apdgear';
+function gearGet() {
+  try { return JSON.parse(localStorage.getItem(GEARKEY) || '{}') || {}; }
+  catch (e) { return {}; }
+}
+function gearSet(g) {
+  try { localStorage.setItem(GEARKEY, JSON.stringify(g)); } catch (e) {}
+}
+// `C` (CPED) and `_ped` are the decided defaults; they are always open and
+// deliberately not offered in the gear.
+function gearOpen(id) {
+  if (id === 'C' || id === '_ped') return true;
+  return !!gearGet()[id];
+}
+
 // ------------------------------------------------------------ i18n strings --
 // Same shape and the same fallback discipline reader2 uses: if i18n.js has not
 // loaded, a bare t() in a render path throws and takes the panel with it.
@@ -180,6 +205,10 @@ var S = {
   wl_rt:        {en: 'Roots', es: 'Raíces'},
   wl_uhs:       {en: 'U Hau Sein', es: 'U Hau Sein'},
   wl_dict:      {en: 'APD', es: 'APD'},
+  wl_gear_tip:  {en: 'Choose which dictionaries open in this tab',
+                 es: 'Elegir qué diccionarios se abren en esta pestaña'},
+  wl_gear_note: {en: 'CPED and PED always open. Edition and Abhidhāna are the authority (§9) and keep their own tabs; DPD is excluded by §9 — none of the three is an option here.',
+                 es: 'CPED y PED siempre abiertos. La Edición y el Abhidhāna son la autoridad (§9) y tienen sus propias pestañas; el DPD queda excluido por §9 — ninguno de los tres es opción aquí.'},
   wl_ped_tab:   {en: 'PED', es: 'PED'},
   wl_tip_dict:  {en: 'The dictionaries aggregated at dictionary.sutta.org, plus CPED and PPN — '
                    + 'one section each, in order of authority. Reference, never the panel’s voice (§9).',
@@ -989,6 +1018,22 @@ var CSS = ''
 + '#wl .wl-sec .wl-sub{margin-top:0;color:var(--accent);font-size:11.5px}'
 + '#wl .wl-jump{font-size:11.5px;line-height:1.9;padding:0 0 10px;'
 + 'border-bottom:1px solid var(--line);margin-bottom:12px}'
+/* the APD gear (decided 2026-08-06): a small control above the jump strip, a
+   popover of checkboxes, and the one-line header a switched-off section keeps
+   when it has a hit — hidden must not mean absent */
++ '#wl .wl-gearrow{display:flex;justify-content:flex-end;position:relative;margin:0 0 4px}'
++ '#wl .wl-gear{background:none;border:1px solid var(--line);border-radius:8px;'
++ 'color:var(--mut);cursor:pointer;font-size:13px;line-height:1;padding:3px 8px}'
++ '#wl .wl-gear:hover{background:var(--hover);color:var(--accent)}'
++ '#wl .wl-gearpop{position:absolute;right:0;top:26px;z-index:6;background:var(--panel);'
++ 'border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(0,0,0,.2);'
++ 'padding:10px 12px;max-height:44vh;overflow:auto;min-width:230px;text-align:left}'
++ '#wl .wl-gearnote{display:block;margin-bottom:8px;line-height:1.45}'
++ '#wl .wl-gearopt{display:block;font-size:12.5px;margin:5px 0;cursor:pointer}'
++ '#wl .wl-sec.wl-off{padding-top:7px;margin-top:8px}'
++ '#wl .wl-openline{background:none;border:none;color:var(--mut);cursor:pointer;'
++ 'font:inherit;font-size:12.5px;padding:0;text-align:left}'
++ '#wl .wl-openline:hover{color:var(--accent)}'
 + '#wl .wl-jump a{color:var(--accent);text-decoration:underline;'
 + 'text-decoration-style:dotted;text-underline-offset:2px;margin-right:2px}'
 + '#wl .wl-ext{overflow-wrap:break-word}'
@@ -1671,7 +1716,7 @@ function render(d) {
 // Each was a silent `String.replace` that matched nothing, applied nothing and
 // asserted nothing.  The gate now PRESSES these, rather than checking they
 // exist: see gate_reader.py assertion 12.
-function show(tab, d) {
+function show(tab, d, keepGear) {
   var tabs = document.getElementById('wlt'), body = document.getElementById('wlb');
   Array.prototype.forEach.call(tabs.querySelectorAll('button'), function (b) {
     b.setAttribute('aria-selected', b.dataset.tab === tab ? 'true' : 'false'); });
@@ -1680,6 +1725,12 @@ function show(tab, d) {
                  : tab === 'dpd'  ? viewDpd(d)
                  : viewDict(d);
   body.scrollTop = 0;
+  // a gear change re-renders this tab; the popover reopens so several
+  // sections can be chosen without reopening it each time
+  if (keepGear) {
+    var gp0 = body.querySelector('.wl-gearpop');
+    if (gp0) gp0.hidden = false;
+  }
 
   // 1. paging through a form with more gloss rows than a shard may hold
   var more = body.querySelector('button.wl-more');
@@ -1708,6 +1759,34 @@ function show(tab, d) {
         ev.stopPropagation();
         var target = body.querySelector('[id="' + a.dataset.target + '"]');
         if (target) target.classList.toggle('hidden');
+      });
+    });
+
+  // 5. the APD gear (decided 2026-08-06).  A checkbox change persists beside
+  //    `osbct-wle`, re-renders THIS tab, and keeps the popover open so
+  //    several sections can be set in one visit.
+  var gear = body.querySelector('.wl-gear');
+  if (gear) gear.addEventListener('click', function () {
+    var p = body.querySelector('.wl-gearpop');
+    if (p) p.hidden = !p.hidden;
+  });
+  Array.prototype.forEach.call(body.querySelectorAll('input[data-wl-gear]'),
+    function (cb) {
+      cb.addEventListener('change', function () {
+        var g = gearGet();
+        if (cb.checked) g[cb.dataset.wlGear] = 1; else delete g[cb.dataset.wlGear];
+        gearSet(g);
+        show('dict', d, true);
+      });
+    });
+
+  // 6. hidden must not mean absent: a switched-off section's one-line header
+  //    opens it in place, for this word only — the gear state is untouched
+  Array.prototype.forEach.call(body.querySelectorAll('button[data-wl-open]'),
+    function (b) {
+      b.addEventListener('click', function () {
+        var t = b.nextElementSibling;
+        if (t) { t.hidden = false; b.style.display = 'none'; }
       });
     });
 
@@ -2040,33 +2119,31 @@ function apdZawgyi(id) {
 // merge -- and a jump strip says what is in here for this word.
 function viewDict(d) {
   var have = [];
-  // THE CONCISE PAIR COMES BEFORE PED AS WELL.  PED is the longest entry in
-  // the tab, and putting it first meant scrolling past it to reach the two
-  // that answer quickest.
-  var pinned = [];
-  if (EVAL) {
-    APD_FIRST.forEach(function (id) {
-      var rows = d.apd && d.apd[id];
-      if (!rows || !rows.length) return;
-      var bk = apdBook(id);
-      pinned.push({id: id, label: bk.name, n: rows.length, ev: true,
-                   src: bk.author + (apdZawgyi(id) ? ' — ' + T('wl_zg') : '')});
-    });
+  // THE ORDER IS THE READER'S DECISION OF 2026-08-06: CPED, then PED — the
+  // two that open by default — then NCP and the rest.  This moves PED up
+  // between the concise pair the 2026-08-02 pinning put first; the pinning's
+  // reason (shortest answers first) survives in CPED still leading, and PED
+  // second is the decision itself.
+  function apdEntry(id) {
+    var rows = d.apd && d.apd[id];
+    if (!rows || !rows.length) return null;
+    var bk = apdBook(id);
+    return {id: id, label: bk.name, n: rows.length, ev: true,
+            src: bk.author + (apdZawgyi(id) ? ' — ' + T('wl_zg') : '')};
   }
-  have = pinned;
+  var e;
+  if (EVAL) { e = apdEntry('C'); if (e) have.push(e); }
   // `d.pedRows` is the merged PED section — the shipped set plus whatever PCED's
   // "P" adds that is not already in it.  `d.apd.P` has been removed by render().
   if (d.pedRows && d.pedRows.length)
     have.push({id: '_ped', label: T('wl_ped_tab'),
                src: T('wl_tip_ped'), n: d.pedRows.length, ev: false});
   if (EVAL) {
+    e = apdEntry('NCP'); if (e) have.push(e);
     apdOrder(d).forEach(function (id) {
-      if (APD_FIRST.indexOf(id) >= 0) return;      // already pinned above
-      var rows = d.apd[id];
-      if (!rows || !rows.length) return;
-      var bk = apdBook(id);
-      have.push({id: id, label: bk.name, n: rows.length, ev: true,
-                 src: bk.author + (apdZawgyi(id) ? ' — ' + T('wl_zg') : '')});
+      if (APD_FIRST.indexOf(id) >= 0) return;      // C and NCP already placed
+      var e2 = apdEntry(id);
+      if (e2) have.push(e2);
     });
     if (d.n.ppn) have.push({id: '_ppn', label: T('wl_ppn'), n: d.n.ppn, ev: true,
                             src: T('wl_tip_ppn')});
@@ -2080,6 +2157,26 @@ function viewDict(d) {
   // 'In this word:' line and before the first dictionary's name, in the
   // plural, because that is what it is describing.
   var h = '';
+  // the gear, above everything, so the choice of sections is made where the
+  // sections are (decided 2026-08-06; the catalogue is the BUILD's, not a
+  // list kept here, for the reason viewDict's own header records)
+  if (EVAL) {
+    var cat = [], seen = {C: 1, P: 1};
+    ['NCP'].concat((EMAN && EMAN.apd_order) || []).forEach(function (id) {
+      if (!seen[id]) { seen[id] = 1; cat.push({id: id, label: apdBook(id).name}); }
+    });
+    cat.push({id: '_ppn', label: T('wl_ppn')});
+    var g = gearGet();
+    h += '<div class="wl-gearrow"><button type="button" class="wl-gear" title="'
+       + esc(T('wl_gear_tip')) + '">⚙</button>'
+       + '<div class="wl-gearpop" hidden>'
+       + '<div class="wl-cite wl-gearnote">' + esc(T('wl_gear_note')) + '</div>'
+       + cat.map(function (c) {
+           return '<label class="wl-gearopt"><input type="checkbox" data-wl-gear="'
+                + c.id + '"' + (g[c.id] ? ' checked' : '') + '> ' + esc(c.label) + '</label>';
+         }).join('')
+       + '</div></div>';
+  }
   if (have.length > 1) {
     h += '<div class="wl-jump"><span class="wl-cite">' + esc(T('wl_jump')) + '</span> '
        + have.map(function (t) {
@@ -2091,12 +2188,22 @@ function viewDict(d) {
     h += '<div class="wl-banner">'
        + esc(T(have.length > 1 ? 'wl_eval_pl' : 'wl_eval')) + '</div>';
   have.forEach(function (t) {
-    h += '<div class="wl-sec" id="wl-s-' + t.id + '">'
-       + '<div class="wl-sub">' + esc(t.label)
-       + ' <span class="wl-flag">(' + t.n + ')</span></div>'
-       + '<div class="wl-src">' + esc(t.src) + '</div>'
-       + sectionBody(d, t.id)
-       + '</div>';
+    var sec = '<div class="wl-sub">' + esc(t.label)
+            + ' <span class="wl-flag">(' + t.n + ')</span></div>'
+            + '<div class="wl-src">' + esc(t.src) + '</div>'
+            + sectionBody(d, t.id);
+    if (gearOpen(t.id)) {
+      h += '<div class="wl-sec" id="wl-s-' + t.id + '">' + sec + '</div>';
+    } else {
+      // HIDDEN MUST NOT MEAN ABSENT (decided 2026-08-06): the one-line header
+      // with its count, only because this section HAS a hit for this word —
+      // `have` never carries an empty section.  Click opens in place, for
+      // this word only; the gear state is not touched.
+      h += '<div class="wl-sec wl-off" id="wl-s-' + t.id + '">'
+         + '<button type="button" class="wl-openline" data-wl-open="' + t.id + '">'
+         + esc(t.label) + ' · ' + t.n + '</button>'
+         + '<div hidden>' + sec + '</div></div>';
+    }
   });
   return h;
 }
