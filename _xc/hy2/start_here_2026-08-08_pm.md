@@ -10,7 +10,7 @@
 **Done, not yet committed: the footnote markers, twice over.**
 `pipeline/check_fn_markers.js` carries two assertions; all 118 volumes green on
 both; the selftest catches the injected defect on both.
-BUILD `6151ac21bbbd` → `c7b5b5ecd26f`. Commit message in `COMMIT_MSG.bak`.
+BUILD `6151ac21bbbd` → `04d4b285be40`. Commit message in `COMMIT_MSG.bak`.
 
   1. **Markers lost to the bold lemma** — 3,480 of 70,598 (4.93%).
   2. **Markers after a closing bracket** — 684 more, `)` 433, `”` 237, `’` 14,
@@ -30,6 +30,13 @@ BUILD `6151ac21bbbd` → `c7b5b5ecd26f`. Commit message in `COMMIT_MSG.bak`.
      keyed `Work/X/X/<paragraph number>`. **45,901 of 73,431 notes (62.5%)**
      placeable; on paragraphs that actually cross a break, 30,124 of 54,426
      (55.3%). The rest stay in the end-of-paragraph block.
+
+  5. **The opening quote moved to the page it opens** — `pbreak` cut between the
+     `“` and `Diṭṭho`, stranding a quote mark alone at the foot of p. 146. The
+     PRINTED page settles it: pdf 154 opens `“Diṭṭho hi me”ti`. **1,562 of
+     35,043 mid-paragraph breaks (4.46%)** land after an opening mark — 1,459
+     `“`, 62 `(`, 41 `‘`. Seven of ten random cases resolved against the PDF, all
+     seven with the quote on the new page, none against.
 
 **The gate now carries three assertions**, and the third found a defect the
 moment it existed: four volumes drew MORE note rows than the data holds, because
@@ -139,6 +146,44 @@ lands on the paragraphs above and nowhere else.
 6. **`fix_vagga_heads.py` on the other 17 volumes**, one at a time.
 7. **Audit the remaining `pipeline/` baselines for drift.**
 8. **`20KhuA01` ord 174** carries a section head the nav does not.
+
+## THE BOLD LEMMAS THE READER FOUND MISSING — MEASURED, NOT FIXED
+
+Reader, 2026-08-08: "in the phrase *Tattha Buddhavīrāti* **Buddhavīrā** should be
+bold ... also *Namo tyatthū* ... and *Sabbasattānamuttamā* and *yo maṁ dukkhā
+pamocesi, aññañca bahukaṁ janan* and *sabbadukkhan*. I wonder if there are other
+bolds missing."
+
+There are, and every one he named is on ONE drawn line.
+
+**The spans are all present in the data.** `bold/31KhuA12.bold.json` ord 210
+carries 41 spans including `(120,130) Buddhavīrā`, `Namo`, `tyatthū`,
+`Sabbasattānamuttamā`, `yo`, `maṁ`, `dukkhā`, `pamocesi`. Nothing is missing from
+the extraction. What fails is the LOCATE: the verse branch draws the printed line
+stream and finds each drawn line in the corpus paragraph by `indexOf`, and this
+line is not found.
+
+**The cause is the unrepaired line-break hyphen** — the open item the previous
+handoff lists as "the hyphen repair (8,790 words, 109 volumes)". At character 125
+the corpus text reads `catubbidhasammappadhānavīriya- nipphattiyā` and the drawn
+line reads `catubbidhasammappadhānavīriyanipphattiyā`. One hyphen, and the whole
+line loses its bold — and with it eight of the lemmas the reader was looking for.
+
+**MEASURED over five volumes, 31,391 spans: 25,233 drawn (80.4%). A
+hyphen-tolerant locate would draw 26,032 (82.9%) — +799 spans.** Per volume:
+31KhuA12 95.0→95.6, 32KhuA13 89.7→90.1, 09DiT02 64.3→68.0, 25VsmT01 79.1→82.9,
+29KhuA10 94.0→94.2.
+
+**This partly contradicts what `reader2.html` says about itself.** Its comment
+records 85.9% located and concludes the rest "are not reachable from the
+ordinal-keyed spans and no reader change fixes them". For the hyphen class that
+is false: joining `- ` before matching reaches them, and the reader's own example
+is one. The other ~17% remains unexplained and unmeasured.
+
+**Design note for whoever does it:** locate in the JOINED string and draw the
+JOINED string with spans mapped into that address space. Mapping back to the raw
+text and drawing that would put `vīriya- nipphattiyā` on the page — a hyphen the
+reader would then be right to report.
 
 ## Opened by this session, not closed
 

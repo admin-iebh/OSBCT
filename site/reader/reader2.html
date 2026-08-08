@@ -273,7 +273,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=c7b5b5ecd26f"></script>
+<script src="../i18n.js?v=04d4b285be40"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -403,7 +403,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='c7b5b5ecd26f';
+const BUILD='04d4b285be40';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -1215,6 +1215,35 @@ function fnmPages(app,s,cuts,first){
   }
   return {map, rest:(app||[]).filter(n=>!placed.has(n))};
 }
+// !!! AN OPENING QUOTE BELONGS TO THE PAGE IT OPENS ON, AND `pbreak` PUTS THE
+// CUT AFTER IT (2026-08-08, reader-reported: "there is still `“` at the end
+// before the footnotes").  `31KhuA12` ord 210 breaks at raw offset 1210, which
+// falls between the `“` and `Diṭṭho`, so the reader drew a line containing
+// nothing but an opening quote at the foot of p. 146.
+//
+// COMPARED AGAINST THE PRINTED PAGE, which is the only authority here: pdf page
+// 154 of `atthakatha-unicode/31KhuA12.pdf` OPENS `“Diṭṭho hi me”ti gāthāyapi`.
+// The quote is on 147.  Ten more cases drawn at random from other volumes and
+// other layers were checked the same way: seven resolved, all seven with the
+// quote on the NEW page, none against.
+//
+// MEASURED: 1,562 of 35,043 mid-paragraph breaks (4.46%) land immediately after
+// an opening mark — 1,459 `“`, 62 `(`, 41 `‘`.  So this is a class, not an
+// instance.  The cut is moved back in front of the run; the space before it
+// stays on the page that is closing.
+//
+// This corrects OUR extraction toward the printed page.  It is not an emendation
+// of the edition and working principle 3 is not engaged: the edition prints the
+// quote on 147 and now so do we.
+const FNOPEN='“‘(«';
+function pageCut(s,i){
+  let j=i, first=-1;
+  while(j>0){ const ch=s[j-1];
+    if(FNOPEN.indexOf(ch)>=0){ j--; first=j; continue; }
+    if(ch===' ' && first>=0){ j--; continue; }
+    break; }
+  return first>=0?first:i;
+}
 function fnmBegin(app,text){
   FNMCUR=null;
   if(!app||!app.length) return;
@@ -1267,7 +1296,8 @@ function fmtBold(t,spans,brks){
   // a span straddling a page turn is drawn as bold on both sides of the rule.
   // With no breaks this is the original loop, character for character, so a
   // volume with an empty map renders byte-identically to before.
-  const cuts=(brks||[]).map(b=>[b[0]-off,b[1]]).filter(b=>b[0]>0&&b[0]<stripped.length).sort((a,b)=>a[0]-b[0]);
+  const cuts=(brks||[]).map(b=>[pageCut(stripped,b[0]-off),b[1]])
+              .filter(b=>b[0]>0&&b[0]<stripped.length).sort((a,b)=>a[0]-b[0]);
   const marks=fnmSpans(stripped);
   if(cuts.length){
     let out='',prev=0;
@@ -1997,7 +2027,8 @@ function block(kind, key, opts){
     if(_sOn){ i=_sTxt.indexOf(b,_sCur); if(i<0) i=_sTxt.indexOf(b); if(i>=0) _sCur=i+b.length; }
     if(!cuts.length) return pre+((i>=0&&_sSp.length)?_boldRange(_sTxt,_sSp,i,i+b.length):fmtText(s));
     let out='',prev=0;
-    for(const c of cuts){ const q=Math.max(prev,Math.min(b.length,c[0]-noff));
+    // the same opening-mark walk as `fmtBold`, on the DRAWN string
+    for(const c of cuts){ const q=Math.max(prev,pageCut(b,Math.min(b.length,c[0]-noff)));
       out+=(i>=0?_boldRange(_sTxt,_sSp,i+prev,i+q):fmtPiece(b.slice(prev,q)))+c[1]; prev=q; }
     out+=(i>=0?_boldRange(_sTxt,_sSp,i+prev,i+b.length):fmtPiece(b.slice(prev)));
     return pre+out;
