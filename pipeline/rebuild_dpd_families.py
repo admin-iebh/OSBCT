@@ -228,5 +228,23 @@ def main():
     if bad: sys.exit(1)
     print('post-verification: zero loading..., every data-fk key resolves')
 
+    # !!! A WRITTEN FILE THE BUCKET WILL NEVER SEE (2026-08-09, production:
+    # "The family data could not be loaded").  `stores/lookup_eval/*` in
+    # .gitignore ate the new family/ tree; `git add -A` skipped it; the
+    # commit shipped without it; and r2_upload.sh — git-driven BY DESIGN —
+    # correctly uploaded nothing.  Four correct mechanisms, one invisible
+    # absence.  So this build now checks its own output is trackable.
+    import subprocess
+    probe = glob.glob(os.path.join(FAMDIR, '*', '*.json.gz'))[:1]
+    if probe:
+        r = subprocess.run(['git', '-C', ROOT, 'check-ignore', probe[0]],
+                           capture_output=True)
+        if r.returncode == 0:
+            print('FAIL: %s is GIT-IGNORED — the bucket uploader takes its '
+                  'file list from git and will never see it.  Fix .gitignore '
+                  'first.' % probe[0])
+            sys.exit(1)
+    print('git-trackability: the family store is visible to git')
+
 if __name__ == '__main__':
     main()

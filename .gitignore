@@ -169,6 +169,17 @@ stores/lookup_eval/*
 # meant to leave this machine.
 !stores/lookup_eval/dpd/
 stores/lookup_eval/dpd/*.json
+# !!! THE STAR RULE ATE A WHOLE NEW SUBTREE IN SILENCE (2026-08-09,
+# user-reported as "The family data could not be loaded" in production).
+# `stores/lookup_eval/family/` was created by rebuild_dpd_families.py; the
+# `stores/lookup_eval/*` rule above ignored it; `git add -A` skipped all of
+# it; the commit shipped without it; and r2_upload.sh — whose file list is
+# `git ls-files` BY DESIGN — correctly uploaded nothing.  Four correct
+# mechanisms composing into one invisible absence.  Same convention as dpd/:
+# only the .gz is tracked and served; the plain .json stays on this machine.
+!stores/lookup_eval/family/
+!stores/lookup_eval/family/**/
+stores/lookup_eval/family/**/*.json
 _dictsrc/
 
 # Build-run stdout/stderr from _panel/ scripts (eval rebuilds, precision sweeps).
