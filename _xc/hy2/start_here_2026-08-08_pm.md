@@ -150,10 +150,21 @@ lands on the paragraphs above and nowhere else.
    on the pre-fix build). BUILD `ab3632cc3580` → `3bcc7431b9a5`. Left open:
    `search.html` drift (one word only, naive `book` field).
 
-0b. **THE VATTHU NAMES ARE STYLED DIFFERENTLY IN THE CANON AND IN THE
-   COMMENTARY** (reader, 2026-08-08): "in the Dhammapadapāḷi the names like
-   `1. Cakkhupālattheravatthu` and so on shouldn't be golden colour like in
-   other places like in its commentary?"
+0b. ~~**THE VATTHU NAMES ARE STYLED DIFFERENTLY**~~ **DONE 2026-08-09, the
+   printed page settled it.**  pymupdf over the PDFs: the edition sets
+   `1. Cakkhupālattheravatthu` IDENTICALLY in 18Khu01 (pdf p.38) and 21KhuA02
+   (pdf p.9) — 12pt centred — and in the canon it is typographically EQUAL to
+   `1. Yamakavagga`.  So the DATA was fixed, not the CSS:
+   `pipeline/fix_vatthu_heads.py` (fix_vagga_heads idiom) reclassified
+   18Khu01's 304 heads vatthu→sutta; 19Khu02's ~36 vatthu-kind heads are
+   DELIBERATE sub-series demotions (build_19khu02_nav.py) and the script
+   refuses that volume.  Plus 3 headless uddana entries corpus-wide given
+   hk=sutta (one Dhp vatthu drawn via uddana/, two Jātaka titles in 22Khu05).
+   Verified rendered: zero `.head.vatthu` in 18Khu01, both layers golden.
+   Reader confirmed direction on return ("most of the titles are golden").
+   Original report kept below for the record: "in the Dhammapadapāḷi the names
+   like `1. Cakkhupālattheravatthu` and so on shouldn't be golden colour like
+   in other places like in its commentary?"
 
    **MEASURED — the two layers carry different head kinds for the same name:**
 
