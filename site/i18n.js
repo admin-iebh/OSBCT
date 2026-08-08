@@ -156,6 +156,18 @@ window.sigla=function(s){ const e=window.SIGLA[s]; return e? (e[window.osbctLang
 window.osbctLang=function(){ let l=localStorage.getItem('osbct-lang'); if(!l){ l=(navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en'; } return l; };
 window.t=function(k){ const e=window.I18N[k]; if(!e) return k; return e[osbctLang()]||e.en; };
 window.osbctSetLang=function(l){ localStorage.setItem('osbct-lang',l); location.reload(); };
+// THE SITE'S OWN VERSION, SAID ON EVERY PAGE (2026-08-09, reader request).
+// One source, many displays: every element carrying class="sitever" is
+// filled from here.  This project's citation metadata has been a release
+// behind THREE times — a version painted on the site is one more place
+// where that drift becomes visible instead of silent.  BUMPING THIS LINE
+// IS PART OF TAGGING, beside CITATION.cff and .zenodo.json (the checklist
+// there names this file now).
+window.OSBCT_VERSION='v2.5.0';
+document.addEventListener('DOMContentLoaded',function(){
+  var els=document.querySelectorAll('.sitever');
+  for(var i=0;i<els.length;i++) els[i].textContent=window.OSBCT_VERSION;
+});
 window.applyI18n=function(){
   const lang=osbctLang(); document.documentElement.lang=lang;
   document.querySelectorAll('[data-i18n]').forEach(el=>{ el.innerHTML=t(el.getAttribute('data-i18n')); });

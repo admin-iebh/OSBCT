@@ -39,9 +39,11 @@ date-released: "2026-08-08"
 # IN THE REPOSITORY ROOT, AND WHEN IT DOES, ZENODO IGNORES THIS FILE ENTIRELY --
 # not "prefers", ignores. Zenodo's own documentation says so.
 #
-# So the release checklist is BOTH files, every time:
+# So the release checklist is BOTH files, every time — and since 2026-08-09
+# a THIRD, because the site now says its version on every page:
 #     .zenodo.json  -> "version", and the "New in x.y.z" paragraph of "description"
 #     CITATION.cff  -> "version", "date-released", and the new DOI once minted
+#     site/i18n.js  -> window.OSBCT_VERSION (painted into every .sitever element)
 #
 # Found on 2026-08-07 with the v2.4.0 tag not yet cut: this file had been bumped
 # to 2.4.0 and `.zenodo.json` still said 2.3.0, so the deposit would have been
