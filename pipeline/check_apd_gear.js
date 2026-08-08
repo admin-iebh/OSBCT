@@ -182,6 +182,27 @@ const ok=(c,label,detail)=>{ console.log((c?'  ok    ':'  FAIL  ')+label+(detail
   ok(chips.some(a=>/grammar/i.test(a.textContent)),
      'the inline chips (grammar…) survive the scrub');
 
+  // 8. THE FAMILIES ARE BACK WITH CONTENT (2026-08-09, the store rebuild):
+  //    the root-family chip exists again, and clicking it fetches the
+  //    pre-rendered family from stores/lookup_eval/family/ — for sāvaka,
+  //    √su with its 111 words — with no stub and no dead promise.
+  const rootChip=chips.find(a=>/root family/i.test(a.textContent));
+  ok(!!rootChip,'the root family chip is back');
+  if(rootChip){
+    rootChip.click(); await wait(600);
+    const blk=body().querySelector('[id="'+rootChip.dataset.target+'"]');
+    ok(!!blk && /111.*words belong to the root family/.test(blk.textContent.replace(/\s+/g,' '))
+            && /√su/.test(blk.textContent),
+       'clicking it fetches the real √su family (111 words)',
+       blk?blk.textContent.replace(/\s+/g,' ').slice(0,60):'(no block)');
+    ok(!!blk && blk.querySelectorAll('table.family tr').length>100,
+       'the family table carries its rows', blk?blk.querySelectorAll('table.family tr').length+' rows':'');
+  }
+  const compChip=chips.find(a=>/compound family/i.test(a.textContent));
+  ok(!!compChip,'the compound family chip is back');
+  const idmChip=chips.find(a=>/idiom/i.test(a.textContent));
+  ok(!!idmChip,'the idioms chip is back');
+
   console.log(fails?('FAILED: '+fails+' assertion(s)'):'all green');
   process.exit(fails?1:0);
 })().catch(e=>{ console.log('  FAIL  threw: '+(e&&e.message||e)); process.exit(1); });

@@ -260,6 +260,35 @@ JOINED string with spans mapped into that address space. Mapping back to the raw
 text and drawing that would put `vīriya- nipphattiyā` on the page — a hyphen the
 reader would then be right to report.
 
+## ~~DPD FAMILY BLOCKS — BLOCKED ON SOURCE~~ DONE 2026-08-09 pm
+
+The reader connected `/Users/aovb/GoldenDict/dpd`.  The keys were in the
+inline `data_<lemma>` scripts the trim stripped; content in res/'s three
+family_*_json.js.  `pipeline/rebuild_dpd_families.py` refreshed the whole
+dpd store onto the 2026-07-28 DPD release (measured first: May→July differs
+in dates on 63k entries, real updates on 10,990), pre-rendered 9,716
+families into `stores/lookup_eval/family/`, stamped 77,894 divs with
+`data-fk`; panel's `famFill` fetches on chip click.  Gate 25 assertions.
+**R2 UPLOAD REQUIRED: dpd/ and family/ both** — until then production
+serves the old store (WLV 20260809a busts it).  Original blocked note below
+for the record.
+
+## DPD FAMILY BLOCKS — BLOCKED ON SOURCE (2026-08-09)
+
+The reader wants root family / compound family / idioms BACK WITH CONTENT
+(they were scrubbed as eternal-loading stubs).  Diagnosis: `_panel/sources.py
+dpd_trim` strips ALL `<script>` and its own docstring says it meant to keep
+root-family content — the hypothesis (UNVERIFIED, one raw entry settles it)
+is that DPD's GoldenDict export carries the family data inside the scripts.
+The source is GONE: it was `/mnt/user-data/uploads/GoldenDict` in an earlier
+session; GitHub releases are unreachable from the sandbox.  The reader is
+asked to copy the GoldenDict folder into `_gd_src/GoldenDict/` in the repo
+(needs `dpd/dpd.idx`, `dpd.syn.dz`, `dpd.dict.dz`).  Then: diagnose one raw
+entry FIRST, fix the trim to extract families before stripping scripts,
+rebuild the dpd shards only, bump **WLV** (stores change — not just the
+script tag), extend `check_apd_gear.js` (sāvaka `family_root` has content,
+chip present — the scrub spares contentful blocks by design), stamp, commit.
+
 ## Opened by this session, not closed
 
 **397 note numbers have no marker anywhere in their paragraph's text**, in any

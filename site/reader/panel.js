@@ -209,6 +209,8 @@ var S = {
                  es: 'Elegir qué diccionarios se abren en esta pestaña'},
   wl_more_dicts:{en: '%d more dictionaries have this word',
                  es: '%d diccionarios más tienen esta palabra'},
+  wl_fam_missing:{en: 'The family data could not be loaded.',
+                  es: 'Los datos de la familia no se pudieron cargar.'},
   wl_gear_note: {en: 'CPED and PED always open. Edition and Abhidhāna are the authority (§9) and keep their own tabs; DPD is excluded by §9 — none of the three is an option here.',
                  es: 'CPED y PED siempre abiertos. La Edición y el Abhidhāna son la autoridad (§9) y tienen sus propias pestañas; el DPD queda excluido por §9 — ninguno de los tres es opción aquí.'},
   wl_ped_tab:   {en: 'PED', es: 'PED'},
@@ -381,7 +383,11 @@ var CACHE = {};
 // their manifest was hours old, had no `apd_order`, and so named no sections
 // to draw.  Every fetch is versioned now, and WLV must be bumped whenever the
 // data is rebuilt -- as must the `?v=` on the <script> tag in reader2.html.
-var WLV = '20260803m';
+// 2026-08-09: the dpd/ shards were REBUILT (DPD 2026-07-28 refresh + the
+// family stubs stamped with their keys) and stores/lookup_eval/family/ is
+// NEW — both must be uploaded to the R2 bucket beside the rest, or
+// production 404s and only the unpacked-archive fallback works.
+var WLV = '20260809a';
 
 // ---------------------------------------------------- gzipped shard sets --
 // WHY THE SHARDS ARE STORED GZIPPED, AND WHY THAT IS NOT THE SAME AS
@@ -1760,7 +1766,7 @@ function show(tab, d, keepGear) {
         ev.preventDefault();
         ev.stopPropagation();
         var target = body.querySelector('[id="' + a.dataset.target + '"]');
-        if (target) target.classList.toggle('hidden');
+        if (target) { target.classList.toggle('hidden'); famFill(target); }
       });
     });
 
@@ -2035,6 +2041,31 @@ function dpdScrub(h) {
     h = h.replace(/<a (?=[^>]*class="?dpd-button)[^>]*data-target="?([^ >"]+)"?[^>]*>[^<]*<\/a>/g,
       function (m, t) { return dead[t] ? '' : m; });
   return h;
+}
+// THE FAMILY BLOCKS ARRIVE ON DEMAND (2026-08-09) — the same lazy shape
+// DPD's own app uses, from OUR origin: the rebuilt entries carry `data-fk`
+// (the family keys the old trim threw away with the scripts), and
+// stores/lookup_eval/family/{root,comp,idm}/<p2>.json holds the content,
+// pre-rendered at build time in DPD's own template wording.
+var FAMT = {family_root_: 'root', family_compound_: 'comp', family_idiom_: 'idm'};
+function famFill(div) {
+  if (!div || !div.dataset.fk || div.dataset.famDone) return;
+  div.dataset.famDone = '1';
+  var t = null;
+  for (var pfx in FAMT) if (div.id.indexOf(pfx) === 0) t = FAMT[pfx];
+  if (!t) return;
+  var keys; try { keys = JSON.parse(div.dataset.fk); } catch (e) { return; }
+  div.innerHTML = '<span class="wl-cite">…</span>';
+  Promise.all(keys.map(function (k) {
+    var letters = fold(k).replace(/[^a-z]/g, '');
+    var p2 = (letters.length >= 2 ? letters.slice(0, 2) : (letters + '_').slice(0, 2)) || '__';
+    return jfetch(EBASE + 'family/' + t + '/' + p2 + '.json', true)
+      .then(function (m) { return (m && m[k]) || null; });
+  })).then(function (parts) {
+    var html = parts.filter(Boolean).join('');
+    div.innerHTML = html
+      || ('<span class="wl-cite">' + esc(T('wl_fam_missing')) + '</span>');
+  });
 }
 function viewDpd(d) {
   var h = evHead(T('wl_tip_dpd'), '', 'wl_cc_dpd');
