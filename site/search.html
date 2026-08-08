@@ -81,7 +81,7 @@
 <script>
 // cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
 // rewrites it, so a rebuild can never be invisible to a returning browser.
-const BUILD='899c272fdf7a';
+const BUILD='fe2bed1c658c';
 function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
 
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded',()=>{document.getElementById('theme
   inside longer words. Results show the book, the printed page and the paragraph;
   click a result to open it in the reader at the marked word.
 </footer>
-<script src="i18n.js?v=899c272fdf7a"></script>
+<script src="i18n.js?v=fe2bed1c658c"></script>
 <script>
 const FOLD={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
 const fold=s=>s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLD[c]||c);
@@ -154,6 +154,98 @@ const status=m=>el('status').textContent=m;
 // pays nothing at all.
 let indexPromise=null;
 function ensureIndex(){ if(indexPromise) return indexPromise; return indexPromise=boot(); }
+// ---------------- the BUCKETED term index (2026-08-09) ----------------
+// Same change as reader2.html, same day, kept in step: the first search no
+// longer downloads and parses the 22 MB / 643,965-key map.  `tb/meta.json`
+// is tiny; postings come one prefix bucket at a time; a substring or
+// suffix-wildcard sweep scans `tb/k.txt` — ONE string, indexOf, no parse.
+// `terms.compact.json` stays as the fallback (meta 404 = an unpacked old
+// deposit) and the gates' ground truth.  Failures are never cached.
+let TBMETA=null, TBERR=null, TBCACHE={}, KTXT=null;
+async function ensureMeta(){
+  if(TBMETA||TERMS) return;
+  try{
+    const r=await fetch(bust('index/tb/meta.json'));
+    if(r.ok){ const j=await r.json();
+      if(j&&j.vols&&j.layers){ TBMETA=j; TBERR=null; return; }
+      throw new Error('malformed meta'); }
+    if(r.status===404){ await ensureIndex(); return; }
+    throw new Error('HTTP '+r.status);
+  }catch(e){ TBERR=(e&&e.message)||String(e); if(!TERMS) await ensureIndex(); }
+}
+async function ensureNamesOnly(){
+  if(NAMES) return;
+  try{ const nr=await fetch(bust('index/names.json'));
+       if(nr.ok){ NAMES=await nr.json(); NFOLD=NAMES.labels.map(fold); } }catch(e){}
+}
+const IVOLS=()=>TBMETA?TBMETA.vols:VOLS;
+const ILAYERS=()=>TBMETA?TBMETA.layers:LAYERS;
+const p2of=k=>k.length>1?k.slice(0,2):k+'_';
+function tbBucket(p){ if(TBCACHE[p])return TBCACHE[p];
+  return TBCACHE[p]=(async()=>{ try{
+      const r=await fetch(bust('index/tb/'+p+'.json'));
+      if(r.status===404) return {};
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return (await r.json()).terms||{};
+    }catch(e){ delete TBCACHE[p]; return null; } })(); }
+function tbKeys(){ if(KTXT)return KTXT;
+  return KTXT=(async()=>{ try{
+      const r=await fetch(bust('index/tb/k.txt'));
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return await r.text();
+    }catch(e){ KTXT=null; return null; } })(); }
+async function resolveWord(ft){
+  if(TERMS){ const m=matchTerms(ft); const vols={};
+    m.forEach(function(k){ vols[k]=TERMS[k]||[]; });
+    return {keys:m,vols:vols}; }
+  if(ft.indexOf('*')>=0){
+    if(ft.replace(/\*/g,'').length<3) return {keys:[],vols:{}};
+    const rxs='^'+ft.split('*').map(rxEsc).join('.*')+'$';
+    const star=ft.indexOf('*');
+    if(star>=2){
+      const b=await tbBucket(p2of(ft.slice(0,star)));
+      if(b===null) return null;
+      const rx=new RegExp(rxs); const keys=[];
+      for(const k in b){ if(rx.test(k)){ keys.push(k); if(keys.length>=500)break; } }
+      const vols={}; keys.forEach(function(k){ vols[k]=b[k]; });
+      return {keys:keys,vols:vols};
+    }
+    return await tbSweepRx(rxs);
+  }
+  const b=await tbBucket(p2of(ft));
+  if(b===null) return null;
+  if(b[ft]){ const vols={}; vols[ft]=b[ft]; return {keys:[ft],vols:vols}; }
+  if(ft.length<3) return {keys:[],vols:{}};
+  return await tbSweepSub(ft);
+}
+async function tbSweepSub(ft){
+  const txt=await tbKeys(); if(txt==null) return null;
+  const keys=[]; let i=txt.indexOf(ft);
+  while(i>=0&&keys.length<500){
+    const a=txt.lastIndexOf('\n',i)+1;
+    let z=txt.indexOf('\n',i); if(z<0)z=txt.length;
+    keys.push(txt.slice(a,z));
+    i=txt.indexOf(ft,z);
+  }
+  return await tbPostings(keys);
+}
+async function tbSweepRx(rxs){
+  const txt=await tbKeys(); if(txt==null) return null;
+  const rx=new RegExp(rxs,'gm');
+  const keys=[]; let m;
+  while((m=rx.exec(txt))&&keys.length<500){ if(m[0])keys.push(m[0]); else rx.lastIndex++; }
+  return await tbPostings(keys);
+}
+async function tbPostings(keys){
+  const byp={}; keys.forEach(function(k){ (byp[p2of(k)]=byp[p2of(k)]||[]).push(k); });
+  const ps=Object.keys(byp); const vols={};
+  let i=0; const pool=[];
+  for(let w=0;w<Math.min(6,ps.length);w++)
+    pool.push((async()=>{ while(i<ps.length){ const p=ps[i++]; const b=await tbBucket(p);
+      if(b) byp[p].forEach(function(k){ if(b[k]) vols[k]=b[k]; }); } })());
+  await Promise.all(pool);
+  return {keys:keys.filter(function(k){ return vols[k]; }),vols:vols};
+}
 async function boot(){
   try{
     status('Loading term index (5 MB) — first search only…');
@@ -177,7 +269,7 @@ async function boot(){
 async function shard(vi){
   if(shardCache[vi]) return shardCache[vi];
   return shardCache[vi]=(async()=>{
-    try{ const r=await fetch(bust('index/'+VOLS[vi]+'.idx.json'));
+    try{ const r=await fetch(bust('index/'+IVOLS()[vi]+'.idx.json'));
          if(!r.ok) throw new Error('HTTP '+r.status);
          return await r.json();
     }catch(e){ delete shardCache[vi]; return {paras:[],inv:{}}; }
@@ -265,8 +357,9 @@ async function run(){
   const my=++runSeq;
   const q=el('q').value.trim(); if(!q){status('Type a query.');return;}
   // the index is fetched HERE, on the first query, not on page load
-  if(!TERMS){ await ensureIndex(); if(my!==runSeq) return; }
-  if(!TERMS){status('Could not load the term index.');return;}
+  if(!TBMETA&&!TERMS){ await ensureMeta(); if(my!==runSeq) return; }
+  await ensureNamesOnly(); if(my!==runSeq) return;
+  if(!TBMETA&&!TERMS){status('Could not load the term index.'+(TBERR?' ('+TBERR+')':''));return;}
   const ft=fold(q); const lf=sLayer;
   const secHTML=sectionHits(ft,lf);
   // A QUERY WITH A SPACE MATCHED NOTHING AND SAID "No matches" — the same one
@@ -280,18 +373,25 @@ async function run(){
   const phq=words.join(' ');
   const anyWC=words.some(w=>w.indexOf('*')>=0);
   const phSrc=words.map(wpat).join(' ');
-  const mtsPer=words.map(w=>matchTerms(w));
+  const resolved=[];
+  for(const wd of words){
+    const r=await resolveWord(wd);
+    if(my!==runSeq) return;
+    if(r===null){ status('The term index could not be loaded. Check the connection and search again.'); return; }
+    resolved.push(r);
+  }
+  const mtsPer=resolved.map(r=>r.keys);
   let vis=null;
   if(mtsPer.length && mtsPer.every(m=>m.length)){
-    const vsets=mtsPer.map(m=>new Set(m.flatMap(k=>TERMS[k]||[])));
+    const vsets=resolved.map(r=>new Set(r.keys.flatMap(k=>r.vols[k]||[])));
     vis=[...vsets[0]].filter(v=>vsets.every(s=>s.has(v))).sort((a,b)=>a-b);
-    if(lf) vis=vis.filter(v=>LAYERS[v]===lf);
+    if(lf) vis=vis.filter(v=>ILAYERS()[v]===lf);
     // CANON FIRST, THEN AṬṬHAKATHĀ, THEN ṬĪKĀ (2026-08-08, user request; same
     // change as reader2.html).  Volume order interleaves the layers — 01ViT01
     // is a ṭīkā and sorts ahead of every canon volume.  `vis` itself is
     // ordered so the row caps favour the canon; sections stay above all.
     const LRANK={'pali-unicode':0,'atthakatha-unicode':1,'tika-unicode':2};
-    if(vis) vis.sort((a,b)=>((LRANK[LAYERS[a]]??3)-(LRANK[LAYERS[b]]??3))||a-b);
+    if(vis) vis.sort((a,b)=>((LRANK[ILAYERS()[a]]??3)-(LRANK[ILAYERS()[b]]??3))||a-b);
     if(!vis.length) vis=null;
   }
   if(!vis){
@@ -337,14 +437,14 @@ async function run(){
       return mm; });
     const pis=[...maps[0].keys()].filter(pi=>maps.every(mm=>mm.has(pi))).sort((a,b)=>a-b);
     for(const pi of pis){ const p=sh.paras[pi];
-      const _lay=LAYERS[vi];
+      const _lay=ILAYERS()[vi];
       if(words.length>1){
         const c=phCount(fold(p.text));
-        if(c>0){ total+=c; phrParas++; phrVols.add(vi); if((nPhr[_lay]=(nPhr[_lay]||0)+1)<=CAPP) phrOut.push({lay:_lay,vol:VOLS[vi],p}); }
-        else    { andTotal++; if((nAnd[_lay]=(nAnd[_lay]||0)+1)<=CAPA) andOut.push({lay:_lay,vol:VOLS[vi],p}); }
+        if(c>0){ total+=c; phrParas++; phrVols.add(vi); if((nPhr[_lay]=(nPhr[_lay]||0)+1)<=CAPP) phrOut.push({lay:_lay,vol:IVOLS()[vi],p}); }
+        else    { andTotal++; if((nAnd[_lay]=(nAnd[_lay]||0)+1)<=CAPA) andOut.push({lay:_lay,vol:IVOLS()[vi],p}); }
       } else {
         total+=maps[0].get(pi); phrParas++; phrVols.add(vi);
-        if((nPhr[_lay]=(nPhr[_lay]||0)+1)<=CAPP) phrOut.push({lay:_lay,vol:VOLS[vi],p});
+        if((nPhr[_lay]=(nPhr[_lay]||0)+1)<=CAPP) phrOut.push({lay:_lay,vol:IVOLS()[vi],p});
       }
     }
   }
@@ -391,7 +491,7 @@ document.querySelectorAll('#laychips .lchip').forEach(c=>c.addEventListener('cli
 el('q').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
 // warm the index on FOCUS, so the common case (click the box, type, Enter) has
 // the download already in flight without costing a visitor who never searches
-el('q').addEventListener('focus',()=>{ensureIndex();},{once:true});
+el('q').addEventListener('focus',()=>{ensureMeta();},{once:true});
 status('Ready — type a query.');
 </script>
 </body>

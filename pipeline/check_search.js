@@ -44,12 +44,16 @@ function mkResolve(base){ return u=>{ u=String(u).split('?')[0];
   if(u.startsWith('../')) return path.join(ROOT,'site',u.slice(3));
   if(u.startsWith('http')){ try{u=new URL(u).pathname.replace(/^\//,'');}catch(e){} }
   return path.join(base,u); }; }
-function boot(file,base){
+function boot(file,base,opts){
   const resolve=mkResolve(base);
+  const hideTb=opts&&opts.hideTb;   // simulate an unpacked deposit from before tb/
   const dom=new JSDOM(fs.readFileSync(file,'utf8'),{runScripts:'dangerously',pretendToBeVisual:true,url:'http://x/',beforeParse(w){
     w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});
     w.scrollTo=()=>{}; w.Element.prototype.scrollIntoView=()=>{};
-    w.fetch=u=>{const f=resolve(u);let t=null;try{t=fs.readFileSync(f,'utf8');}catch(e){}
+    w.__fetched=[];
+    w.fetch=u=>{w.__fetched.push(String(u).split('?')[0]);
+      const f=resolve(u);let t=null;
+      if(!(hideTb&&/\/tb\//.test(String(u)))){ try{t=fs.readFileSync(f,'utf8');}catch(e){} }
       return Promise.resolve({ok:t!=null,status:t!=null?200:404,json:()=>Promise.resolve(t?JSON.parse(t):{}),text:()=>Promise.resolve(t||'')});};
   }});
   return dom.window;
@@ -210,6 +214,41 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
     w.document.dispatchEvent(ev); }
   ok(dd.hidden===false,'reader: chip click cannot close the dropdown','hidden='+dd.hidden);
 
+  // 6d. THE WIRING FACTS (2026-08-09, the bucketed index).  An exact-word
+  //     search must have fetched tb/ buckets and NEVER terms.compact.json —
+  //     the 22 MB map and its 643,965-entry parse are the cost the buckets
+  //     exist to remove.  The searches above covered exact, substring-sweep
+  //     (none needed yet — added below), both wildcard shapes and phrases.
+  const fetched=w.__fetched.join(' ');
+  ok(/\/tb\/meta\.json/.test(fetched)&&/\/tb\/[a-z_]{2}\.json/.test(fetched),
+     'wiring: buckets are fetched');
+  ok(!/terms\.compact\.json/.test(fetched),
+     'wiring: the 22 MB map is never fetched');
+  // a SUBSTRING sweep (not exact, no wildcard) must go through k.txt and
+  // still count exactly — truth comes from the source map, so this is the
+  // first time the assertion is not circular
+  const tS=truth(['amakasalana']);
+  await w.doSearch('amakasālāna');
+  dd=w.document.getElementById('sdrop');
+  ok(tS.phrTot>0 && heads(dd).some(h=>h.startsWith(tS.phrTot.toLocaleString()+' occurrence')),
+     'wiring: substring sweep via k.txt counts exactly', 'want '+tS.phrTot+' | '+heads(dd).join(' / '));
+  ok(/\/tb\/k\.txt/.test(w.__fetched.join(' ')),'wiring: the sweep fetched k.txt');
+
+  // 6e. the FALLBACK: with tb/ absent (an unpacked deposit from before the
+  //     buckets) the box must still answer, from terms.compact.json
+  {
+    const w2=boot(READER,path.join(ROOT,'site','reader'),{hideTb:true});
+    if(await readyReader(w2)){
+      await w2.doSearch('yamakasālānaṁ');
+      const dd2=w2.document.getElementById('sdrop');
+      const h2=[...dd2.querySelectorAll('.sr-head')].map(h=>h.textContent);
+      ok(h2.some(h=>h.startsWith(t3.phrTot.toLocaleString()+' occurrence')),
+         'wiring: legacy fallback answers when tb/ is absent', h2.join(' / '));
+      ok(/terms\.compact\.json/.test(w2.__fetched.join(' ')),
+         'wiring: the fallback used the legacy map');
+    } else { ok(false,'wiring: fallback window did not boot'); }
+  }
+
   // 7. markInEl: phrase as one run; words apart each marked; wildcard extent.
   const doc=w.document;
   const el1=doc.createElement('div'); el1.textContent='idha yamakasālānaṁ antare pupphitā';
@@ -282,6 +321,15 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
      && !!s.document.querySelector('#laychips .lchip.on'),
      'search: layer chip filters', (typeof s.setLayerChip)+' '+s.document.querySelectorAll('.hit').length+' vs '+(t6.phrParas+t6.andParas));
   if(typeof s.setLayerChip==='function') s.setLayerChip('');
+
+  // search.html's wiring, asserted on its OWN fetch log — the counts above
+  // would pass on the legacy path too, and a silent fallback is exactly the
+  // drift these two files keep falling into
+  const sf=s.__fetched.join(' ');
+  ok(/\/tb\/meta\.json/.test(sf)&&/\/tb\/[a-z_]{2}\.json/.test(sf),
+     'search wiring: buckets are fetched');
+  ok(!/terms\.compact\.json/.test(sf),
+     'search wiring: the 22 MB map is never fetched');
 
   console.log(fails?('FAILED: '+fails+' assertion(s)'):'all green');
   process.exit(fails?1:0);

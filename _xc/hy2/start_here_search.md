@@ -65,7 +65,14 @@ ground truth computed from the shards; `--selftest /tmp/reader2_HEAD.html`
   ARE NOT WIRED — they still read `terms.compact.json`, which stays as gate
   ground-truth and fallback.
 
-  **The wiring brief (next session, gate first):** `matchTerms` goes async —
+  **WIRED, same day (2026-08-09 pm), gate first as briefed** — both UIs on
+  the buckets, 40 assertions all green, selftest fails exactly the five
+  wiring facts on the unwired build.  Exact word → its bucket; sweep →
+  k.txt + candidate buckets; `xxx*` → one bucket; meta-404 → legacy
+  fallback, proven by hiding tb/.  Every new await carries its ticket
+  check.  What remains of search speed is ONLY the heavy half (per-volume
+  shard split), waiting on the reader's live-network verdict for
+  common-word searches.  The original brief, for the record: `matchTerms` goes async —
   exact word → its p2 bucket only; substring or `*xxx` sweep → `k.txt`
   (cached as ONE STRING, scanned with indexOf) then fetch only the buckets
   the ≤500 candidates live in; `xxx*` prefix wildcard → its bucket alone.
