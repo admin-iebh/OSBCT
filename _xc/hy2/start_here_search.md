@@ -36,12 +36,28 @@ ground truth computed from the shards; `--selftest /tmp/reader2_HEAD.html`
 
   Placeholder now says "words or a phrase" (en + es, `r2_search_ph`).
 
-  **Left open here:** `search.html` still answers one word only and prints the
-  corpus `book` field naively (`[p.book,p.vagga,p.sutta]`) — the drift this
-  file warned about, recorded, not fixed.  The 22 MB first-load and the
-  per-volume shard model are untouched — a prefix/bucket index remains the
-  next lever if the reader still finds it slow ON THE NETWORK, which the
-  sandbox cannot measure.
+  ~~**Left open here:** `search.html` still answers one word only…~~ **CLOSED
+  later the same day** (reader hit `sabbe saṅkhārā` on search.html, screenshot):
+  the whole port landed there — multi-word, booktitle/ rows, 8-wide shard pool,
+  and its `shard()` had NO error handling at all (one lost request threw out of
+  `run()`).  Same session added, to BOTH boxes: **`*` wildcard** (`.*` against
+  term keys, `\S*` against running text so a star cannot cross a word; ≥3
+  literal letters, same 500 cap), **heads that count everything found** ("N
+  occurrence(s) in P paragraph(s), V volume(s)", V = phrase volumes only), and
+  to the reader box: **layer chips** in the dropdown (not a select — `.search`
+  is 90px on a phone) and a **"?" help chip** opening bilingual instructions;
+  search.html carries the same text in its footer via `i18n.js`.
+  `pipeline/check_search.js` now boots BOTH pages, 26 assertions, selftest
+  fails 20/26 on the pre-fix pair (old reader = `git show
+  f82db5ab:site/reader/reader2.html`, old search = `git show
+  d1b01414:site/search.html`).  Measured live: `sabbe saṅkhārā` → 280
+  occurrences, 166 paragraphs, 61 volumes, +90 non-adjacent, 2.7 s cold in
+  jsdom.  BUILD `3bcc7431b9a5` → `5fd3c711bc8e`, commit message in
+  `COMMIT_MSG.bak`.
+
+  **Still untouched:** the 22 MB first-load and the per-volume shard model — a
+  prefix/bucket index remains the next lever if the reader still finds it slow
+  ON THE NETWORK, which the sandbox cannot measure.
 
 The reader asked for three things, in this order of interest:
 

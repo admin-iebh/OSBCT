@@ -55,7 +55,7 @@
   <h1>Sixth Buddhist Council Tipiṭaka <span class="pali">(Chaṭṭhasaṅgītipiṭaka)</span></h1>
   <div class="sub" data-i18n="search_sub">Full-text search across 118 volumes — Tipiṭaka, Aṭṭhakathā, Ṭīkā · 83,751 paragraphs</div>
   <div class="bar">
-    <input id="q" type="search" data-i18n-ph="search_ph" placeholder="Search Pāḷi — diacritics optional (e.g. nibbana finds nibbāna)" autocomplete="off">
+    <input id="q" type="search" data-i18n-ph="search_ph" placeholder="Search Pāḷi — words, a phrase, * wildcard; diacritics optional" autocomplete="off">
     <select id="layer">
       <option value="" data-i18n="opt_all">All layers</option>
       <option value="pali-unicode" data-i18n="opt_pali">Tipiṭaka only</option>
@@ -69,7 +69,7 @@
 <script>
 // cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
 // rewrites it, so a rebuild can never be invisible to a returning browser.
-const BUILD='3bcc7431b9a5';
+const BUILD='5fd3c711bc8e';
 function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
 
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
@@ -80,10 +80,14 @@ document.addEventListener('DOMContentLoaded',()=>{document.getElementById('theme
   <div id="results"></div>
 </main>
 <footer data-i18n="search_foot">
-  Diacritic-insensitive exact/substring search. Type with or without diacritics.
-  Results show location and printed page; click a result to open it in the reader.
+  Type one word, several words, or a phrase — a phrase matches the words adjacent
+  and in order; paragraphs carrying the words apart are listed separately.
+  Diacritics are optional: nibbana finds nibbāna. * completes a word: dhamm*,
+  *vaggo, dham*ti (at least 3 letters beside the *). A bare word also matches
+  inside longer words. Results show the book, the printed page and the paragraph;
+  click a result to open it in the reader at the marked word.
 </footer>
-<script src="i18n.js?v=3bcc7431b9a5"></script>
+<script src="i18n.js?v=5fd3c711bc8e"></script>
 <script>
 const FOLD={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
 const fold=s=>s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLD[c]||c);
@@ -98,8 +102,24 @@ let NAMES=null, NFOLD=null, TERMKEYS=null;
 // "exact / substring" all along.
 // Exact still wins outright; otherwise the term list is scanned once, cached,
 // and every term CONTAINING the query contributes its postings.
+// `*` IS A WILDCARD, AND IT MEANS TWO DIFFERENT THINGS IN TWO ADDRESS SPACES
+// (2026-08-08, same change as reader2.html — THE TWO IMPLEMENTATIONS HAD
+// DRIFTED and this one still answered one word only while the reader's box
+// took phrases; keep them in step).  Against the TERM KEYS `*` is `.*` — a
+// key is a single word.  Against RUNNING TEXT it must be `\S*`, or the star
+// would swallow a space and match across a word boundary.
+const rxEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+const wpat=w=>w.indexOf('*')>=0?w.split('*').map(rxEsc).join('\\S*'):rxEsc(w);
 function matchTerms(ft){
   if(!TERMS) return [];
+  if(ft.indexOf('*')>=0){
+    if(ft.replace(/\*/g,'').length<3) return [];   // at least 3 literal letters
+    if(!TERMKEYS) TERMKEYS=Object.keys(TERMS);
+    const rx=new RegExp('^'+ft.split('*').map(rxEsc).join('.*')+'$');
+    const out=[];
+    for(let i=0;i<TERMKEYS.length;i++){ if(rx.test(TERMKEYS[i])){ out.push(TERMKEYS[i]); if(out.length>=500) break; } }
+    return out;
+  }
   if(TERMS[ft]) return [ft];
   if(ft.length<3) return [];   // a 1-2 letter substring sweep is noise
   if(!TERMKEYS) TERMKEYS=Object.keys(TERMS);
@@ -138,16 +158,61 @@ async function boot(){
     status(`Ready — ${Object.keys(TERMS).length.toLocaleString()} indexed terms across ${VOLS.length} volumes.`);
   }catch(e){ status('Could not load index/terms.compact.json — serve this folder over http (e.g. `python3 -m http.server`) rather than opening the file directly.'); }
 }
+// A FAILED SHARD MUST NOT BE CACHED AS AN ANSWER, and here it was worse: no
+// try/catch at all, so one lost request threw out of `run()` and the page went
+// quiet (2026-08-08, ported from reader2.html).  The PROMISE is cached and
+// deleted on failure, so the next search retries.
 async function shard(vi){
   if(shardCache[vi]) return shardCache[vi];
-  const r=await fetch(bust('index/'+VOLS[vi]+'.idx.json'));
-  const j=await r.json(); shardCache[vi]=j; return j;
+  return shardCache[vi]=(async()=>{
+    try{ const r=await fetch(bust('index/'+VOLS[vi]+'.idx.json'));
+         if(!r.ok) throw new Error('HTTP '+r.status);
+         return await r.json();
+    }catch(e){ delete shardCache[vi]; return {paras:[],inv:{}}; }
+  })();
+}
+// The book on a row, from `booktitle/<VOL>.json` — the stack the edition
+// prints on the book's own title page.  NEVER the corpus `book` field, which
+// names the wrong thing in 61 of 118 volumes (07Di02: a kathā one level too
+// deep on all 335 paragraphs of the Mahāparinibbānasutta).  Same source and
+// same reason as reader2's row line and ¶-tooltip.
+let btCache={};
+async function btFor(vol){ if(btCache[vol]) return btCache[vol];
+  return btCache[vol]=(async()=>{
+    try{ const r=await fetch(bust('reader/booktitle/'+vol+'.json'));
+         if(!r.ok) throw new Error('HTTP '+r.status);
+         return await r.json();
+    }catch(e){ delete btCache[vol]; return {}; }
+  })(); }
+function bookOf(bt,ord){
+  let bk='',bo=-1;
+  for(const k in bt){ const kk=+k; if(kk<=ord&&kk>bo)bo=kk; }
+  if(bo>=0){ const st=bt[String(bo)]; const a=Array.isArray(st)?st:[st];
+             bk=String(a[a.length-1]||'').trim(); }
+  return bk;
 }
 function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
-function snippet(text,ft){
-  const f=fold(text); const i=f.indexOf(ft); if(i<0) return esc(text.slice(0,180));
-  const a=Math.max(0,i-60), b=Math.min(text.length,i+ft.length+90);
-  return (a>0?'… ':'')+esc(text.slice(a,i))+'<mark>'+esc(text.slice(i,i+ft.length))+'</mark>'+esc(text.slice(i+ft.length,b))+(b<text.length?' …':'');
+// anchored on the phrase where it occurs, else on the earliest word; every
+// query word inside the window is marked — the old builder assumed ONE
+// contiguous match and could not serve a multi-word or wildcard row
+function snippet(text,words,phRx,wordRxs){
+  const f=fold(text);
+  let i=-1,len=0;
+  phRx.lastIndex=0; const pm=phRx.exec(f);
+  if(pm&&pm[0]){ i=pm.index; len=pm[0].length; }
+  else{ for(const rx of wordRxs){ rx.lastIndex=0; const m=rx.exec(f);
+          if(m&&m[0]&&(i<0||m.index<i)){ i=m.index; len=m[0].length; } }
+        if(i<0) return esc(text.slice(0,180)); }
+  const a=Math.max(0,i-60), b=Math.min(text.length,i+len+90);
+  const R=[];
+  for(const rx of wordRxs){ rx.lastIndex=0; let m;
+    while((m=rx.exec(f))){ if(!m[0]){rx.lastIndex++;continue;} if(m.index>=b) break;
+      if(m.index>=a) R.push([m.index,Math.min(m.index+m[0].length,b)]); } }
+  R.sort((x,y)=>x[0]-y[0]);
+  const M=[]; for(const r of R){ if(M.length&&r[0]<=M[M.length-1][1]) M[M.length-1][1]=Math.max(M[M.length-1][1],r[1]); else M.push([r[0],r[1]]); }
+  let h=(a>0?'… ':''), pos=a;
+  for(const [s,e] of M){ h+=esc(text.slice(pos,s))+'<mark>'+esc(text.slice(s,e))+'</mark>'; pos=e; }
+  return h+esc(text.slice(pos,b))+(b<text.length?' …':'');
 }
 // SECTION NAMES, MATCHED ON THE FOLDED LABEL.  Substring, so a partial name
 // still lands (`ovada` -> *Ovādavagga*), and diacritic-insensitive by the same
@@ -192,8 +257,25 @@ async function run(){
   if(!TERMS){status('Could not load the term index.');return;}
   const ft=fold(q); const lf=el('layer').value;
   const secHTML=sectionHits(ft,lf);
-  const mts=matchTerms(ft);
-  const vis=mts.length?[...new Set(mts.flatMap(k=>TERMS[k]||[]))].sort((a,b)=>a-b):null;
+  // A QUERY WITH A SPACE MATCHED NOTHING AND SAID "No matches" — the same one
+  // bug as reader2's box, fixed the same way (2026-08-08, user-reported here
+  // with a screenshot of `sabbe saṅkhārā`): split, resolve each word,
+  // intersect the volume lists, intersect the per-paragraph postings, verify
+  // adjacency on the folded text.  Phrase hits are counted by occurrence;
+  // paragraphs carrying all the words apart are listed after, labelled,
+  // never merged into the phrase count.
+  const words=ft.split(/\s+/).filter(Boolean);
+  const phq=words.join(' ');
+  const anyWC=words.some(w=>w.indexOf('*')>=0);
+  const phSrc=words.map(wpat).join(' ');
+  const mtsPer=words.map(w=>matchTerms(w));
+  let vis=null;
+  if(mtsPer.length && mtsPer.every(m=>m.length)){
+    const vsets=mtsPer.map(m=>new Set(m.flatMap(k=>TERMS[k]||[])));
+    vis=[...vsets[0]].filter(v=>vsets.every(s=>s.has(v))).sort((a,b)=>a-b);
+    if(lf) vis=vis.filter(v=>LAYERS[v]===lf);
+    if(!vis.length) vis=null;
+  }
   if(!vis){
     // A NAME MATCH IS STILL A MATCH.  `Oghataraṇasutta` occurs in no running
     // text at all, so the old "no matches" was wrong as well as unhelpful.
@@ -206,24 +288,58 @@ async function run(){
                  el('results').innerHTML=secHTML; return; }
     status(`No matches for “${q}”.`);el('results').innerHTML='';return;}
   status(`Searching ${vis.length} volume(s)…`);
-  let out=[], total=0;
+  // shards 8 at a time, not one per await — the serial loop was most of the
+  // slowness on a common word (measured in reader2: shards avg 1.64 MB,
+  // 194 MB in all, up to 118 volumes per common word)
+  { const need=[...vis]; let ni=0; const pool=[];
+    for(let w=0;w<Math.min(8,need.length);w++)
+      pool.push((async()=>{ while(ni<need.length && my===runSeq){ await shard(need[ni++]); } })());
+    await Promise.all(pool); }
+  if(my!==runSeq) return;
+  const countOcc=(hay,ndl)=>{ let n=0,i=hay.indexOf(ndl); while(i>=0){n++;i=hay.indexOf(ndl,i+1);} return n; };
+  const phRxG=anyWC?new RegExp(phSrc,'g'):null;
+  const phCount=f=>{ if(!anyWC) return countOcc(f,phq);
+    phRxG.lastIndex=0; let n=0,m;
+    while((m=phRxG.exec(f))){ if(!m[0]){phRxG.lastIndex++;continue;} n++; } return n; };
+  const phRxA=new RegExp(phSrc,'g');
+  const wordRxs=words.map(w=>new RegExp(wpat(w),'g'));
+  // `phrVols`: volumes with PHRASE hits only, so the status line cannot claim
+  // volumes that merely carry the words apart
+  let phrOut=[], andOut=[], total=0, andTotal=0, phrParas=0; const phrVols=new Set();
   for(const vi of vis){
-    if(lf && LAYERS[vi]!==lf) continue;
     const sh=await shard(vi);
-    const seenP=new Map();
-    for(const k of mts) for(const [pi,c] of (sh.inv[k]||[])) seenP.set(pi,(seenP.get(pi)||0)+c);
-    const postings=[...seenP.entries()].sort((a,b)=>a[0]-b[0]);
-    for(const [pi,c] of postings){
-      total+=c;
-      if(out.length<200){ const p=sh.paras[pi]; out.push({lay:LAYERS[vi],vol:VOLS[vi],p}); }
+    if(my!==runSeq) return;
+    const maps=mtsPer.map(m=>{ const mm=new Map();
+      for(const k of m) for(const [pi,c] of (sh.inv[k]||[])) mm.set(pi,(mm.get(pi)||0)+c);
+      return mm; });
+    const pis=[...maps[0].keys()].filter(pi=>maps.every(mm=>mm.has(pi))).sort((a,b)=>a-b);
+    for(const pi of pis){ const p=sh.paras[pi];
+      if(words.length>1){
+        const c=phCount(fold(p.text));
+        if(c>0){ total+=c; phrParas++; phrVols.add(vi); if(phrOut.length<200) phrOut.push({lay:LAYERS[vi],vol:VOLS[vi],p}); }
+        else    { andTotal++; if(andOut.length<100) andOut.push({lay:LAYERS[vi],vol:VOLS[vi],p}); }
+      } else {
+        total+=maps[0].get(pi); phrParas++; phrVols.add(vi);
+        if(phrOut.length<200) phrOut.push({lay:LAYERS[vi],vol:VOLS[vi],p});
+      }
     }
   }
-  if(!out.length){status(`No matches in that layer for “${q}”.`);el('results').innerHTML='';return;}
-  status(`${total.toLocaleString()} ${(window.t?t('s_occ'):'occurrence(s)')}`+(total>out.length?`, +${out.length}`:'')+`.`);
+  if(!phrOut.length&&!andOut.length){status(`No matches in that layer for “${q}”.`);el('results').innerHTML=secHTML;return;}
+  // the count of everything found, not of the rows drawn — like the reader's
+  // word-lookup pane (2026-08-08, user request)
+  status(`${total.toLocaleString()} ${(window.t?t('s_occ'):'occurrence(s)')} in ${phrParas.toLocaleString()} paragraph(s), ${phrVols.size.toLocaleString()} volume(s)`+
+         (andTotal?` — and ${andTotal.toLocaleString()} paragraph(s) with all ${words.length} words, not adjacent`:'')+`.`);
   const layName={'pali-unicode':'Tipiṭaka','atthakatha-unicode':'Aṭṭhakathā','tika-unicode':'Ṭīkā'};
+  // the book for every row DRAWN, resolved from `booktitle/` (cached per vol)
+  const drawVols=[...new Set(phrOut.concat(andOut).map(h=>h.vol))];
+  const btMap={};
+  await Promise.all(drawVols.map(async v=>{ btMap[v]=await btFor(v); }));
   if(my!==runSeq) return;
-  el('results').innerHTML=secHTML+out.map(h=>{
-    const p=h.p, loc=[p.book,p.vagga,p.sutta].filter(x=>x&&x!=='X').join(' › ');
+  const rowHTML=h=>{
+    const p=h.p;
+    const bk=bookOf(btMap[h.vol]||{},p.ord!=null?p.ord:-1);
+    const su=(p.sutta&&p.sutta!=='X')?String(p.sutta).replace(/\s+/g,' ').trim():'';
+    const loc=[bk,(su&&su!==bk)?su:''].filter(Boolean).join(' · ');
     // THE ORDINAL, NOT THE `id`.  `p.id` is not unique — 12,110 collisions
     // across 65 volumes — so an id-keyed jump lands on the FIRST paragraph
     // that answers to it.  The rebuilt index carries `ord`; older shards do
@@ -232,10 +348,12 @@ async function run(){
     const tgt=(p.ord!=null)?('#'+h.vol+'#'+p.ord):('#'+h.vol+'/'+encodeURIComponent(p.id));
     const href='reader/reader2.html?q='+encodeURIComponent(q)+tgt;
     return `<a class="hit" href="${href}"><div class="loc"><span class="lay">${layName[h.lay]||h.lay}</span>`+
-      `${esc(loc||'—')} · ¶${esc(String(p.n))} · p.${p.page??'?'} <span class="open">${(window.t?t('s_open'):'open in reader →')}</span>`+
+      `${esc(loc||h.vol)} · ${esc(h.vol)}${p.n!=null?' · ¶'+esc(String(p.n)):''} · p.${p.page??'?'} <span class="open">${(window.t?t('s_open'):'open in reader →')}</span>`+
       (p.peyyala?' <span class="pey">peyyāla</span>':'')+`</div>`+
-      `<div class="txt">${snippet(p.text,ft)}</div></a>`;
-  }).join('');
+      `<div class="txt">${snippet(p.text,words,phRxA,wordRxs)}</div></a>`;
+  };
+  el('results').innerHTML=secHTML+phrOut.map(rowHTML).join('')+
+    (andOut.length?`<div class="secgrp"><h3>${andTotal.toLocaleString()} paragraph(s) with all ${words.length} words, not adjacent</h3></div>`+andOut.map(rowHTML).join(''):'');
 }
 el('go').onclick=run;
 el('q').addEventListener('keydown',e=>{if(e.key==='Enter')run();});

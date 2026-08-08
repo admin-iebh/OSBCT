@@ -124,6 +124,16 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
    for "the book and sutta, not just Pāḷi ¶52").  Small and muted so the
    snippet stays the row's voice. */
 .sr-where{font-family:'Inter',sans-serif;font-size:10.5px;color:var(--mut);margin-left:8px}
+/* Layer chips + "?" help at the top of the dropdown (2026-08-08).  In the
+   dropdown, not beside the input — `.search` shrinks to 90px on a phone. */
+.sr-filt{display:flex;gap:5px;align-items:center;padding:7px 10px 3px;flex-wrap:wrap}
+.sr-chip{font-family:'Inter',sans-serif;font-size:10.5px;font-weight:600;color:var(--mut);
+         border:1px solid var(--line);border-radius:12px;padding:2px 9px;cursor:pointer}
+.sr-chip:hover{background:var(--hover)}
+.sr-chip.on{color:var(--accent);border-color:var(--accent)}
+.sr-help{margin-left:auto;padding:2px 8px}
+.sr-helpbox{font-family:'Inter',sans-serif;font-size:11.5px;line-height:1.55;color:var(--mut);
+            padding:6px 12px 8px;border-bottom:1px solid var(--line)}
 .sr-snip mark{background:var(--hl);border-radius:2px}
 /* !!! THE SECTION ROWS HAD NO STYLES AT ALL (2026-07-30o, user-reported): they
    inherited the body serif at full size and carried no cursor and no hover, so
@@ -277,7 +287,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=3bcc7431b9a5"></script>
+<script src="../i18n.js?v=5fd3c711bc8e"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -302,7 +312,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
   <div class="topbar">
     <button class="tb" id="sidetog" data-i18n-title="tip_nav" title="Hide / show navigation">☰</button>
     <span class="brand"><span class="dot"></span>Sixth Buddhist Council Tipiṭaka</span>
-    <div class="search"><input id="sq" type="search" data-i18n-ph="r2_search_ph" placeholder="Search all layers — words or a phrase, diacritics optional" autocomplete="off"><div id="sdrop" class="sdrop" hidden></div></div>
+    <div class="search"><input id="sq" type="search" data-i18n-ph="r2_search_ph" placeholder="Search — words, a phrase, * wildcard; diacritics optional" autocomplete="off"><div id="sdrop" class="sdrop" hidden></div></div>
     <span class="sp"></span>
     <a class="navlink" href="../index.html" data-i18n="nav_home">Home</a>
     <a class="navlink" href="../downloads.html" data-i18n="nav_downloads">Downloads</a>
@@ -341,7 +351,14 @@ const $=s=>document.querySelector(s);
 // these call sites were wired (2026-07-30f).  TIP() degrades to English.
 const TIP=(k,en)=>(window.t&&window.I18N&&window.I18N[k])?window.t(k):en;
 if(window.I18N) Object.assign(window.I18N,{
-  r2_search_ph:{en:'Search all layers — words or a phrase, diacritics optional',es:'Buscar en todas las capas — palabras o una frase, diacríticos opcionales'},
+  r2_search_ph:{en:'Search — words, a phrase, * wildcard; diacritics optional',es:'Buscar — palabras, una frase, comodín *; diacríticos opcionales'},
+  r2_lay_all:{en:'All',es:'Todas'},
+  r2_lay_pali:{en:'Pāḷi',es:'Pāḷi'},
+  r2_lay_a:{en:'Aṭṭhakathā',es:'Aṭṭhakathā'},
+  r2_lay_t:{en:'Ṭīkā',es:'Ṭīkā'},
+  r2_search_help:{
+    en:'Type one word, several words, or a phrase — a phrase matches the words adjacent and in order; paragraphs carrying the words apart are listed separately. Diacritics are optional: nibbana finds nibbāna. * completes a word: dhamm*, *vaggo, dham*ti (at least 3 letters beside the *). A bare word also matches inside longer words. The chips above limit the search to one layer. Click a result to open it in the reader at the marked word.',
+    es:'Escriba una palabra, varias palabras o una frase — una frase encuentra las palabras adyacentes y en orden; los párrafos que llevan las palabras separadas se listan aparte. Los diacríticos son opcionales: nibbana encuentra nibbāna. * completa una palabra: dhamm*, *vaggo, dham*ti (mínimo 3 letras junto al *). Una palabra sola también coincide dentro de palabras más largas. Las fichas de arriba limitan la búsqueda a una capa. Pulse un resultado para abrirlo en el lector sobre la palabra marcada.'},
   r2_layers:{en:'Layers',es:'Capas'},
   r2_columns:{en:'Columns',es:'Columnas'},
   r2_tabs:{en:'Tabs',es:'Pestañas'},
@@ -407,7 +424,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='3bcc7431b9a5';
+const BUILD='5fd3c711bc8e';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -3220,6 +3237,13 @@ function tipShow(el){
 const FOLDM={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
 const foldS=s=>(s||'').toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLDM[c]||c);
 const foldName=s=>foldS(s).replace(/[^a-z]/g,'');
+// `*` IS A WILDCARD, AND IT MEANS TWO DIFFERENT THINGS IN TWO ADDRESS SPACES
+// (2026-08-08).  Against the TERM KEYS it is `.*` — a key is a single word, so
+// it cannot overshoot.  Against RUNNING TEXT it must be `\S*`, or `dhamm* ti`
+// would let the star swallow the space and match across a word boundary,
+// turning a two-word phrase into one elastic word.
+const rxEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+const wpat=w=>w.indexOf('*')>=0?w.split('*').map(rxEsc).join('\\S*'):rxEsc(w);
 let TERMS=null, shardCache={}, TERMKEYS=null, SNAMES=null, SNFOLD=null;
 // !!! A SUTTA'S NAME IS USUALLY NOT IN ITS OWN PROSE.  Measured over the 2,593
 // distinct sutta names in the corpus: 16 are indexed as an exact term, 348 more
@@ -3241,6 +3265,19 @@ async function ensureNames(){ if(SNAMES!==null) return;
 // and every term CONTAINING the query contributes its postings.
 function matchTerms(ft){
   if(!TERMS) return [];
+  // `*` wildcard (2026-08-08): anchored regex over the key list — `dhamm*` is
+  // a prefix, `*vaggo` a suffix, `dham*ti` both ends pinned.  The full-key
+  // scan costs what the substring sweep costs, measured 7–15 ms over 643,965
+  // keys, and the same floor and cap apply: at least 3 LITERAL letters, or
+  // `a*` would be the `og` incident with a star on it.
+  if(ft.indexOf('*')>=0){
+    if(ft.replace(/\*/g,'').length<3) return [];
+    if(!TERMKEYS) TERMKEYS=Object.keys(TERMS.terms);
+    const rx=new RegExp('^'+ft.split('*').map(rxEsc).join('.*')+'$');
+    const out=[];
+    for(let i=0;i<TERMKEYS.length;i++){ if(rx.test(TERMKEYS[i])){ out.push(TERMKEYS[i]); if(out.length>=500) break; } }
+    return out;
+  }
   if(TERMS.terms[ft]) return [ft];
   // A SUBSTRING SWEEP ON ONE OR TWO LETTERS IS NOT A SEARCH.  `og` matched 500
   // terms across most of the corpus and pulled a shard for each — seconds of
@@ -3316,6 +3353,12 @@ function bookOf(bt,vol,ord){
   return bk||VOLTITLE[vol]||shortWork(VOLWORK[vol])||'';
 }
 let sTimer=null, sSeq=0;
+// The layer filter lives IN the dropdown as chips, not beside the input — the
+// `.search` div shrinks to 90px on a phone and a select would not fit
+// (2026-08-08).  State survives repaints; changing it re-runs the query.
+let sLayer='', sHelp=false;
+function setSLayer(v){ sLayer=v; doSearch($('#sq').value); }
+function setSHelp(){ sHelp=!sHelp; doSearch($('#sq').value); }
 $('#sq').addEventListener('input',e=>{clearTimeout(sTimer);sTimer=setTimeout(()=>doSearch(e.target.value),180);});
 $('#sq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';$('#sdrop').hidden=true;}});
 document.addEventListener('click',e=>{const s=$('.search'); if(s&&!s.contains(e.target))$('#sdrop').hidden=true;});
@@ -3349,7 +3392,9 @@ async function doSearch(q){
     const hit=[];
     for(let i=0;i<SNFOLD.length;i++) if(SNFOLD[i].indexOf(fq)>=0) hit.push(i);
     if(hit.length){
-      const H=new Set(hit); const rows=SNAMES.rows.filter(r=>H.has(r[0]));
+      const H=new Set(hit); let rows=SNAMES.rows.filter(r=>H.has(r[0]));
+      if(sLayer){ const LK={'pali-unicode':'canon','atthakatha-unicode':'commentary','tika-unicode':'subcommentary'}[sLayer];
+                  rows=rows.filter(r=>SNAMES.layers[r[3]]===LK); }
       nSec=rows.length;
       rows.sort((a,b)=>{const A=SNAMES.labels[a[0]],Bb=SNAMES.labels[b[0]];
         return (SNFOLD[a[0]]===fq?0:1)-(SNFOLD[b[0]]===fq?0:1)||A.length-Bb.length;});
@@ -3382,16 +3427,28 @@ async function doSearch(q){
   // and 10 with the phrase.
   const words=fq.split(/\s+/).filter(Boolean);
   const phq=words.join(' ');
+  const anyWC=words.some(w=>w.indexOf('*')>=0);
+  const phSrc=words.map(wpat).join(' ');
   const mtsPer=words.map(w=>matchTerms(w));
   let vis=null;
   if(mtsPer.length && mtsPer.every(m=>m.length)){
     const vsets=mtsPer.map(m=>new Set(m.flatMap(k=>TERMS.terms[k]||[])));
     vis=[...vsets[0]].filter(v=>vsets.every(s=>s.has(v))).sort((a,b)=>a-b);
+    if(sLayer) vis=vis.filter(v=>TERMS.layers[v]===sLayer);
     if(!vis.length) vis=null;
   }
+  // The filter chips and the "?" help are part of every results paint, so the
+  // way OUT of an over-narrow filter is always on screen, and the instructions
+  // are where the searching happens (2026-08-08, reader asked for both).
+  const filtHTML='<div class="sr-filt">'
+    +[['','r2_lay_all','All'],['pali-unicode','r2_lay_pali','Pāḷi'],['atthakatha-unicode','r2_lay_a','Aṭṭhakathā'],['tika-unicode','r2_lay_t','Ṭīkā']]
+      .map(x=>'<span class="sr-chip'+(sLayer===x[0]?' on':'')+'" onclick="setSLayer(\''+x[0]+'\')">'+esc(TIP(x[1],x[2]))+'</span>').join('')
+    +'<span class="sr-chip sr-help'+(sHelp?' on':'')+'" onclick="setSHelp()">?</span></div>'
+    +(sHelp?'<div class="sr-helpbox">'+esc(TIP('r2_search_help',
+      'Type one word, several words, or a phrase — a phrase matches the words adjacent and in order; words apart are listed separately. Diacritics are optional: nibbana finds nibbāna. * completes a word: dhamm*, *vaggo, dham*ti (3 letters minimum). A bare word also matches inside longer words. Chips above limit the search to one layer. Click a result to open it in the reader at the marked word.'))+'</div>':'');
   if(my!==sSeq) return;
   if(!vis){dd.hidden=false;
-    dd.innerHTML=secHTML||('<div class="sr-head">No matches for “'+esc(q)+'”</div>');return;}
+    dd.innerHTML=filtHTML+(secHTML||('<div class="sr-head">No matches for “'+esc(q)+'”'+(sLayer?' in this layer':'')+'</div>'));return;}
   const LN={'pali-unicode':'Pāḷi','atthakatha-unicode':'Aṭṭhakathā','tika-unicode':'Ṭīkā'};
   const COL={'pali-unicode':'var(--canon)','atthakatha-unicode':'var(--comm)','tika-unicode':'var(--tika)'};
   // !!! THE SHARDS WERE FETCHED ONE AT A TIME (2026-08-08, user-reported "it
@@ -3409,7 +3466,19 @@ async function doSearch(q){
     await Promise.all(pool); }
   if(my!==sSeq) return;
   const countOcc=(hay,ndl)=>{ let n=0,i=hay.indexOf(ndl); while(i>=0){n++;i=hay.indexOf(ndl,i+1);} return n; };
-  let phrRows=[], andRows=[], total=0, andTotal=0;
+  // adjacency with a wildcard in it needs the regex; without one, indexOf
+  const phRxG=anyWC?new RegExp(phSrc,'g'):null;
+  const phCount=f=>{ if(!anyWC) return countOcc(f,phq);
+    phRxG.lastIndex=0; let n=0,m;
+    while((m=phRxG.exec(f))){ if(!m[0]){phRxG.lastIndex++;continue;} n++; } return n; };
+  const wordRxs=words.map(w=>new RegExp(wpat(w),'g'));
+  const phRxA=new RegExp(phSrc,'g');
+  // counted over EVERYTHING, not the 80 drawn rows — the head must say how
+  // much there IS, like the word-lookup pane does (2026-08-08, user request)
+  // `phrVols` counts volumes with PHRASE hits only — the head must not claim
+  // three volumes for a phrase found in one because two others carry the
+  // words apart
+  let phrRows=[], andRows=[], total=0, andTotal=0, phrParas=0; const phrVols=new Set();
   for(const vi of vis){ const sh=await shard(vi);
     if(my!==sSeq) return;
     const maps=mtsPer.map(m=>{ const mm=new Map();
@@ -3418,11 +3487,11 @@ async function doSearch(q){
     const pis=[...maps[0].keys()].filter(pi=>maps.every(mm=>mm.has(pi))).sort((a,b)=>a-b);
     for(const pi of pis){ const p=sh.paras[pi];
       if(words.length>1){
-        const f=foldS(p.text), c=countOcc(f,phq);
-        if(c>0){ total+=c; if(phrRows.length<80) phrRows.push({vi,p,f}); }
+        const f=foldS(p.text), c=phCount(f);
+        if(c>0){ total+=c; phrParas++; phrVols.add(vi); if(phrRows.length<80) phrRows.push({vi,p,f}); }
         else    { andTotal++; if(andRows.length<40) andRows.push({vi,p,f}); }
       } else {
-        total+=maps[0].get(pi);
+        total+=maps[0].get(pi); phrParas++; phrVols.add(vi);
         if(phrRows.length<80) phrRows.push({vi,p,f:foldS(p.text)});
       }
     }
@@ -3436,16 +3505,22 @@ async function doSearch(q){
   await Promise.all(drawVols.map(async v=>{ btMap[v]=await btFor(v); }));
   if(my!==sSeq) return;
   const row=(r)=>{ const p=r.p, f=r.f, lay=TERMS.layers[r.vi], vol=TERMS.vols[r.vi];
-    // anchor the snippet on the phrase where it occurs, else on the earliest word
-    let i=f.indexOf(phq), len=phq.length;
-    if(i<0){ i=f.length;
-      for(const w of words){ const j=f.indexOf(w); if(j>=0&&j<i){i=j;len=w.length;} }
-      if(i>=f.length){ i=0; len=0; } }
+    // anchor the snippet on the phrase where it occurs, else on the earliest
+    // word — by regex throughout, so `*` matches are anchored and marked at
+    // their real extent (`dhamm*` marks the whole of `dhammacakkhuṁ`)
+    let i=-1,len=0;
+    phRxA.lastIndex=0; const pm=phRxA.exec(f);
+    if(pm&&pm[0]){ i=pm.index; len=pm[0].length; }
+    else{ for(const rx of wordRxs){ rx.lastIndex=0; const m=rx.exec(f);
+            if(m&&m[0]&&(i<0||m.index<i)){ i=m.index; len=m[0].length; } }
+          if(i<0){ i=0; len=0; } }
     const a=Math.max(0,i-24), b=Math.min(p.text.length,i+len+42);
     // every query word inside the window is marked — the old builder assumed
     // ONE contiguous match and could not serve a multi-word row
     const R=[];
-    for(const w of words){ let j=f.indexOf(w,a); while(j>=0&&j<b){ R.push([j,Math.min(j+w.length,b)]); j=f.indexOf(w,j+1); } }
+    for(const rx of wordRxs){ rx.lastIndex=0; let m;
+      while((m=rx.exec(f))){ if(!m[0]){rx.lastIndex++;continue;} if(m.index>=b) break;
+        if(m.index>=a) R.push([m.index,Math.min(m.index+m[0].length,b)]); } }
     R.sort((x,y)=>x[0]-y[0]);
     const M=[]; for(const rg of R){ if(M.length&&rg[0]<=M[M.length-1][1]) M[M.length-1][1]=Math.max(M[M.length-1][1],rg[1]); else M.push([rg[0],rg[1]]); }
     let snip=(a>0?'…':''), pos=a;
@@ -3479,14 +3554,15 @@ async function doSearch(q){
   // for the same reason: someone typing a sutta's name wants the sutta.
   if(my!==sSeq) return;
   let occHTML;
+  const where=' in '+phrParas.toLocaleString()+' paragraph(s), '+phrVols.size.toLocaleString()+' volume(s)';
   if(words.length>1){
-    occHTML=(total?'<div class="sr-head">'+total.toLocaleString()+' occurrence(s) of “'+esc(q)+'”</div>'+phrRows.map(row).join(''):'')
+    occHTML=(total?'<div class="sr-head">'+total.toLocaleString()+' occurrence(s) of “'+esc(q)+'”'+where+'</div>'+phrRows.map(row).join(''):'')
       +(andTotal?'<div class="sr-head">'+andTotal.toLocaleString()+' paragraph(s) carry all '+words.length+' words, not adjacent</div>'+andRows.map(row).join(''):'');
     if(!total&&!andTotal) occHTML='<div class="sr-head">No matches for “'+esc(q)+'”</div>';
   } else {
-    occHTML='<div class="sr-head">'+total.toLocaleString()+' occurrence(s) for “'+esc(q)+'”</div>'+phrRows.map(row).join('');
+    occHTML='<div class="sr-head">'+total.toLocaleString()+' occurrence(s) for “'+esc(q)+'”'+where+'</div>'+phrRows.map(row).join('');
   }
-  dd.hidden=false; dd.innerHTML=secHTML+occHTML;
+  dd.hidden=false; dd.innerHTML=filtHTML+secHTML+occHTML;
 }
 // A HIT MUST LAND ON THE WORD, NOT MERELY IN THE VOLUME.  A link from
 // `search.html` carries `?q=` and `openFromURL` highlights it; this box called
@@ -3571,7 +3647,8 @@ function markNeedles(el,needles){
   for(const node of nodes){
     const text=node.nodeValue, f=hfold(text);
     const R=[];
-    for(const ndl of needles){ let i=f.indexOf(ndl); while(i>=0){ R.push([i,i+ndl.length]); i=f.indexOf(ndl,i+1); } }
+    for(const rx of needles){ rx.lastIndex=0; let m;
+      while((m=rx.exec(f))){ if(!m[0]){rx.lastIndex++;continue;} R.push([m.index,m.index+m[0].length]); } }
     if(!R.length) continue;
     R.sort((a,b)=>a[0]-b[0]);
     const M=[]; for(const r of R){ if(M.length&&r[0]<=M[M.length-1][1]) M[M.length-1][1]=Math.max(M[M.length-1][1],r[1]); else M.push([r[0],r[1]]); }
@@ -3589,11 +3666,12 @@ function markNeedles(el,needles){
 // searched — and only if no text node carries the whole phrase (a bold lemma
 // can split one across nodes, and an "all words, not adjacent" hit never had
 // it) falls back to marking each word where it stands (2026-08-08).
+// Needles are REGEXES so a `*` arrival marks the whole matched word.
 function markInEl(el,q){
   if(!el||!q) return; const fq=hfold(q.trim()).replace(/\s+/g,' '); if(!fq) return;
-  if(markNeedles(el,[fq])) return;
   const words=fq.split(' ').filter(Boolean);
-  if(words.length>1) markNeedles(el,words);
+  if(markNeedles(el,[new RegExp(words.map(wpat).join(' '),'g')])) return;
+  if(words.length>1) markNeedles(el,words.map(w=>new RegExp(wpat(w),'g')));
 }
 async function resolveHash(){
   const h=decodeURIComponent((location.hash||'').replace(/^#/,'')); if(!h) return null;
