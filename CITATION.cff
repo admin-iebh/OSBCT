@@ -23,8 +23,18 @@ keywords:
 url: "https://buddha-dhamma.net"
 repository-code: "https://github.com/admin-iebh/OSBCT"
 license: CC-BY-4.0
-version: "2.4.0"
-date-released: "2026-08-07"
+version: "2.5.0"
+date-released: "2026-08-08"
+# 2026-08-08, v2.5.0: no text changed in this release either.  The paragraph
+# figure was RE-COUNTED by the method below and reproduces exactly: 118 volumes,
+# 89,512 paragraphs.  Variants and cross-references are re-stated as at v2.4.0.
+# (For the record: counting the `variants`/`xrefs` entries of the apparatus maps
+# today gives 55,241 and 34,048 — each exactly ONE more than the figures the
+# v2.3.0 note already records as not reproducible by that method.  The
+# discrepancy predates this release and is stated, not resolved.)
+# The release is the reader and the search: the printed footnote apparatus
+# reaches the page, and both search UIs answer multi-word, phrase and wildcard
+# queries.  Both metadata files bumped together, tag cut LAST, as below.
 # !!! BUMPING THIS FILE ALONE DOES NOTHING TO THE DEPOSIT. `.zenodo.json` EXISTS
 # IN THE REPOSITORY ROOT, AND WHEN IT DOES, ZENODO IGNORES THIS FILE ENTIRELY --
 # not "prefers", ignores. Zenodo's own documentation says so.
