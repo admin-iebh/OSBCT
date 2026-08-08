@@ -10,7 +10,7 @@
 **Done, not yet committed: the footnote markers, twice over.**
 `pipeline/check_fn_markers.js` carries two assertions; all 118 volumes green on
 both; the selftest catches the injected defect on both.
-BUILD `6151ac21bbbd` → `04d4b285be40`. Commit message in `COMMIT_MSG.bak`.
+BUILD `6151ac21bbbd` → `ab3632cc3580`. Commit message in `COMMIT_MSG.bak`.
 
   1. **Markers lost to the bold lemma** — 3,480 of 70,598 (4.93%).
   2. **Markers after a closing bracket** — 684 more, `)` 433, `”` 237, `’` 14,
@@ -38,11 +38,22 @@ BUILD `6151ac21bbbd` → `04d4b285be40`. Commit message in `COMMIT_MSG.bak`.
      `“`, 62 `(`, 41 `‘`. Seven of ten random cases resolved against the PDF, all
      seven with the quote on the new page, none against.
 
-**The gate now carries three assertions**, and the third found a defect the
+  6. **The bold lemmas the reader found missing** — `Buddhavīrā`, `Namo
+     tyatthū`, `Sabbasattānamuttamā`, `yo maṁ dukkhā pamocesi…`, `sabbadukkhan`,
+     all on ONE drawn line that failed to locate over one line-break hyphen:
+     corpus `…vīriya- nipphattiyā` against drawn `…vīriyanipphattiyā`. The locate
+     retries against the joined text and DRAWS the joined text with spans
+     remapped, so no hyphen reaches the page. **Five volumes, 31,391 spans:
+     25,233 drawn (80.4%) → 26,053 (83.0%).** Ord 210 draws all 41.
+
+**The gate now carries four assertions**, and the third found a defect the
 moment it existed: four volumes drew MORE note rows than the data holds, because
 `pbreak` can name the same page twice and the foot was emitted twice. A page is
-spent once drawn. All 118 volumes: **55,453 notes, 55,453 rows**; 50,239 markers
-backed by a note, 50,239 carrying it.
+spent once drawn. The fourth is a TWO-SIDED bold baseline,
+`pipeline/bold_baseline.json`, 118 volumes, **339,569 lemmas**, failing on any
+change in either direction — verified to bite by moving one entry by 5.
+All 118 volumes: **55,453 notes, 55,453 rows**; 50,239 markers backed by a note,
+50,239 carrying it.
 
 **Unchanged: `_xc/linksk_toc/20Khu03.links.json`** still holds vaggas 2–42 →
 `33KhuA14`, still NOT applied. Nothing was written to `site/reader/linksk/`.
@@ -147,7 +158,7 @@ lands on the paragraphs above and nowhere else.
 7. **Audit the remaining `pipeline/` baselines for drift.**
 8. **`20KhuA01` ord 174** carries a section head the nav does not.
 
-## THE BOLD LEMMAS THE READER FOUND MISSING — MEASURED, NOT FIXED
+## THE BOLD LEMMAS — FIXED FOR THE HYPHEN CLASS, ~17% STILL UNEXPLAINED
 
 Reader, 2026-08-08: "in the phrase *Tattha Buddhavīrāti* **Buddhavīrā** should be
 bold ... also *Namo tyatthū* ... and *Sabbasattānamuttamā* and *yo maṁ dukkhā

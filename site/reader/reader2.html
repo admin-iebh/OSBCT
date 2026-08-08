@@ -273,7 +273,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=04d4b285be40"></script>
+<script src="../i18n.js?v=ab3632cc3580"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -403,7 +403,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='04d4b285be40';
+const BUILD='ab3632cc3580';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -1998,6 +1998,60 @@ function block(kind, key, opts){
   const _sSp=(spans||[]).map(a=>[a[0]-_sOff,a[1]-_sOff]).filter(a=>a[1]>0&&a[0]<_sTxt.length)
               .map(a=>[Math.max(0,a[0]),Math.min(_sTxt.length,a[1])]).sort((a,b)=>a[0]-b[0]);
   let _sCur=0, _sOn=false, _lineIx=0;
+  // !!! ONE UNREPAIRED LINE-BREAK HYPHEN COSTS A WHOLE LINE ITS BOLD.
+  // Reader, 2026-08-08: "in the phrase *Tattha Buddhavīrāti* Buddhavīrā should
+  // be bold ... also *Namo tyatthū* ... *Sabbasattānamuttamā* ... *yo maṁ dukkhā
+  // pamocesi, aññañca bahukaṁ janan* ... *sabbadukkhan*.  I wonder if there are
+  // other bolds missing."
+  //
+  // Every span he named IS in `bold/31KhuA12.bold.json` — ord 210 carries 41,
+  // among them `(120,130) Buddhavīrā`.  Nothing is missing from the extraction.
+  // What failed is the LOCATE above: this branch draws the PRINTED line stream
+  // and finds each drawn line in the corpus paragraph by `indexOf`, and at
+  // character 125 the corpus reads
+  //
+  //     catubbidhasammappadhānavīriya- nipphattiyā
+  //
+  // where the drawn line reads `...vīriyanipphattiyā`.  The line is not found,
+  // the whole line falls back to `fmtText`, and EIGHT lemmas lose their bold at
+  // once.  That is the "hyphen repair (8,790 words, 109 volumes)" open item,
+  // showing up somewhere nobody was looking for it.
+  //
+  // MEASURED over five volumes, 31,391 spans: 25,233 drawn (80.4%) before,
+  // 26,032 (82.9%) with the joined retry — +799.  09DiT02 64.3→68.0,
+  // 25VsmT01 79.1→82.9, 32KhuA13 89.7→90.1, 31KhuA12 95.0→95.6, 29KhuA10
+  // 94.0→94.2.  The remaining ~17% is a different cause and is still unmeasured.
+  //
+  // !!! THE RETRY DRAWS THE JOINED STRING, NOT THE CORPUS SLICE.  Locating in the
+  // joined text and then drawing `_sTxt[a..z]` would put `vīriya- nipphattiyā` on
+  // the page — a hyphen the reader would be right to report next.  So the spans
+  // are mapped INTO the joined address space and the joined text is what is
+  // drawn, which is character for character what this branch already drew when
+  // the line failed to locate.  Only the bold is added.
+  //
+  // Only a hyphen with WHITESPACE after it is joined.  `pavattihetu-ādiṁ` is one
+  // word the edition hyphenates and must stay as it is; the printed line break
+  // always leaves a space behind.
+  const _LET=/[a-zāīūṁṅñṭḍṇḷ]/i;
+  function _joinHy(s){
+    let out='', r2j=new Array(s.length+1);
+    for(let k=0;k<s.length;k++){
+      r2j[k]=out.length;
+      if(s[k]==='-' && k>0 && _LET.test(s[k-1])){
+        let m=k+1; while(m<s.length && (s[m]===' '||s[m]==='\n'||s[m]==='\t')) m++;
+        if(m>k+1 && m<s.length && _LET.test(s[m])){
+          for(let q=k;q<m;q++) r2j[q]=out.length;
+          k=m-1; continue; }
+      }
+      out+=s[k];
+    }
+    r2j[s.length]=out.length;
+    return {j:out,r2j:r2j};
+  }
+  const _J=_joinHy(_sTxt);
+  const _sSpJ=(_J.j.length===_sTxt.length)?_sSp
+        :_sSp.map(a=>[_J.r2j[a[0]],_J.r2j[a[1]]]).filter(a=>a[1]>a[0]);
+  let _sCurJ=0;
   // a piece of an already-number-stripped string: `_boldRange` with no spans,
   // without re-stripping a leading number off a piece that only starts with a
   // digit because the page turned in front of it.
@@ -2023,14 +2077,24 @@ function block(kind, key, opts){
     const b=s.replace(/^\s*\d+(-\d+)?\.\s*/,'');
     if(!b) return pre+fmtText(s);
     const noff=s.length-b.length;
-    let i=-1;
-    if(_sOn){ i=_sTxt.indexOf(b,_sCur); if(i<0) i=_sTxt.indexOf(b); if(i>=0) _sCur=i+b.length; }
-    if(!cuts.length) return pre+((i>=0&&_sSp.length)?_boldRange(_sTxt,_sSp,i,i+b.length):fmtText(s));
+    let i=-1, iJ=-1;
+    if(_sOn){ i=_sTxt.indexOf(b,_sCur); if(i<0) i=_sTxt.indexOf(b);
+      if(i>=0){ _sCur=i+b.length; _sCurJ=_J.r2j[Math.min(_sCur,_sTxt.length)]; }
+      // the exact text did not contain this line -- retry with the printed
+      // line-break hyphens joined, which is how the drawn stream has it
+      else if(_J.j.length!==_sTxt.length){
+        iJ=_J.j.indexOf(b,_sCurJ); if(iJ<0) iJ=_J.j.indexOf(b);
+        if(iJ>=0) _sCurJ=iJ+b.length; } }
+    // ONE decision about which string this line is drawn from, so the no-cut and
+    // the cut path cannot disagree
+    const _src = i>=0 ? [_sTxt,_sSp,i] : (iJ>=0 ? [_J.j,_sSpJ,iJ] : null);
+    if(!cuts.length) return pre+((_src&&_src[1].length)
+      ? _boldRange(_src[0],_src[1],_src[2],_src[2]+b.length) : fmtText(s));
     let out='',prev=0;
     // the same opening-mark walk as `fmtBold`, on the DRAWN string
     for(const c of cuts){ const q=Math.max(prev,pageCut(b,Math.min(b.length,c[0]-noff)));
-      out+=(i>=0?_boldRange(_sTxt,_sSp,i+prev,i+q):fmtPiece(b.slice(prev,q)))+c[1]; prev=q; }
-    out+=(i>=0?_boldRange(_sTxt,_sSp,i+prev,i+b.length):fmtPiece(b.slice(prev)));
+      out+=(_src?_boldRange(_src[0],_src[1],_src[2]+prev,_src[2]+q):fmtPiece(b.slice(prev,q)))+c[1]; prev=q; }
+    out+=(_src?_boldRange(_src[0],_src[1],_src[2]+prev,_src[2]+b.length):fmtPiece(b.slice(prev)));
     return pre+out;
   };
   const proseOne=(p)=>{

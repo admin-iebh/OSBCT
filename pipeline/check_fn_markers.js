@@ -38,8 +38,18 @@
 // `.appx` is excluded from the page side only because a note block draws no
 // `sup.fnm` at all, so excluding it can cost nothing.
 //
+// !!! AND A FOURTH ASSERTION, ON THE BOLD LEMMA, WITH A TWO-SIDED BASELINE.
+// The reader found `Buddhavīrā` and seven more lemmas unbolded on one line of
+// 31KhuA12 ord 210; the spans were all in the data and the line simply failed to
+// locate, over one unrepaired line-break hyphen.  Bold coverage is therefore
+// counted per volume against `pipeline/bold_baseline.json` and any change AT ALL
+// is reported -- a fall means lemmas went missing, a rise means something was
+// recovered and the baseline needs moving on purpose.  `check_concordance.py`
+// drifted 46 upward in silence because its ratchet only looked one way.
+//
 // Usage:  node pipeline/check_fn_markers.js [VOL ...]      (default: a sample)
 //         node pipeline/check_fn_markers.js --all
+//         node pipeline/check_fn_markers.js --rebaseline [VOL ...]
 const fs=require('fs'),path=require('path');const {JSDOM}=require('jsdom');
 const ROOT=path.dirname(__dirname); const R=path.join('site','reader');
 const resolve=u=>{u=String(u).split('?')[0];if(u.startsWith('../'))return path.join('site',u.slice(3));if(u.startsWith('http')){try{u=new URL(u).pathname.replace(/^\//,'');}catch(e){}return path.join(R,u);}return path.join(R,u);};
@@ -63,6 +73,8 @@ function lines(e,out){ out=out||[];
   return out; }
 // One canon volume, one aṭṭhakathā, one ṭīkā, plus the three the reader met.
 const SAMPLE=['21Khu04','19Khu02','31KhuA12','32KhuA13','29KhuA10','09DiT02','25VsmT01'];
+const BASEF=path.join('pipeline','bold_baseline.json');
+function readBase(){ try{ return JSON.parse(fs.readFileSync(BASEF,'utf8')); }catch(e){ return {}; } }
 
 // !!! THE ONLY WAY TO KNOW A GATE WORKS IS TO BREAK THE THING IT GUARDS.
 // `--selftest` puts the ORIGINAL `_boldRange` back -- the one that assembled the
@@ -86,7 +98,9 @@ const OLD_BOLDRANGE = `_boldRange = function(stripped,sp,a,b,marks){
 (async()=>{
   let argv=process.argv.slice(2);
   const selftest=argv.includes('--selftest');
-  let vols=argv.filter(a=>a!=='--selftest');
+  const rebase=argv.includes('--rebaseline');
+  const BASE=readBase(); const NEWBASE=Object.assign({},BASE);
+  let vols=argv.filter(a=>a!=='--selftest'&&a!=='--rebaseline');
   if(vols[0]==='--all'){
     vols=fs.readdirSync(path.join(R,'bold')).filter(f=>f.endsWith('.bold.json'))
            .map(f=>f.slice(0,-10)).sort();
@@ -102,7 +116,7 @@ const OLD_BOLDRANGE = `_boldRange = function(stripped,sp,a,b,marks){
     if(selftest && !broke){ broke=true; w.eval(OLD_BOLDRANGE); w.eval('render()'); await wait(400);
       console.log('   [selftest] the pre-2026-08-08 _boldRange is back in place'); }
     const c=(w.eval('cache')||{})[vol]||{}; const P=c.paras||[]; const V=c.verse||{};
-    let want=0,got=0,inText=0,bad=[];
+    let want=0,got=0,inText=0,bad=[]; let bWant=0,bGot=0;
     w.document.querySelectorAll('#scroll [id^="p-'+vol+'-"]').forEach(x=>{
       const o=+x.id.slice(('p-'+vol+'-').length); const p=P[o]; if(!p) return;
       const e=V[String(o)];
@@ -116,6 +130,8 @@ const OLD_BOLDRANGE = `_boldRange = function(stripped,sp,a,b,marks){
       // note assigned to a page whose rule is never emitted would simply vanish
       // -- silently, because a missing note looks exactly like a paragraph that
       // has none.  This counts the rows drawn against the notes the data holds.
+      bWant+=((c.bold||{})[String(o)]||[]).length;
+      bGot+=x.querySelectorAll('b.lemma').length;
       noteWant+=((c.app||{})[String(o)]||[]).length;
       x.querySelectorAll('.appx > div').forEach(()=>noteGot++);
       let sup=0;
@@ -134,6 +150,14 @@ const OLD_BOLDRANGE = `_boldRange = function(stripped,sp,a,b,marks){
     if(!ok){ fail++; console.log(`FAIL ${vol}: ${want} markers in the drawn strings, ${got} on the page${drift}`);
              bad.forEach(b=>console.log('      '+b)); }
     else console.log(`ok   ${vol}: ${want} markers, all drawn${drift}`);
+    // the bold lemma, two-sided against the baseline
+    NEWBASE[vol]=bGot;
+    const base=BASE[vol];
+    const pct=bWant?(100*bGot/bWant).toFixed(1):'—';
+    if(rebase) console.log(`     bold: ${bGot} of ${bWant} spans drawn (${pct}%)  [baseline written]`);
+    else if(base==null) console.log(`     bold: ${bGot} of ${bWant} spans drawn (${pct}%)  [no baseline yet]`);
+    else if(base===bGot) console.log(`     bold: ${bGot} of ${bWant} spans drawn (${pct}%)`);
+    else { fail++; console.log(`FAIL ${vol}: bold lemmas drawn ${bGot}, baseline ${base} (${bGot>base?'+':''}${bGot-base}) — of ${bWant} spans in the data`); }
   }
   const tipOk = tipGot>=tipWant;
   if(!tipOk) fail++;
@@ -142,6 +166,8 @@ const OLD_BOLDRANGE = `_boldRange = function(stripped,sp,a,b,marks){
   console.log(`\n${vols.length} volumes; ${totWant} markers in the drawn strings, ${totGot} drawn; ${fail} failing`);
   console.log(`${tipWant} markers whose paragraph carries a note with that number; ${tipGot} carry it in a tooltip`+(tipOk?'':'  <-- FAIL'));
   console.log(`${noteWant} notes in the data; ${noteGot} rows drawn`+(noteOk?'':'  <-- FAIL'));
+  if(rebase){ fs.writeFileSync(BASEF, JSON.stringify(NEWBASE,null,1)+'\n');
+              console.log(`bold baseline written for ${Object.keys(NEWBASE).length} volumes`); }
   if(selftest){
     const caught=fail>0;
     console.log(caught
