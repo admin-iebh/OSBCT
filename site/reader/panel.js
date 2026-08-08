@@ -1765,8 +1765,21 @@ function show(tab, d, keepGear) {
       a.addEventListener('click', function (ev) {
         ev.preventDefault();
         ev.stopPropagation();
-        var target = body.querySelector('[id="' + a.dataset.target + '"]');
-        if (target) { target.classList.toggle('hidden'); famFill(target); }
+        // scope to the chip's own entry row: DPD numbers homonym ids
+        // (grammar_deseti_1 / _2), but scoping is what makes that a
+        // guarantee rather than luck
+        var row = a.closest('.wl-row') || body;
+        var target = row.querySelector('[id="' + a.dataset.target + '"]')
+                  || body.querySelector('[id="' + a.dataset.target + '"]');
+        if (!target) return;
+        // ONE BLOCK OPEN PER ENTRY (2026-08-09, user request: "when clicking
+        // another label the one that is open should close").  Opening a block
+        // closes its siblings; clicking the open block's own chip closes it.
+        var opening = target.classList.contains('hidden');
+        Array.prototype.forEach.call(row.querySelectorAll('.dpd.content'),
+          function (c) { if (c !== target) c.classList.add('hidden'); });
+        target.classList.toggle('hidden', !opening);
+        if (opening) famFill(target);
       });
     });
 

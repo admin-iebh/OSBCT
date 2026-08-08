@@ -203,6 +203,21 @@ const ok=(c,label,detail)=>{ console.log((c?'  ok    ':'  FAIL  ')+label+(detail
   const idmChip=chips.find(a=>/idiom/i.test(a.textContent));
   ok(!!idmChip,'the idioms chip is back');
 
+  // 9. ONE BLOCK OPEN PER ENTRY (2026-08-09, user request): opening the
+  //    compound family closes the root family; re-clicking closes itself.
+  if(rootChip&&compChip){
+    compChip.click(); await wait(600);
+    const rootBlk=body().querySelector('[id="'+rootChip.dataset.target+'"]');
+    const compBlk=body().querySelector('[id="'+compChip.dataset.target+'"]');
+    ok(!!rootBlk&&rootBlk.classList.contains('hidden')
+       &&!!compBlk&&!compBlk.classList.contains('hidden'),
+       'opening one block closes the other',
+       'root hidden='+(rootBlk&&rootBlk.classList.contains('hidden'))+' comp hidden='+(compBlk&&compBlk.classList.contains('hidden')));
+    compChip.click(); await wait(100);
+    ok(!!compBlk&&compBlk.classList.contains('hidden'),
+       're-clicking the open chip closes it');
+  }
+
   console.log(fails?('FAILED: '+fails+' assertion(s)'):'all green');
   process.exit(fails?1:0);
 })().catch(e=>{ console.log('  FAIL  threw: '+(e&&e.message||e)); process.exit(1); });
