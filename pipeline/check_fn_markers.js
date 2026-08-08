@@ -48,7 +48,10 @@ function boot(){const dom=new JSDOM(fs.readFileSync(path.join(R,'reader2.html'),
 async function ready(w){ for(let k=0;k<80;k++){ await wait(100);
   if(w.document.querySelectorAll('.row').length>3) return true; } return false; }
 
-const MARK=/[a-zāīūṁṅñṭḍṇḷ](\d{1,2})(?!\d)/g;
+// !!! THIS CLASS MUST TRACK `FNM` IN reader2.html.  It gained `)”’»` on
+// 2026-08-08 (684 markers the letter-only form could not see), and a gate whose
+// pattern is narrower than the reader's would score correct markers as invented.
+const MARK=/[a-zāīūṁṅñṭḍṇḷ)”’»](\d{1,2})(?!\d)/g;
 const LEAD=/^\s*\d+(-\d+)?\.\s*/;
 // every string inside a `verse/` entry, whatever the entry's shape
 // (`groups`, `before`, `after`, and a group member may be {gatha:[...]}or {t,n})
@@ -68,6 +71,9 @@ const SAMPLE=['21Khu04','19Khu02','31KhuA12','32KhuA13','29KhuA10','09DiT02','25
 // be measuring nothing; that is how `check_links.py` carried a wrong range
 // pattern through 356 correct links, and how `check_concordance.py` drifted by
 // 46 without a word.
+// a second assertion, added with the tooltip: a marker whose paragraph carries a
+// note with that number must SHOW it.  The pairing itself is only claimed where
+// the counts agree, so this asserts reachability, not identification.
 const OLD_BOLDRANGE = `_boldRange = function(stripped,sp,a,b,marks){
   let seg=sp.filter(x=>x[1]>a&&x[0]<b).map(x=>[Math.max(a,x[0]),Math.min(b,x[1])]);
   let html='',cur=a;
@@ -87,7 +93,7 @@ const OLD_BOLDRANGE = `_boldRange = function(stripped,sp,a,b,marks){
   } else if(!vols.length) vols=selftest?['31KhuA12']:SAMPLE;
   const w=boot();
   if(!await ready(w)){ console.log('FAIL: the nav never built'); process.exit(1); }
-  let fail=0, totWant=0, totGot=0;
+  let fail=0, totWant=0, totGot=0, tipWant=0, tipGot=0;
   let broke=false;
   for(const vol of vols){
     try{ await w.eval('openKey')(vol+'#0','canon'); }catch(e){ console.log('FAIL '+vol+': '+e.message); fail++; continue; }
@@ -106,7 +112,10 @@ const OLD_BOLDRANGE = `_boldRange = function(stripped,sp,a,b,marks){
       MARK.lastIndex=0;
       inText+=(String(p.text||'').replace(LEAD,'').match(MARK)||[]).length;
       let sup=0;
-      x.querySelectorAll('sup.fnm').forEach(s=>{ if(!s.closest('.appx')) sup++; });
+      const notes=new Set(((c.app||{})[String(o)]||[]).map(n=>String(n&&n.n)));
+      x.querySelectorAll('sup.fnm').forEach(s=>{ if(s.closest('.appx')) return; sup++;
+        if(notes.has(s.textContent)){ tipWant++;
+          if(s.getAttribute('title')||s.getAttribute('data-tip')) tipGot++; } });
       want+=exp; got+=sup;
       if(sup<exp && bad.length<10)
         bad.push(`ord ${o} p.${p.printed}: drawn strings carry ${exp}, page shows ${sup}`);
@@ -119,7 +128,10 @@ const OLD_BOLDRANGE = `_boldRange = function(stripped,sp,a,b,marks){
              bad.forEach(b=>console.log('      '+b)); }
     else console.log(`ok   ${vol}: ${want} markers, all drawn${drift}`);
   }
+  const tipOk = tipGot>=tipWant;
+  if(!tipOk) fail++;
   console.log(`\n${vols.length} volumes; ${totWant} markers in the drawn strings, ${totGot} drawn; ${fail} failing`);
+  console.log(`${tipWant} markers whose paragraph carries a note with that number; ${tipGot} carry it in a tooltip`+(tipOk?'':'  <-- FAIL'));
   if(selftest){
     const caught=fail>0;
     console.log(caught

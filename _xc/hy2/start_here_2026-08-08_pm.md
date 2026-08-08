@@ -7,9 +7,22 @@
 
 ## State
 
-**Done and committed: the footnote markers.** `pipeline/check_fn_markers.js`,
-all 118 volumes green, selftest catches the injected defect.
-BUILD `6151ac21bbbd` → `f051d390acfe`. Commit message in `COMMIT_MSG.bak`.
+**Done, not yet committed: the footnote markers, twice over.**
+`pipeline/check_fn_markers.js` carries two assertions; all 118 volumes green on
+both; the selftest catches the injected defect on both.
+BUILD `6151ac21bbbd` → `eac8bb93c9fd`. Commit message in `COMMIT_MSG.bak`.
+
+  1. **Markers lost to the bold lemma** — 3,480 of 70,598 (4.93%).
+  2. **Markers after a closing bracket** — 684 more, `)` 433, `”` 237, `’` 14,
+     which the letter-only class could never see. Reader's own example proves
+     the rule: `gāthamāha)`³ carries `( ) natthi (Sī)`, and the parenthesis the
+     marker stands after IS the parenthesis the note calls absent.
+  3. **The note made reachable from the marker** — ord 210 is 19,871 characters
+     and its note block sat six screens below the marker. Tooltip on each
+     marker; the block at the end is untouched. Pairing is positional and
+     claimed only where the marker count and the note count agree (45,901 of
+     69,000, 66.5%); otherwise every candidate is shown and the tooltip says the
+     pairing is not established.
 
 **Unchanged: `_xc/linksk_toc/20Khu03.links.json`** still holds vaggas 2–42 →
 `33KhuA14`, still NOT applied. Nothing was written to `site/reader/linksk/`.
@@ -116,6 +129,17 @@ lands on the paragraphs above and nowhere else.
 
 ## Opened by this session, not closed
 
+**397 note numbers have no marker anywhere in their paragraph's text**, in any
+form — counted while measuring the bracket forms. They are notes keyed to an
+ordinal whose text does not carry the digit at all, so either the keying or the
+extraction is off by a paragraph. Nobody has looked. It is 0.9% of 44,917.
+
+**The marker→note pairing is unestablished for a third of the corpus.** 45,901
+of 69,000 markers sit in a digit whose marker count and note count agree, and the
+reader is told plainly about the other 23,099 rather than being shown a guess.
+Closing that gap means keying notes to the marker's OFFSET, not to its number —
+which is the same shape of problem as the paragraph number not being a key.
+
 **The verse map re-segments markers away from the paragraph text**, and nobody
 has asked why. `check_fn_markers.js` reports the number on every volume that has
 one: 09DiT02 907 in `text` against 868 in the drawn lines, 19Khu02 927 against
@@ -150,7 +174,7 @@ though four files cite it; Node 20 deprecation on the Pages workflow.
 - Clear git locks on the host at the end of every session.
 - Never "Re-run failed jobs" on Pages; start a fresh run.
 - **`stamp_build.py --write` is not optional after any change under `site/`.**
-  Done this session: `6151ac21bbbd` → `f051d390acfe`.
+  Done this session, twice: `6151ac21bbbd` → `f051d390acfe` → `eac8bb93c9fd`.
 - **Run the placer for the range LAST.**
 
 ## The method

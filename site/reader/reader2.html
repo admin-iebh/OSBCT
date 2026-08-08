@@ -273,7 +273,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=f051d390acfe"></script>
+<script src="../i18n.js?v=eac8bb93c9fd"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -403,7 +403,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='f051d390acfe';
+const BUILD='eac8bb93c9fd';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -1138,10 +1138,54 @@ const SIG={'Sī':'Sīhaḷa (Sinhalese)','Syā':'Syāma (Thai)','Kaṁ':'Kamboja
 // escaped `&amp;12` offers `p12` to the same regex, and a page-rule href
 // carrying `51Vism01.pdf` offers `m01`.  Nothing is searched for in the output
 // any more, so neither can happen.
-const FNM=/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g;
+// !!! AND THE MARKER DOES NOT ALWAYS FOLLOW A LETTER (2026-08-08, second
+// reader report, from the printed page: `... "mātā putto"ti gāthamāha)3.`).
+// The edition sets the marker after whatever the annotated matter ENDS with, and
+// that is often a closing bracket or quote -- `)3`, `”4`, `’1` -- because what is
+// annotated is a quotation or a parenthesis, not a word.  MEASURED over the 118
+// volumes: 684 such markers, 433 after `)`, 237 after `”`, 14 after `’`.  521 of
+// them (76.2%) are corroborated outright by a note carrying that number on the
+// same paragraph; the rest carry the edition's own `( )N` form, where the note
+// says what is ABSENT and is keyed to a neighbouring ordinal.
+//
+// The OPENING bracket is deliberately NOT in the class, and neither is a bare
+// digit after a space or a stop.  `(1)` opening a clause is the edition
+// enumerating, not annotating -- `03Vin03` ord 316 prints `kathinuddhāro. (1)`
+// -- and admitting `(` or ` ` would turn every one of those into a footnote that
+// does not exist.  Reader's decision, 2026-08-08.
+const FNM=/([a-zāīūṁṅñṭḍṇḷ)”’»])(\d{1,2})(?![\d])/g;
 function fnmSpans(s){ const out=[]; FNM.lastIndex=0; let m;
   while((m=FNM.exec(s||''))) out.push([m.index+1,m.index+m[0].length]);
   return out; }
+// !!! THE NOTE HAS TO BE READABLE FROM THE MARKER (2026-08-08, reader-reported
+// from the page).  `31KhuA12` ord 210 is **19,871 characters**; its `Apadāne4`
+// stands 14% of the way through, and the `.appx` block that answers it is at the
+// end of the paragraph, about six screens down.  The note was being drawn all
+// along and was, in practice, unreachable.  So each marker now carries its own
+// note in a tooltip, and the block at the end is left exactly as it was.
+//
+// !!! WHICH NOTE A MARKER MEANS IS NOT ALWAYS ESTABLISHED, AND IS NOT GUESSED.
+// The numbering restarts on every printed page, so one paragraph spanning six
+// pages carries six notes numbered `1`.  The pairing is therefore positional --
+// the k-th marker numbered d takes the k-th note numbered d -- and that is only
+// sound when the two counts agree.  MEASURED: they agree for **45,901 of the
+// 69,000 markers (66.5%)** on paragraphs that carry apparatus.  For the rest the
+// tooltip shows EVERY note carrying that number and says so, rather than picking
+// one and presenting a guess as the edition's word.  Working principle 2.
+let FNMCUR=null;
+function fnmNote(n){
+  if(!n) return '';
+  const v=(n.variants||[]).map(x=>x.reading+((x.sigla||[]).length?' ('+x.sigla.join(', ')+')':''));
+  return v.length?v.join('; '):(n.text||'');
+}
+function fnmBegin(app,text){
+  FNMCUR=null;
+  if(!app||!app.length) return;
+  const by={}; for(const n of app){ if(n&&n.n!=null){ (by[n.n]=by[n.n]||[]).push(n); } }
+  const s=String(text||'').replace(/^\s*\d+(-\d+)?\.\s*/,'');
+  const cnt={}; for(const sp of fnmSpans(s)){ const d=s.slice(sp[0],sp[1]); cnt[d]=(cnt[d]||0)+1; }
+  FNMCUR={by,cnt,seen:{}};
+}
 // escaped text for [a,b) of `s`, with the marker digits falling inside it drawn
 // as superscripts.  A marker is clipped to the range, so a bold edge or a page
 // break landing mid-marker costs the part outside and never the whole marker.
@@ -1152,7 +1196,25 @@ function _plain(s,marks,a,b){
     if(m[1]<=a||m[0]>=b) continue;
     const x=Math.max(a,m[0]), y=Math.min(b,m[1]);
     if(x>cur) out+=esc(s.slice(cur,x));
-    out+='<sup class="fnm">'+esc(s.slice(x,y))+'</sup>'; cur=y;
+    const d=s.slice(x,y);
+    let tip='';
+    // only a WHOLE marker takes a note; a clipped one is half an address
+    if(FNMCUR && x===m[0] && y===m[1] && FNMCUR.by[d]){
+      const list=FNMCUR.by[d];
+      const k=(FNMCUR.seen[d]=(FNMCUR.seen[d]||0)+1)-1;
+      // !!! `cnt` COUNTS THE PARAGRAPH'S `text`, AND THE PAGE MAY DRAW MORE.
+      // Where `verse/` re-segments an ordinal the drawn lines can carry the same
+      // digit more often than `text` does, so `k` runs past the end of the list
+      // and the exact branch produced NOTHING -- 17 markers in the seven-volume
+      // sample silently lost their tooltip while the count still said the
+      // pairing was exact.  Falling out of the exact branch is the same
+      // situation as the counts disagreeing, and is treated as such.
+      const exact=FNMCUR.cnt[d]===list.length && list[k]!=null;
+      tip=(exact?[list[k]]:list).filter(Boolean).map(fnmNote).filter(Boolean).join('  ·  ');
+      if(!exact&&list.length>1)
+        tip+='  —  '+list.length+' notes carry this number in this paragraph; which one this marker means is not established';
+    }
+    out+='<sup class="fnm"'+(tip?' title="'+escA(tip)+'"':'')+'>'+esc(d)+'</sup>'; cur=y;
   }
   return out+esc(s.slice(cur,b));
 }
@@ -1700,6 +1762,10 @@ function block(kind, key, opts){
   const pr=c.paras[ord]; if(!pr) return '<div class="para empty">·</div>';
   pr._key=key; pr._ord=ord; pr._src=(opts&&opts.src)||null;
   const spans=c.bold[String(ord)]||[]; const app=c.app[String(ord)]||[];
+  // the notes this paragraph's markers point at, for the whole of the drawing
+  // below.  Set unconditionally -- with no apparatus it CLEARS, so a paragraph
+  // can never inherit the previous one's notes.
+  fnmBegin(app,pr.text);
   const _pbk=(c.pbk||{})[String(ord)]||[];
   const lk=LAYERKIND[VOLLAYER[vol]]||kind;
   const cls='para'+(lk==='canon'?' canon':' l-'+lk);
