@@ -273,7 +273,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=6151ac21bbbd"></script>
+<script src="../i18n.js?v=f051d390acfe"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -403,7 +403,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='6151ac21bbbd';
+const BUILD='f051d390acfe';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -1112,7 +1112,52 @@ async function _openCanon(canonVol, scrollKey){
 
 // ---------- rendering ----------
 const SIG={'Sī':'Sīhaḷa (Sinhalese)','Syā':'Syāma (Thai)','Kaṁ':'Kamboja (Cambodian)','I':'PTS / English','Ka':'some Burmese mss','Ka-Sī':'Ka + Sīhaḷa','katthaci':'in some copies','sabbattha':'in all copies','bahūsu':'in many copies'};
-function fmtText(t){return esc((t||'').replace(/^\s*\d+(-\d+)?\.\s*/,'')).replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');}
+// !!! THE FOOTNOTE MARKER IS A FACT ABOUT THE TEXT, AND IT WAS BEING LOOKED FOR
+// IN THE HTML (2026-08-08, reader-reported: "the footnotes are missing" in the
+// Commentaries and Subcommentaries).  Every one of these five call sites used to
+// assemble the markup FIRST and then run `([letter])(\d{1,2})` over the finished
+// string.  The edition prints the marker glued to the last letter of the word it
+// annotates -- `Apadāne2`, `sāvake3` -- and the commentary's bold lemma ends on
+// exactly that letter, so `fmtBold` had already written
+//
+//     <b class="lemma">Apadāne</b>2
+//
+// and the letter and the digit were no longer adjacent.  The marker silently
+// became a bare digit in the running text, with no `<sup>` and no note beside
+// it.  MEASURED over all 118 volumes: 70,598 markers, of which **3,480 (4.93%)**
+// have a bold-span boundary standing between the letter and the digit -- 1,817
+// in the ṭīkā, 1,494 in the aṭṭhakathā, 169 in the canon.  That is precisely the
+// reader's report, and precisely why it looked inconsistent WITHIN one
+// paragraph: the markers on words the commentary does not gloss came through
+// untouched, and the ones on the glossed words -- the words a reader is most
+// likely to be looking at -- did not.
+//
+// So the marker spans are computed ONCE, on the raw text, before any markup
+// exists, and `_plain` emits them positionally alongside the bold.  Running a
+// pattern over generated HTML also invents markers that the text never had: an
+// escaped `&amp;12` offers `p12` to the same regex, and a page-rule href
+// carrying `51Vism01.pdf` offers `m01`.  Nothing is searched for in the output
+// any more, so neither can happen.
+const FNM=/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g;
+function fnmSpans(s){ const out=[]; FNM.lastIndex=0; let m;
+  while((m=FNM.exec(s||''))) out.push([m.index+1,m.index+m[0].length]);
+  return out; }
+// escaped text for [a,b) of `s`, with the marker digits falling inside it drawn
+// as superscripts.  A marker is clipped to the range, so a bold edge or a page
+// break landing mid-marker costs the part outside and never the whole marker.
+function _plain(s,marks,a,b){
+  if(b<=a) return '';
+  let out='',cur=a;
+  for(const m of (marks||[])){
+    if(m[1]<=a||m[0]>=b) continue;
+    const x=Math.max(a,m[0]), y=Math.min(b,m[1]);
+    if(x>cur) out+=esc(s.slice(cur,x));
+    out+='<sup class="fnm">'+esc(s.slice(x,y))+'</sup>'; cur=y;
+  }
+  return out+esc(s.slice(cur,b));
+}
+function fmtText(t){ const s=(t||'').replace(/^\s*\d+(-\d+)?\.\s*/,'');
+  return _plain(s,fnmSpans(s),0,s.length); }
 function fmtBold(t,spans,brks){
   const text=t||''; const stripped=text.replace(/^\s*\d+(-\d+)?\.\s*/,''); const off=text.length-stripped.length;
   let sp=(spans||[]).map(a=>[a[0]-off,a[1]-off]).filter(a=>a[1]>0&&a[0]<stripped.length).map(a=>[Math.max(0,a[0]),Math.min(stripped.length,a[1])]).sort((a,b)=>a[0]-b[0]);
@@ -1124,20 +1169,22 @@ function fmtBold(t,spans,brks){
   // With no breaks this is the original loop, character for character, so a
   // volume with an empty map renders byte-identically to before.
   const cuts=(brks||[]).map(b=>[b[0]-off,b[1]]).filter(b=>b[0]>0&&b[0]<stripped.length).sort((a,b)=>a[0]-b[0]);
+  const marks=fnmSpans(stripped);
   if(cuts.length){
     let out='',prev=0;
-    for(const c of cuts){ out+=_boldRange(stripped,sp,prev,c[0])+c[1]; prev=c[0]; }
-    return out+_boldRange(stripped,sp,prev,stripped.length);
+    for(const c of cuts){ out+=_boldRange(stripped,sp,prev,c[0],marks)+c[1]; prev=c[0]; }
+    return out+_boldRange(stripped,sp,prev,stripped.length,marks);
   }
-  let html='',cur=0; for(const s of sp){ if(s[0]<cur) continue; html+=esc(stripped.slice(cur,s[0]))+'<b class="lemma">'+esc(stripped.slice(s[0],s[1]))+'</b>'; cur=s[1]; }
-  html+=esc(stripped.slice(cur));
-  return html.replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');
+  // the no-break path is now the SAME function over the whole string.  It used
+  // to be its own copy of the loop, and a fix applied to one and not the other
+  // is how the two drift.
+  return _boldRange(stripped,sp,0,stripped.length,marks);
 }
-function _boldRange(stripped,sp,a,b){
+function _boldRange(stripped,sp,a,b,marks){
+  marks=marks||fnmSpans(stripped);
   let seg=sp.filter(x=>x[1]>a&&x[0]<b).map(x=>[Math.max(a,x[0]),Math.min(b,x[1])]);
-  let html='',cur=a; for(const s of seg){ if(s[0]<cur) continue; html+=esc(stripped.slice(cur,s[0]))+'<b class="lemma">'+esc(stripped.slice(s[0],s[1]))+'</b>'; cur=s[1]; }
-  html+=esc(stripped.slice(cur,b));
-  return html.replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');
+  let html='',cur=a; for(const s of seg){ if(s[0]<cur) continue; html+=_plain(stripped,marks,cur,s[0])+'<b class="lemma">'+_plain(stripped,marks,s[0],s[1])+'</b>'; cur=s[1]; }
+  return html+_plain(stripped,marks,cur,b);
 }
 // A `sections` k:'gatha' block, drawn with its lemma spans.  This path used
 // `fmtText`, which takes no spans at all -- it was written for a four-pada
@@ -1152,12 +1199,9 @@ function gathaHTML(l,spans){
   const text=String(l==null?'':l);
   if(!spans||!spans.length) return text.split('\n').map(x=>fmtText(x)).join('<br>');
   const sp=spans.map(a=>[Math.max(0,a[0]),Math.min(text.length,a[1])]).filter(a=>a[1]>a[0]).sort((a,b)=>a[0]-b[0]);
-  let html='',cur=0;
-  for(const x of sp){ if(x[0]<cur) continue;
-    html+=esc(text.slice(cur,x[0]))+'<b class="lemma">'+esc(text.slice(x[0],x[1]))+'</b>'; cur=x[1]; }
-  html+=esc(text.slice(cur));
-  return html.replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>')
-             .replace(/\n/g,'<br>');
+  // same positional marker as the paragraph path -- a gatha's lemma ends on the
+  // annotated letter just as a prose lemma does.
+  return _boldRange(text,sp,0,text.length).replace(/\n/g,'<br>');
 }
 function _isHead(stripped,s){ if(s===0) return true; let i=s-1; while(i>=0 && ' “”"‘’'.indexOf(stripped[i])>=0) i--; return i>=0 && '.?!–'.indexOf(stripped[i])>=0; }
 function outlineHTML(text,spans){
@@ -1802,7 +1846,7 @@ function block(kind, key, opts){
   // a piece of an already-number-stripped string: `_boldRange` with no spans,
   // without re-stripping a leading number off a piece that only starts with a
   // digit because the page turned in front of it.
-  const fmtPiece=(x)=>esc(String(x==null?'':x)).replace(/([a-zāīūṁṅñṭḍṇḷ])(\d{1,2})(?![\d])/g,'$1<sup class="fnm">$2</sup>');
+  const fmtPiece=(x)=>{ const s=String(x==null?'':x); return _plain(s,fnmSpans(s),0,s.length); };
   const fmtLine=(l)=>{
     const s=String(l==null?'':l);
     const ix=_lineIx++;
