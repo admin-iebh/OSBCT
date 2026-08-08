@@ -273,7 +273,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=eac8bb93c9fd"></script>
+<script src="../i18n.js?v=c7b5b5ecd26f"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -403,7 +403,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='eac8bb93c9fd';
+const BUILD='c7b5b5ecd26f';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -1178,6 +1178,43 @@ function fnmNote(n){
   const v=(n.variants||[]).map(x=>x.reading+((x.sigla||[]).length?' ('+x.sigla.join(', ')+')':''));
   return v.length?v.join('; '):(n.text||'');
 }
+// !!! THE EDITION SETS ITS NOTES AT THE FOOT OF THE PAGE THEY BELONG TO, AND
+// THAT IS THE WHOLE OF WHY THEY LOOKED MISSING (2026-08-08, third reader
+// report): "Footnotes 1 2 3 missing ... in page 147 only the superscripts
+// without footnotes."  `31KhuA12` ord 210 spans SIXTEEN printed pages, 146 to
+// 162, and every one of its notes was drawn in one block at the end of the
+// paragraph.  A reader on p. 146 sees markers 1 2 3 and no notes; a reader on
+// p. 147 sees 1 2 3 4 and no notes; the notes for all sixteen pages sit
+// together, pages later, in an order that means nothing on any page.
+//
+// That is also why the numbering restarts: `1 2 3` on p. 146 and `1 2 3 4` on
+// p. 147 are two different first notes.  Presented as one list they read as
+// duplicates.
+//
+// The apparatus data does NOT carry a page -- `<vol>.app.json` is keyed
+// `Work/X/X/<paragraph number>` -- so the page is derived, from the one thing
+// that does know it: the MARKER's own offset, against `pbreak/<VOL>.json`.
+// Verified on the reader's own paragraph: markers 1,2,3 fall before offset 1205
+// and markers 1,2,3,4 after it, and 1205 is exactly where p. 147 begins.
+//
+// A note is placed only where its marker is established -- the same 66.5%
+// condition as the tooltip.  Whatever is not established stays in the block at
+// the end of the paragraph, where it has always been.  Nothing is moved on a
+// guess.
+function fnmPages(app,s,cuts,first){
+  const by={}; for(const n of (app||[])) if(n&&n.n!=null){ (by[n.n]=by[n.n]||[]).push(n); }
+  const sp=fnmSpans(s), cnt={};
+  for(const x of sp){ const d=s.slice(x[0],x[1]); cnt[d]=(cnt[d]||0)+1; }
+  const seen={}, map={}, placed=new Set();
+  for(const x of sp){
+    const d=s.slice(x[0],x[1]), list=by[d]; if(!list) continue;
+    const k=(seen[d]=(seen[d]||0)+1)-1;
+    if(cnt[d]!==list.length || list[k]==null) continue;   // not established
+    let pg=first; for(const c of cuts){ if(x[0]>=c[0]) pg=c[1]; else break; }
+    (map[pg]=map[pg]||[]).push(list[k]); placed.add(list[k]);
+  }
+  return {map, rest:(app||[]).filter(n=>!placed.has(n))};
+}
 function fnmBegin(app,text){
   FNMCUR=null;
   if(!app||!app.length) return;
@@ -1882,8 +1919,30 @@ function block(kind, key, opts){
   // break, because the band and the spine draw different strings.  The band cuts
   // `pr.text` at `rawOffset` (`fmtBold`); the spine's VERSE branch does not draw
   // `pr.text` at all and cuts the drawn string `drawnIndex` at `drawnOffset`.
+  // THE NOTES OF THE PAGE THAT ENDS AT EACH BREAK, drawn immediately above the
+  // rule that opens the next one -- which is where the printed page puts them.
+  // `_footPg` walks the pages in the order the breaks are emitted, so the block
+  // attached to a rule is always the page just closed, never the one opening.
+  const _fnFirst=(_pbk.find(b=>b[0]===0)||[])[1];
+  const _FN=fnmPages(app,_sTxt,
+      _pbk.filter(b=>b[0]>0).map(b=>[b[0]-_sOff,b[1]]).sort((a,b)=>a[0]-b[0]),
+      _fnFirst!=null?_fnFirst:pr.printed);
+  let _footPg=_fnFirst!=null?_fnFirst:pr.printed;
+  // !!! A PAGE'S NOTES ARE EMITTED ONCE AND THEN THE PAGE IS SPENT.  `_pbk` can
+  // carry two breaks naming the SAME page -- a page that opens, is interrupted,
+  // and is named again -- and without this the foot of that page was drawn
+  // twice.  Caught by the third assertion on four volumes (09Ma01, 10MaA01,
+  // 11MaA02, 20KhuA01), which reported MORE rows drawn than the data holds:
+  // 1,272 against 1,270 and so on.  A duplicated note is as much a false
+  // statement about the edition as a missing one, and only a two-sided count
+  // sees it -- the one-sided ratchet of `check_concordance.py` would not have.
   const _mid=_pbk.filter(b=>b[0]>0).map(b=>{ LASTPG[vol]=b[1];
-    return [b[0],pageRuleAt(vol,kind,b[1],b[2]),(b.length>4?b[3]:null),(b.length>4?b[4]:0),b[1]]; });
+    const foot=appBlock(_FN.map[_footPg]||[],vol); delete _FN.map[_footPg]; _footPg=b[1];
+    return [b[0],foot+pageRuleAt(vol,kind,b[1],b[2]),(b.length>4?b[3]:null),(b.length>4?b[4]:0),b[1]]; });
+  // what is left for the end of the paragraph: the LAST page's notes (the page
+  // has not turned yet, so its foot is here) and everything whose marker could
+  // not be established.
+  const _footRest=(_FN.map[_footPg]||[]).concat(_FN.rest);
   // !!! THE VERSE BRANCH IS THE MAJORITY OF THE REPAIR, NOT AN EDGE CASE: 31,247
   // of 35,385 mid-paragraph breaks corpus-wide sit on an ordinal whose verse map
   // carries `groups`.  Addressed by the index of the `fmtLine` call the page opens
@@ -2098,7 +2157,7 @@ function block(kind, key, opts){
    // view three volumes' blocks interleave and one shared counter would make
    // each of them suppress the others' page turns.  `rule` is computed at the
    // TOP of this function now; see the note there.
-   return rule+'<div class="'+cls+'" id="p-'+key.replace('#','-')+'">'+toolsFor(kind,vol,pr,pr.sutta)+st+wt+num+body+appBlock(app,vol)+'</div>';
+   return rule+'<div class="'+cls+'" id="p-'+key.replace('#','-')+'">'+toolsFor(kind,vol,pr,pr.sutta)+st+wt+num+body+appBlock(_footRest,vol)+'</div>';
 }
 // !!! A CANON PARAGRAPH'S COMMENTARY IS A RANGE, NOT A POINT (2026-08-04,
 // reader-reported with a screenshot).  Reading `18Khu01` with the A band on,

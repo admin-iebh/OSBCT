@@ -10,7 +10,7 @@
 **Done, not yet committed: the footnote markers, twice over.**
 `pipeline/check_fn_markers.js` carries two assertions; all 118 volumes green on
 both; the selftest catches the injected defect on both.
-BUILD `6151ac21bbbd` → `eac8bb93c9fd`. Commit message in `COMMIT_MSG.bak`.
+BUILD `6151ac21bbbd` → `c7b5b5ecd26f`. Commit message in `COMMIT_MSG.bak`.
 
   1. **Markers lost to the bold lemma** — 3,480 of 70,598 (4.93%).
   2. **Markers after a closing bracket** — 684 more, `)` 433, `”` 237, `’` 14,
@@ -19,10 +19,23 @@ BUILD `6151ac21bbbd` → `eac8bb93c9fd`. Commit message in `COMMIT_MSG.bak`.
      marker stands after IS the parenthesis the note calls absent.
   3. **The note made reachable from the marker** — ord 210 is 19,871 characters
      and its note block sat six screens below the marker. Tooltip on each
-     marker; the block at the end is untouched. Pairing is positional and
-     claimed only where the marker count and the note count agree (45,901 of
-     69,000, 66.5%); otherwise every candidate is shown and the tooltip says the
-     pairing is not established.
+     marker. Pairing is positional and claimed only where the marker count and
+     the note count agree (45,901 of 69,000, 66.5%); otherwise every candidate is
+     shown and the tooltip says the pairing is not established.
+  4. **Each printed page's notes drawn at the foot of that page** — which is
+     where the edition sets them, and the reader's third report was that they
+     were not there. Ord 210 spans SIXTEEN pages, 146–162, and every note sat in
+     one block at the end. The page is derived from the MARKER's offset against
+     `pbreak/`, because the apparatus data carries no page: `<vol>.app.json` is
+     keyed `Work/X/X/<paragraph number>`. **45,901 of 73,431 notes (62.5%)**
+     placeable; on paragraphs that actually cross a break, 30,124 of 54,426
+     (55.3%). The rest stay in the end-of-paragraph block.
+
+**The gate now carries three assertions**, and the third found a defect the
+moment it existed: four volumes drew MORE note rows than the data holds, because
+`pbreak` can name the same page twice and the foot was emitted twice. A page is
+spent once drawn. All 118 volumes: **55,453 notes, 55,453 rows**; 50,239 markers
+backed by a note, 50,239 carrying it.
 
 **Unchanged: `_xc/linksk_toc/20Khu03.links.json`** still holds vaggas 2–42 →
 `33KhuA14`, still NOT applied. Nothing was written to `site/reader/linksk/`.

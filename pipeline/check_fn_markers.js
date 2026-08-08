@@ -93,7 +93,7 @@ const OLD_BOLDRANGE = `_boldRange = function(stripped,sp,a,b,marks){
   } else if(!vols.length) vols=selftest?['31KhuA12']:SAMPLE;
   const w=boot();
   if(!await ready(w)){ console.log('FAIL: the nav never built'); process.exit(1); }
-  let fail=0, totWant=0, totGot=0, tipWant=0, tipGot=0;
+  let fail=0, totWant=0, totGot=0, tipWant=0, tipGot=0, noteWant=0, noteGot=0;
   let broke=false;
   for(const vol of vols){
     try{ await w.eval('openKey')(vol+'#0','canon'); }catch(e){ console.log('FAIL '+vol+': '+e.message); fail++; continue; }
@@ -111,6 +111,13 @@ const OLD_BOLDRANGE = `_boldRange = function(stripped,sp,a,b,marks){
         exp+=(String(s).replace(LEAD,'').match(MARK)||[]).length; }
       MARK.lastIndex=0;
       inText+=(String(p.text||'').replace(LEAD,'').match(MARK)||[]).length;
+      // !!! EVERY NOTE MUST STILL BE ON THE PAGE SOMEWHERE.  Splitting the block
+      // by printed page moves notes out of the end-of-paragraph block, and a
+      // note assigned to a page whose rule is never emitted would simply vanish
+      // -- silently, because a missing note looks exactly like a paragraph that
+      // has none.  This counts the rows drawn against the notes the data holds.
+      noteWant+=((c.app||{})[String(o)]||[]).length;
+      x.querySelectorAll('.appx > div').forEach(()=>noteGot++);
       let sup=0;
       const notes=new Set(((c.app||{})[String(o)]||[]).map(n=>String(n&&n.n)));
       x.querySelectorAll('sup.fnm').forEach(s=>{ if(s.closest('.appx')) return; sup++;
@@ -130,8 +137,11 @@ const OLD_BOLDRANGE = `_boldRange = function(stripped,sp,a,b,marks){
   }
   const tipOk = tipGot>=tipWant;
   if(!tipOk) fail++;
+  const noteOk = noteGot===noteWant;
+  if(!noteOk) fail++;
   console.log(`\n${vols.length} volumes; ${totWant} markers in the drawn strings, ${totGot} drawn; ${fail} failing`);
   console.log(`${tipWant} markers whose paragraph carries a note with that number; ${tipGot} carry it in a tooltip`+(tipOk?'':'  <-- FAIL'));
+  console.log(`${noteWant} notes in the data; ${noteGot} rows drawn`+(noteOk?'':'  <-- FAIL'));
   if(selftest){
     const caught=fail>0;
     console.log(caught
