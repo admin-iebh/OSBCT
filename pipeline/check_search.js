@@ -273,11 +273,15 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
      'search: every layer draws up to its own cap',
      JSON.stringify(scnt)+' want '+[Math.min(70,aP),Math.min(70,aA),Math.min(70,aT)].join('/'));
 
-  s.document.getElementById('layer').value='tika-unicode';
+  // chips, not a select — the same layer idiom as the reader box
+  // (2026-08-08, user request)
+  if(typeof s.setLayerChip==='function') s.setLayerChip('tika-unicode');
   await sq('yamakasālānaṁ antare');
-  ok((t6.phrParas+t6.andParas)>0 && s.document.querySelectorAll('.hit').length===t6.phrParas+t6.andParas,
-     'search: layer select filters', s.document.querySelectorAll('.hit').length+' vs '+(t6.phrParas+t6.andParas));
-  s.document.getElementById('layer').value='';
+  ok(typeof s.setLayerChip==='function'
+     && (t6.phrParas+t6.andParas)>0 && s.document.querySelectorAll('.hit').length===t6.phrParas+t6.andParas
+     && !!s.document.querySelector('#laychips .lchip.on'),
+     'search: layer chip filters', (typeof s.setLayerChip)+' '+s.document.querySelectorAll('.hit').length+' vs '+(t6.phrParas+t6.andParas));
+  if(typeof s.setLayerChip==='function') s.setLayerChip('');
 
   console.log(fails?('FAILED: '+fails+' assertion(s)'):'all green');
   process.exit(fails?1:0);

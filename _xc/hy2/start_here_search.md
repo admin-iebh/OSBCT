@@ -59,6 +59,18 @@ ground truth computed from the shards; `--selftest /tmp/reader2_HEAD.html`
   prefix/bucket index remains the next lever if the reader still finds it slow
   ON THE NETWORK, which the sandbox cannot measure.
 
+  **Same-day follow-ups, all reader-reported, all gated (commits after
+  `1af292ec`):** the mark's dark-theme contrast (6.89:1 → 14.48:1, the
+  `mark.shl` idiom in both boxes); rows ordered Pāḷi → Aṭṭhakathā → Ṭīkā by
+  sorting `vis` itself; per-layer row caps (30/14 reader, 70/35 search —
+  `arati` holds EXACTLY 80 canon paragraphs and the old global cap of 80 drew
+  nothing else); the chip click that closed the dropdown (microtasks run
+  between listeners, the repaint detached the target, `contains()` lied —
+  `composedPath()` doesn't); `Tipiṭaka` → `Pāḷi` everywhere on search.html;
+  and search.html's layer select replaced by the reader's chip row.
+  `pipeline/check_search.js` ended the day at 34 assertions, each shown to
+  fail on the build that had its bug.
+
 The reader asked for three things, in this order of interest:
 
   1. more information on a result row — the book and sutta, not just `Pāḷi ¶52`;
