@@ -266,121 +266,231 @@ def lemmas(v, o, minlen=6):
 
 
 # ---------------------------------------------------------------- place
+import ordinal_words as _OW                                  # noqa: E402
+from ordinal_vagga import read_vaggas                         # noqa: E402
+
+# apadāna position within a vagga: `Dutiyattherāpadāne`, `Tatiyāpadāne`,
+# `Sattamaṭṭhamanavamāni`.  Stems, because the edition compounds them.
+APOS = {w[:-1] + 'a': v for w, v in _OW.LOC.items() if v <= 12}
+# !!! THE STEM'S FINAL VOWEL LENGTHENS AT THE JOIN.  `tatiya` + `apadāne` is
+# printed `tatiyāpadāne`, one long vowel, so a literal `tatiya` never matches
+# exactly the form that names an apadāna without a thera word in between.  The
+# final -a is therefore written `[aā]`, which is the same sandhi that `vaggādi`
+# showed in `fix_vagga_heads.py`.  Third time this has cost a fix in one day.
+_APOS_RE = re.compile('(' + '|'.join(
+    (re.escape(x[:-1]) + '[aā]') if x.endswith('a') else re.escape(x)
+    for x in sorted(APOS, key=len, reverse=True)) + ')')
+# the marker that says the ordinal is naming an APADĀNA, not something else
+APMARK = re.compile(r'(apadān|therāpadān|ttherassa|tthera|āpadān)')
+
+
+def apadana_positions(text):
+    """Which apadāna(s) of the vagga a commentary paragraph says it is about.
+
+    The edition states it in words, with or without a number beside it:
+
+        Vīsatime vagge PAṬHAMAtherāpadānaṁ uttānameva.      -> [1]
+        6. DUTIYAttherāpadāne yaṁ dāyavāsiko isīti ...      -> [2]
+        TATIYAttherassa apadāne Khaṇḍaphulliyattheroti ...  -> [3]
+        ... Chaṭṭhaṁ. SATTAMAAṬṬHAMANAVAMĀNI uttānatthāneva -> [7, 8, 9]
+
+    !!! THE UNNUMBERED ONES ARE COMMENTARY, NOT GAPS.  `33KhuA14` ord 498 has no
+    paragraph number at all and is a full gloss of Khaṇḍapulliya; reading only
+    numbers would have thrown it away and then reported the canon paragraphs it
+    glosses as uncommented.  Reader, 2026-08-07: "unnumbered paragraphs have to
+    be included by matching the names of the vaggas in this case."
+
+    Only the OPENING is read, and only when an apadāna marker stands with the
+    ordinal -- `Chaṭṭhe nagare Dvāravatiyā` names the sixth apadāna, but a
+    `chaṭṭha-` deep inside a gloss is somebody's name.
+    """
+    head = letters(LEAD.sub('', (text or '')[:90]))
+    if not APMARK.search(head):
+        return []
+    out = []
+    for m in _APOS_RE.finditer(head):
+        v = APOS.get(m.group(1)) or APOS.get(m.group(1)[:-1] + 'a')
+        if not v:
+            continue
+        # !!! THE ORDINAL MUST SIT AGAINST THE APADĀNA MARKER, NOT MERELY IN A
+        # PARAGRAPH THAT MENTIONS ONE.  `33KhuA14` ord 280 (p. 110) opens
+        # `Pabbate Himavantamhīti-ādikaṁ āyasmato DUTIYARaṁsisaññakattherassa
+        # apadānaṁ` -- `Dutiya-` there is part of the elder's NAME, telling two
+        # theras called Raṁsisaññaka apart, and has nothing to do with position.
+        # Read loosely it placed canon 15 on the second apadāna's commentary and
+        # crossed two links, which assertion 7 caught.
+        #
+        # In every true case the ordinal runs straight into the marker --
+        # `dutiyaTTHERāpadāne`, `tatiyaTTHERassa apadāne`, `tatiyĀPADĀNe` -- with
+        # at most the one vowel that sandhi merges at the join.
+        tail = head[m.end():m.end() + 6]   # 'tther' is five
+        if not re.match(r'^(t*her|[aā]?padān|[aā]?pad)', tail):
+            continue
+        if v not in out:
+            out.append(v)
+    return sorted(out)
+
+
 def place(src, tgt, vagga=None):
+    """canon ordinal -> (target ordinal, n, canon section, target section,
+    gloss hits, bold count).
+
+    THE ORDER, AND EVERY STEP IS THE EDITION SPEAKING:
+
+      1  VAGGA REGION.  Bounded by the commentary's vagga heads, paired to the
+         canon vagga by NAME.  A head may cover SEVERAL canon vaggas -- `21-23.`
+         and `34.`+ādi -- and the words in its text say which.
+      2  NUMBER, inside that region only.  Unique there, so it is the address.
+      3  ORDINAL WORD, for commentary paragraphs carrying no number.
+      4  Whatever the region does not account for is NOT COMMENTED.
+
+    Section pairing is no longer a gate on any of this.  It was, and vagga 40
+    showed the cost: 519 canon paragraphs, 2 linked and 456 falling out with no
+    link AND no verdict, because their sections did not pair.  Sections now only
+    label the result and feed the gloss check.
+    """
     C, A = paras(src), paras(tgt)
     vs = vaggas(src)
-    # `unclaimed` collects the numbers carried by commentary sections that no
-    # canon section paired with -- see the note beside its use below.
-    unclaimed = {}
     if vagga is not None:
-        # `vagga` is (lo, hi) inclusive, or a bare int
         lo, hi = vagga if isinstance(vagga, tuple) else (vagga, vagga)
         vs = [x for x in vs if tocnum(x[2]) and lo <= tocnum(x[2])[0] <= hi]
         if not vs:
             raise SystemExit('no vagga %s-%s in %s' % (lo, hi, src))
-    # the commentary's own vagga head bounds the region it covers; front matter
-    # (Ganthārambhakathā .. Santikenidānakathā) lies before it and is not a target
     avs = vaggas(tgt) or [(0, len(A) - 1, '')]
+    # commentary vagga head -> the canon vagga numbers it covers
+    cover = {}
+    for i, (a0, a1, l) in enumerate(avs):
+        m = re.match(r'^\s*(\d+)\s*[-–]\s*(\d+)\s*\.', l or '')
+        if m:                                   # `21-23.` says so outright
+            nums = list(range(int(m.group(1)), int(m.group(2)) + 1))
+        else:
+            n0 = tocnum(l)[0] if tocnum(l) else None
+            said = read_vaggas((A[a0].get('text') or '')[:400])
+            # !!! `ādi` DOES NOT SAY WHERE IT STOPS -- the words do.  `34.
+            # Gandhodakavaggādivaṇṇanā` names 34-38 and then treats the 39th
+            # separately and only to its eighth apadāna.  Taking the span from
+            # the next head's number would have claimed 34-39 entire.
+            nums = said if (said and n0 in said) else ([n0] if n0 else [])
+        for x in nums:
+            cover.setdefault(x, (a0, a1, l))
     out, gaps, notes, unpaired, unsure = {}, [], [], [], []
     for (ca, cb, clbl) in vs:
         cvn, cvs = tocnum(clbl), stem(clbl)
-        # !!! THE VAGGA IS PAIRED BY NAME, WITH THE NUMBER AS CONFIRMATION --
-        # the same order as the sections, and for a demonstrated reason.
-        # `33KhuA14` prints `10.` TWICE: once for `10. Sudhāvagga` (p. 114) and
-        # again for `10. Bhikkhadāyivagga` (p. 120), where the canon has
-        # Sudhā = 10 and Bhikkhadāyi = 11.  Keyed on the number, the second
-        # silently overwrote the first, so canon vagga 10 would have been paired
-        # with the Bhikkhadāyi commentary and canon vagga 11 with nothing --
-        # one wrong pairing and one whole vagga reported as having no commentary
-        # at all.  The names are unambiguous where the printed numbers are not.
-        #
-        # The number disagreement is REPORTED, never corrected: working
-        # principle 3.  Which side carries the misprint is a question about the
-        # printed page and is not decided here.
         av = [x for x in avs if stem(x[2]) == cvs and len(cvs) >= 4]
         how = 'name'
+        if not av and cvn and cvn[0] in cover:
+            av, how = [cover[cvn[0]]], 'declared'
         if not av:
             av = [x for x in avs if tocnum(x[2]) == cvn]
             how = 'number'
         if not av and len(avs) == 1:
             av, how = [avs[0]], 'sole'
         if not av:
-            notes.append(('NO VAGGA', clbl, 'no vagga of that name or number in %s' % tgt))
+            notes.append(('NO VAGGA', clbl, 'not in %s' % tgt))
             continue
         if len(av) > 1:
-            notes.append(('VAGGA AMBIGUOUS', clbl,
-                          '%d candidates in %s, skipped' % (len(av), tgt)))
+            notes.append(('VAGGA AMBIGUOUS', clbl, '%d candidates' % len(av)))
             continue
-        if how == 'name' and tocnum(av[0][2]) != cvn:
-            notes.append(('VAGGA NUMBER DIFFERS', clbl,
-                          '%s prints %s' % (tgt, av[0][2])))
         aa, ab, albl = av[0]
+        if how == 'name' and tocnum(albl) != cvn:
+            notes.append(('VAGGA NUMBER DIFFERS', clbl,
+                          '%s prints %s' % (tgt, albl)))
+        # canon apadāna sections of this vagga, in order, with their n-spans
         csec = sections_in(src, ca, cb)
-        asec = sections_in(tgt, aa, ab)
-        pairs, n2 = pair_sections(csec, asec)
-        notes += [(a, b, c) for a, b, c in n2]
-        paired_c = {i for i, _ in pairs}
-        for i, (a, b, l) in enumerate(csec):
-            if i not in paired_c:
-                unpaired.append((a, b, l))
-        # !!! A COMMENTARY SECTION NO CANON SECTION PAIRED WITH STILL CARRIES
-        # NUMBERS, AND THEY ARE NOT SILENCE.  `32KhuA13` opens Buddhavagga with
-        # `Abbhantaranidānavaṇṇanā` (p. 111), the commentary's own introduction
-        # to the Therāpadāna; the canon has no section facing it, so it pairs
-        # with nothing -- yet it carries n=5 and quotes canon 5 outright
-        # ("5. Atha Buddhāpadānāni, suṇātha suddhamānasā").  Counting 5 as
-        # not_commented because it fell outside every pair would be exactly the
-        # untested absence stated as a claim that this file exists to prevent.
-        # So numbers held by unpaired commentary sections downgrade the verdict
-        # to `cannot_establish` and are reported for the reader to settle.
-        paired_a = {k for _, k in pairs}
-        for k, (a0, a1, al) in enumerate(asec):
-            if k not in paired_a:
-                for n in numbers_in(tgt, a0, a1):
-                    unclaimed.setdefault(n, al)
-        for k, (ci, ai) in enumerate(pairs):
-            c0, c1, cl = csec[ci]
-            a0, a1, al = asec[ai]
-            # !!! THE SPAN REACHES BACK OVER UNPAIRED COMMENTARY SECTIONS.
-            # Reader, 2026-08-07: "paragraph 5 of the Apadānapāḷi is commented
-            # and the A is dimmed.  You missed that?"  He is right and the cause
-            # was here.  `32KhuA13` ord 11 (p. 111) quotes canon 5 in full and
-            # glosses it word by word -- it IS the commentary on canon 5 -- but
-            # it sits under `Abbhantaranidānavaṇṇanā`, the commentary's own
-            # introduction to the Therāpadāna, which no canon section faces.  So
-            # it paired with nothing, its numbers fell outside every span, and
-            # canon 5 was reported `cannot_establish`.
-            #
-            # THAT WAS A FACT ABOUT THE PAIRING PROCEDURE, NOT ABOUT THE PAGE,
-            # and it reached the reader as a dimmed chip -- which on screen is
-            # indistinguishable from "not commented".  A verdict of "we cannot
-            # tell" must never be produced by the instrument's own bookkeeping.
-            #
-            # A commentary opens a work with material of its own before it
-            # reaches the first named unit, and that material still glosses
-            # canon paragraphs.  So the search span starts after the PREVIOUS
-            # paired section ends, absorbing anything unpaired in between,
-            # rather than at this section's own head.  Assertion 7 of
-            # `check_toc_links.py` -- targets advance monotonically -- is the
-            # guard: if absorbing a gap ever pulled a link backwards out of
-            # order, the gate fails.
-            a0 = (asec[pairs[k - 1][1]][1] + 1) if k else aa
-            avail = numbers_in(tgt, a0, a1)
-            for j in range(c0, c1 + 1):
-                n = C[j].get('n')
-                if n is None:
-                    continue
-                o = avail.get(n)
-                if o is None:
-                    if n in unclaimed:
-                        unsure.append((j, n, cl, unclaimed[n]))
-                    else:
-                        gaps.append((j, n, cl, al))
-                    continue
-                lem = lemmas(tgt, o)
-                ct = nfold(C[j].get('text') or '')
-                hit = sorted(w for w in lem if w in ct)
-                out[j] = (o, n, cl, al, hit, len(lem))
+        spans = []
+        for a0, a1, l in csec:
+            ns = [C[t]['n'] for t in range(a0, a1 + 1) if C[t].get('n') is not None]
+            spans.append((set(ns), l))
+        # 2. the numbers the region carries, and 3. the ones it names in words
+        avail = numbers_in(tgt, aa, ab)
+        for j in range(aa, min(ab, len(A) - 1) + 1):
+            if A[j].get('n') is not None or expand_range(A[j].get('text') or ''):
+                continue
+            for pos in apadana_positions(A[j].get('text') or ''):
+                if pos <= len(spans):
+                    for n in spans[pos - 1][0]:
+                        avail.setdefault(n, j)
+        secname = {}
+        for a0, a1, l in sections_in(tgt, aa, ab):
+            for t in range(a0, a1 + 1):
+                secname[t] = l
+        cname = {}
+        for a0, a1, l in csec:
+            for t in range(a0, a1 + 1):
+                cname[t] = l
+        # !!! A NUMBER CAN OCCUR TWICE IN A REGION, AND ONE OF THEM IS A
+        # MISPRINT.  `32KhuA13` ord 321 (p. 305) carries `442.` while sitting
+        # inside `3-4. Anuruddhatthera-apadānavaṇṇanā`, whose numbers otherwise
+        # run 421, 430, 431 -- a `422` printed as `442`.  The real 442 is at ord
+        # 330 (p. 309) and glosses `ajjhāyako`, which is canon 442 word for
+        # word.  Taking the first occurrence took the misprint and sent canon
+        # 442 four printed pages backwards into the wrong thera's apadāna.
+        #
+        # THE COMMENTARY FOLLOWS ITS CANON IN ORDER, so the resolution is to
+        # walk forward: among the paragraphs carrying this number, take the
+        # earliest that does not go BACKWARDS from the one already placed.  That
+        # is the same fact assertion 7 of `check_toc_links.py` tests, applied
+        # while placing instead of afterwards -- and it was assertion 7 that
+        # found this, on a volume that had already been applied and passed.
+        #
+        # The duplicate is REPORTED as a suspected erratum, never corrected:
+        # working principle 3.  Which of the two is the misprint is a question
+        # about the printed page and is not settled here.
+        allpos = collections.defaultdict(list)
+        for t in range(aa, min(ab, len(A) - 1) + 1):
+            for x in numbers_in(tgt, t, t):
+                allpos[x].append(t)
+            # !!! AND THE UNNUMBERED PARAGRAPHS, WHICH ARE COMMENTARY TOO.
+            # Rebuilding the candidate map from `numbers_in` alone silently
+            # dropped every paragraph placed by its ORDINAL WORD -- the count
+            # fell from 688 links to 448 and nothing failed, because the lost
+            # ones simply became `not_commented`, which is a claim rather than
+            # an error.  A refactor that turns links into assertions of silence
+            # is the most dangerous shape of change in this file.
+            if A[t].get('n') is None and not expand_range(A[t].get('text') or ''):
+                for pos in apadana_positions(A[t].get('text') or ''):
+                    if pos <= len(spans):
+                        for x in spans[pos - 1][0]:
+                            allpos[x].append(t)
+        for x in allpos:
+            allpos[x] = sorted(set(allpos[x]))
+        bynum = set()
+        for t in range(aa, min(ab, len(A) - 1) + 1):
+            bynum |= set(numbers_in(tgt, t, t))
+        for x, ts in sorted(allpos.items()):
+            if len(ts) > 1:
+                notes.append(('DUPLICATE NUMBER', '%s n=%d' % (tgt, x),
+                              'ords %s, printed pp. %s -- suspected erratum'
+                              % (ts, [A[t].get('printed') for t in ts])))
+        floor = aa
+        for j in range(ca, cb + 1):
+            n = C[j].get('n')
+            if n is None:
+                continue
+            cand = [t for t in allpos.get(n, []) if t >= floor] or \
+                allpos.get(n, [])
+            o = cand[0] if cand else None
+            if o is None:
+                gaps.append((j, n, cname.get(j, clbl), albl))
+                continue
+            floor = o
+            lem = lemmas(tgt, o)
+            ct = nfold(C[j].get('text') or '')
+            hit = sorted(w for w in lem if w in ct)
+            # !!! THE RECORD SAYS HOW IT WAS PLACED, because the gate must
+            # check the claim that was actually made.  A number placement
+            # asserts the target carries that number; an ordinal-word placement
+            # asserts the target NAMES that apadāna, and its target is normally
+            # unnumbered.  Judging the second by the first failed 180 of vagga
+            # 40's 184 links -- a gate red on correct data, which is how gates
+            # get switched off.
+            how = 'num' if (A[o].get('n') == n or
+                            (expand_range(A[o].get('text') or '') or (0, -1))[0]
+                            <= n <=
+                            (expand_range(A[o].get('text') or '') or (0, -1))[1]
+                            ) else 'ord'
+            out[j] = (o, n, cname.get(j, clbl), secname.get(o, albl), hit,
+                      len(lem), how)
     return out, gaps, notes, unpaired, unsure
 
 
@@ -414,7 +524,7 @@ def build(src, tgt, vagga=None, apply=False):
                 foreign[v] += 1
         return old, keep
 
-    for j, (o, n, cl, al, hit, nl) in got.items():
+    for j, (o, n, cl, al, hit, nl, how) in got.items():
         e = L.setdefault(str(j), {})
         key = '%s#%d' % (tgt, o)
         old, keep = strip_ineligible(e)
@@ -422,7 +532,7 @@ def build(src, tgt, vagga=None, apply=False):
         # !!! FIRST, NOT LAST.  `jumpFrom` in reader2.html takes arr[0] of the
         # direct targets, so a stale record in front of this one would send the
         # chip there instead.
-        rec = {'key': key, 'state': 'direct', 'n': n, 'by': 'toc'}
+        rec = {'key': key, 'state': 'direct', 'n': n, 'by': 'toc-' + how}
         if not old or old[0].get('key') != key or old[0].get('state') != 'direct':
             changed += 1
         # !!! THE NEW RECORD REPLACES, IT DOES NOT JOIN A QUEUE.  `link_by_gloss.py`
@@ -508,7 +618,9 @@ if __name__ == '__main__':
     print()
     conf = sum(1 for v in got.values() if v[4])
     withb = sum(1 for v in got.values() if v[5])
-    print('  placed              %5d' % len(got))
+    bynum = sum(1 for v in got.values() if v[6] == 'num')
+    print('  placed              %5d   (%d by number, %d by ordinal word)'
+          % (len(got), bynum, len(got) - bynum))
     print('    gloss confirms    %5d  of %d with bold in the target (%.1f%%)'
           % (conf, withb, 100.0 * conf / withb if withb else 0))
     print('  not commented       %5d' % len(gaps))

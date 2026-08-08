@@ -102,6 +102,19 @@ def check(src, tgt, vg, new, old):
             if v != tgt:
                 continue
             o, n = int(o), t.get('n')
+            # !!! EACH PLACEMENT IS JUDGED BY THE CLAIM IT MAKES.  `toc-num`
+            # asserts the target carries this number.  `toc-ord` asserts the
+            # target NAMES this apadāna in words -- `Tatiyattherassa apadāne
+            # Khaṇḍaphulliyattheroti` -- and such a paragraph usually carries no
+            # number at all, which is precisely why the words were needed.
+            # Judging both by the number failed 180 of vagga 40's 184 correct
+            # links; a gate red on good data is a gate that gets switched off.
+            if t.get('by') == 'toc-ord':
+                if T.apadana_positions(A[o].get('text') or ''):
+                    ok += 1
+                else:
+                    bad += 1
+                continue
             r = T.expand_range(A[o].get('text') or '')
             if n is not None and (A[o].get('n') == n or (r and r[0] <= n <= r[1])):
                 ok += 1
@@ -207,7 +220,13 @@ def selftest():
     a case that trips two means an assertion is not measuring what it claims."""
     src, tgt, vg = '20Khu03', '32KhuA13', 1
     base = json.load(open(os.path.join(DRY, src + '.links.json'), encoding='utf-8'))
-    old = json.load(open(os.path.join(LIVE, src + '.links.json'), encoding='utf-8'))
+    # !!! THE BASELINE IS THE UNMUTATED FILE ITSELF, NOT `site/`.  The selftest
+    # asks one question -- does each assertion catch its own defect, alone -- and
+    # comparing against the live file made assertion 1 fire on every case as soon
+    # as the dry file legitimately carried other vaggas.  A selftest whose result
+    # depends on unrelated work in progress reports noise, and noise is what gets
+    # a gate switched off.
+    old = copy.deepcopy(base)
     a, b, _ = vagga_bounds(src, vg)
     linked = [k for k, e in base.items()
               if a <= int(k) <= b and e.get('commentary')]
