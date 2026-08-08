@@ -101,26 +101,27 @@ const ok=(c,label,detail)=>{ console.log((c?'  ok    ':'  FAIL  ')+label+(detail
   const label=s=>{const el2=s.querySelector('.wl-sub'); const ol=s.querySelector('.wl-openline');
     return (el2?el2.textContent:ol?ol.textContent:'').trim();};
   const isOpen=s=>!s.classList.contains('wl-off');
-  ok(secs.length>2 && /Concise/i.test(label(secs[0])) && isOpen(secs[0]),
+  ok(secs.length>=2 && /Concise/i.test(label(secs[0])) && isOpen(secs[0]),
      'CPED is first and open', label(secs[0])||'(none)');
-  ok(secs.length>2 && /PED|P-E|Pali-English/i.test(label(secs[1])) && isOpen(secs[1]),
+  ok(secs.length>=2 && /PED|P-E|Pali-English/i.test(label(secs[1])) && isOpen(secs[1]),
      'PED is second and open', label(secs[1])||'(none)');
 
-  // 2. everything else closed, with the one-line count header
-  const others=secs.slice(2);
-  const closed=others.filter(s=>!isOpen(s));
-  ok(others.length>0 && closed.length===others.length,
-     'every other section draws closed', closed.length+' of '+others.length+' closed');
-  ok(closed.every(s=>{const b=s.querySelector('.wl-openline'); return b&&/·\s*\d+/.test(b.textContent);}),
-     'closed sections carry label · count', closed.length?closed[0].querySelector('.wl-openline').textContent.trim():'(none)');
+  // 2. NOTHING else draws as a section — the seven one-line headers were
+  //    replaced by ONE summary line saying how many more dictionaries carry
+  //    this word (reader, 2026-08-09, trying this before deciding on removal)
+  ok(secs.length===2, 'only the open sections draw', secs.length+' sections');
+  const more=body().querySelector('.wl-moredicts');
+  ok(!!more && /7/.test(more.textContent),
+     'one summary line carries the closed count', more?more.textContent.trim():'(none)');
 
-  // 3. opening in place does not touch the persisted state
+  // 3. the summary line opens the GEAR, and touches no state
   const before=w.localStorage.getItem('osbct-apdgear');
-  if(closed.length){ closed[0].querySelector('.wl-openline').click(); await wait(100); }
-  ok(closed.length>0 && !closed[0].querySelector('div[hidden]'),
-     'one-line header opens the section in place');
+  if(more){ more.click(); await wait(100); }
+  const popNow=body().querySelector('.wl-gearpop');
+  ok(!!more && !!popNow && !popNow.hidden, 'the summary line opens the gear');
   ok(w.localStorage.getItem('osbct-apdgear')===before,
-     'in-place open leaves the gear state alone');
+     'the summary line leaves the gear state alone');
+  if(popNow) popNow.hidden=true;
 
   // 3b. the jump strip lists ONLY the open sections (reader, 2026-08-09) —
   //     a closed section is already its own one-line header, and the strip
@@ -152,6 +153,9 @@ const ok=(c,label,detail)=>{ console.log((c?'  ok    ':'  FAIL  ')+label+(detail
   const jump2=[...body().querySelectorAll('.wl-jump a')].map(a=>a.textContent.trim());
   ok(jump2.length===3 && jump2.some(t=>/New Concise/i.test(t)),
      'the ticked section joins the jump strip', jump2.join(' | '));
+  const more2=body().querySelector('.wl-moredicts');
+  ok(!!more2 && /6/.test(more2.textContent),
+     'the summary count falls when a section opens', more2?more2.textContent.trim():'(none)');
 
   // 6. the choice holds on the next word
   await w.WL.lookup('bhagavā',para);

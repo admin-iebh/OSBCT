@@ -207,6 +207,8 @@ var S = {
   wl_dict:      {en: 'APD', es: 'APD'},
   wl_gear_tip:  {en: 'Choose which dictionaries open in this tab',
                  es: 'Elegir qué diccionarios se abren en esta pestaña'},
+  wl_more_dicts:{en: '%d more dictionaries have this word',
+                 es: '%d diccionarios más tienen esta palabra'},
   wl_gear_note: {en: 'CPED and PED always open. Edition and Abhidhāna are the authority (§9) and keep their own tabs; DPD is excluded by §9 — none of the three is an option here.',
                  es: 'CPED y PED siempre abiertos. La Edición y el Abhidhāna son la autoridad (§9) y tienen sus propias pestañas; el DPD queda excluido por §9 — ninguno de los tres es opción aquí.'},
   wl_ped_tab:   {en: 'PED', es: 'PED'},
@@ -1030,10 +1032,10 @@ var CSS = ''
 + 'padding:10px 12px;max-height:44vh;overflow:auto;min-width:230px;text-align:left}'
 + '#wl .wl-gearnote{display:block;margin-bottom:8px;line-height:1.45}'
 + '#wl .wl-gearopt{display:block;font-size:12.5px;margin:5px 0;cursor:pointer}'
-+ '#wl .wl-sec.wl-off{padding-top:7px;margin-top:8px}'
-+ '#wl .wl-openline{background:none;border:none;color:var(--mut);cursor:pointer;'
-+ 'font:inherit;font-size:12.5px;padding:0;text-align:left}'
-+ '#wl .wl-openline:hover{color:var(--accent)}'
++ '#wl .wl-moredicts{display:block;background:none;border:none;border-top:1px solid var(--line);'
++ 'color:var(--mut);cursor:pointer;font:inherit;font-size:12px;'
++ 'margin-top:14px;padding:10px 0 0;text-align:left;width:100%}'
++ '#wl .wl-moredicts:hover{color:var(--accent)}'
 + '#wl .wl-jump a{color:var(--accent);text-decoration:underline;'
 + 'text-decoration-style:dotted;text-underline-offset:2px;margin-right:2px}'
 + '#wl .wl-ext{overflow-wrap:break-word}'
@@ -1780,13 +1782,14 @@ function show(tab, d, keepGear) {
       });
     });
 
-  // 6. hidden must not mean absent: a switched-off section's one-line header
-  //    opens it in place, for this word only — the gear state is untouched
-  Array.prototype.forEach.call(body.querySelectorAll('button[data-wl-open]'),
+  // 6. the "N more dictionaries" summary line opens the gear, which is where
+  //    the choosing happens — the gear state itself is untouched by the click
+  Array.prototype.forEach.call(body.querySelectorAll('button[data-wl-gearline]'),
     function (b) {
       b.addEventListener('click', function () {
-        var t = b.nextElementSibling;
-        if (t) { t.hidden = false; b.style.display = 'none'; }
+        var p = body.querySelector('.wl-gearpop');
+        if (p) { p.hidden = false; }
+        body.scrollTop = 0;
       });
     });
 
@@ -2194,24 +2197,24 @@ function viewDict(d) {
   if (have.some(function (t) { return t.ev; }))
     h += '<div class="wl-banner">'
        + esc(T(have.length > 1 ? 'wl_eval_pl' : 'wl_eval')) + '</div>';
+  var closedN = 0;
   have.forEach(function (t) {
-    var sec = '<div class="wl-sub">' + esc(t.label)
-            + ' <span class="wl-flag">(' + t.n + ')</span></div>'
-            + '<div class="wl-src">' + esc(t.src) + '</div>'
-            + sectionBody(d, t.id);
-    if (gearOpen(t.id)) {
-      h += '<div class="wl-sec" id="wl-s-' + t.id + '">' + sec + '</div>';
-    } else {
-      // HIDDEN MUST NOT MEAN ABSENT (decided 2026-08-06): the one-line header
-      // with its count, only because this section HAS a hit for this word —
-      // `have` never carries an empty section.  Click opens in place, for
-      // this word only; the gear state is not touched.
-      h += '<div class="wl-sec wl-off" id="wl-s-' + t.id + '">'
-         + '<button type="button" class="wl-openline" data-wl-open="' + t.id + '">'
-         + esc(t.label) + ' · ' + t.n + '</button>'
-         + '<div hidden>' + sec + '</div></div>';
-    }
+    if (!gearOpen(t.id)) { closedN++; return; }
+    h += '<div class="wl-sec" id="wl-s-' + t.id + '">'
+       + '<div class="wl-sub">' + esc(t.label)
+       + ' <span class="wl-flag">(' + t.n + ')</span></div>'
+       + '<div class="wl-src">' + esc(t.src) + '</div>'
+       + sectionBody(d, t.id)
+       + '</div>';
   });
+  // HIDDEN MUST NOT MEAN ABSENT — but seven one-line headers were clutter
+  // (reader, 2026-08-09, trying this before deciding whether to remove even
+  // it).  ONE summary line says how many more dictionaries carry THIS word —
+  // the fact the gear alone can never state — and clicking it opens the gear.
+  if (closedN) {
+    h += '<button type="button" class="wl-moredicts" data-wl-gearline="1">'
+       + esc(T('wl_more_dicts').replace('%d', closedN)) + ' · ⚙</button>';
+  }
   return h;
 }
 
