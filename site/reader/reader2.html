@@ -21,7 +21,7 @@
    definitions are.  Setting it here puts it in scope for both. */
 :root{--rsize:15.5px;
   --bg:#f7f5f1;--panel:#fffdf9;--fg:#211f1a;--mut:#756d63;--faint:#918b7f;--line:#ece7dd;--accent:#88693a;
-  --canon:#976e27;--comm:#2a7a6c;--tika:#7a5cc0;--hover:#f0ebe1;--active:#efe7d7;--chip:#efeae0;--chipfg:#6a5f4d;--app:#f5f1e8;--hl:#fbe7b8}
+  --canon:#976e27;--comm:#2a7a6c;--tika:#7a5cc0;--hover:#f0ebe1;--active:#efe7d7;--chip:#efeae0;--chipfg:#6a5f4d;--app:#f5f1e8;--hl:#fbe7b8;--hlt:#211f1a}
 /* CONTRAST, MEASURED AGAINST BOTH BACKGROUNDS THESE TOKENS SIT ON -- not just
    --panel.  The earlier survey checked --panel alone and stopped there, but
    .wl-banner, .wl-cites, .wl-promo and the reader's own .appx apparatus block
@@ -44,7 +44,13 @@
    Darkening is multiplicative, so the hue is held exactly and the palette
    stays warm.  Dark theme is untouched except --faint, which was 2.36:1. */
 html[data-theme=dark]{--bg:#141210;--panel:#1c1a16;--fg:#ece6da;--mut:#8f867a;--faint:#6f6759;--line:#2a2620;--accent:#cba976;
-  --canon:#d6a94e;--comm:#4fbfa8;--tika:#a487e6;--hover:#232019;--active:#2b2618;--chip:#282318;--chipfg:#d8c9a6;--app:#201d16;--hl:#5c4a1c}
+  /* !!! THE SEARCH MARK KEPT THE PAGE'S LIGHT TEXT ON A MID-DARK GOLD
+     (2026-08-08, user-reported with screenshots): #ece6da on #5c4a1c made the
+     found word the least readable thing in its own snippet.  `--hl`/`--hlt`
+     now use the SAME idiom as the arrival highlight `mark.shl` two lines of
+     CSS below it — bright gold, DARK text — one look for "your match".
+     `--hl` feeds only the search marks; nothing else reads it. */
+  --canon:#d6a94e;--comm:#4fbfa8;--tika:#a487e6;--hover:#232019;--active:#2b2618;--chip:#282318;--chipfg:#d8c9a6;--app:#201d16;--hl:#ffdf7e;--hlt:#111}
 *{box-sizing:border-box}html,body{height:100%}
 body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--fg);
   display:grid;grid-template-columns:300px 1fr;grid-template-rows:52px 1fr;grid-template-areas:"top top" "side main";height:100vh;overflow:hidden;transition:grid-template-columns .2s}
@@ -134,7 +140,7 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
 .sr-help{margin-left:auto;padding:2px 8px}
 .sr-helpbox{font-family:'Inter',sans-serif;font-size:11.5px;line-height:1.55;color:var(--mut);
             padding:6px 12px 8px;border-bottom:1px solid var(--line)}
-.sr-snip mark{background:var(--hl);border-radius:2px}
+.sr-snip mark{background:var(--hl);color:var(--hlt);border-radius:2px}
 /* !!! THE SECTION ROWS HAD NO STYLES AT ALL (2026-07-30o, user-reported): they
    inherited the body serif at full size and carried no cursor and no hover, so
    they read as a heading rather than as the links they are, and dwarfed the
@@ -287,7 +293,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=5fd3c711bc8e"></script>
+<script src="../i18n.js?v=700a33aa461d"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -424,7 +430,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='5fd3c711bc8e';
+const BUILD='700a33aa461d';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
