@@ -92,6 +92,15 @@ identifiers:
   # but because nothing added the line.  It exists: 10.5281/zenodo.21760727.
   # Checked against the Zenodo record's own Versions panel, 2026-08-06, which is
   # also where the concept DOI above was confirmed as `Cite all versions`.
+  # Minted 2026-08-08, read from the record itself (zenodo.org/records/21853330),
+  # not guessed.  FIRST DEPOSIT TO ARRIVE DESCRIBING ITSELF CORRECTLY: version
+  # 2.5.0 and the "New in 2.5.0" paragraph were on the record at minting,
+  # because both metadata files were committed and pushed BEFORE the tag was
+  # cut — the ordering the v2.4.0 erratum prescribed, followed for the first
+  # time.  No in-place correction was needed.
+  - type: doi
+    value: "10.5281/zenodo.21853330"
+    description: "Zenodo archive of v2.5.0 (8 August 2026)"
   # Minted 2026-08-07 and taken from the record's own Versions panel, not
   # guessed. Zenodo listed it as "Version 2.3.0" on arrival, which is the
   # erratum in docs/DEPOSIT_ERRATA.md showing through: the deposited
