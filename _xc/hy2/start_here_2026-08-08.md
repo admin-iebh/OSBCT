@@ -53,6 +53,44 @@ paragraphs the commentary actually numbers, and the ordinal word serves to
 identify WHICH apadāna those numbers belong to — is likely right and would move
 most of the 317 into `not_commented`.
 
+## TWO DEFECTS THE READER FOUND AT THE END OF 08-07, BOTH VERIFIED
+
+**1. A link that lands on the canon repeated back, not on the gloss.**
+`19Khu02` ord 3294 (n=159, printed p. 397) — Mahāpajāpatī Gotamī's verse
+*Mātā putto pitā bhātā … Yathābhuccamajānantī, saṁsariṁhaṁ anibbisaṁ* —
+links `direct` to `31KhuA12` ord **207**, printed p. 146. That paragraph is the
+**verbatim canon verse**, nothing else. The actual gloss is `31KhuA12` ord
+**210**, same printed page: *Tattha **yathābhuccamajānantī**ti pavattihetu-ādiṁ
+yathābhūtaṁ anavabujjhantī. **Saṁsariṁ haṁ anibbisan**ti …*
+
+So the reader clicks **A** and is shown the line he just read. The record
+carries `by: None` — it predates every `by` this pipeline writes, so it is an
+old-builder link, not one of ours.
+
+**This is the parked "verbatim repeat" item (5,376 of 22,527) with a concrete
+cost attached, and it is no longer only a display question.** The commentary
+prints the canon lemma as a heading before glossing it; a link that stops at the
+heading is a link to nothing. The fix is presumably: where a candidate target is
+a verbatim repeat of the canon paragraph, advance to the next paragraph that is
+not. **Measure how many of the 5,376 are link targets before deciding.**
+
+**2. The apparatus is extracted and keyed, and the reader is not showing it.**
+NOT an extraction defect — I checked, and my first check was wrong. The files
+are `<vol>.app.json` / `<vol>.appk.json` (464 files); looking for `<vol>.json`
+reported "0 of 118 volumes have an apparatus", which is false.
+
+`31KhuA12.appk.json` holds **111 keyed entries**, and ord 210 carries seven,
+including `3 → "Sāvaketi (Sī, I)"` and `4 → "Khu 4. 206 piṭṭhādīsu."`. Those are
+exactly the markers standing as bare digits in the reader — *sāvake**3***,
+*Apadāne**4**–* — with no note attached and no marker styling. Some markers on
+the same page render as superscripts and some do not, so the rendering is
+inconsistent within one paragraph.
+
+Corpus-wide there are **70,598** digits glued to a letter across the 118
+volumes. Start from `reader2.html:551`, which loads `apparatus/<vol>.appk.json`,
+and establish whether the A band renders apparatus at all or only the canon
+layer does.
+
 ## Three inversions, unresolved
 
 Vaggas 18, 34, 35, one link each crossing its neighbour. Every other assertion
@@ -118,6 +156,8 @@ after, not by whether the gate stays green.
 
 1. **Settle the ordinal-word span** — §"THE FIRST THING" above. Blocks applying
    vaggas 2–42.
+1b. **The two defects the reader found** — the verbatim-repeat link target and
+   the unrendered apparatus. Both verified, both above.
 2. **The three inversions.**
 3. **Spot-check against the printed page** before applying —
    `_xc/hy2/20Khu03_vaggas2-42_dryrun.md` has the list with printed pages.
