@@ -2009,18 +2009,45 @@ function evHead(srcLine, extra, rights, authority) {
        + (rights ? '<div class="wl-rights">' + esc(T(rights)) + '</div>' : '');
 }
 
+// !!! DPD SHIPS THREE OF ITS SIX BLOCKS EMPTY (2026-08-09, user-reported:
+// "when clicking root family it does not load... the same with compound
+// family and idioms. Only the first three work").  In DPD's own web app
+// `family_root`, `family_compound` and `family_idiom` are fetched LAZILY from
+// its server; the archived entry carries only the stub — literally
+// `root family loading...` — so the chip opened a promise nothing would ever
+// keep.  Grammar, examples and declension are inline, which is why exactly
+// those three worked.
+// A chip whose block is a stub is REMOVED along with the stub, not disabled:
+// a control that can never work is not information, it is furniture.
+// Bringing the families back is a STORE job — rebuild lookup_eval with DPD's
+// family tables — recorded in the handoff, not attempted from the panel.
+function dpdScrub(h) {
+  h = String(h);
+  var dead = {};
+  // a hidden block whose whole content is `...loading...` is a stub; DPD
+  // writes these ids unquoted, but both forms are matched
+  h = h.replace(/<div class="dpd content hidden" id="?([^ >"]+)"?>[^<]*loading\.\.\.<\/div>/g,
+    function (_m, id) { dead[id] = 1; return ''; });
+  if (Object.keys(dead).length)
+    // DPD writes every attribute UNQUOTED (`class=dpd-button
+    // data-target=family_root_…`), so the class is asserted by lookahead and
+    // the target captured with quotes optional
+    h = h.replace(/<a (?=[^>]*class="?dpd-button)[^>]*data-target="?([^ >"]+)"?[^>]*>[^<]*<\/a>/g,
+      function (m, t) { return dead[t] ? '' : m; });
+  return h;
+}
 function viewDpd(d) {
   var h = evHead(T('wl_tip_dpd'), '', 'wl_cc_dpd');
   var e = (d.ev && d.ev.dpd) || [];
   if (!e.length) return h + '<p class="wl-none">' + esc(T('wl_noentry')) + '</p>';
-  // DPD's entry carries its own chips -- grammar, examples, declension, root
-  // family, compound family, idioms -- each opening a block it keeps hidden.
-  // They are how the entry is read, so they are passed through as DPD draws
-  // them and wired up in show().
+  // DPD's entry carries its own chips -- grammar, examples, declension --
+  // each opening a block it keeps hidden.  They are how the entry is read,
+  // so they are passed through as DPD draws them (scrubbed of the stub
+  // blocks above) and wired up in show().
   e.forEach(function (x, i) {
     h += '<div class="wl-row"><span class="wl-cite">' + (i + 1) + '. </span>'
        + '<span class="wl-lem wl-g">' + esc(x.h) + '</span>'
-       + '<div class="wl-ext wl-dpd">' + x.e + '</div></div>';
+       + '<div class="wl-ext wl-dpd">' + dpdScrub(x.e) + '</div></div>';
   });
   return h;
 }

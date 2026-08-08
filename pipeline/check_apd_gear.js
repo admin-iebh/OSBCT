@@ -166,6 +166,22 @@ const ok=(c,label,detail)=>{ console.log((c?'  ok    ':'  FAIL  ')+label+(detail
   ok(!ncpSec2 || !ncpSec2.classList.contains('wl-off'),
      'the persisted choice holds on the next word', ncpSec2?'present, open':'no NCP hit for this word');
 
+  // 7. DPD's stub blocks are scrubbed (2026-08-09, user-reported): the
+  //    archived entry carries `root family loading...` etc. as lazy-load
+  //    stubs DPD's server would have filled; the chip and the stub must BOTH
+  //    be gone, and the three inline blocks must keep their chips.
+  await w.WL.lookup('sāvakā',para);
+  for(let k=0;k<120;k++){ await wait(100); if(el()&&el().dataset.state==='ready') break; }
+  const dpdBtn=w.document.querySelector('#wlt button[data-tab="dpd"]');
+  if(dpdBtn){ dpdBtn.click(); await wait(300); }
+  const dpdTxt=body().textContent;
+  ok(!/loading\.\.\./.test(dpdTxt),'no lazy-load stub survives in the DPD tab');
+  const chips=[...body().querySelectorAll('a.dpd-button[data-target]')];
+  ok(chips.length>0 && chips.every(a=>!!body().querySelector('[id="'+a.dataset.target+'"]')),
+     'every surviving DPD chip has a real block', chips.length+' chips');
+  ok(chips.some(a=>/grammar/i.test(a.textContent)),
+     'the inline chips (grammar…) survive the scrub');
+
   console.log(fails?('FAILED: '+fails+' assertion(s)'):'all green');
   process.exit(fails?1:0);
 })().catch(e=>{ console.log('  FAIL  threw: '+(e&&e.message||e)); process.exit(1); });

@@ -55,9 +55,27 @@ ground truth computed from the shards; `--selftest /tmp/reader2_HEAD.html`
   jsdom.  BUILD `3bcc7431b9a5` → `5fd3c711bc8e`, commit message in
   `COMMIT_MSG.bak`.
 
-  **Still untouched:** the 22 MB first-load and the per-volume shard model — a
-  prefix/bucket index remains the next lever if the reader still finds it slow
-  ON THE NETWORK, which the sandbox cannot measure.
+  **Still untouched:** ~~the 22 MB first-load~~ and the per-volume shard model.
+  **2026-08-09: the reader chose the moderate half and its DATA is built** —
+  `pipeline/build_term_buckets.py` → `site/index/tb/`: `meta.json`
+  (vols/layers), `k.txt` (all 643,965 keys newline-joined, 10.2 MB raw /
+  2.27 MB gz — the sweep surface, `indexOf` over one string, NO giant JSON
+  parse), 273 `<p2>.json` postings buckets (largest `pa` 2.23 MB raw /
+  0.54 MB gz).  Self-verified: bucket union == source map EXACTLY.  The UIs
+  ARE NOT WIRED — they still read `terms.compact.json`, which stays as gate
+  ground-truth and fallback.
+
+  **The wiring brief (next session, gate first):** `matchTerms` goes async —
+  exact word → its p2 bucket only; substring or `*xxx` sweep → `k.txt`
+  (cached as ONE STRING, scanned with indexOf) then fetch only the buckets
+  the ≤500 candidates live in; `xxx*` prefix wildcard → its bucket alone.
+  EVERY NEW AWAIT NEEDS ITS OWN `if(my!==sSeq) return` — the race trap is
+  the whole reason the wiring is its own change.  Wire reader2.html and
+  search.html identically (they have drifted before), extend
+  `check_search.js` first so it fails on the unwired build only where wiring
+  is asserted, and keep the `terms.compact.json` path as the fallback when
+  `tb/` 404s (an unpacked old archive).  The per-volume shard model (the
+  heavy half) waits for the reader's live-network verdict.
 
   **Same-day follow-ups, all reader-reported, all gated (commits after
   `1af292ec`):** the mark's dark-theme contrast (6.89:1 → 14.48:1, the
