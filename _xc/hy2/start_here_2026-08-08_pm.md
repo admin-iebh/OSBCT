@@ -214,7 +214,11 @@ lands on the paragraphs above and nowhere else.
 4. **Spot-check against the printed page** before applying —
    `_xc/hy2/20Khu03_vaggas2-42_dryrun.md`.
 5. **The concordance gate** when vaggas 2–42 land. Reader's decision, not taken.
-6. **`fix_vagga_heads.py` on the other 17 volumes**, one at a time.
+6. ~~**`fix_vagga_heads.py` on the other 17 volumes**~~ **DONE 2026-08-09**:
+   16 volumes, 212 heads (census had tightened since the 258/18 count),
+   applied one run each, census now empty.  Rendering verified (`head vagga`
+   in the real reader), `check_links.py` "no measure regressed".  The placer,
+   when the links work unparks, now runs against sound vagga boundaries.
 7. **Audit the remaining `pipeline/` baselines for drift.**
 8. **`20KhuA01` ord 174** carries a section head the nav does not.
 
