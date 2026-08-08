@@ -143,6 +143,55 @@ lands on the paragraphs above and nowhere else.
 
 ## Next, in order
 
+0. ~~**The reader asked for the SEARCH BOX next**~~ **DONE 2026-08-08 (search
+   session), not yet committed** — all three asks; see the DONE block at the top
+   of **`_xc/hy2/start_here_search.md`**, commit message in
+   `COMMIT_MSG.bak`, gate `pipeline/check_search.js` (selftest fails 7/10
+   on the pre-fix build). BUILD `ab3632cc3580` → `3bcc7431b9a5`. Left open:
+   `search.html` drift (one word only, naive `book` field).
+
+0b. **THE VATTHU NAMES ARE STYLED DIFFERENTLY IN THE CANON AND IN THE
+   COMMENTARY** (reader, 2026-08-08): "in the Dhammapadapāḷi the names like
+   `1. Cakkhupālattheravatthu` and so on shouldn't be golden colour like in
+   other places like in its commentary?"
+
+   **MEASURED — the two layers carry different head kinds for the same name:**
+
+       18Khu01  (canon, holds Dhammapadapāḷi)   book 52, vagga 10,
+                                                sutta 265, **vatthu 304**
+       21KhuA02 (Dhammapada-aṭṭhakathā I)       vagga 8,  sutta 95,  vatthu 0
+       22KhuA03 (Dhammapada-aṭṭhakathā II)      vagga 18, sutta 211, vatthu 0
+
+   `reader2.html:1519` maps `HCLS={book:'sutta', vagga:'vagga', sutta:'section',
+   vatthu:'vatthu'}`, and the CSS at :182-183 gives
+
+       .head.section  font-size:14.5px  color: var(--accent)     <- GOLDEN
+       .head.vatthu   font-size:13px    color: var(--mut)        <- muted grey
+
+   So `1. Cakkhupālattheravatthu` is muted in the canon and golden in the
+   commentary, and the ONLY reason is that the extraction assigned a different
+   `hk`. The commentary volumes carry no `vatthu` kind at all — every vatthu
+   name in them falls through as `sutta`.
+
+   **This is the same shape as the open item at §"Errors in earlier work" 4** —
+   "258 heads in 18 volumes name a vagga but are classified `sutta`, because the
+   extraction takes a head's kind from typography and the PDF does not centre
+   them". Same cause, different symptom: a head's LEVEL is being inferred from
+   how it was set, and the two layers were set differently.
+
+   !!! DO NOT SIMPLY RECOLOUR ONE OF THEM. Which is right is a question about
+   the PRINTED PAGE — how the edition sets these names in `18Khu01` against how
+   it sets them in `21KhuA02`/`22KhuA03`. Extract both from the PDFs and compare,
+   the way pdf page 154 of `31KhuA12` settled the stranded quote. If the edition
+   sets them alike, one layer's `hk` is wrong and the DATA should be fixed, not
+   the CSS. If the edition really does set them differently, then the reader is
+   faithful and the question is whether we want to be.
+
+   **AND ASK THE READER WHICH DIRECTION HE MEANT.** His sentence can be read as
+   "they should be golden here too" or as "they should not be golden anywhere".
+   Do not guess; a wrong guess here silently restyles 304 heads in the canon or
+   306 in the commentary.
+
 1. **The three recommendations above**, as the reader decides them. Still blocks
    applying vaggas 2–42.
 2. **The verbatim-repeat link target** — the other defect the reader found on

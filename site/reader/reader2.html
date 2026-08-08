@@ -120,6 +120,10 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
    pretend to be clickable — see the note beside `_k` in doSearch. */
 .sresult.sr-dead{cursor:default;opacity:.62}.sresult.sr-dead:hover{background:none}
 .sr-lay{font-size:10.5px;font-weight:600}.sr-snip{font-family:'Gentium Plus',serif;font-size:12.5px;margin-top:2px;line-height:1.4}
+/* The book · sutta · volume line on an occurrence row (2026-08-08, user asked
+   for "the book and sutta, not just Pāḷi ¶52").  Small and muted so the
+   snippet stays the row's voice. */
+.sr-where{font-family:'Inter',sans-serif;font-size:10.5px;color:var(--mut);margin-left:8px}
 .sr-snip mark{background:var(--hl);border-radius:2px}
 /* !!! THE SECTION ROWS HAD NO STYLES AT ALL (2026-07-30o, user-reported): they
    inherited the body serif at full size and carried no cursor and no hover, so
@@ -273,7 +277,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=ab3632cc3580"></script>
+<script src="../i18n.js?v=3bcc7431b9a5"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -298,7 +302,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
   <div class="topbar">
     <button class="tb" id="sidetog" data-i18n-title="tip_nav" title="Hide / show navigation">☰</button>
     <span class="brand"><span class="dot"></span>Sixth Buddhist Council Tipiṭaka</span>
-    <div class="search"><input id="sq" type="search" data-i18n-ph="r2_search_ph" placeholder="Search all layers — diacritics optional" autocomplete="off"><div id="sdrop" class="sdrop" hidden></div></div>
+    <div class="search"><input id="sq" type="search" data-i18n-ph="r2_search_ph" placeholder="Search all layers — words or a phrase, diacritics optional" autocomplete="off"><div id="sdrop" class="sdrop" hidden></div></div>
     <span class="sp"></span>
     <a class="navlink" href="../index.html" data-i18n="nav_home">Home</a>
     <a class="navlink" href="../downloads.html" data-i18n="nav_downloads">Downloads</a>
@@ -337,7 +341,7 @@ const $=s=>document.querySelector(s);
 // these call sites were wired (2026-07-30f).  TIP() degrades to English.
 const TIP=(k,en)=>(window.t&&window.I18N&&window.I18N[k])?window.t(k):en;
 if(window.I18N) Object.assign(window.I18N,{
-  r2_search_ph:{en:'Search all layers — diacritics optional',es:'Buscar en todas las capas — diacríticos opcionales'},
+  r2_search_ph:{en:'Search all layers — words or a phrase, diacritics optional',es:'Buscar en todas las capas — palabras o una frase, diacríticos opcionales'},
   r2_layers:{en:'Layers',es:'Capas'},
   r2_columns:{en:'Columns',es:'Columnas'},
   r2_tabs:{en:'Tabs',es:'Pestañas'},
@@ -403,7 +407,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='ab3632cc3580';
+const BUILD='3bcc7431b9a5';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -3274,7 +3278,43 @@ async function ensureTerms(){ if(TERMS)return;
     if(!j||!j.terms||!j.vols) throw new Error('malformed index');
     TERMS=j; TERMSERR=null;
   }catch(e){ TERMS=null; TERMSERR=(e&&e.message)||String(e); } }
-async function shard(vi){ if(shardCache[vi])return shardCache[vi]; return shardCache[vi]=await jget('../index/'+TERMS.vols[vi]+'.idx.json',{paras:[],inv:{}}); }
+// !!! A FAILED SHARD MUST NOT BE CACHED AS AN ANSWER EITHER (2026-08-08, found
+// while fixing the multi-word bug below — the exact trap the term map fell
+// into on 2026-08-02, one function up).  This was `shardCache[vi]=await
+// jget(..., {paras:[],inv:{}})`, and `jget` returns its fallback on ANY
+// failure, so one lost request installed an EMPTY shard and silently deleted
+// that volume from every later search of the page load.  The PROMISE is cached
+// — parallel callers and racing keystrokes share one fetch — and deleted on
+// failure so the next keystroke retries.
+async function shard(vi){ if(shardCache[vi])return shardCache[vi];
+  return shardCache[vi]=(async()=>{
+    try{ const r=await fetch('../index/'+TERMS.vols[vi]+'.idx.json?v='+BUILD);
+         if(!r.ok) throw new Error('HTTP '+r.status);
+         return await r.json();
+    }catch(e){ delete shardCache[vi]; return {paras:[],inv:{}}; }
+  })(); }
+// The book named on a search row.  `booktitle/<VOL>.json` is the stack the
+// edition prints on the book's own title page, keyed by opening ordinal — the
+// same source the paragraph-number tooltip uses, and for the same reason: THE
+// CORPUS'S `book` FIELD IS NOT THE BOOK IN 61 OF 118 VOLUMES (07Di02 carries a
+// kathā one level too deep on all 335 paragraphs of the Mahāparinibbānasutta).
+// Measured 2026-08-08: all 118 indexed volumes now carry a non-empty stack.
+// Cached as a promise, deleted on failure, as above.
+let btCache={};
+async function btFor(vol){ if(btCache[vol])return btCache[vol];
+  return btCache[vol]=(async()=>{
+    try{ const r=await fetch('booktitle/'+vol+'.json?v='+BUILD);
+         if(!r.ok) throw new Error('HTTP '+r.status);
+         return await r.json();
+    }catch(e){ delete btCache[vol]; return {}; }
+  })(); }
+function bookOf(bt,vol,ord){
+  let bk='',bo=-1;
+  for(const k in bt){ const kk=+k; if(kk<=ord&&kk>bo)bo=kk; }
+  if(bo>=0){ const st=bt[String(bo)]; const a=Array.isArray(st)?st:[st];
+             bk=String(a[a.length-1]||'').trim(); }
+  return bk||VOLTITLE[vol]||shortWork(VOLWORK[vol])||'';
+}
 let sTimer=null, sSeq=0;
 $('#sq').addEventListener('input',e=>{clearTimeout(sTimer);sTimer=setTimeout(()=>doSearch(e.target.value),180);});
 $('#sq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';$('#sdrop').hidden=true;}});
@@ -3324,45 +3364,129 @@ async function doSearch(q){
           '">'+LN2[SNAMES.layers[r[3]]]+' · '+SNAMES.vols[r[1]]+'</span></div>').join('');
     }
   }
-  const mts=matchTerms(fq);
-  const vis=mts.length?[...new Set(mts.flatMap(k=>TERMS.terms[k]||[]))].sort((a,b)=>a-b):null;
+  // !!! A QUERY WITH A SPACE MATCHED NOTHING AND SAID "No matches"
+  // (2026-08-08, user-reported: "if I type a word after searching one it does
+  // not search anymore").  The term keys are single words, so a spaced query
+  // was neither an exact key nor a substring of any key: `matchTerms` returned
+  // [], `vis` was null, and the box painted "No matches" — not a hang and not
+  // stale state.  The query is now SPLIT on whitespace, each word resolved to
+  // its terms separately (exact still wins outright, so `me` and `ca` resolve
+  // although the 3-letter floor bars them from the substring sweep), the
+  // volume lists intersected, and the per-paragraph postings intersected
+  // inside each shard.  A paragraph carrying the words ADJACENT — the folded
+  // phrase; shard text carries no doubled spaces, measured 0 of 559 in 06Di01
+  // — is a phrase hit, counted by occurrence.  A paragraph carrying all the
+  // words apart is listed AFTER the phrase hits and labelled as what it is,
+  // never merged into the phrase count.  Measured on `evaṁ me sutaṁ`: 105
+  // volumes carry all three words; 07Di02 holds 18 paragraphs with all three
+  // and 10 with the phrase.
+  const words=fq.split(/\s+/).filter(Boolean);
+  const phq=words.join(' ');
+  const mtsPer=words.map(w=>matchTerms(w));
+  let vis=null;
+  if(mtsPer.length && mtsPer.every(m=>m.length)){
+    const vsets=mtsPer.map(m=>new Set(m.flatMap(k=>TERMS.terms[k]||[])));
+    vis=[...vsets[0]].filter(v=>vsets.every(s=>s.has(v))).sort((a,b)=>a-b);
+    if(!vis.length) vis=null;
+  }
   if(my!==sSeq) return;
   if(!vis){dd.hidden=false;
     dd.innerHTML=secHTML||('<div class="sr-head">No matches for “'+esc(q)+'”</div>');return;}
   const LN={'pali-unicode':'Pāḷi','atthakatha-unicode':'Aṭṭhakathā','tika-unicode':'Ṭīkā'};
   const COL={'pali-unicode':'var(--canon)','atthakatha-unicode':'var(--comm)','tika-unicode':'var(--tika)'};
-  let items=[],total=0;
+  // !!! THE SHARDS WERE FETCHED ONE AT A TIME (2026-08-08, user-reported "it
+  // is slow" — measured before touching anything, because the slowness had
+  // three candidate causes and they measure very differently).  The substring
+  // sweep over 643,965 term keys is 7–15 ms and its 500 cap lands early — not
+  // the cost.  The 22 MB term map is paid once and says so on screen — left
+  // alone.  But a common word matches up to 118 volumes, the shards average
+  // 1.64 MB (194 MB in all), and this loop awaited them ONE PER ITERATION —
+  // a serial download of most of the index before anything painted.  They are
+  // now fetched 8 at a time; the per-shard work below then runs on cache hits.
+  { const need=[...vis]; let ni=0; const pool=[];
+    for(let w=0;w<Math.min(8,need.length);w++)
+      pool.push((async()=>{ while(ni<need.length && my===sSeq){ await shard(need[ni++]); } })());
+    await Promise.all(pool); }
+  if(my!==sSeq) return;
+  const countOcc=(hay,ndl)=>{ let n=0,i=hay.indexOf(ndl); while(i>=0){n++;i=hay.indexOf(ndl,i+1);} return n; };
+  let phrRows=[], andRows=[], total=0, andTotal=0;
   for(const vi of vis){ const sh=await shard(vi);
-    const _m=new Map();
-    for(const k of mts) for(const [pi,c] of (sh.inv[k]||[])) _m.set(pi,(_m.get(pi)||0)+c);
-    const post=[..._m.entries()].sort((a,b)=>a[0]-b[0]);
-    for(const [pi,c] of post){ total+=c; if(items.length<80){ const p=sh.paras[pi]; const lay=TERMS.layers[vi];
-      const f=foldS(p.text), i=f.indexOf(fq), a=Math.max(0,i-24), b=Math.min(p.text.length,i+fq.length+42);
-      const snip=(a>0?'…':'')+esc(p.text.slice(a,i))+'<mark>'+esc(p.text.slice(i,i+fq.length))+'</mark>'+esc(p.text.slice(i+fq.length,b))+'…';
-      // !!! `p.key` IS NOT A FIELD THE INDEX HAS EVER CARRIED (2026-08-02,
-      // user-reported).  This row was built as `openKey(p.key, …)`; measured
-      // over all 118 shards, `key` is present on 0 of 86,365 paragraphs and
-      // `ord` on all of them — `build_search_index.py` says so in its own
-      // docstring ("**`ord` is added**… the reader needs the ordinal"), and
-      // `search.html` has always used `p.ord`.  So EVERY occurrence hit in
-      // this box called `openKey('undefined', …)`: `parseKey` found no '#',
-      // returned the volume as `'undefine'` (slice(0,-1)) and the ordinal as
-      // NaN, the reader drew 0 paragraphs, and the layer band reported "No
-      // Aṭṭhakathā is linked to the passages on screen" — a wrong answer that
-      // reads as an honest one.  Fourth instance of this project's
-      // characteristic failure: an ABSENT VALUE PRODUCED A CALL THAT LOOKED
-      // LIKE A CALL.  Section hits above were never affected; they build the
-      // key from `vols[]` + ord, which is what this now does.
-      // A row whose ordinal is missing is drawn WITHOUT an onclick rather
-      // than with a dead one, so the failure is visible instead of silent.
-      const _k=(p.ord!=null)?(TERMS.vols[vi]+'#'+p.ord):null;
-      items.push('<div class="sresult'+(_k?'':' sr-dead')+'"'+(_k?' onclick="openHit(\''+_k+'\',\''+({'pali-unicode':'canon','atthakatha-unicode':'A','tika-unicode':'T'}[lay])+'\')"':'')+'><span class="sr-lay" style="color:'+COL[lay]+'">'+LN[lay]+(p.n!=null?' ¶'+p.n:(p.page!=null?' p.'+p.page:''))+'</span><div class="sr-snip">'+snip+'</div></div>');
-    } } }
+    if(my!==sSeq) return;
+    const maps=mtsPer.map(m=>{ const mm=new Map();
+      for(const k of m) for(const [pi,c] of (sh.inv[k]||[])) mm.set(pi,(mm.get(pi)||0)+c);
+      return mm; });
+    const pis=[...maps[0].keys()].filter(pi=>maps.every(mm=>mm.has(pi))).sort((a,b)=>a-b);
+    for(const pi of pis){ const p=sh.paras[pi];
+      if(words.length>1){
+        const f=foldS(p.text), c=countOcc(f,phq);
+        if(c>0){ total+=c; if(phrRows.length<80) phrRows.push({vi,p,f}); }
+        else    { andTotal++; if(andRows.length<40) andRows.push({vi,p,f}); }
+      } else {
+        total+=maps[0].get(pi);
+        if(phrRows.length<80) phrRows.push({vi,p,f:foldS(p.text)});
+      }
+    }
+  }
+  // The book and sutta for every row that will be DRAWN — resolved from
+  // `booktitle/`, never printed from the corpus's `book` field, which names
+  // the wrong thing in 61 of 118 volumes (see `bookOf` above).  Only the
+  // volumes actually on screen are fetched, and each stack is cached.
+  const drawVols=[...new Set(phrRows.concat(andRows).map(r=>TERMS.vols[r.vi]))];
+  const btMap={};
+  await Promise.all(drawVols.map(async v=>{ btMap[v]=await btFor(v); }));
+  if(my!==sSeq) return;
+  const row=(r)=>{ const p=r.p, f=r.f, lay=TERMS.layers[r.vi], vol=TERMS.vols[r.vi];
+    // anchor the snippet on the phrase where it occurs, else on the earliest word
+    let i=f.indexOf(phq), len=phq.length;
+    if(i<0){ i=f.length;
+      for(const w of words){ const j=f.indexOf(w); if(j>=0&&j<i){i=j;len=w.length;} }
+      if(i>=f.length){ i=0; len=0; } }
+    const a=Math.max(0,i-24), b=Math.min(p.text.length,i+len+42);
+    // every query word inside the window is marked — the old builder assumed
+    // ONE contiguous match and could not serve a multi-word row
+    const R=[];
+    for(const w of words){ let j=f.indexOf(w,a); while(j>=0&&j<b){ R.push([j,Math.min(j+w.length,b)]); j=f.indexOf(w,j+1); } }
+    R.sort((x,y)=>x[0]-y[0]);
+    const M=[]; for(const rg of R){ if(M.length&&rg[0]<=M[M.length-1][1]) M[M.length-1][1]=Math.max(M[M.length-1][1],rg[1]); else M.push([rg[0],rg[1]]); }
+    let snip=(a>0?'…':''), pos=a;
+    for(const [s,e] of M){ snip+=esc(p.text.slice(pos,s))+'<mark>'+esc(p.text.slice(s,e))+'</mark>'; pos=e; }
+    snip+=esc(p.text.slice(pos,b))+'…';
+    // !!! `p.key` IS NOT A FIELD THE INDEX HAS EVER CARRIED (2026-08-02,
+    // user-reported).  This row was built as `openKey(p.key, …)`; measured
+    // over all 118 shards, `key` is present on 0 of 86,365 paragraphs and
+    // `ord` on all of them — `build_search_index.py` says so in its own
+    // docstring ("**`ord` is added**… the reader needs the ordinal"), and
+    // `search.html` has always used `p.ord`.  So EVERY occurrence hit in
+    // this box called `openKey('undefined', …)`: `parseKey` found no '#',
+    // returned the volume as `'undefine'` (slice(0,-1)) and the ordinal as
+    // NaN, the reader drew 0 paragraphs, and the layer band reported "No
+    // Aṭṭhakathā is linked to the passages on screen" — a wrong answer that
+    // reads as an honest one.  Fourth instance of this project's
+    // characteristic failure: an ABSENT VALUE PRODUCED A CALL THAT LOOKED
+    // LIKE A CALL.  Section hits above were never affected; they build the
+    // key from `vols[]` + ord, which is what this now does.
+    // A row whose ordinal is missing is drawn WITHOUT an onclick rather
+    // than with a dead one, so the failure is visible instead of silent.
+    const _k=(p.ord!=null)?(vol+'#'+p.ord):null;
+    // "more information … the book and sutta, not just `Pāḷi ¶52`"
+    // (2026-08-08, user-reported, with a screenshot).  Everything the line
+    // needs was ALREADY in the shard and in `booktitle/` — display only.
+    const _bk=bookOf(btMap[vol]||{},vol,p.ord!=null?p.ord:-1);
+    const _su=(p.sutta&&p.sutta!=='X')?String(p.sutta).replace(/\s+/g,' ').trim():'';
+    const _loc=[_bk,(_su&&_su!==_bk)?_su:'',vol].filter(Boolean).join(' · ');
+    return '<div class="sresult'+(_k?'':' sr-dead')+'"'+(_k?' onclick="openHit(\''+_k+'\',\''+({'pali-unicode':'canon','atthakatha-unicode':'A','tika-unicode':'T'}[lay])+'\')"':'')+'><span class="sr-lay" style="color:'+COL[lay]+'">'+LN[lay]+(p.n!=null?' ¶'+p.n:(p.page!=null?' p.'+p.page:''))+'</span>'+(_loc?'<span class="sr-where">'+esc(_loc)+'</span>':'')+'<div class="sr-snip">'+snip+'</div></div>'; };
   // SECTIONS FIRST, THEN OCCURRENCES — the same order `search.html` uses, and
   // for the same reason: someone typing a sutta's name wants the sutta.
   if(my!==sSeq) return;
-  dd.hidden=false; dd.innerHTML=secHTML+
-    '<div class="sr-head">'+total.toLocaleString()+' occurrence(s) for “'+esc(q)+'”</div>'+items.join('');
+  let occHTML;
+  if(words.length>1){
+    occHTML=(total?'<div class="sr-head">'+total.toLocaleString()+' occurrence(s) of “'+esc(q)+'”</div>'+phrRows.map(row).join(''):'')
+      +(andTotal?'<div class="sr-head">'+andTotal.toLocaleString()+' paragraph(s) carry all '+words.length+' words, not adjacent</div>'+andRows.map(row).join(''):'');
+    if(!total&&!andTotal) occHTML='<div class="sr-head">No matches for “'+esc(q)+'”</div>';
+  } else {
+    occHTML='<div class="sr-head">'+total.toLocaleString()+' occurrence(s) for “'+esc(q)+'”</div>'+phrRows.map(row).join('');
+  }
+  dd.hidden=false; dd.innerHTML=secHTML+occHTML;
 }
 // A HIT MUST LAND ON THE WORD, NOT MERELY IN THE VOLUME.  A link from
 // `search.html` carries `?q=` and `openFromURL` highlights it; this box called
@@ -3440,19 +3564,36 @@ async function openHit(key,kind){
 // ordinal instead.
 const HLFOLD={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
 const hfold=s=>s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>HLFOLD[c]||c);
-function markInEl(el,q){
-  if(!el||!q) return; const fq=hfold(q.trim()); if(!fq) return;
+function markNeedles(el,needles){
   const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null);
   const nodes=[]; while(walker.nextNode()){ if(walker.currentNode.parentNode.nodeName!=='MARK') nodes.push(walker.currentNode); }
+  let made=0;
   for(const node of nodes){
-    const text=node.nodeValue, f=hfold(text); let idx=f.indexOf(fq); if(idx<0) continue;
+    const text=node.nodeValue, f=hfold(text);
+    const R=[];
+    for(const ndl of needles){ let i=f.indexOf(ndl); while(i>=0){ R.push([i,i+ndl.length]); i=f.indexOf(ndl,i+1); } }
+    if(!R.length) continue;
+    R.sort((a,b)=>a[0]-b[0]);
+    const M=[]; for(const r of R){ if(M.length&&r[0]<=M[M.length-1][1]) M[M.length-1][1]=Math.max(M[M.length-1][1],r[1]); else M.push([r[0],r[1]]); }
     const frag=document.createDocumentFragment(); let last=0;
-    while(idx>=0){ if(idx>last)frag.appendChild(document.createTextNode(text.slice(last,idx)));
-      const m=document.createElement('mark'); m.className='shl'; m.textContent=text.slice(idx,idx+fq.length);
-      frag.appendChild(m); last=idx+fq.length; idx=f.indexOf(fq,last); }
+    for(const [s,e] of M){ if(s>last)frag.appendChild(document.createTextNode(text.slice(last,s)));
+      const m=document.createElement('mark'); m.className='shl'; m.textContent=text.slice(s,e);
+      frag.appendChild(m); last=e; }
     if(last<text.length) frag.appendChild(document.createTextNode(text.slice(last)));
     node.parentNode.replaceChild(frag,node);
+    made+=M.length;
   }
+  return made;
+}
+// A multi-word arrival tries the PHRASE first — one mark, exactly what was
+// searched — and only if no text node carries the whole phrase (a bold lemma
+// can split one across nodes, and an "all words, not adjacent" hit never had
+// it) falls back to marking each word where it stands (2026-08-08).
+function markInEl(el,q){
+  if(!el||!q) return; const fq=hfold(q.trim()).replace(/\s+/g,' '); if(!fq) return;
+  if(markNeedles(el,[fq])) return;
+  const words=fq.split(' ').filter(Boolean);
+  if(words.length>1) markNeedles(el,words);
 }
 async function resolveHash(){
   const h=decodeURIComponent((location.hash||'').replace(/^#/,'')); if(!h) return null;
