@@ -373,8 +373,15 @@ ADVISORY = [
      'python3 pipeline/rebuild_apparatus.py  (then _xref/fill_xrefs.py --write)'),
     ('linksk (reader)', 'site/reader/linksk', ['site/*.json'],
      'the link builders — see HANDOFF; never run pipeline/build_links.py'),
-    ('links (legacy)', 'site/reader/links', ['site/*.json'],
-     'loaded by nothing in reader2.html; retire or rebuild'),
+    # `links (legacy)` RETIRED 2026-08-08, at the reader's decision and on
+    # measurement, not narrative: over the 20,263 canon paragraphs where BOTH
+    # generations offered a commentary target, the old generation's target
+    # agreed with the source's section name 26.95% of the time against
+    # linksk/'s 46.48% (identical proxy applied to both), covered 22,348
+    # paragraphs against 43,607, and addressed them by paragraph number and
+    # `id` — the two recorded non-keys.  Loaded by nothing on the site.  The
+    # files remain in git history; the reader deletes the working tree copy
+    # with `git rm -r site/reader/links/`.
     ('sections', 'site/reader/sections', ['site/*.json'],
      'the per-volume nav builders'),
     ('nav.json', 'site/reader/nav.json', ['site/reader/sections/*'],
