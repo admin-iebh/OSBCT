@@ -262,8 +262,8 @@
    "suggested_reading": "pakkhepassa",
    "confidence": "review",
    "context": "naṁ subhasukhabhāvādīnaṁ pakkhepqssa, domanassavinayena kāye bhū",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved)."
   },
   {
    "id": "E023",
@@ -294,8 +294,8 @@
    "suggested_reading": "vuttanayeneva",
    "confidence": "high",
    "context": "thitā. Tasmā etesupi vuttanayenefa sampajānakāritā veditabbā. Ti",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved)."
   },
   {
    "id": "E026",
@@ -342,8 +342,8 @@
    "suggested_reading": "appamāṇena",
    "confidence": "review",
    "context": " cetasā vipulena mahaggatena appqmāṇena averena abyāpajjena phar",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved)."
   },
   {
    "id": "E029",
@@ -406,8 +406,8 @@
    "suggested_reading": "vacanaṁ",
    "confidence": "review",
    "context": "u dvīsu satthavāhesu yakkhassa vqcanaṁ gahetvā bālasatthavāho sa",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved)."
   },
   {
    "id": "E033",
@@ -451,11 +451,11 @@
    "glyph": "z",
    "codepoint": "U+007A",
    "printed_reading": "Kumbhizādīsupi",
-   "suggested_reading": "Kumbhilādīsupi",
+   "suggested_reading": "Kumbhi ādīsupi",
    "confidence": "high",
    "context": "canaṁ kataṁ bhavissatīti. Kumbhizādīsupi so sattasaññīti āha “ku",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved). The earlier suggestion 'Kumbhilādīsupi' is superseded by the reader's reading."
   },
   {
    "id": "E036",
@@ -678,8 +678,8 @@
    "suggested_reading": "dhammābhisamayo",
    "confidence": "review",
    "context": " “atthi gabbhaseyyāya dhammābhisqmayo”ti. * Atthi gabbhaseyyāya ",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved)."
   },
   {
    "id": "E052",
@@ -694,8 +694,8 @@
    "suggested_reading": "Revato",
    "confidence": "high",
    "context": "“Sumanassa aparena, Fevato nāma Nāyako. Anūpamo asad",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved)."
   },
   {
    "id": "E053",

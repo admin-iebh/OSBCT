@@ -77359,7 +77359,6 @@ appotetva
 appothetva
 appoti
 appotiti
-appqmanena
 apprajakkheti
 appurisam
 appuriso
@@ -168055,7 +168054,6 @@ dhammabhisamayena
 dhammabhisamayo
 dhammabhisamayopi
 dhammabhisamayoti
-dhammabhisqmayo
 dhammabhogam
 dhammabhoganti
 dhammabhogo
@@ -199240,7 +199238,6 @@ eyya
 eyyasaddo
 eyyasi
 eyyasiti
-fevato
 ga
 gabalavaliya
 gabbam
@@ -275025,7 +275022,6 @@ kumbhiyan
 kumbhiyanti
 kumbhiyati
 kumbhiyo
-kumbhizadisupi
 kumbho
 kumbhodaro
 kumbhoti
@@ -370598,7 +370594,6 @@ pakkhephandapayamanassa
 pakkhepi
 pakkhepo
 pakkhepoti
-pakkhepqssa
 pakkhesu
 pakkhesuti
 pakkheti
@@ -632062,7 +632057,6 @@ voyogapajjane
 voyu
 voyunjati
 vpassati
-vqcanam
 vsuddhimagge
 vu
 vucca
@@ -633464,7 +633458,6 @@ vuttanayenattho
 vuttanayenava
 vuttanayenavati
 vuttanayene
-vuttanayenefa
 vuttanayenena
 vuttanayenetam
 vuttanayenettha

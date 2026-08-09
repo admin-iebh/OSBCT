@@ -49,7 +49,21 @@ fail on the build that had its bug.
     links artifact is loaded by nothing: reader to decide retire vs
     rebuild; BLOCKBREAK off; `position` unmeasured for 114 volumes; the
     WLV gate; the offline package (§2 permission first).
- 4b. **CORRECT THE PDFs FROM THE ERRATA REGISTER (reader, 2026-08-08).**
+ 4b. **CORRECT THE PDFs FROM THE ERRATA REGISTER (reader, 2026-08-08) —
+    PDF SIDE ON STANDBY (reader, 2026-08-09); the SEVEN CONFIRMED WORDS
+    ARE APPLIED TO THE CORPUS.**  Shown the seven belief-only corrupt
+    words, the reader confirmed six and CORRECTED one: `Kumbhizādīsupi`
+    = `Kumbhi ādīsupi` (z is a SPACE, not l; register note records the
+    superseded suggestion).  All seven applied — corpus, verse stores,
+    idx shards, terms.compact, buckets, demo-links — every replacement
+    length-preserving, so pbreak re-derived byte-EQUAL (sidecar hashes
+    refreshed, pagespan rebuilt, stamp 963375c10f40).  Register entries
+    status=confirmed with the application noted.  LESSON BANKED: a dead
+    term prefix leaves a stale bucket; build_term_buckets.py now empties
+    orphan buckets itself.  What REMAINS of 4b: the per-entry audit of
+    the 22 other-layer entries, the ~110 single-witness glyph visual
+    review sheet (offered, not yet ordered), and the PDF correction
+    itself (ToUnicode injection, one volume first) — ON STANDBY.
     docs/PDF_ERRATA.md (generated from data/errata.json — 68 entries, 39
     volumes; regenerate with pipeline/build_pdf_errata_doc.py) is the work
     list.  MEASURED state of the register vs the corpus: 31 glyph-class

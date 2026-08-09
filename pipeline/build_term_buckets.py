@@ -68,6 +68,20 @@ def main():
         json.dump({'terms': m}, open(os.path.join(OUT, p + '.json'), 'w',
                   encoding='utf-8'), ensure_ascii=False)
 
+    # A prefix can DIE between builds (2026-08-09: correcting the corrupt
+    # glyphs `Fevato`/`vqcanaṁ` emptied the whole `fe` and `vq` prefixes; no
+    # bucket was written for them, so the previous build's files survived and
+    # the union check below rightly failed on the dead keys).  Overwrite any
+    # bucket the current source no longer produces with an EMPTY one —
+    # overwrite, not delete, because the working sandbox may not hold delete
+    # rights on the repo, and an empty bucket is equally correct.
+    for f in os.listdir(OUT):
+        if f in ('meta.json', 'k.txt') or not f.endswith('.json'): continue
+        if f[:-5] not in buckets:
+            json.dump({'terms': {}}, open(os.path.join(OUT, f), 'w',
+                      encoding='utf-8'))
+            print('emptied stale bucket:', f)
+
     # ---- self-verification: the union of what was written IS the source ----
     back = {}
     nfiles = 0

@@ -54,7 +54,7 @@ publisher — can be prepared from one list.
 | E033 | 18AnA02 | 117 | `paveóenti` | `paveṇenti` | high |
 | E070 | 18Khu01 | 279 | `Namo tassa Bhagavatā Arahato Sammāsambuddhassa.` | `Namo tassa Bhagavato Arahato Sammāsambuddhassa.` | high |
 | E034 | 19AnA03 | 77 | `dvattiṁsavarapurisalakkhaṇapatÙmaṇḍitaṁ` | `dvattiṁsavarapurisalakkhaṇapatimaṇḍitaṁ` | review |
-| E035 | 19AnT02 | 219 | `Kumbhizādīsupi` | `Kumbhilādīsupi` | high |
+| E035 | 19AnT02 | 219 | `Kumbhizādīsupi` | `Kumbhi ādīsupi` | high |
 | E064 | 19AnT02 | 333 | `9. Vaṇijjasuttādivaṇṇanā` | `9. Vaṇijjasuttavaṇṇanā` | medium |
 | E065 | 20AnT03 | 6 | `5. Paṭhamayodhājīvasuttādivaṇṇanā` | `5. Paṭhamayodhājīvasuttavaṇṇanā` | high |
 | E066 | 20AnT03 | 316 | `4. Gāvīupamāsuttavaṇṇanā` | `(undecided)` | none |
@@ -145,9 +145,9 @@ publisher — can be prepared from one list.
 
 ### 10MaA01
 
-- **E022** (printed p. 232, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
+- **E022** (printed p. 232, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved).
 - **E023** (printed p. 258, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
-- **E024** (printed p. 258, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
+- **E024** (printed p. 258, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved).
 
 ### 12DiT05
 
@@ -164,7 +164,7 @@ publisher — can be prepared from one list.
 ### 15An01
 
 - **E027** (printed p. 181, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
-- **E028** (printed p. 181, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
+- **E028** (printed p. 181, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved).
 - **E029** (printed p. 181, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
 
 ### 15SamA02
@@ -186,7 +186,7 @@ publisher — can be prepared from one list.
 
 ### 18AnA02
 
-- **E032** (printed p. 80, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
+- **E032** (printed p. 80, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved).
 - **E033** (printed p. 117, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
 
 ### 18Khu01
@@ -199,7 +199,7 @@ publisher — can be prepared from one list.
 
 ### 19AnT02
 
-- **E035** (printed p. 219, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
+- **E035** (printed p. 219, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved). The earlier suggestion 'Kumbhilādīsupi' is superseded by the reader's reading.
 - **E064** (printed p. 333, Ṭīkā): PREVIOUSLY "no third witness". Now measured: the canon 15An01 prints *Vaṇijjasutta* four times and the commentary 18AnA02 four times, neither with *-ādi-*; this volume prints *-ādi-* twice and the plain form never. The body added the *-ādi-*. Recorded 2026-07-30; MEDIUM because *-ādi-* is a real editorial device elsewhere in the same volume, so the body may be describing a run of suttas rather than slipping.
 
 ### 20AnT03
@@ -244,11 +244,11 @@ publisher — can be prepared from one list.
 - **E048** (printed p. 51, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
 - **E049** (printed p. 282, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
 - **E050** (printed p. 314, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
-- **E051** (printed p. 444, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
+- **E051** (printed p. 444, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved).
 
 ### 34KhuA15
 
-- **E052** (printed p. 193, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
+- **E052** (printed p. 193, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-08 and applied to the corpus (length-preserving; no offset moved).
 - **E053** (printed p. 209, Aṭṭhakathā): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
 
 ### 35KhuA16
