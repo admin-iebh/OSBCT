@@ -121,6 +121,15 @@ identifiers:
   # but because nothing added the line.  It exists: 10.5281/zenodo.21760727.
   # Checked against the Zenodo record's own Versions panel, 2026-08-06, which is
   # also where the concept DOI above was confirmed as `Cite all versions`.
+  # Minted 2026-08-09 and READ FROM THE RECORD (zenodo.org/records/21864177),
+  # not guessed: "Published August 9, 2026 | Version 2.7.1", with the "New in
+  # 2.7.1" paragraph on the record at minting — including the sentence that
+  # states the ONE moved word first.  FOURTH CONSECUTIVE DEPOSIT to arrive
+  # describing itself correctly, and the first of them to describe a release
+  # in which the text actually changed.  No in-place correction needed.
+  - type: doi
+    value: "10.5281/zenodo.21864177"
+    description: "Zenodo archive of v2.7.1 (9 August 2026)"
   # Minted 2026-08-09 and READ FROM THE RECORD ITSELF (zenodo.org/records/21863987),
   # not guessed: "Published August 9, 2026 | Version 2.7.0", with the "New in
   # 2.7.0" paragraph already on the record at minting.  THIRD CONSECUTIVE
