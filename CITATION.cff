@@ -100,6 +100,13 @@ identifiers:
   # but because nothing added the line.  It exists: 10.5281/zenodo.21760727.
   # Checked against the Zenodo record's own Versions panel, 2026-08-06, which is
   # also where the concept DOI above was confirmed as `Cite all versions`.
+  # Minted 2026-08-08, provided by the reader from the record
+  # (doi.org/10.5281/zenodo.21855790).  Second consecutive deposit to arrive
+  # describing itself correctly — the three-file checklist and tag-cut-last
+  # ordering, now routine.
+  - type: doi
+    value: "10.5281/zenodo.21855790"
+    description: "Zenodo archive of v2.6.0 (8 August 2026)"
   # Minted 2026-08-08, read from the record itself (zenodo.org/records/21853330),
   # not guessed.  FIRST DEPOSIT TO ARRIVE DESCRIBING ITSELF CORRECTLY: version
   # 2.5.0 and the "New in 2.5.0" paragraph were on the record at minting,

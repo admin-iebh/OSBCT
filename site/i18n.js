@@ -178,29 +178,42 @@ document.addEventListener('DOMContentLoaded',function(){
       if(!b||!b.date) return;
       var word=(window.t?t('ver_updated'):'updated');
       var msg=window.OSBCT_VERSION+' — '+word+' '+b.date;
-      // `title` for the mouse; a TAP for everything else (2026-08-08,
-      // user-reported: "different browsers" showed no tooltip — they were
-      // all WebKit on iOS, where title tooltips do not exist in ANY
-      // browser).  The tap toggles a small popover with the same text.
+      // ONE styled popover for every pointer (2026-08-08, user-reported
+      // twice: iOS browsers — all WebKit — never show `title` tooltips, and
+      // the native desktop tooltip proved unreliable too).  HOVER shows it
+      // and mouseleave hides it; a TAP or CLICK pins it until the next tap
+      // anywhere.  No `title` attribute at all, so nothing doubles up.
+      var mkTip=function(el,pin){
+        var tip=document.createElement('div');
+        tip.className='sitever-tip';
+        if(pin) tip.dataset.pin='1';
+        tip.textContent=msg;
+        tip.style.cssText='position:fixed;z-index:9999;font-family:system-ui,sans-serif;'
+          +'font-size:12px;padding:6px 10px;border-radius:8px;'
+          +'background:var(--panel,#211e18);color:var(--fg,#e7e2d8);'
+          +'border:1px solid var(--line,#444);box-shadow:0 6px 18px rgba(0,0,0,.25)';
+        document.body.appendChild(tip);
+        var r=el.getBoundingClientRect();
+        tip.style.top=Math.min(window.innerHeight-40,r.bottom+6)+'px';
+        tip.style.left=Math.max(6,Math.min(window.innerWidth-tip.offsetWidth-6,r.right-tip.offsetWidth))+'px';
+        return tip;
+      };
+      var rmTip=function(){ var o=document.querySelector('.sitever-tip'); if(o) o.remove(); };
       for(var i=0;i<els.length;i++)(function(el){
-        el.title=msg;
         el.style.cursor='pointer';
+        el.addEventListener('mouseenter',function(){
+          if(!document.querySelector('.sitever-tip')) mkTip(el,false);
+        });
+        el.addEventListener('mouseleave',function(){
+          var o=document.querySelector('.sitever-tip');
+          if(o&&!o.dataset.pin) o.remove();
+        });
         el.addEventListener('click',function(ev){
           ev.stopPropagation();
-          var old=document.querySelector('.sitever-tip');
-          if(old){ old.remove(); return; }
-          var tip=document.createElement('div');
-          tip.className='sitever-tip';
-          tip.textContent=msg;
-          tip.style.cssText='position:fixed;z-index:9999;font-family:system-ui,sans-serif;'
-            +'font-size:12px;padding:6px 10px;border-radius:8px;'
-            +'background:var(--panel,#211e18);color:var(--fg,#e7e2d8);'
-            +'border:1px solid var(--line,#444);box-shadow:0 6px 18px rgba(0,0,0,.25)';
-          document.body.appendChild(tip);
-          var r=el.getBoundingClientRect();
-          tip.style.top=Math.min(window.innerHeight-40,r.bottom+6)+'px';
-          tip.style.left=Math.max(6,Math.min(window.innerWidth-tip.offsetWidth-6,r.right-tip.offsetWidth))+'px';
-          var away=function(){ tip.remove(); document.removeEventListener('click',away); };
+          var o=document.querySelector('.sitever-tip');
+          if(o&&o.dataset.pin){ o.remove(); return; }
+          rmTip(); mkTip(el,true);
+          var away=function(){ rmTip(); document.removeEventListener('click',away); };
           setTimeout(function(){ document.addEventListener('click',away); },0);
         });
       })(els[i]);
