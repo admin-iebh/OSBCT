@@ -177,8 +177,33 @@ document.addEventListener('DOMContentLoaded',function(){
     .then(function(b){
       if(!b||!b.date) return;
       var word=(window.t?t('ver_updated'):'updated');
-      for(var i=0;i<els.length;i++)
-        els[i].title=window.OSBCT_VERSION+' — '+word+' '+b.date;
+      var msg=window.OSBCT_VERSION+' — '+word+' '+b.date;
+      // `title` for the mouse; a TAP for everything else (2026-08-08,
+      // user-reported: "different browsers" showed no tooltip — they were
+      // all WebKit on iOS, where title tooltips do not exist in ANY
+      // browser).  The tap toggles a small popover with the same text.
+      for(var i=0;i<els.length;i++)(function(el){
+        el.title=msg;
+        el.style.cursor='pointer';
+        el.addEventListener('click',function(ev){
+          ev.stopPropagation();
+          var old=document.querySelector('.sitever-tip');
+          if(old){ old.remove(); return; }
+          var tip=document.createElement('div');
+          tip.className='sitever-tip';
+          tip.textContent=msg;
+          tip.style.cssText='position:fixed;z-index:9999;font-family:system-ui,sans-serif;'
+            +'font-size:12px;padding:6px 10px;border-radius:8px;'
+            +'background:var(--panel,#211e18);color:var(--fg,#e7e2d8);'
+            +'border:1px solid var(--line,#444);box-shadow:0 6px 18px rgba(0,0,0,.25)';
+          document.body.appendChild(tip);
+          var r=el.getBoundingClientRect();
+          tip.style.top=Math.min(window.innerHeight-40,r.bottom+6)+'px';
+          tip.style.left=Math.max(6,Math.min(window.innerWidth-tip.offsetWidth-6,r.right-tip.offsetWidth))+'px';
+          var away=function(){ tip.remove(); document.removeEventListener('click',away); };
+          setTimeout(function(){ document.addEventListener('click',away); },0);
+        });
+      })(els[i]);
     }).catch(function(){});
 });
 window.applyI18n=function(){
