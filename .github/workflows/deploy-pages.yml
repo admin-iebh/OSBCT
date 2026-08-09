@@ -48,7 +48,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        # v5 runs on Node 24; v4 was the source of the Node 20 deprecation
+        # warnings (open item, closed 2026-08-08).  The other actions here
+        # are already on their newest majors; if they warn, the fix is
+        # waiting for THEIR next major, not pinning anything older.
+        uses: actions/checkout@v5
       - name: Configure Pages
         uses: actions/configure-pages@v5
       # !!! A PRUNE STEP STOOD HERE FOR ONE COMMIT AND ITS PREMISE WAS WRONG.

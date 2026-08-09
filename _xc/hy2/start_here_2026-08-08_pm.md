@@ -1,5 +1,45 @@
 # START HERE — 2026-08-08 pm
 
+## STATE AS OF v2.6.0 (2026-08-08, end of the second long session)
+
+v2.5.0 AND v2.6.0 both released, deposited, DOIs recorded (…21853330,
+…21855790), site live.  Done since this file was written: the whole search
+arc (multi-word, wildcard, layer chips, per-layer caps, ordering, bucketed
+term index BOTH halves), the APD gear + summary line, DPD refreshed to
+2026-07-28 with family tables WORKING (store rebuilt from the reader's
+GoldenDict folder, mounted at ~/GoldenDict/dpd), vatthu heads golden (data
+fix), fix_vagga_heads on all remaining volumes (212 heads, census empty),
+version chip on every page with hover/tap popover date.  Gates:
+check_search.js 40, check_apd_gear.js 27, both green; every one shown to
+fail on the build that had its bug.
+
+**REMAINING, in the reader's chosen order (links LAST):**
+ 1. Parked display decisions (reader's): verbatim-repeat display
+    (5,376 of 22,527), `none` vs `dim`, capping the concordance tooltip.
+ 2. Search heavy half (per-volume shard split into postings + text) — ONLY
+    if the reader's live-network verdict says common-word searches hurt.
+ 3. The hyphen repair (8,790 words, 109 volumes) and the ~17% undrawn bold
+    spans still unexplained.
+ 4. ~~Housekeeping~~ **MOSTLY DONE 2026-08-08 late**: checkout@v5 (Node
+    24); `Ekaṁ nāma kintipañhavaṇṇanā` in the nav at #174 via rebuild
+    (which also dropped two GHOST nodes whose heads left sections/, and
+    corrected Nigamanakathā to #668); `claude/` reconstructed from the
+    surviving records, marked as such; baselines audited — links,
+    concordance, ordinal, fn-markers ALL "no measure regressed".
+    **Remaining in this bucket:** the NINE kintipañha heads still tail-of-
+    paragraph (the deferred corpus split, 2026-07-28r — the two dropped
+    gāthā heads are the same family); check_derived's flag — the legacy
+    links artifact is loaded by nothing: reader to decide retire vs
+    rebuild; BLOCKBREAK off; `position` unmeasured for 114 volumes; the
+    WLV gate; the offline package (§2 permission first).
+ 5. **THE LINKS (postponed by the reader, deliberately last):** the three
+    placer recommendations (block applying 20Khu03 vaggas 2–42, which sit
+    computed in `_xc/linksk_toc/`), the shadowing defect FIRST, the
+    verbatim-repeat target measure, the three inversions, spot-check
+    against the printed page, the concordance gate; and the assessment of
+    2026-08-09[read: 08-08]: a printed-page ground-truth sample and
+    provenance tiers in the UI are what turn "accurate" into a number.
+
 <!-- Supersedes start_here_2026-08-08.md, which is still correct about everything
      except its open item 1b (the apparatus half is DONE and its diagnosis was
      wrong) and its open item 1 (evidence gathered, decision still the reader's).
