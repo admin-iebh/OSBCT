@@ -460,3 +460,16 @@ returns 8,790/109 — the §11.3 verification), so the corpus-wide apply can lan
 as ONE operation: migrate all volumes, rebuild, re-emit the search index
 (terms come from the text), run every gate old-against-new, move the bold
 baseline deliberately.
+
+## 11.7 LANDED (2026-08-08, third session) — pipeline/apply_hyphen_repair.py
+
+All of §11.6's plan, plus the dimension the §11 audit predates: pbreak/
+rawOffsets (derived 2026-08-08, offsets into the very text the repair edits).
+7,291 deletions / 127,867 spans (the § figures exactly), 7,548 pbreak offsets
+shifted with zero anchor moves — then all 101 volumes RE-DERIVED from the
+printed page and every one EQUAL to the arithmetic shift.  hyspace 8,790 →
+1,501/96 (§11.5 exactly).  Two builder witnesses byte-identical.  Search index
+re-emitted, 643,965 terms unchanged.  Bold baseline moved deliberately:
+**339,569 → 381,912 drawn (+42,343), no volume lost a lemma.**  Every ratchet
+green.  What remains of the hyphen question is §2's consonant branch (1,521)
+and extract.py:204 hygiene — nothing else.
