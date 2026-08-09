@@ -300,7 +300,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=b324427be28c"></script>
+<script src="../i18n.js?v=dc6d59a884ae"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -441,7 +441,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='b324427be28c';
+const BUILD='dc6d59a884ae';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -2235,7 +2235,7 @@ function block(kind, key, opts){
     // so a volume with an empty bold map renders byte-identically to before.
     let _bs=spans||[], _bm=_mid;
     if((c.inc||{})[String(ord)]){
-      const _m=t.match(/[Nn]amo\s+tassa\s+\S+\s+[Aa]rahato\s+[Ss]ammāsam[Bb]uddhassa\.?\s*/);
+      const _m=t.match(/[Nn]amo\s+[Tt]assa\s+\S+\s+[Aa]rahato\s+[Ss]ammāsam[Bb]uddhassa\.?\s*/);
       if(_m){ const _i=_m.index,_n=_m[0].length;
         t=t.slice(0,_i)+t.slice(_i+_n);
         _bs=_bs.filter(x=>!(x[1]>_i&&x[0]<_i+_n)).map(x=>x[0]>=_i+_n?[x[0]-_n,x[1]-_n]:x);
@@ -3271,7 +3271,12 @@ const rxEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 // (2026-08-08, reader's decision); the corpus and incipit maps keep the
 // edition's printed variants, recorded as errata E068-E071.
 const HOMAGE='Namo tassa Bhagavato Arahato Sammāsambuddhassa.';
-const homageNorm=s=>/^[Nn]amo\s+tassa\s+\S+\s+[Aa]rahato\s+[Ss]ammāsam[Bb]uddhassa\.?\s*$/.test((s||'').trim())?HOMAGE:s;
+// [Tt]assa: the census run case-blind (after the reader found `Namo Tassa`
+// at the Bhikkhunīpātimokkha head) counts TWELVE printed variants across
+// 211 homages — capital T in six books, capital B in three, Bhagavatā in
+// two, a lower-case sammā-, three without the period — every one verified
+// at its own printed page and recorded in the errata register.
+const homageNorm=s=>/^[Nn]amo\s+[Tt]assa\s+\S+\s+[Aa]rahato\s+[Ss]ammāsam[Bb]uddhassa\.?\s*$/.test((s||'').trim())?HOMAGE:s;
 const wpat=w=>w.indexOf('*')>=0?w.split('*').map(rxEsc).join('\\S*'):rxEsc(w);
 let TERMS=null, shardCache={}, TERMKEYS=null, SNAMES=null, SNFOLD=null;
 // !!! A SUTTA'S NAME IS USUALLY NOT IN ITS OWN PROSE.  Measured over the 2,593
