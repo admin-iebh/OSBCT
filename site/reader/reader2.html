@@ -187,10 +187,10 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
 .rctrl button{border-right:1px solid var(--line)}.rctrl button:last-child{border-right:none}
 .scroll{overflow-y:auto;padding:20px 22px 130px;flex:1}  /* --rsize moved to :root, see above */
 .scroll::-webkit-scrollbar{width:11px}.scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
-.incipit{font-family:'Gentium Plus',serif;font-style:italic;color:var(--accent);text-align:center;font-size:15px;margin:2px 0 16px}
+.incipit{font-family:'Gentium Plus',serif;color:var(--accent);text-align:center;font-size:15px;margin:2px 0 16px}
 .uddana{text-align:center;margin:14px auto 22px;max-width:640px;color:var(--mut)}
 .udd-label{font-weight:700;color:var(--accent);font-size:13px;letter-spacing:.02em;margin-bottom:5px}
-.udd-verse{font-family:'Gentium Plus',serif;font-style:italic;font-size:calc(var(--rsize,16px) - 1px);line-height:1.7;color:var(--fg)}
+.udd-verse{font-family:'Gentium Plus',serif;font-size:calc(var(--rsize,16px) - 1px);line-height:1.7;color:var(--fg)}
 .uddana .appx{text-align:left;display:inline-block;margin-top:8px}
 .head{font-family:'Gentium Plus',Georgia,serif;scroll-margin-top:14px}
 .head.bookseries{font-size:15px;font-weight:600;color:var(--mut);margin:30px 0 0;text-align:center;letter-spacing:.04em}
@@ -201,10 +201,17 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
 .head.section.band{margin:6px 0 4px}
 .head.section{font-size:14.5px;font-weight:600;color:var(--accent);margin:15px 0 5px;text-align:center;scroll-margin-top:14px}
 .head.vatthu{font-size:13px;font-weight:600;color:var(--mut);margin:14px 0 4px;text-align:center;scroll-margin-top:14px}
-.gatha{font-family:'Gentium Plus',serif;font-style:italic;line-height:1.7;margin:8px 0 4px 1.6em;color:var(--fg)}
+/* NO ITALICS ANYWHERE THE EDITION'S TEXT IS DRAWN (2026-08-08, reader's
+   decision, made on the page and then made total by measurement: all 118
+   PDFs, every embedded font enumerated — no italic or oblique face exists
+   in the edition.  The gāthā/incipit/uddāna italics were OUR typography,
+   treating Pāḷi as if it were a foreign phrase in an English book; the
+   whole book is Pāḷi.  `.appx i` is pinned to normal because the <i>
+   element defaults italic in every browser. */
+.gatha{font-family:'Gentium Plus',serif;line-height:1.7;margin:8px 0 4px 1.6em;color:var(--fg)}
 .gatha .pn{font-style:normal;margin-left:-1.6em;margin-right:.4em}
 .gatha-end{font-size:12px;color:var(--mut);margin-left:.6em}
-.gatha-count{font-size:12px;color:var(--mut);margin-left:1.6em;font-style:italic}
+.gatha-count{font-size:12px;color:var(--mut);margin-left:1.6em}
 .gatha-after{margin-top:10px}
 /* A `sections` entry with k:'prose' — printed prose that sits between two
    display blocks BEFORE a book's first anchored paragraph.  Body font, not
@@ -248,7 +255,7 @@ sup.fnm{color:var(--accent);font-size:9.5px;font-weight:700;vertical-align:super
 .para .pgrule{margin:9px 0 7px}
 .pgmk{font-family:'Inter',sans-serif;font-size:10px;color:var(--faint);text-decoration:none;border:1px solid var(--line);border-radius:7px;padding:1px 6px}.pgmk:hover{color:var(--accent)}
 .appx{margin:7px 0 0;padding:6px 11px;border-left:2px solid var(--line);background:var(--app);border-radius:0 8px 8px 0;font-family:'Inter',sans-serif;font-size:11.5px;line-height:1.5;color:var(--mut)}
-.appx .mk{font-weight:700;color:var(--accent);margin-right:5px}.appx i{font-family:'Gentium Plus',serif;font-style:italic;color:var(--fg)}
+.appx .mk{font-weight:700;color:var(--accent);margin-right:5px}.appx i{font-family:'Gentium Plus',serif;font-style:normal;color:var(--fg)}
 .appx abbr{text-decoration:none;border-bottom:1px dotted var(--faint);cursor:help}
 .appx .xref{color:var(--accent);cursor:pointer;text-decoration:none;border-bottom:1px solid transparent}.appx a.xref:hover{border-bottom-color:var(--accent)}
 .pagemark{display:block;text-align:center;color:var(--faint);font-family:'Inter',sans-serif;font-size:10.5px;letter-spacing:.06em;margin:16px 0 8px;text-decoration:none}
@@ -293,7 +300,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=a07c56fc56a4"></script>
+<script src="../i18n.js?v=58718ecc8654"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -434,7 +441,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='a07c56fc56a4';
+const BUILD='58718ecc8654';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
