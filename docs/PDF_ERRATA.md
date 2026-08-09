@@ -35,7 +35,7 @@ publisher — can be prepared from one list.
 | E018 | 08DiA02 | 334 | `Kèyādicatu` | `Kāyādicatu` | high |
 | E019 | 10Ma02 | 53 | `panāÿasmā` | `panāyasmā` | high |
 | E020 | 10Ma02 | 207 | `parÙpphosakaṁ` | `paripphosakaṁ` | review |
-| E021 | 10Ma02 | 247 | `x` | `` | review |
+| E021 | 10Ma02 | 247 | `x` | `` | high |
 | E022 | 10MaA01 | 232 | `pakkhepqssa` | `pakkhepassa` | review |
 | E023 | 10MaA01 | 258 | `bhikkhØcāragocare` | `bhikkhācāragocare` | high |
 | E024 | 10MaA01 | 258 | `vuttanayenefa` | `vuttanayeneva` | high |
@@ -141,7 +141,7 @@ publisher — can be prepared from one list.
 
 - **E019** (printed p. 53, Tipiṭaka): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
 - **E020** (printed p. 207, Tipiṭaka): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
-- **E021** (printed p. 247, Tipiṭaka): Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context.
+- **E021** (printed p. 247, Tipiṭaka): RESOLVED 2026-08-09 against the printed page (pdf p.253, printed p.247): the x is SET IN PRINT — the edition's own unnumbered position siglum, paired with the + eleven lines below (‘pabbajjāya, + maraṇenapi’), both belonging to the one unnumbered note at the foot of that page: “Maraṇenapi te -pa- pabbajjāyā”ti vākyadvayaṁ Sī-Syā-Kaṁ-I-potthakesu dutiyaṭṭhāne yeva dissati, Pārājikapāḷiyaṁ pana paṭhamaṭṭhāne yeva dissati. Tasmā idha dutiyaṭṭhāne punāgataṁ adhikaṁ viya dissati. x marks the paṭhamaṭṭhāna, + the dutiyaṭṭhāna, of the repeated two-sentence passage. The corpus already preserves both marks faithfully; NOTHING IS APPLIED. Same class as the * cross-reference sigla. Two superseded suggestions recorded: the register's original deletion, and the 2026-08-09 session's ‘( )’ reading, which came from the DIFFERENT omission-marker site one page earlier (¶295, printed p.246, ‘jānāsi, ( ) maraṇenapi’, corpus already correct there). DEFECT DISCOVERED WHILE RESOLVING, extraction class, not the edition's: the + note is ABSENT from the live apparatus — site/reader/apparatus/10Ma02.app.json carries no key for ¶296 at all (the note text survives in _xc/hy1/blocks*/10Ma02.json); and unnumbered-siglum notes elsewhere are GLUED onto numbered notes (¶295 apparatus note 2 carries the ( ) note appended). Needs its own corpus-wide measure before any repair.
 
 ### 10MaA01
 

@@ -1,0 +1,516 @@
+{
+ "note": "Reader verdicts of 2026-08-09 joined to apply pairs. CONVENTION (measured on E035): corpus/*.txt KEEPS the printed reading by principle 3; application is to site/<vol>.json and derived stores, and data/glyph_errata.json must carry the pair so rebuilds reproduce it. CLASS A (37 rows): site already carries the reader-confirmed reading — register status update only. CLASS B (12 rows): the quick neighbourhood probe did NOT locate/confirm the site reading — E042 shows a real third reading (vaḍḍhanī vs reader vaḍḍhane); each needs a careful per-row look before any write. NOTHING APPLIED YET.",
+ "class_A": [
+  "E001",
+  "E003",
+  "E004",
+  "E006",
+  "E007",
+  "E013",
+  "E014",
+  "E017",
+  "E019",
+  "E020",
+  "E023",
+  "E026",
+  "E027",
+  "E029",
+  "E030",
+  "E031",
+  "E033",
+  "E036",
+  "E040",
+  "E041",
+  "E045",
+  "E048",
+  "E050",
+  "E053",
+  "E054",
+  "E055",
+  "E056",
+  "E057",
+  "E058",
+  "X001",
+  "X002",
+  "X003",
+  "X004",
+  "X005",
+  "X006",
+  "X008",
+  "X009"
+ ],
+ "class_B": [
+  "E002",
+  "E005",
+  "E011",
+  "E018",
+  "E034",
+  "E037",
+  "E038",
+  "E039",
+  "E042",
+  "E043",
+  "E044",
+  "E049"
+ ],
+ "unanswered": [
+  "X007"
+ ],
+ "adjudications_from_print": {
+  "E002": "vuṭṭhānasammutiṁ (print ṭṭh; register suggestion had ṭth slip)",
+  "E030": "adhiṭṭhitatāya (print ṭṭh)",
+  "E031": "vuṭṭhātuṁ (print ṭṭh; word is a BOLD lemma)",
+  "E041": "santuṭṭho (print ṭṭh)",
+  "E034": "…paṭimaṇḍitaṁ (edition ṁ, reader ṃ normalised)",
+  "E011": "Rāhu-asurindo (print keeps hyphen; PRINT ITSELF corrupt at ā)",
+  "E017": "Rāhu-asurindaṁ (hyphen kept)",
+  "X002": "cakkhuviññāṇaṁ (print shows displaced-dot nạ; ṇ per class pattern)",
+  "X003": "ñāṇaṁ (same page prints Buddhañāṇassa with ṇ)",
+  "X006": "sabbaññutaññāṇaṁ (same)",
+  "X008": "Ḍayhantu (print capital Ḍ, BOLD lemma)",
+  "X009": "Ḍahantaṁ1 (both printed sites p146+p206 read Ḍ; marker digit kept)"
+ },
+ "rows": [
+  {
+   "id": "E001",
+   "vol": "02ViT02",
+   "apply_from": "Dêghanikāyaṭṭhakathāyaṁ3",
+   "apply_to": "Dīghanikāyaṭṭhakathāyaṁ3",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E002",
+   "vol": "02Vin02",
+   "apply_from": "vòṭthānasammutiṁ",
+   "apply_to": "vuṭṭhānasammutiṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E003",
+   "vol": "03ViT03",
+   "apply_from": "āóattiyampi",
+   "apply_to": "āṇattiyampi",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E004",
+   "vol": "04ViT04",
+   "apply_from": "āóattikapayogaṁ",
+   "apply_to": "āṇattikapayogaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E005",
+   "vol": "06VinSg06",
+   "apply_from": "Dêghabhāṇaka",
+   "apply_to": "Dīghabhāṇaka",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E006",
+   "vol": "07Di02",
+   "apply_from": "passémi",
+   "apply_to": "passāmi",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E007",
+   "vol": "07DiA01",
+   "apply_from": "ratanacuṇóavippakiṇṇaṁ",
+   "apply_to": "ratanacuṇṇavippakiṇṇaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E011",
+   "vol": "08DiA02",
+   "apply_from": "Rèhu-asurindo",
+   "apply_to": "Rāhu-asurindo",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E013",
+   "vol": "08DiA02",
+   "apply_from": "upaîetha",
+   "apply_to": "upanetha",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 2
+  },
+  {
+   "id": "E014",
+   "vol": "08DiA02",
+   "apply_from": "upaîetha",
+   "apply_to": "upanetha",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 2
+  },
+  {
+   "id": "E017",
+   "vol": "08DiA02",
+   "apply_from": "Rèhu-asurindaṁ",
+   "apply_to": "Rāhu-asurindaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E018",
+   "vol": "08DiA02",
+   "apply_from": "Kèyādicatu",
+   "apply_to": "Kāyādicatu",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E019",
+   "vol": "10Ma02",
+   "apply_from": "panāÿasmā",
+   "apply_to": "panāyasmā",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E020",
+   "vol": "10Ma02",
+   "apply_from": "parÙpphosakaṁ",
+   "apply_to": "paripphosakaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E023",
+   "vol": "10MaA01",
+   "apply_from": "bhikkhØcāragocare",
+   "apply_to": "bhikkhācāragocare",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E026",
+   "vol": "14SamA01",
+   "apply_from": "sampÙṇḍeti",
+   "apply_to": "sampiṇḍeti",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E027",
+   "vol": "15An01",
+   "apply_from": "mõditāsahagatena",
+   "apply_to": "muditāsahagatena",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E029",
+   "vol": "15An01",
+   "apply_from": "viharāmé",
+   "apply_to": "viharāmi",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E030",
+   "vol": "17SaT02",
+   "apply_from": "adhÙṭthitatāya",
+   "apply_to": "adhiṭṭhitatāya",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E031",
+   "vol": "17SaT02",
+   "apply_from": "vòṭthātuṁ",
+   "apply_to": "vuṭṭhātuṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E033",
+   "vol": "18AnA02",
+   "apply_from": "paveóenti",
+   "apply_to": "pavesenti",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E034",
+   "vol": "19AnA03",
+   "apply_from": "dvattiṁsavarapurisalakkhaṇapatÙmaṇḍitaṁ",
+   "apply_to": "dvattiṁsavarapurisalakkhaṇapaṭimaṇḍitaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E036",
+   "vol": "20Khu03",
+   "apply_from": "Aòjalī",
+   "apply_to": "Añjalī",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E037",
+   "vol": "22AbhiT01",
+   "apply_from": "dhātuþoti",
+   "apply_to": "dhātuyoti",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E038",
+   "vol": "22AbhiT01",
+   "apply_from": "adhippāþo",
+   "apply_to": "adhippāyo",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E039",
+   "vol": "24AbhiT03",
+   "apply_from": "Nènācittavasena",
+   "apply_to": "Nānācittavasena",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E040",
+   "vol": "25VsmT01",
+   "apply_from": "Sêlādidhammehi",
+   "apply_to": "Sīlādidhammehi",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E041",
+   "vol": "25VsmT01",
+   "apply_from": "santòtṭho",
+   "apply_to": "santuṭṭho",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E042",
+   "vol": "25VsmT01",
+   "apply_from": "pathavīkasiṇādivaḍḍhaní",
+   "apply_to": "pathavīkasiṇādivaḍḍhane",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E043",
+   "vol": "25VsmT01",
+   "apply_from": "Vêriyāyattassa",
+   "apply_to": "Vīriyāyattassa",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E044",
+   "vol": "26Khu09",
+   "apply_from": "mānavinibandhādÙṭhi",
+   "apply_to": "mānavinibandhādiṭṭhi",
+   "dlen": 1,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E045",
+   "vol": "27Khu10",
+   "apply_from": "āóatti",
+   "apply_to": "āṇatti",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E048",
+   "vol": "32Abhi04",
+   "apply_from": "Kèyasakkhi1",
+   "apply_to": "Kāyasakkhi1",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E049",
+   "vol": "32Abhi04",
+   "apply_from": "Sèrammaṇaṁ",
+   "apply_to": "Sārammaṇaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E050",
+   "vol": "32Abhi04",
+   "apply_from": "purejātèrammaṇā",
+   "apply_to": "purejātārammaṇā",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E053",
+   "vol": "34KhuA15",
+   "apply_from": "Candavatê",
+   "apply_to": "Candavatī",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E054",
+   "vol": "35KhuA16",
+   "apply_from": "saṅgahaóato",
+   "apply_to": "saṅgahaṇato",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E055",
+   "vol": "46KhuA27",
+   "apply_from": "tÙṭhatīti",
+   "apply_to": "tiṭṭhatīti",
+   "dlen": 1,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "E056",
+   "vol": "49AbhiA02",
+   "apply_from": "Tèni",
+   "apply_to": "Tāni",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E057",
+   "vol": "49AbhiA02",
+   "apply_from": "Pètimokkhasaṁvarasīlaṁ",
+   "apply_to": "Pātimokkhasaṁvarasīlaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "E058",
+   "vol": "49AbhiA02",
+   "apply_from": "Kèmañca",
+   "apply_to": "Kāmañca",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 0
+  },
+  {
+   "id": "X001",
+   "vol": "08DiA02",
+   "apply_from": "āyuparimānṁ",
+   "apply_to": "āyuparimāṇaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "X002",
+   "vol": "08DiA02",
+   "apply_from": "cakkhuviññānṁ",
+   "apply_to": "cakkhuviññāṇaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "X003",
+   "vol": "08DiA02",
+   "apply_from": "ñānṁ",
+   "apply_to": "ñāṇaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 3
+  },
+  {
+   "id": "X004",
+   "vol": "08DiA02",
+   "apply_from": "sahajātasamosaranṁ",
+   "apply_to": "sahajātasamosaraṇaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "X005",
+   "vol": "08DiA02",
+   "apply_from": "āyuppamānṁ",
+   "apply_to": "āyuppamāṇaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "X006",
+   "vol": "08DiA02",
+   "apply_from": "sabbaññutaññānṁ",
+   "apply_to": "sabbaññutaññāṇaṁ",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "X008",
+   "vol": "12DiT05",
+   "apply_from": "qayhantu",
+   "apply_to": "Ḍayhantu",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  },
+  {
+   "id": "X009",
+   "vol": "27Khu10",
+   "apply_from": "qahantaṁ1",
+   "apply_to": "Ḍahantaṁ1",
+   "dlen": 0,
+   "n_site": 0,
+   "n_corpus": 1
+  }
+ ]
+}

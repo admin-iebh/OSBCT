@@ -23,8 +23,19 @@ keywords:
 url: "https://buddha-dhamma.net"
 repository-code: "https://github.com/admin-iebh/OSBCT"
 license: CC-BY-4.0
-version: "2.6.0"
-date-released: "2026-08-08"
+version: "2.7.0"
+date-released: "2026-08-09"
+# 2026-08-09, v2.7.0: no text changed — the errata register under scrutiny.
+# E021 resolved AGAINST both guesses: the printed x at 10Ma02 p.247 is the
+# edition's own position siglum (paired with the + below it, one unnumbered
+# foot-note); nothing applied, two superseded suggestions recorded in the
+# entry.  The glyph review sheet (pipeline/build_glyph_review.py) renders
+# all 50 unresolved census-glyph sites beside their printed pages; the
+# reader's verdicts on 49 are recorded in _review/ — 37 confirm readings the
+# served text already carries, 12 await per-row application.  The siglum
+# measure (pipeline/measure_sigla.py): 1,427 of 2,535 symbol-marked
+# paragraphs carry no apparatus entry at all.  Three-file checklist bumped
+# together, tag cut LAST.
 # 2026-08-08, v2.6.0: no text changed — 118 volumes, 89,512 paragraphs,
 # RE-COUNTED and exact.  The release is the reader and the search again:
 # layer-ordered results, the bucketed term index, the dictionary panel's

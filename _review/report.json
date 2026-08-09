@@ -1,0 +1,1008 @@
+[
+ {
+  "key": "E001",
+  "vol": "02ViT02",
+  "glyph": "ê",
+  "printed": 169,
+  "ctx": "āyañca2 imināva nayena vuttaṁ. Dêghanikāyaṭṭhakathāyaṁ3 pana “ma",
+  "sug": "Dīghanikāyaṭṭhakathāyaṁ3",
+  "src": "register",
+  "conf": "high",
+  "pdf": "tika-unicode/02ViT02.pdf",
+  "hits": [
+   {
+    "pdf_page": 181,
+    "header": "Vinayapiṭaka",
+    "img": "clips_b/E001_02ViT02_p181.png",
+    "line_found": true
+   }
+  ],
+  "needle": "a nayena vuttaṁ. Dêghanikāyaṭṭhakathā"
+ },
+ {
+  "key": "E002",
+  "vol": "02Vin02",
+  "glyph": "ò",
+  "printed": 428,
+  "ctx": "hasu dhammesu sikkhitasikkhāya vòṭthānasammutiṁ dadeyya, esā ñat",
+  "sug": "vuṭthānasammutiṁ",
+  "src": "register",
+  "conf": "review",
+  "pdf": "pali-unicode/02Vin02.pdf",
+  "hits": [
+   {
+    "pdf_page": 442,
+    "header": "Vinayapiṭaka",
+    "img": "clips_b/E002_02Vin02_p442.png",
+    "line_found": true
+   }
+  ],
+  "needle": "sikkhitasikkhāya vòṭthānasammutiṁ dad"
+ },
+ {
+  "key": "E003",
+  "vol": "03ViT03",
+  "glyph": "ó",
+  "printed": 238,
+  "ctx": "etī”ti-ādi sabbaṁ upajjhāyassa āóattiyampi veditabbaṁ. Sesametth",
+  "sug": "āṇattiyampi",
+  "src": "register",
+  "conf": "high",
+  "pdf": "tika-unicode/03ViT03.pdf",
+  "hits": [
+   {
+    "pdf_page": 260,
+    "header": "Sāratthadīpanīṭīkā",
+    "img": "clips_b/E003_03ViT03_p260.png",
+    "line_found": true
+   }
+  ],
+  "needle": "baṁ upajjhāyassa āóattiyampi veditabb"
+ },
+ {
+  "key": "E004",
+  "vol": "04ViT04",
+  "glyph": "ó",
+  "printed": 194,
+  "ctx": "hi adinnādānato muccatīti idaṁ āóattikapayogaṁ sandhāya vuttaṁ, ",
+  "sug": "āṇattikapayogaṁ",
+  "src": "register",
+  "conf": "high",
+  "pdf": "tika-unicode/04ViT04.pdf",
+  "hits": [
+   {
+    "pdf_page": 203,
+    "header": "Vinayapiṭaka",
+    "img": "clips_b/E004_04ViT04_p203.png",
+    "line_found": true
+   }
+  ],
+  "needle": "o muccatīti idaṁ āóattikapayogaṁ sand"
+ },
+ {
+  "key": "E005",
+  "vol": "06VinSg06",
+  "glyph": "ê",
+  "printed": 13,
+  "ctx": "sāmī”ti agamāsi. Ārāmikā disvā Dêghabhāṇaka-abhayattherassa āroc",
+  "sug": "Dīghabhāṇaka",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/06VinSg06.pdf",
+  "hits": [
+   {
+    "pdf_page": 19,
+    "header": "14",
+    "img": "clips_b/E005_06VinSg06_p19.png",
+    "line_found": true
+   }
+  ],
+  "needle": "i. Ārāmikā disvā Dêghabhāṇaka-abhayat"
+ },
+ {
+  "key": "E006",
+  "vol": "07Di02",
+  "glyph": "é",
+  "printed": 191,
+  "ctx": "a kho panāhaṁ bho brahmānaṁ passémi, na brahmunā sākacchemi, na ",
+  "sug": "passimi",
+  "src": "register",
+  "conf": "review",
+  "pdf": "pali-unicode/07Di02.pdf",
+  "hits": [
+   {
+    "pdf_page": 200,
+    "header": "6. Mahāgovindasutta",
+    "img": "clips_b/E006_07Di02_p200.png",
+    "line_found": true
+   }
+  ],
+  "needle": "bho brahmānaṁ passémi, na brahmunā sā"
+ },
+ {
+  "key": "E007",
+  "vol": "07DiA01",
+  "glyph": "ó",
+  "printed": 27,
+  "ctx": "i ratanāveḷaratanadāma-ratanacuṇóavippakiṇṇaṁ viya, pasāritarata",
+  "sug": "ratanacuṇṇavippakiṇṇaṁ",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/07DiA01.pdf",
+  "hits": [
+   {
+    "pdf_page": 56,
+    "header": "Dīghanikāya",
+    "img": "clips_b/E007_07DiA01_p56.png",
+    "line_found": true
+   }
+  ],
+  "needle": "tanadāma-ratanacuṇóavippakiṇṇaṁ viya,"
+ },
+ {
+  "key": "E011",
+  "vol": "08DiA02",
+  "glyph": "è",
+  "printed": 72,
+  "ctx": "ññesampi uttānoti na vattabbo. Rèhu-asurindo pana pādantato yāva",
+  "sug": "Rāhu",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/08DiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 87,
+    "header": "78",
+    "img": "clips_b/E011_08DiA02_p87.png",
+    "line_found": true
+   }
+  ],
+  "needle": "oti na vattabbo. Rèhu-asurindo pana p"
+ },
+ {
+  "key": "E013",
+  "vol": "08DiA02",
+  "glyph": "î",
+  "printed": 135,
+  "ctx": "aṁ passatha. Upasaṁharathāti upaîetha, imaṁ Licchaviparisaṁ tumh",
+  "sug": "upanetha",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/08DiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 144,
+    "header": "Mahāvaggaṭṭhakathā",
+    "img": "clips_b/E013_08DiA02_p144.png",
+    "line_found": true
+   }
+  ],
+  "needle": "pasaṁharathāti upaîetha, imaṁ Licchav"
+ },
+ {
+  "key": "E014",
+  "vol": "08DiA02",
+  "glyph": "î",
+  "printed": 135,
+  "ctx": "vatiṁsāsadisaṁ upasaṁharatha upaîetha allīyāpetha. Yatheva Tāvat",
+  "sug": "upanetha",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/08DiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 144,
+    "header": "Mahāvaggaṭṭhakathā",
+    "img": "clips_b/E014_08DiA02_p144.png",
+    "line_found": true
+   }
+  ],
+  "needle": "upasaṁharatha upaîetha allīyāpetha."
+ },
+ {
+  "key": "E017",
+  "vol": "08DiA02",
+  "glyph": "è",
+  "printed": 282,
+  "ctx": "a hutvā. Rāhubhaddamupāgamunti Rèhu-asurindaṁ upasaṅkamiṁsu. Sam",
+  "sug": "Rāhu",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/08DiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 291,
+    "header": "282",
+    "img": "clips_b/E017_08DiA02_p291.png",
+    "line_found": true
+   }
+  ],
+  "needle": "haddamupāgamunti Rèhu-asurindaṁ upasa"
+ },
+ {
+  "key": "E018",
+  "vol": "08DiA02",
+  "glyph": "è",
+  "printed": 334,
+  "ctx": "bbabhāgamaggassa adhippetattā. Kèyādicatu-ārammaṇappavatto hi pu",
+  "sug": "Kāyādicatu",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/08DiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 345,
+    "header": "336",
+    "img": "clips_b/E018_08DiA02_p345.png",
+    "line_found": true
+   }
+  ],
+  "needle": "sa adhippetattā. Kèyādicatu-ārammaṇap"
+ },
+ {
+  "key": "E019",
+  "vol": "10Ma02",
+  "glyph": "ÿ",
+  "printed": 53,
+  "ctx": "mpadaṁ, acirūpasampanno kho panāÿasmā Seniyo eko vūpakaṭṭho appa",
+  "sug": "panāyasmā",
+  "src": "register",
+  "conf": "high",
+  "pdf": "pali-unicode/10Ma02.pdf",
+  "hits": [
+   {
+    "pdf_page": 60,
+    "header": "Majjhimapaṇṇāsapāḷi",
+    "img": "clips_b/E019_10Ma02_p60.png",
+    "line_found": true
+   }
+  ],
+  "needle": "asampanno kho panāÿasmā Seniyo eko vū"
+ },
+ {
+  "key": "E020",
+  "vol": "10Ma02",
+  "glyph": "Ù",
+  "printed": 207,
+  "ctx": "īyacuṇṇāni2 ākiritvā udakena parÙpphosakaṁ paripphosakaṁ sanneyy",
+  "sug": "paripphosakaṁ",
+  "src": "register",
+  "conf": "review",
+  "pdf": "pali-unicode/10Ma02.pdf",
+  "hits": [
+   {
+    "pdf_page": 213,
+    "header": "7. Mahāsakuludāyīsutta (77)",
+    "img": "clips_b/E020_10Ma02_p213.png",
+    "line_found": true
+   }
+  ],
+  "needle": "iritvā udakena parÙpphosakaṁ parippho"
+ },
+ {
+  "key": "E023",
+  "vol": "10MaA01",
+  "glyph": "Ø",
+  "printed": 258,
+  "ctx": "ṅkhātaṁ gocaraṁ uggahetvā bhikkhØcāragocare taṁ gahetvā gamanaṁ ",
+  "sug": "bhikkhācāragocare",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/10MaA01.pdf",
+  "hits": [
+   {
+    "pdf_page": 276,
+    "header": "Mūlapaṇṇāsaṭṭhakathā",
+    "img": "clips_b/E023_10MaA01_p276.png",
+    "line_found": true
+   }
+  ],
+  "needle": "ṁ uggahetvā bhikkhØcāragocare taṁ gah"
+ },
+ {
+  "key": "E026",
+  "vol": "14SamA01",
+  "glyph": "Ù",
+  "printed": 119,
+  "ctx": "ipāto, tena ca cha Satthāre sampÙṇḍeti. Yathā pūraṇādayo “Sammās",
+  "sug": "sampiṇḍeti",
+  "src": "register",
+  "conf": "review",
+  "pdf": "atthakatha-unicode/14SamA01.pdf",
+  "hits": [
+   {
+    "pdf_page": 144,
+    "header": "3. Kosalasaṁyutta",
+    "img": "clips_b/E026_14SamA01_p144.png",
+    "line_found": true
+   }
+  ],
+  "needle": "cha Satthāre sampÙṇḍeti. Yathā pūraṇ"
+ },
+ {
+  "key": "E027",
+  "vol": "15An01",
+  "glyph": "õ",
+  "printed": 181,
+  "ctx": ". Karuṇāsahagatena cetasā -pa- mõditāsahagatena cetasā. Upekkhās",
+  "sug": "muditāsahagatena",
+  "src": "register",
+  "conf": "high",
+  "pdf": "pali-unicode/15An01.pdf",
+  "hits": [
+   {
+    "pdf_page": 216,
+    "header": "184",
+    "img": "clips_b/E027_15An01_p216.png",
+    "line_found": true
+   }
+  ],
+  "needle": "tena cetasā -pa- mõditāsahagatena cet"
+ },
+ {
+  "key": "E029",
+  "vol": "15An01",
+  "glyph": "é",
+  "printed": 181,
+  "ctx": "ena abyāpajjena pharitvā viharāmé. So ce ahaṁ brāhmaṇa evaṁbhūto",
+  "sug": "viharāmi",
+  "src": "register",
+  "conf": "review",
+  "pdf": "pali-unicode/15An01.pdf",
+  "hits": [
+   {
+    "pdf_page": 216,
+    "header": "184",
+    "img": "clips_b/E029_15An01_p216.png",
+    "line_found": true
+   }
+  ],
+  "needle": "a pharitvā viharāmé. So ce ahaṁ brāhm"
+ },
+ {
+  "key": "E030",
+  "vol": "17SaT02",
+  "glyph": "Ù",
+  "printed": 227,
+  "ctx": "ccayalābhena tasmiṁ ārammaṇe adhÙṭthitatāya anekaggataṁ pahāya c",
+  "sug": "adhiṭthitatāya",
+  "src": "register",
+  "conf": "review",
+  "pdf": "tika-unicode/17SaT02.pdf",
+  "hits": [
+   {
+    "pdf_page": 265,
+    "header": "Khandhavaggasaṁyuttaṭīkā",
+    "img": "clips_b/E030_17SaT02_p265.png",
+    "line_found": true
+   }
+  ],
+  "needle": "asmiṁ ārammaṇe adhÙṭthitatāya anekagg"
+ },
+ {
+  "key": "E031",
+  "vol": "17SaT02",
+  "glyph": "ò",
+  "printed": 279,
+  "ctx": "attā. Yathāparicchedena kālena vòṭthātuṁ na sakkoti vuṭṭhānavasī",
+  "sug": "vuṭthātuṁ",
+  "src": "register",
+  "conf": "review",
+  "pdf": "tika-unicode/17SaT02.pdf",
+  "hits": [
+   {
+    "pdf_page": 315,
+    "header": "Khandhavaggasaṁyuttaṭīkā",
+    "img": "clips_b/E031_17SaT02_p315.png",
+    "line_found": true
+   }
+  ],
+  "needle": "icchedena kālena vòṭthātuṁ na sakkoti"
+ },
+ {
+  "key": "E033",
+  "vol": "18AnA02",
+  "glyph": "ó",
+  "printed": 117,
+  "ctx": "atthe tālappamāṇaṁ ayasūlaṁ paveóenti, tathā vāmahatthādīsu. Yat",
+  "sug": "paveṇenti",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/18AnA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 140,
+    "header": "Tikanipātaṭṭhakathā",
+    "img": "clips_b/E033_18AnA02_p140.png",
+    "line_found": true
+   }
+  ],
+  "needle": "āṇaṁ ayasūlaṁ paveóenti, tathā vāmaha"
+ },
+ {
+  "key": "E034",
+  "vol": "19AnA03",
+  "glyph": "Ù",
+  "printed": 77,
+  "ctx": " “dvattiṁsavarapurisalakkhaṇapatÙmaṇḍitaṁ nāma sarīraṁ atthi nu ",
+  "sug": "dvattiṁsavarapurisalakkhaṇapatimaṇḍitaṁ",
+  "src": "register",
+  "conf": "review",
+  "pdf": "atthakatha-unicode/19AnA03.pdf",
+  "hits": [
+   {
+    "pdf_page": 104,
+    "header": "Pañcakanipātaṭṭhakathā",
+    "img": "clips_b/E034_19AnA03_p104.png",
+    "line_found": true
+   }
+  ],
+  "needle": "apurisalakkhaṇapatÙmaṇḍitaṁ nāma sarī"
+ },
+ {
+  "key": "E036",
+  "vol": "20Khu03",
+  "glyph": "ò",
+  "printed": 90,
+  "ctx": "ako Dhūpo, Pulino Uttiyena ca. Aòjalī Khomadāyī ca, daseva tatiy",
+  "sug": "Aujalī",
+  "src": "register",
+  "conf": "review",
+  "pdf": "pali-unicode/20Khu03.pdf",
+  "hits": [
+   {
+    "pdf_page": 110,
+    "header": "90",
+    "img": "clips_b/E036_20Khu03_p110.png",
+    "line_found": true
+   }
+  ],
+  "needle": "ino Uttiyena ca. Aòjalī Khomadāyī ca,"
+ },
+ {
+  "key": "E037",
+  "vol": "22AbhiT01",
+  "glyph": "þ",
+  "printed": 27,
+  "ctx": "ro khandhā dvāyatanāni dve dhātuþoti-ādinā khandhāyatanadhātādim",
+  "sug": "dhātuyoti",
+  "src": "register",
+  "conf": "review",
+  "pdf": "tika-unicode/22AbhiT01.pdf",
+  "hits": [
+   {
+    "pdf_page": 277,
+    "header": "Dhammasaṅgaṇī-anuṭīkā",
+    "img": "clips_b/E037_22AbhiT01_p277.png",
+    "line_found": true
+   }
+  ],
+  "needle": "yatanāni dve dhātuþoti-ādinā khandhāy"
+ },
+ {
+  "key": "E038",
+  "vol": "22AbhiT01",
+  "glyph": "þ",
+  "printed": 184,
+  "ctx": "anatthanti aṭṭhakathāyaṁ adhippāþo daṭṭhabbo. Tathā hi “rūpārūpa",
+  "sug": "adhippāyo",
+  "src": "register",
+  "conf": "review",
+  "pdf": "tika-unicode/22AbhiT01.pdf",
+  "hits": [
+   {
+    "pdf_page": 424,
+    "header": "Abhidhammapiṭaka",
+    "img": "clips_b/E038_22AbhiT01_p424.png",
+    "line_found": true
+   }
+  ],
+  "needle": "hakathāyaṁ adhippāþo daṭṭhabbo. Tathā"
+ },
+ {
+  "key": "E039",
+  "vol": "24AbhiT03",
+  "glyph": "è",
+  "printed": 91,
+  "ctx": "āgadassanatthanti vuttaṁ hoti. Nènācittavasena paṭijānantassa ad",
+  "sug": "Nānācittavasena",
+  "src": "register",
+  "conf": "high",
+  "pdf": "tika-unicode/24AbhiT03.pdf",
+  "hits": [
+   {
+    "pdf_page": 127,
+    "header": "Kathāvatthupakaraṇamūlaṭīkā",
+    "img": "clips_b/E039_24AbhiT03_p127.png",
+    "line_found": true
+   }
+  ],
+  "needle": "nti vuttaṁ hoti. Nènācittavasena paṭi"
+ },
+ {
+  "key": "E040",
+  "vol": "25VsmT01",
+  "glyph": "ê",
+  "printed": 17,
+  "ctx": "aṁ cettha āsevanaṁ daṭṭhabbaṁ. Sêlādidhammehi saṁvaraṇādivasena ",
+  "sug": "Sīlādidhammehi",
+  "src": "register",
+  "conf": "high",
+  "pdf": "tika-unicode/25VsmT01.pdf",
+  "hits": [
+   {
+    "pdf_page": 25,
+    "header": "Nidānādikathāvaṇṇanā",
+    "img": "clips_b/E040_25VsmT01_p25.png",
+    "line_found": true
+   }
+  ],
+  "needle": "anaṁ daṭṭhabbaṁ. Sêlādidhammehi saṁva"
+ },
+ {
+  "key": "E041",
+  "vol": "25VsmT01",
+  "glyph": "ò",
+  "printed": 119,
+  "ctx": "āgasampattiyā appiccho hoti santòtṭho pavivitto asaṁsaṭṭho, vīri",
+  "sug": "santutṭho",
+  "src": "register",
+  "conf": "review",
+  "pdf": "tika-unicode/25VsmT01.pdf",
+  "hits": [
+   {
+    "pdf_page": 127,
+    "header": "3. Kammaṭṭhānaggahaṇaniddesavaṇṇanā",
+    "img": "clips_b/E041_25VsmT01_p127.png",
+    "line_found": true
+   }
+  ],
+  "needle": "appiccho hoti santòtṭho pavivitto asa"
+ },
+ {
+  "key": "E042",
+  "vol": "25VsmT01",
+  "glyph": "í",
+  "printed": 130,
+  "ctx": "aḍḍhanena pathavīkasiṇādivaḍḍhaní viya kiñci payojanaṁ natthi. P",
+  "sug": "pathavīkasiṇādivaḍḍhanī",
+  "src": "register",
+  "conf": "high",
+  "pdf": "tika-unicode/25VsmT01.pdf",
+  "hits": [
+   {
+    "pdf_page": 139,
+    "header": "3. Kammaṭṭhānaggahaṇaniddesavaṇṇanā",
+    "img": "clips_b/E042_25VsmT01_p139.png",
+    "line_found": true
+   }
+  ],
+  "needle": "avīkasiṇādivaḍḍhaní viya kiñci payoja"
+ },
+ {
+  "key": "E043",
+  "vol": "25VsmT01",
+  "glyph": "ê",
+  "printed": 154,
+  "ctx": "imūlakañca dukkhaṁ saṅgaṇhāti. Vêriyāyattassa lokiyalokuttaravis",
+  "sug": "Vīriyāyattassa",
+  "src": "register",
+  "conf": "high",
+  "pdf": "tika-unicode/25VsmT01.pdf",
+  "hits": [
+   {
+    "pdf_page": 165,
+    "header": "4. Pathavīkasiṇaniddesavaṇṇanā",
+    "img": "clips_b/E043_25VsmT01_p165.png",
+    "line_found": true
+   }
+  ],
+  "needle": "khaṁ saṅgaṇhāti. Vêriyāyattassa lokiy"
+ },
+ {
+  "key": "E044",
+  "vol": "26Khu09",
+  "glyph": "Ù",
+  "printed": 133,
+  "ctx": " diṭṭhi “ahan”ti mānavinibandhādÙṭhi “maman”ti mānavinibandhā di",
+  "sug": "mānavinibandhādiṭhi",
+  "src": "register",
+  "conf": "review",
+  "pdf": "pali-unicode/26Khu09.pdf",
+  "hits": [
+   {
+    "pdf_page": 142,
+    "header": "2. Diṭṭhikathā",
+    "img": "clips_b/E044_26Khu09_p142.png",
+    "line_found": true
+   }
+  ],
+  "needle": "ti mānavinibandhādÙṭhi “maman”ti māna"
+ },
+ {
+  "key": "E045",
+  "vol": "27Khu10",
+  "glyph": "ó",
+  "printed": 5,
+  "ctx": " visuddhiyā”ti1. Tattha katamā āóatti– “Cakkhumā visamānīva, vij",
+  "sug": "āṇatti",
+  "src": "register",
+  "conf": "high",
+  "pdf": "pali-unicode/27Khu10.pdf",
+  "hits": [
+   {
+    "pdf_page": 13,
+    "header": "4. Paṭiniddesavāra",
+    "img": "clips_b/E045_27Khu10_p13.png",
+    "line_found": true
+   }
+  ],
+  "needle": "tha katamā āóatti– “Cakkh"
+ },
+ {
+  "key": "E048",
+  "vol": "32Abhi04",
+  "glyph": "è",
+  "printed": 51,
+  "ctx": "tto atthi. Paññāvimutto atthi. Kèyasakkhi1 atthi. Diṭṭhippatto a",
+  "sug": "Kāyasakkhi1",
+  "src": "register",
+  "conf": "high",
+  "pdf": "pali-unicode/32Abhi04.pdf",
+  "hits": [
+   {
+    "pdf_page": 65,
+    "header": "1. Puggalakathā",
+    "img": "clips_b/E048_32Abhi04_p65.png",
+    "line_found": true
+   }
+  ],
+  "needle": "tto atthi. Kèyasakkhi1 at"
+ },
+ {
+  "key": "E049",
+  "vol": "32Abhi04",
+  "glyph": "è",
+  "printed": 282,
+  "ctx": "ammaṁ rūpaṁ kusalanti, āmantā. Sèrammaṇaṁ, atthi tassa āvaṭṭanā ",
+  "sug": "Sārammaṇaṁ",
+  "src": "register",
+  "conf": "high",
+  "pdf": "pali-unicode/32Abhi04.pdf",
+  "hits": [
+   {
+    "pdf_page": 296,
+    "header": "282",
+    "img": "clips_b/E049_32Abhi04_p296.png",
+    "line_found": true
+   }
+  ],
+  "needle": "salanti, āmantā. Sèrammaṇaṁ, atthi ta"
+ },
+ {
+  "key": "E050",
+  "vol": "32Abhi04",
+  "glyph": "è",
+  "printed": 314,
+  "ctx": "viññāṇā purejātavatthukā purejātèrammaṇā ajjhattikavatthukā bāhi",
+  "sug": "purejātārammaṇā",
+  "src": "register",
+  "conf": "high",
+  "pdf": "pali-unicode/32Abhi04.pdf",
+  "hits": [
+   {
+    "pdf_page": 328,
+    "header": "314",
+    "img": "clips_b/E050_32Abhi04_p328.png",
+    "line_found": true
+   }
+  ],
+  "needle": "tavatthukā purejātèrammaṇā ajjhattika"
+ },
+ {
+  "key": "E053",
+  "vol": "34KhuA15",
+  "glyph": "ê",
+  "printed": 209,
+  "ctx": "Anomadassissa Bhagavato Candavatê nāma nagaraṁ ahosi, Yasavā nām",
+  "sug": "Candavatī",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/34KhuA15.pdf",
+  "hits": [
+   {
+    "pdf_page": 215,
+    "header": "210",
+    "img": "clips_b/E053_34KhuA15_p215.png",
+    "line_found": true
+   }
+  ],
+  "needle": "Bhagavato Candavatê nāma nagaraṁ ahos"
+ },
+ {
+  "key": "E054",
+  "vol": "35KhuA16",
+  "glyph": "ó",
+  "printed": 163,
+  "ctx": "aṅgahavatthūhi sammadeva saṅgahaóato ca sabbakālaṁ sambhattapari",
+  "sug": "saṅgahaṇato",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/35KhuA16.pdf",
+  "hits": [
+   {
+    "pdf_page": 168,
+    "header": "Cariyāpiṭakaṭṭhakathā",
+    "img": "clips_b/E054_35KhuA16_p168.png",
+    "line_found": true
+   }
+  ],
+  "needle": "sammadeva saṅgahaóato ca sabbakālaṁ"
+ },
+ {
+  "key": "E055",
+  "vol": "46KhuA27",
+  "glyph": "Ù",
+  "printed": 14,
+  "ctx": "ti ca, asati neva uppajjati na tÙṭhatīti evaṁvidhena sīlena saha",
+  "sug": "tiṭhatīti",
+  "src": "register",
+  "conf": "review",
+  "pdf": "atthakatha-unicode/46KhuA27.pdf",
+  "hits": [
+   {
+    "pdf_page": 22,
+    "header": "16",
+    "img": "clips_b/E055_46KhuA27_p22.png",
+    "line_found": true
+   }
+  ],
+  "needle": "eva uppajjati na tÙṭhatīti evaṁvidhen"
+ },
+ {
+  "key": "E056",
+  "vol": "49AbhiA02",
+  "glyph": "è",
+  "printed": 374,
+  "ctx": " paṭibhānapaṭisambhi dāñāṇena. Tèni ñāṇāni jānātīti itarāni tīṇi",
+  "sug": "Tāni",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/49AbhiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 384,
+    "header": "Sammohavinodanī-aṭṭhakathā",
+    "img": "clips_b/E056_49AbhiA02_p384.png",
+    "line_found": true
+   }
+  ],
+  "needle": "sambhi dāñāṇena. Tèni ñāṇāni jānātīti"
+ },
+ {
+  "key": "E057",
+  "vol": "49AbhiA02",
+  "glyph": "è",
+  "printed": 395,
+  "ctx": "āsakā upāsikāyo ca paññāpenti. Pètimokkhasaṁvarasīlaṁ pana sabba",
+  "sug": "Pātimokkhasaṁvarasīlaṁ",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/49AbhiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 404,
+    "header": "Sammohavinodanī-aṭṭhakathā",
+    "img": "clips_b/E057_49AbhiA02_p404.png",
+    "line_found": true
+   }
+  ],
+  "needle": "o ca paññāpenti. Pètimokkhasaṁvarasīl"
+ },
+ {
+  "key": "E058",
+  "vol": "49AbhiA02",
+  "glyph": "è",
+  "printed": 478,
+  "ctx": "tanāni. Purisapuggaloti satto. Kèmañca purisotipi puggalotipi vu",
+  "sug": "Kāmañca",
+  "src": "register",
+  "conf": "high",
+  "pdf": "atthakatha-unicode/49AbhiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 487,
+    "header": "478",
+    "img": "clips_b/E058_49AbhiA02_p487.png",
+    "line_found": true
+   }
+  ],
+  "needle": "puggaloti satto. Kèmañca purisotipi p"
+ },
+ {
+  "key": "X001",
+  "vol": "08DiA02",
+  "glyph": "",
+  "printed": null,
+  "ctx": "mpi taṁ tadeva āyuparimānṁ hotīti veditabbaṁ. 8. ",
+  "sug": "",
+  "src": "sidecar:control",
+  "conf": null,
+  "pdf": "atthakatha-unicode/08DiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 17,
+    "header": "Dīghanikāya",
+    "img": "clips_b/X001_08DiA02_p17.png",
+    "line_found": true
+   }
+  ],
+  "needle": "mpi taṁ tadeva āyuparimān"
+ },
+ {
+  "key": "X002",
+  "vol": "08DiA02",
+  "glyph": "",
+  "printed": null,
+  "ctx": "ntokucchiyaṁ cakkhuviññānṁ uppajjati. 24. Kālaṁ k",
+  "sug": "",
+  "src": "sidecar:control",
+  "conf": null,
+  "pdf": "atthakatha-unicode/08DiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 38,
+    "header": "Mahāvaggaṭṭhakathā",
+    "img": "clips_b/X002_08DiA02_p38.png",
+    "line_found": true
+   }
+  ],
+  "needle": "ntokucchiyaṁ cakkhuviññān"
+ },
+ {
+  "key": "X003",
+  "vol": "08DiA02",
+  "glyph": "",
+  "printed": null,
+  "ctx": "jjitaṁ mahantaṁ hoti, ñānṁ anupavisati, Buddhañāṇ",
+  "sug": "",
+  "src": "sidecar:control",
+  "conf": null,
+  "pdf": "atthakatha-unicode/08DiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 84,
+    "header": "Mahāvaggaṭṭhakathā",
+    "img": "clips_b/X003_08DiA02_p84.png",
+    "line_found": true
+   }
+  ],
+  "needle": "jjitaṁ mahantaṁ hoti, ñān"
+ },
+ {
+  "key": "X004",
+  "vol": "08DiA02",
+  "glyph": "",
+  "printed": null,
+  "ctx": "i2 idaṁ sahajātasamosaranṁ nāma. “Dvayena vedanāy",
+  "sug": "",
+  "src": "sidecar:control",
+  "conf": null,
+  "pdf": "atthakatha-unicode/08DiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 99,
+    "header": "90",
+    "img": "clips_b/X004_08DiA02_p99.png",
+    "line_found": true
+   }
+  ],
+  "needle": "i2 idaṁ sahajātasamosaran"
+ },
+ {
+  "key": "X005",
+  "vol": "08DiA02",
+  "glyph": "",
+  "printed": null,
+  "ctx": " yaṁ manussānaṁ āyuppamānṁ hoti, taṁ paripuṇṇaṁ k",
+  "sug": "",
+  "src": "sidecar:control",
+  "conf": null,
+  "pdf": "atthakatha-unicode/08DiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 153,
+    "header": "144",
+    "img": "clips_b/X005_08DiA02_p153.png",
+    "line_found": true
+   }
+  ],
+  "needle": "yaṁ manussānaṁ āyuppamān"
+ },
+ {
+  "key": "X006",
+  "vol": "08DiA02",
+  "glyph": "",
+  "printed": null,
+  "ctx": "aṭividdhaṁ sabbaññutaññānṁ, kiṁ te lokavicāraṇenā",
+  "sug": "",
+  "src": "sidecar:control",
+  "conf": null,
+  "pdf": "atthakatha-unicode/08DiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 154,
+    "header": "Mahāvaggaṭṭhakathā",
+    "img": "clips_b/X006_08DiA02_p154.png",
+    "line_found": true
+   }
+  ],
+  "needle": "aṭividdhaṁ sabbaññutaññān"
+ },
+ {
+  "key": "X007",
+  "vol": "08DiA02",
+  "glyph": "",
+  "printed": null,
+  "ctx": "adosamoha-indakhīlameva. hacca manejāti ete taṇhā",
+  "sug": "",
+  "src": "sidecar:control",
+  "conf": null,
+  "pdf": "atthakatha-unicode/08DiA02.pdf",
+  "hits": [
+   {
+    "pdf_page": 283,
+    "header": "274",
+    "img": "clips_b/X007_08DiA02_p283.png",
+    "line_found": true
+   }
+  ],
+  "needle": "adosamoha-indakhīlameva."
+ },
+ {
+  "key": "X008",
+  "vol": "12DiT05",
+  "glyph": "q",
+  "printed": null,
+  "ctx": "yantūti vuccantī”ti āha. qayhantu vāti pete sandhā",
+  "sug": "",
+  "src": "sidecar:nonpali_ascii",
+  "conf": null,
+  "pdf": "tika-unicode/12DiT05.pdf",
+  "hits": [
+   {
+    "pdf_page": 163,
+    "header": "Dīghanikāya",
+    "img": "clips_b/X008_12DiT05_p163.png",
+    "line_found": true
+   }
+  ],
+  "needle": "yantūti vuccantī”ti āha."
+ },
+ {
+  "key": "X009",
+  "vol": "27Khu10",
+  "glyph": "q",
+  "printed": null,
+  "ctx": ", sajjukhīraṁva muccati. qahantaṁ1 bālamanveti, bh",
+  "sug": "",
+  "src": "sidecar:nonpali_ascii",
+  "conf": null,
+  "pdf": "pali-unicode/27Khu10.pdf",
+  "hits": [
+   {
+    "pdf_page": 146,
+    "header": "Nettipāḷi",
+    "img": "clips_b/X009_27Khu10_p146.png",
+    "line_found": true
+   },
+   {
+    "pdf_page": 206,
+    "header": "200",
+    "img": "clips_b/X009_27Khu10_p206.png",
+    "line_found": true
+   }
+  ],
+  "needle": ", sajjukhīraṁva muccati."
+ }
+]

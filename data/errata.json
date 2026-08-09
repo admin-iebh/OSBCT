@@ -5,7 +5,8 @@
  "method": "corpus-wide orthographic scan (characters outside the Pāḷi alphabet), adjudicated against rendered pages",
  "counts": {
   "edition_erratum": 67,
-  "total": 67,
+  "not_an_erratum": 1,
+  "total": 68,
   "entries": 68
  },
  "entries": [
@@ -239,15 +240,15 @@
    "layer": "Tipiṭaka",
    "printed_page": 247,
    "paragraph_id": "Majjhimapaṇṇāsapāḷi/Rājavagga/Raṭṭhapālasutta82/296",
-   "category": "edition_erratum",
+   "category": "not_an_erratum",
    "glyph": "x",
    "codepoint": "U+0078",
    "printed_reading": "x",
    "suggested_reading": "",
-   "confidence": "review",
+   "confidence": "high",
    "context": "apāla kassaci dukkhassa jānāsi, x maraṇenapi te mayaṁ akāmakā vi",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "resolved",
+   "note": "RESOLVED 2026-08-09 against the printed page (pdf p.253, printed p.247): the x is SET IN PRINT — the edition's own unnumbered position siglum, paired with the + eleven lines below (‘pabbajjāya, + maraṇenapi’), both belonging to the one unnumbered note at the foot of that page: “Maraṇenapi te -pa- pabbajjāyā”ti vākyadvayaṁ Sī-Syā-Kaṁ-I-potthakesu dutiyaṭṭhāne yeva dissati, Pārājikapāḷiyaṁ pana paṭhamaṭṭhāne yeva dissati. Tasmā idha dutiyaṭṭhāne punāgataṁ adhikaṁ viya dissati. x marks the paṭhamaṭṭhāna, + the dutiyaṭṭhāna, of the repeated two-sentence passage. The corpus already preserves both marks faithfully; NOTHING IS APPLIED. Same class as the * cross-reference sigla. Two superseded suggestions recorded: the register's original deletion, and the 2026-08-09 session's ‘( )’ reading, which came from the DIFFERENT omission-marker site one page earlier (¶295, printed p.246, ‘jānāsi, ( ) maraṇenapi’, corpus already correct there). DEFECT DISCOVERED WHILE RESOLVING, extraction class, not the edition's: the + note is ABSENT from the live apparatus — site/reader/apparatus/10Ma02.app.json carries no key for ¶296 at all (the note text survives in _xc/hy1/blocks*/10Ma02.json); and unnumbered-siglum notes elsewhere are GLUED onto numbered notes (¶295 apparatus note 2 carries the ( ) note appended). Needs its own corpus-wide measure before any repair."
   },
   {
    "id": "E022",

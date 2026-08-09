@@ -49,6 +49,83 @@ fail on the build that had its bug.
     links artifact is loaded by nothing: reader to decide retire vs
     rebuild; BLOCKBREAK off; `position` unmeasured for 114 volumes; the
     WLV gate; the offline package (§2 permission first).
+ 4a2. **E021 RESOLVED 2026-08-09 pm — NOT AN ERRATUM, NOTHING APPLIED.**  The
+    x in 10Ma02 ¶296 (`jānāsi, x maraṇenapi`, printed p.247, pdf p.253) is
+    SET IN PRINT: the edition's own unnumbered position siglum, paired with
+    the `+` eleven lines below, both keying the one foot-note (vākyadvayaṁ …
+    dutiyaṭṭhāne yeva dissati).  Corpus preserves both marks; register entry
+    now category=not_an_erratum, status=resolved, with TWO superseded
+    suggestions recorded (the original deletion; this session's `( )`
+    reading, which belonged to the different omission site at ¶295 printed
+    p.246 — corpus already correct there).  LESSONS: (1) the first
+    page-match is not the right page-match — MN 82 repeats the speech, and
+    the `( )` evidence came from the wrong occurrence until pbreak said the
+    offsets disagreed; (2) a census glyph can be the EDITION's mark — which
+    is exactly what the ~110-glyph visual review sheet exists to catch, so
+    this strengthens the case for ordering it.  OPENED, NOT CLOSED: the `+`
+    note is ABSENT from the live apparatus (10Ma02.app.json has no key for
+    ¶296; text survives in `_xc/hy1/blocks*/10Ma02.json`), and unnumbered-
+    siglum notes elsewhere are GLUED onto numbered notes (¶295 app note 2
+    carries the `( )` note appended).  Extraction class.  Measure the
+    unnumbered-siglum classes (`*`, `+`, `x`, `( )`) corpus-wide before any
+    repair.  Stamp 963375c10f40 → f078d6411162; commit message in
+    `COMMIT_MSG_e021.bak`.
+ 4a3. **BOTH INSTRUMENTS BUILT AND RUN, 2026-08-09 pm (same session).**
+    (1) `pipeline/build_glyph_review.py` → `_review/glyph_review.html`:
+    50 sites (41 register glyph candidates + 9 sidecar/control/vocab
+    extras; the "~110" above was stale), ALL 50 located with printed-page
+    clips in `_review/clips_b/`, three-way verdicts + JSON export, nothing
+    applied from the sheet.  Every context-carrying page is rendered, not
+    the first match — X009 (27Khu10 `q`) draws both p.146 and p.206, and
+    its clip already settles it: print reads `Ḍahantaṁ` (pdftotext decoded
+    the byte as `q`; glyph-free needles catch this decoder-divergence
+    class).  Page-number entries (E063/E064/E066) and homages (E068–E077)
+    are glyphless, other classes, excluded.  **AWAITS THE READER'S
+    VERDICTS** — export JSON from the sheet, then apply confirmations by
+    the E035/E021 precedent.
+    (2) `pipeline/measure_sigla.py` (selftest: both witnessed 10Ma02 cases
+    must report as witnessed): `( )` 188 marks / 28 in paragraphs with NO
+    apparatus entry; `+` 597/298; `*` 3,470/2,067; `x` 1/1.  2,535 marked
+    paragraphs in 76 volumes, 1,427 without any apparatus entry.  "Entry
+    present" deliberately does NOT claim the symbol's note is inside
+    standalone — the ¶295 gluing needed the printed page.  Spot-checks:
+    paragraph-initial `*`/`+` are the also-at cross-reference class; some
+    `( )` carry a trailing NUMBERED marker (`( )2`) whose note travels the
+    numbered path.  Detail `_review/sigla_report.json`; commit message
+    `COMMIT_MSG_review.bak`.  HAZARD RECONFIRMED: repo files cannot be
+    deleted from the sandbox — `_review/clips/` (first run, superseded by
+    `clips_b/`) needs host deletion.
+ 4a4. **READER'S VERDICTS RECEIVED AND PERSISTED (2026-08-09 pm, end of
+    session) — NOT YET APPLIED.  START THE NEXT SESSION HERE.**  49 of the
+    sheet's 50 sites judged (X007 unanswered); raw export in
+    `_review/verdicts_2026-08-09.json`; the joined apply table with the
+    printed-page adjudications in `_review/apply_table_2026-08-09.json`.
+    CONVENTION MEASURED ON E035 BEFORE ANY WRITE: `corpus/*.txt` KEEPS the
+    printed (corrupt) reading by principle 3 — application means
+    `site/<vol>.json` + derived stores, AND the pair must land in
+    `data/glyph_errata.json` (182 entries, 67 with pairs, applied at build
+    time) or the next rebuild regresses it.  CLASS A, 37 rows: the served
+    text ALREADY carries the reader-confirmed reading — what remains is
+    register status=confirmed + application notes, no text change.  CLASS B,
+    12 rows (E002 E005 E011 E018 E034 E037 E038 E039 E042 E043 E044 E049):
+    the quick probe could NOT confirm the current site reading — E042 shows
+    a real THIRD reading (site `…vaḍḍhanī` vs reader `…vaḍḍhane`); each
+    needs its own look before writing.  Adjudications made against the
+    printed page and recorded in the apply table: ṭṭh restored where the
+    register's suggestion carried a ṭth slip (E002 E030 E031 E041; E055 the
+    reader caught himself); edition's ṁ over the reader's ṃ (E034 X003
+    X009); ṇ in the 08DiA02 `n\x8f`→`ṇa` class incl. X002 X006 (print shows
+    the displaced-dot nạ, same page prints Buddhañāṇassa); print's hyphen
+    kept in Rāhu-asurindo/-aṁ (E011 E017); Ḍ capital in X008 Ḍayhantu (a
+    BOLD lemma — E031 is too).  All 49 pairs are Δ0 except E044/E055 (+1 —
+    offset shifting needed there).  X-rows need NEW register entries
+    (E078+); X007 stays a sheet row only.
+ 4a5. **v2.7.0 BUMPED (this session): all three checklist files** —
+    `.zenodo.json` (version + New-in paragraph), `CITATION.cff` (version,
+    date-released 2026-08-09), `site/i18n.js` (OSBCT_VERSION) — stamp
+    `f078d6411162 → 361c9aa7c2d9`.  TAG NOT CUT — the reader cuts it LAST
+    on the host after commit+push; DOI to be added to CITATION.cff after
+    Zenodo mints it.  Commit message `COMMIT_MSG_270.bak`.
  4b. **CORRECT THE PDFs FROM THE ERRATA REGISTER (reader, 2026-08-08) —
     PDF SIDE ON STANDBY (reader, 2026-08-09); the SEVEN CONFIRMED WORDS
     ARE APPLIED TO THE CORPUS.**  Shown the seven belief-only corrupt
