@@ -18,8 +18,25 @@ fail on the build that had its bug.
     (5,376 of 22,527), `none` vs `dim`, capping the concordance tooltip.
  2. Search heavy half (per-volume shard split into postings + text) — ONLY
     if the reader's live-network verdict says common-word searches hurt.
- 3. The hyphen repair (8,790 words, 109 volumes) and the ~17% undrawn bold
-    spans still unexplained.
+ 3. ~~The hyphen repair~~ **DONE, both sessions, 2026-08-08 late**: the
+    matcher's third join candidate broke the §11.3 blocker (hy2/FINDINGS
+    §11.6), then the corpus-wide apply as one operation — 7,291 deletions,
+    127,867 bold spans + 7,548 pbreak offsets shifted (the dimension the
+    08-05 audit predates; all 101 volumes re-derived from the printed page
+    and byte-EQUAL to the shift), search index re-emitted, bold baseline
+    moved deliberately: **+42,343 lemmas drawn (339,569 → 381,912), losses
+    in NO volume**.  Remaining from that family: the consonant branch
+    (1,521, ca-saddo class, unadjudicated per hy2 §2), extract.py:204
+    hygiene, and the ~17% undrawn bold spans still unexplained (now
+    smaller — remeasure before believing the number).
+ 3b. **ITALICS REMOVED (2026-08-08 late, reader's decision made total by
+    census)**: no italic face exists in any of the 118 PDFs; .gatha,
+    .incipit, .udd-verse, .gatha-count dropped, .appx i pinned normal.
+    **HOMAGE UNIFIED AT THE DRAW**: 12 printed variants across 211 homages
+    (census re-run CASE-BLIND after the reader caught `Namo Tassa` — a
+    case-sensitive census of a capitalisation question), all verified at
+    their printed pages, errata E068-E077; corpus and incipit maps keep
+    the print; homageNorm draws the official line at every book head.
  4. ~~Housekeeping~~ **MOSTLY DONE 2026-08-08 late**: checkout@v5 (Node
     24); `Ekaṁ nāma kintipañhavaṇṇanā` in the nav at #174 via rebuild
     (which also dropped two GHOST nodes whose heads left sections/, and
