@@ -49,6 +49,17 @@ fail on the build that had its bug.
     links artifact is loaded by nothing: reader to decide retire vs
     rebuild; BLOCKBREAK off; `position` unmeasured for 114 volumes; the
     WLV gate; the offline package (§2 permission first).
+ 4b. **CORRECT THE PDFs FROM THE ERRATA REGISTER (reader, 2026-08-08).**
+    docs/PDF_ERRATA.md (generated from data/errata.json — 68 entries, 39
+    volumes; regenerate with pipeline/build_pdf_errata_doc.py) is the work
+    list.  MEASURED state of the register vs the corpus: 31 glyph-class
+    entries are corrected IN THE CORPUS with attribution (the
+    apply_from/apply_to mechanism); 14 preserved as printed (wrong ¶
+    numbers, the homage variants — display-normalised only); 22 live at
+    other layers (sections/ headings, incipit maps) and need a per-entry
+    audit before anything else.  PDF correction itself connects to the §6
+    scope decision (ToUnicode injection preferred, one volume first), and
+    every candidate stays pending scholarly confirmation.
  5. **THE LINKS (postponed by the reader, deliberately last):** the three
     placer recommendations (block applying 20Khu03 vaggas 2–42, which sit
     computed in `_xc/linksk_toc/`), the shadowing defect FIRST, the
