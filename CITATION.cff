@@ -23,8 +23,18 @@ keywords:
 url: "https://buddha-dhamma.net"
 repository-code: "https://github.com/admin-iebh/OSBCT"
 license: CC-BY-4.0
-version: "2.7.0"
+version: "2.7.1"
 date-released: "2026-08-09"
+# 2026-08-09, v2.7.1: ONE WORD of the text changes, and it is the first time
+# since v2.3.0 that any reading has moved — 25VsmT01 `pathavīkasiṇādivaḍḍhanī`
+# becomes `…vaḍḍhane`, settled by the reader against the printed page, one
+# character for one character, so pbreak re-derived BYTE-EQUAL and the corpus
+# figures in the abstract stand unchanged.  The rest completes what v2.7.0 left
+# open: 41 register entries confirmed (49 of 68), eleven wrong suggestions
+# corrected with their superseded readings kept, and NINE review-sheet sites
+# WITHDRAWN — the PDFs read correctly at every one and the corrupt forms lived
+# only in a gitignored snapshot three weeks stale.  Three-file checklist bumped
+# together, tag cut LAST.
 # 2026-08-09, v2.7.0: no text changed — the errata register under scrutiny.
 # E021 resolved AGAINST both guesses: the printed x at 10Ma02 p.247 is the
 # edition's own position siglum (paired with the + below it, one unnumbered
@@ -111,6 +121,14 @@ identifiers:
   # but because nothing added the line.  It exists: 10.5281/zenodo.21760727.
   # Checked against the Zenodo record's own Versions panel, 2026-08-06, which is
   # also where the concept DOI above was confirmed as `Cite all versions`.
+  # Minted 2026-08-09 and READ FROM THE RECORD ITSELF (zenodo.org/records/21863987),
+  # not guessed: "Published August 9, 2026 | Version 2.7.0", with the "New in
+  # 2.7.0" paragraph already on the record at minting.  THIRD CONSECUTIVE
+  # DEPOSIT TO ARRIVE DESCRIBING ITSELF CORRECTLY — the three-file checklist
+  # and tag-cut-last ordering, now routine.  No in-place correction needed.
+  - type: doi
+    value: "10.5281/zenodo.21863987"
+    description: "Zenodo archive of v2.7.0 (9 August 2026)"
   # Minted 2026-08-08, provided by the reader from the record
   # (doi.org/10.5281/zenodo.21855790).  Second consecutive deposit to arrive
   # describing itself correctly — the three-file checklist and tag-cut-last

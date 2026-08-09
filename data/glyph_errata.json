@@ -1676,10 +1676,10 @@
    "char": "í",
    "codepoint": "U+00ED",
    "context": "a sattarāsivaḍḍhanena pathavīkasiṇādivaḍḍhaní viya kiñci payojanaṁ natthi. Pariggahavase",
-   "fix": null,
+   "fix": "e",
    "apply_from": "vaḍḍhaní",
-   "apply_to": "vaḍḍhanī",
-   "evidence": "whole-word repair; the corpus prints 'vaḍḍhanī' in 12 volumes (2026-07-30). The single character was not the whole fault where the neighbourhood degraded with it."
+   "apply_to": "vaḍḍhane",
+   "evidence": "whole-word repair; the corpus prints 'vaḍḍhanī' in 12 volumes (2026-07-30). The single character was not the whole fault where the neighbourhood degraded with it. SETTLED BY THE READER 2026-08-09 against the printed page: the reading is `vaḍḍhane`, not `vaḍḍhanī`. The superseded `ī` was an inference from the ê->ī pattern, never a witness — í occurs in ONE place in the whole corpus. Δ0 in characters; applied through every served store."
   },
   {
    "vol": "25VsmT01",
@@ -1688,10 +1688,10 @@
    "char": "í",
    "codepoint": "U+00ED",
    "context": "a sattarāsivaḍḍhanena pathavīkasiṇādivaḍḍhaní viya kiñci payojanaṁ natthi. Pariggahavase",
-   "fix": null,
+   "fix": "e",
    "apply_from": "vaḍḍhaní",
-   "apply_to": "vaḍḍhanī",
-   "evidence": "whole-word repair; the corpus prints 'vaḍḍhanī' in 12 volumes (2026-07-30). The single character was not the whole fault where the neighbourhood degraded with it."
+   "apply_to": "vaḍḍhane",
+   "evidence": "whole-word repair; the corpus prints 'vaḍḍhanī' in 12 volumes (2026-07-30). The single character was not the whole fault where the neighbourhood degraded with it. SETTLED BY THE READER 2026-08-09 against the printed page: the reading is `vaḍḍhane`, not `vaḍḍhanī`. The superseded `ī` was an inference from the ê->ī pattern, never a witness — í occurs in ONE place in the whole corpus. Δ0 in characters; applied through every served store."
   },
   {
    "vol": "25VsmT01",
@@ -1724,10 +1724,10 @@
    "char": "í",
    "codepoint": "U+00ED",
    "context": "a sattarāsivaḍḍhanena pathavīkasiṇādivaḍḍhaní viya kiñci payojanaṁ natthi. Pariggahavase",
-   "fix": null,
+   "fix": "e",
    "apply_from": "vaḍḍhaní",
-   "apply_to": "vaḍḍhanī",
-   "evidence": "whole-word repair; the corpus prints 'vaḍḍhanī' in 12 volumes (2026-07-30). The single character was not the whole fault where the neighbourhood degraded with it."
+   "apply_to": "vaḍḍhane",
+   "evidence": "whole-word repair; the corpus prints 'vaḍḍhanī' in 12 volumes (2026-07-30). The single character was not the whole fault where the neighbourhood degraded with it. SETTLED BY THE READER 2026-08-09 against the printed page: the reading is `vaḍḍhane`, not `vaḍḍhanī`. The superseded `ī` was an inference from the ê->ī pattern, never a witness — í occurs in ONE place in the whole corpus. Δ0 in characters; applied through every served store."
   },
   {
    "vol": "25VsmT01",
@@ -2153,9 +2153,9 @@
    "char": "ó",
    "codepoint": "U+00F3",
    "reading": "ṇ",
-   "confidence": "high",
-   "agreement": "7/7",
-   "evidence": "āóattiyampi=āṇattiyampi (03ViT03) · āóattikapayogaṁ=āṇattikapayogaṁ (04ViT04) · ratanacuṇóa=ratanacuṇṇa (07DiA01) · paveóenti=paveṇenti (18AnA02) · saṅgahaóato=saṅgahaṇato (35KhuA16).",
+   "confidence": "high (one dissent, recorded)",
+   "agreement": "7/8",
+   "evidence": "āóattiyampi=āṇattiyampi (03ViT03) · āóattikapayogaṁ=āṇattikapayogaṁ (04ViT04) · ratanacuṇóa=ratanacuṇṇa (07DiA01) · āóattikappayoga=āṇattikappayoga (07ViT07) · āóatti=āṇatti (27Khu10) · saṅgahaóato=saṅgahaṇato (35KhuA16). ONE PLACE DISSENTS AND IS APPLIED AS IT READS: paveóenti=paveSenti (18AnA02) — `paveṇenti` is not a word and `pavesenti` is, and the reader confirmed it 2026-08-09. CORRECTED 2026-08-09: this evidence string had said `paveóenti=paveṇenti` and claimed 7/7, while the entry itself has carried fix='s' all along — the summary contradicted the data it summarised. The class is not uniform; ó is a NEIGHBOURHOOD fault like Ù and ò.",
    "family": "lowercase counterpart of the mapped Ó→ṇ",
    "applied": null,
    "places": 7,
@@ -2260,10 +2260,10 @@
   {
    "char": "í",
    "codepoint": "U+00ED",
-   "reading": "ī",
-   "confidence": "medium",
+   "reading": "e",
+   "confidence": "settled 2026-08-09 by the reader, against the printed page",
    "agreement": "1/1",
-   "evidence": "pathavīkasiṇādivaḍḍhaní viya = …vaḍḍhanī viya (25VsmT01). One place only; the reading follows the sense and the ê→ī pattern.",
+   "evidence": "pathavīkasiṇādivaḍḍhaní viya = …vaḍḍhane viya (25VsmT01), the ONE place í occurs. SUPERSEDES the earlier `ī`, which this same field described as following 'the sense and the ê->ī pattern' — an inference, and the neighbouring codepoints (é, Ù, ò) each resolve two ways, so the pattern was never entitled to carry it. Printed context: 'tena sattarāsivaḍḍhanena pathavīkasiṇādivaḍḍhaní viya kiñci payojanaṁ natthi'.",
    "family": "same reading as ê",
    "applied": null,
    "places": 1,
@@ -2325,7 +2325,7 @@
    "reading": "i (majority)",
    "confidence": "settled 2026-07-30 — a NEIGHBOURHOOD fault",
    "agreement": "6 i / 1 ṭ / 1 u / 1 siglum",
-   "evidence": "i: parÙpphosakaṁ=paripphosakaṁ (10Ma02, glossed on the same line) · sampÙṇḍeti=sampiṇḍeti (14SamA01) · adhÙṭthitatāya=adhiṭṭhitatāya (17SaT02) · patÙmaṇḍitaṁ=patimaṇḍitaṁ (19AnA03) · …ādÙṭhi=…ā diṭṭhi (26Khu09) · tÙṭhatīti=tiṭṭhatīti (46KhuA27). Against: PiÙṭhaṅkā=Piṭṭhaṅkā (02Vin02) says ṭ; PavesanapavÙṭtha…=…pavuṭṭha… (07ViT07) says u; and in 22Khu05 it stands where a variant siglum belongs, \"(Sī, Ù)\".",
+   "evidence": "i: parÙpphosakaṁ=paripphosakaṁ (10Ma02, glossed on the same line) · sampÙṇḍeti=sampiṇḍeti (14SamA01) · adhÙṭthitatāya=adhiṭṭhitatāya (17SaT02) · patÙmaṇḍitaṁ=paṭimaṇḍitaṁ (19AnA03) · …ādÙṭhi=…ā diṭṭhi (26Khu09) · tÙṭhatīti=tiṭṭhatīti (46KhuA27). Against: PiÙṭhaṅkā=Piṭṭhaṅkā (02Vin02) says ṭ; PavesanapavÙṭtha…=…pavuṭṭha… (07ViT07) says u; and in 22Khu05 it stands where a variant siglum belongs, \"(Sī, Ù)\".",
    "family": null,
    "applied": null,
    "places": 9,
@@ -2372,5 +2372,8 @@
   "resolved_medium": 1,
   "unresolved": 4,
   "applied_by_builder": 1
+ },
+ "classes": {
+  "displaced_dot": "RECORDED 2026-08-09 while confirming the reader's verdicts. Two of these glyph faults are not substitutions at all but DISPLACED DOTS, and reading them as one-for-one is what put the ṭth slips into the register's suggestions. (1) n+U+008F -> ṇa (08DiA02, six places: āyuparimānṁ = āyuparimāṇaṁ) — the dot belongs under the n and a vowel is lost with it. (2) Ù and ò before ṭth: patÙmaṇḍitaṁ = paṭimaṇḍitaṁ, adhÙṭthitatāya = adhiṭṭhitatāya, tÙṭhatīti = tiṭṭhatīti, vòṭthānasammutiṁ = vuṭṭhānasammutiṁ, vòṭthātuṁ = vuṭṭhātuṁ, santòtṭho = santuṭṭho. The glyph supplies the vowel AND a retroflex dot that the conversion set on the wrong consonant, so the printed cluster ṭth is ṭṭh. Every register suggestion that carried ṭth was corrected against the printed page on 2026-08-09; the APPLIED pairs were already right."
  }
 }

@@ -1,7 +1,7 @@
 {
  "title": "Errata register — Sixth Buddhist Council Tipiṭaka",
  "principle": "Errata are recorded as an overlay: the printed reading is preserved verbatim; suggested emendations are marked as candidates pending scholarly confirmation. The base text is never silently altered.",
- "generated": "2026-07-30",
+ "generated": "2026-08-09",
  "method": "corpus-wide orthographic scan (characters outside the Pāḷi alphabet), adjudicated against rendered pages",
  "counts": {
   "edition_erratum": 67,
@@ -23,8 +23,8 @@
    "suggested_reading": "Dīghanikāyaṭṭhakathāyaṁ3",
    "confidence": "high",
    "context": "āyañca2 imināva nayena vuttaṁ. Dêghanikāyaṭṭhakathāyaṁ3 pana “ma",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E002",
@@ -36,11 +36,11 @@
    "glyph": "ò",
    "codepoint": "U+00F2",
    "printed_reading": "vòṭthānasammutiṁ",
-   "suggested_reading": "vuṭthānasammutiṁ",
+   "suggested_reading": "vuṭṭhānasammutiṁ",
    "confidence": "review",
    "context": "hasu dhammesu sikkhitasikkhāya vòṭthānasammutiṁ dadeyya, esā ñat",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. The suggestion 'vuṭthānasammutiṁ' is SUPERSEDED by 'vuṭṭhānasammutiṁ', adjudicated against the printed page — vuṭṭhānasammutiṁ (print ṭṭh; register suggestion had ṭth slip). CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E003",
@@ -55,8 +55,8 @@
    "suggested_reading": "āṇattiyampi",
    "confidence": "high",
    "context": "etī”ti-ādi sabbaṁ upajjhāyassa āóattiyampi veditabbaṁ. Sesametth",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E004",
@@ -71,8 +71,8 @@
    "suggested_reading": "āṇattikapayogaṁ",
    "confidence": "high",
    "context": "hi adinnādānato muccatīti idaṁ āóattikapayogaṁ sandhāya vuttaṁ, ",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E005",
@@ -87,8 +87,8 @@
    "suggested_reading": "Dīghabhāṇaka",
    "confidence": "high",
    "context": "sāmī”ti agamāsi. Ārāmikā disvā Dêghabhāṇaka-abhayattherassa āroc",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E006",
@@ -100,11 +100,11 @@
    "glyph": "é",
    "codepoint": "U+00E9",
    "printed_reading": "passémi",
-   "suggested_reading": "passimi",
+   "suggested_reading": "passāmi",
    "confidence": "review",
    "context": "a kho panāhaṁ bho brahmānaṁ passémi, na brahmunā sākacchemi, na ",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. The suggestion 'passimi' is SUPERSEDED by 'passāmi', adjudicated against the printed page. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E007",
@@ -119,8 +119,8 @@
    "suggested_reading": "ratanacuṇṇavippakiṇṇaṁ",
    "confidence": "high",
    "context": "i ratanāveḷaratanadāma-ratanacuṇóavippakiṇṇaṁ viya, pasāritarata",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E011",
@@ -131,12 +131,12 @@
    "category": "edition_erratum",
    "glyph": "è",
    "codepoint": "U+00E8",
-   "printed_reading": "Rèhu",
-   "suggested_reading": "Rāhu",
+   "printed_reading": "Rèhu-asurindo",
+   "suggested_reading": "Rāhu-asurindo",
    "confidence": "high",
    "context": "ññesampi uttānoti na vattabbo. Rèhu-asurindo pana pādantato yāva",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. The suggestion 'Rāhu' is SUPERSEDED by 'Rāhu-asurindo', adjudicated against the printed page — Rāhu-asurindo (print keeps hyphen; PRINT ITSELF corrupt at ā). printed_reading widened from 'Rèhu' to the whole hyphenated word 'Rèhu-asurindo', which is what the applied pair keys on; the edition's hyphen is KEPT. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E013",
@@ -151,8 +151,8 @@
    "suggested_reading": "upanetha",
    "confidence": "high",
    "context": "aṁ passatha. Upasaṁharathāti upaîetha, imaṁ Licchaviparisaṁ tumh",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E014",
@@ -167,8 +167,8 @@
    "suggested_reading": "upanetha",
    "confidence": "high",
    "context": "vatiṁsāsadisaṁ upasaṁharatha upaîetha allīyāpetha. Yatheva Tāvat",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E017",
@@ -179,12 +179,12 @@
    "category": "edition_erratum",
    "glyph": "è",
    "codepoint": "U+00E8",
-   "printed_reading": "Rèhu",
-   "suggested_reading": "Rāhu",
+   "printed_reading": "Rèhu-asurindaṁ",
+   "suggested_reading": "Rāhu-asurindaṁ",
    "confidence": "high",
    "context": "a hutvā. Rāhubhaddamupāgamunti Rèhu-asurindaṁ upasaṅkamiṁsu. Sam",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. The suggestion 'Rāhu' is SUPERSEDED by 'Rāhu-asurindaṁ', adjudicated against the printed page — Rāhu-asurindaṁ (hyphen kept). printed_reading widened from 'Rèhu' to the whole hyphenated word 'Rèhu-asurindaṁ', which is what the applied pair keys on; the edition's hyphen is KEPT. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E018",
@@ -199,8 +199,8 @@
    "suggested_reading": "Kāyādicatu",
    "confidence": "high",
    "context": "bbabhāgamaggassa adhippetattā. Kèyādicatu-ārammaṇappavatto hi pu",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E019",
@@ -215,8 +215,8 @@
    "suggested_reading": "panāyasmā",
    "confidence": "high",
    "context": "mpadaṁ, acirūpasampanno kho panāÿasmā Seniyo eko vūpakaṭṭho appa",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E020",
@@ -231,8 +231,8 @@
    "suggested_reading": "paripphosakaṁ",
    "confidence": "review",
    "context": "īyacuṇṇāni2 ākiritvā udakena parÙpphosakaṁ paripphosakaṁ sanneyy",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E021",
@@ -279,8 +279,8 @@
    "suggested_reading": "bhikkhācāragocare",
    "confidence": "high",
    "context": "ṅkhātaṁ gocaraṁ uggahetvā bhikkhØcāragocare taṁ gahetvā gamanaṁ ",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E024",
@@ -311,8 +311,8 @@
    "suggested_reading": "sampiṇḍeti",
    "confidence": "review",
    "context": "ipāto, tena ca cha Satthāre sampÙṇḍeti. Yathā pūraṇādayo “Sammās",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E027",
@@ -327,8 +327,8 @@
    "suggested_reading": "muditāsahagatena",
    "confidence": "high",
    "context": ". Karuṇāsahagatena cetasā -pa- mõditāsahagatena cetasā. Upekkhās",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E028",
@@ -359,8 +359,8 @@
    "suggested_reading": "viharāmi",
    "confidence": "review",
    "context": "ena abyāpajjena pharitvā viharāmé. So ce ahaṁ brāhmaṇa evaṁbhūto",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E030",
@@ -372,11 +372,11 @@
    "glyph": "Ù",
    "codepoint": "U+00D9",
    "printed_reading": "adhÙṭthitatāya",
-   "suggested_reading": "adhiṭthitatāya",
+   "suggested_reading": "adhiṭṭhitatāya",
    "confidence": "review",
    "context": "ccayalābhena tasmiṁ ārammaṇe adhÙṭthitatāya anekaggataṁ pahāya c",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. The suggestion 'adhiṭthitatāya' is SUPERSEDED by 'adhiṭṭhitatāya', adjudicated against the printed page — adhiṭṭhitatāya (print ṭṭh). CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E031",
@@ -388,11 +388,11 @@
    "glyph": "ò",
    "codepoint": "U+00F2",
    "printed_reading": "vòṭthātuṁ",
-   "suggested_reading": "vuṭthātuṁ",
+   "suggested_reading": "vuṭṭhātuṁ",
    "confidence": "review",
    "context": "attā. Yathāparicchedena kālena vòṭthātuṁ na sakkoti vuṭṭhānavasī",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. The suggestion 'vuṭthātuṁ' is SUPERSEDED by 'vuṭṭhātuṁ', adjudicated against the printed page — vuṭṭhātuṁ (print ṭṭh; word is a BOLD lemma). CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E032",
@@ -420,11 +420,11 @@
    "glyph": "ó",
    "codepoint": "U+00F3",
    "printed_reading": "paveóenti",
-   "suggested_reading": "paveṇenti",
+   "suggested_reading": "pavesenti",
    "confidence": "high",
    "context": "atthe tālappamāṇaṁ ayasūlaṁ paveóenti, tathā vāmahatthādīsu. Yat",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. The suggestion 'paveṇenti' is SUPERSEDED by 'pavesenti', adjudicated against the printed page. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E034",
@@ -436,11 +436,11 @@
    "glyph": "Ù",
    "codepoint": "U+00D9",
    "printed_reading": "dvattiṁsavarapurisalakkhaṇapatÙmaṇḍitaṁ",
-   "suggested_reading": "dvattiṁsavarapurisalakkhaṇapatimaṇḍitaṁ",
+   "suggested_reading": "dvattiṁsavarapurisalakkhaṇapaṭimaṇḍitaṁ",
    "confidence": "review",
    "context": " “dvattiṁsavarapurisalakkhaṇapatÙmaṇḍitaṁ nāma sarīraṁ atthi nu ",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. The suggestion 'dvattiṁsavarapurisalakkhaṇapatimaṇḍitaṁ' is SUPERSEDED by 'dvattiṁsavarapurisalakkhaṇapaṭimaṇḍitaṁ', adjudicated against the printed page — …paṭimaṇḍitaṁ (edition ṁ, reader ṃ normalised). CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E035",
@@ -468,11 +468,11 @@
    "glyph": "ò",
    "codepoint": "U+00F2",
    "printed_reading": "Aòjalī",
-   "suggested_reading": "Aujalī",
+   "suggested_reading": "Añjalī",
    "confidence": "review",
    "context": "ako Dhūpo, Pulino Uttiyena ca. Aòjalī Khomadāyī ca, daseva tatiy",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. The suggestion 'Aujalī' is SUPERSEDED by 'Añjalī', adjudicated against the printed page. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E037",
@@ -487,8 +487,8 @@
    "suggested_reading": "dhātuyoti",
    "confidence": "review",
    "context": "ro khandhā dvāyatanāni dve dhātuþoti-ādinā khandhāyatanadhātādim",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E038",
@@ -503,8 +503,8 @@
    "suggested_reading": "adhippāyo",
    "confidence": "review",
    "context": "anatthanti aṭṭhakathāyaṁ adhippāþo daṭṭhabbo. Tathā hi “rūpārūpa",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E039",
@@ -519,8 +519,8 @@
    "suggested_reading": "Nānācittavasena",
    "confidence": "high",
    "context": "āgadassanatthanti vuttaṁ hoti. Nènācittavasena paṭijānantassa ad",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E040",
@@ -535,8 +535,8 @@
    "suggested_reading": "Sīlādidhammehi",
    "confidence": "high",
    "context": "aṁ cettha āsevanaṁ daṭṭhabbaṁ. Sêlādidhammehi saṁvaraṇādivasena ",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E041",
@@ -548,11 +548,11 @@
    "glyph": "ò",
    "codepoint": "U+00F2",
    "printed_reading": "santòtṭho",
-   "suggested_reading": "santutṭho",
+   "suggested_reading": "santuṭṭho",
    "confidence": "review",
    "context": "āgasampattiyā appiccho hoti santòtṭho pavivitto asaṁsaṭṭho, vīri",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. The suggestion 'santutṭho' is SUPERSEDED by 'santuṭṭho', adjudicated against the printed page — santuṭṭho (print ṭṭh). CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E042",
@@ -564,11 +564,11 @@
    "glyph": "í",
    "codepoint": "U+00ED",
    "printed_reading": "pathavīkasiṇādivaḍḍhaní",
-   "suggested_reading": "pathavīkasiṇādivaḍḍhanī",
+   "suggested_reading": "pathavīkasiṇādivaḍḍhane",
    "confidence": "high",
    "context": "aḍḍhanena pathavīkasiṇādivaḍḍhaní viya kiñci payojanaṁ natthi. P",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. 2026-08-09, NOT SETTLED — THREE readings now stand. The register's applied pair is vaḍḍhaní -> vaḍḍhanī and that is what the site serves; the reader's sheet verdict reads vaḍḍhane. The pair's own warrant is weak: í (U+00ED) is a ONE-PLACE glyph, confidence 'medium', 1/1, and the register's evidence says in so many words that the reading 'follows the sense and the ê->ī pattern' — an inference, not a witness. The neighbouring codepoints do NOT support inference: é resolves two ways (ā and i) and Ù and ò are recorded as NEIGHBOURHOOD faults with mixed readings. Printed context (pdftotext, tika-unicode/25VsmT01.pdf): '…tena sattarāsivaḍḍhanena pathavīkasiṇādivaḍḍhaní viya kiñci payojanaṁ natthi'. Δ0 either way. Reader to settle; nothing applied. SETTLED BY THE READER 2026-08-09: the reading is `vaḍḍhane`. The applied pair is changed from `vaḍḍhaní -> vaḍḍhanī` to `vaḍḍhaní -> vaḍḍhane` in data/glyph_errata.json, and the superseded `vaḍḍhanī` — an inference from the ê->ī pattern, never a witness — is recorded there. Δ0 in characters, so no offset moved: applied through site/25VsmT01.json, the volume index, the verse store, the term index and its bucket, and the lookup stores; corpus/*.txt keeps the printed `vaḍḍhaní`."
   },
   {
    "id": "E043",
@@ -583,8 +583,8 @@
    "suggested_reading": "Vīriyāyattassa",
    "confidence": "high",
    "context": "imūlakañca dukkhaṁ saṅgaṇhāti. Vêriyāyattassa lokiyalokuttaravis",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E044",
@@ -597,10 +597,10 @@
    "codepoint": "U+00D9",
    "printed_reading": "mānavinibandhādÙṭhi",
    "suggested_reading": "mānavinibandhādiṭhi",
-   "confidence": "review",
+   "confidence": "high",
    "context": " diṭṭhi “ahan”ti mānavinibandhādÙṭhi “maman”ti mānavinibandhā di",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. 2026-08-09, SETTLED AGAINST THE PRINTED PAGE — the applied pair stands and the sheet verdict is superseded. The reader's sheet reading was mānavinibandhādiṭṭhi (no space); the register's applied pair is mānavinibandhādÙṭhi -> 'mānavinibandhā diṭṭhi' (space). The edition settles it on the SAME LINE: '“ahan”ti mānavinibandhādÙṭhi “maman”ti mānavinibandhā diṭṭhi' — the parallel member of the very same sentence is printed with the space, and three further occurrences in 26Khu09 all read 'mānavinibandhā diṭṭhi'. This place is also the register's own witness for Ù->i. Left status=candidate for the reader's word, but the evidence is one-sided. CONFIRMED BY THE READER 2026-08-09: `“maman”ti mānavinibandhā diṭṭhi`, with the space — the applied pair stands unchanged and the sheet's no-space verdict is withdrawn. Nothing was written to the text; the served reading was already right."
   },
   {
    "id": "E045",
@@ -615,8 +615,8 @@
    "suggested_reading": "āṇatti",
    "confidence": "high",
    "context": " visuddhiyā”ti1. Tattha katamā āóatti– “Cakkhumā visamānīva, vij",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E048",
@@ -631,8 +631,8 @@
    "suggested_reading": "Kāyasakkhi1",
    "confidence": "high",
    "context": "tto atthi. Paññāvimutto atthi. Kèyasakkhi1 atthi. Diṭṭhippatto a",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E049",
@@ -647,8 +647,8 @@
    "suggested_reading": "Sārammaṇaṁ",
    "confidence": "high",
    "context": "ammaṁ rūpaṁ kusalanti, āmantā. Sèrammaṇaṁ, atthi tassa āvaṭṭanā ",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E050",
@@ -663,8 +663,8 @@
    "suggested_reading": "purejātārammaṇā",
    "confidence": "high",
    "context": "viññāṇā purejātavatthukā purejātèrammaṇā ajjhattikavatthukā bāhi",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E051",
@@ -711,8 +711,8 @@
    "suggested_reading": "Candavatī",
    "confidence": "high",
    "context": "Anomadassissa Bhagavato Candavatê nāma nagaraṁ ahosi, Yasavā nām",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E054",
@@ -727,8 +727,8 @@
    "suggested_reading": "saṅgahaṇato",
    "confidence": "high",
    "context": "aṅgahavatthūhi sammadeva saṅgahaóato ca sabbakālaṁ sambhattapari",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E055",
@@ -740,11 +740,11 @@
    "glyph": "Ù",
    "codepoint": "U+00D9",
    "printed_reading": "tÙṭhatīti",
-   "suggested_reading": "tiṭhatīti",
+   "suggested_reading": "tiṭṭhatīti",
    "confidence": "review",
    "context": "ti ca, asati neva uppajjati na tÙṭhatīti evaṁvidhena sīlena saha",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. The suggestion 'tiṭhatīti' is SUPERSEDED by 'tiṭṭhatīti', adjudicated against the printed page. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E056",
@@ -759,8 +759,8 @@
    "suggested_reading": "Tāni",
    "confidence": "high",
    "context": " paṭibhānapaṭisambhi dāñāṇena. Tèni ñāṇāni jānātīti itarāni tīṇi",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E057",
@@ -775,8 +775,8 @@
    "suggested_reading": "Pātimokkhasaṁvarasīlaṁ",
    "confidence": "high",
    "context": "āsakā upāsikāyo ca paññāpenti. Pètimokkhasaṁvarasīlaṁ pana sabba",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E058",
@@ -791,8 +791,8 @@
    "suggested_reading": "Kāmañca",
    "confidence": "high",
    "context": "tanāni. Purisapuggaloti satto. Kèmañca purisotipi puggalotipi vu",
-   "status": "candidate",
-   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context."
+   "status": "confirmed",
+   "note": "Misprint in the printed edition (corrupted glyph). Printed reading preserved; emendation suggested from context. CONFIRMED by the reader 2026-08-09 against the printed page, from the visual review sheet (_review/glyph_review.html; verdicts in _review/verdicts_2026-08-09.json, joined in _review/apply_table_2026-08-09.json). The served text ALREADY carries this reading: the pair is applied at build time from data/glyph_errata.json, over the PDF text layer, before extraction. corpus/*.txt is a superseded 2026-07-29 working snapshot and still shows the corrupt form; that is staleness, not principle 3."
   },
   {
    "id": "E059",

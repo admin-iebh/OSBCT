@@ -120,6 +120,51 @@ fail on the build that had its bug.
     BOLD lemma — E031 is too).  All 49 pairs are Δ0 except E044/E055 (+1 —
     offset shifting needed there).  X-rows need NEW register entries
     (E078+); X007 stays a sheet row only.
+ 4a4b. **VERDICTS APPLIED 2026-08-09 (next session).**  39 register entries
+    candidate → confirmed (register now 47 confirmed / 20 candidate / 1
+    resolved), each noting that the served text already carries the reading
+    via `data/glyph_errata.json`, applied over the PDF text layer before
+    extraction.  ELEVEN suggested readings were WRONG in the register and are
+    corrected against the printed page with the superseded reading kept —
+    the ṭth slips (E002 E030 E031 E041 E055), E006 `passimi`→`passāmi`,
+    E033 `paveṇenti`→`pavesenti`, E034 `patimaṇḍitaṁ`→`paṭimaṇḍitaṁ`, E036
+    `Aujalī`→`Añjalī`, E011/E017 printed_reading widened to the whole
+    hyphenated word.  The applied PAIRS were right throughout; the
+    register's summary of them had rotted.
+    **THE CLASS A/B SPLIT DID NOT SURVIVE RE-MEASUREMENT:** 10 of the 12
+    class-B rows measure like class A — the earlier probe matched the
+    reader's typed string, not the adjudicated one, so ṃ/ṁ and ṭth/ṭṭh read
+    as failures to locate.  **E044 SETTLED** against the printed page and
+    the sheet verdict superseded (the edition prints the parallel member of
+    the same sentence `“maman”ti mānavinibandhā diṭṭhi`, with the space;
+    three more agree in 26Khu09) — left `candidate` for the reader's word.
+    **E042 STILL OPEN, three readings:** applied `vaḍḍhanī`, reader
+    `vaḍḍhane`, printed `vaḍḍhaní`; the applied pair is an inference, not a
+    witness (`í` is a one-place glyph and the register says so), and the
+    neighbouring codepoints resolve two ways each.  **SETTLED BY THE READER
+    THE SAME DAY: `vaḍḍhane`.**  The applied pair is changed and the
+    superseded `vaḍḍhanī` kept with the reason it fell.  ONE word of served
+    text moved, Δ0 in characters — site/25VsmT01.json, the volume index
+    (display form AND folded key — the first sweep missed the folded one),
+    the verse store, terms.compact, its bucket, five lookup stores; pbreak
+    re-derived BYTE-EQUAL, pagespan rebuilt.  **E044 confirmed by the reader
+    as the applied pair reads** (`“maman”ti mānavinibandhā diṭṭhi`, with the
+    space).  Register now **49 confirmed / 18 candidate / 1 resolved**.
+    **THE NINE X-ROWS ARE NOT ERRATA — no E078+ opened.**  The Unicode PDFs
+    read correctly at every one; the corrupt forms live only in `corpus/`,
+    gitignored, last written 2026-07-29, whose `*.errata.json` sidecars (the
+    sheet's own input, `build_glyph_review.py:73`) are dated 2026-07-21.
+    See `claude/x_rows_are_a_stale_snapshot.md`, which also CORRECTS this
+    file's stated convention: `corpus/*.txt` keeps the corrupt reading
+    because it is stale and unpublished, **not** "by principle 3".
+    **OPEN, for the reader:** stop `corpus/*.errata.json` feeding the review
+    sheet, or the next sheet re-raises these nine; and X007 is now suspect
+    for the same reason — check it against the live PDF before asking again.
+    `glyph_errata.json` entries UNCHANGED (182, verified byte-equal);
+    proposals corrected (`ó` is 7/8, not 7/7 — 18AnA02 has carried `fix='s'`
+    all along while the summary claimed `ṇ`) and a `displaced_dot` class
+    recorded.  Stamp `361c9aa7c2d9 → e72ad62629c1`; commit message
+    `COMMIT_MSG_verdicts.bak`.
  4a5. **v2.7.0 BUMPED (this session): all three checklist files** —
     `.zenodo.json` (version + New-in paragraph), `CITATION.cff` (version,
     date-released 2026-08-09), `site/i18n.js` (OSBCT_VERSION) — stamp
