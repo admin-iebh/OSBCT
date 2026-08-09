@@ -442,3 +442,21 @@ measured as one change. Locating that matcher is the next step and is not done h
 The 1,501 remaining are the consonant branch of §2 — **not a residue, a different and
 unadjudicated question**. `extract.py:204` is still uncorrected, so a future extraction would
 reintroduce the fault; that is hygiene and is not done here.
+
+## 11.6 THE BLOCKER OF §11.3 IS BROKEN (2026-08-08, second session)
+
+The matcher §11.4 said must change with the text is the **paragraph-run placer**
+(`build_khu_volume.py`, the `cnd` list in the run matcher).  On a hyphen-ended
+accumulation it tried two joins — drop-and-close, keep-with-space — and the
+migration's KEEP-AND-CLOSE form (`hyjoin`'s own vowel branch) was simply missing.
+One candidate, appended last.
+
+Measured as one change on 09DiT02, per §11.4's own procedure: fix alone on
+unmigrated text → all five side-maps BYTE-IDENTICAL; migrate + rebuild → 84
+ordinals / 2,012 lines EXACT (not 81 / 4,489), side-maps byte-identical again;
+`check_bold_fidelity` warm both sides → EXACT/MISS/PART/LONG/SPUR unmoved at
+5609/173/2/0/1, `notdrawn` **1,862 → 720**.  Pilot then REVERTED (hyspace.py
+returns 8,790/109 — the §11.3 verification), so the corpus-wide apply can land
+as ONE operation: migrate all volumes, rebuild, re-emit the search index
+(terms come from the text), run every gate old-against-new, move the bold
+baseline deliberately.

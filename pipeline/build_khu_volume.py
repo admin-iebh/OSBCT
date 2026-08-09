@@ -6345,7 +6345,17 @@ def unnum_runs(items, paras, cands):
                 if k in ('unit', 'uverse', 'homage') and b > a:
                     break
                 t = texts[b]
-                cnd = ([acc[:-1] + t, acc + ' ' + t] if acc.endswith('-')
+                # !!! THE THIRD JOIN THE EXTRACTION CAN HAVE MADE (2026-08-08).
+                # `hyjoin`'s vowel branch KEEPS the hyphen and CLOSES UP
+                # (`bhayādi-upaddavañca`), and the hyphen-space migration
+                # writes exactly that form into `paragraphs[].text` — but this
+                # list knew only drop-and-close and keep-with-space, so a
+                # migrated paragraph stopped matching its own printed lines:
+                # 09DiT02 lost three ordinals and fell back to emitting 3,178
+                # single lines (hy2/FINDINGS §11.3, the reason the migration
+                # was reverted).  Appended LAST, so nothing already matching
+                # can change which candidate wins.
+                cnd = ([acc[:-1] + t, acc + ' ' + t, acc + t] if acc.endswith('-')
                        else [acc + ' ' + t] if acc else [t])
                 nxt = next((c for c in cnd if want.startswith(c)), None)
                 if nxt is None:
