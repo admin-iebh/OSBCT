@@ -218,6 +218,99 @@ const ok=(c,label,detail)=>{ console.log((c?'  ok    ':'  FAIL  ')+label+(detail
        're-clicking the open chip closes it');
   }
 
+  // 10. THE DICTIONARIES ARE REACHABLE BY THEIR OWN HEADWORDS (2026-08-10).
+  //     `yathānisinna` is the reader's report of 2026-08-09: the panel said
+  //     "no entry" while dictionary.sutta.org answered it — from PCED books B
+  //     and K, both of which are in our own `_dictsrc/`.  It is a compound, so
+  //     all twelve of its corpus forms are `dpd_tier: 3` and it never entered
+  //     `LEMMAS`; the whole `lem` store was keyed on DPD's index, so 163,453
+  //     of 210,111 headwords (77.8%) could not be reached.  See
+  //     `claude/dpd_gates_the_abhidhana.md`.
+  //
+  //     THIS ASSERTION IS WRITTEN TO FAIL ON THE BUILD THAT HAS THE BUG, and
+  //     was run red before the store existed — the dict tab does not even
+  //     appear for this word today.  What it presses is what the reader sees:
+  //     the two named books, drawn open, carrying their own Burmese gloss, and
+  //     the Abhidhāna tab with the pm12e entry behind it.
+  //
+  //     B and K are ticked through localStorage rather than through the gear,
+  //     because on the failing build there is no gear to click: viewDict
+  //     returns `wl-none` before it draws one.
+  w.localStorage.setItem('osbct-apdgear', JSON.stringify({B:1,K:1}));
+  await w.WL.lookup('yathānisinna',para);
+  for(let k=0;k<120;k++){ await wait(100); if(el()&&el().dataset.state==='ready') break; }
+  const db3=w.document.querySelector('#wlt button[data-tab="dict"]');
+  ok(!!db3 && !db3.classList.contains('dis'),
+     'yathānisinna has a dictionary tab', db3?db3.textContent.trim():'(no tab)');
+  if(db3&&!db3.classList.contains('dis')){ db3.click(); await wait(300); }
+  const secB=body().querySelector('#wl-s-B'), secK=body().querySelector('#wl-s-K');
+  ok(!!secB,'book B (Pali Myanmar Dictionary) draws a section');
+  ok(!!secK,'book K (Tipiṭaka Pāḷi-Myanmar Dictionary) draws a section');
+  // the gloss itself, not merely a heading: the Burmese spelling of the word,
+  // and K's definition line — the two strings `_dictsrc/pced_full.jsonl.gz`
+  // actually carries for this headword.
+  ok(!!secB && /ယထာနိသိန္န/.test(secB.textContent),
+     'book B carries the Burmese headword', secB?secB.textContent.replace(/\s+/g,' ').slice(0,70):'');
+  ok(!!secK && /ယထာနိသိန္န/.test(secK.textContent) && /နေ-ထိုင်-မြဲတိုင်းသော/.test(secK.textContent),
+     'book K carries its definition', secK?secK.textContent.replace(/\s+/g,' ').slice(0,70):'');
+  // and the §9 authority itself: pm12e.csv:145524 is this word, so the
+  // Abhidhāna tab must not be disabled either.
+  const abhiBtn=w.document.querySelector('#wlt button[data-tab="abhi"]');
+  ok(!!abhiBtn && !abhiBtn.classList.contains('dis'),
+     'the Abhidhāna tab is live for yathānisinna',
+     abhiBtn?abhiBtn.textContent.trim():'(no tab)');
+  if(abhiBtn&&!abhiBtn.classList.contains('dis')){ abhiBtn.click(); await wait(300); }
+  ok(!!abhiBtn && !abhiBtn.classList.contains('dis') && /ယထာနိသိန္န/.test(body().textContent),
+     'the Abhidhāna entry draws');
+  // 10b. AND THE WORD THE READER TYPES NEED NOT CARRY ITS DIACRITICS.  §7 asks
+  //      search to be diacritic-insensitive; the store is keyed on fold(), so
+  //      the plain-ASCII spelling must reach the same two books.
+  await w.WL.lookup('yathanisinna',para);
+  for(let k=0;k<120;k++){ await wait(100); if(el()&&el().dataset.state==='ready') break; }
+  const db4=w.document.querySelector('#wlt button[data-tab="dict"]');
+  if(db4&&!db4.classList.contains('dis')){ db4.click(); await wait(300); }
+  ok(!!db4 && !db4.classList.contains('dis') && !!body().querySelector('#wl-s-K'),
+     'the undiacriticked spelling reaches the same entry');
+
+  // 11. THE MISS MESSAGE NO LONGER CLAIMS THE CORPUS IS SILENT WHEN IT IS NOT.
+  //     "No entry for X in the corpus or the dictionaries" was false about its
+  //     first half for any stem the edition only ever prints inflected.
+  //     `yathāvuttamattha` is such a stem, measured over the shipped stores: it
+  //     is in NEITHER freq, ped, lem, dpd NOR the new hw store, and the corpus
+  //     carries 4 forms of it, 91 occurrences.  So the miss is genuine — and
+  //     the forms must be offered above it, each one clickable.
+  //
+  //     Pressed through the SEARCH BOX, which is where the message lives; a
+  //     direct WL.lookup() call would skip resolveTyped and test nothing.
+  const qbox=w.document.getElementById('wlq');
+  ok(!!qbox,'the panel has a search box');
+  if(qbox){
+    w.document.getElementById('wlb').innerHTML='';
+    qbox.hidden=false; qbox.value='yathāvuttamattha';
+    qbox.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
+    for(let k=0;k<80;k++){ await wait(100);
+      if(w.document.querySelector('#wlb .wl-none')) break; }
+    const none=w.document.querySelector('#wlb .wl-none');
+    const pfx=[...w.document.querySelectorAll('#wlb .wl-pfx')];
+    ok(!!none,'the typed stem is still reported as having no entry');
+    ok(pfx.length>=4,'the corpus forms are offered before the message',
+       pfx.map(b=>b.textContent.trim()).join(' | ').slice(0,90));
+    ok(pfx.length>0 && pfx.every(b=>/^yath[aā]vuttamattha/.test(b.dataset.w||'')),
+       'every form offered actually begins with what was typed',
+       pfx.map(b=>b.dataset.w).join(' '));
+    // the chips must be live: clicking one looks that form up
+    if(pfx.length){
+      const want=pfx[0].dataset.w;
+      pfx[0].click();
+      for(let k=0;k<80;k++){ await wait(100);
+        if(el()&&el().dataset.state==='ready'
+           &&w.document.getElementById('wlw').textContent===want) break; }
+      ok(w.document.getElementById('wlw').textContent===want,
+         'clicking a form looks it up',
+         w.document.getElementById('wlw').textContent);
+    }
+  }
+
   console.log(fails?('FAILED: '+fails+' assertion(s)'):'all green');
   process.exit(fails?1:0);
 })().catch(e=>{ console.log('  FAIL  threw: '+(e&&e.message||e)); process.exit(1); });

@@ -180,6 +180,20 @@ stores/lookup_eval/dpd/*.json
 !stores/lookup_eval/family/
 !stores/lookup_eval/family/**/
 stores/lookup_eval/family/**/*.json
+# `stores/lookup_eval/hw/` — the APD books and the Abhidhāna keyed on their OWN
+# headwords (_panel/build_own.py, 2026-08-10; claude/dpd_gates_the_abhidhana.md).
+# WRITTEN AT THE SAME TIME AS THE STORE, DELIBERATELY: the `stores/lookup_eval/*`
+# rule above would otherwise swallow the whole subtree, `git add -A` would skip
+# it, the commit would ship without it, and r2_upload.sh — whose file list is
+# `git ls-files` BY DESIGN — would correctly upload nothing.  That is exactly
+# what happened to family/ on 2026-08-09 and the note is four lines above.
+# Same convention as dpd/ and family/: only the .gz is tracked and served (the
+# manifest lists `hw` in its `gz` array, so the panel never asks for the plain
+# .json), and the .json stay on this machine so a rebuild need not start from
+# nothing.  40 MB tracked against 153 MB on disk.
+!stores/lookup_eval/hw/
+stores/lookup_eval/hw/*.json
+!stores/lookup_eval/hw/index.json
 _dictsrc/
 
 # Build-run stdout/stderr from _panel/ scripts (eval rebuilds, precision sweeps).

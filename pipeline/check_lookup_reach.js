@@ -100,6 +100,16 @@ function sample(n){
   const step=Math.max(1,Math.floor(broken.length/n));
   const out=[]; for(let i=0;i<broken.length&&out.length<n;i+=step) out.push(broken[i]);
   if(lem['atappaka'] && out.indexOf('atappaka')<0) out.unshift('atappaka');   // the reported word, always
+  // !!! AND THE 2026-08-09 WORD, WHICH IS NOT IN `lem` AT ALL — THAT IS THE
+  // POINT.  `yathānisinna` is a compound, so every one of its twelve corpus
+  // forms is `dpd_tier: 3` and it never entered `LEMMAS`; the sample above is
+  // drawn from `lem` and therefore cannot contain it, or anything like the
+  // 163,453 headwords that were unreachable for the same reason.  It is in
+  // `stores/lookup_eval/hw/`, keyed on its own headword, and it must resolve
+  // through the box like any other — `claude/dpd_gates_the_abhidhana.md`.
+  // Named rather than sampled, because a store this gate does not read cannot
+  // supply its own example.
+  if(out.indexOf('yathānisinna')<0) out.unshift('yathānisinna');
   return {words:out, total:broken.length, form:Object.keys(form).length, lem:Object.keys(lem).length};
 }
 let pass=0, fail=0;

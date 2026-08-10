@@ -224,6 +224,15 @@ var S = {
                  es: 'Escriba una palabra pāḷi — diacríticos opcionales'},
   wl_notfound:  {en: 'No entry for “%s” in the corpus or the dictionaries.',
                  es: 'No hay entrada para «%s» en el corpus ni en los diccionarios.'},
+  // THE MISS MESSAGE SAID THE CORPUS DID NOT HAVE THE WORD, AND FOR A STEM THE
+  // EDITION ONLY EVER INFLECTS THAT IS FALSE.  `lookup/freq` holds 12 forms of
+  // `yathānisinna`, 52 occurrences, and the panel said "not in the corpus".
+  // These forms are shown BEFORE the message, and the message then says what
+  // is actually true: no entry under that exact spelling.
+  wl_prefix:    {en: 'Forms in the edition beginning with “%s”:',
+                 es: 'Formas en la edición que empiezan por «%s»:'},
+  wl_prefix_n:  {en: '%d forms · %d occurrences',
+                 es: '%d formas · %d apariciones'},
   wl_goto:      {en: 'Open this passage in the reader',
                  es: 'Abrir este pasaje en el lector'},
   wl_nodict:    {en: 'No dictionary reached from this form.',
@@ -387,7 +396,13 @@ var CACHE = {};
 // family stubs stamped with their keys) and stores/lookup_eval/family/ is
 // NEW — both must be uploaded to the R2 bucket beside the rest, or
 // production 404s and only the unpacked-archive fallback works.
-var WLV = '20260809a';
+// 2026-08-10: `stores/lookup_eval/hw/` is NEW — 6,751 shards, the APD books and
+// the Abhidhāna keyed on their own headwords (hwlook(), below).  IT IS SERVED
+// FROM R2 LIKE THE REST, so `pipeline/r2_upload.sh` must run before this bump
+// means anything: the manifest is fetched `?v=WLV`, and a reader who gets the
+// new version against a bucket that has no `hw/` gets a 404 and the same "no
+// entry" they get today.  Upload first, bump second.
+var WLV = '20260810a';
 
 // ---------------------------------------------------- gzipped shard sets --
 // WHY THE SHARDS ARE STORED GZIPPED, AND WHY THAT IS NOT THE SAME AS
@@ -734,12 +749,49 @@ function resolveTyped(q) {
 // will go on to fetch.  PED ships publicly; `lem` and `dpd` are the evaluation
 // store and `elook` already returns null when that is switched off, so this
 // answers "no" for a reader who has turned those sources off, which is right.
+// !!! AND `hw` IS ONE OF THEM, OR THE FIX REACHES A CLICK AND NOT THE SEARCH
+// BOX.  Wiring the own-headword store into lookup() alone made `yathānisinna`
+// answer when a reader CLICKS it in the text, while the search box went on
+// saying "not found" — because the box asks this function, and this function
+// asked the three sets keyed through DPD.  That is the atappaka defect of
+// 2026-08-05 exactly, one store later: a word the reader can read in a
+// dictionary must be a word the reader can type.
 function inDicts(w) {
   return Promise.all([
     look('ped', w).catch(function () { return null; }),
     elook('lem', w).catch(function () { return null; }),
-    elook('dpd', w).catch(function () { return null; })
-  ]).then(function (r) { return !!(r[0] || r[1] || r[2]); });
+    elook('dpd', w).catch(function () { return null; }),
+    hwlook(w).catch(function () { return null; })
+  ]).then(function (r) { return !!(r[0] || r[1] || r[2] || r[3]); });
+}
+// THE CORPUS FORMS THAT BEGIN WITH WHAT WAS TYPED.  One shard fetch: prefix
+// sharding puts every key beginning with fold(q) in the shard fold(q) names —
+// or in a shallower one holding a superset of them — so the whole answer is in
+// the file `shardName` already resolves to, and there is nothing to scan.
+//
+// It returns [] rather than guessing when the shard cannot be named, which is
+// the short-query case (a two-letter query may sit under shards split deeper
+// than the query is long).  A miss then reads exactly as it does today.
+var PFX_MAX = 24;
+function corpusPrefix(q) {
+  var f = fold((q || '').trim());
+  if (f.length < 3) return Promise.resolve([]);
+  return manifest().then(function () {
+    return jfetch(BASE + 'freq/' + shardName('freq', f) + '.json',
+                  gzSet(MAN, 'freq'));
+  }).then(function (o) {
+    if (!o) return [];
+    var out = [];
+    for (var k in o) {
+      if (fold(k).indexOf(f) !== 0) continue;
+      if (fold(k) === f) continue;          // an exact key is not a suggestion
+      out.push({w: k, n: (o[k] && o[k][0]) || 0});
+    }
+    // commonest first — the same ordering rule resolveTyped uses when a plain
+    // ASCII spelling has to choose between readings; ties to the shorter form.
+    out.sort(function (a, b) { return b.n - a.n || a.w.length - b.w.length; });
+    return out.slice(0, PFX_MAX);
+  }).catch(function () { return []; });
 }
 function look(set, key) {
   return manifest().then(function () {
@@ -779,6 +831,51 @@ function elook(set, key) {
     }
     return v;
   });
+}
+
+// ---------------------------------------- the dictionaries' OWN headwords --
+// !!! DPD DECIDED WHICH WORDS THE ABHIDHĀNA WAS ALLOWED TO ANSWER, AND IT
+// SILENCED 77.8% OF IT.  `build_eval.py` builds the `lem` key set as corpus
+// forms → DPD index → DPD headwords, and then attaches the Abhidhāna and all
+// the APD books TO THOSE LEMMAS AND NOTHING ELSE.  The question the build asks
+// is therefore not "does the Abhidhāna have this word?" but "does DPD have a
+// headword for some corpus form of it?" — and §9 admits the Abhidhāna as the
+// ONLY dictionary that is an authority while ranking DPD lowest.  163,453 of
+// 210,111 headwords were unreachable.  The reader met it as `yathānisinna`
+// returning "no entry" while dictionary.sutta.org answered it, from two books
+// sitting in our own `_dictsrc/`.  `claude/dpd_gates_the_abhidhana.md`.
+//
+// `stores/lookup_eval/hw/` is that store, keyed on fold(headword) — which
+// lowercases AND strips diacritics, so `Yathānisinna`, `yathānisinna` and
+// `yathanisinna` are one key and the capitalised `acc` trap cannot bite.  It
+// carries ITS OWN MANIFEST: `build_eval.py` rewrites the eval index.json
+// wholesale on every run, so an `hw` entry there would vanish on the next
+// rebuild, silently, the way `family/` vanished from a commit.
+//
+// IT IS ADDITIVE AND IT IS CONSULTED LAST.  Only when `lem` has returned
+// nothing — the path that says "no entry" today — so no word that answers now
+// can answer differently, and the cost on the common path is zero requests.
+var HWMANP = null, HWMAN = null;
+function hwmanifest() {
+  if (!HWMANP) HWMANP = jfetch(EBASE + 'hw/index.json')
+    .then(function (m) { HWMAN = m; return m; });
+  return HWMANP;
+}
+function hwlook(key) {
+  if (!EVAL) return Promise.resolve(null);
+  var f = fold(key || '');
+  if (!f) return Promise.resolve(null);
+  return hwmanifest().then(function (m) {
+    if (!m || !m.shards) return null;
+    for (var d = 2; d <= 40; d++) {
+      var name = (f.slice(0, d) + new Array(d + 1).join('_')).slice(0, d);
+      if (m.shards[name])
+        return jfetch(EBASE + 'hw/' + name + '.json', gzSet(m, 'hw'));
+    }
+    return null;
+  }).then(function (o) {
+    return o && o[f] !== undefined ? o[f] : null;
+  }).catch(function () { return null; });
 }
 
 // -------------------------------------------------- WordNet, the English --
@@ -990,6 +1087,14 @@ var CSS = ''
 + 'background:none;border:1px dashed var(--line);border-radius:6px;padding:6px 10px;'
 + 'cursor:pointer;margin:10px 0}'
 + '#wl .wl-none{color:var(--mut);font-size:12.5px}'
+// the corpus forms offered before a miss message: chips, wrapping, each one a
+// lookup of that form.  Deliberately quiet — they are a suggestion, not an
+// answer, and the message below them still says the typed word has no entry.
++ '#wl .wl-prefix{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 10px}'
++ '#wl .wl-pfx{font:400 12.5px/1.3 Inter,system-ui,sans-serif;color:var(--fg);'
++ 'background:none;border:1px solid var(--line);border-radius:6px;'
++ 'padding:3px 7px;cursor:pointer}'
++ '#wl .wl-pfx:hover{border-color:var(--accent);color:var(--accent)}'
 // SMALL BUT VISIBLE, at the reader's direction.  It was --mut, which the
 // 2026-08-02 contrast survey measured at 3.40:1 on --app — under AA, i.e.
 // not reliably legible, which for a caution is the wrong failure.
@@ -1155,15 +1260,49 @@ function build() {
       var para = current && current.para;
       resolveTyped(typed).then(function (key) {
         if (!key) {
-          document.getElementById('wlb').innerHTML =
-            '<p class="wl-none">'
-            + esc(T('wl_notfound').replace('%s', typed)) + '</p>';
-          document.getElementById('wlt').innerHTML = '';
-          document.getElementById('wlc').textContent = '';
-          w.textContent = typed;
-          el.dataset.state = 'ready';
-          shut();
-          return;
+          // !!! THE MISS MESSAGE MADE A CLAIM ABOUT THE CORPUS THAT THE CORPUS
+          // CONTRADICTS.  "No entry for X in the corpus or the dictionaries"
+          // is wrong about the first half whenever X is a stem the edition
+          // only ever prints inflected: `yathānisinna` has TWELVE forms in
+          // `lookup/freq`, 52 occurrences, 34 in the Aṭṭhakathā and 18 in the
+          // Ṭīkā.  Showing them costs one shard fetch, on the miss path only,
+          // and turns a dead end into the answer the reader was after.
+          //
+          // This is the MIRROR of the `atappaka` fallback in resolveTyped
+          // above: that one made a dictionary HEADWORD typable; this one makes
+          // a STEM THE EDITION ONLY INFLECTS findable.
+          return corpusPrefix(typed).then(function (hits) {
+            var h = '';
+            if (hits && hits.length) {
+              var tot = 0;
+              hits.forEach(function (x) { tot += x.n; });
+              h += '<div class="wl-sec"><div class="wl-sub">'
+                 + esc(T('wl_prefix').replace('%s', typed))
+                 + ' <span class="wl-flag">('
+                 + esc(T('wl_prefix_n').replace('%d', hits.length).replace('%d', tot))
+                 + ')</span></div><div class="wl-prefix">'
+                 + hits.map(function (x) {
+                     return '<button type="button" class="wl-pfx" data-w="'
+                          + esc(x.w) + '">' + esc(x.w)
+                          + ' <span class="wl-cite">' + x.n + '</span></button>';
+                   }).join(' ') + '</div></div>';
+            }
+            h += '<p class="wl-none">'
+               + esc(T('wl_notfound').replace('%s', typed)) + '</p>';
+            var body = document.getElementById('wlb');
+            body.innerHTML = h;
+            Array.prototype.forEach.call(body.querySelectorAll('.wl-pfx'),
+              function (b) {
+                b.addEventListener('click', function () {
+                  lookup(b.dataset.w, para, true);
+                });
+              });
+            document.getElementById('wlt').innerHTML = '';
+            document.getElementById('wlc').textContent = '';
+            w.textContent = typed;
+            el.dataset.state = 'ready';
+            shut();
+          });
         }
         shut();
         lookup(key, para, true);
@@ -1518,6 +1657,17 @@ function lookup(word, paraEl, inPanel) {
         ]).then(function (z) {
           return {dpd: z[0].filter(function (x) { return x.e; }),
                   lem: z[1].filter(function (x) { return x.e; })};
+        });
+      }).then(function (ev) {
+        // ...and if `lem` still has nothing, ask the dictionaries by their OWN
+        // headwords before the panel says "no entry".  See hwlook() above: this
+        // runs ONLY on the miss path, and what it appends is an ordinary lemma
+        // record, so the Abhidhāna tab, the APD sections, the counts and the
+        // gear all render it with no further change anywhere.
+        if (ev.lem.length) return ev;
+        return hwlook(word).then(function (v) {
+          if (v) ev.lem.push({b: (v.w && v.w[0]) || word, e: v});
+          return ev;
         });
       });
       return Promise.all([pGloss, pPed, pEval]).then(function (r2) {

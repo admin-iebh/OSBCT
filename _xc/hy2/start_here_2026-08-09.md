@@ -68,7 +68,27 @@ evidence about R2.
 
 ---
 
-## 0b. NEW AND LARGE — DPD GATES THE ABHIDHĀNA, 77.8% UNREACHABLE
+## 0b. DPD GATES THE ABHIDHĀNA — **REPAIRED 2026-08-10, NOT YET UPLOADED**
+
+> **BUILT AND GATED; THE BUCKET DOES NOT HAVE IT YET.**
+> `stores/lookup_eval/hw/` (`_panel/build_own.py`) keys the APD books and the
+> Abhidhāna on `fold(headword)` — a SEPARATE store, `lem` untouched, consulted
+> only where `lem` returns nothing. **22.8% → 100.0% reachable** on all eight
+> kept PCED books and on pm12e. 185,809 keys · 6,751 shards · largest 148 kB,
+> under the 150 kB cap, measured before it was built. `check_apd_gear.js` §10
+> was **run red first** (8 failures on the build with the bug) and is green now,
+> along with `check_hw_agrees_with_lem.py` (0 missing rows over 34,731) and
+> `check_lookup_reach.js`. The miss message's prefix fallback is in too.
+>
+> **STILL OWED, AND THE JOB IS NOT DONE WITHOUT IT: `pipeline/r2_upload.sh` has
+> not been run.** The panel fetches this store from R2, so production still
+> answers "no entry" until it does. `WLV` is `20260810a`; upload FIRST, or a
+> reader gets the new version against a bucket with no `hw/`.
+> Full account: `claude/hw_store_own_headwords.md`. The §2/§9 redistribution
+> question is untouched. **What follows is the original finding, kept as it was
+> written.**
+
+## 0b-original. NEW AND LARGE — DPD GATES THE ABHIDHĀNA, 77.8% UNREACHABLE
 
 **Found at the end of 2026-08-09 from the reader's report that `yathānisinna`
 returns "no entry" while dictionary.sutta.org answers it.** He was right; the
