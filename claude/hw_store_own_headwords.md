@@ -138,11 +138,18 @@ can read in a dictionary must be a word the reader can type.
 * `pipeline/check_r2_origin.js` **cannot** confirm any of this from the sandbox
   — it has no route to the bucket, and its negative control passes when the
   network is down. Run it on the host.
-* `python3 pipeline/stamp_build.py --write` **refuses**, and correctly: a
-  derived artefact is older than `site/25VsmT01.json`, which the E042 apply
-  rewrote on 2026-08-09. That staleness is **pre-existing and not this work's**,
-  and `BUILD` does not cover `panel.js` in any case — the `panel.js?v=` bump is
-  the lever for this change. Not forced.
+* ~~`python3 pipeline/stamp_build.py --write` refuses, and correctly~~ —
+  **WRONG, AND IT WAS THE CHECK.** It refused because it was run with `--fast`,
+  which skips the rebuild-and-compare and leaves only the mtime screen, and the
+  mtime screen's own docstring warns that it raised a false alarm on
+  `pdfblanks` once already. The deep run says `pdfblanks` is **byte-identical to
+  a fresh build** and *all derived artefacts fresh*. The four remaining items
+  (apparatus, linksk, sections, nav) are advisory and non-blocking.
+  **And the deep check had never been able to run on the reader's own machine
+  at all**: it shells out to `pdftotext`, which was not installed there, so
+  every deploy from that machine has used `--fast` or `--force` — the one gate
+  that catches stale derived data has been inert at the moment it matters most.
+  Poppler installed 2026-08-10; the gate is real there now.
 
 ## 8. Also fixed, cheaply — the miss message was wrong about the corpus
 
@@ -164,3 +171,32 @@ The §2 / §9 **redistribution** question. These sources sit in `lookup_eval/`
 because their redistribution is unresolved, and that is exactly as unresolved as
 it was. What changed is that even in evaluation, where the reader may lawfully
 consult them, three quarters of the lexicon is no longer unreachable.
+
+---
+
+## 10. Two defects found on the reader's first live look, 2026-08-10
+
+**THE UPLOAD SHIPPED NOTHING, AND THE INSTRUCTION WAS THE CAUSE.**
+`pipeline/r2_upload.sh` derives its file list from `git ls-files` — deliberately,
+after the 2026-08-07 incident where walking the filesystem pushed 11,229
+gitignored DPD shards to the bucket. The session's own instruction was
+"R2 FIRST, then commit", which for a store that is not tracked yet means
+`git ls-files` names none of it and the upload copies **zero** new objects.
+Worse, the script's own safety check cannot see it: it compares the bucket count
+against `git ls-files | wc -l`, and both sides exclude the same 6,752 files, so
+it reports a match. **The ordering rule is: `git add` (or commit) FIRST, then
+upload, then deploy.** The script's header records the hazard it was written
+for; it does not record this one, which is its mirror image.
+
+**THE PREFIX LIST DROPPED THE COMMONEST FORM IT WAS DESCRIBING.**
+The reader's screenshot showed *7 forms · 16 occurrences* for `yathānisinna`
+where the corpus has **12 and 52**. A literal prefix match cannot see a stem
+whose final vowel has inflected: `yathānisinnova` (27 occurrences, more than
+half the total), `yathānisinneneva`, `yathānisinnesu`, `yathānisinno`,
+`yathānisinnoyeva`. The count line stated 7 and 16 as though they were the
+answer — **a summary contradicting the data it summarises, one day after that
+was written into the method.** `prefixOf()` now trims one trailing vowel or
+nasal from the folded query, and the heading names the prefix actually matched
+(`yathānisinn`, accented, sliced from the typed string because fold() is one
+character for one), so the panel no longer claims to have matched the word.
+Gated at `check_apd_gear.js` §11.

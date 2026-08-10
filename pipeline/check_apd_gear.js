@@ -295,9 +295,20 @@ const ok=(c,label,detail)=>{ console.log((c?'  ok    ':'  FAIL  ')+label+(detail
     ok(!!none,'the typed stem is still reported as having no entry');
     ok(pfx.length>=4,'the corpus forms are offered before the message',
        pfx.map(b=>b.textContent.trim()).join(' | ').slice(0,90));
-    ok(pfx.length>0 && pfx.every(b=>/^yath[aā]vuttamattha/.test(b.dataset.w||'')),
-       'every form offered actually begins with what was typed',
+    ok(pfx.length>0 && pfx.every(b=>/^yath[aā]vuttamatth/.test(b.dataset.w||'')),
+       'every form offered actually begins with the matched prefix',
        pfx.map(b=>b.dataset.w).join(' '));
+    // !!! AND THE PREFIX IS THE STEM, NOT THE TYPED WORD (reader, 2026-08-10).
+    //     A literal prefix drops every form whose final vowel has inflected:
+    //     for `yathānisinna` that is 5 of 12 forms and 36 of 52 occurrences,
+    //     including `yathānisinnova`, the commonest of the whole set.  The
+    //     heading must therefore name the prefix actually matched — one
+    //     character shorter than what was typed — and not claim to have
+    //     matched the word.
+    const sub=w.document.querySelector('#wlb .wl-sec .wl-sub');
+    ok(!!sub && /yathāvuttamatth[^a]/.test(sub.textContent),
+       'the heading names the matched prefix, not the typed word',
+       sub?sub.textContent.replace(/\s+/g,' ').trim():'(none)');
     // the chips must be live: clicking one looks that form up
     if(pfx.length){
       const want=pfx[0].dataset.w;

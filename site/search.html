@@ -81,7 +81,7 @@
 <script>
 // cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
 // rewrites it, so a rebuild can never be invisible to a returning browser.
-const BUILD='d464e222a9f0';
+const BUILD='bf1436517cf0';
 function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
 
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded',()=>{document.getElementById('theme
   inside longer words. Results show the book, the printed page and the paragraph;
   click a result to open it in the reader at the marked word.
 </footer>
-<script src="i18n.js?v=d464e222a9f0"></script>
+<script src="i18n.js?v=bf1436517cf0"></script>
 <script>
 const FOLD={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
 const fold=s=>s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLD[c]||c);

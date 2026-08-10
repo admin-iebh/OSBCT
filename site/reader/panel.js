@@ -772,9 +772,29 @@ function inDicts(w) {
 // It returns [] rather than guessing when the shard cannot be named, which is
 // the short-query case (a two-letter query may sit under shards split deeper
 // than the query is long).  A miss then reads exactly as it does today.
+// !!! AND A LITERAL PREFIX IS THE WRONG MATCH FOR PĀḶI (reader, 2026-08-10, on
+// the first live look at this list).  It offered SEVEN forms of `yathānisinna`
+// and 16 occurrences where the corpus has TWELVE and 52 — because the final
+// vowel of a stem inflects, and `yathānisinnova`, `yathānisinneneva`,
+// `yathānisinnesu`, `yathānisinno`, `yathānisinnoyeva` do not begin with
+// `yathānisinna` at all.  The commonest form of the whole set, `yathānisinnova`
+// at 27 occurrences — more than half the total — was the one being dropped, and
+// the count line stated 7 and 16 as if they were the answer.  A summary that
+// contradicts the data it summarises, one day after that was written down.
+//
+// So the match trims ONE trailing vowel or nasal from the folded query, and the
+// heading then names the prefix actually used — `yathānisinn`, accented,
+// because fold() is one character for one character and the typed string can be
+// sliced to the same length.  Nothing is implied about morphology: this is not
+// a lemma search (that waits on the Kaccāyana work), it is a wider prefix,
+// honestly labelled.
 var PFX_MAX = 24;
-function corpusPrefix(q) {
+function prefixOf(q) {
   var f = fold((q || '').trim());
+  return (f.length > 4 && 'aiueom'.indexOf(f.slice(-1)) >= 0) ? f.slice(0, -1) : f;
+}
+function corpusPrefix(q) {
+  var typed = (q || '').trim(), f = prefixOf(typed), exact = fold(typed);
   if (f.length < 3) return Promise.resolve([]);
   return manifest().then(function () {
     return jfetch(BASE + 'freq/' + shardName('freq', f) + '.json',
@@ -784,7 +804,7 @@ function corpusPrefix(q) {
     var out = [];
     for (var k in o) {
       if (fold(k).indexOf(f) !== 0) continue;
-      if (fold(k) === f) continue;          // an exact key is not a suggestion
+      if (fold(k) === exact) continue;      // an exact key is not a suggestion
       out.push({w: k, n: (o[k] && o[k][0]) || 0});
     }
     // commonest first — the same ordering rule resolveTyped uses when a plain
@@ -1276,8 +1296,12 @@ function build() {
             if (hits && hits.length) {
               var tot = 0;
               hits.forEach(function (x) { tot += x.n; });
+              // the heading names the prefix ACTUALLY matched, not what was
+              // typed — see prefixOf(): sliced off the typed string, so it
+              // keeps its diacritics
               h += '<div class="wl-sec"><div class="wl-sub">'
-                 + esc(T('wl_prefix').replace('%s', typed))
+                 + esc(T('wl_prefix').replace('%s',
+                       typed.slice(0, prefixOf(typed).length)))
                  + ' <span class="wl-flag">('
                  + esc(T('wl_prefix_n').replace('%d', hits.length).replace('%d', tot))
                  + ')</span></div><div class="wl-prefix">'
