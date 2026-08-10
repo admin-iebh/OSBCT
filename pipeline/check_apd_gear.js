@@ -322,6 +322,62 @@ const ok=(c,label,detail)=>{ console.log((c?'  ok    ':'  FAIL  ')+label+(detail
     }
   }
 
+  // 12. A DICTIONARY THAT IS NEITHER THE ABHIDHĀNA NOR A PCED BOOK MUST ALSO
+  //     BE REACHABLE BY ITS OWN HEADWORD.  `Akalaṅka` is a Malalasekera proper
+  //     name and NOTHING else: measured over the shipped stores it is absent
+  //     from freq, ped, lem and dpd, and carries no APD row and no Abhidhāna
+  //     row — so it exists in the panel only if DPPN was keyed on its own
+  //     headword.  Through `lem` it was reachable only where DPD happened to
+  //     have a lemma for it.
+  await w.WL.lookup('Akalaṅka',para);
+  for(let k=0;k<120;k++){ await wait(100); if(el()&&el().dataset.state==='ready') break; }
+  const db5=w.document.querySelector('#wlt button[data-tab="dict"]');
+  ok(!!db5 && !db5.classList.contains('dis'),
+     'a DPPN-only name has a dictionary tab', db5?db5.textContent.trim():'(no tab)');
+  if(db5&&!db5.classList.contains('dis')){ db5.click(); await wait(300); }
+  // and it must be DRAWN, not merely counted.  Its only section is the
+  // proper-names one, which is not a default; before 2026-08-10 the tab said
+  // "1" and rendered a single grey line.  Where nothing would be open, the
+  // first section opens.
+  const ppnSec=body().querySelector('#wl-s-_ppn');
+  ok(!!ppnSec && !ppnSec.classList.contains('wl-off'),
+     'the proper-names section is DRAWN, not just counted',
+     body().textContent.replace(/\s+/g,' ').slice(0,80));
+  ok(!!ppnSec && /Akalaṅka/.test(ppnSec.textContent),
+     'and it carries the entry',
+     ppnSec?ppnSec.textContent.replace(/\s+/g,' ').slice(0,70):'(none)');
+
+  // 13. WHAT THE READER TYPED IS WHAT THE READER GETS (reader, 2026-08-10:
+  //     "If I type kiriya it should not change to kiriyā").  `kiriya` occurs 4
+  //     times and `kiriyā` 296; the 2026-08-05 order opened the commoner one
+  //     silently.  Exact now wins, and the commoner spelling is OFFERED as a
+  //     clickable line instead of being substituted.
+  for (const [typed, other] of [['kiriya','kiriyā'], ['itthi','itthī']]) {
+    w.document.getElementById('wlb').innerHTML='';
+    qbox.hidden=false; qbox.value=typed;
+    qbox.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
+    for(let k=0;k<80;k++){ await wait(100);
+      if(el()&&el().dataset.state==='ready'
+         &&w.document.getElementById('wlw').textContent===typed) break; }
+    ok(w.document.getElementById('wlw').textContent===typed,
+       '"'+typed+'" opens '+typed+', not '+other,
+       w.document.getElementById('wlw').textContent);
+    const sibs=[...w.document.querySelectorAll('#wlc .wl-sib')].map(b=>b.dataset.w);
+    ok(sibs.indexOf(other)>=0,
+       'and '+other+' is offered beside it', sibs.join(' ')||'(none)');
+  }
+  // and a query that is NOT a corpus form still reaches the commonest reading,
+  // or diacritics stop being optional (§7)
+  w.document.getElementById('wlb').innerHTML='';
+  qbox.value='pathavikasina';
+  qbox.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
+  for(let k=0;k<80;k++){ await wait(100);
+    if(el()&&el().dataset.state==='ready'
+       &&/pathav/.test(w.document.getElementById('wlw').textContent)) break; }
+  ok(/^pathavīkasiṇ/.test(w.document.getElementById('wlw').textContent),
+     'an undiacriticked non-form still reaches the accented word',
+     w.document.getElementById('wlw').textContent);
+
   console.log(fails?('FAILED: '+fails+' assertion(s)'):'all green');
   process.exit(fails?1:0);
 })().catch(e=>{ console.log('  FAIL  threw: '+(e&&e.message||e)); process.exit(1); });

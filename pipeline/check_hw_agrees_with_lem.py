@@ -84,6 +84,17 @@ def main():
         n_sample = int(sys.argv[sys.argv.index('--sample') + 1])
     man = hw_index()
     cache = {}
+    # !!! WHAT MAY BE DEMANDED OF `hw` IS WHAT `hw` WAS BUILT WITH, AND THE
+    # STORE SAYS SO ITSELF.  `build_own.py` records in its manifest which
+    # sources were absent when it ran (`stardict_missing`) — PEU, DOP, CPD and
+    # NCPED live in a GoldenDict build that is not on every machine.  Reading
+    # that instead of hard-coding a list means this gate tightens by itself the
+    # moment the store is rebuilt somewhere they exist, rather than going on
+    # excusing an absence nobody rechecks.
+    absent = set(man.get('stardict_missing') or [])
+    if absent:
+        print(f'NOTE: the store records these as absent when it was built: '
+              f'{sorted(absent)} — not demanded of it here.')
     shards = sorted(glob.glob(os.path.join(LEM, '*.json')))
     if not shards:
         shards = sorted(glob.glob(os.path.join(LEM, '*.json.gz')))
@@ -95,6 +106,7 @@ def main():
     seen = miss_key = 0
     a_checked = a_missing = a_extra = 0
     apd_checked = apd_missing = apd_extra = 0
+    pn_checked = pn_missing = 0
     missing_examples = []
     per_book_missing = collections.Counter()
 
@@ -117,8 +129,8 @@ def main():
             # index — the same defect as the one being repaired here, in a
             # corner it does not reach.  Whoever widens this: they need the
             # GoldenDict build present, which is why it was not done blind.
-            payload = bool(v.get('a')) or any(
-                d not in STARDICT_ONLY for d in (v.get('apd') or {}))
+            payload = bool(v.get('a')) or bool(v.get('pn')) or any(
+                d not in absent for d in (v.get('apd') or {}))
             if not payload:
                 continue
             seen += 1
@@ -140,12 +152,20 @@ def main():
                     if len(missing_examples) < 10:
                         missing_examples.append(('abhidhāna row', key, lost[0][:90]))
                 a_extra += max(0, len(hs) - len(ls))
+            if v.get('pn'):
+                pn_checked += 1
+                hs = h.get('pn') or []
+                lost = [r for r in v['pn'] if r not in hs]
+                if lost:
+                    pn_missing += 1
+                    if len(missing_examples) < 10:
+                        missing_examples.append(('ppn', key, lost[0][:90]))
             if v.get('apd'):
                 apd_checked += 1
                 hm = h.get('apd') or {}
                 for did, bodies in v['apd'].items():
-                    if did in STARDICT_ONLY:
-                        continue          # StarDict-only; build_own does not read them
+                    if did in absent:
+                        continue          # not present when the store was built
                     hb = hm.get(did) or []
                     lost = [b for b in bodies if b not in hb]
                     if lost:
@@ -159,6 +179,7 @@ def main():
     print(f'  key absent from hw                  : {miss_key:,}')
     print(f'  Abhidhāna: {a_checked:,} checked · {a_missing:,} with a MISSING row '
           f'· {a_extra:,} extra rows (fold() gathers more, as designed)')
+    print(f'  PPN      : {pn_checked:,} checked · {pn_missing:,} with a MISSING name')
     print(f'  APD      : {apd_checked:,} checked · {apd_missing:,} with a MISSING '
           f'body · {apd_extra:,} extra bodies')
     if per_book_missing:
@@ -166,7 +187,7 @@ def main():
               + ' · '.join(f'{k}={v}' for k, v in per_book_missing.most_common()))
     for kind, key, detail in missing_examples:
         print(f'    {kind:16s} {key!r}  {detail}')
-    bad = miss_key + a_missing + apd_missing
+    bad = miss_key + a_missing + apd_missing + pn_missing
     print('all green' if not bad else f'FAILED: {bad} entr(ies) lose content')
     return 1 if bad else 0
 

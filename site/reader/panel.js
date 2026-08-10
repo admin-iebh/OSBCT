@@ -229,6 +229,8 @@ var S = {
   // `yathānisinna`, 52 occurrences, and the panel said "not in the corpus".
   // These forms are shown BEFORE the message, and the message then says what
   // is actually true: no entry under that exact spelling.
+  // Offered, not imposed: the reader typed a real word and keeps it (2026-08-10).
+  wl_also:      {en: 'Also spelt:', es: 'También escrito:'},
   wl_prefix:    {en: 'Forms in the edition beginning with “%s”:',
                  es: 'Formas en la edición que empiezan por «%s»:'},
   wl_prefix_n:  {en: '%d forms · %d occurrences',
@@ -700,21 +702,32 @@ function resolveTyped(q) {
                   gzSet(MAN, 'freq'));
   }).then(function (o) {
     if (!o) return null;
-    // !!! AN EXACT MATCH IS NOT ALWAYS THE ANSWER.  `nibbana` IS a key -- it
-    // occurs once in the corpus -- so exact-first sent a reader who typed it
-    // to a hapax instead of to `nibbāna`, which occurs 17,211 times.  Right by
-    // the letter, useless in fact.
+    // !!! WHAT THE READER TYPED IS WHAT THE READER GETS.  Reader, 2026-08-10:
+    // "If I type kiriya it should not change to kiriyā.  If I type itthi it
+    // should not correct to itthī after pressing enter."
     //
-    // So: if the reader typed a diacritic they meant it, and exact wins.  If
-    // they typed plain ASCII they are asking for whatever that spells, and the
-    // COMMONEST reading of it is what they want.  Frequency is already in this
-    // shard; ties go to the shorter form.
-    var deliberate = /[āīūṁṃṅñṭḍṇḷ]/.test(w);
-    if (deliberate) {
-      if (o[w] !== undefined) return w;
-      var lcd = w.toLowerCase();
-      if (o[lcd] !== undefined) return lcd;
-    }
+    // THIS REVERSES THE ORDER SET ON 2026-08-05, and the reason that order
+    // existed is kept here because it is a real reason and it is now met a
+    // different way.  It read: `nibbana` IS a key -- it occurs once -- so
+    // exact-first sends a reader who typed it to a hapax instead of to
+    // `nibbāna`, which occurs 17,211 times; right by the letter, useless in
+    // fact.  The rule chosen then was that a plain-ASCII query asks for the
+    // COMMONEST reading of what it spells.
+    //
+    // What that rule did in practice was substitute a word the reader had not
+    // typed, SILENTLY.  `kiriya` occurs 4 times and `kiriyā` 296; `itthi` 45
+    // and `itthī` 825.  Both typed spellings are real words of the edition,
+    // and the reader asking for one was shown the other with nothing said.
+    //
+    // So: an exact key wins, always.  The frequency argument is answered by
+    // `siblings()` instead, which offers the commoner spelling as a LINE the
+    // reader can click rather than as a decision taken for them -- the same
+    // information, without the substitution.  A query that is NOT a key still
+    // falls through to the fold match, which is what makes diacritics optional
+    // (§7) and what the search box's own placeholder promises.
+    if (o[w] !== undefined) return w;
+    var lc = w.toLowerCase();
+    if (o[lc] !== undefined) return lc;
     var f = fold(w), best = null, bestN = -1;
     for (var k in o) {
       if (fold(k) !== f) continue;
@@ -724,9 +737,6 @@ function resolveTyped(q) {
       }
     }
     if (best !== null) return best;
-    if (o[w] !== undefined) return w;
-    var lc = w.toLowerCase();
-    if (o[lc] !== undefined) return lc;
     // !!! AND IF THE CORPUS DOES NOT HAVE IT, ASK THE DICTIONARIES BEFORE
     // SAYING NO.  Everything above this line queries `lookup/freq/`, which is
     // the set of words that OCCUR IN THE TIPIṬAKA.  So the search box was
@@ -788,6 +798,33 @@ function inDicts(w) {
 // sliced to the same length.  Nothing is implied about morphology: this is not
 // a lemma search (that waits on the Kaccāyana work), it is a wider prefix,
 // honestly labelled.
+// THE OTHER SPELLINGS OF WHAT WAS TYPED, OFFERED AND NOT IMPOSED.
+// The 2026-08-05 order silently opened the commonest reading of a plain-ASCII
+// query; the reader asked for that to stop (2026-08-10) and it has.  The
+// argument behind it was still sound — `nibbana` occurs once and `nibbāna`
+// 17,211 — so the information survives as a line: every other corpus form that
+// folds to the same string, commonest first, each one a click.  Nothing is
+// substituted and nothing is hidden.
+//
+// The shard is the one `resolveTyped` has already fetched, so this costs no
+// request: `jfetch` memoises by URL.
+function siblings(word) {
+  var f = fold(word || '');
+  if (!f) return Promise.resolve([]);
+  return manifest().then(function () {
+    return jfetch(BASE + 'freq/' + shardName('freq', f) + '.json',
+                  gzSet(MAN, 'freq'));
+  }).then(function (o) {
+    if (!o) return [];
+    var out = [];
+    for (var k in o) {
+      if (k === word || fold(k) !== f) continue;
+      out.push({w: k, n: (o[k] && o[k][0]) || 0});
+    }
+    out.sort(function (a, b) { return b.n - a.n || a.w.length - b.w.length; });
+    return out.slice(0, 6);
+  }).catch(function () { return []; });
+}
 var PFX_MAX = 24;
 function prefixOf(q) {
   var f = fold((q || '').trim());
@@ -1115,6 +1152,11 @@ var CSS = ''
 + 'background:none;border:1px solid var(--line);border-radius:6px;'
 + 'padding:3px 7px;cursor:pointer}'
 + '#wl .wl-pfx:hover{border-color:var(--accent);color:var(--accent)}'
++ '#wl .wl-sibs{margin-top:5px;display:flex;flex-wrap:wrap;gap:5px;align-items:baseline}'
++ '#wl .wl-sib{font:400 12.5px/1.3 Inter,system-ui,sans-serif;color:var(--fg);'
++ 'background:none;border:1px solid var(--line);border-radius:6px;'
++ 'padding:2px 6px;cursor:pointer}'
++ '#wl .wl-sib:hover{border-color:var(--accent);color:var(--accent)}'
 // SMALL BUT VISIBLE, at the reader's direction.  It was --mut, which the
 // 2026-08-02 contrast survey measured at 3.40:1 on --app — under AA, i.e.
 // not reliably legible, which for a caution is the wrong failure.
@@ -1630,10 +1672,11 @@ function lookup(word, paraEl, inPanel) {
 
   var vo = volOrdOf(paraEl);
   Promise.all([look('freq', word), look('gloss', word), look('forms', word),
-               vo ? loadLinks(vo.vol) : Promise.resolve(null)])
+               vo ? loadLinks(vo.vol) : Promise.resolve(null),
+               siblings(word)])
     .then(function (res) {
       if (!current || current.word !== word) return;   // superseded by a later click
-      var freq = res[0], gl = res[1], forms = res[2];
+      var freq = res[0], gl = res[1], forms = res[2], sibs = res[4];
       var linked = vo ? linkedKeys(res[3], vo.ord) : {};
       // A high-frequency form's rows do not fit in a shard (`tattha` alone has
       // 718): the shard carries only the count and the rows live in paged
@@ -1704,7 +1747,7 @@ function lookup(word, paraEl, inPanel) {
         // arrives after the render silently leaves every citation plain.
         return loadOrds(rows).then(function () {
         render({word: word, para: paraEl, freq: freq, rows: rows,
-                linked: linked, ev: ev,
+                linked: linked, ev: ev, sibs: sibs,
                 big: !!big, page: page0 ? page0.page : null,
                 pages: page0 ? page0.pages : null, nGloss: nGloss,
                 ped: ped.filter(function (p) { return p.e; })});
@@ -1754,10 +1797,26 @@ function tabBtn(id, label, n, dis, tip) {
 function render(d) {
   var tabs = document.getElementById('wlt'), body = document.getElementById('wlb');
   var c = d.freq;
-  document.getElementById('wlc').innerHTML = c
+  document.getElementById('wlc').innerHTML = (c
     ? '<b>' + c[0] + '</b> ' + esc(T('wl_corpus')) + ' · ' + c[1] + ' ' + esc(T('wl_canon'))
       + ' · ' + c[2] + ' ' + esc(T('wl_comm')) + ' · ' + c[3] + ' ' + esc(T('wl_sub'))
-    : '';
+    : '')
+    // the other spellings of this word, offered — never substituted.  See
+    // siblings(): this is what replaced the silent correction of 2026-08-05.
+    + ((d.sibs && d.sibs.length)
+       ? '<div class="wl-sibs"><span class="wl-cite">' + esc(T('wl_also')) + '</span> '
+         + d.sibs.map(function (s) {
+             return '<button type="button" class="wl-sib" data-w="' + esc(s.w) + '">'
+                  + esc(s.w) + ' <span class="wl-cite">' + s.n + '</span></button>';
+           }).join(' ') + '</div>'
+       : '');
+  Array.prototype.forEach.call(
+    document.getElementById('wlc').querySelectorAll('.wl-sib'), function (b) {
+      b.addEventListener('click', function () {
+        HIST.push({word: d.word, para: d.para}); updateBack();
+        lookup(b.dataset.w, d.para, true);
+      });
+    });
   // how many entries each evaluation source has for this word
   d.n = {};
   var lems = (d.ev && d.ev.lem) || [];
@@ -2431,7 +2490,26 @@ function viewDict(d) {
   // count, so listing it here too said everything twice.  The strip keeps
   // its jump role for the sections actually open — which is where an entry
   // can be long enough to need jumping past.
-  var openHave = have.filter(function (t) { return gearOpen(t.id); });
+  // !!! A TAB THAT COUNTS ITS DICTIONARIES AND THEN DRAWS NONE OF THEM.
+  // Reader-reported 2026-08-10 and rendered to confirm it: `yathānisinna`
+  // showed `APD 2` and the body held ONE grey line — because the only sections
+  // that open by default are CPED and PED (the decision of 2026-08-06) and the
+  // word is in neither.  For `Akalaṅka`, whose one source is the proper-names
+  // section, the tab said 1 and drew nothing at all.
+  //
+  // The defaults are not the problem and are not changed: where CPED or PED
+  // has the word, everything below behaves exactly as it did.  What is fixed
+  // is the case the defaults cannot cover — if NOTHING would be open, the
+  // first section opens, because a count with nothing behind it is the failure
+  // this panel keeps being caught by, and "hidden must not mean absent" was the
+  // reason the summary line exists in the first place.
+  //
+  // It touches no persisted state: the gear still says what the reader chose,
+  // and this word alone is drawn.
+  var forced = have.some(function (t) { return gearOpen(t.id); })
+             ? null : (have[0] && have[0].id);
+  var isOpen = function (t) { return gearOpen(t.id) || t.id === forced; };
+  var openHave = have.filter(isOpen);
   if (openHave.length > 1) {
     h += '<div class="wl-jump"><span class="wl-cite">' + esc(T('wl_jump')) + '</span> '
        + openHave.map(function (t) {
@@ -2444,7 +2522,7 @@ function viewDict(d) {
        + esc(T(have.length > 1 ? 'wl_eval_pl' : 'wl_eval')) + '</div>';
   var closedN = 0;
   have.forEach(function (t) {
-    if (!gearOpen(t.id)) { closedN++; return; }
+    if (!isOpen(t)) { closedN++; return; }
     h += '<div class="wl-sec" id="wl-s-' + t.id + '">'
        + '<div class="wl-sub">' + esc(t.label)
        + ' <span class="wl-flag">(' + t.n + ')</span></div>'

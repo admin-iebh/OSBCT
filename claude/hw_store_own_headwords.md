@@ -200,3 +200,112 @@ nasal from the folded query, and the heading names the prefix actually matched
 (`yathānisinn`, accented, sliced from the typed string because fold() is one
 character for one), so the panel no longer claims to have matched the word.
 Gated at `check_apd_gear.js` §11.
+
+---
+
+## 11. Widened to every dictionary the panel serves — 2026-08-10, second pass
+
+The reader: *"All dictionaries should be reachable through the search box in the
+word lookup pane."* He is right, and the first pass built only what the task's
+constraint 1 named — the two files in `_dictsrc/`. The rest of the APD tab is
+DPPN plus four StarDict dictionaries, and they were still gated by DPD.
+
+**Done and verified here: DPPN.** `_dictsrc/DPPN.json` was already in the
+folder. 13,642 names on their own headwords; `check_hw_agrees_with_lem.py`
+checks 2,210 shared keys with 0 missing. Store now 191,928 keys · 7,155 shards
+· largest 147 kB.
+
+**Written, and NOT verifiable here: PEU, DOP, CPD, NCPED.** These are GoldenDict
+StarDict files, not in `_dictsrc/`, and that build is not on this machine.
+`build_own.py` now reads them on their own headwords — every `.idx` key and
+every `.syn` spelling — using `sources.py`, the same reader `build_eval.py`
+uses. Absent, they are **skipped loudly**, and the manifest records the fact in
+`stardict_missing`. `check_hw_agrees_with_lem.py` reads that field instead of a
+hard-coded list, so **the gate tightens by itself** the moment the store is
+rebuilt where they exist, rather than going on excusing an absence nobody
+rechecks. PEU matters most of the four: it is the Abhidhāna's own English
+rendering, shown inside the Abhidhāna entry, so a word reached through this
+store shows the Burmese and not the English until it is built.
+
+### The tab counted its dictionaries and drew none of them
+
+Reader-reported, and **rendered to confirm rather than reasoned about**: with
+the default gear, `yathānisinna` showed `APD 2` over a body holding one grey
+line. The only sections that open by default are CPED and PED — his decision of
+2026-08-06 — and the word is in neither. `Akalaṅka`, whose one source is the
+proper-names section, said `APD 1` and drew nothing at all.
+
+The defaults are unchanged. What is fixed is the case they cannot cover: **if
+nothing would be open, the first section opens.** No persisted state is
+touched, and any word that has CPED or PED behaves exactly as before. A count
+with nothing behind it is the failure this panel keeps being caught by, and
+"hidden must not mean absent" is why the summary line exists at all. Gated at
+`check_apd_gear.js` §12 on `Akalaṅka`, which is a Malalasekera name and nothing
+else — absent from freq, ped, lem and dpd, with no APD row and no Abhidhāna row,
+so it exists in the panel only if DPPN was keyed on its own headword.
+
+### Where it stands
+
+| source | reachable by its own headword |
+|---|---|
+| the Abhidhāna (pm12e) | yes |
+| PCED books P C N I K B R O | yes |
+| DPPN (proper names) | yes |
+| PEU, DOP, CPD, NCPED | **only after a rebuild with `~/GoldenDict` present** |
+| DPD | no — and §9 excludes it as a voice in any case |
+
+---
+
+## 12. The search box silently corrected what was typed — 2026-08-10
+
+**Reader: "If I type `kiriya` it should not change to `kiriyā`. If I type
+`itthi` it should not correct to `itthī` after pressing enter."**
+
+Measured, and both typed spellings are real words of the edition:
+
+    kiriyā  296 occurrences   ·   kiriya   4
+    itthī   825              ·   itthi   45
+
+`resolveTyped` had checked the exact key **only when the query carried a
+diacritic**; a plain-ASCII query went to the commonest form folding to it. That
+order was set on 2026-08-05 for a real reason — `nibbana` occurs once and
+`nibbāna` 17,211, so exact-first sent a reader to a hapax — but what it did in
+practice was open a word the reader had not typed, **with nothing said**.
+
+**Exact now wins, always.** The frequency argument is answered a different way
+rather than discarded: `siblings()` offers every other corpus form that folds to
+the same string, commonest first, as clickable chips under the counts line —
+*Also spelt: kiriyā 296*. Same information, no substitution, and the shard is
+the one `resolveTyped` already fetched, so it costs no request.
+
+A query that is **not** a corpus form still falls through to the fold match, or
+diacritics would stop being optional (§7) and the search box's own placeholder
+would be a lie: `pathavikasina` still reaches `pathavīkasiṇā`. Gated at
+`check_apd_gear.js` §13, all three cases.
+
+**Consequence to be aware of, stated rather than buried:** typing `nibbana` now
+opens `nibbana`, the single canonical occurrence, with *Also spelt: nibbāna 49*
+beside it. That is the 2026-08-05 decision reversed, deliberately and at the
+reader's instruction.
+
+## 13. PCED book `C` is contaminated — REPORTED, NOT FIXED
+
+Found while choosing a word to recommend for testing, which is the only reason
+it was seen at all. Book `C` is labelled *"Concise P-E Dictionary — Concise
+Pali-English Dictionary by A.P. Buddhadatta Mahathera"*, and **1,773 of its
+22,564 rows (7.9%) are Japanese or Chinese**:
+
+    Abhayagiri：m. アバヤギリ（Abhayagiri的片假名發音），無畏山 [寺].
+
+That is text shown to the reader under the name of an author who did not write
+it — principle 4, reaching the screen. **It pre-dates this work**: 1,780 such
+bodies are already in `lem` and live today, so `hw` did not introduce it, only
+widened its reach.
+
+Not repaired, because the repair is a choice and the evidence does not settle
+it: either book `C` is a mislabelled merge in the PCED dataset, or PCED's book
+table names it wrongly, and telling those apart needs the PCED source rather
+than our derived copy. Whoever takes it: the marker is cheap —
+`re.search(r'[぀-ヿ一-鿿]', body)` — but dropping every row that matches would
+also drop any legitimate entry that quotes a Chinese term, so measure before
+cutting.
