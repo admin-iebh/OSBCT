@@ -68,6 +68,41 @@ evidence about R2.
 
 ---
 
+## 0b. NEW AND LARGE — DPD GATES THE ABHIDHĀNA, 77.8% UNREACHABLE
+
+**Found at the end of 2026-08-09 from the reader's report that `yathānisinna`
+returns "no entry" while dictionary.sutta.org answers it.** He was right; the
+word is in `_dictsrc/` in both dictionaries he named (PCED books B and K) and in
+`pm12e.csv:145524`, the Abhidhāna itself.
+
+`_panel/build_eval.py:64–89` builds the `lem` key set as corpus forms → **DPD
+index** → DPD headwords → `LEMMAS`, and then attaches the Abhidhāna (`:265`) and
+all twenty-four APD books (`:500`) **to those lemmas and nothing else**. So the
+build asks "does DPD have a headword for this?" instead of "does the Abhidhāna
+have this word?". `yathānisinna` is a compound — all 12 of its corpus forms are
+`dpd_tier: 3`, the tier that means DPD has no headword — so it never enters
+`LEMMAS` and its rows are discarded with the answer in the file.
+
+    distinct PCED headwords 210,111 → 46,658 reachable (22.2%), 163,453 DROPPED
+    Tipiṭaka Pāḷi-Myanmar Dict. 153,527 → 35,022 (22.8%)
+    pm12e Abhidhāna            152,451 → 34,730 (22.8%)
+
+**§9 admits the Abhidhāna as the ONLY dictionary that is an authority and ranks
+DPD lowest, "not the final authority but tools". The build inverts that
+exactly** — an evaluation-only source with an unresolved licence is the gate the
+named authority must pass. Nobody chose this; `LEMMAS` came from DPD because
+DPD's index maps inflected forms to headwords, which is useful, and was then
+reused as a membership test for sources that carry their own headwords.
+
+**Full note, with what a fix must do and the key-case trap (`acc` is
+capitalised, `panel.js look()` tries exact then lower):
+`claude/dpd_gates_the_abhidhana.md`.** Nothing changed.
+
+Cheap and independent: the miss message claims the word is not in the corpus,
+but `lookup/freq` holds 12 forms of this stem, 52 occurrences, 34 Aṭṭhakathā /
+18 Ṭīkā / 0 canon. **A prefix fallback before the message** would have answered
+the reader at once. It is the mirror of the `atappaka` fix at `panel.js:714`.
+
 ## Remaining, in the reader's chosen order (links LAST)
 
 ### 1. Parked display decisions — and the first of them IS NOT A DISPLAY QUESTION

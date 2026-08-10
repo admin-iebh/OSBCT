@@ -31,7 +31,77 @@ you parked deliberately, or something nobody has looked at yet.
 
 ## 3. What to tell a new chat
 
+### 3a. The dictionary gate — what "bigger than the evening" meant
+
+It is not vague, it is **five coupled steps, each with a gate**, and one of them
+touches production:
+
+1. The key set roughly **quadruples** — 52,757 → 210,111+ headwords. Sharding,
+   the 150 KB byte cap and the gz layer all have to be re-measured, not assumed.
+2. The store is **served from Cloudflare R2**, not from Pages. So it needs an
+   upload and a `WLV` bump, and until both happen production keeps serving the
+   old store while the repo looks fixed. That is the failure mode the DPD family
+   rebuild already hit once.
+3. `panel.js` needs a new lookup path, and the **APD gear list** must learn the
+   new sections.
+4. `pipeline/check_apd_gear.js` (27 assertions) must be **extended and made to
+   fail on the current build first**.
+5. **The licence question gets louder.** These sources sit in `lookup_eval/`
+   because redistribution is unresolved (§2, §9). Making 163,453 more headwords
+   reachable does not change that, but it does raise the stakes of getting it
+   settled — and it must be settled separately, not inside this fix.
+
+Two facts that make it tractable, both verified:
+
+* **The safe design is a NEW store, not a wider `lem`.** Key it on the
+  dictionaries' own headwords, leave `lem` and the DPD path untouched, and have
+  the panel consult the new store when `lem` misses. Additive, so no existing
+  gate can regress.
+* **That design needs no GoldenDict.** `_panel/build_eval.py:48` reads
+  `GD_DIR`, defaulting to a path that no longer exists — re-running the whole
+  eval build would need the GoldenDict folder mounted again. But the two files
+  the fix needs, `_dictsrc/pced_full.jsonl.gz` (24 MB) and `_dictsrc/pm12e.csv`
+  (42 MB), are **in the folder already**.
+
+**One hazard to state up front: `_dictsrc/` is gitignored** (`.gitignore:183`).
+Those sources exist on your machine and nowhere else — not in git, not in the
+Zenodo deposit. Do not let a session assume it can re-fetch them.
+
 Paste this:
+
+> Continuing OSBCT. Repo at Documents/OSBCT; request access to that folder.
+> Read `_xc/hy2/start_here_2026-08-09.md` §0b, then
+> `claude/dpd_gates_the_abhidhana.md` in full.
+>
+> The task: make the Tipiṭaka Pāḷi-Myanmā-Abhidhāna and the APD books reachable
+> by their OWN headwords instead of through DPD's index. Today 163,453 of
+> 210,111 headwords (77.8%) are unreachable because `_panel/build_eval.py:64–89`
+> keys everything on `LEMMAS`, which is built from DPD. §9 makes the Abhidhāna
+> the only dictionary that is an authority and ranks DPD lowest; the build
+> inverts that.
+>
+> Constraints, in order:
+> 1. Do NOT widen `lem`. Build a SEPARATE store from `_dictsrc/pced_full.jsonl.gz`
+>    and `_dictsrc/pm12e.csv` — both already in the folder — keyed on the
+>    dictionaries' own accented headwords. Additive, so no existing gate can
+>    regress. `_dictsrc/` is gitignored; it exists nowhere else.
+> 2. Mind the key case: PCED's `acc` is capitalised (`Yathānisinna`) while
+>    `panel.js look()` tries the exact key then `toLowerCase()`. Fold on write.
+> 3. Measure sharding and the 150 KB cap BEFORE building. The key set roughly
+>    quadruples.
+> 4. Extend `pipeline/check_apd_gear.js` and make the new assertion FAIL on the
+>    current build first — `yathānisinna` must return the book B and book K
+>    entries. Show me the failing run before the fix.
+> 5. The store is served from R2: the job is not done until `r2_upload.sh` has
+>    run and `WLV` is bumped. Say so explicitly when you reach that point.
+> 6. Do not touch the §2/§9 redistribution question. It is separate.
+>
+> Separately and cheaply, if there is time: a prefix fallback in the word-lookup
+> pane before the "no entry" message, showing the corpus forms that begin with
+> what was typed. `lookup/freq` already has them — 12 forms of `yathānisinna`,
+> 52 occurrences. It is the mirror of the `atappaka` fix at `panel.js:714`.
+
+### 3b. Alternative, if you would rather do the links
 
 > Continuing OSBCT. Repo at Documents/OSBCT; request access to that folder.
 > Read `_xc/hy2/start_here_2026-08-09.md` — it supersedes the 08-08 pm handoff
