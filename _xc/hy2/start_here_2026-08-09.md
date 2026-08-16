@@ -237,6 +237,50 @@ precision — the placer — which is the work parked deliberately last.
 Verified separately, by reading the store: `verse/27KhuA08.json` key `510` holds
 the three pādas, so the data for the fix is already shipped.
 
+### 1b. PARKED, READER'S QUESTION 2026-08-10 — reading the Burmese definitions
+
+The Tipiṭaka Pāḷi-Myanmar Dictionary and the Abhidhāna answer in Burmese, and a
+reader of English or Spanish cannot use them. **Measured before answering, so
+nobody re-measures:**
+
+    pm12e definitions          151,683 · median 40 chars · 90th pct 104
+    distinct definition strings 94.3%  — varied prose, NOT boilerplate
+    recurring chunks            top 1,000 = 40% of tokens · top 20,000 = 69%
+    commonest are STRUCTURAL    ကြည့် (see) 25,346 · သူ 19,387 · sense
+                                letters (က)(ခ)(ဂ) · sense digits · POS tags
+
+Three tiers, and they are not the same kind of work:
+
+* **A. Structural gloss** — see-markers, sense letters, POS tags, citation
+  abbreviations (`BUR_ABBR` already transcodes the last of these). Small closed
+  set, deterministic, verifiable by census. Makes an entry NAVIGABLE, gives no
+  meaning. **Unsized; one run would size it exactly.**
+* **B. Widen PEU** — the Abhidhāna's own English rendering, 42,525 entries in
+  `lem`, 12,226 of them already Google-marked and segregated. It is one of the
+  four StarDict sources `build_own.py` now reads; **a rebuild with GoldenDict
+  present is the whole job.** Highest value per unit of work by a wide margin.
+* **C. MT of the semantic remainder** — cheap to run, and the quality is the
+  entire question. Burmese MT is weak and this is classical Buddhist
+  lexicography, its worst case. **Unverifiable from the sandbox.**
+
+Four constraints that bind, recorded so they are not rediscovered:
+**there is no server** (static + R2), so anything MT must be precomputed and
+shipped, not called; **a translation is a DERIVATIVE WORK** and the Abhidhāna's
+permission is the §8 Q6 question still open, so this makes that harder, not
+easier; **Zawgyi residue** is still flagged unconverted in places and MT over
+mis-encoded text produces confident nonsense; and **Spanish should pivot through
+English or PEU**, in the Kaccāyana notation §9 requires, because direct
+Burmese→Spanish is worse and pivoting blind compounds the error.
+
+> **AND WHATEVER C PRODUCES IS NOT THE ABHIDHĀNA SPEAKING.** §9 admits that
+> dictionary because it is the tradition's own glosses. A model's rendering of
+> it is a different voice and must inherit PEU's exact treatment — attributed,
+> marked, behind a reveal, never merged into the Gloss tab.
+
+A guess made while sizing this was WRONG and is recorded so it is not made
+again: "a large share of entries are pure cross-references" — measured, **17**.
+`ကြည့်` occurs inside longer definitions, not as the whole entry.
+
 ### 2. Search heavy half
 Per-volume shard split into postings + text — **only** if the reader's
 live-network verdict says common-word searches hurt.

@@ -354,7 +354,11 @@ function stem(w) {
     f = f.slice(0, -1);
   return f;
 }
-var PALI = 'aāiīuūeokgṅcjñṭḍṇtdnpbmyrlvshḷṁ';
+// `ṃ` is in the set because the reader may be DISPLAYING the modern niggahita
+// (reader2's toggle, 2026-08-15): the caret walk reads the DOM as shown, so a
+// click on `evaṃ` must not stop at the ṃ and hand back `eva`.  Everything
+// downstream still speaks the edition's ṁ — see niggCanon below.
+var PALI = 'aāiīuūeokgṅcjñṭḍṇtdnpbmyrlvshḷṁṃ';
 var PALISET = {}; (PALI + PALI.toUpperCase()).split('').forEach(function (c) { PALISET[c] = 1; });
 var APOS = {'’': 1, "'": 1};
 function esc(s) { return String(s).replace(/[&<>"]/g, function (c) {
@@ -1314,7 +1318,7 @@ function build() {
     q.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') { shut(); return; }
       if (e.key !== 'Enter') return;
-      var typed = q.value.trim();
+      var typed = niggCanon(q.value.trim());  // typed ṃ is the edition's ṁ
       if (!typed) return;
       // the paragraph context is carried over, so the Edition tab still
       // knows where the reader is standing -- a typed word is looked up
@@ -1531,8 +1535,14 @@ function wordAt(x, y, en) {
   while (a > 0 && isW(a - 1)) a--;
   while (b < t.length - 1 && isW(b + 1)) b++;
   var w = t.slice(a, b + 1).replace(/(\d{1,2})$/, '');
+  // The DOM may show the modern ṃ (display toggle); every key downstream —
+  // corpus forms, dictionary rows, freq shards — is stored with the edition's
+  // ṁ.  Canonicalise HERE, at the single point where a word leaves the DOM.
+  // `a`/`b` stay valid: the node's text is untouched, only the copy changes.
+  w = niggCanon(w);
   return w ? {word: w, node: node, a: a, b: b} : null;
 }
+function niggCanon(s) { return s.replace(/ṃ/g, 'ṁ').replace(/Ṃ/g, 'Ṁ'); }
 
 var markEl = null;
 function unmark() {
@@ -1644,7 +1654,7 @@ function paraTextOf(node) {
 function poolOf(text) {
   var pool = {};
   function add(w) { var s = stem(w); if (s) pool[s] = (pool[s] || 0) + 1; }
-  (text.match(/[aāiīuūeokgṅcjñṭḍṇtdnpbmyrlvshḷṁAĀIĪUŪEOKGṄCJÑṬḌṆTDNPBMYRLVSHḶṀ’'-]+/g) || [])
+  (text.match(/[aāiīuūeokgṅcjñṭḍṇtdnpbmyrlvshḷṁṃAĀIĪUŪEOKGṄCJÑṬḌṆTDNPBMYRLVSHḶṀṂ’'-]+/g) || [])
     .forEach(function (w) {
       add(w);
       if (w.indexOf('-') >= 0)

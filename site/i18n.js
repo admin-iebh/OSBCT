@@ -9,6 +9,11 @@ window.I18N = {
   nav_errata:{en:'Errata',es:'Erratas'},
   btn_errata:{en:'Errata',es:'Erratas'},
   theme_toggle:{en:'Toggle light / dark',es:'Cambiar claro / oscuro'},
+  // NIGGAHITA TOGGLE (2026-08-15).  The button's own label is a text node
+  // showing 'ṁ', which the display transform itself rewrites to 'ṃ' in modern
+  // mode — the label always states the active convention with no extra code.
+  nigg_toggle:{en:'Niggahita: the edition’s ṁ or the modern ṃ. Display only — the stored text always keeps the edition’s ṁ.',
+               es:'Niggahita: la ṁ de la edición o la ṃ moderna. Solo visual — el texto guardado conserva siempre la ṁ de la edición.'},
   ver_updated:{en:'updated',es:'actualizado'},
 
   // TOOLTIPS.  These were the last English strings left in the Spanish
