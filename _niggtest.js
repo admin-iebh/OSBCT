@@ -22,7 +22,7 @@ async function testReader() {
   const code = block('site/reader/reader2.html')
     .replace(/^.*\$\('#niggbtn'\)\.onclick[\s\S]*?niggApply\(to\)\};/m, '');  // button wired separately below
   const dom = new JSDOM(`<!doctype html><html><body>
-    <button id="niggbtn">ṁ</button>
+    <button id="niggbtn" data-nigg-keep-tip>ṁ</button>
     <div id="scroll"><p id="p1">Evaṁ me sutaṁ — MAṀGALA <a id="a1" href="#X/evaṁ">saṁvaro</a></p></div>
     <script id="inline">var FOLDX={'ṁ':'m'};</scr` + `ipt></body></html>`, { runScripts: 'outside-only', pretendToBeVisual: true, url: 'https://localhost/' });
   const w = dom.window;
@@ -88,10 +88,16 @@ async function testReader() {
   // tipShow must inherit the marker from the source element, and REMOVE it
   // when the source lacks it (the #tiptip element is shared by all tooltips)
   const html = require('fs').readFileSync('site/reader/reader2.html', 'utf8');
-  ok(/id="niggbtn"[^>]*\bdata-nigg-keep\b|\bdata-nigg-keep\b[^>]*id="niggbtn"/.test(html.replace(/\n/g,' ')),
-     'reader: #niggbtn carries data-nigg-keep');
-  ok(/if\(el\.hasAttribute\('data-nigg-keep'\)\) d\.setAttribute\('data-nigg-keep',''\);\s*\n\s*else d\.removeAttribute\('data-nigg-keep'\);/.test(html),
-     'reader: tipShow inherits AND clears the marker');
+  // -TIP on the button, NOT data-nigg-keep: keep on the button itself froze
+  // its own label at ṁ, because niggSkip tests the text node's parent, which
+  // is the button (user-reported 2026-08-16b).  The harness button above
+  // carries the same shipped attribute, so the label assertions at the top of
+  // this test now exercise exactly the case that regressed.
+  const btn = html.match(/<button[^>]*id="niggbtn"[^>]*>/)[0];
+  ok(/\bdata-nigg-keep-tip\b/.test(btn), 'reader: #niggbtn carries data-nigg-keep-TIP');
+  ok(!/\bdata-nigg-keep\b(?!-tip)/.test(btn), 'reader: #niggbtn does NOT carry bare data-nigg-keep (would freeze its label)');
+  ok(/if\(el\.hasAttribute\('data-nigg-keep-tip'\)\) d\.setAttribute\('data-nigg-keep',''\);\s*\n\s*else d\.removeAttribute\('data-nigg-keep'\);/.test(html),
+     'reader: tipShow maps -tip on source to keep on #tiptip, and clears it');
 }
 
 async function testSearch() {
