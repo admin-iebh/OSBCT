@@ -300,7 +300,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=deb0de87e33e"></script>
+<script src="../i18n.js?v=fa88c2ba23f1"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -336,7 +336,13 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
     <a class="navlink" href="../about.html" data-i18n="nav_about">About</a>
     <a class="navlink" href="../errata.html" data-i18n="nav_errata">Errata</a>
     <button class="tb langbtn" data-i18n-title="lang_toggle" title="Cambiar idioma">ES</button>
-    <button class="tb" id="niggbtn" data-i18n-title="nigg_toggle" title="Niggahita: the edition’s ṁ or the modern ṃ. Display only — the stored text always keeps the edition’s ṁ.">ṁ</button>
+    <!-- data-nigg-keep: this button's TOOLTIP names both glyphs literally
+         ("the edition's ṁ or the modern ṃ"), so the display transform must not
+         rewrite it — converted, it reads "the edition's ṃ or the modern ṃ"
+         (user-reported 2026-08-16, with a screenshot).  tipShow copies the
+         marker onto #tiptip; the button's own LABEL is not under the marker
+         and keeps tracking the active convention. -->
+    <button class="tb" id="niggbtn" data-nigg-keep data-i18n-title="nigg_toggle" title="Niggahita: the edition’s ṁ or the modern ṃ. Display only — the stored text always keeps the edition’s ṁ.">ṁ</button>
     <button class="tb" id="themebtn" data-i18n-title="theme_toggle" title="Toggle light / dark">◐</button><span class="sitever" style="color:var(--mut);font-size:10.5px;align-self:center;margin-left:2px"></span>
   </div>
   <nav class="side" id="side"><div class="hint">Loading…</div></nav>
@@ -412,14 +418,17 @@ function niggText(v,toModern){
   return toModern?v.replace(/[ṁṀ]/g,c=>NIGG_TO[c]):v.replace(/[ṃṂ]/g,c=>NIGG_BACK[c]);
 }
 function niggConvert(root,toModern){
-  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{
-    const p=n.parentNode&&n.parentNode.nodeName;
-    return (p==='SCRIPT'||p==='STYLE')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;}});
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>
+    niggSkip(n)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
   const re=toModern?/[ṁṀ]/:/[ṃṂ]/;
   let n; while((n=w.nextNode())){ if(re.test(n.nodeValue)) n.nodeValue=niggText(n.nodeValue,toModern); }
   if(root.nodeType===3&&!niggSkip(root)&&re.test(root.nodeValue)) root.nodeValue=niggText(root.nodeValue,toModern);
 }
-function niggSkip(tn){const p=tn.parentNode&&tn.parentNode.nodeName;return p==='SCRIPT'||p==='STYLE';}
+// Skip: inline code, and any element marked data-nigg-keep — text that NAMES
+// the two glyphs (the toggle's own tooltip) rather than using one of them.
+// The parent check suffices: #tiptip's text is its direct child.
+function niggSkip(tn){const p=tn.parentNode;if(!p)return false;
+  return p.nodeName==='SCRIPT'||p.nodeName==='STYLE'||(p.nodeType===1&&p.hasAttribute('data-nigg-keep'));}
 // Content arrives asynchronously (volume JSON, nav, search drop, the word
 // panel), so in modern mode a MutationObserver converts whatever is inserted.
 // Our own rewrite re-fires characterData once; the second pass finds no ṁ and
@@ -491,7 +500,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='deb0de87e33e';
+const BUILD='fa88c2ba23f1';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -3276,6 +3285,12 @@ function tipPlace(r, b, vw, vh, above){
 function tipShow(el){
   const txt=el.getAttribute('data-tip'); if(!txt){ tipHide(); return; }
   const d=tipNode();
+  // The niggahita toggle's tooltip names both glyphs literally; the display
+  // transform must not rewrite it (2026-08-16).  Inherit the marker from the
+  // source element — and REMOVE it otherwise, or the flag would stick to the
+  // shared #tiptip and freeze every later tooltip's Pāḷi in edition form.
+  if(el.hasAttribute('data-nigg-keep')) d.setAttribute('data-nigg-keep','');
+  else d.removeAttribute('data-nigg-keep');
   d.textContent=txt;
   // measure before placing: the box has to be known to be centred, clamped and
   // flipped, and it cannot be measured while display:none

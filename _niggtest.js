@@ -62,6 +62,36 @@ async function testReader() {
   // no genuine ṃ can be harmed here: census showed none in served data — but
   // prove the direction anyway: text that NEVER contained ṁ is untouched.
   ok(w._niggText('pāḷi text', true) === 'pāḷi text', 'reader: text without niggahita unchanged');
+
+  // data-nigg-keep: text that NAMES both glyphs (the toggle's own tooltip)
+  // must never be rewritten — user-reported 2026-08-16 with a screenshot:
+  // the DOM tooltip read "the edition's ṃ or the modern ṃ".
+  w.localStorage.setItem('osbct-nigg', 'modern');
+  w._niggApply(true);
+  const tip = w.document.createElement('div');
+  tip.id = 'tiptip'; tip.setAttribute('data-nigg-keep', '');
+  tip.textContent = 'the edition’s ṁ or the modern ṃ';
+  w.document.body.appendChild(tip);
+  await new Promise(r => setTimeout(r, 30));
+  ok(tip.textContent === 'the edition’s ṁ or the modern ṃ', 'reader: data-nigg-keep tooltip untouched by observer: ' + tip.textContent);
+  // full-body walk (mode toggle) must skip it too
+  w._niggApply(false); w._niggApply(true);
+  ok(tip.textContent === 'the edition’s ṁ or the modern ṃ', 'reader: data-nigg-keep tooltip untouched by full walk');
+  // …and an UNMARKED sibling inserted the same way still converts
+  const sib = w.document.createElement('div');
+  sib.textContent = 'evaṁ';
+  w.document.body.appendChild(sib);
+  await new Promise(r => setTimeout(r, 30));
+  ok(sib.textContent === 'evaṃ', 'reader: unmarked sibling still converts');
+  w._niggApply(false);
+
+  // tipShow must inherit the marker from the source element, and REMOVE it
+  // when the source lacks it (the #tiptip element is shared by all tooltips)
+  const html = require('fs').readFileSync('site/reader/reader2.html', 'utf8');
+  ok(/id="niggbtn"[^>]*\bdata-nigg-keep\b|\bdata-nigg-keep\b[^>]*id="niggbtn"/.test(html.replace(/\n/g,' ')),
+     'reader: #niggbtn carries data-nigg-keep');
+  ok(/if\(el\.hasAttribute\('data-nigg-keep'\)\) d\.setAttribute\('data-nigg-keep',''\);\s*\n\s*else d\.removeAttribute\('data-nigg-keep'\);/.test(html),
+     'reader: tipShow inherits AND clears the marker');
 }
 
 async function testSearch() {
