@@ -105,12 +105,38 @@ def concordance_allows():
 
 
 def strip_dim(obj):
-    """the file as it would be without this script's field"""
+    """the file as it would be without this script's field
+
+    !!! NOT EVERY KEY OF A RECORD IS A LAYER, and this walked them all blindly.
+    `20Khu03.links.json` carries a `verdict` key — a dict, not a list of link
+    entries — on **133 records**, left by the `not_commented` work:
+
+        {"why": "not_commented", "layer": "commentary", "vol": "32KhuA13", ...}
+
+    So `strip_dim` raised `AttributeError: 'str' object has no attribute
+    'items'` and `--verify` DIED RATHER THAN RAN.  Found 2026-08-23.
+
+    **That is worse than it sounds: `--verify` is this file's reproducibility
+    control** — the one asserting that stripping `dim` gives back the file as
+    git has it, so that the marks are provably nothing but this script's own
+    output.  `main()` was never affected, because it iterates the fixed `LAYERS`
+    list.  Only the control was, and **no gate runs it**, so it has been dead
+    since `verdict` was introduced and nothing said so.  A control nobody runs
+    is indistinguishable from one that passes — the same lesson as
+    `check_r2_origin.js`, in a different file.
+
+    Non-layer keys are passed through untouched: they are not this script's to
+    strip, and copying them keeps the comparison honest.
+    """
     out = {}
     for si, rec in obj.items():
         r = {}
         for layer, ents in rec.items():
-            r[layer] = [{k: v for k, v in e.items() if k != 'dim'} for e in ents]
+            if not isinstance(ents, list):
+                r[layer] = ents
+                continue
+            r[layer] = [{k: v for k, v in e.items() if k != 'dim'}
+                        if isinstance(e, dict) else e for e in ents]
         out[si] = r
     return out
 

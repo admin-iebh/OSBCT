@@ -167,11 +167,13 @@ any session that starts fresh:**
 
 ### Ready to decide — yours, nothing blocks them
 
-* **`none` vs `dim`.** A dead "no commentary" and a condemned "link disputed"
-  are both grey dashed chips and both called dimmed. 3,163 concordance
-  violations are due to arrive in whichever style is chosen. Options were
-  sketched; **nothing has been rendered against the real reader** — worth an
-  hour to photograph both states before deciding.
+* ~~**`none` vs `dim`.**~~ **DECIDED 2026-08-23 by the reader: `dim`.** A dead
+  "no commentary" and a condemned "link disputed" both render as the dimmed
+  chip. The 3,163 concordance violations land in that style. Not yet
+  implemented — and it should still be **rendered and photographed against the
+  real reader before it ships**, because the decision was made from a
+  description and nothing has ever been drawn. If the two states turn out to be
+  indistinguishable in use, that is a fact to bring back, not to absorb.
 * **Capping the concordance tooltip.** Seven volume codes for `18Khu01`. Cap at
   three with "+4 more", show a count only, or leave it.
 * **The legacy links artifact** `check_derived` flags — loaded by nothing.
@@ -195,9 +197,11 @@ any session that starts fresh:**
     `39KhuA20` 590, `34KhuA15` 511, `38KhuA19` 310.
   * **B** — reprint and comment in the SAME paragraph. Nothing to move.
   * **C** — verses run in a block, the comment is collective and **unnumbered**.
-    `42KhuA23` 1103, `30KhuA11` 887, `41KhuA22` 528, `31KhuA12` 433. Confirmed
-    on the printed page. **Do not touch these by number** — ask the reader what
-    those books do first.
+    `42KhuA23` 1103, `30KhuA11` 887, `41KhuA22` 528, `31KhuA12` 433,
+    `29KhuA10` 67. **DECIDED 2026-08-23: LEAVE AS IT IS** — "if in the PDF is
+    like this, keep it as it is". ~3,000 links closed as *not a defect*.
+    Imposing a structure the edition does not print would be principle 3
+    reaching the link layer.
 * ~~Next: `19Khu02 → 28KhuA09`~~ — **DONE 2026-08-23. 350 links moved**, gated
   red first, printed pages 7, 161 and 191. It **mixes shapes A and B**: 101 of
   its links already landed on a paragraph that reprints *and then comments*, and

@@ -94,12 +94,24 @@ paragraph?
   next one to do.
 * Then the three big Jātaka pairs — `40KhuA21` 765, `39KhuA20` 590,
   `38KhuA19` 310 — and `34KhuA15` 511 (Buddhavaṁsa).
-* **Do not touch the shape-C pairs by number.** `42KhuA23` 1103,
-  `30KhuA11` 887, `41KhuA22` 528, `31KhuA12` 433, `29KhuA10` 67. Their comments
-  are unnumbered and collective. A repair there is a different piece of work —
-  find the block, find its collective gloss, and decide whether every verse in
-  the block should point at it. **Ask the reader what those books do before
-  measuring anything about them.**
+* **SHAPE C — DECIDED 2026-08-23 BY THE READER: LEAVE IT AS IT IS.**
+  Shown the printed Therīgāthā page — verses 7, 8, 9, 10 in a run, then
+  `gāthāyo abhāsiṁsu.` and the collective gloss — his instruction was:
+  *"If in the PDF is like this, keep it as it is."*
+
+  So `42KhuA23` 1103, `30KhuA11` 887, `41KhuA22` 528, `31KhuA12` 433 and
+  `29KhuA10` 67 — **about 3,000 links — are NOT a defect and are not to be
+  repaired.** The reader meets the book as the edition set it: the verses in
+  their run, the comment after the last of them. Pointing each verse at a
+  collective gloss would impose a structure the edition does not print, which is
+  principle 3 — never silently correct the edition — reaching the link layer.
+
+  This closes the largest single block of "on a reprint" counts in §2. They stay
+  in the table as a **measurement**, not as a backlog.
+
+  *(Recorded as an interpretation of one sentence. If what was meant was
+  narrower — keep the verse run intact but still let a verse reach its gloss —
+  say so and it can be reopened; nothing has been built either way.)*
 * The `?` rows have not been characterised. Do that before planning them.
 
 Each pair still gets its own named assertion in `check_links.py`, run red
