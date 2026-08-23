@@ -185,12 +185,21 @@ any session that starts fresh:**
   reprint and onto the comment**, gated red first, verified on four printed
   pages, 470 uncommented verses deliberately left alone.
   `claude/vimanavatthu_links_moved_to_the_gloss.md`. 16 pairs remain.
-* **RE-MEASURE THE WORKSHEET BEFORE USING IT.** Every figure in
-  `claude/link_targets_land_on_the_requotation.md` is an undercount — its test
-  keeps the canon's inline footnote-marker digits, so it called 168 verbatim
-  reprints different in this pair alone (500 → 907, 267 → 435). The four rows
-  reading "0 glosses found" are the least trustworthy.
-* Next in this line: `19Khu02 → 28KhuA09` — same canon volume, offset 3.
+* ~~RE-MEASURE THE WORKSHEET~~ — **DONE 2026-08-23.**
+  `pipeline/measure_requotation.py` replaces the 08-09 measurement, and the
+  worksheet is rewritten. **21,621 direct links, 7,437 on a bare reprint, 3,369
+  movable.** The important result is not the count but that the pairs fall into
+  **three shapes**, not one:
+  * **A** — reprint and comment in separate paragraphs under the same number.
+    Repairable, and what 27KhuA08 was. `28KhuA09` 348, `40KhuA21` 765,
+    `39KhuA20` 590, `34KhuA15` 511, `38KhuA19` 310.
+  * **B** — reprint and comment in the SAME paragraph. Nothing to move.
+  * **C** — verses run in a block, the comment is collective and **unnumbered**.
+    `42KhuA23` 1103, `30KhuA11` 887, `41KhuA22` 528, `31KhuA12` 433. Confirmed
+    on the printed page. **Do not touch these by number** — ask the reader what
+    those books do first.
+* Next in this line: **`19Khu02 → 28KhuA09`** — same canon volume as the
+  repaired pair, shape A, 348 movable.
 * **The shadowing defect FIRST** within the placer work: it moves links off
   paragraphs the edition addressed *by number*, which is the strongest evidence
   there is.
