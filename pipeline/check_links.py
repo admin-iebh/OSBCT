@@ -87,11 +87,35 @@ def stem(s):
 
 def name_at(v, i):
     """The section name covering ordinal i: the `sutta` field marks where a
-    section opens, so it is carried forward."""
+    section opens, so it is carried forward -- BUT NEVER ACROSS A BOOK.
+
+    !!! IT USED TO CARRY ACROSS, AND THAT IS A REAL DEFECT IN THE CORPUS THAT
+    THIS MEASURE WAS SPREADING.  A book's opening paragraphs often carry no
+    `sutta` field at all: in `19Khu02` the Petavatthu starts at ord 1034 and the
+    first `sutta` in it is at ord 1374, so **340 paragraphs of Petavatthu were
+    being called by a Vimānavatthu section name** -- ord 1371 answered
+    `Rasuttamadāyikāvimānavatthu (4)`.  Corpus-wide that is **5,616 paragraphs
+    in 44 volumes** (worst: 19Khu02 678, 01Vin01 399, 28KhuA09 397).
+
+    Found 2026-08-23 because the 28KhuA09 link repair moved one such link onto a
+    target that DOES have a name, which made the pair checkable for the first
+    time and dropped name-match by 0.004.  The link was right; the name was
+    wrong.  Answering None here is honest -- the pair is simply not counted --
+    where answering the previous book's name is a false agreement or a false
+    disagreement depending on which way it falls.
+
+    THE UNDERLYING DEFECT IS NOT FIXED, only stopped from being measured: the
+    corpus still has 5,616 paragraphs with no section of their own, and the
+    reader still shows them that way.  That belongs to the nav/section builders.
+    """
     if v not in _sn:
-        out, cur, st = [], None, 0
+        out, cur, st, book = [], None, 0, object()
         ps = P(v)
         for j, p in enumerate(ps):
+            if p.get('book') != book:
+                if cur is not None:
+                    out.append((st, j - 1, cur))
+                cur, book = None, p.get('book')
             if p.get('sutta'):
                 if cur is not None:
                     out.append((st, j - 1, cur))
@@ -191,8 +215,18 @@ def measure(load=None):
 # the paragraph the comment actually is.
 REQUOTE_CASES = [
     # canon vol, canon ord, printed n, forbidden target, the gloss
+    #
+    # 27KhuA08 Vimānavatthu-aṭṭhakathā — repaired 2026-08-23.
+    # p.130 has ¶333 as verse in the run 330-336; p.133 restarts at
+    # `333. Tattha vatthuttamadāyikāti ...`.
     ('19Khu02', 317, 333, '27KhuA08#467', '27KhuA08#511'),
     ('19Khu02',   0,   1, '27KhuA08#4',   '27KhuA08#11'),
+    #
+    # 28KhuA09 Petavatthu-aṭṭhakathā — same shape, repaired 2026-08-23.
+    # p.7 ends the verse run at ¶3 with `imā gāthā abhāsi.` and restarts
+    # `1. Tattha khettūpamāti ...`; p.161 has `397. Akammakāmāti sādhūhi ...`.
+    ('19Khu02', 1034,   1, '28KhuA09#4',   '28KhuA09#7'),
+    ('19Khu02', 1430, 397, '28KhuA09#579', '28KhuA09#595'),
 ]
 
 

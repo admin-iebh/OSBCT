@@ -198,8 +198,14 @@ any session that starts fresh:**
     `42KhuA23` 1103, `30KhuA11` 887, `41KhuA22` 528, `31KhuA12` 433. Confirmed
     on the printed page. **Do not touch these by number** — ask the reader what
     those books do first.
-* Next in this line: **`19Khu02 → 28KhuA09`** — same canon volume as the
-  repaired pair, shape A, 348 movable.
+* ~~Next: `19Khu02 → 28KhuA09`~~ — **DONE 2026-08-23. 350 links moved**, gated
+  red first, printed pages 7, 161 and 191. It **mixes shapes A and B**: 101 of
+  its links already landed on a paragraph that reprints *and then comments*, and
+  the `tail()` guard is the only reason they were not moved off the commentary.
+  A repair script right for one book is not thereby right for the next.
+* Next in this line: the three big Jātaka pairs — `40KhuA21` 765 movable,
+  `39KhuA20` 590, `38KhuA19` 310 — and `34KhuA15` 511 (Buddhavaṁsa). Check for
+  the shape-B mixture in each before applying, as 28KhuA09 required.
 * **The shadowing defect FIRST** within the placer work: it moves links off
   paragraphs the edition addressed *by number*, which is the strongest evidence
   there is.
@@ -212,6 +218,18 @@ any session that starts fresh:**
 
 ### Measured, not repaired
 
+* **5,616 CANON PARAGRAPHS ANSWER TO THE PREVIOUS BOOK'S SECTION NAME**, in 44
+  volumes — found 2026-08-23. A book's opening paragraphs often carry no `sutta`
+  field, and the name was being carried forward across the boundary: all 340
+  paragraphs from the start of Petavatthu in `19Khu02` to its first section were
+  labelled with a *Vimānavatthu* section. Worst: 19Khu02 678, 01Vin01 399,
+  28KhuA09 397, 02ViT02 318, 26VsmT02 299, 25Khu08 295.
+  `check_links.py:name_at` now stops at a book boundary — which moved name-match
+  from "76.126% of 20,784" to **"76.442% of 16,657", i.e. 4,127 comparisons
+  (19.9%) had been made against a name from the wrong book** — but that only
+  stops it being *measured*. **The reader still shows those paragraphs under the
+  wrong heading.** It belongs to the nav/section builders and it is probably the
+  most substantial known defect on this list.
 * **The unnumbered-siglum class.** 2,535 paragraphs in 76 volumes carry a `*`,
   `+`, `x` or `( )` mark; **1,427 have no apparatus entry at all.** Two known
   defects: the `+` note absent from `10Ma02.app.json` ¶296, and unnumbered notes

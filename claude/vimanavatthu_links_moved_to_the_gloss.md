@@ -1,3 +1,21 @@
+# Links moved off the reprint and onto the comment — 27KhuA08, then 28KhuA09
+
+> **2026-08-23, later the same day: the second pair is done too.**
+> `19Khu02 → 28KhuA09` (Petavatthu-aṭṭhakathā), **350 links moved**, both named
+> cases run red first and verified on printed pages 7, 161 and 191.
+>
+> **28KhuA09 mixes the shapes, which 27KhuA08 did not.** 101 of its links
+> already land on a paragraph that reprints the verse *and then comments in the
+> same paragraph* — correct as they stand. `relink_requotation.py` gained the
+> `tail()` guard for exactly this, and without it those 101 correct links would
+> have been moved off the commentary and onto nothing better. See §9.
+>
+> Two further findings came out of it, §10 and §11. One of them —
+> **5,616 canon paragraphs carrying the previous book's section name** — is
+> larger than the repair that exposed it.
+
+---
+
 # 19Khu02 → 27KhuA08: 437 links moved off the reprint and onto the comment
 
 **Done 2026-08-23.** The first of the seventeen pairs in
@@ -103,7 +121,11 @@ Baseline re-recorded at `reachable 28210`, so the repair is now the floor.
 Reported under principle 5, with their extent.
 
 **7a. The 08-09 worksheet understates this pair, and by the same cause
-everywhere.** It records `19Khu02 → 27KhuA08` as **500** links on a repeat with
+everywhere.** — **RE-MEASURED THE SAME DAY; the worksheet is rewritten and the
+answer was bigger than "the numbers were low": the pairs fall into three
+different book shapes, and only one of them is repairable. See
+`claude/link_targets_land_on_the_requotation.md` §1.** The original note
+follows. It records `19Khu02 → 27KhuA08` as **500** links on a repeat with
 **267** same-numbered glosses found. Measured with footnote-marker digits
 stripped, it is **907** links landing on a reprint (437 with a gloss to move to,
 470 without) and **435** same-numbered gloss pairs. The whole-string test also
@@ -146,3 +168,113 @@ The remaining sixteen pairs, one book at a time, **after** 7a is re-measured.
 221 same-numbered glosses by the old undercounting test, so probably many more.
 The four "0 glosses found" pairs are a different shape and need a reader's
 description of what those books do before any measurement will mean anything.
+
+---
+
+# Part two — 19Khu02 → 28KhuA09, Petavatthu-aṭṭhakathā
+
+## 9. Same shape, but not purely — and the guard that mattered
+
+Printed page 7 shows it plainly: the verse run ends at ¶3 with
+`imā gāthā abhāsi.` and the commentary restarts `1. **Tattha khettūpamā**ti
+khittaṁ vuttaṁ bījaṁ tāyati …`. Page 161 the same: `397. **Akammakāmā**ti
+sādhūhi akattabbaṁ kammaṁ akusalaṁ kāmentīti …`. Shape A, as in 27KhuA08.
+
+    MOVE quote -> comment                                    350
+    one candidate: the quote, no comment printed             244
+    number absent from the commentary                        107
+    reprints AND comments in one paragraph — correct as is   101
+    no direct link to move                                     8
+    already on the comment                                     5
+    one candidate: already the comment                         3
+    tie on opening, broken by the tail                         2
+
+**The 101 are the point.** 27KhuA08 is pure shape A, so the question never
+arose there. 28KhuA09 mixes: many of its paragraphs reprint the verse and then
+comment *in the same paragraph*, which `opening()` scores 1.0 — identical to a
+bare reprint. Moving those would have taken 101 links off the commentary. The
+`tail()` guard, written for `measure_requotation.py` an hour earlier after the
+same mistake was made about `31KhuA12`, is what stopped it.
+
+> **A repair script that is right for one book is not thereby right for the
+> next.** The guard was not added because 28KhuA09 was inspected and found to
+> need it; it was added because the *measure* had already been caught. Had the
+> order been reversed, 101 correct links would have moved and every gate would
+> have stayed green.
+
+**Two cases were decided by a tie-break that is worth recording.** At canon
+¶486 and ¶760 both candidates *open* with the verse, so `opening` cannot
+separate them and `MIN_SEP` refused the call. The difference is length: 13
+words against 41. Printed page 191 shows why — inside the gloss run the edition
+re-quotes the verse in full (`Tena vuttaṁ—`, then verse 486 set as verse) and
+then comments `**Tattha paṭihatā**ti paṭihatacittā …`. So the second candidate
+is a re-quotation *and* the comment. The tie is broken on `tail`, and only when
+exactly one of the two continues past the verse.
+
+## 10. The ratchet fired, and it was right to
+
+After the move, two aggregates fell:
+
+    name-match   76.126 -> 76.122   (one link)
+    reachable    28210  -> 28209    (one paragraph)
+
+Neither was waved through, and they turned out to be different in kind.
+
+**`reachable` −1 is the arithmetic of the repair and is accepted.** 350 links
+moved off reprints; some reprints lost their only referrer while the glosses
+gained one. The reprint is still the edition's own text in the commentary's own
+stream, where a reader reaches it by reading — it is simply no longer a link
+target, which is what was intended. **But note the measure cannot tell this from
+deletion**, which is what it exists to catch, so any future repair of this kind
+must explain its −1 rather than re-record it.
+
+**`name-match` −0.004 was not the repair at all.** It was one link becoming
+*checkable* for the first time and immediately disagreeing — see §11.
+
+## 11. NEW AND LARGER THAN THE REPAIR — 5,616 paragraphs answer to the wrong book's section name
+
+`check_links.py:name_at()` carried the last `sutta` field forward, and **carried
+it across book boundaries**. A book's opening paragraphs often carry no `sutta`
+field at all:
+
+    19Khu02  Petavatthupāḷi starts at ord 1034
+             its first paragraph carrying a `sutta` field is ord 1374
+             => ords 1034-1373, 340 paragraphs, answered with a
+                VIMĀNAVATTHU section name
+
+Ord 1371 — a Petavatthu verse — answered `Rasuttamadāyikāvimānavatthu (4)`.
+
+Corpus-wide: **5,616 canon paragraphs in 44 volumes** sit before their own
+book's first section name. Worst: `19Khu02` 678, `01Vin01` 399, `28KhuA09` 397,
+`02ViT02` 318, `26VsmT02` 299, `25Khu08` 295.
+
+**What this did to the measure.** `name_at` now stops at a book boundary and
+answers `None` there, so the pair is not counted rather than counted wrongly.
+The effect on the gate is not small:
+
+    before   name-match 76.126%  of 20,784 links
+    after    name-match 76.442%  of 16,657 links
+
+**4,127 of 20,784 name comparisons — 19.9% — were being made against a section
+name belonging to a different book.** The honest figure is *higher*, so the
+measure had been understating itself; but it was also silently counting
+agreements and disagreements that meant nothing either way. Baseline re-recorded
+at the corrected figures.
+
+**THE UNDERLYING DEFECT IS NOT REPAIRED, only stopped from being measured.** The
+corpus still has 5,616 paragraphs with no section of their own, and **the reader
+still shows them under the previous book's heading.** That is a nav/section
+builder question and it is now the most substantial known defect on the list.
+It was found only because a link repair moved one link onto a target that
+happened to have a name.
+
+## 12. Gates, part two
+
+    check_links.py        n-match 55.93% unchanged; name-match 76.44% of 16,657
+                          (measure corrected, see §11); reachable 28209;
+                          all FOUR named cases ok
+    negative control      fires: n-match 55.928 -> 4.085
+    check_concordance.py  no measure regressed
+    check_dimmed.js       PASS ; check_search.js all green
+    build_rev.py          re-run; 0 direct forward links without a reverse entry
+    stamp                 26a5cf36582c

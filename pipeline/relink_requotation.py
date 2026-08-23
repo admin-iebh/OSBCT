@@ -67,11 +67,21 @@ LINKS = os.path.join(SITE, 'reader', 'linksk')
 # canon volume, the canon BOOK inside it this commentary covers, commentary vol
 PAIRS = [
     ('19Khu02', 'Vimānavatthupāḷi', '27KhuA08'),
+    # 2026-08-23. Petavatthu-aṭṭhakathā, the same shape, confirmed on printed
+    # p.7 (`... imā gāthā abhāsi.` then `1. Tattha khettūpamāti ...`) and p.161.
+    # It MIXES shapes, which 27KhuA08 did not: 101 of its links already land on
+    # a paragraph that reprints the verse and then comments in the same
+    # paragraph. Those are correct as they stand and are skipped, not moved —
+    # see the TAIL_OK guard below and `pipeline/measure_requotation.py:tail`.
+    ('19Khu02', 'Petavatthupāḷi', '28KhuA09'),
 ]
 
 # A pair closer than this is not decided here.  Nothing in this book reaches it
 # — the closest is 0.30 — so it exists to stop a future book being decided by a
 # coin toss without anyone noticing.
+TAIL_OK = 0.50   # a paragraph this much longer than the canon text it opens
+                 # with has gone on to comment; the link is already right
+
 MIN_SEP = 0.15
 
 
@@ -99,6 +109,28 @@ def opening(cw, aw):
     if not cw or not aw:
         return 0.0
     return difflib.SequenceMatcher(None, cw, aw[:len(cw)]).ratio()
+
+
+def tail(cw, aw):
+    """How much of the paragraph is left after the canon text it opens with,
+    as a multiple of the canon paragraph's own length.
+
+    !!! THIS GUARD IS WHY 28KhuA09 DID NOT LOSE 101 CORRECT LINKS.  Some
+    commentaries print the verse and the comment as ONE paragraph:
+
+        “Tisse sikkhassu sikkhāya, ... anāsavā”ti– gāthaṁ abhāsi.
+        Tattha tisseti tassā ālapanaṁ.  Sikkhassu sikkhāyāti ...
+
+    Such a paragraph OPENS with the canon text, so `opening` scores 1.0 and it
+    looks exactly like a bare reprint — but the link already lands on the
+    commentary and moving it would be a defect, not a repair.  27KhuA08 is pure
+    shape A so this never arose there; 28KhuA09 mixes the two and 101 of its
+    links are of this kind.  Whole volumes are built this way — see
+    `claude/link_targets_land_on_the_requotation.md` §1.
+    """
+    if not cw or not aw:
+        return 0.0
+    return max(0.0, (len(aw) - len(cw)) / float(len(cw)))
 
 
 def plan(cvol, book, avol):
@@ -133,6 +165,12 @@ def plan(cvol, book, avol):
             tally['no direct link to move'] += 1
             continue
         cw = words(p.get('text'))
+        cur0 = int((direct[0].get('key') or '').split('#')[1])
+        if 0 <= cur0 < len(A):
+            aw = words(A[cur0].get('text'))
+            if opening(cw, aw) >= 0.60 and tail(cw, aw) > TAIL_OK:
+                tally['reprints AND comments in one paragraph — correct as is'] += 1
+                continue
         qs = sorted(((i, opening(cw, words(A[i].get('text')))) for i in cand),
                     key=lambda x: -x[1])
         if len(qs) == 1:
@@ -145,9 +183,25 @@ def plan(cvol, book, avol):
             continue
         (qi, qq), (gi, gq) = qs[0], qs[1]
         if qq - gq < MIN_SEP:
-            close.append((o, p.get('n'), qs))
-            tally['two candidates too close to call — NOT MOVED'] += 1
-            continue
+            # !!! BOTH CANDIDATES OPEN WITH THE VERSE.  That happens when the
+            # comment RE-QUOTES before commenting — 28KhuA09 #735 is
+            # `486. “Tassa kammassa kusalassa ... khāditun”ti. Tattha paṭihatāti
+            # paṭihatacittā ...` against the bare #729.  `opening` cannot
+            # separate them because both openings ARE the verse; `tail` can,
+            # and it is the same distinction the TAIL_OK guard above makes:
+            # 13 words against 41.  Break the tie on it, and only when exactly
+            # one of the two continues past the verse.
+            long0 = tail(cw, words(A[qs[0][0]].get('text'))) > TAIL_OK
+            long1 = tail(cw, words(A[qs[1][0]].get('text'))) > TAIL_OK
+            if long0 == long1:
+                # both bare, or both continue: nothing here can tell them apart
+                close.append((o, p.get('n'), qs))
+                tally['two candidates too close to call — NOT MOVED'] += 1
+                continue
+            # the one that continues past the verse is the comment
+            gi = qs[1][0] if long1 else qs[0][0]
+            qi = qs[0][0] if long1 else qs[1][0]
+            tally['tie on opening, broken by the tail'] += 1
         cur = int((direct[0].get('key') or '').split('#')[1])
         if cur == qi:
             moves[o] = (qi, gi, round(qq, 3), round(gq, 3))
