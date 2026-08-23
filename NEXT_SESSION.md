@@ -1,8 +1,31 @@
-# Closing 2026-08-09 — what to run, and what to tell the next session
+# Closing 2026-08-09, re-verified 2026-08-23 — where things stand
+
+> **Read this box first; it is newer than the rest of the file.**
+>
+> **2026-08-23 — nothing is owed and nothing is broken.** Checked, not assumed:
+>
+> * **The site is current.** Live `build.json`, cache-busted, is
+>   **`c97a3f99fdb2` dated 2026-08-16** — the repository's own HEAD build. The
+>   *uncached* fetch of the same URL still answers `1f2819473f91 / 2026-08-08`,
+>   the v2.6.0 stamp. **That is the third time this cache has told this project
+>   the deploy failed.** It has not. Never read a deploy without a cache-buster.
+> * **The `hw` store is on R2**, so §3a below is finished, upload and all —
+>   see `_xc/hy2/start_here_2026-08-09.md` §0b for the probes and the negative
+>   control. `WLV 20260810a` matches the live build.
+> * **Every offline gate is green**, re-run today, a week after v2.8.0:
+>   `check_links.py` and `check_concordance.py` both "no measure regressed",
+>   `check_apd_gear.js` all green, `check_search.js` all green,
+>   `check_lookup_reach.js` 12/0.
+> * **v2.8.0 is released and deposited**, its DOI read from the record and in
+>   `CITATION.cff` (commit `96e1eb0e8`). The niggahita display toggle — edition
+>   ṁ ↔ modern ṃ, display only — is live.
+>
+> **`RUN_ON_HOST.md` is stale**: it still describes the v2.7.1 release, which
+> shipped two releases ago. Nothing in it is owed. Do not work from it.
 
 ---
 
-## 1. Two commands, then you are done for the day
+## 1. ~~Two commands, then you are done for the day~~ — done, 2026-08-09
 
 ```bash
 cd ~/Documents/OSBCT
@@ -11,10 +34,10 @@ rm -f _probe_band_verse.js      # my jsdom probe; the sandbox cannot delete it
 ```
 
 That commit changes no text, moves no link, and touches nothing under
-`site/` — so there is **no stamp, no Pages run and no R2 sync needed.**
-It is the two findings notes plus the corrected handoff.
+`site/` — so there was **no stamp, no Pages run and no R2 sync needed.**
+It was the two findings notes plus the corrected handoff.
 
-## 2. Where things stand
+## 2. Where things stood on 08-09 (superseded by the box above)
 
 **Shipped and clean.** v2.7.0 and v2.7.1 both released, deposited and in the
 citation ledger — `10.5281/zenodo.21863987` and `10.5281/zenodo.21864177`, both
@@ -31,7 +54,15 @@ you parked deliberately, or something nobody has looked at yet.
 
 ## 3. What to tell a new chat
 
-### 3a. The dictionary gate — what "bigger than the evening" meant
+### 3a. ~~The dictionary gate~~ — **DONE 2026-08-10, UPLOAD CONFIRMED 2026-08-23**
+
+Kept because the account of *why* it was five coupled steps is still the best
+description of what a store change costs. All five landed: the new `hw` store
+(191,928 keys, largest shard 147,337 B under the 150 kB cap), `lem` untouched,
+`check_apd_gear.js` extended and run red first, and the R2 upload — the step
+that was owed for thirteen days — now verified against the live origin.
+**Only item 5 remains, and it always was separate: the §2/§9 redistribution
+question.** What follows is the brief as it was written.
 
 It is not vague, it is **five coupled steps, each with a gate**, and one of them
 touches production:
@@ -150,9 +181,16 @@ any session that starts fresh:**
 
 ### The links — one book at a time
 
-* `19Khu02 → 27KhuA08` first: measured, read, and the note above says what a fix
-  needs. 17 pairs in total —
-  `claude/link_targets_land_on_the_requotation.md`.
+* ~~`19Khu02 → 27KhuA08` first~~ — **DONE 2026-08-23. 437 links moved off the
+  reprint and onto the comment**, gated red first, verified on four printed
+  pages, 470 uncommented verses deliberately left alone.
+  `claude/vimanavatthu_links_moved_to_the_gloss.md`. 16 pairs remain.
+* **RE-MEASURE THE WORKSHEET BEFORE USING IT.** Every figure in
+  `claude/link_targets_land_on_the_requotation.md` is an undercount — its test
+  keeps the canon's inline footnote-marker digits, so it called 168 verbatim
+  reprints different in this pair alone (500 → 907, 267 → 435). The four rows
+  reading "0 glosses found" are the least trustworthy.
+* Next in this line: `19Khu02 → 28KhuA09` — same canon volume, offset 3.
 * **The shadowing defect FIRST** within the placer work: it moves links off
   paragraphs the edition addressed *by number*, which is the strongest evidence
   there is.
@@ -198,8 +236,17 @@ any session that starts fresh:**
 * Nine kintipañha heads still tail-of-paragraph; BLOCKBREAK off; `position`
   unmeasured for 114 of 118 volumes; the WLV gate; the offline package (§2
   permission first); `.gitignore`'s stale store rule.
-* **Two gate gaps.** `check_r2_origin.js` cannot tell "reachable and absent"
+* **Three gate gaps.** `check_r2_origin.js` cannot tell "reachable and absent"
   from "unreachable" — its negative control passes when the network is down —
-  and it covers neither `lookup_eval/family/` nor `form/`.
+  and it covers neither `lookup_eval/family/` nor `form/`. The shape of a real
+  404 from that bucket is now known (empty body, no `Content-Type`, unlike a
+  present object's `application/gzip`), so the discrimination is cheap to add.
+* **And the third, found 2026-08-23: nothing checks that the reverse link maps
+  are derivable from the forward ones.** They had drifted again — `32KhuA13`
+  was missing 33 entries, and `28KhuA09`/`41KhuA22` had six entries attributed
+  to the wrong canon paragraph — all of it predating this session's work and
+  none of it noticed by any gate. Rebuilt and now consistent, but the same
+  silence will return after the next link repair that forgets `build_rev.py`.
+  §7b of `claude/vimanavatthu_links_moved_to_the_gloss.md`.
 * `v2.7.0` is a lightweight tag where v2.4.0–v2.6.0 are annotated. It has a DOI.
   **Leave it**; recorded so nobody rediscovers it as a defect.

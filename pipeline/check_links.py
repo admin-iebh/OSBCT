@@ -154,6 +154,90 @@ def measure(load=None):
             'n_checked': nok + nbad, 'name_checked': agree + dis}, worst
 
 
+# ---------------------------------------------------------------------------
+# THE RE-QUOTATION CASES.  Added 2026-08-23.
+#
+# WHY.  `27KhuA08` (Vimānavatthu-aṭṭhakathā) prints, for each vimāna: unnumbered
+# nidāna prose, then the canon's verses REPRINTED IN FULL UNDER THE CANON'S OWN
+# NUMBERS, then the comments RESTARTING AT THE SAME NUMBERS.  Both bear the same
+# number, so a placer working from the number alone takes the first one -- the
+# quote -- every time.  A reader who opens the Aṭṭhakathā band at 19Khu02 ¶333
+# is shown the verse he has just finished reading, set as prose, while the
+# comment on it sits 44 paragraphs further on with nothing pointing at it.
+# Full account: claude/vimanavatthu_atthakatha_quotes_then_glosses.md.
+#
+# WHY NAMED CASES AND NOT A MEASURE.  There is no text test that separates quote
+# from gloss in this book, and it is worth saying exactly why, because the
+# obvious ones were tried and all of them fail:
+#
+#   * whole-string similarity          -- fails: the commentary often reprints
+#                                         the verse AND appends prose to it
+#                                         ("... -- Ayaṁ gāthā ..."), so a real
+#                                         quote scores 0.53
+#   * prefix containment               -- fails: canon and commentary disagree
+#                                         on single words (padmaṁ/paddhaṁ,
+#                                         Upapajjati/Uppajjati), so a real quote
+#                                         breaks off at 50% coverage
+#   * opening similarity               -- fails BOTH WAYS: a quote may be
+#                                         abridged by peyyala (`-pa-`) and score
+#                                         0.35, and A GLOSS OPENS BY QUOTING ITS
+#                                         OWN LEMMA -- "Mā tvaṁ uposathe bhāyīti
+#                                         bhadde ..." -- and scores 0.36 too.
+#
+# The distributions overlap; there is no threshold. So these are cases READ off
+# the printed page and named, one at a time, exactly as the reader said this
+# work has to go: one book at a time, and within the book, by eye. Each entry
+# records the canon paragraph, the target it must NOT keep (the reprint), and
+# the paragraph the comment actually is.
+REQUOTE_CASES = [
+    # canon vol, canon ord, printed n, forbidden target, the gloss
+    ('19Khu02', 317, 333, '27KhuA08#467', '27KhuA08#511'),
+    ('19Khu02',   0,   1, '27KhuA08#4',   '27KhuA08#11'),
+]
+
+
+def requote(load=None):
+    """Named cases where a link is known to land on the commentary's reprint of
+    the canon verse instead of on the comment.  Hard assertions, not a ratchet:
+    each one was read, and a repair either moves it or it did not happen."""
+    out = []
+    for vol, ordn, n, forbidden, gloss in REQUOTE_CASES:
+        f = os.path.join(LINKS, vol + '.links.json')
+        if not os.path.exists(f):
+            out.append((vol, ordn, n, forbidden, gloss, None, 'no link file'))
+            continue
+        L = (load(f) if load else json.load(open(f, encoding='utf-8')))
+        e = L.get(str(ordn)) or {}
+        tvol = forbidden.split('#')[0]
+        got = [t.get('key') for t in (e.get('commentary') or [])
+               if t.get('state') == 'direct'
+               and (t.get('key') or '').startswith(tvol + '#')]
+        cur = got[0] if got else None
+        if cur == forbidden:
+            out.append((vol, ordn, n, forbidden, gloss, cur, 'lands on the reprint'))
+        elif cur is None:
+            out.append((vol, ordn, n, forbidden, gloss, cur, 'no direct link at all'))
+        else:
+            out.append((vol, ordn, n, forbidden, gloss, cur, 'ok'))
+    return out
+
+
+def report_requote(cases):
+    print('\n  re-quotation cases (the commentary reprints before it comments):')
+    fails = []
+    for vol, ordn, n, forbidden, gloss, cur, why in cases:
+        if why == 'ok':
+            print('  ok    %s#%d (¶%d) -> %s' % (vol, ordn, n, cur))
+        else:
+            print('  FAIL  %s#%d (¶%d) -> %s : %s'
+                  % (vol, ordn, n, cur, why))
+            print('        that paragraph is the canon verse reprinted; '
+                  'the comment is %s' % gloss)
+            fails.append('%s#%d (¶%d) still lands on the reprint %s, not on %s'
+                         % (vol, ordn, n, forbidden, gloss))
+    return fails
+
+
 def report(m, worst, base):
     print('  n-match     %7.2f%%  of %d numbered targets' % (m['n_match'], m['n_checked']))
     print('  name-match  %7.2f%%  of %d links naming a sutta on both sides'
@@ -206,9 +290,14 @@ if __name__ == '__main__':
     m, w = measure()
     print('cross-layer links, %s' % LINKS)
     fails = report(m, w, base)
+    # !!! THE NAMED CASES ARE NOT PART OF THE BASELINE and must not be, or
+    # `--record` would accept the defect as the standard.  They are assertions.
+    rq = requote()
+    fails = fails + report_requote(rq)
     if '--record' in sys.argv:
         json.dump(m, open(BASE, 'w', encoding='utf-8'), indent=1)
-        print('\nbaseline recorded')
+        print('\nbaseline recorded (the three measures only — '
+              'the re-quotation cases are assertions and are never recorded)')
         sys.exit(0)
     if fails:
         print('\nLINKS REGRESSED:')

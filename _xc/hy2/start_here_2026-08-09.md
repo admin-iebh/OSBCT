@@ -80,10 +80,32 @@ evidence about R2.
 > along with `check_hw_agrees_with_lem.py` (0 missing rows over 34,731) and
 > `check_lookup_reach.js`. The miss message's prefix fallback is in too.
 >
-> **STILL OWED, AND THE JOB IS NOT DONE WITHOUT IT: `pipeline/r2_upload.sh` has
-> not been run.** The panel fetches this store from R2, so production still
-> answers "no entry" until it does. `WLV` is `20260810a`; upload FIRST, or a
-> reader gets the new version against a bucket with no `hw/`.
+> ~~**STILL OWED, AND THE JOB IS NOT DONE WITHOUT IT: `pipeline/r2_upload.sh` has
+> not been run.**~~ **SETTLED 2026-08-23 — IT WAS RUN, AND THE BUCKET HAS IT.**
+> This paragraph stood unresolved for thirteen days because nobody could reach
+> R2 from a sandbox to check. It is answerable from the host, and the answer is
+> yes. Verified against the live origin, every request cache-busted:
+>
+> * `lookup_eval/hw/index.json` → **200**, and its header fields are the
+>   repository's own: `cap_bytes 150000`, `largest_bytes 147337`,
+>   `keys 191928`, `abhidhana_keys 146865`, and the shard series opening
+>   5, 5, 3, 1, 5, 4 — identical. So this is not some earlier `hw/`; it is
+>   the build `_panel/build_own.py` made on 08-10.
+> * `lookup_eval/hw/yathan.json.gz` → **200**, `Content-Type: application/gzip`,
+>   binary. That is the shard holding `yathanisinna`, the word the whole finding
+>   started from, and it is on the bucket.
+> * **The negative control discriminates**, which is the part that makes the
+>   above mean anything: `hw/zzzz_nosuchshard.json.gz` comes back empty with no
+>   `Content-Type`, plainly unlike the two above. (So does plain `hw/do_.json`
+>   without `.gz` — correct, since `gz: ['hw']` means only the gzipped objects
+>   were ever uploaded.) Contrast `check_r2_origin.js`, whose control passes
+>   when the network is down; that gap is still open and still worth closing.
+> * Delivery is the **opaque** branch — `application/gzip`, no
+>   `Content-Encoding` — so `jfetch` inflates it itself, which is the branch it
+>   sniffs magic bytes for.
+>
+> `WLV` is `20260810a` and the live build is `c97a3f99fdb2`, which carries it,
+> so the reader and the bucket are on the same version. **Nothing is owed here.**
 > Full account: `claude/hw_store_own_headwords.md`. The §2/§9 redistribution
 > question is untouched. **What follows is the original finding, kept as it was
 > written.**

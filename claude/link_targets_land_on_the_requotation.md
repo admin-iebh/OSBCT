@@ -1,5 +1,22 @@
 # Links landing on the commentary's re-quotation, per book
 
+> **EVERY NUMBER BELOW IS AN UNDERCOUNT. Established 2026-08-23; do not plan
+> against this table until it is re-measured.**
+>
+> The test used here compares whole strings, and **the canon carries
+> footnote-marker digits inside the word** (`malyadhare1`, `Imāsāhaṁ1`) where
+> the commentary's reprint does not. It also cannot see a quote that the
+> edition abridged with peyyala, or one with prose appended after it.
+>
+> On the one row since measured properly — `19Khu02 → 27KhuA08` — the true
+> figures are **907 links on a reprint, not 500**, and **435 same-numbered
+> gloss pairs, not 267**. That row is now repaired: 437 links moved,
+> `claude/vimanavatthu_links_moved_to_the_gloss.md`.
+>
+> The four rows reading **0** in the "same-n gloss found" column are the least
+> trustworthy of all — `31KhuA12` is already known by hand to have a gloss this
+> test could not see.
+
 Measured 2026-08-09 over `site/reader/linksk/` at build `92157e0692e0`.
 A link is counted when the target paragraph's text IS the canon paragraph's
 text — the commentary reprinting the verse, not commenting on it.
