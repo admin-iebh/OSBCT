@@ -257,7 +257,7 @@ dominates transfer. It may even be faster, depending on edge coverage.
 
 ## 5. Option C — jsDelivr over the existing repository
 
-`https://cdn.jsdelivr.net/gh/admin-iebh/OSBCT@<tag>/site/lookup/…`. Nothing to host,
+`https://cdn.jsdelivr.net/gh/bthar-mx/OSBCT@<tag>/site/lookup/…`. Nothing to host,
 nothing to upload, the files stay exactly where they are.
 
 - **for:** working the same afternoon; no infrastructure; free
