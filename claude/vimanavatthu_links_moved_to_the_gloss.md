@@ -83,10 +83,24 @@ A comparison that keeps them calls **168 verbatim reprints different**.
     no direct link to move                              6
     already on the comment                              1
 
-**The 470 are the edition's silence and were not touched.** The commentary does
-not gloss every verse — printed page 130 shows 341, 349, 357, 365 quoted and
-page 133 comments on 341 but never on 349, 357 or 365. Inventing a target for
-those would manufacture a commentary that was never printed.
+**The 470 were not touched**, and that was right — but the reason given here was
+wrong, and the example chosen to illustrate it was the worst possible one.
+
+> ~~The commentary does not gloss every verse — printed page 130 shows 341, 349,
+> 357, 365 quoted and page 133 comments on 341 but never on 349, 357 or 365.~~
+>
+> **FALSE, corrected §13.** Page 133's gloss on 341 reads
+> `… tathā gandhuttamadāyikāti daṭṭhabbā. Tattha pupphuttamaṁ sumanapupphādi,
+> gandhuttamaṁ candanagandhādi, phaluttamaṁ panasaphalādi, rasuttamaṁ
+> gorasasappi-ādi veditabbaṁ.` **It glosses all four.** 349, 357 and 365 are
+> commented collectively, under 341's number. I read the page, saw the four
+> verses quoted, saw one gloss, and concluded the other three were passed over —
+> without reading the gloss to the end.
+
+The decision not to move them stands: there is no same-numbered target, and
+inventing one would manufacture a commentary that was never printed. But **"the
+edition's silence" is the wrong description of this population.** Measured in
+§13: about a third are named in a neighbouring gloss, about two thirds are not.
 
 Each moved record carries its provenance and its former target:
 
@@ -278,3 +292,72 @@ happened to have a name.
     check_dimmed.js       PASS ; check_search.js all green
     build_rev.py          re-run; 0 direct forward links without a reverse entry
     stamp                 26a5cf36582c
+
+---
+
+# 13. The silence, measured — and it is not silence
+
+**Asked 2026-08-23: should the reader be told "the edition does not comment
+here" for the verses left pointing at a reprint? Measured before answering, and
+the answer is: NOT IN THOSE WORDS, because for a third of them it would be
+false.**
+
+The case that started it. Printed page 130 quotes four verses, abridged:
+
+    341. Pupphuttamadāyikā nārī, Pavarā hoti naresu nārīsu -pa-.
+    349. Gandhuttamadāyikā nārī, Pavarā hoti naresu nārīsu -pa-.
+    357. Phaluttamadāyikā nārī -pa-.
+    365. Rasuttamadāyikā nārī -pa-.
+
+Only 341 has a same-numbered gloss. But that gloss, on page 133, reads:
+
+> `341. Pupphuttamadāyikāti … tathā gandhuttamadāyikāti daṭṭhabbā. Tattha
+> pupphuttamaṁ sumanapupphādi, **gandhuttamaṁ** candanagandhādi,
+> **phaluttamaṁ** panasaphalādi, **rasuttamaṁ** gorasasappi-ādi veditabbaṁ.`
+
+It glosses all four and says the rest are to be understood likewise.
+**349, 357 and 365 are commented — collectively, under 341's number.**
+
+## The split
+
+Of the verses whose only candidate is a bare reprint, how many are named in a
+gloss within sixty paragraphs (reprints excluded from the search, so a verse
+recurring elsewhere cannot answer for itself):
+
+    19Khu02 -> 27KhuA08    named in a nearby gloss   94  (35%)
+                           no mention found         173  (65%)
+    19Khu02 -> 28KhuA09    named in a nearby gloss   62  (39%)
+                           no mention found          97  (61%)
+
+**So roughly a third of the "uncommented" verses are explained; two thirds are
+not.** A single message for all of them is wrong either way round.
+
+## The weakness of this measurement, stated
+
+**Vimānavatthu's verses are formulaic and recur.** `Pucchāmi taṁ devi
+mahānubhāve …` and `Sā devatā attamanā, Moggallānena pucchitā …` appear dozens
+of times, and the commentary handles the repeats by saying so rather than
+repeating itself — `tassā attho heṭṭhā vutto eva`, "its meaning has already been
+given above". So a match found for ¶11 in the gloss on ¶37 is *real* in the
+sense that a reader following it finds the explanation, but it is not a gloss
+*on ¶11*. The test cannot separate "glossed collectively here" from "the same
+formula was explained elsewhere", and both land in the 35%.
+
+That does not undermine the conclusion — in both cases the explanation exists
+somewhere and the verse is not passed over in silence — but it does mean **the
+35% is an upper bound on "commented nearby" and a lower bound on nothing.**
+
+## What this makes the actual question
+
+Not "should we say the edition is silent", but a three-way one, and it is the
+reader's:
+
+1. the ~65% with no mention found — *uttānatthāneva*, self-evident, and the
+   edition genuinely passes over them;
+2. the ~35% named in a neighbouring gloss — where a link, not a message, is what
+   the reader wants;
+3. and whether the formulaic repeats should say **"explained above"**, which is
+   what the edition itself says about them.
+
+**Nothing has been built and nothing has been worded.** The two counts are here
+so the choice is between known populations rather than a guess.

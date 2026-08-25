@@ -1,107 +1,118 @@
-# Commands to run on the host — 2026-08-23
+# Commands to run on the host — 2026-08-23 (section names)
 
-Run from the repository root, in order. **This is not a release** — no version
-bump, no tag, no Zenodo deposit. It is a content change under `site/`, so it
-needs a stamp (already done), a push and a Pages run, and nothing else.
-
-**The R2 sync is NOT needed.** Nothing under `stores/` changed. The `hw/` store
-owed since 08-10 was verified this session as already on the bucket.
+**This one is NOT optional and NOT just a push.** The sandbox could not rebuild
+one derived artefact, and `stamp_build.py` will keep refusing until it is done.
+That refusal is correct — it is the 2026-07-30i guard, which exists to stop a
+stale artefact being published under a fresh cache-buster.
 
 ---
 
-## 1. Delete what the sandbox could not
+## 1. Rebuild the one artefact the sandbox could not
+
+`derive.py` skips an existing output, and the sandbox cannot unlink the old
+file, so this must happen here:
 
 ```bash
 cd ~/Documents/OSBCT
-
-# the zero-byte git lock the sandbox leaves behind (push.sh also does this)
 rm -f .git/index.lock
-
-# the forward link map as it was before the 437 moves — keep it until you have
-# read the diff, then remove
-rm -f site/reader/linksk/19Khu02.links.json.prerequote
-
-# printed pages I rendered to verify against; the sandbox cannot unlink them
-rm -rf "$(ls -d ~/Library/Application\ Support/Claude/local-agent-mode-sessions/*/*/*/outputs/pg 2>/dev/null)"
+for v in 19Khu02 28KhuA09; do
+  mv site/reader/pbreak/$v.json /tmp/$v.pbreak.old
+  python3 _xc/pagemark/derive.py $v --out site/reader/pbreak
+done
 ```
 
-## 2. Look at the diff before committing
-
-The link maps are one line per volume, so `git diff` will report "1 insertion,
-1 deletion" for 437 moves and show you nothing readable. **Read it by parsing,
-not by diffing:**
+**Then check they came back the same**, which is the point of doing it rather
+than forcing past it:
 
 ```bash
-python3 - <<'EOF'
-import json, subprocess
-old = json.loads(subprocess.run(
-    ['git','show','HEAD:site/reader/linksk/19Khu02.links.json'],
-    capture_output=True, text=True).stdout)
-new = json.load(open('site/reader/linksk/19Khu02.links.json', encoding='utf-8'))
-d = [k for k in set(old) | set(new) if old.get(k) != new.get(k)]
-print('records differing:', len(d))          # expect 437
-for k in sorted(d, key=int)[:5]:
-    print(k, new[k]['commentary'][-1])        # each carries by/was provenance
-EOF
+md5sum /tmp/19Khu02.pbreak.old  site/reader/pbreak/19Khu02.json
+md5sum /tmp/28KhuA09.pbreak.old site/reader/pbreak/28KhuA09.json
 ```
 
-Every moved record says how it got there:
+The two hashes should match — the section-name write added a `sutta` field and
+touched no text and no page data. `pagespan.json` was rebuilt in the sandbox and
+came back **byte-identical** (`9ce1a269…`), and the search index's `inv` — the
+searchable terms — is unchanged, so a matching hash here is the expected result.
+**If they differ, stop and look**: something changed that should not have.
 
-    {"key": "27KhuA08#511", "state": "direct", "n": 333,
-     "by": "requotation", "was": "27KhuA08#467"}
-
-And the gate that was red before the move must now be green:
+## 2. Stamp
 
 ```bash
-python3 pipeline/check_links.py                    # both named cases ok
-python3 pipeline/check_links.py --negative-control # must fire
+python3 pipeline/stamp_build.py --write
+```
+
+It refused before step 1 with three stale artefacts (`pagespan`, `search index`,
+`pbreak`); the first two are already rebuilt. Do **not** use `--force`.
+
+## 3. Look at the diff
+
+```bash
+git status --short
+python3 pipeline/check_sections.py     # 4 named cases, all read off printed pages
+python3 pipeline/check_links.py
 python3 pipeline/check_concordance.py
 ```
 
-## 3. Commit and push
+`site/19Khu02.json` gains a `sutta` field on 3,653 of 3,660 paragraphs — 3
+distinct names become 444. `site/index/19Khu02.idx.json` changes only in its
+`paras` block, which is what search results display; `inv` is untouched.
 
-`COMMIT_MSG.bak` carries the message. `push.sh` re-checks the stale lock, the
-stale message and the forgotten stamp, then prompts before committing.
+## 4. Commit, push, Pages
 
 ```bash
 ./push.sh
 ```
 
-The stamp is already written — build **`8a89a13c6b74`** (was `c97a3f99fdb2`).
-
-## 4. Fresh Pages run
-
-GitHub → Actions → **Run workflow**. Never "Re-run failed jobs".
-Then hard-reload the reader (Cmd-Shift-R).
+Then GitHub → Actions → **Run workflow**. Never "Re-run failed jobs".
 
 ```bash
-# and check what is LIVE with a cache-buster, or you are measuring the past —
-# this has now given a false "the deploy failed" three times
 curl -s "https://buddha-dhamma.net/build.json?cb=$RANDOM" ; echo
 ```
 
-Expect `8a89a13c6b74`.
+Read it cache-busted or you are measuring the past — that has now given a false
+"the deploy failed" three times.
 
-## 5. Then look at it as a reader
+**No R2 sync.** Nothing under `stores/` changed.
 
-Open `19Khu02` ¶333 with the Aṭṭhakathā band on. It should show
-`333. Tattha vatthuttamadāyikāti vatthānaṁ uttamaṁ seṭṭhaṁ …` — the comment,
-printed page 133 — and not the verse you have just finished reading.
+## 5. Then look at it as a reader — this is the part that matters
 
-Worth a look too: ¶349, ¶357, ¶365. Those are among the 470 the edition quotes
-and never comments on, so they still reach the reprint. That is the edition's
-silence and it was left alone deliberately — but seeing it in the reader is the
-way to decide whether it should be *said* rather than merely left.
+Open `19Khu02` and page through the Petavatthu. Every paragraph should now sit
+under the section the edition prints — `Khettūpamapetavatthu`,
+`Sūkaramukhapetavatthu`, and so on — where before the whole first third of the
+book was headed with a *Vimānavatthu* section name.
+
+Two things to look at while you are there, both recorded and neither repaired:
+
+* **ord 483** carries the vagga `'Itthivimāna      4. Mañjiṭṭhakavagga'` — two
+  headings glued together with the index left in. The edition prints
+  `Mañjiṭṭhakavagga`. 24 of the other 25 vaggas agree with the edition.
+* **Three headings are still stored as numbered PARAGRAPHS** — ord 388
+  `'17. Valliphaladā yikāvimānavatthu (6)'`, ord 390, ord 857. They collide with
+  real paragraph numbers and they broke a classifier earlier today. They should
+  leave the paragraph stream now that the names are carried properly.
 
 ---
 
+## Not done, and deliberately
+
+**`28KhuA09` IS DONE TOO** — 51 section names, 1 distinct becomes 47, and the
+Mātikā agrees at 51. **`name-match` recovered and rose above where it started:
+76.442 -> 76.141 -> 76.67%, over 17,440 links.** That was the prediction written
+down before it was tested, and it held.
+
+**`27KhuA08` REFUSES and is left alone.** Its body scan finds 83 headings where
+the Mātikā lists 79, and until that is understood it must not be written: a
+miscounted heading does not leave a gap, it spreads the previous section over
+the missing one — the very defect being repaired. Whoever picks it up: the four
+extra are the thing to find. Full account:
+`claude/sections_the_edition_prints.md` §7-8.
+
+The other 116 volumes are untouched. The canon reader is blind in 20Khu03,
+29Abhi01 and 36-40Abhi; the commentary reader has been tried on exactly two
+volumes.
+
 ## The ordering rule, for the next actual release
 
-**CUT THE TAG LAST.** Every metadata file must be committed and pushed before
-the tag exists, or Zenodo mints a deposit describing the previous release. This
-project has broken that rule three times. The v2.7.1 sequence — checklist files,
-commit, push, Pages, R2, *then* tag, then the GitHub Release, then read the DOI
-from the record — is in git history at `RUN_ON_HOST.md` before this revision.
-
-`v2.7.0` is a lightweight tag where v2.4.0–v2.6.0 are annotated. It has a DOI.
-**Leave it**; recorded so nobody rediscovers it as a defect.
+**CUT THE TAG LAST.** Every metadata file committed and pushed before the tag
+exists, or Zenodo mints a deposit describing the previous release. Broken three
+times. `v2.7.0` is a lightweight tag with a DOI — **leave it**.

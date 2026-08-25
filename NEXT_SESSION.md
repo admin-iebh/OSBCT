@@ -232,8 +232,31 @@ any session that starts fresh:**
   from "76.126% of 20,784" to **"76.442% of 16,657", i.e. 4,127 comparisons
   (19.9%) had been made against a name from the wrong book** — but that only
   stops it being *measured*. **The reader still shows those paragraphs under the
-  wrong heading.** It belongs to the nav/section builders and it is probably the
-  most substantial known defect on this list.
+  wrong heading.**
+  **DIAGNOSED 2026-08-23: it is not a fallback question, it is MISSING DATA.**
+  The edition prints a section name there — p.143 of `19Khu02` prints
+  `1. Khettūpamapetavatthu` above ¶1 of the Petavatthu, and the corpus has
+  nothing. `pipeline/extract_sections.py` reads them from `pali-unicode/`:
+  **4,279 printed headings over the 40 canon volumes, 1,301 absent from the
+  corpus**, and on `19Khu02` — 3,660 paragraphs carrying **3** section names —
+  it finds 501 and resolves **501/501 in order, 0 backwards, 0 unresolvable**.
+  **Nothing has been written.** 1,301 is a FLOOR: the extractor is blind in
+  20Khu03, 29Abhi01 and 36–40Abhi, which is a fault in the instrument, not
+  evidence the edition prints no sections there.
+  **APPLIED 2026-08-23 to `19Khu02` (476 names, 3 distinct → 444) and
+  `28KhuA09` (51 names, 1 → 47), both gated red first and verified on printed
+  pages.** `name-match` went 76.442 → 76.141 (canon side only, half-applied) →
+  **76.670** once the commentary side followed — more pairs checkable *and* more
+  agreeing, which is the shape a real repair makes.
+  **`27KhuA08` REFUSES**: its body scan finds 83 headings where the Mātikā lists
+  79, and the Mātikā count is the completeness gate — a missed heading spreads
+  the previous section over the missing one, re-creating the defect. Finding
+  those four is the next step for that volume.
+  116 volumes untouched. The canon reader is blind in 20Khu03, 29Abhi01 and
+  36–40Abhi; the commentary reader has been tried on exactly two volumes.
+  Still open: the vagga at ord 483 (`'Itthivimāna      4. Mañjiṭṭhakavagga'`,
+  two headings glued), and the three headings stored as numbered paragraphs.
+  `claude/sections_the_edition_prints.md` §7–8.
 * **The unnumbered-siglum class.** 2,535 paragraphs in 76 volumes carry a `*`,
   `+`, `x` or `( )` mark; **1,427 have no apparatus entry at all.** Two known
   defects: the `+` note absent from `10Ma02.app.json` ¶296, and unnumbered notes
