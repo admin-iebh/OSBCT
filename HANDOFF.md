@@ -1,6 +1,39 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-08-01e)
+## START HERE (updated 2026-08-25a)
+
+* **THE REPO MOVED TO AN ORGANIZATION (2026-08-25).** OSBCT now lives at
+  `bthar-mx/OSBCT`; `gramaticas-pali-es` moved to `bthar-mx` the same day.
+  `admin-iebh` is still the personal login and is an OWNER of the org — the
+  08-01e note that `admin-iebh` is a personal account still describes the
+  LOGIN, but the REPO is now org-owned.
+  **The remote is `git@github.com:bthar-mx/OSBCT.git`** (SSH, no prompt).
+  GitHub redirects the old paths, but use the new one everywhere.
+
+* **PAGES SURVIVED THE TRANSFER; DOMAIN VERIFICATION DID NOT.** The site never
+  stopped serving and the Pages DNS check passed, but verification is scoped to
+  the ACCOUNT, so the org began with no verified domains. Re-verified 2026-08-25
+  with a `_github-pages-challenge-bthar-mx` TXT record; the old
+  `_github-pages-challenge-admin-iebh` record was deleted.
+
+* **DNS NOW POINTS AT THE ORG.** Apex `buddha-dhamma.net` CNAMEs to
+  `bthar-mx.github.io`, DNS only (Cloudflare flattens the apex CNAME, which is
+  why `dig CNAME` on the apex returns nothing). The `osbct` subdomain CNAMEs to
+  the same target and is PROXIED, not grey — the 07-30h entry's "both DNS only"
+  no longer holds. `bthar-mx.github.io/OSBCT/` and `osbct.buddha-dhamma.net`
+  both land on buddha-dhamma.net.
+
+* **`CITATION.cff` and `docs/DEPLOY_SCALE.md` updated** to the new path. The
+  Zenodo deposit filename in the CITATION.cff comment still reads
+  `admin-iebh/OSBCT-v2.8.0.zip` — that is the file AS MINTED on 2026-08-16 and
+  must not be "corrected".
+
+* **OLDER ENTRIES BELOW PREDATE THE MOVE.** Where they say `admin-iebh.github.io`
+  or `admin-iebh/OSBCT`, they were accurate when written; read them as history,
+  not as current configuration.
+
+
+## START HERE — earlier (2026-08-01e)
 
 * **!!!!! THE BUILDER REBUILD THIS FILE HAS RECOMMENDED SINCE 07-31b IS A
   REGRESSION. DO NOT DO IT (measured 2026-08-01e).** The standing advice was
