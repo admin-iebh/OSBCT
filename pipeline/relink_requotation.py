@@ -6,7 +6,7 @@ comment — one book pair at a time, never a corpus-wide rule.
 WHY.  `27KhuA08` (Vimānavatthu-aṭṭhakathā) prints, for each vimāna: the
 unnumbered nidāna prose, then THE CANON'S VERSES REPRINTED IN FULL UNDER THE
 CANON'S OWN NUMBERS, then the comments RESTARTING AT THE SAME NUMBERS.  Verified
-on the printed page, 2026-08-23:
+on the printed page, 2026-08-26:
 
     p.130   333. “Vatthuttamadāyikā nārī, / Pavarā hoti naresu nārīsu. ...
                  — set as verse, inside the run 330-336, 341, 349, 357, 365
@@ -67,7 +67,7 @@ LINKS = os.path.join(SITE, 'reader', 'linksk')
 # canon volume, the canon BOOK inside it this commentary covers, commentary vol
 PAIRS = [
     ('19Khu02', 'Vimānavatthupāḷi', '27KhuA08'),
-    # 2026-08-23. Petavatthu-aṭṭhakathā, the same shape, confirmed on printed
+    # 2026-08-26. Petavatthu-aṭṭhakathā, the same shape, confirmed on printed
     # p.7 (`... imā gāthā abhāsi.` then `1. Tattha khettūpamāti ...`) and p.161.
     # It MIXES shapes, which 27KhuA08 did not: 101 of its links already land on
     # a paragraph that reprints the verse and then comments in the same

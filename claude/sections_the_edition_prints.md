@@ -1,6 +1,6 @@
 # The section names the edition prints and the corpus does not carry
 
-**Measured 2026-08-23, and APPLIED to `19Khu02` the same day — §7.**
+**Measured 2026-08-26, and APPLIED to `19Khu02` the same day — §7.**
 Instrument: `pipeline/extract_sections.py`. Gate: `pipeline/check_sections.py`.
 §§1–6 were written before the write and say "nothing has been written"; they are
 kept as they were and §7 is what supersedes them.
@@ -126,7 +126,7 @@ before anything relies on it.
 
 ---
 
-## 7. APPLIED to 19Khu02, 2026-08-23 — and what it cost the name-match gate
+## 7. APPLIED to 19Khu02, 2026-08-26 — and what it cost the name-match gate
 
 `pipeline/check_sections.py` was **run red first** on all four of its cases:
 
@@ -184,7 +184,7 @@ line, and until it exists the canon-side repair is deliberately incomplete.**
 
 ## 8. The commentary reader — 28KhuA09 done, 27KhuA08 refused
 
-**Built 2026-08-23, after §7 recorded that it did not exist.**
+**Built 2026-08-26, after §7 recorded that it did not exist.**
 
 **The difference is not the name, it is what follows the heading.** A canon
 heading is followed by its first numbered verse, so the verse number anchors it.

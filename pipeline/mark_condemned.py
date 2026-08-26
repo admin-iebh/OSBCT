@@ -114,7 +114,7 @@ def strip_dim(obj):
         {"why": "not_commented", "layer": "commentary", "vol": "32KhuA13", ...}
 
     So `strip_dim` raised `AttributeError: 'str' object has no attribute
-    'items'` and `--verify` DIED RATHER THAN RAN.  Found 2026-08-23.
+    'items'` and `--verify` DIED RATHER THAN RAN.  Found 2026-08-26.
 
     **That is worse than it sounds: `--verify` is this file's reproducibility
     control** — the one asserting that stripping `dim` gives back the file as

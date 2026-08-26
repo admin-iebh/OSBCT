@@ -1,6 +1,11 @@
-# Commands to run on the host — 2026-08-23 (section names)
+# Commands to run on the host — 2026-08-26 (section names)
 
-**This one is NOT optional and NOT just a push.** The sandbox could not rebuild
+> **DONE 2026-08-26. Kept as the record of how it went, not as work owed.**
+> Both `pbreak` files came back byte-identical (`8cb75b08…`, `8362787b…`), the
+> stamp went to `2b856038234a`, and the live site serves it. Nothing below is
+> outstanding.
+
+**This one was NOT optional and NOT just a push.** The sandbox could not rebuild
 one derived artefact, and `stamp_build.py` will keep refusing until it is done.
 That refusal is correct — it is the 2026-07-30i guard, which exists to stop a
 stale artefact being published under a fresh cache-buster.

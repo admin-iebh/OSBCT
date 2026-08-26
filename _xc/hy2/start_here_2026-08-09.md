@@ -81,7 +81,7 @@ evidence about R2.
 > `check_lookup_reach.js`. The miss message's prefix fallback is in too.
 >
 > ~~**STILL OWED, AND THE JOB IS NOT DONE WITHOUT IT: `pipeline/r2_upload.sh` has
-> not been run.**~~ **SETTLED 2026-08-23 — IT WAS RUN, AND THE BUCKET HAS IT.**
+> not been run.**~~ **SETTLED 2026-08-26 — IT WAS RUN, AND THE BUCKET HAS IT.**
 > This paragraph stood unresolved for thirteen days because nobody could reach
 > R2 from a sandbox to check. It is answerable from the host, and the answer is
 > yes. Verified against the live origin, every request cache-busted:

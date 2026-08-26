@@ -1,33 +1,37 @@
-# Closing 2026-08-23 — where things stand
+# Closing 2026-08-26 — where things stand
 
-> # ⚠ ONE THING IS OWED, AND IT BLOCKS THE DEPLOY
+> # NOTHING IS OWED. EVERYTHING OF 2026-08-26 IS SHIPPED AND LIVE.
 >
-> **`stamp_build.py` is refusing, and it is right to.** `pbreak` for `19Khu02`
-> and `28KhuA09` is older than its source. `derive.py` skips an existing output
-> and the sandbox cannot unlink, so it must be done on the host:
+> **Live build `2b856038234a`, dated 2026-08-26**, cache-busted — the
+> repository's own. **Verified by content, not only by the stamp:** the served
+> `19Khu02.json` carries `"sutta": "Paṭhamapīṭhavimānavatthu"`, a section name
+> that did not exist in the corpus that morning.
 >
-> ```bash
-> cd ~/Documents/OSBCT
-> rm -f .git/index.lock
-> for v in 19Khu02 28KhuA09; do
->   mv site/reader/pbreak/$v.json /tmp/$v.pbreak.old
->   python3 _xc/pagemark/derive.py $v --out site/reader/pbreak
-> done
-> md5sum /tmp/19Khu02.pbreak.old  site/reader/pbreak/19Khu02.json
-> md5sum /tmp/28KhuA09.pbreak.old site/reader/pbreak/28KhuA09.json
-> ```
+> The `pbreak` rebuild that blocked the stamp was done on the host and **both
+> volumes came back byte-identical** (`8cb75b08…`, `8362787b…`) — proof the
+> section-name write touched nothing but the `sutta` field. Working tree clean,
+> nothing unpushed.
 >
-> **The hashes should MATCH.** The section-name write added a `sutta` field and
-> touched no text and no page data; `pagespan.json` already rebuilt
-> byte-identical and the search index's `inv` is unchanged. **If they differ,
-> stop and look.** Then `stamp_build.py --write`, `./push.sh`, Actions → Run
-> workflow, and read `build.json?cb=$RANDOM`. Full steps: `RUN_ON_HOST.md`.
+> **THE REPO MOVED on 2026-08-25**: `admin-iebh` → the organization
+> `bthar-mx`. Remote is `git@github.com:bthar-mx/OSBCT.git`. Pages survived;
+> domain verification did not and was redone the same day. See `HANDOFF.md`
+> "START HERE (updated 2026-08-25a)". **A stale live build read right after the
+> move looks like the transfer broke something — it did not; the first read was
+> simply taken before Pages finished.**
 >
-> Uncommitted work is real and gated: `COMMIT_MSG.bak` carries it.
+> ## ⚠ THE DATES IN THIS FILE WERE WRONG AND ARE NOW CORRECTED
+>
+> The whole session of **2026-08-26** was written up as **2026-08-23**: the
+> sandbox clock was three days behind and I inferred the date from file mtimes
+> instead of running `date`. Corrected across eleven files (76 occurrences).
+> **The COMMIT MESSAGES of that day still say 08-23 and cannot be corrected** —
+> `45a557383`, `356121bc8`, `ec25f72c7`, `fb11b1421`, `7649bda6d`, `f4318cb5a`
+> and their neighbours are all one day's work, 2026-08-26. Do not read them as
+> a separate earlier session.
 
 ---
 
-## What happened on 2026-08-23 — one day, in order
+## What happened on 2026-08-26 — one day, in order
 
 1. **`19Khu02 → 27KhuA08`, 437 links** moved off the commentary's reprint and
    onto the comment. Gated red first, four printed pages read.
@@ -52,13 +56,14 @@ every time.
 
 > **Older box, still true where it does not conflict with the above.**
 >
-> **2026-08-23 — nothing is owed and nothing is broken.** Checked, not assumed:
+> **2026-08-26 — nothing is owed and nothing is broken.** Checked, not assumed:
 >
-> * **The site is current.** Live `build.json`, cache-busted, is
->   **`c97a3f99fdb2` dated 2026-08-16** — the repository's own HEAD build. The
->   *uncached* fetch of the same URL still answers `1f2819473f91 / 2026-08-08`,
->   the v2.6.0 stamp. **That is the third time this cache has told this project
->   the deploy failed.** It has not. Never read a deploy without a cache-buster.
+> * **The site was current at the START of the day** at `c97a3f99fdb2`
+>   (2026-08-16); it is now `2b856038234a`. The *uncached* fetch that morning
+>   still answered `1f2819473f91 / 2026-08-08`, the v2.6.0 stamp. **That is the
+>   third time this cache has told this project the deploy failed.** It had not.
+>   Never read a deploy without a cache-buster — and give Pages time to finish
+>   before concluding anything, which is the fourth instance of the same lesson.
 > * **The `hw` store is on R2**, so §3a below is finished, upload and all —
 >   see `_xc/hy2/start_here_2026-08-09.md` §0b for the probes and the negative
 >   control. `WLV 20260810a` matches the live build.
@@ -70,8 +75,8 @@ every time.
 >   `CITATION.cff` (commit `96e1eb0e8`). The niggahita display toggle — edition
 >   ṁ ↔ modern ṃ, display only — is live.
 >
-> ~~**`RUN_ON_HOST.md` is stale**~~ — **rewritten 2026-08-23 and it is now the
-> live instruction sheet. Work from it.**
+> ~~**`RUN_ON_HOST.md` is stale**~~ — rewritten 2026-08-26, **and now itself
+> history: every step in it was run and none is outstanding.**
 
 ---
 
@@ -104,7 +109,7 @@ you parked deliberately, or something nobody has looked at yet.
 
 ## 3. What to tell a new chat
 
-### 3a. ~~The dictionary gate~~ — **DONE 2026-08-10, UPLOAD CONFIRMED 2026-08-23**
+### 3a. ~~The dictionary gate~~ — **DONE 2026-08-10, UPLOAD CONFIRMED 2026-08-26**
 
 Kept because the account of *why* it was five coupled steps is still the best
 description of what a store change costs. All five landed: the new `hw` store
@@ -217,7 +222,7 @@ any session that starts fresh:**
 
 ### Ready to decide — yours, nothing blocks them
 
-* ~~**`none` vs `dim`.**~~ **DECIDED 2026-08-23 by the reader: `dim`.** A dead
+* ~~**`none` vs `dim`.**~~ **DECIDED 2026-08-26 by the reader: `dim`.** A dead
   "no commentary" and a condemned "link disputed" both render as the dimmed
   chip. The 3,163 concordance violations land in that style. Not yet
   implemented — and it should still be **rendered and photographed against the
@@ -233,11 +238,11 @@ any session that starts fresh:**
 
 ### The links — one book at a time
 
-* ~~`19Khu02 → 27KhuA08` first~~ — **DONE 2026-08-23. 437 links moved off the
+* ~~`19Khu02 → 27KhuA08` first~~ — **DONE 2026-08-26. 437 links moved off the
   reprint and onto the comment**, gated red first, verified on four printed
   pages, 470 uncommented verses deliberately left alone.
   `claude/vimanavatthu_links_moved_to_the_gloss.md`. 16 pairs remain.
-* ~~RE-MEASURE THE WORKSHEET~~ — **DONE 2026-08-23.**
+* ~~RE-MEASURE THE WORKSHEET~~ — **DONE 2026-08-26.**
   `pipeline/measure_requotation.py` replaces the 08-09 measurement, and the
   worksheet is rewritten. **21,621 direct links, 7,437 on a bare reprint, 3,369
   movable.** The important result is not the count but that the pairs fall into
@@ -248,11 +253,11 @@ any session that starts fresh:**
   * **B** — reprint and comment in the SAME paragraph. Nothing to move.
   * **C** — verses run in a block, the comment is collective and **unnumbered**.
     `42KhuA23` 1103, `30KhuA11` 887, `41KhuA22` 528, `31KhuA12` 433,
-    `29KhuA10` 67. **DECIDED 2026-08-23: LEAVE AS IT IS** — "if in the PDF is
+    `29KhuA10` 67. **DECIDED 2026-08-26: LEAVE AS IT IS** — "if in the PDF is
     like this, keep it as it is". ~3,000 links closed as *not a defect*.
     Imposing a structure the edition does not print would be principle 3
     reaching the link layer.
-* ~~Next: `19Khu02 → 28KhuA09`~~ — **DONE 2026-08-23. 350 links moved**, gated
+* ~~Next: `19Khu02 → 28KhuA09`~~ — **DONE 2026-08-26. 350 links moved**, gated
   red first, printed pages 7, 161 and 191. It **mixes shapes A and B**: 101 of
   its links already landed on a paragraph that reprints *and then comments*, and
   the `tail()` guard is the only reason they were not moved off the commentary.
@@ -273,7 +278,7 @@ any session that starts fresh:**
 ### Measured, not repaired
 
 * **5,616 CANON PARAGRAPHS ANSWER TO THE PREVIOUS BOOK'S SECTION NAME**, in 44
-  volumes — found 2026-08-23. A book's opening paragraphs often carry no `sutta`
+  volumes — found 2026-08-26. A book's opening paragraphs often carry no `sutta`
   field, and the name was being carried forward across the boundary: all 340
   paragraphs from the start of Petavatthu in `19Khu02` to its first section were
   labelled with a *Vimānavatthu* section. Worst: 19Khu02 678, 01Vin01 399,
@@ -283,7 +288,7 @@ any session that starts fresh:**
   (19.9%) had been made against a name from the wrong book** — but that only
   stops it being *measured*. **The reader still shows those paragraphs under the
   wrong heading.**
-  **DIAGNOSED 2026-08-23: it is not a fallback question, it is MISSING DATA.**
+  **DIAGNOSED 2026-08-26: it is not a fallback question, it is MISSING DATA.**
   The edition prints a section name there — p.143 of `19Khu02` prints
   `1. Khettūpamapetavatthu` above ¶1 of the Petavatthu, and the corpus has
   nothing. `pipeline/extract_sections.py` reads them from `pali-unicode/`:
@@ -293,7 +298,7 @@ any session that starts fresh:**
   **Nothing has been written.** 1,301 is a FLOOR: the extractor is blind in
   20Khu03, 29Abhi01 and 36–40Abhi, which is a fault in the instrument, not
   evidence the edition prints no sections there.
-  **APPLIED 2026-08-23 to `19Khu02` (476 names, 3 distinct → 444) and
+  **APPLIED 2026-08-26 to `19Khu02` (476 names, 3 distinct → 444) and
   `28KhuA09` (51 names, 1 → 47), both gated red first and verified on printed
   pages.** `name-match` went 76.442 → 76.141 (canon side only, half-applied) →
   **76.670** once the commentary side followed — more pairs checkable *and* more
@@ -345,7 +350,7 @@ any session that starts fresh:**
   and it covers neither `lookup_eval/family/` nor `form/`. The shape of a real
   404 from that bucket is now known (empty body, no `Content-Type`, unlike a
   present object's `application/gzip`), so the discrimination is cheap to add.
-* **And the third, found 2026-08-23: nothing checks that the reverse link maps
+* **And the third, found 2026-08-26: nothing checks that the reverse link maps
   are derivable from the forward ones.** They had drifted again — `32KhuA13`
   was missing 33 entries, and `28KhuA09`/`41KhuA22` had six entries attributed
   to the wrong canon paragraph — all of it predating this session's work and

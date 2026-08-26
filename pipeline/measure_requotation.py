@@ -84,7 +84,7 @@ def tail(cw, aw):
     text, as a multiple of the canon paragraph's own length.
 
     !!! WITHOUT THIS THE MEASURE LIES, and it lied for a whole afternoon on
-    2026-08-23.  `31KhuA12` (Therīgāthā-aṭṭhakathā) does NOT print the verse
+    2026-08-26.  `31KhuA12` (Therīgāthā-aṭṭhakathā) does NOT print the verse
     and the comment as two paragraphs.  It prints them as ONE:
 
         #8  n=4  “Tisse sikkhassu sikkhāya, ... anāsavā”ti– gāthaṁ abhāsi.

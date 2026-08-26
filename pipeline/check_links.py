@@ -97,7 +97,7 @@ def name_at(v, i):
     `Rasuttamadāyikāvimānavatthu (4)`.  Corpus-wide that is **5,616 paragraphs
     in 44 volumes** (worst: 19Khu02 678, 01Vin01 399, 28KhuA09 397).
 
-    Found 2026-08-23 because the 28KhuA09 link repair moved one such link onto a
+    Found 2026-08-26 because the 28KhuA09 link repair moved one such link onto a
     target that DOES have a name, which made the pair checkable for the first
     time and dropped name-match by 0.004.  The link was right; the name was
     wrong.  Answering None here is honest -- the pair is simply not counted --
@@ -179,7 +179,7 @@ def measure(load=None):
 
 
 # ---------------------------------------------------------------------------
-# THE RE-QUOTATION CASES.  Added 2026-08-23.
+# THE RE-QUOTATION CASES.  Added 2026-08-26.
 #
 # WHY.  `27KhuA08` (Vimānavatthu-aṭṭhakathā) prints, for each vimāna: unnumbered
 # nidāna prose, then the canon's verses REPRINTED IN FULL UNDER THE CANON'S OWN
@@ -216,13 +216,13 @@ def measure(load=None):
 REQUOTE_CASES = [
     # canon vol, canon ord, printed n, forbidden target, the gloss
     #
-    # 27KhuA08 Vimānavatthu-aṭṭhakathā — repaired 2026-08-23.
+    # 27KhuA08 Vimānavatthu-aṭṭhakathā — repaired 2026-08-26.
     # p.130 has ¶333 as verse in the run 330-336; p.133 restarts at
     # `333. Tattha vatthuttamadāyikāti ...`.
     ('19Khu02', 317, 333, '27KhuA08#467', '27KhuA08#511'),
     ('19Khu02',   0,   1, '27KhuA08#4',   '27KhuA08#11'),
     #
-    # 28KhuA09 Petavatthu-aṭṭhakathā — same shape, repaired 2026-08-23.
+    # 28KhuA09 Petavatthu-aṭṭhakathā — same shape, repaired 2026-08-26.
     # p.7 ends the verse run at ¶3 with `imā gāthā abhāsi.` and restarts
     # `1. Tattha khettūpamāti ...`; p.161 has `397. Akammakāmāti sādhūhi ...`.
     ('19Khu02', 1034,   1, '28KhuA09#4',   '28KhuA09#7'),

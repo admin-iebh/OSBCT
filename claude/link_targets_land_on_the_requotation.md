@@ -1,6 +1,6 @@
 # Links landing on the commentary's re-quotation, per book
 
-**Re-measured 2026-08-23** with `pipeline/measure_requotation.py`. The
+**Re-measured 2026-08-26** with `pipeline/measure_requotation.py`. The
 2026-08-09 table this replaces is kept in §5, because the way it was wrong is
 worth more than the numbers it gave.
 
@@ -51,7 +51,7 @@ exists elsewhere under the same number, so there is somewhere to move it to.
 | 19Khu02 | 28KhuA09 | 703 | 592 | **348** | A | Petavatthupāḷi |
 | 23Khu06 | 41KhuA22 | 774 | 528 | 0 | **C** | Jātakapāḷi |
 | 19Khu02 | 31KhuA12 | 520 | 433 | 0 | **C** | Therīgāthāpāḷi |
-| 19Khu02 | 27KhuA08 | 937 | 399 | 0 | A | **REPAIRED 08-23** |
+| 19Khu02 | 27KhuA08 | 937 | 399 | 0 | A | **REPAIRED 08-26** |
 | 22Khu05 | 38KhuA19 | 793 | 310 | **310** | A | Jātakapāḷi |
 | 22Khu05 | 40KhuA21 | 335 | 204 | **203** | A | Tiṁsanipāta |
 | 18Khu01 | 21KhuA02 | 119 | 112 | 9 | ? | Dhammapadapāḷi |
@@ -68,7 +68,7 @@ script's own output.
 
     TOTAL   21,621 direct links   7,437 on a bare reprint   3,369 movable
 
-**The 08-23 repair validates the instrument.** Run against the pair it already
+**The 08-26 repair validates the instrument.** Run against the pair it already
 fixed, `19Khu02 → 27KhuA08` now reports **436 already on the comment**, 399
 solo reprints the edition never comments on, 73 of shape B, 29 already the
 comment — and **0 movable**. Nothing left to do there, which is the right
@@ -94,7 +94,7 @@ paragraph?
   next one to do.
 * Then the three big Jātaka pairs — `40KhuA21` 765, `39KhuA20` 590,
   `38KhuA19` 310 — and `34KhuA15` 511 (Buddhavaṁsa).
-* **SHAPE C — DECIDED 2026-08-23 BY THE READER: LEAVE IT AS IT IS.**
+* **SHAPE C — DECIDED 2026-08-26 BY THE READER: LEAVE IT AS IT IS.**
   Shown the printed Therīgāthā page — verses 7, 8, 9, 10 in a run, then
   `gāthāyo abhāsiṁsu.` and the collective gloss — his instruction was:
   *"If in the PDF is like this, keep it as it is."*
@@ -138,7 +138,7 @@ Three faults, in increasing order of how much they cost:
    gloss"*; the truth is that those books do not number their glosses, and the
    right conclusion was not "measure harder" but "this is a different book".
 
-> **The 08-23 instrument made the same class of mistake for an afternoon**, and
+> **The 08-26 instrument made the same class of mistake for an afternoon**, and
 > it is recorded in `measure_requotation.py` at `tail()`: reading only the
 > paragraph's opening, it reported 514 links on a reprint for `31KhuA12` when
 > every one of them already lands on the commentary three words further into

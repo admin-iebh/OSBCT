@@ -1,6 +1,6 @@
 # Links moved off the reprint and onto the comment — 27KhuA08, then 28KhuA09
 
-> **2026-08-23, later the same day: the second pair is done too.**
+> **2026-08-26, later the same day: the second pair is done too.**
 > `19Khu02 → 28KhuA09` (Petavatthu-aṭṭhakathā), **350 links moved**, both named
 > cases run red first and verified on printed pages 7, 161 and 191.
 >
@@ -18,7 +18,7 @@
 
 # 19Khu02 → 27KhuA08: 437 links moved off the reprint and onto the comment
 
-**Done 2026-08-23.** The first of the seventeen pairs in
+**Done 2026-08-26.** The first of the seventeen pairs in
 `claude/link_targets_land_on_the_requotation.md` is repaired. One book, no
 corpus-wide rule, gated red first.
 
@@ -297,7 +297,7 @@ happened to have a name.
 
 # 13. The silence, measured — and it is not silence
 
-**Asked 2026-08-23: should the reader be told "the edition does not comment
+**Asked 2026-08-26: should the reader be told "the edition does not comment
 here" for the verses left pointing at a reprint? Measured before answering, and
 the answer is: NOT IN THOSE WORDS, because for a third of them it would be
 false.**

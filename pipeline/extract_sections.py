@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """The section names the edition prints, which the corpus does not carry.
 
-WHY.  Found 2026-08-23 from a link repair: `19Khu02` holds **3,660 paragraphs
+WHY.  Found 2026-08-26 from a link repair: `19Khu02` holds **3,660 paragraphs
 and 3 distinct `sutta` values**.  The Petavatthu's first 340 paragraphs answered
 to a *Vimānavatthu* section name, because `name_at` carried the last one forward
 across the book boundary and there was nothing of its own to stop it.  That is
@@ -185,7 +185,7 @@ def resolve(vol, H):
 VAGGA = re.compile(r'vagga\s*$', re.I)
 
 # --------------------------------------------------------------------------
-# THE COMMENTARIES, which the canon reader could not touch.  Added 2026-08-23
+# THE COMMENTARIES, which the canon reader could not touch.  Added 2026-08-26
 # after that reader was found to yield 14 headings for a 1,480-paragraph volume.
 #
 # THE DIFFERENCE IS NOT THE NAME, IT IS WHAT FOLLOWS THE HEADING.  A canon
@@ -339,7 +339,7 @@ def write(vol):
     """
     pdf = pdf_for(vol)
     if not pdf or 'pali-unicode' not in pdf:
-        # !!! MEASURED 2026-08-23, DO NOT REMOVE THIS WITHOUT REPEATING IT.
+        # !!! MEASURED 2026-08-26, DO NOT REMOVE THIS WITHOUT REPEATING IT.
         # This reader is CANON-SHAPED.  On the commentaries it finds almost
         # nothing and misplaces what it finds:
         #   27KhuA08  14 headings for a 1,480-paragraph volume, 1 backwards
