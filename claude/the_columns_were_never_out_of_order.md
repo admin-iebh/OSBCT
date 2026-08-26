@@ -97,12 +97,45 @@ passes. A gate that dies mid-way looks like a gate that ran.
   `--max-old-space-size=6144`. **Not a regression**: it never sets `state.view`,
   so it never renders the columns branch. Pre-existing harness ceiling.
 
-## 6. Noticed, NOT chased, and not claimed
+## 6. The second defect in the same three lines — asked as a question, answered by the reader
 
-`.rowline` is `display:contents`, and line 3051 attaches
+`.rowline` is `display:contents`, and the reader attached
 `onmouseenter`/`onmouseleave` **to the rowline itself** to drive
-`.rowline.hot .para`. An element with `display:contents` generates no box. If
-that means the row-hover highlight has never fired in Columns view, it is a
-second defect sitting in the same three lines — but **jsdom does no layout, so
-this probe cannot decide it**, and it is recorded here as a question rather than
-a finding. It wants a real browser and an eye.
+`.rowline.hot .para`. An element with `display:contents` generates no box, so the
+pointer can never enter it and `mouseenter` never fires.
+
+This was written up as a **question, not a finding**, because jsdom does no
+layout and no hit-testing: the probe that settled §2 could not settle this. It
+went to the reader with a description of exactly what to look for.
+
+**Answered 2026-08-26: "only the one I'm on."** Pointing at the Pāḷi paragraph
+left the Aṭṭhakathā paragraph opposite it flat. The row-pairing highlight had
+never worked in Columns view.
+
+### Why it survived so long
+
+`.para:hover .tools` is **pure CSS on a real box** and always worked. So hovering
+a paragraph *did* something visible — the jump chips, facsimile, copy-text and
+copy-citation buttons faded in, correctly layer-aware (A|T on the canon
+paragraph, P|T on the commentary). The row looked alive. The half that was
+missing is the half that matters in a two-column view: **which commentary belongs
+to the verse beside it**, when the two columns have drifted apart vertically, as
+they always do — a commentary paragraph is usually many times longer than the
+verse it comments on.
+
+### The fix, and what the gate can honestly claim
+
+Handlers move to `.cell`, which is a real box in every engine; each toggles
+`hot` on its parent `.rowline`. Moving between the two cells of one row fires
+leave-then-enter in the same turn, so `hot` ends up set with no paint between.
+
+`check_columns.js` dispatches `mouseenter` **at a cell** and asserts the **row**
+goes hot, and off again on `mouseleave`. Red on the old wiring
+(`{"on":false,"off":true}`), green after.
+
+**What that gate proves and what it does not.** It proves the WIRING: an event
+arriving at a cell reaches the row. It cannot prove the pointer would ever reach
+that cell, because jsdom has no layout — and that is precisely the half that was
+broken. **The instrument settled the wiring; a reader settled the pointer.** Any
+future change here needs both, and the gate should not be read as covering more
+than it does.

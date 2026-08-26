@@ -82,7 +82,35 @@ async function run(w, vol, active){
         (c.textContent||'').replace(/\s+/g,' ').trim().slice(0,60)]; }
     });
   });
-  return {keys, heads, rows:rows.length, wide, misplaced, firstWide, firstMis};
+  // ROW PAIRING: hovering one column must light the whole row.
+  //
+  // READER-CONFIRMED DEAD 2026-08-26: pointing at the Pāḷi paragraph left the
+  // Aṭṭhakathā paragraph opposite it flat.  The cause is the same
+  // `display:contents` that caused the column defect — the handlers were
+  // attached to `.rowline`, which generates NO BOX, so the pointer never enters
+  // it and `mouseenter` never fires.  `.para:hover .tools` is pure CSS on a real
+  // box and always worked, which is what made the failure hard to see: the
+  // buttons appeared, so the row looked alive.
+  //
+  // WHAT THIS CAN AND CANNOT PROVE.  jsdom does no layout and no hit-testing, so
+  // it cannot tell whether a pointer would reach an element — that question was
+  // settled by a reader looking at the screen.  What it CAN prove is the wiring:
+  // dispatch `mouseenter` at a CELL, which is a real box in any engine, and the
+  // row must go hot.  On the build where the handlers sat on `.rowline` this
+  // fails, because `mouseenter` does not bubble.
+  let hot=null;
+  if(rows.length){
+    const cells=[...rows[0].children];
+    if(cells.length){
+      const c=cells[0];
+      c.dispatchEvent(new w.MouseEvent('mouseenter',{bubbles:false}));
+      const on=/\bhot\b/.test(rows[0].className||'');
+      c.dispatchEvent(new w.MouseEvent('mouseleave',{bubbles:false}));
+      const off=!/\bhot\b/.test(rows[0].className||'');
+      hot={on, off};
+    }
+  }
+  return {keys, heads, rows:rows.length, wide, misplaced, firstWide, firstMis, hot};
 }
 
 const CASES=[
@@ -121,6 +149,12 @@ const CASES=[
                                   +r.firstMis[1]+' should hold '+r.firstMis[2]+', has class '
                                   +JSON.stringify(r.firstMis[3])+' '+JSON.stringify(r.firstMis[4]));
       fails.push(tag+': '+r.wide+' wide, '+r.misplaced+' misplaced');
+    } else if(!r.hot || !r.hot.on || !r.hot.off){
+      console.log('  FAIL  '+tag+'  cells are right, but hovering a cell does NOT light '
+                  +'its row: '+JSON.stringify(r.hot)
+                  +'\n          the row-pairing highlight is what tells a reader WHICH '
+                  +'commentary belongs to the verse beside it');
+      fails.push(tag+': row hover dead');
     } else {
       console.log('  ok    '+tag+'  '+r.rows+' rows, every row '+r.keys.length+' cells, '
                   +'each under its own heading  ['+r.heads.join(' | ')+']');

@@ -33,6 +33,13 @@
 >    3 volumes first.
 >    `claude/the_columns_were_never_out_of_order.md`.
 >
+> 3. **Row hover in Columns was dead, and is fixed.** Flagged in that same
+>    session as a QUESTION the instrument could not answer — jsdom has no
+>    hit-testing — and **answered by the reader looking at the screen**. It had
+>    never worked: the handlers sat on the boxless `.rowline`. It hid behind
+>    `.para:hover .tools`, which is pure CSS and always worked, so the buttons
+>    appeared and the row looked alive.
+>
 > **`27KhuA08`'s ☰ Contents is NOT yet rebuilt** — advisory, not blocking; see
 > `RUN_ON_HOST.md` §3.
 
@@ -373,11 +380,15 @@ any session that starts fresh:**
   report matters: the reader said "P should be on the left", and **the column
   order was never wrong**. Acting on the report as phrased would have moved the
   headings away from the columns. `claude/the_columns_were_never_out_of_order.md`.
-* **Open, and it needs a browser: does row hover work in Columns at all?**
-  `.rowline` is `display:contents`, which generates no box, and the
-  `onmouseenter`/`onmouseleave` that drive `.rowline.hot .para` are attached to
-  it. jsdom does no layout so the probe cannot decide it. Recorded as a
-  question, not a finding.
+* ~~**Open, and it needs a browser: does row hover work in Columns at all?**~~
+  **ANSWERED BY THE READER 2026-08-26 — it did not, and now does.** `.rowline`
+  is `display:contents`, generates no box, and the handlers were on it, so
+  `mouseenter` never fired. It survived because `.para:hover .tools` is pure CSS
+  on a real box: the buttons appeared, so the row looked alive, while the half
+  that says *which commentary belongs to this verse* was dead. Handlers moved to
+  `.cell`. **The gate proves the wiring and cannot prove the pointer** — jsdom
+  has no hit-testing, which is exactly the half that was broken. Instrument for
+  the wiring, reader for the pointer; this one needed both.
 * **`check_fn_markers.js` OOMs at node's default heap** and passes at
   `--max-old-space-size=6144`. Pre-existing (it never renders the columns
   branch). Either raise it in the script or say so where the gates are listed —
@@ -387,6 +398,18 @@ any session that starts fresh:**
   Contents is built by `buildOutline` from `c.headings`, NOT from the `sutta`
   field, so the Contents does not yet list those sections even though the
   citation and title bar do.
+
+### One property of the tooling, recorded so it does not mislead twice
+
+* **`stamp_build.py` IS NOT IDEMPOTENT, and a dry run is not a verification.**
+  BUILD is a hash over the 2,086 JSON files under `site/` — and `site/build.json`
+  is one of them. So writing the stamp changes the input to the next stamp: after
+  `--write` produced `8196f1a01c65`, an immediate dry run reported the tree
+  hashing to `2798a6a45568`. **Nothing was wrong.** Do not re-run `--write` "to
+  be safe": it produces a spurious new build and dirties a clean tree. And do not
+  use a dry run to check that the live stamp matches the tree — it cannot.
+  Verify a deploy by fetching `build.json` cache-busted and comparing it to
+  `site/build.json`, which is what the committed stamp actually says.
 
 ### Never looked at
 

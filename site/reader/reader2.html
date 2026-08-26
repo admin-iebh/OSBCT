@@ -307,7 +307,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=8196f1a01c65"></script>
+<script src="../i18n.js?v=2798a6a45568"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -509,7 +509,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='8196f1a01c65';
+const BUILD='2798a6a45568';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -3082,7 +3082,27 @@ function render(){
   }
   html+='<div class="hint">On-demand from the keyed corpus. Toggle P / A / T; Columns / Tabs / Single; hover a paragraph for cite, copy, facsimile and cross-layer jumps.</div>';
   $('#scroll').innerHTML=html; tipify($('#scroll'));
-  if(state.view==='columns'){ $('#scroll').querySelectorAll('.rowline').forEach(r=>{r.onmouseenter=()=>r.classList.add('hot');r.onmouseleave=()=>r.classList.remove('hot');}); }
+  // !!! THE HANDLERS GO ON THE CELLS, NOT ON THE ROW.  `.rowline` is
+  // `display:contents` and so generates NO BOX — the pointer can never enter it,
+  // `mouseenter` never fires, and the row-pairing highlight was DEAD.
+  // Reader-confirmed 2026-08-26: pointing at the Pāḷi paragraph left the
+  // Aṭṭhakathā paragraph opposite it flat.
+  //
+  // It was hard to see because `.para:hover .tools` is pure CSS on a real box
+  // and always worked: the buttons appeared on hover, so the row looked alive.
+  // The half that was missing is the half that matters in a two-column view —
+  // which commentary belongs to the verse beside it, when the columns have
+  // drifted apart vertically, as they always do.
+  //
+  // `.cell` is a real box in every engine, so entering one is a fact about the
+  // pointer and not about a spec corner.  Moving between the two cells of ONE
+  // row fires leave-then-enter in the same turn, so `hot` ends up set and no
+  // paint happens in between.  Gated by `pipeline/check_columns.js`, which
+  // dispatches at a cell and asserts the ROW goes hot — run red first.
+  if(state.view==='columns'){ $('#scroll').querySelectorAll('.rowline > .cell').forEach(c=>{
+    const r=c.parentNode;
+    c.onmouseenter=()=>r.classList.add('hot');
+    c.onmouseleave=()=>r.classList.remove('hot'); }); }
 }
 // !!! A RE-RENDER MUST NOT MOVE THE READER (2026-08-02, user-reported
 // twice — "click in A it takes the user to a place that it is not the
