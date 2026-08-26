@@ -389,6 +389,16 @@ any session that starts fresh:**
   `.cell`. **The gate proves the wiring and cannot prove the pointer** — jsdom
   has no hit-testing, which is exactly the half that was broken. Instrument for
   the wiring, reader for the pointer; this one needed both.
+* **AND THEN THE GATE WENT GREEN WHILE THE FEATURE STAYED INVISIBLE.** The
+  reader looked again and said "only one lights", unchanged. Measured in a real
+  browser: the row DID go hot and both paragraphs took the highlight — but
+  `--hover` is **15 levels out of 255** from the page in dark, so the only
+  visible change was the toolbar, which is on one paragraph. Now `--active` with
+  a `--faint` outline. **A gate on "does the class get applied" is not a gate on
+  the feature**; `check_columns.js` now asserts a minimum token contrast in both
+  palettes, threshold derived from the rejected and accepted values, negative
+  control run. Three rounds on this one defect, the instrument wrong differently
+  each time, and a reader right every time.
 * **`check_fn_markers.js` OOMs at node's default heap** and passes at
   `--max-old-space-size=6144`. Pre-existing (it never renders the columns
   branch). Either raise it in the script or say so where the gates are listed —

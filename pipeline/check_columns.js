@@ -113,6 +113,44 @@ async function run(w, vol, active){
   return {keys, heads, rows:rows.length, wide, misplaced, firstWide, firstMis, hot};
 }
 
+// IS THE ROW HIGHLIGHT ACTUALLY VISIBLE?
+//
+// THIS IS THE ASSERTION THAT WOULD HAVE CAUGHT IT.  The wiring gate went green
+// while the feature was still useless: the row went hot, both paragraphs took
+// the highlight, and the reader still said "only one lights" — because
+// `--hover` sits 15 levels out of 255 from the page in the dark theme, and the
+// only unmistakable change was the toolbar, which appears on ONE paragraph.
+//
+// So a gate on "does the class get applied" is not a gate on the feature. This
+// one reads the CSS tokens and asserts a minimum separation between the hot
+// background and the page, in BOTH palettes.
+//
+// THE THRESHOLD IS DERIVED, NOT PICKED.  Per-channel maxima, measured:
+//     --hover   dark 15, light 16   <- reported invisible by a reader
+//     --active  dark 23, light 26   <- reported readable
+// 20 is the only round number that separates the rejected value from the
+// accepted one. If a future palette change makes this fail, the question to ask
+// is whether a reader can still see it, not what number would make it pass.
+const MIN_CONTRAST=20;
+function tokenContrast(){
+  const css=fs.readFileSync(R+'/reader2.html','utf8');
+  const m=css.match(/\.rowline\.hot\s+\.para\{background:var\(--([a-z-]+)\)/);
+  if(!m) return [{theme:'-',err:'could not find the .rowline.hot .para background rule'}];
+  const tok=m[1];
+  const hex=(block,name)=>{ const r=new RegExp('--'+name+':(#[0-9a-fA-F]{6})');
+    const g=block.match(r); return g?g[1]:null; };
+  const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+  // the light palette is `:root{...}`; the dark one `html[data-theme=dark]{...}`
+  const light=(css.match(/:root\{--rsize[\s\S]*?\}/)||[''])[0];
+  const dark =(css.match(/html\[data-theme=dark\]\{[\s\S]*?\}/)||[''])[0];
+  return [['light',light],['dark',dark]].map(([theme,block])=>{
+    const a=hex(block,tok), b=hex(block,'bg');
+    if(!a||!b) return {theme,tok,err:'token --'+tok+' or --bg not found in this palette'};
+    const d=Math.max(...rgb(a).map((v,i)=>Math.abs(v-rgb(b)[i])));
+    return {theme,tok,hot:a,bg:b,delta:d,ok:d>=MIN_CONTRAST};
+  });
+}
+
 const CASES=[
   // the reader's own case, and the one in the screenshot
   ['12Sam01', {canon:true,A:true,T:false}],
@@ -128,6 +166,16 @@ const CASES=[
   const cases=argv.length? argv.map(v=>[v,{canon:true,A:true,T:false}]) : CASES;
   let fails=[];
   console.log('columns view: one grid cell per active layer, on every row');
+  console.log('row highlight, token contrast against the page (min '+MIN_CONTRAST+'):');
+  for(const c of tokenContrast()){
+    if(c.err){ console.log('  FAIL  '+c.theme+': '+c.err); fails.push(c.theme+': '+c.err); }
+    else if(!c.ok){
+      console.log('  FAIL  '+c.theme+'  --'+c.tok+' '+c.hot+' vs --bg '+c.bg+' = '+c.delta
+                  +' levels; a reader could not see this');
+      fails.push(c.theme+' highlight contrast '+c.delta);
+    } else console.log('  ok    '+c.theme+'  --'+c.tok+' '+c.hot+' vs --bg '+c.bg
+                       +' = '+c.delta+' levels');
+  }
   for(const [vol,active] of cases){
     // !!! A FRESH WINDOW PER CASE.  Re-using one window across cases keeps every
     // volume any case loaded in `cache`, and three openings of a Saṁyutta volume

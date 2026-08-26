@@ -232,7 +232,19 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
 .para{font-family:'Gentium Plus',serif;font-size:var(--rsize);line-height:1.62;padding:9px 13px;border-radius:11px;border:1px solid transparent;position:relative;scroll-margin-top:14px}
 .para.canon{border-left:3px solid var(--canon)}.para.l-A{border-left:3px solid var(--comm)}.para.l-T{border-left:3px solid var(--tika)}
 .para.empty{color:var(--faint);text-align:center;font-size:18px;line-height:1;border:none;padding:14px 0;opacity:.5}
-.rowline.hot .para{background:var(--hover);border-color:var(--line)}.rowline.hot .para.canon{border-left-color:var(--canon)}.rowline.hot .para.l-A{border-left-color:var(--comm)}.rowline.hot .para.l-T{border-left-color:var(--tika)}
+/* !!! `--hover` WAS TOO FAINT TO DO THE JOB, and the job is to be SEEN.
+   Reader-reported 2026-08-26, after the wiring was fixed and the gate was green:
+   "only one lights". Measured in the live browser — the row DID go hot and BOTH
+   paragraphs computed to rgb(35,32,25) — but the page is rgb(20,18,16), a
+   difference of 15 levels out of 255. The only unmistakable change on hover is
+   the toolbar, and that appears on ONE paragraph, so "only one lights" was an
+   accurate report of what a person can see.
+   `--active` is 23 levels in dark and 26 in light, and the outline goes to
+   `--faint` so the block has a defined edge rather than a wash. The left bar is
+   put back per layer because the `border-color` shorthand above overrides all
+   four sides. Gated: check_columns.js asserts a minimum token contrast, which
+   is the assertion that would have caught this. */
+.rowline.hot .para{background:var(--active);border-color:var(--faint)}.rowline.hot .para.canon{border-left-color:var(--canon)}.rowline.hot .para.l-A{border-left-color:var(--comm)}.rowline.hot .para.l-T{border-left-color:var(--tika)}
 .para.flash{animation:flashkf 1.5s ease}@keyframes flashkf{0%,20%{background:var(--active)}100%{background:transparent}}
 .para .pn{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--accent);margin-right:6px;vertical-align:1px}
 .para .pn.k-A{color:var(--comm)}.para .pn.k-T{color:var(--tika)}
@@ -307,7 +319,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=2798a6a45568"></script>
+<script src="../i18n.js?v=3d1e09456afa"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -509,7 +521,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='2798a6a45568';
+const BUILD='3d1e09456afa';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything

@@ -136,6 +136,63 @@ goes hot, and off again on `mouseleave`. Red on the old wiring
 **What that gate proves and what it does not.** It proves the WIRING: an event
 arriving at a cell reaches the row. It cannot prove the pointer would ever reach
 that cell, because jsdom has no layout — and that is precisely the half that was
-broken. **The instrument settled the wiring; a reader settled the pointer.** Any
-future change here needs both, and the gate should not be read as covering more
-than it does.
+broken. **The instrument settled the wiring; a reader settled the pointer.**
+
+## 7. The gate went green and the reader still said "only one lights"
+
+**And the reader was right, for the third time in this one defect.**
+
+The wiring fix shipped, `check_columns.js` passed, and the report came back
+unchanged. Measured in a real browser on the live build — not inferred, and not
+in jsdom, which cannot answer this:
+
+| pointer on | row `hot` | Pāḷi bg | Aṭṭhakathā bg |
+|---|---|---|---|
+| the Pāḷi paragraph | yes | `rgb(35,32,25)` | `rgb(35,32,25)` |
+| the Aṭṭhakathā paragraph | yes | `rgb(35,32,25)` | `rgb(35,32,25)` |
+
+Both paragraphs took the identical highlight, in both directions. **The wiring
+was fixed and the feature was still useless**, because the page is
+`rgb(20,18,16)` and `--hover` is `rgb(35,32,25)` — **15 levels out of 255**. The
+only unmistakable change on hover is the toolbar, and the toolbar appears on the
+paragraph under the pointer alone. So "only one lights" was an accurate report of
+what a person can see; the asymmetry was the buttons, not the highlight.
+
+A correction to §6 while here: the earlier claim that the coloured left bar
+"brightens" on a hot row was wrong. `.rowline.hot .para{border-color:var(--line)}`
+sets all four sides, and the per-layer rules only put the left bar **back** to
+the colour it already had. The entire visible difference was a faint panel and a
+faint 1px outline.
+
+Now `--active` with a `--faint` outline, chosen by the reader.
+
+### The assertion that would have caught it
+
+A gate on "does the class get applied" is not a gate on the feature.
+`check_columns.js` now reads the CSS tokens and asserts a minimum separation
+between the hot background and the page **in both palettes**:
+
+    light  --active #efe7d7 vs --bg #f7f5f1 = 26 levels   ok
+    dark   --active #2b2618 vs --bg #141210 = 23 levels   ok
+
+**The threshold is derived, not picked.** `--hover` measures 15 dark / 16 light
+and was reported invisible; `--active` measures 23 / 26 and was reported
+readable. 20 is the only round number separating the rejected value from the
+accepted one. **Negative control run**: putting `--hover` back makes the gate
+fail on both themes with "a reader could not see this". If a future palette
+change trips this, the question is whether a reader can still see it — not what
+number would make it pass.
+
+### The shape of this whole defect, worth keeping
+
+Three rounds, and the instrument was wrong in a different way each time:
+
+1. The reader said "P should be on the left". **The order was never wrong** — the
+   rows emitted too many cells.
+2. The wiring gate could not see the hover at all, because jsdom has no
+   hit-testing. **A reader answered it.**
+3. The wiring gate went green while the feature stayed invisible. **A reader
+   answered that too**, and only then did a measurable assertion exist.
+
+Each round the gate was extended to cover what the reader had just caught. None
+of the three would have been found by running the gates.

@@ -7,14 +7,14 @@ cd ~/Documents/OSBCT
 ./push.sh
 ```
 
-`COMMIT_MSG.bak` carries the row-hover fix. The build IS stamped
-(`8196f1a01c65` → `2798a6a45568`), so guard 3 will pass, and `push.sh` clears the
+`COMMIT_MSG.bak` carries the highlight-contrast fix. The build IS stamped
+(`2798a6a45568` → `3d1e09456afa`), so guard 3 will pass, and `push.sh` clears the
 stale zero-byte `.git/index.lock` itself — expected, no action needed.
 
 Then, **once Pages has finished**, check cache-busted:
 
 ```
-https://buddha-dhamma.net/build.json?cb=<anything-new>   ->  2798a6a45568
+https://buddha-dhamma.net/build.json?cb=<anything-new>   ->  3d1e09456afa
 ```
 
 The previous deploy took about **four minutes**; the first two reads still
@@ -25,9 +25,20 @@ conclude a deploy failed from an early read.
 
 Open `12Sam01` in **Columns** with **P and A** on, and hover a Pāḷi paragraph.
 
-**Both paragraphs in that row should now take a lighter panel together**, not
-just the one you are pointing at. That is the fix. If only the one under the
-pointer lights, the fix did not take and I want to know.
+**Both paragraphs in that row should now take a clearly lighter panel together**,
+with a defined outline — not just the one you are pointing at.
+
+The wiring was already right before this build; what changed is that the panel
+is now `--active` with a `--faint` outline instead of `--hover` with a `--line`
+one. Measured in a real browser, the old pair sat **15 levels out of 255** from
+the page in the dark theme, which is why it read as "only one lights": the only
+unmistakable change was the toolbar, and the toolbar appears on one paragraph.
+The new pair is 23 levels dark, 26 light.
+
+If it is still hard to see, say so — the number is now gated
+(`check_columns.js`, minimum 20, negative control run against the old value), so
+raising it is a one-line change to a threshold that is documented as derived
+from your reading rather than picked.
 
 Everything else there was checked and is fine: the columns hold their own layers
 (reported fine), the spacing in a cell holding a long commentary run (reported
