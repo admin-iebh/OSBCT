@@ -212,6 +212,86 @@ many headings as the front matter lists, or it must not write:
 `27KhuA08` finds four MORE than the Mātikā lists, which is its own puzzle and is
 not resolved here. Finding those four is the next step for that volume.
 
+## 8a. The four were found, and the MĀTIKĀ READER was the thing that was wrong
+
+**2026-08-26 (later the same day). `27KhuA08` is written: 84 section names, 1,480
+paragraphs, distinct 0 → 83.**
+
+The four extras were `Dāsivimānavaṇṇanā`, `Lakhumāvimānavaṇṇanā`,
+`Paṭhamabhikkhādāyikāvimānavaṇṇanā` and `Dutiyabhikkhādāyikāvimānavaṇṇanā`. The
+diff was one-sided from the start — four in the body with no Mātikā counterpart,
+and **nothing in the Mātikā that the body lacked** — which is the shape of a
+reader that is dropping entries, not of a body scan inventing them.
+
+**All four are printed in the Mātikā.** Rendered and read, not inferred:
+
+    p.ii   ...17. Kesakārīvimānavaṇṇanā
+                  2. Cittalatāvagga
+               1. Dāsivimānavaṇṇanā        }  a run of TWO, then the page ends
+               2. Lakhumāvimānavaṇṇanā     }
+    p.iii  ...  7. Uposathāvimānavaṇṇanā
+             8-9. Niddā-suniddāvimānavaṇṇanā
+              10. Paṭhamabhikkhādāyikāvimānavaṇṇanā  }  another run of two,
+              11. Dutiyabhikkhādāyikāvimānavaṇṇanā   }  then a vagga line
+
+**Two faults, and they are independent.** `matika()` kept a name only inside a
+run of four or more consecutive matching lines — a proxy for "this is the front
+matter" that fails wherever the printed list is interrupted, which it is at every
+vagga heading and every page foot. And `NUM` was `^(\d+)\.`, which does not match
+`8-9.`: the edition numbers a section covering two vimānas as a **range**. That
+one broke the Mātikā run in half *and* made the section invisible to the body
+scan as well.
+
+So the true count is **84 on both sides**, exact set agreement, and the earlier
+"body 83, Mātikā 79" was two instruments failing on the same line for different
+reasons.
+
+**§8's own rule is what saved this.** The Mātikā gate refused rather than
+writing, and had it merely counted rather than refused, `Niddā-suniddā`'s nine
+paragraphs would have gone out under `Uposathāvimānavaṇṇanā` — the defect being
+repaired, re-created by the repair. **The completeness check earned its keep by
+being wrong in the safe direction.**
+
+### What was changed, and the controls
+
+* `NUM` now reads `^(\d+)(?:-\d+)?\.` — first number captured, so callers still
+  get an int.
+* `matika()` is scoped to the pages carrying the running head `Mātikā` instead of
+  to run length, falling back to the old rule if a volume has no such page.
+* `pipeline/check_sections.py` gained the four cases, **run red first** — all
+  four `is None` on the build as it stood — each read off a rendered page (p.82,
+  p.106, p.107, p.108).
+
+Controls, because a change to a shared pattern is a change to every volume that
+uses it:
+
+    19Khu02   re-run --write  ->  BYTE-IDENTICAL (837e72c1…), still 501/501
+    28KhuA09  re-run --write  ->  BYTE-IDENTICAL (91ee6ad0…), still 51/51
+    27KhuA08  written, then re-run  ->  idempotent (69fb0890…)
+    pbreak    fresh derivation of 27KhuA08 == the file on disk, so the write
+              touched nothing but the `sutta` field
+
+`name-match` went **76.669 → 77.231%, over 18,582 links, up from 17,440** — more
+pairs checkable and a higher share agreeing, the same shape §7 predicted and §8
+measured. Baseline re-recorded; the old one is kept at
+`pipeline/links_baseline.json.presections27`.
+
+### Not a defect: `Ambavimānavaṇṇanā` twice
+
+84 sections, 83 distinct names. The edition itself lists `Ambavimānavaṇṇanā` in
+two vaggas — Mātikā entries 45 and 78, body headings `8.` and `5.`, landing on
+ord 763 and ord 1254, two different stories. Checked before it was written off,
+because a repeated name is exactly what a misplacement looks like.
+
+### Still open on this volume
+
+The three §5 items are untouched, and one new question: `matika()`'s page
+scoping keys on the literal string `Mātikā` in a running head. It held on the two
+commentary volumes tried. **It has not been tried on the other 50**, and a volume
+whose front matter is headed differently falls back to the run-length rule —
+which will undercount in exactly the way described above and refuse. Refusing is
+safe; being surprised by it is not.
+
 ### The prediction held
 
 §7 said name-match should recover and rise above where it started once the

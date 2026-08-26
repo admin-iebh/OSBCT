@@ -1,123 +1,57 @@
-# Commands to run on the host — 2026-08-26 (section names)
+# Run on the host — 2026-08-26 (second session of the day)
 
-> **DONE 2026-08-26. Kept as the record of how it went, not as work owed.**
-> Both `pbreak` files came back byte-identical (`8cb75b08…`, `8362787b…`), the
-> stamp went to `2b856038234a`, and the live site serves it. Nothing below is
-> outstanding.
+Everything below was done in the sandbox and is sitting in the working tree.
+**Nothing is committed and nothing is pushed**, because the sandbox has no write
+access to `.git`.
 
-**This one was NOT optional and NOT just a push.** The sandbox could not rebuild
-one derived artefact, and `stamp_build.py` will keep refusing until it is done.
-That refusal is correct — it is the 2026-07-30i guard, which exists to stop a
-stale artefact being published under a fresh cache-buster.
-
----
-
-## 1. Rebuild the one artefact the sandbox could not
-
-`derive.py` skips an existing output, and the sandbox cannot unlink the old
-file, so this must happen here:
+## 1. Two commands
 
 ```bash
 cd ~/Documents/OSBCT
-rm -f .git/index.lock
-for v in 19Khu02 28KhuA09; do
-  mv site/reader/pbreak/$v.json /tmp/$v.pbreak.old
-  python3 _xc/pagemark/derive.py $v --out site/reader/pbreak
-done
+rm -f _xc/cols/head_reader2.html   # scratch: HEAD's reader2.html, for the
+                                   # before/after control on check_layout.
+                                   # The sandbox cannot delete it.
+./push.sh                          # COMMIT_MSG.bak carries this session's message
 ```
 
-**Then check they came back the same**, which is the point of doing it rather
-than forcing past it:
+`push.sh` clears the stale zero-byte `.git/index.lock` itself — one was left
+behind by a `git stash` that the sandbox could not complete. That is guard 1 in
+the script and it is expected; no action needed.
 
-```bash
-md5sum /tmp/19Khu02.pbreak.old  site/reader/pbreak/19Khu02.json
-md5sum /tmp/28KhuA09.pbreak.old site/reader/pbreak/28KhuA09.json
-```
+The build IS stamped (`2b856038234a` → `8196f1a01c65`), so guard 3 will pass.
 
-The two hashes should match — the section-name write added a `sutta` field and
-touched no text and no page data. `pagespan.json` was rebuilt in the sandbox and
-came back **byte-identical** (`9ce1a269…`), and the search index's `inv` — the
-searchable terms — is unchanged, so a matching hash here is the expected result.
-**If they differ, stop and look**: something changed that should not have.
+## 2. After the push — the one thing that needs an eye, not a gate
 
-## 2. Stamp
+**Look at Columns view in a real browser**, `12Sam01` with P and A on. The fix is
+gated headlessly and the gate is green, but jsdom does no layout: it can prove
+each layer is in its own cell and cannot prove the page *looks* right. Worth
+checking in particular:
 
-```bash
-python3 pipeline/stamp_build.py --write
-```
+* the vertical rhythm inside a cell that holds several commentary paragraphs
+  (`18Khu01` ¶1 holds nineteen) — `.cell` uses `gap:14px` and zeroes the page
+  rule's own margins;
+* a long unbroken Pāḷi compound not widening its column (`min-width:0`);
+* **row hover.** `.rowline` is `display:contents` and the hover handlers are
+  attached to it, which generates no box. If `.rowline.hot .para` has never
+  fired in Columns, that is a second defect in the same three lines — recorded
+  as a QUESTION, not a finding, in
+  `claude/the_columns_were_never_out_of_order.md` §6. It needs a browser.
 
-It refused before step 1 with three stale artefacts (`pagespan`, `search index`,
-`pbreak`); the first two are already rebuilt. Do **not** use `--force`.
+**And bust the cache when you check the live site, and give Pages time.** That
+has now produced a false "the deploy failed" four times.
 
-## 3. Look at the diff
+## 3. Not done, deliberately
 
-```bash
-git status --short
-python3 pipeline/check_sections.py     # 4 named cases, all read off printed pages
-python3 pipeline/check_links.py
-python3 pipeline/check_concordance.py
-```
-
-`site/19Khu02.json` gains a `sutta` field on 3,653 of 3,660 paragraphs — 3
-distinct names become 444. `site/index/19Khu02.idx.json` changes only in its
-`paras` block, which is what search results display; `inv` is untouched.
-
-## 4. Commit, push, Pages
-
-```bash
-./push.sh
-```
-
-Then GitHub → Actions → **Run workflow**. Never "Re-run failed jobs".
-
-```bash
-curl -s "https://buddha-dhamma.net/build.json?cb=$RANDOM" ; echo
-```
-
-Read it cache-busted or you are measuring the past — that has now given a false
-"the deploy failed" three times.
-
-**No R2 sync.** Nothing under `stores/` changed.
-
-## 5. Then look at it as a reader — this is the part that matters
-
-Open `19Khu02` and page through the Petavatthu. Every paragraph should now sit
-under the section the edition prints — `Khettūpamapetavatthu`,
-`Sūkaramukhapetavatthu`, and so on — where before the whole first third of the
-book was headed with a *Vimānavatthu* section name.
-
-Two things to look at while you are there, both recorded and neither repaired:
-
-* **ord 483** carries the vagga `'Itthivimāna      4. Mañjiṭṭhakavagga'` — two
-  headings glued together with the index left in. The edition prints
-  `Mañjiṭṭhakavagga`. 24 of the other 25 vaggas agree with the edition.
-* **Three headings are still stored as numbered PARAGRAPHS** — ord 388
-  `'17. Valliphaladā yikāvimānavatthu (6)'`, ord 390, ord 857. They collide with
-  real paragraph numbers and they broke a classifier earlier today. They should
-  leave the paragraph stream now that the names are carried properly.
-
----
-
-## Not done, and deliberately
-
-**`28KhuA09` IS DONE TOO** — 51 section names, 1 distinct becomes 47, and the
-Mātikā agrees at 51. **`name-match` recovered and rose above where it started:
-76.442 -> 76.141 -> 76.67%, over 17,440 links.** That was the prediction written
-down before it was tested, and it held.
-
-**`27KhuA08` REFUSES and is left alone.** Its body scan finds 83 headings where
-the Mātikā lists 79, and until that is understood it must not be written: a
-miscounted heading does not leave a gap, it spreads the previous section over
-the missing one — the very defect being repaired. Whoever picks it up: the four
-extra are the thing to find. Full account:
-`claude/sections_the_edition_prints.md` §7-8.
-
-The other 116 volumes are untouched. The canon reader is blind in 20Khu03,
-29Abhi01 and 36-40Abhi; the commentary reader has been tried on exactly two
-volumes.
-
-## The ordering rule, for the next actual release
-
-**CUT THE TAG LAST.** Every metadata file committed and pushed before the tag
-exists, or Zenodo mints a deposit describing the previous release. Broken three
-times. `v2.7.0` is a lightweight tag with a DOI — **leave it**.
+* **`site/reader/sections/27KhuA08.json` was NOT rebuilt.** `check_derived`
+  reports it as ADVISORY, not blocking. The `sutta` field this session wrote
+  feeds the citation, the title bar and `name_at` — verified by rendering:
+  ¶244 now offers `Aṭṭhakathā, Dāsivimānavaṇṇanā § (p.82)` and ¶362
+  `Aṭṭhakathā, Niddā-suniddāvimānavaṇṇanā § (p.106)`, and both page numbers
+  match the pages the headings were read on. But the **☰ Contents is built by
+  `buildOutline` from `c.headings`**, a separate artefact, so the Contents for
+  this volume does not yet list the 84 sections. The same is true of `19Khu02`
+  and `28KhuA09` from the earlier session. Rebuilding the per-volume nav is its
+  own piece of work — "NEVER import one; run as a subprocess".
+* **`_xc/cols/probe_columns.js` and `probe_27_cite.js` are kept**, not tidied
+  away. They are how the two findings were established and they are cheap to
+  re-run.

@@ -222,6 +222,13 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
 .colhead .ch{font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;display:flex;align-items:center;gap:7px;color:var(--mut)}
 .colhead .ch .cdot{width:7px;height:7px;border-radius:50%}
 .grid{display:grid;gap:14px 16px}.rowline{display:contents}.stack{max-width:820px;margin:0 auto}
+/* One grid item per active layer — see the `.cell` note in the columns branch of
+   render().  `min-width:0` keeps a long unbroken Pāḷi compound from widening its
+   track and pushing the other column off; the flex column restores the 14px the
+   grid row-gap used to give between stacked paragraphs, and the page rule's own
+   margins are dropped inside a cell so the two do not add up. */
+.cell{min-width:0;display:flex;flex-direction:column;gap:14px}
+.cell>.pgrule{margin:0}
 .para{font-family:'Gentium Plus',serif;font-size:var(--rsize);line-height:1.62;padding:9px 13px;border-radius:11px;border:1px solid transparent;position:relative;scroll-margin-top:14px}
 .para.canon{border-left:3px solid var(--canon)}.para.l-A{border-left:3px solid var(--comm)}.para.l-T{border-left:3px solid var(--tika)}
 .para.empty{color:var(--faint);text-align:center;font-size:18px;line-height:1;border:none;padding:14px 0;opacity:.5}
@@ -300,7 +307,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=2b856038234a"></script>
+<script src="../i18n.js?v=8196f1a01c65"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -502,7 +509,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='2b856038234a';
+const BUILD='8196f1a01c65';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -2903,11 +2910,38 @@ function render(){
     // the same once-per-page rule the single view uses: a run drawn in one
     // row must not be drawn again in the next row's cell (see `drawnA`).
     const cdrawn={A:new Set(),T:new Set()};
+    // !!! ONE `.cell` PER LAYER, AND THE WRAPPER IS THE WHOLE FIX.
+    // READER-REPORTED 2026-08-26 with a screenshot of `12Sam01`: the left column
+    // headed PĀḶI (TIPIṬAKA) held nothing but a `page 1` rule and the CANON text
+    // of the Oghataraṇasutta sat in the right column, under AṬṬHAKATHĀ.
+    //
+    // The column ORDER was never wrong — `activeKeys()` is
+    // `['canon','A','T'].filter(...)`, canon first by construction, and the two
+    // headings were in the right order.  What was wrong is that `.rowline` is
+    // `display:contents`, so EVERY child it emits is a direct grid item, and a
+    // row did not emit one child per column:
+    //
+    //   * `block()` returns `rule + <div class=para>` — a `<div class="pgrule">`
+    //     in front of the paragraph wherever a printed page turns there.  That
+    //     rule took a CELL, so row 0 emitted [pgrule, canon, pgrule, A] and the
+    //     canon paragraph landed in column 2.  Measured: 176 of `12Sam01`'s 517
+    //     rows, 140 of `09Ma01`'s 511.
+    //   * a band cell with SEVERAL targets is several `.para` siblings, not one
+    //     cell.  `18Khu01` row 0 emitted TWENTY-THREE items into two columns.
+    //
+    // Wrapping each key's contribution makes the count exactly `keys.length`,
+    // whatever any one cell contains — so it holds for P+A, P+T, A+T and
+    // P+A+T alike, which is what "fix it for everything" needs.  An empty
+    // string from `block()` (an unloaded volume) still yields an empty cell,
+    // and the alignment survives that too.  Gated by `pipeline/check_columns.js`,
+    // which was run red on five cases across three volumes first.
     paras.forEach((p,li)=>{ const i=base+li; html+='<div class="rowline">';
-      keys.forEach(k=>{ if(k==='canon'){ html+=block('canon',state.canonVol+'#'+i); }
+      keys.forEach(k=>{ let cell;
+        if(k==='canon'){ cell=block('canon',state.canonVol+'#'+i); }
         else{ const ts=targetsFor(i,k).filter(t=>!cdrawn[k].has(t.key));
               ts.forEach(t=>cdrawn[k].add(t.key));
-              html+= ts.length? ts.map(t=>block(k,t.key,t)).join('') : '<div class="para empty">·</div>'; } });
+              cell= ts.length? ts.map(t=>block(k,t.key,t)).join('') : '<div class="para empty">·</div>'; }
+        html+='<div class="cell">'+cell+'</div>'; });
       html+='</div>'; });
     html+='</div>';
   } else if(state.view==='tabs'){

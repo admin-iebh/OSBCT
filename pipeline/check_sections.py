@@ -42,6 +42,27 @@ CASES = [
     # Satthari Rājagahaṁ upanissāya Veḷuvane ...` — which is ord 10.
     ('28KhuA09',   3, 'Khettūpamapetavatthuvaṇṇanā',  'p.5'),
     ('28KhuA09',  10, 'Sūkaramukhapetavatthuvaṇṇanā', 'p.9'),
+    # 27KhuA08.  This volume REFUSED on 2026-08-26 — body 83 headings, Mātikā
+    # 79 — and the four cases below are the four that disagreed.  All four are
+    # printed in BOTH the body and the Mātikā; it was the Mātikā reader that
+    # was short.  Read off the rendered pages 2026-08-26 before being asserted:
+    #
+    # p.82   the Pīṭhavagga closes, then `2. Cittalatāvagga`, then the bold
+    #        `1. Dāsivimānavaṇṇanā` above `Dutiyavagge api Sakkova devindoti
+    #        dāsivimānaṁ.`                              -> ord 244
+    # p.106  `Uposathāvimānavaṇṇanā niṭṭhitā.`, a rule, then the bold
+    #        `8-9. Niddā-suniddāvimānavaṇṇanā` above `Aṭṭhamanavamavimānāni
+    #        Rājagahanidānāni.`                          -> ord 362
+    #        !!! A RANGE-NUMBERED HEADING.  `8-9.` is why this section was
+    #        invisible to BOTH scans, and why the Mātikā run broke here.
+    # p.107  `10. Paṭhamabhikkhādāyikāvimānavaṇṇanā` above `Abhikkantena
+    #        vaṇṇenāti bhikkhādāyikāvimānaṁ.`            -> ord 371
+    # p.108  `11. Dutiyabhikkhādāyikāvimānavaṇṇanā` above `Abhikkantena
+    #        vaṇṇenāti dutiyabhikkhādāyikāvimānaṁ.`      -> ord 378
+    ('27KhuA08', 244, 'Dāsivimānavaṇṇanā',                 'p.82'),
+    ('27KhuA08', 362, 'Niddā-suniddāvimānavaṇṇanā',        'p.106'),
+    ('27KhuA08', 371, 'Paṭhamabhikkhādāyikāvimānavaṇṇanā', 'p.107'),
+    ('27KhuA08', 378, 'Dutiyabhikkhādāyikāvimānavaṇṇanā',  'p.108'),
 ]
 
 ARTIFACT = re.compile(r'\(\s*\d+\s*\)\s*$')

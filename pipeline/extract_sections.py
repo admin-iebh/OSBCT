@@ -89,7 +89,16 @@ def pdf_for(vol):
 
 PDFS = os.path.join(ROOT, 'pali-unicode')
 
-NUM = re.compile(r'^(\d+)\.\s*(.*)$')
+# !!! THE `(?:-\d+)?` IS NOT COSMETIC.  The edition numbers a section that
+# covers two vimānas as a RANGE — printed p.106 of `27KhuA08` carries the bold
+# heading `8-9. Niddā-suniddāvimānavaṇṇanā`, and its Mātikā entry on p.ii reads
+# the same way.  Without the range this line matched NOTHING, and it cost twice:
+#   * the body scan never saw the section, so its nine paragraphs would have
+#     answered to `Uposathāvimānavaṇṇanā` — the exact defect being repaired;
+#   * it broke the Mātikā's run of consecutive entries in half, which is what
+#     made `27KhuA08` look like 83 body headings against 79 listed.
+# Only the FIRST number is captured, so callers still get an int.
+NUM = re.compile(r'^(\d+)(?:-\d+)?\.\s*(.*)$')
 TYPE = re.compile(r'(vatthu|vagga|sutta|gāthā|nipāta|kaṇḍa|pañha|niddesa'
                   r'|bhāṇavāra|vaṇṇanā|vaṇṇanaṁ)\s*$', re.I)
 
@@ -252,9 +261,57 @@ def matika(pdf):
     section's name spread over the missing one's paragraphs.  That is precisely
     the defect being repaired, re-created by a partial repair.  So the body scan
     must find as many headings as the Mātikā lists, or it must not write.
+
+    SCOPED BY PAGE, NOT BY RUN LENGTH — CHANGED 2026-08-26, and the reason is
+    that the run-length version UNDERCOUNTED and thereby refused a volume that
+    should have been written.
+
+    The old rule kept a name only when four or more matching lines ran
+    consecutively.  That is a proxy for "this is the front matter", and it fails
+    wherever the list is INTERRUPTED — which the printed Mātikā does routinely:
+
+      p.ii  ... 17. Kesakārīvimānavaṇṇanā
+                    2. Cittalatāvagga          <- a vagga line, not a vaṇṇanā
+                 1. Dāsivimānavaṇṇanā          }  a run of TWO,
+                 2. Lakhumāvimānavaṇṇanā       }  then the page ends
+      p.iii    ... 7. Uposathāvimānavaṇṇanā
+                8-9. Niddā-suniddāvimānavaṇṇanā <- the range broke NUM as well
+                 10. Paṭhamabhikkhādāyikāvimānavaṇṇanā  }  another run of two,
+                 11. Dutiyabhikkhādāyikāvimānavaṇṇanā   }  then a vagga line
+
+    Four real entries dropped, in two pairs, for two different reasons — and
+    `27KhuA08` refused with "body 83, Mātikā 79" when the truth is 84 and 84.
+    Both renders were read before this was changed; the four names are printed
+    in the Mātikā and in the body alike.
+
+    The Mātikā prints its own name as a running head on every one of its pages,
+    which is a far better discriminator than a run length: take the entries on
+    those pages and no others.  If a volume has no such page, fall back to the
+    old rule rather than silently returning nothing — a wrong count refuses,
+    which is the safe direction, but an empty one would refuse every volume.
     """
     txt = subprocess.run(['pdftotext', pdf, '-'],
                          capture_output=True, text=True).stdout
+    pages = txt.split('\f')
+
+    def entries(lines):
+        out = []
+        for line in lines:
+            l = line.strip()
+            m = NUM.match(l)
+            if m and COMM_HEAD.search(m.group(2).strip()) \
+                    and len(m.group(2).split()) <= 3:
+                out.append(m.group(2).strip())
+        return out
+
+    front = [p for p in pages
+             if any(l.strip() == 'Mātikā' for l in p.split('\n'))]
+    if front:
+        names = []
+        for p in front:
+            names.extend(entries(p.split('\n')))
+        return names
+
     names, run = [], []
     for line in txt.split('\n'):
         l = line.strip()

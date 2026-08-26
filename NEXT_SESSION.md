@@ -1,6 +1,42 @@
 # Closing 2026-08-26 — where things stand
 
-> # NOTHING IS OWED. EVERYTHING OF 2026-08-26 IS SHIPPED AND LIVE.
+> # ⚠ ONE THING IS OWED: THE PUSH. SEE `RUN_ON_HOST.md`.
+>
+> **A SECOND session ran on 2026-08-26.** Its work is complete and gated but
+> **sits uncommitted in the working tree** — the sandbox has no write access to
+> `.git`. Two commands on the host finish it; `COMMIT_MSG.bak` is written.
+>
+> **The live build is still `2b856038234a`.** The tree is stamped
+> `8196f1a01c65` and will go live with the push. A stale `.git/index.lock`
+> (zero bytes, from a `git stash` the sandbox could not complete) is cleared by
+> `push.sh` itself — expected, not a problem.
+>
+> What that session did, both gated red first:
+>
+> 1. **`27KhuA08` written — 84 section names, distinct 0 → 83.** The four
+>    "extra" body headings that made it refuse are all PRINTED IN THE MĀTIKĀ;
+>    the Mātikā reader was undercounting for two independent reasons (a
+>    run-length heuristic broken by page feet and vagga lines, and `NUM` not
+>    matching the range-numbered `8-9. Niddā-suniddāvimānavaṇṇanā`). **The
+>    instrument was wrong, not the scan — the fifth rule again.** True count 84
+>    on both sides. `19Khu02` and `28KhuA09` re-run byte-identical, so the
+>    shared pattern change disturbed neither. **name-match 76.669 → 77.231%
+>    over 18,582 links**, up from 17,440.
+>    `claude/sections_the_edition_prints.md` §8a.
+> 2. **Columns view: the canon was rendering under the Aṭṭhakathā heading.**
+>    Reader-reported with a screenshot. **The column ORDER was never wrong** —
+>    `.rowline` is `display:contents` and a row emitted more grid items than
+>    there were columns, because `block()` prepends a page rule and a band cell
+>    can hold several targets. `18Khu01` row 0 emitted 23 items into 2 columns.
+>    Fixed with one `.cell` wrapper per layer, so it holds for every band
+>    combination. New gate `pipeline/check_columns.js`, red on 5 cases across
+>    3 volumes first.
+>    `claude/the_columns_were_never_out_of_order.md`.
+>
+> **`27KhuA08`'s ☰ Contents is NOT yet rebuilt** — advisory, not blocking; see
+> `RUN_ON_HOST.md` §3.
+
+> # OF THE FIRST SESSION: NOTHING IS OWED. EVERYTHING OF IT IS SHIPPED AND LIVE.
 >
 > **Live build `2b856038234a`, dated 2026-08-26**, cache-busted — the
 > repository's own. **Verified by content, not only by the stamp:** the served
@@ -303,11 +339,15 @@ any session that starts fresh:**
   pages.** `name-match` went 76.442 → 76.141 (canon side only, half-applied) →
   **76.670** once the commentary side followed — more pairs checkable *and* more
   agreeing, which is the shape a real repair makes.
-  **`27KhuA08` REFUSES**: its body scan finds 83 headings where the Mātikā lists
-  79, and the Mātikā count is the completeness gate — a missed heading spreads
-  the previous section over the missing one, re-creating the defect. Finding
-  those four is the next step for that volume.
-  116 volumes untouched. The canon reader is blind in 20Khu03, 29Abhi01 and
+  ~~**`27KhuA08` REFUSES**: body 83, Mātikā 79.~~ **RESOLVED AND WRITTEN
+  2026-08-26 (second session): 84 names, distinct 0 → 83.** All four "extras"
+  are printed in the Mātikā; the front-matter reader was dropping them, for two
+  independent reasons — a run-length heuristic that the printed list's own page
+  feet and vagga lines interrupt, and `NUM` not matching the range-numbered
+  `8-9. Niddā-suniddāvimānavaṇṇanā`, which also hid that section from the BODY
+  scan. Had the Mātikā gate merely counted instead of refusing, those nine
+  paragraphs would have shipped under `Uposathāvimānavaṇṇanā`. §8a.
+  **115 volumes untouched.** The canon reader is blind in 20Khu03, 29Abhi01 and
   36–40Abhi; the commentary reader has been tried on exactly two volumes.
   Still open: the vagga at ord 483 (`'Itthivimāna      4. Mañjiṭṭhakavagga'`,
   two headings glued), and the three headings stored as numbered paragraphs.
@@ -325,6 +365,28 @@ any session that starts fresh:**
 * **18 register candidates**, plus the per-entry audit of the 22 other-layer
   entries. The PDF correction itself (ToUnicode injection, one volume first)
   stays on standby by your decision.
+
+### The reader — found 2026-08-26 (second session)
+
+* ~~**Columns view put the canon under the Aṭṭhakathā heading.**~~ **FIXED**,
+  gated by `pipeline/check_columns.js`. Kept here because the shape of the
+  report matters: the reader said "P should be on the left", and **the column
+  order was never wrong**. Acting on the report as phrased would have moved the
+  headings away from the columns. `claude/the_columns_were_never_out_of_order.md`.
+* **Open, and it needs a browser: does row hover work in Columns at all?**
+  `.rowline` is `display:contents`, which generates no box, and the
+  `onmouseenter`/`onmouseleave` that drive `.rowline.hot .para` are attached to
+  it. jsdom does no layout so the probe cannot decide it. Recorded as a
+  question, not a finding.
+* **`check_fn_markers.js` OOMs at node's default heap** and passes at
+  `--max-old-space-size=6144`. Pre-existing (it never renders the columns
+  branch). Either raise it in the script or say so where the gates are listed —
+  right now it looks like a failure.
+* **`site/reader/sections/` is stale for all three volumes that got section
+  names** — `19Khu02`, `28KhuA09`, `27KhuA08`. Advisory, not blocking. The ☰
+  Contents is built by `buildOutline` from `c.headings`, NOT from the `sutta`
+  field, so the Contents does not yet list those sections even though the
+  citation and title bar do.
 
 ### Never looked at
 
