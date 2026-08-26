@@ -1,6 +1,56 @@
-# Closing 2026-08-09, re-verified 2026-08-23 — where things stand
+# Closing 2026-08-23 — where things stand
 
-> **Read this box first; it is newer than the rest of the file.**
+> # ⚠ ONE THING IS OWED, AND IT BLOCKS THE DEPLOY
+>
+> **`stamp_build.py` is refusing, and it is right to.** `pbreak` for `19Khu02`
+> and `28KhuA09` is older than its source. `derive.py` skips an existing output
+> and the sandbox cannot unlink, so it must be done on the host:
+>
+> ```bash
+> cd ~/Documents/OSBCT
+> rm -f .git/index.lock
+> for v in 19Khu02 28KhuA09; do
+>   mv site/reader/pbreak/$v.json /tmp/$v.pbreak.old
+>   python3 _xc/pagemark/derive.py $v --out site/reader/pbreak
+> done
+> md5sum /tmp/19Khu02.pbreak.old  site/reader/pbreak/19Khu02.json
+> md5sum /tmp/28KhuA09.pbreak.old site/reader/pbreak/28KhuA09.json
+> ```
+>
+> **The hashes should MATCH.** The section-name write added a `sutta` field and
+> touched no text and no page data; `pagespan.json` already rebuilt
+> byte-identical and the search index's `inv` is unchanged. **If they differ,
+> stop and look.** Then `stamp_build.py --write`, `./push.sh`, Actions → Run
+> workflow, and read `build.json?cb=$RANDOM`. Full steps: `RUN_ON_HOST.md`.
+>
+> Uncommitted work is real and gated: `COMMIT_MSG.bak` carries it.
+
+---
+
+## What happened on 2026-08-23 — one day, in order
+
+1. **`19Khu02 → 27KhuA08`, 437 links** moved off the commentary's reprint and
+   onto the comment. Gated red first, four printed pages read.
+2. **The worksheet re-measured** — and the answer was bigger than the numbers:
+   the pairs fall into **three book shapes**, only one of which is repairable.
+3. **`19Khu02 → 28KhuA09`, 350 links.** It mixes shapes A and B; the `tail()`
+   guard is the only reason 101 correct links were not moved off the commentary.
+4. **Shape C decided: leave as printed.** ~3,000 links closed as *not a defect*.
+5. **`mark_condemned.py --verify` was found dead** — crashing, not passing, since
+   `verdict` was introduced. No gate ran it.
+6. **The silence measured**, and it is not silence: about a third of the
+   "uncommented" verses are glossed collectively. **This corrected a claim I had
+   made the same morning.**
+7. **Section names extracted and written** — `19Khu02` 3 distinct → 444,
+   `28KhuA09` 1 → 47, both gated red first and read off printed pages.
+
+**Two of the day's largest findings came from an instrument being wrong, not
+from the work planned.** When a measure and a reading disagreed, the reading won
+every time.
+
+---
+
+> **Older box, still true where it does not conflict with the above.**
 >
 > **2026-08-23 — nothing is owed and nothing is broken.** Checked, not assumed:
 >
@@ -20,8 +70,8 @@
 >   `CITATION.cff` (commit `96e1eb0e8`). The niggahita display toggle — edition
 >   ṁ ↔ modern ṃ, display only — is live.
 >
-> **`RUN_ON_HOST.md` is stale**: it still describes the v2.7.1 release, which
-> shipped two releases ago. Nothing in it is owed. Do not work from it.
+> ~~**`RUN_ON_HOST.md` is stale**~~ — **rewritten 2026-08-23 and it is now the
+> live instruction sheet. Work from it.**
 
 ---
 
