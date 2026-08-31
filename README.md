@@ -9,7 +9,7 @@ Pāḷi Tipiṭaka, together with its **Aṭṭhakathā** (commentaries) and **�
 **Live site:** https://buddha-dhamma.net
 
 A project of the Instituto de Estudios Buddhistas Hispano (IEBH) and Buddhismo Theravāda
-México-Hispano AR (BTHAR).
+Hispano A.R. (BTHAR).
 
 ---
 
