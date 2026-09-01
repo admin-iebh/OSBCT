@@ -24,7 +24,7 @@ structure of the edition, links the three layers, and publishes the result as a 
 Key facts:
 
 - **118 volumes** — 40 Tipiṭaka, 52 Aṭṭhakathā, 26 Ṭīkā
-- **83,751 paragraphs**, hierarchically addressed and anchored to printed page numbers
+- **89,512 paragraphs**, hierarchically addressed and anchored to printed page numbers
 - **54,000+ variant readings** extracted from the footnote apparatus, tagged by witness siglum
 - **~94%** of canon paragraphs linked to their commentary (interval model), and onward to subcommentary
 - Pages render **pixel-identically to the print** — only the text layer was corrected
@@ -65,9 +65,9 @@ apparatus) are released under the licence in [`LICENSE.md`](LICENSE.md).
 See [`CITATION.cff`](CITATION.cff). Each release is archived on Zenodo. Cite the **concept DOI**
 [10.5281/zenodo.21495338](https://doi.org/10.5281/zenodo.21495338), which always resolves to the
 newest version; individual versions have their own DOIs
-([v2.8.0](https://doi.org/10.5281/zenodo.21727002),
-[v2.7.1](https://doi.org/10.5281/zenodo.21708525),
-[v2.7.0](https://doi.org/10.5281/zenodo.21495339)).
+([v2.8.0](https://doi.org/10.5281/zenodo.21967270),
+[v2.7.1](https://doi.org/10.5281/zenodo.21864177),
+[v2.7.0](https://doi.org/10.5281/zenodo.21863987)).
 
 ## Contact
 
