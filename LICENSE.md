@@ -30,7 +30,7 @@ Attribution to the original edition and publisher must be preserved in all cases
 ## MIT License (project code)
 
 Copyright (c) 2026 Instituto de Estudios Buddhistas Hispano (IEBH) and
-Buddhismo Theravāda México-Hispano AR (BTHAR)
+Buddhismo Theravāda Hispano A.R. (BTHAR)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 associated documentation files (the "Software"), to deal in the Software without restriction,
