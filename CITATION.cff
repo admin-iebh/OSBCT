@@ -25,6 +25,25 @@ repository-code: "https://github.com/bthar-mx/OSBCT"
 license: CC-BY-4.0
 version: "2.8.0"
 date-released: "2026-08-16"
+# 2026-08-31: the AUTHOR NAME was wrong, and had been wrong in every deposit.
+# This file, `.zenodo.json`, the README and `LICENSE.md` all named "Buddhismo
+# Theravāda México-Hispano AR".  The entity recognised by SEGOB (Secretaría de
+# Gobernación) as an Asociación Religiosa is "Buddhismo Theravāda Hispano
+# A.R." — without México — and that is the name under which the GitHub
+# organisation `bthar-mx` is held.  Corrected in all four files.
+# NO VERSION BUMP and no tag: the text, the corpus figures and every DOI are
+# untouched, so the three-file checklist does not apply here.
+# !!! THE TWELVE EXISTING ZENODO RECORDS STILL CARRY THE OLD NAME.  Only
+# `.zenodo.json` reaches a deposit, and only deposits minted after this commit.
+# v1.0.0 through v2.8.0 credit an entity under a name it is not registered
+# under; each can be corrected in place on the record, which does not affect
+# its DOI (as was done for v2.4.0, see the note below).
+# 2026-08-31: THE README CLAIMED THE PĀḶI TEXT WAS PUBLIC DOMAIN.  It is not.
+# `LICENSE.md` has always stated the position correctly — the edition's notice
+# permits duplication for free, NON-COMMERCIAL distribution — and the README
+# contradicted both that file and its own next sentence.  The same overstated
+# claim was live on the site (`site/about.html`, ab_source2, both languages)
+# and is corrected there too.  The corpus figures and DOIs are unaffected.
 # 2026-08-16, v2.8.0: no text changed — the niggahita becomes the reader's
 # choice.  The reader and the search page gain a toggle between the edition's
 # ṁ and the modern ṃ.  Display-only and bijective: the stored corpus carries
