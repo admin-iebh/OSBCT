@@ -42,20 +42,26 @@ The method, verification, and known limitations are documented in [`docs/`](docs
 | `pipeline/` | extraction code (`extract.py`); see [`docs/`](docs/) for the full method |
 | `docs/` | method and verification reports |
 
-The source and Unicode PDFs are **not** in this repository (public domain; served from Cloudflare
+The source and Unicode PDFs are **not** in this repository (freely distributable on the terms
+above; served from Cloudflare
 R2 and archived on Zenodo). See `.gitignore`.
 
 ## Deploying
 
 `site/` is a self-contained static site. See [`site/DEPLOY.md`](site/DEPLOY.md). In short: it is served
-on Cloudflare Pages; the downloadable PDFs are on Cloudflare R2 (see
-[`site/DOWNLOADS-R2-SETUP.md`](site/DOWNLOADS-R2-SETUP.md)).
+by GitHub Pages, published from `site/` by `.github/workflows/deploy-pages.yml` on every push to
+`main`; the downloadable PDFs are on Cloudflare R2 (see
+[`site/DOWNLOADS-R2-SETUP.md`](site/DOWNLOADS-R2-SETUP.md)). The Cloudflare Pages route described in
+`DEPLOY.md` is an alternative and is not live.
 
 ## Source & licensing
 
 **Text.** The Pāḷi text is from the Sixth Council edition published by the Ministry of Religious
-Affairs, Yangon, for free distribution as a Gift of the Dhamma. It is treated here as public
-domain. *(Confirm the exact terms before any commercial reuse — see the credits notice.)*
+Affairs, Yangon, for free distribution as a Gift of the Dhamma. The edition's own notice permits
+duplication for **free, non-commercial distribution**, and this project redistributes it on those
+terms. It is *not* public domain. Anyone intending commercial reuse should confirm the applicable
+terms with the original publisher rather than relying on this repository — see
+[`LICENSE.md`](LICENSE.md).
 
 **This project's code and data** (the pipeline, the website, the extracted structure, links, and
 apparatus) are released under the licence in [`LICENSE.md`](LICENSE.md).
