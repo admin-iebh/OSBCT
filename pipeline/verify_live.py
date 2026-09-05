@@ -119,6 +119,27 @@ def local_wlv():
     return m.group(1) if m else None
 
 
+def local_panel_tag():
+    """The `panel.js?v=` the working copy's reader2.html asks for.
+
+    !!! THIS IS NOT WLV, AND THE GATE USED TO ASSUME IT WAS (2026-09-05).  The
+    script tag versions the panel's CODE; WLV versions the panel's DATA (the R2
+    stores), and the two move independently by design — a code-only change to
+    panel.js bumps the tag and must NOT bump WLV, or every reader re-fetches
+    stores that did not change.  On 2026-09-05 the tag went to 20260905a with
+    WLV still 20260810a, the deploy was correct and complete, and this gate
+    reported "GitHub Pages has not finished deploying.  Wait a minute" — a
+    wrong diagnosis with a confident remedy.  The invariant is: the LIVE page
+    asks for the same tag the WORKING COPY asks for.
+    """
+    try:
+        s = open(os.path.join(ROOT, 'site/reader/reader2.html'), encoding='utf-8').read()
+    except OSError:
+        return None
+    m = re.search(r'panel\.js\?v=([^"\']*)', s)
+    return m.group(1) if m else None
+
+
 def local_build():
     s = open(os.path.join(ROOT, 'site/reader/reader2.html'), encoding='utf-8').read()
     m = re.search(r"const BUILD='([^']*)'", s)
@@ -128,10 +149,11 @@ def local_build():
 def run(origin, redirect_host, quiet=False):
     want = local_build()
     wlv = local_wlv()
+    ptag = local_panel_tag()
     if not want:
         print('cannot read BUILD from the local reader2.html'); return 1
-    print('working copy BUILD %s   WLV %s   origin %s\n'
-          % (want, wlv or '(none)', origin))
+    print('working copy BUILD %s   WLV %s   panel.js?v=%s   origin %s\n'
+          % (want, wlv or '(none)', ptag or '(none)', origin))
     bad = 0
     for path, local, kind in TARGETS:
         url = origin.rstrip('/') + path
@@ -166,13 +188,13 @@ def run(origin, redirect_host, quiet=False):
                     # the same trap one file over: stale HTML asks for the
                     # stale panel.js, and the ?v= on the script tag cannot
                     # help because it is IN the stale HTML.  Name it plainly.
-                    if wlv and 'panel.js' in txt \
-                            and ('panel.js?v=' + wlv) not in txt:
+                    if ptag and 'panel.js' in txt \
+                            and ('panel.js?v=' + ptag) not in txt:
                         live_v = re.search(r'panel\.js\?v=([^"\']*)', txt)
                         notes.append('the live page asks for panel.js?v=%s but this '
-                                     'copy ships WLV %s — the word-lookup panel a '
+                                     'copy asks for ?v=%s — the word-lookup panel a '
                                      'visitor gets is NOT this one'
-                                     % (live_v.group(1) if live_v else '(none)', wlv))
+                                     % (live_v.group(1) if live_v else '(none)', ptag))
                 else:
                     if 'reader2.html' not in txt or len(body_a) > 8000:
                         notes.append('does NOT look like the retirement stub '
