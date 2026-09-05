@@ -1,0 +1,141 @@
+{
+ "recorded": "2026-09-05",
+ "lat": 40,
+ "results": {
+  "search: cold median word": {
+   "q": "yamakasālānaṁ",
+   "req": 19,
+   "raw": 15260637,
+   "gz": 3531797,
+   "ms": 731,
+   "waves": 18,
+   "ktxt": false,
+   "status": "12 occurrence(s) in 11 paragraph(s), 8 volume(s)."
+  },
+  "search: warm, same word": {
+   "q": "yamakasālānaṁ",
+   "req": 0,
+   "raw": 0,
+   "gz": 0,
+   "ms": 12,
+   "waves": 0,
+   "ktxt": false,
+   "status": "12 occurrence(s) in 11 paragraph(s), 8 volume(s)."
+  },
+  "search: pa- word": {
+   "q": "paṭisambhidā",
+   "req": 105,
+   "raw": 106046666,
+   "gz": 25579488,
+   "ms": 3999,
+   "waves": 100,
+   "ktxt": false,
+   "status": "875 occurrence(s) in 765 paragraph(s), 58 volume(s)."
+  },
+  "search: common word (117 vols)": {
+   "q": "tassā",
+   "req": 124,
+   "raw": 193532431,
+   "gz": 43317580,
+   "ms": 4432,
+   "waves": 111,
+   "ktxt": false,
+   "status": "36,644 occurrence(s) in 14,287 paragraph(s), 117 volume(s)."
+  },
+  "search: prefix wildcard": {
+   "q": "dhamm*",
+   "req": 126,
+   "raw": 195191440,
+   "gz": 43479194,
+   "ms": 3856,
+   "waves": 96,
+   "ktxt": false,
+   "status": "88,895 occurrence(s) in 22,451 paragraph(s), 118 volume(s)."
+  },
+  "search: suffix wildcard": {
+   "q": "*vaggo",
+   "req": 156,
+   "raw": 121751035,
+   "gz": 29262991,
+   "ms": 2874,
+   "waves": 72,
+   "ktxt": true,
+   "status": "199 occurrence(s) in 109 paragraph(s), 55 volume(s)."
+  },
+  "search: substring sweep": {
+   "q": "amakasālāna",
+   "req": 57,
+   "raw": 55075748,
+   "gz": 13208401,
+   "ms": 1605,
+   "waves": 40,
+   "ktxt": true,
+   "status": "44 occurrence(s) in 38 paragraph(s), 26 volume(s)."
+  },
+  "search: phrase": {
+   "q": "evaṁ me sutaṁ",
+   "req": 155,
+   "raw": 176274345,
+   "gz": 40370123,
+   "ms": 3943,
+   "waves": 99,
+   "ktxt": false,
+   "status": "515 occurrence(s) in 495 paragraph(s), 30 volume(s) — and 168 paragraph(s) with all 3 word"
+  },
+  "search: no diacritics typed": {
+   "q": "nibbana",
+   "req": 53,
+   "raw": 46104212,
+   "gz": 10764007,
+   "ms": 1305,
+   "waves": 33,
+   "ktxt": false,
+   "status": "73 occurrence(s) in 56 paragraph(s), 25 volume(s)."
+  },
+  "reader: cold median word": {
+   "q": "yamakasālānaṁ",
+   "req": 19,
+   "raw": 15260637,
+   "gz": 3531797,
+   "ms": 440,
+   "waves": 11,
+   "status": "12 occurrence(s) for “yamakasālānaṁ” in 11 paragraph(s), 8 volume(s)"
+  },
+  "reader: common word (117 vols)": {
+   "q": "tassā",
+   "req": 124,
+   "raw": 193532431,
+   "gz": 43317580,
+   "ms": 3269,
+   "waves": 82,
+   "status": "45 sections"
+  },
+  "lookup: cold common word": {
+   "q": "tathāgato",
+   "req": 18,
+   "raw": 1461675,
+   "gz": 306150,
+   "ms": 325,
+   "waves": 8,
+   "status": "2902 corpus · 1558 canon · 1016 aṭṭh. · 328 ṭīkāAlso spelt: tathagato 2"
+  },
+  "lookup: warm, second word": {
+   "q": "bhagavā",
+   "req": 16,
+   "raw": 415278,
+   "gz": 125184,
+   "ms": 213,
+   "waves": 5,
+   "status": "17211 corpus · 8820 canon · 6149 aṭṭh. · 2242 ṭīkāAlso spelt: bhāgavā 27 bhagāvā 1"
+  },
+  "lookup: lemma-only word": {
+   "q": "atappaka",
+   "req": 8,
+   "raw": 1284122,
+   "gz": 257007,
+   "ms": 261,
+   "waves": 7,
+   "status": ""
+  }
+ }
+}

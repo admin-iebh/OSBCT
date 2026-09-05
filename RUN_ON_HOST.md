@@ -1,4 +1,48 @@
-# Run on the host — 2026-09-05
+# Run on the host — 2026-09-05 (second session)
+
+## The command
+
+```bash
+cd ~/Documents/OSBCT
+git push
+```
+
+**Plain `git push`, not `./push.sh`.** The commit is already made — HEAD, whose subject is
+"Search: exact diacritics by default; postings shards + text chunks replace
+per-volume downloads" — by `./push.sh` run from the sandbox, which committed and
+then could not reach github.com (no DNS there). Running `./push.sh` again would
+stop at guard 2, correctly, because `COMMIT_MSG.bak` is the message of HEAD.
+
+The tree is stamped **`13d1e3a5b704`, dated 2026-09-05** (sandbox clock checked
+against the environment's date: both 2026-09-05). Do not re-stamp: nothing under
+`site/` has changed since, and `stamp_build.py` is not idempotent.
+
+Then, **once Pages has finished** — this deploy adds ~2,040 files under
+`site/index/` (tp/ + tx/) and removes 275 (tb/), so give it the four minutes and
+more — check cache-busted:
+
+```
+https://buddha-dhamma.net/build.json?cb=<anything-new>
+   ->  {"build": "13d1e3a5b704", "date": "2026-09-05"}
+https://buddha-dhamma.net/search.html?cb=<anything-new>
+   ->  search `tassā`: 4,322 occurrence(s) … · exact diacritics
+       click `a = ā`, again: 36,644 … · diacritics folded
+```
+
+Then `python3 pipeline/verify_live.py` from the host — it now fetches
+`searchcore.js` and `index/tp/index.json` as well.
+
+## Then paste the project instructions
+
+§7 was revised (folding is no longer "essential for usability"). The whole
+revised file was delivered as `OSBCT_Project_Instructions.md` in the session
+outputs: replace the project's knowledge copy, paste it into the "Set project
+instructions" field, and update the header line that says PENDING.
+
+---
+
+# Run on the host — 2026-09-05 (first session) — DONE, kept as record
+
 
 ## The command
 

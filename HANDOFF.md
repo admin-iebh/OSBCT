@@ -1,6 +1,16 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-08-25a)
+## START HERE (updated 2026-09-05b)
+
+* **SEARCH REBUILT 2026-09-05: exact diacritics by default, postings shards instead
+  of per-volume downloads, one implementation in `site/searchcore.js`.** Read
+  `claude/search_exact_by_default_and_postings_shards.md` and the top of
+  `NEXT_SESSION.md` before touching search.html, reader2.html, panel.js or
+  `site/index/`. `site/index/tb/` and `build_term_buckets.py` are gone;
+  `build_term_postings.py` replaced them. `pipeline/perf_search.js` is the
+  performance gate. The project-instructions paste (§7) is still owed.
+
+## START HERE — earlier (2026-08-25a)
 
 * **THE REPO MOVED TO AN ORGANIZATION (2026-08-25).** OSBCT now lives at
   `bthar-mx/OSBCT`; `gramaticas-pali-es` moved to `bthar-mx` the same day.

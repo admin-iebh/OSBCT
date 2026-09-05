@@ -1,4 +1,49 @@
-# Closing 2026-09-05 — where things stand
+# Closing 2026-09-05 (second session) — search rebuilt: exact diacritics, no more volume downloads
+
+> # THE SEARCH CHANGED SHAPE TODAY. READ `claude/search_exact_by_default_and_postings_shards.md` BEFORE TOUCHING search.html, reader2.html, panel.js OR site/index/.
+>
+> **Measured first, on the live site, in the browser pane** (the previous session could
+> not load it; that was its tooling): Pages and R2 BOTH compress in transit
+> (0.19–0.25), so pre-compression was never the missing win. The cost of a search
+> was the per-volume `<VOL>.idx.json`: `tassā` pulled 117 of them, ~40 MB compressed,
+> 190 MB parsed, 4.2 s. A dictionary lookup was a chain six round trips deep.
+>
+> **§0 first, gate red first.** `tassa` ≠ `tassā`: the index keys are now the PRINTED
+> tokens, matching is exact by default, folding is the `a = ā` chip (both pages,
+> remembered), and every result line names the mode. `check_search.js` failed 15
+> assertions on `a164a57cc4c3` (the run is delivered with the session as
+> `check_search_red_run_2026-09-05.txt`), and is green now, legacy fallback included.
+> 34,134 folded keys (5.3%) were merging printed forms.
+>
+> **Then the store.** `site/index/tp/` (1,031 postings shards, folded-prefix names,
+> ≤ 500 KB) + `site/index/tx/` (1,008 text chunks) replace `tb/`; one shard answers a
+> word, text is fetched for the rows drawn. `site/searchcore.js` is the ONE
+> implementation — the two pages are its UIs. `tassā`: 43.3 → 2.26 MB on the wire.
+> `pipeline/perf_search.js` is the performance gate (`perf_baseline.json`; the
+> pre-change numbers are in `perf_baseline_2026-09-05_before.json`).
+>
+> **Dictionary:** `elook('form')` starts beside the first tier; three manifests warm on
+> pointerdown. NO store changed — no `r2_upload.sh`, no `WLV` bump; `panel.js?v=20260905a`.
+>
+> ## Owed
+>
+> 1. **PASTE THE REVISED PROJECT INSTRUCTIONS.** §7 no longer says folding is "essential
+>    for usability". The revised whole file was delivered as `OSBCT_Project_Instructions.md`
+>    in the session outputs; replace the knowledge copy and paste it into the field, then
+>    update its header line. Until then a session reading the field reads the OLD rule.
+> 2. **Cloudflare cache rule for `dict.buddha-dhamma.net`** — every `.json` is
+>    `cf-cache-status: DYNAMIC`; the manifest cold was 801 ms. Dashboard, not repo.
+> 3. Lever 3 of the brief (`k.txt`, 12.5 MB raw / 2.7 MB gz per page load for substring and
+>    `*`-suffix sweeps) is not done; how often real queries take it is unmeasured.
+> 4. `27KhuA08`'s ☰ Contents — advisory, from the previous session, `RUN_ON_HOST.md` §3.
+>
+> Gates run green this session: check_search, check_lookup_reach (12/12), check_apd_gear,
+> check_columns, check_reader_range (37/37 — it had to learn to inline searchcore.js),
+> check_archive_fallback, check_dimmed, check_tipplace, check_layout 06Di01, perf_search.
+> `git ls-files site/` grows by ~2,040 files (tp/ + tx/) and loses 275 (tb/): if a Pages
+> deploy times out at ~11m40s, `deploy-pages.yml`'s note on the file-count clock applies.
+
+# Closing 2026-09-05 (first session) — where things stood
 
 > # ⚠ THE DATES OF THE 2026-09-05 SESSION WERE WRITTEN AS 2026-08-26, AND ARE NOW CORRECTED
 >

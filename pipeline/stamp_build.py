@@ -107,7 +107,9 @@ for base, dirs, files in os.walk(SITE):
         # key is missing, so every wired tooltip would have read `tip_toc`,
         # `tip_nav`, `tip_larger` on screen.  Hashing it and versioning the
         # <script src> is what stops that.
-        if not (f.endswith('.json') or f == 'i18n.js'):
+        # searchcore.js joined it on 2026-09-05: one search implementation for
+        # both pages, loaded by <script src>, versioned the same way.
+        if not (f.endswith('.json') or f in ('i18n.js', 'searchcore.js')):
             continue
         p = os.path.join(base, f)
         st = os.stat(p)
@@ -115,7 +117,7 @@ for base, dirs, files in os.walk(SITE):
                                   int(st.st_mtime))).encode())
         n += 1
 stamp = h.hexdigest()[:12]
-print('%d JSON + i18n file(s) under site/  ->  BUILD %s' % (n, stamp))
+print('%d JSON + i18n/searchcore file(s) under site/  ->  BUILD %s' % (n, stamp))
 
 for rp in READERS:
     if not os.path.exists(rp):
@@ -163,7 +165,7 @@ if '--write' in sys.argv:
     print('   site/build.json      %s' % stamp)
 
 # Version every <script src="…i18n.js"> so a new stamp forces a re-fetch.
-I18N_SRC = re.compile(r'(<script src="[^"]*i18n\.js)(\?v=[^"]*)?(")')
+I18N_SRC = re.compile(r'(<script src="[^"]*(?:i18n|searchcore)\.js)(\?v=[^"]*)?(")')
 pages = [os.path.join(b, f) for b, d, fs in os.walk(SITE) for f in fs
          if f.endswith('.html')]
 touched = 0

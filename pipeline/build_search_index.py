@@ -1,19 +1,29 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Rebuild the diacritic-insensitive search index from the CURRENT corpora.
+"""Rebuild the search index from the CURRENT corpora — EXACT keys since
+2026-09-05.
 
 !!! WHY THIS FILE EXISTS.  `site/index/` was built on 2026-07-23 and NO BUILDER
 WAS EVER COMMITTED — so every corpus rebuilt since (the seven Vinaya Ṭīkā, the
 Dīgha/Majjhima/Saṁyutta/Aṅguttara Ṭīkā, 05Kankha, 01VinA01 …) is indexed in its
 OLD shape.  Measured 2026-07-30g: **65 of 118 shards disagree with their corpus
 on paragraph count**, 07ViT07 holding 22 against 420 and 05Kankha 534 against
-932.  Search cannot find text it has no posting for, so those volumes are
+932.  Search cannot find text it has no posting for, so those volumes were
 substantially unsearchable on the live site.
 
-THE FORMAT IS REPRODUCED, NOT INVENTED.  It was read off the shipped index and
-this builder is checked against a volume whose corpus has NOT changed since:
-`--verify VOL` rebuilds that volume and compares the result with the shipped
-shard, term for term and posting for posting.  01Vin01 is the reference.
+!!! THE KEYS ARE EXACT NOW, NOT FOLDED (2026-09-05, reader: "in Pāḷi `tassa`
+and `tassā` are different words").  Until this date every key was folded —
+`tassā` -> `tassa` — so a search for either reported the occurrences of both,
+36,644 against the 4,322 that are actually `tassā`.  A key is now the token as
+the edition prints it: NFC, lower-cased, and the modern ṃ written as the
+edition's ṁ (the corpus carries ṁ only; the reader's niggahita toggle is
+display-only).  Nothing else is changed.  Measured over the corpus: 682,010
+exact keys against 643,958 folded; 34,134 folded keys (5.3%) were merging two
+or more printed forms.  Diacritic folding is still offered — as a switch in the
+UI, resolved on the client from these keys (`site/index/tp/`, built from the
+shards by `build_term_postings.py`) — never as the stored form.
+`--verify VOL` against a shard built before this date will therefore report
+`DIFFERS` on the term set: that is the change, not a fault.
 
     index/terms.compact.json  {vols:[code], layers:[folder], terms:{t:[volIdx]}}
     index/<VOL>.idx.json      {vol, source, paras:[…], inv:{t:[[paraIdx,count]]}}
@@ -24,6 +34,11 @@ had no way to name a paragraph except by `id`, which is NOT unique (12,110
 collisions across 65 volumes, REBUILD-PLAN.md Phase 2), and a deep link into the
 reader needs the ordinal.  Extra keys are ignored by `search.html`.
 
+These per-volume shards are no longer what the pages fetch for a search
+(2026-09-05: `tp/` postings shards and `tx/` text chunks are — see
+`build_term_postings.py`).  They remain the legacy fallback for an unpacked
+deposit without `tp/`, and the gates' ground truth.
+
 Usage: python3 pipeline/build_search_index.py [--verify VOL] [--write]
 """
 import json, os, re, sys, unicodedata
@@ -33,27 +48,40 @@ OUT = os.path.join(ROOT, 'site', 'index')
 FOLDER = {'canon': 'pali-unicode', 'commentary': 'atthakatha-unicode',
           'subcommentary': 'tika-unicode'}
 
-# THE FOLD IS THE POINT OF THE INDEX — `nibbana` must find *nibbāna*.  Derived
-# from the shipped index's own keys (`taṁ`->`tam`, `katamaṁ`->`katamam`,
-# `vā`->`va`) and then checked against it wholesale by `--verify`.
+# THE KEY IS THE PRINTED TOKEN.  `canon()` is the whole normalisation: NFC,
+# lower case, ṃ -> ṁ.  The character census over all 118 volumes (2026-09-05)
+# finds exactly a–z plus ā ī ū ṁ ṅ ñ ṇ ṭ ḍ ḷ inside words, and nothing else;
+# `build()` asserts that again on every run so a stray glyph cannot enter the
+# index unnoticed.
+PALI = set('abcdefghijklmnopqrstuvwxyzāīūṁṅñṇṭḍḷ')
+
+
+def canon(s):
+    return unicodedata.normalize('NFC', s or '').lower().replace('ṃ', 'ṁ')
+
+
+# kept for the fold switch's consumers and for `build_term_postings.py`, which
+# names its shards by the FOLDED prefix so a folded query can find them
 _MAP = {'ā': 'a', 'ī': 'i', 'ū': 'u', 'ṁ': 'm', 'ṃ': 'm', 'ṅ': 'n', 'ñ': 'n',
-        'ṇ': 'n', 'ṭ': 't', 'ḍ': 'd', 'ḷ': 'l', 'ḹ': 'l', 'ṛ': 'r', 'ś': 's',
-        'ṣ': 's', 'ḥ': 'h', 'ẽ': 'e', 'õ': 'o'}
+        'ṇ': 'n', 'ṭ': 't', 'ḍ': 'd', 'ḷ': 'l'}
 
 
 def fold(s):
-    s = unicodedata.normalize('NFC', s).lower()
-    return ''.join(_MAP.get(c, c) for c in s)
+    return ''.join(_MAP.get(c, c) for c in canon(s))
 
 
 _TOK = re.compile(r'[^a-zāīūṁṃṅñṇṭḍḷ]+', re.I)
 
 
 def terms_of(text):
-    """Every folded term in one paragraph, with its count, in first-seen order."""
+    """Every exact term in one paragraph, with its count, in first-seen order."""
     out = {}
-    for w in _TOK.split(fold(text or '')):
+    for w in _TOK.split(canon(text)):
         if w:
+            bad = set(w) - PALI
+            if bad:
+                raise SystemExit('REFUSING: token %r carries %r outside the Pāḷi '
+                                 'alphabet' % (w, sorted(bad)))
             out[w] = out.get(w, 0) + 1
     return out
 

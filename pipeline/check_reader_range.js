@@ -60,6 +60,8 @@ function boot(opts){
   let html=readerHTML()
     .replace(/<script src="\.\.\/i18n\.js[^"]*"><\/script>/,
              '<script>'+fs.readFileSync('site/i18n.js','utf8')+'</'+'script>')
+    .replace(/<script src="\.\.\/searchcore\.js[^"]*"><\/script>/,
+             '<script>'+fs.readFileSync('site/searchcore.js','utf8')+'</'+'script>')
     .replace(/<script src="panel\.js[^"]*"( defer)?><\/script>/,'');
   const vc=new VirtualConsole();          // swallow jsdom's navigation notices
   const state={build:opts.build||null, replaced:[], vis:'visible'};

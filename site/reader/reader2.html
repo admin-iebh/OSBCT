@@ -137,6 +137,8 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
          border:1px solid var(--line);border-radius:12px;padding:2px 9px;cursor:pointer}
 .sr-chip:hover{background:var(--hover)}
 .sr-chip.on{color:var(--accent);border-color:var(--accent)}
+.sr-chip.sr-fold{font-family:'Gentium Plus',serif;font-size:12px}
+.sr-foldlink{color:var(--accent);cursor:pointer;text-decoration:underline}
 .sr-help{margin-left:auto;padding:2px 8px}
 .sr-helpbox{font-family:'Inter',sans-serif;font-size:11.5px;line-height:1.55;color:var(--mut);
             padding:6px 12px 8px;border-bottom:1px solid var(--line)}
@@ -319,7 +321,8 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=a164a57cc4c3"></script>
+<script src="../i18n.js?v=13d1e3a5b704"></script>
+<script src="../searchcore.js?v=13d1e3a5b704"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -336,7 +339,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
      on demand from stores/lookup_eval/family/).  WLV moved too this time —
      20260809a — because the STORES changed: dpd/ rebuilt on the 2026-07-28
      DPD release, family/ is new, and BOTH must be uploaded to the R2 bucket. -->
-<script src="panel.js?v=20260815a" defer></script>
+<script src="panel.js?v=20260905a" defer></script>
 </head>
 <body>
   <div id="errbar" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:999;background:#7f1d1d;color:#fff;font:12px/1.4 ui-monospace,monospace;padding:8px 10px;white-space:pre-wrap"></div>
@@ -521,7 +524,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='a164a57cc4c3';
+const BUILD='13d1e3a5b704';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -3393,14 +3396,17 @@ function tipShow(el){
 })();
 
 // ---------- search (top bar, real index) ----------
+// ONE IMPLEMENTATION, IN ../searchcore.js (2026-09-05).  This box is its UI;
+// search.html is the other.  The gate (pipeline/check_search.js) boots both,
+// because the two copies that used to live here and there drifted twice.
+// Two things changed with the move and they are recorded there in full:
+// diacritics are matched EXACTLY by default (reader: `tassa` and `tassā` are
+// different words) with folding behind the a = ā chip, and a search no longer
+// downloads the volumes it hits — postings shards and text chunks instead of
+// 117 per-volume files for one common word.
 const FOLDM={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
 const foldS=s=>(s||'').toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLDM[c]||c);
 const foldName=s=>foldS(s).replace(/[^a-z]/g,'');
-// `*` IS A WILDCARD, AND IT MEANS TWO DIFFERENT THINGS IN TWO ADDRESS SPACES
-// (2026-08-08).  Against the TERM KEYS it is `.*` — a key is a single word, so
-// it cannot overshoot.  Against RUNNING TEXT it must be `\S*`, or `dhamm* ti`
-// would let the star swallow the space and match across a word boundary,
-// turning a two-word phrase into one elastic word.
 const rxEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 // The homage line drawn at a book's head reads the SAME everywhere
 // (2026-08-08, reader's decision); the corpus and incipit maps keep the
@@ -3413,7 +3419,13 @@ const HOMAGE='Namo tassa Bhagavato Arahato Sammāsambuddhassa.';
 // at its own printed page and recorded in the errata register.
 const homageNorm=s=>/^[Nn]amo\s+[Tt]assa\s+\S+\s+[Aa]rahato\s+[Ss]ammāsam[Bb]uddhassa\.?\s*$/.test((s||'').trim())?HOMAGE:s;
 const wpat=w=>w.indexOf('*')>=0?w.split('*').map(rxEsc).join('\\S*'):rxEsc(w);
-let TERMS=null, shardCache={}, TERMKEYS=null, SNAMES=null, SNFOLD=null;
+const FOLDKEY='osbct-fold';
+let sFold=false; try{ sFold=localStorage.getItem(FOLDKEY)==='1'; }catch(e){}
+// guarded: if ../searchcore.js did not load, the READER must still draw —
+// only the box says so.  (A rig that inlines i18n.js and not this file is
+// exactly such a page: check_reader_range.js, before it learned the file.)
+const SC=window.SearchCore?SearchCore.create({base:'../index/',bust:u=>u+'?v='+BUILD}):null;
+let SNAMES=null, SNNORM=null, SNFOLD=null;
 // !!! A SUTTA'S NAME IS USUALLY NOT IN ITS OWN PROSE.  Measured over the 2,593
 // distinct sutta names in the corpus: 16 are indexed as an exact term, 348 more
 // are reachable once the lookup does substrings — and **2,229 occur in no
@@ -3423,181 +3435,14 @@ let TERMS=null, shardCache={}, TERMKEYS=null, SNAMES=null, SNFOLD=null;
 // still find nothing however good the text matching got.
 async function ensureNames(){ if(SNAMES!==null) return;
   SNAMES=await jget('../index/names.json',null);
+  SNNORM=SNAMES?SNAMES.labels.map(SearchCore.canonS):null;
   SNFOLD=SNAMES?SNAMES.labels.map(foldS):null; }
-// !!! THE LOOKUP WAS EXACT-TOKEN WHILE THE PAGE PROMISED SUBSTRING
-// (2026-07-30m, user-reported).  `TERMS[ft]` is a key lookup, so `saṅgītisutta`
-// found nothing although `saṅgītisuttaṁ` is indexed in two volumes and thirteen
-// paragraphs carry the string — the edition inflects, so a bare stem is exactly
-// what a reader types and exactly what failed.  The footer has claimed
-// "exact / substring" all along.
-// Exact still wins outright; otherwise the term list is scanned once, cached,
-// and every term CONTAINING the query contributes its postings.
-function matchTerms(ft){
-  if(!TERMS) return [];
-  // `*` wildcard (2026-08-08): anchored regex over the key list — `dhamm*` is
-  // a prefix, `*vaggo` a suffix, `dham*ti` both ends pinned.  The full-key
-  // scan costs what the substring sweep costs, measured 7–15 ms over 643,965
-  // keys, and the same floor and cap apply: at least 3 LITERAL letters, or
-  // `a*` would be the `og` incident with a star on it.
-  if(ft.indexOf('*')>=0){
-    if(ft.replace(/\*/g,'').length<3) return [];
-    if(!TERMKEYS) TERMKEYS=Object.keys(TERMS.terms);
-    const rx=new RegExp('^'+ft.split('*').map(rxEsc).join('.*')+'$');
-    const out=[];
-    for(let i=0;i<TERMKEYS.length;i++){ if(rx.test(TERMKEYS[i])){ out.push(TERMKEYS[i]); if(out.length>=500) break; } }
-    return out;
-  }
-  if(TERMS.terms[ft]) return [ft];
-  // A SUBSTRING SWEEP ON ONE OR TWO LETTERS IS NOT A SEARCH.  `og` matched 500
-  // terms across most of the corpus and pulled a shard for each — seconds of
-  // work for a result nobody wants, and it is what made the race above visible.
-  if(ft.length<3) return [];
-  if(!TERMKEYS) TERMKEYS=Object.keys(TERMS.terms);
-  const out=[];
-  for(let i=0;i<TERMKEYS.length;i++){ if(TERMKEYS[i].indexOf(ft)>=0){ out.push(TERMKEYS[i]); if(out.length>=500) break; } }
-  return out;
-}
-// !!! A FAILED FETCH MUST NOT BE CACHED AS AN ANSWER (2026-08-02,
-// user-reported: "the search box only works when there is text in the reader
-// pane").  This was `if(TERMS) return; TERMS = await jget(url, {terms:{}})` —
-// and `jget` returns its fallback on ANY error.  So ONE failed, aborted or
-// timed-out request for the 22 MB term map installed an EMPTY term map as
-// though it were the answer, and `if(TERMS) return` then guaranteed it was
-// never fetched again: every later keystroke matched nothing, in silence, for
-// the rest of the page load.
-//
-// That is the same shape as `jget()` failing silently everywhere else (the
-// standing open item), and it explains the reported correlation with an empty
-// pane WITHOUT the pane being the cause: on a cold load this 22 MB request
-// contends with nav.json, pageindex, pagespan, concordance and the fonts,
-// which is where it is most likely to lose.  Once a volume is open those are
-// done and it succeeds — so the box "only works when there is text on screen".
-//
-// A failure is now remembered AS a failure, retried on the next keystroke, and
-// SAID on screen rather than left to look like "no matches".
-let TERMSERR=null;
-async function ensureTerms(){ if(TERMS)return;
-  try{
-    const r=await fetch('../index/terms.compact.json?v='+BUILD);
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    const j=await r.json();
-    if(!j||!j.terms||!j.vols) throw new Error('malformed index');
-    TERMS=j; TERMSERR=null;
-  }catch(e){ TERMS=null; TERMSERR=(e&&e.message)||String(e); } }
-// ---------------- the BUCKETED term index (2026-08-09) ----------------
-// The 22 MB map above is no longer the first search's price: 643,965 keys
-// parsed before anything could answer was most of "the search is slow" and
-// the whole of the iOS freeze.  `pipeline/build_term_buckets.py` emits
-// `tb/meta.json` (vols/layers, tiny), 273 `tb/<p2>.json` postings buckets,
-// and `tb/k.txt` — every key in ONE newline-joined string, the sweep
-// surface, scanned with indexOf and never JSON-parsed.
-// `terms.compact.json` STAYS: it is the fallback an unpacked old deposit
-// needs (meta 404 → legacy path), and the gates' ground truth.
-// Failures are never cached as answers — the promise idiom from `shard()`.
-let TBMETA=null, TBERR=null, TBCACHE={}, KTXT=null;
-async function ensureIndex(){
-  if(TBMETA||TERMS) return;
-  try{
-    const r=await fetch('../index/tb/meta.json?v='+BUILD);
-    if(r.ok){ const j=await r.json();
-      if(j&&j.vols&&j.layers){ TBMETA=j; TBERR=null; return; }
-      throw new Error('malformed meta'); }
-    if(r.status===404){ await ensureTerms(); return; }
-    throw new Error('HTTP '+r.status);
-  }catch(e){ TBERR=(e&&e.message)||String(e); if(!TERMS) await ensureTerms(); }
-}
-const IVOLS=()=>TBMETA?TBMETA.vols:(TERMS?TERMS.vols:null);
-const ILAYERS=()=>TBMETA?TBMETA.layers:(TERMS?TERMS.layers:null);
-const p2of=k=>k.length>1?k.slice(0,2):k+'_';
-function tbBucket(p){ if(TBCACHE[p])return TBCACHE[p];
-  return TBCACHE[p]=(async()=>{ try{
-      const r=await fetch('../index/tb/'+p+'.json?v='+BUILD);
-      if(r.status===404) return {};              // no key starts with this
-      if(!r.ok) throw new Error('HTTP '+r.status);
-      return (await r.json()).terms||{};
-    }catch(e){ delete TBCACHE[p]; return null; } })(); }
-function tbKeys(){ if(KTXT)return KTXT;
-  return KTXT=(async()=>{ try{
-      const r=await fetch('../index/tb/k.txt?v='+BUILD);
-      if(!r.ok) throw new Error('HTTP '+r.status);
-      return await r.text();
-    }catch(e){ KTXT=null; return null; } })(); }
-// {keys:[...], vols:{key:[volIdx]}} — or null when a fetch failed (said on
-// screen, retried on the next keystroke; NEVER cached as "no matches")
-async function resolveWord(ft){
-  if(TERMS){ const m=matchTerms(ft); const vols={};
-    m.forEach(function(k){ vols[k]=TERMS.terms[k]||[]; });
-    return {keys:m,vols:vols}; }
-  if(ft.indexOf('*')>=0){
-    if(ft.replace(/\*/g,'').length<3) return {keys:[],vols:{}};
-    const rxs='^'+ft.split('*').map(rxEsc).join('.*')+'$';
-    const star=ft.indexOf('*');
-    if(star>=2){                        // dhamm*: one bucket holds them all
-      const b=await tbBucket(p2of(ft.slice(0,star)));
-      if(b===null) return null;
-      const rx=new RegExp(rxs); const keys=[];
-      for(const k in b){ if(rx.test(k)){ keys.push(k); if(keys.length>=500)break; } }
-      const vols={}; keys.forEach(function(k){ vols[k]=b[k]; });
-      return {keys:keys,vols:vols};
-    }
-    return await tbSweepRx(rxs);        // *vaggo: the key string, per line
-  }
-  const b=await tbBucket(p2of(ft));
-  if(b===null) return null;
-  if(b[ft]){ const vols={}; vols[ft]=b[ft]; return {keys:[ft],vols:vols}; }
-  if(ft.length<3) return {keys:[],vols:{}};
-  return await tbSweepSub(ft);          // substring, as the footer promises
-}
-async function tbSweepSub(ft){
-  const txt=await tbKeys(); if(txt==null) return null;
-  const keys=[]; let i=txt.indexOf(ft);
-  while(i>=0&&keys.length<500){
-    const a=txt.lastIndexOf('\n',i)+1;
-    let z=txt.indexOf('\n',i); if(z<0)z=txt.length;
-    keys.push(txt.slice(a,z));
-    i=txt.indexOf(ft,z);                // jump past the line: one hit per key
-  }
-  return await tbPostings(keys);
-}
-async function tbSweepRx(rxs){
-  const txt=await tbKeys(); if(txt==null) return null;
-  const rx=new RegExp(rxs,'gm');        // ^…$ with m: per line, no split
-  const keys=[]; let m;
-  while((m=rx.exec(txt))&&keys.length<500){ if(m[0])keys.push(m[0]); else rx.lastIndex++; }
-  return await tbPostings(keys);
-}
-async function tbPostings(keys){
-  const byp={}; keys.forEach(function(k){ (byp[p2of(k)]=byp[p2of(k)]||[]).push(k); });
-  const ps=Object.keys(byp); const vols={};
-  let i=0; const pool=[];
-  for(let w=0;w<Math.min(6,ps.length);w++)
-    pool.push((async()=>{ while(i<ps.length){ const p=ps[i++]; const b=await tbBucket(p);
-      if(b) byp[p].forEach(function(k){ if(b[k]) vols[k]=b[k]; }); } })());
-  await Promise.all(pool);
-  return {keys:keys.filter(function(k){ return vols[k]; }),vols:vols};
-}
-// !!! A FAILED SHARD MUST NOT BE CACHED AS AN ANSWER EITHER (2026-08-08, found
-// while fixing the multi-word bug below — the exact trap the term map fell
-// into on 2026-08-02, one function up).  This was `shardCache[vi]=await
-// jget(..., {paras:[],inv:{}})`, and `jget` returns its fallback on ANY
-// failure, so one lost request installed an EMPTY shard and silently deleted
-// that volume from every later search of the page load.  The PROMISE is cached
-// — parallel callers and racing keystrokes share one fetch — and deleted on
-// failure so the next keystroke retries.
-async function shard(vi){ if(shardCache[vi])return shardCache[vi];
-  return shardCache[vi]=(async()=>{
-    try{ const r=await fetch('../index/'+IVOLS()[vi]+'.idx.json?v='+BUILD);
-         if(!r.ok) throw new Error('HTTP '+r.status);
-         return await r.json();
-    }catch(e){ delete shardCache[vi]; return {paras:[],inv:{}}; }
-  })(); }
 // The book named on a search row.  `booktitle/<VOL>.json` is the stack the
 // edition prints on the book's own title page, keyed by opening ordinal — the
 // same source the paragraph-number tooltip uses, and for the same reason: THE
 // CORPUS'S `book` FIELD IS NOT THE BOOK IN 61 OF 118 VOLUMES (07Di02 carries a
 // kathā one level too deep on all 335 paragraphs of the Mahāparinibbānasutta).
-// Measured 2026-08-08: all 118 indexed volumes now carry a non-empty stack.
-// Cached as a promise, deleted on failure, as above.
+// Cached as a promise, deleted on failure.
 let btCache={};
 async function btFor(vol){ if(btCache[vol])return btCache[vol];
   return btCache[vol]=(async()=>{
@@ -3617,14 +3462,16 @@ let sTimer=null, sSeq=0;
 // The layer filter lives IN the dropdown as chips, not beside the input — the
 // `.search` div shrinks to 90px on a phone and a select would not fit
 // (2026-08-08).  State survives repaints; changing it re-runs the query.
+// The a = ā chip beside them is the fold switch (2026-09-05): remembered
+// across pages in localStorage, shown on the chip, named in every head line.
 let sLayer='', sHelp=false;
 function setSLayer(v){ sLayer=v; doSearch($('#sq').value); }
 function setSHelp(){ sHelp=!sHelp; doSearch($('#sq').value); }
+function setSFold(v){ sFold=!!v; try{ localStorage.setItem(FOLDKEY,sFold?'1':'0'); }catch(e){} doSearch($('#sq').value); }
 $('#sq').addEventListener('input',e=>{clearTimeout(sTimer);sTimer=setTimeout(()=>doSearch(e.target.value),180);});
 $('#sq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';$('#sdrop').hidden=true;}});
 // !!! CLICKING A CHIP CLOSED THE DROPDOWN AND LOOKED LIKE A LOST SEARCH
-// (2026-08-08, user-reported: "if one clicks on the label Aṭṭhakathā the
-// searched word disappears").  The chip's onclick repaints `dd.innerHTML`, and
+// (2026-08-08, user-reported).  The chip's onclick repaints `dd.innerHTML`, and
 // MICROTASKS RUN BETWEEN LISTENERS OF THE SAME EVENT — every await in
 // `doSearch` resolves from cache, so the whole repaint completes before this
 // document-level listener fires.  By then `e.target` is the DETACHED old chip,
@@ -3634,43 +3481,38 @@ $('#sq').addEventListener('keydown',e=>{if(e.key==='Escape'){e.target.value='';$
 document.addEventListener('click',e=>{const s=$('.search'); if(!s) return;
   const path=e.composedPath?e.composedPath():[];
   if(!s.contains(e.target)&&!path.includes(s))$('#sdrop').hidden=true;});
+const modeName=()=>sFold?TIP('s_folded','diacritics folded'):TIP('s_exact','exact diacritics');
 async function doSearch(q){
   // !!! AN EARLIER KEYSTROKE MUST NOT PAINT OVER A LATER ONE (2026-07-30n,
-  // user-reported).  This function awaits the term map, the name index and one
-  // shard per volume, so a slow early call can resolve AFTER a fast later one:
-  // typing `oghasutta` showed "11,043 occurrence(s) for “og”" and 245 sections
-  // matching `og` — `Yogasutta`, `Rogasutta`, `Pubbayogādi`.  The race was
-  // always there; the substring scan added on 2026-07-30m made the early calls
-  // slow enough to lose it.  Each call takes a ticket and paints only if it is
-  // still the newest.
+  // user-reported).  Each call takes a ticket and paints only if it is still
+  // the newest.
   const my=++sSeq;
-  // kept for `openHit` so the clicked term can be highlighted where it lands,
-  // rather than being interpolated into an inline onclick and escaped there
+  // kept for `openHit` so the clicked term can be highlighted where it lands
   window.__hq=(q||'').trim();
-  const dd=$('#sdrop'); const fq=foldS((q||'').trim());
+  const dd=$('#sdrop');
+  if(!SC){ dd.hidden=false; dd.innerHTML='<div class="sr-head">'+esc(TIP('r2_search_failed','The search index could not be loaded. Check the connection and type again.'))+' (searchcore.js)</div>'; return; }
+  const norm=SC.norm(sFold); const fq=norm((q||'').trim());
   if(fq.length<2){dd.hidden=true;dd.innerHTML='';return;}
-  // THE BOX MUST NEVER BE SILENT.  The first search of a page load used to
-  // pull a 22 MB term map before it could answer anything; now it is a tiny
-  // meta file plus one bucket, but the rule and the message stay — a slow
-  // network still deserves a sign of life.
-  if(!TBMETA&&!TERMS){ dd.hidden=false;
+  // THE BOX MUST NEVER BE SILENT: a slow network deserves a sign of life.
+  if(!SC.ready()){ dd.hidden=false;
     dd.innerHTML='<div class="sr-head">'+esc(TIP('r2_search_loading','Loading the search index…'))+'</div>'; }
-  await ensureIndex(); await ensureNames();
+  await SC.ensure(); await ensureNames();
   if(my!==sSeq) return;
-  if(!TBMETA&&!TERMS){ dd.hidden=false;
-    dd.innerHTML='<div class="sr-head">'+esc(TIP('r2_search_failed','The search index could not be loaded. Check the connection and type again.'))+(TBERR||TERMSERR?' ('+esc(TBERR||TERMSERR||'')+')':'')+'</div>';
+  if(!SC.ready()){ dd.hidden=false;
+    dd.innerHTML='<div class="sr-head">'+esc(TIP('r2_search_failed','The search index could not be loaded. Check the connection and type again.'))+(SC.error()?' ('+esc(SC.error())+')':'')+'</div>';
     return; }
   let secHTML='', nSec=0;
   if(SNAMES){
+    const NN=sFold?SNFOLD:SNNORM;
     const hit=[];
-    for(let i=0;i<SNFOLD.length;i++) if(SNFOLD[i].indexOf(fq)>=0) hit.push(i);
+    for(let i=0;i<NN.length;i++) if(NN[i].indexOf(fq)>=0) hit.push(i);
     if(hit.length){
       const H=new Set(hit); let rows=SNAMES.rows.filter(r=>H.has(r[0]));
       if(sLayer){ const LK={'pali-unicode':'canon','atthakatha-unicode':'commentary','tika-unicode':'subcommentary'}[sLayer];
                   rows=rows.filter(r=>SNAMES.layers[r[3]]===LK); }
       nSec=rows.length;
       rows.sort((a,b)=>{const A=SNAMES.labels[a[0]],Bb=SNAMES.labels[b[0]];
-        return (SNFOLD[a[0]]===fq?0:1)-(SNFOLD[b[0]]===fq?0:1)||A.length-Bb.length;});
+        return (NN[a[0]]===fq?0:1)-(NN[b[0]]===fq?0:1)||A.length-Bb.length;});
       const LN2={'canon':'Pāḷi','commentary':'Aṭṭhakathā','subcommentary':'Ṭīkā'};
       secHTML='<div class="sr-head">'+nSec+' section'+(nSec===1?'':'s')+'</div>'+
         rows.slice(0,10).map(r=>'<div class="sr-hit" onclick="openKey(\''+
@@ -3682,130 +3524,34 @@ async function doSearch(q){
           '">'+LN2[SNAMES.layers[r[3]]]+' · '+SNAMES.vols[r[1]]+'</span></div>').join('');
     }
   }
-  // !!! A QUERY WITH A SPACE MATCHED NOTHING AND SAID "No matches"
-  // (2026-08-08, user-reported: "if I type a word after searching one it does
-  // not search anymore").  The term keys are single words, so a spaced query
-  // was neither an exact key nor a substring of any key: `matchTerms` returned
-  // [], `vis` was null, and the box painted "No matches" — not a hang and not
-  // stale state.  The query is now SPLIT on whitespace, each word resolved to
-  // its terms separately (exact still wins outright, so `me` and `ca` resolve
-  // although the 3-letter floor bars them from the substring sweep), the
-  // volume lists intersected, and the per-paragraph postings intersected
-  // inside each shard.  A paragraph carrying the words ADJACENT — the folded
-  // phrase; shard text carries no doubled spaces, measured 0 of 559 in 06Di01
-  // — is a phrase hit, counted by occurrence.  A paragraph carrying all the
-  // words apart is listed AFTER the phrase hits and labelled as what it is,
-  // never merged into the phrase count.  Measured on `evaṁ me sutaṁ`: 105
-  // volumes carry all three words; 07Di02 holds 18 paragraphs with all three
-  // and 10 with the phrase.
-  const words=fq.split(/\s+/).filter(Boolean);
-  const phq=words.join(' ');
-  const anyWC=words.some(w=>w.indexOf('*')>=0);
-  const phSrc=words.map(wpat).join(' ');
-  // each word resolves through its BUCKET (or k.txt for a sweep) — an await
-  // per word, so the keystroke ticket is checked after every one
-  const resolved=[];
-  for(const wd of words){
-    const r=await resolveWord(wd);
-    if(my!==sSeq) return;
-    if(r===null){ dd.hidden=false;
-      dd.innerHTML='<div class="sr-head">'+esc(TIP('r2_search_failed','The search index could not be loaded. Check the connection and type again.'))+'</div>';
-      return; }
-    resolved.push(r);
-  }
-  const mtsPer=resolved.map(r=>r.keys);
-  let vis=null;
-  if(mtsPer.length && mtsPer.every(m=>m.length)){
-    const vsets=resolved.map(r=>new Set(r.keys.flatMap(k=>r.vols[k]||[])));
-    vis=[...vsets[0]].filter(v=>vsets.every(s=>s.has(v))).sort((a,b)=>a-b);
-    if(sLayer) vis=vis.filter(v=>ILAYERS()[v]===sLayer);
-    // CANON FIRST, THEN AṬṬHAKATHĀ, THEN ṬĪKĀ (2026-08-08, user request).
-    // Plain volume order interleaves the layers — `01ViT01` is a ṭīkā and
-    // sorts ahead of every canon volume, which is why the reader's screenshot
-    // led with Ṭīkā hits.  Ordering `vis` ITSELF, not the drawn rows, matters:
-    // the row caps below spend themselves in iteration order, so sorting after
-    // capping would show ṭīkā rows while canon rows sat beyond the cap.
-    // Sections stay above everything, as they were.
-    const LRANK={'pali-unicode':0,'atthakatha-unicode':1,'tika-unicode':2};
-    if(vis) vis.sort((a,b)=>((LRANK[ILAYERS()[a]]??3)-(LRANK[ILAYERS()[b]]??3))||a-b);
-    if(!vis.length) vis=null;
-  }
-  // The filter chips and the "?" help are part of every results paint, so the
-  // way OUT of an over-narrow filter is always on screen, and the instructions
-  // are where the searching happens (2026-08-08, reader asked for both).
+  const r=await SC.search(q,{fold:sFold,layer:sLayer,capP:30,capA:14});
+  if(my!==sSeq) return;
+  if(r===null){ dd.hidden=false;
+    dd.innerHTML='<div class="sr-head">'+esc(TIP('r2_search_failed','The search index could not be loaded. Check the connection and type again.'))+'</div>';
+    return; }
+  const words=r.words;
+  // The filter chips, the fold switch and the "?" help are part of every
+  // results paint, so the way OUT of an over-narrow filter is always on
+  // screen, and the instructions are where the searching happens.
   const filtHTML='<div class="sr-filt">'
     +[['','r2_lay_all','All'],['pali-unicode','r2_lay_pali','Pāḷi'],['atthakatha-unicode','r2_lay_a','Aṭṭhakathā'],['tika-unicode','r2_lay_t','Ṭīkā']]
       .map(x=>'<span class="sr-chip'+(sLayer===x[0]?' on':'')+'" onclick="setSLayer(\''+x[0]+'\')">'+esc(TIP(x[1],x[2]))+'</span>').join('')
+    +'<span class="sr-chip sr-fold'+(sFold?' on':'')+'" onclick="setSFold('+(sFold?'false':'true')+')" title="'+escA(TIP('fold_toggle','Fold diacritics: nibbana finds nibbāna. Off by default — tassa and tassā are different words.'))+'">a = ā</span>'
     +'<span class="sr-chip sr-help'+(sHelp?' on':'')+'" onclick="setSHelp()">?</span></div>'
     +(sHelp?'<div class="sr-helpbox">'+esc(TIP('r2_search_help',
-      'Type one word, several words, or a phrase — a phrase matches the words adjacent and in order; words apart are listed separately. Diacritics are optional: nibbana finds nibbāna. * completes a word: dhamm*, *vaggo, dham*ti (3 letters minimum). A bare word also matches inside longer words. Chips above limit the search to one layer. Click a result to open it in the reader at the marked word.'))+'</div>':'');
-  if(my!==sSeq) return;
-  if(!vis){dd.hidden=false;
-    dd.innerHTML=filtHTML+(secHTML||('<div class="sr-head">No matches for “'+esc(q)+'”'+(sLayer?' in this layer':'')+'</div>'));return;}
+      'Type one word, several words, or a phrase — a phrase matches the words adjacent and in order; words apart are listed separately. Diacritics count: tassa and tassā are different words; the a = ā chip folds them, so that nibbana finds nibbāna. * completes a word: dhamm*, *vaggo, dham*ti (3 letters minimum). A bare word also matches inside longer words. Chips above limit the search to one layer. Click a result to open it in the reader at the marked word.'))+'</div>':'');
+  const offer=sFold?'':' — <span class="sr-foldlink" onclick="setSFold(true)">'+esc(TIP('s_try_fold','fold diacritics (a = ā) and search again?'))+'</span>';
+  if(!r.vis){dd.hidden=false;
+    dd.innerHTML=filtHTML+(secHTML||('<div class="sr-head">No matches for “'+esc(q)+'”'+(sLayer?' in this layer':'')+' ('+modeName()+')'+offer+'</div>'));return;}
   const LN={'pali-unicode':'Pāḷi','atthakatha-unicode':'Aṭṭhakathā','tika-unicode':'Ṭīkā'};
   const COL={'pali-unicode':'var(--canon)','atthakatha-unicode':'var(--comm)','tika-unicode':'var(--tika)'};
-  // !!! THE SHARDS WERE FETCHED ONE AT A TIME (2026-08-08, user-reported "it
-  // is slow" — measured before touching anything, because the slowness had
-  // three candidate causes and they measure very differently).  The substring
-  // sweep over 643,965 term keys is 7–15 ms and its 500 cap lands early — not
-  // the cost.  The 22 MB term map is paid once and says so on screen — left
-  // alone.  But a common word matches up to 118 volumes, the shards average
-  // 1.64 MB (194 MB in all), and this loop awaited them ONE PER ITERATION —
-  // a serial download of most of the index before anything painted.  They are
-  // now fetched 8 at a time; the per-shard work below then runs on cache hits.
-  { const need=[...vis]; let ni=0; const pool=[];
-    for(let w=0;w<Math.min(8,need.length);w++)
-      pool.push((async()=>{ while(ni<need.length && my===sSeq){ await shard(need[ni++]); } })());
-    await Promise.all(pool); }
-  if(my!==sSeq) return;
-  const countOcc=(hay,ndl)=>{ let n=0,i=hay.indexOf(ndl); while(i>=0){n++;i=hay.indexOf(ndl,i+1);} return n; };
-  // adjacency with a wildcard in it needs the regex; without one, indexOf
-  const phRxG=anyWC?new RegExp(phSrc,'g'):null;
-  const phCount=f=>{ if(!anyWC) return countOcc(f,phq);
-    phRxG.lastIndex=0; let n=0,m;
-    while((m=phRxG.exec(f))){ if(!m[0]){phRxG.lastIndex++;continue;} n++; } return n; };
   const wordRxs=words.map(w=>new RegExp(wpat(w),'g'));
-  const phRxA=new RegExp(phSrc,'g');
-  // counted over EVERYTHING, not the drawn rows — the head must say how
-  // much there IS, like the word-lookup pane does (2026-08-08, user request)
-  // `phrVols` counts volumes with PHRASE hits only — the head must not claim
-  // three volumes for a phrase found in one because two others carry the
-  // words apart
-  // !!! THE ROW CAP IS PER LAYER, NOT GLOBAL (2026-08-08, user-reported:
-  // "scrolls down and only Pāḷi").  Canon-first ordering plus one shared cap
-  // of 80 meant a word with ≥80 canon paragraphs — `arati` has EXACTLY 80 —
-  // drew no Aṭṭhakathā or Ṭīkā row at all.  30 per layer for phrase rows, 14
-  // per layer for the not-adjacent list; the totals count everything as
-  // before.
-  const CAPP=30, CAPA=14; const nPhr={}, nAnd={};
-  let phrRows=[], andRows=[], total=0, andTotal=0, phrParas=0; const phrVols=new Set();
-  for(const vi of vis){ const sh=await shard(vi);
-    if(my!==sSeq) return;
-    const maps=mtsPer.map(m=>{ const mm=new Map();
-      for(const k of m) for(const [pi,c] of (sh.inv[k]||[])) mm.set(pi,(mm.get(pi)||0)+c);
-      return mm; });
-    const pis=[...maps[0].keys()].filter(pi=>maps.every(mm=>mm.has(pi))).sort((a,b)=>a-b);
-    for(const pi of pis){ const p=sh.paras[pi];
-      const _lay=ILAYERS()[vi];
-      if(words.length>1){
-        const f=foldS(p.text), c=phCount(f);
-        if(c>0){ total+=c; phrParas++; phrVols.add(vi); if((nPhr[_lay]=(nPhr[_lay]||0)+1)<=CAPP) phrRows.push({vi,p,f}); }
-        else    { andTotal++; if((nAnd[_lay]=(nAnd[_lay]||0)+1)<=CAPA) andRows.push({vi,p,f}); }
-      } else {
-        total+=maps[0].get(pi); phrParas++; phrVols.add(vi);
-        if((nPhr[_lay]=(nPhr[_lay]||0)+1)<=CAPP) phrRows.push({vi,p,f:foldS(p.text)});
-      }
-    }
-  }
-  // The book and sutta for every row that will be DRAWN — resolved from
-  // `booktitle/`, never printed from the corpus's `book` field, which names
-  // the wrong thing in 61 of 118 volumes (see `bookOf` above).  Only the
-  // volumes actually on screen are fetched, and each stack is cached.
-  const drawVols=[...new Set(phrRows.concat(andRows).map(r=>IVOLS()[r.vi]))];
+  const phRxA=new RegExp(words.map(wpat).join(' '),'g');
+  const drawVols=[...new Set(r.phrOut.concat(r.andOut).map(h=>h.vol))];
   const btMap={};
   await Promise.all(drawVols.map(async v=>{ btMap[v]=await btFor(v); }));
   if(my!==sSeq) return;
-  const row=(r)=>{ const p=r.p, f=r.f, lay=ILAYERS()[r.vi], vol=IVOLS()[r.vi];
+  const row=(h)=>{ const p=h.p, f=norm(p.text), lay=h.lay, vol=h.vol;
     // anchor the snippet on the phrase where it occurs, else on the earliest
     // word — by regex throughout, so `*` matches are anchored and marked at
     // their real extent (`dhamm*` marks the whole of `dhammacakkhuṁ`)
@@ -3816,8 +3562,6 @@ async function doSearch(q){
             if(m&&m[0]&&(i<0||m.index<i)){ i=m.index; len=m[0].length; } }
           if(i<0){ i=0; len=0; } }
     const a=Math.max(0,i-24), b=Math.min(p.text.length,i+len+42);
-    // every query word inside the window is marked — the old builder assumed
-    // ONE contiguous match and could not serve a multi-word row
     const R=[];
     for(const rx of wordRxs){ rx.lastIndex=0; let m;
       while((m=rx.exec(f))){ if(!m[0]){rx.lastIndex++;continue;} if(m.index>=b) break;
@@ -3827,41 +3571,25 @@ async function doSearch(q){
     let snip=(a>0?'…':''), pos=a;
     for(const [s,e] of M){ snip+=esc(p.text.slice(pos,s))+'<mark>'+esc(p.text.slice(s,e))+'</mark>'; pos=e; }
     snip+=esc(p.text.slice(pos,b))+'…';
-    // !!! `p.key` IS NOT A FIELD THE INDEX HAS EVER CARRIED (2026-08-02,
-    // user-reported).  This row was built as `openKey(p.key, …)`; measured
-    // over all 118 shards, `key` is present on 0 of 86,365 paragraphs and
-    // `ord` on all of them — `build_search_index.py` says so in its own
-    // docstring ("**`ord` is added**… the reader needs the ordinal"), and
-    // `search.html` has always used `p.ord`.  So EVERY occurrence hit in
-    // this box called `openKey('undefined', …)`: `parseKey` found no '#',
-    // returned the volume as `'undefine'` (slice(0,-1)) and the ordinal as
-    // NaN, the reader drew 0 paragraphs, and the layer band reported "No
-    // Aṭṭhakathā is linked to the passages on screen" — a wrong answer that
-    // reads as an honest one.  Fourth instance of this project's
-    // characteristic failure: an ABSENT VALUE PRODUCED A CALL THAT LOOKED
-    // LIKE A CALL.  Section hits above were never affected; they build the
-    // key from `vols[]` + ord, which is what this now does.
-    // A row whose ordinal is missing is drawn WITHOUT an onclick rather
-    // than with a dead one, so the failure is visible instead of silent.
+    // THE ORDINAL, never `p.key` (2026-08-02) — a row without one is drawn
+    // dead rather than with a call that looks like a call
     const _k=(p.ord!=null)?(vol+'#'+p.ord):null;
-    // "more information … the book and sutta, not just `Pāḷi ¶52`"
-    // (2026-08-08, user-reported, with a screenshot).  Everything the line
-    // needs was ALREADY in the shard and in `booktitle/` — display only.
     const _bk=bookOf(btMap[vol]||{},vol,p.ord!=null?p.ord:-1);
     const _su=(p.sutta&&p.sutta!=='X')?String(p.sutta).replace(/\s+/g,' ').trim():'';
     const _loc=[_bk,(_su&&_su!==_bk)?_su:'',vol].filter(Boolean).join(' · ');
     return '<div class="sresult'+(_k?'':' sr-dead')+'"'+(_k?' onclick="openHit(\''+_k+'\',\''+({'pali-unicode':'canon','atthakatha-unicode':'A','tika-unicode':'T'}[lay])+'\')"':'')+'><span class="sr-lay" style="color:'+COL[lay]+'">'+LN[lay]+(p.n!=null?' ¶'+p.n:(p.page!=null?' p.'+p.page:''))+'</span>'+(_loc?'<span class="sr-where">'+esc(_loc)+'</span>':'')+'<div class="sr-snip">'+snip+'</div></div>'; };
-  // SECTIONS FIRST, THEN OCCURRENCES — the same order `search.html` uses, and
-  // for the same reason: someone typing a sutta's name wants the sutta.
+  // SECTIONS FIRST, THEN OCCURRENCES — the same order `search.html` uses.
   if(my!==sSeq) return;
   let occHTML;
-  const where=' in '+phrParas.toLocaleString()+' paragraph(s), '+phrVols.size.toLocaleString()+' volume(s)';
+  const capNote=r.capped.length?' — '+r.capped.map(c=>esc(c.word)+': the '+c.used+' commonest of '+c.matched.toLocaleString()+' forms').join('; '):'';
+  const where=' in '+r.phrParas.toLocaleString()+' paragraph(s), '+r.phrVols.size.toLocaleString()+' volume(s)'+capNote+' · '+modeName();
   if(words.length>1){
-    occHTML=(total?'<div class="sr-head">'+total.toLocaleString()+' occurrence(s) of “'+esc(q)+'”'+where+'</div>'+phrRows.map(row).join(''):'')
-      +(andTotal?'<div class="sr-head">'+andTotal.toLocaleString()+' paragraph(s) carry all '+words.length+' words, not adjacent</div>'+andRows.map(row).join(''):'');
-    if(!total&&!andTotal) occHTML='<div class="sr-head">No matches for “'+esc(q)+'”</div>';
+    occHTML=(r.total?'<div class="sr-head">'+r.total.toLocaleString()+' occurrence(s) of “'+esc(q)+'”'+where+'</div>'+r.phrOut.map(row).join(''):'')
+      +(r.andTotal?'<div class="sr-head">'+r.andTotal.toLocaleString()+' paragraph(s) carry all '+words.length+' words, not adjacent</div>'+r.andOut.map(row).join(''):'');
+    if(!r.total&&!r.andTotal) occHTML='<div class="sr-head">No matches for “'+esc(q)+'” ('+modeName()+')'+offer+'</div>';
   } else {
-    occHTML='<div class="sr-head">'+total.toLocaleString()+' occurrence(s) for “'+esc(q)+'”'+where+'</div>'+phrRows.map(row).join('');
+    occHTML=r.total?'<div class="sr-head">'+r.total.toLocaleString()+' occurrence(s) for “'+esc(q)+'”'+where+'</div>'+r.phrOut.map(row).join('')
+      :'<div class="sr-head">No matches for “'+esc(q)+'” ('+modeName()+')'+offer+'</div>';
   }
   dd.hidden=false; dd.innerHTML=filtHTML+secHTML+occHTML;
 }

@@ -1681,6 +1681,38 @@ function lookup(word, paraEl, inPanel) {
   document.getElementById('wlb').innerHTML = '';
 
   var vo = volOrdOf(paraEl);
+  // !!! THE EVALUATION STORE WAS ASKED ONLY AFTER THE EDITION HAD ANSWERED
+  // (2026-09-05, measured: one cold lookup on the live reader was a chain
+  // SIX round trips deep — manifest → freq/gloss/forms → eval manifest + ped
+  // → form → dpd/lem → ord — about 1.9 s at ~150 ms a hop, with small files
+  // throughout; the bytes were never the cost).  `elook('form')` depends on
+  // nothing the first tier returns, so it starts HERE, beside it, and the
+  // eval manifest is warmed with the edition's at pointerdown.  Four hops
+  // now, three once the manifests are warm.  Nothing about WHAT is looked up
+  // changed: the same sets, in the same order of authority.
+  var pEval = elook('form', word).then(function (fr) {
+    if (!fr) fr = {h: [word], b: [word]};
+    return Promise.all([
+      Promise.all((fr.h || []).map(function (h) {
+        return elook('dpd', h).then(function (e) { return {h: h, e: e}; }); })),
+      Promise.all((fr.b || []).map(function (b) {
+        return elook('lem', b).then(function (e) { return {b: b, e: e}; }); }))
+    ]).then(function (z) {
+      return {dpd: z[0].filter(function (x) { return x.e; }),
+              lem: z[1].filter(function (x) { return x.e; })};
+    });
+  }).then(function (ev) {
+    // ...and if `lem` still has nothing, ask the dictionaries by their OWN
+    // headwords before the panel says "no entry".  See hwlook() above: this
+    // runs ONLY on the miss path, and what it appends is an ordinary lemma
+    // record, so the Abhidhāna tab, the APD sections, the counts and the
+    // gear all render it with no further change anywhere.
+    if (ev.lem.length) return ev;
+    return hwlook(word).then(function (v) {
+      if (v) ev.lem.push({b: (v.w && v.w[0]) || word, e: v});
+      return ev;
+    });
+  });
   Promise.all([look('freq', word), look('gloss', word), look('forms', word),
                vo ? loadLinks(vo.vol) : Promise.resolve(null),
                siblings(word)])
@@ -1701,52 +1733,18 @@ function lookup(word, paraEl, inPanel) {
             return look('ped', h).then(function (e) { return {h: h, e: e}; }); }))
         : Promise.resolve([]);
       // the evaluation store: form -> {h: DPD headwords, b: base lemmas},
-      // then one fetch per headword and per lemma
+      // then one fetch per headword and per lemma — `pEval`, started above
+      // beside the first tier (2026-09-05).
       // !!! THE EVALUATION STORE WAS ENTERED THROUGH `form` AND NOWHERE ELSE,
       // AND `form` HOLDS ONLY WHAT THE CORPUS INFLECTS (2026-08-05, reader:
       // "when I search atappaka it does not find anything, however this word is
-      // in the Tipiṭaka Pāḷi-Myanmā Abhidhāna").
-      //
-      // `atappaka` IS in the store — `lookup_eval/lem/ata.json`, with its
-      // Abhidhāna gloss and its APD entry. What `form` carries is `atappakaṁ`,
-      // `atappake`, `atappakena`, `atappakañca`, `atappakataraṁ`: the surface
-      // forms the edition happens to inflect. The bare headword is not a
-      // surface form, so `fr` was null and the two sets that DO hold the word
-      // were never asked. The dictionary was keyed by exactly the thing the
-      // reader typed, and the one path in was keyed by something else.
-      //
-      // Measured over the whole store, this is not one word:
-      //     34,821 of 52,757 lemma entries — 66.0% — unreachable
-      //     57,198 of 74,146 DPD headwords — 77.1% — unreachable
-      //
-      // The repair is to treat a `form` miss as "then the word may BE a lemma
-      // or a headword", which is what a reader typing a dictionary word means.
-      // It reuses the machinery below unchanged: the two extra fetches happen
-      // only on the miss path, and `lem`/`dpd` misses are already filtered out,
-      // so a word in neither still ends as null exactly as before.
-      var pEval = elook('form', word).then(function (fr) {
-        if (!fr) fr = {h: [word], b: [word]};
-        return Promise.all([
-          Promise.all((fr.h || []).map(function (h) {
-            return elook('dpd', h).then(function (e) { return {h: h, e: e}; }); })),
-          Promise.all((fr.b || []).map(function (b) {
-            return elook('lem', b).then(function (e) { return {b: b, e: e}; }); }))
-        ]).then(function (z) {
-          return {dpd: z[0].filter(function (x) { return x.e; }),
-                  lem: z[1].filter(function (x) { return x.e; })};
-        });
-      }).then(function (ev) {
-        // ...and if `lem` still has nothing, ask the dictionaries by their OWN
-        // headwords before the panel says "no entry".  See hwlook() above: this
-        // runs ONLY on the miss path, and what it appends is an ordinary lemma
-        // record, so the Abhidhāna tab, the APD sections, the counts and the
-        // gear all render it with no further change anywhere.
-        if (ev.lem.length) return ev;
-        return hwlook(word).then(function (v) {
-          if (v) ev.lem.push({b: (v.w && v.w[0]) || word, e: v});
-          return ev;
-        });
-      });
+      // in the Tipiṭaka Pāḷi-Myanmā Abhidhāna").  `atappaka` IS in the store —
+      // `lookup_eval/lem/ata.json` — but the bare headword is not a surface
+      // form, so `fr` was null and the two sets that DO hold the word were
+      // never asked.  Measured over the whole store: 34,821 of 52,757 lemma
+      // entries (66.0%) and 57,198 of 74,146 DPD headwords (77.1%) were
+      // unreachable.  The repair (in `pEval`) treats a `form` miss as "then
+      // the word may BE a lemma or a headword".
       return Promise.all([pGloss, pPed, pEval]).then(function (r2) {
         if (!current || current.word !== word) return;
         var page0 = r2[0], ped = r2[1], ev = r2[2];
@@ -2657,7 +2655,10 @@ function start() {
     if (warmed) return;
     if (!(ev.target.closest && ev.target.closest('.para'))) return;
     warmed = true;
-    manifest();
+    // all three manifests, not one: the eval and hw manifests were fetched
+    // only when first needed, which put them on the click's critical path
+    // (2026-09-05).  Same trigger, same scope, two more small files.
+    manifest(); emanifest(); hwmanifest();
   }, true);
   document.addEventListener('click', function (ev) {
     if (el && el.contains(ev.target)) return;

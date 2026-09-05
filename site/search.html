@@ -34,6 +34,8 @@
   .lchip{font-family:system-ui,sans-serif;font-size:12.5px;color:var(--mut);border:1px solid var(--line);border-radius:14px;padding:4px 12px;cursor:pointer;user-select:none}
   .lchip:hover{background:var(--tag)}
   .lchip.on{color:var(--accent);border-color:var(--accent)}
+  .lchip.fold{font-family:'Gentium Plus',serif;font-size:13.5px;margin-left:4px}
+  .foldlink{color:var(--accent)}
   button.go{background:var(--accent);color:#fff;border-color:var(--accent)}
   .themebtn{padding:9px 12px}
   main{max-width:860px;margin:0 auto;padding:18px 24px 60px}
@@ -64,7 +66,7 @@
   <h1>Sixth Buddhist Council Tipiṭaka <span class="pali">(Chaṭṭhasaṅgītipiṭaka)</span></h1>
   <div class="sub" data-i18n="search_sub">Full-text search across 118 volumes — Tipiṭaka, Aṭṭhakathā, Ṭīkā · 83,751 paragraphs</div>
   <div class="bar">
-    <input id="q" type="search" data-i18n-ph="search_ph" placeholder="Search Pāḷi — words, a phrase, * wildcard; diacritics optional" autocomplete="off">
+    <input id="q" type="search" data-i18n-ph="search_ph" placeholder="Search Pāḷi — words, a phrase, * wildcard" autocomplete="off">
     <!-- The SAME layer idiom as the reader's dropdown chips (2026-08-08, user
          request): All · Pāḷi · Aṭṭhakathā · Ṭīkā, one look across both UIs.
          Replaces the old select. -->
@@ -74,6 +76,11 @@
       <span class="lchip" data-v="atthakatha-unicode">Aṭṭhakathā</span>
       <span class="lchip" data-v="tika-unicode">Ṭīkā</span>
     </span>
+    <!-- EXACT DIACRITICS BY DEFAULT (2026-09-05, reader: tassa and tassā are
+         different words).  This chip is the fold switch; its state is also
+         named in every status line, so a count always says which question
+         produced it. -->
+    <span class="lchip fold" id="foldbtn" data-i18n-title="fold_toggle" title="Fold diacritics: nibbana finds nibbāna. Off by default — tassa and tassā are different words.">a = ā</span>
     <button class="go" id="go" data-i18n="search_btn">Search</button>
     <button class="themebtn" id="niggbtn" data-i18n-title="nigg_toggle" title="Niggahita: the edition’s ṁ or the modern ṃ. Display only — the stored text always keeps the edition’s ṁ.">ṁ</button>
     <button class="themebtn" id="themebtn" data-i18n-title="theme_toggle" title="Toggle light/dark">◐</button>
@@ -82,7 +89,7 @@
 <script>
 // cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
 // rewrites it, so a rebuild can never be invisible to a returning browser.
-const BUILD='a164a57cc4c3';
+const BUILD='13d1e3a5b704';
 function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
 
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
@@ -128,213 +135,38 @@ document.addEventListener('DOMContentLoaded',()=>{
 <footer data-i18n="search_foot">
   Type one word, several words, or a phrase — a phrase matches the words adjacent
   and in order; paragraphs carrying the words apart are listed separately.
-  Diacritics are optional: nibbana finds nibbāna. * completes a word: dhamm*,
-  *vaggo, dham*ti (at least 3 letters beside the *). A bare word also matches
-  inside longer words. Results show the book, the printed page and the paragraph;
+  Diacritics count: tassa and tassā are different words. Switch on a = ā to fold
+  them, so that nibbana finds nibbāna. * completes a word: dhamm*, *vaggo,
+  dham*ti (at least 3 letters beside the *). A bare word also matches inside
+  longer words. Results show the book, the printed page and the paragraph;
   click a result to open it in the reader at the marked word.
 </footer>
-<script src="i18n.js?v=a164a57cc4c3"></script>
+<script src="i18n.js?v=13d1e3a5b704"></script>
+<script src="searchcore.js?v=13d1e3a5b704"></script>
 <script>
-const FOLD={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
-const fold=s=>s.toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLD[c]||c);
+// ONE SEARCH IMPLEMENTATION, IN searchcore.js (2026-09-05) — this page is its
+// UI.  Everything about keys, buckets, sweeps, postings and text chunks that
+// used to live here, twice over with reader2.html, lives there once.
 const el=id=>document.getElementById(id);
-let TERMS=null, VOLS=null, LAYERS=null, shardCache={};
-let NAMES=null, NFOLD=null, TERMKEYS=null;
-// !!! THE LOOKUP WAS EXACT-TOKEN WHILE THE PAGE PROMISED SUBSTRING
-// (2026-07-30m, user-reported).  `TERMS[ft]` is a key lookup, so `saṅgītisutta`
-// found nothing although `saṅgītisuttaṁ` is indexed in two volumes and thirteen
-// paragraphs carry the string — the edition inflects, so a bare stem is exactly
-// what a reader types and exactly what failed.  The footer has claimed
-// "exact / substring" all along.
-// Exact still wins outright; otherwise the term list is scanned once, cached,
-// and every term CONTAINING the query contributes its postings.
-// `*` IS A WILDCARD, AND IT MEANS TWO DIFFERENT THINGS IN TWO ADDRESS SPACES
-// (2026-08-08, same change as reader2.html — THE TWO IMPLEMENTATIONS HAD
-// DRIFTED and this one still answered one word only while the reader's box
-// took phrases; keep them in step).  Against the TERM KEYS `*` is `.*` — a
-// key is a single word.  Against RUNNING TEXT it must be `\S*`, or the star
-// would swallow a space and match across a word boundary.
-const rxEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-const wpat=w=>w.indexOf('*')>=0?w.split('*').map(rxEsc).join('\\S*'):rxEsc(w);
-function matchTerms(ft){
-  if(!TERMS) return [];
-  if(ft.indexOf('*')>=0){
-    if(ft.replace(/\*/g,'').length<3) return [];   // at least 3 literal letters
-    if(!TERMKEYS) TERMKEYS=Object.keys(TERMS);
-    const rx=new RegExp('^'+ft.split('*').map(rxEsc).join('.*')+'$');
-    const out=[];
-    for(let i=0;i<TERMKEYS.length;i++){ if(rx.test(TERMKEYS[i])){ out.push(TERMKEYS[i]); if(out.length>=500) break; } }
-    return out;
-  }
-  if(TERMS[ft]) return [ft];
-  if(ft.length<3) return [];   // a 1-2 letter substring sweep is noise
-  if(!TERMKEYS) TERMKEYS=Object.keys(TERMS);
-  const out=[];
-  for(let i=0;i<TERMKEYS.length;i++){ if(TERMKEYS[i].indexOf(ft)>=0){ out.push(TERMKEYS[i]); if(out.length>=500) break; } }
-  return out;
-}
-const status=m=>el('status').textContent=m;
-
-// !!! 22 MB WAS DOWNLOADED AND PARSED BEFORE THIS PAGE COULD BE USED
-// (2026-07-31b, user-reported: "very slow to load and became unresponsive" on
-// an iPhone and iPad).  `boot()` ran on load and fetched
-// `index/terms.compact.json` — **21.0 MB raw, 5.3 MB gzipped, 643,965 terms** —
-// plus `index/names.json`.  Parsing 21 MB of JSON into 643,965 strings and
-// 643,965 arrays is a large heap on a laptop and past what iOS Safari will give
-// a tab; the page loaded, then froze, before the reader had typed anything.
-//
-// It is now LAZY: nothing is fetched until the first actual query.  The page is
-// usable immediately, and a reader who arrives and leaves without searching
-// pays nothing at all.
-let indexPromise=null;
-function ensureIndex(){ if(indexPromise) return indexPromise; return indexPromise=boot(); }
-// ---------------- the BUCKETED term index (2026-08-09) ----------------
-// Same change as reader2.html, same day, kept in step: the first search no
-// longer downloads and parses the 22 MB / 643,965-key map.  `tb/meta.json`
-// is tiny; postings come one prefix bucket at a time; a substring or
-// suffix-wildcard sweep scans `tb/k.txt` — ONE string, indexOf, no parse.
-// `terms.compact.json` stays as the fallback (meta 404 = an unpacked old
-// deposit) and the gates' ground truth.  Failures are never cached.
-let TBMETA=null, TBERR=null, TBCACHE={}, KTXT=null;
-async function ensureMeta(){
-  if(TBMETA||TERMS) return;
-  try{
-    const r=await fetch(bust('index/tb/meta.json'));
-    if(r.ok){ const j=await r.json();
-      if(j&&j.vols&&j.layers){ TBMETA=j; TBERR=null; return; }
-      throw new Error('malformed meta'); }
-    if(r.status===404){ await ensureIndex(); return; }
-    throw new Error('HTTP '+r.status);
-  }catch(e){ TBERR=(e&&e.message)||String(e); if(!TERMS) await ensureIndex(); }
-}
+const FOLDKEY='osbct-fold';
+let sFold=false; try{ sFold=localStorage.getItem(FOLDKEY)==='1'; }catch(e){}
+const S=SearchCore.create({base:'index/',bust});
+const norm=()=>S.norm(sFold);
+let NAMES=null, NNORM=null, NNORMF=null;
 async function ensureNamesOnly(){
   if(NAMES) return;
   try{ const nr=await fetch(bust('index/names.json'));
-       if(nr.ok){ NAMES=await nr.json(); NFOLD=NAMES.labels.map(fold); } }catch(e){}
+       if(nr.ok){ NAMES=await nr.json(); NNORM=NAMES.labels.map(SearchCore.canonS); NNORMF=NAMES.labels.map(SearchCore.foldS); } }catch(e){}
 }
-const IVOLS=()=>TBMETA?TBMETA.vols:VOLS;
-const ILAYERS=()=>TBMETA?TBMETA.layers:LAYERS;
-const p2of=k=>k.length>1?k.slice(0,2):k+'_';
-function tbBucket(p){ if(TBCACHE[p])return TBCACHE[p];
-  return TBCACHE[p]=(async()=>{ try{
-      const r=await fetch(bust('index/tb/'+p+'.json'));
-      if(r.status===404) return {};
-      if(!r.ok) throw new Error('HTTP '+r.status);
-      return (await r.json()).terms||{};
-    }catch(e){ delete TBCACHE[p]; return null; } })(); }
-function tbKeys(){ if(KTXT)return KTXT;
-  return KTXT=(async()=>{ try{
-      const r=await fetch(bust('index/tb/k.txt'));
-      if(!r.ok) throw new Error('HTTP '+r.status);
-      return await r.text();
-    }catch(e){ KTXT=null; return null; } })(); }
-async function resolveWord(ft){
-  if(TERMS){ const m=matchTerms(ft); const vols={};
-    m.forEach(function(k){ vols[k]=TERMS[k]||[]; });
-    return {keys:m,vols:vols}; }
-  if(ft.indexOf('*')>=0){
-    if(ft.replace(/\*/g,'').length<3) return {keys:[],vols:{}};
-    const rxs='^'+ft.split('*').map(rxEsc).join('.*')+'$';
-    const star=ft.indexOf('*');
-    if(star>=2){
-      const b=await tbBucket(p2of(ft.slice(0,star)));
-      if(b===null) return null;
-      const rx=new RegExp(rxs); const keys=[];
-      for(const k in b){ if(rx.test(k)){ keys.push(k); if(keys.length>=500)break; } }
-      const vols={}; keys.forEach(function(k){ vols[k]=b[k]; });
-      return {keys:keys,vols:vols};
-    }
-    return await tbSweepRx(rxs);
-  }
-  const b=await tbBucket(p2of(ft));
-  if(b===null) return null;
-  if(b[ft]){ const vols={}; vols[ft]=b[ft]; return {keys:[ft],vols:vols}; }
-  if(ft.length<3) return {keys:[],vols:{}};
-  return await tbSweepSub(ft);
-}
-async function tbSweepSub(ft){
-  const txt=await tbKeys(); if(txt==null) return null;
-  const keys=[]; let i=txt.indexOf(ft);
-  while(i>=0&&keys.length<500){
-    const a=txt.lastIndexOf('\n',i)+1;
-    let z=txt.indexOf('\n',i); if(z<0)z=txt.length;
-    keys.push(txt.slice(a,z));
-    i=txt.indexOf(ft,z);
-  }
-  return await tbPostings(keys);
-}
-async function tbSweepRx(rxs){
-  const txt=await tbKeys(); if(txt==null) return null;
-  const rx=new RegExp(rxs,'gm');
-  const keys=[]; let m;
-  while((m=rx.exec(txt))&&keys.length<500){ if(m[0])keys.push(m[0]); else rx.lastIndex++; }
-  return await tbPostings(keys);
-}
-async function tbPostings(keys){
-  const byp={}; keys.forEach(function(k){ (byp[p2of(k)]=byp[p2of(k)]||[]).push(k); });
-  const ps=Object.keys(byp); const vols={};
-  let i=0; const pool=[];
-  for(let w=0;w<Math.min(6,ps.length);w++)
-    pool.push((async()=>{ while(i<ps.length){ const p=ps[i++]; const b=await tbBucket(p);
-      if(b) byp[p].forEach(function(k){ if(b[k]) vols[k]=b[k]; }); } })());
-  await Promise.all(pool);
-  return {keys:keys.filter(function(k){ return vols[k]; }),vols:vols};
-}
-async function boot(){
-  try{
-    status('Loading term index (5 MB) — first search only…');
-    const r=await fetch(bust('index/terms.compact.json')); if(!r.ok) throw 0;
-    const j=await r.json(); TERMS=j.terms; VOLS=j.vols; LAYERS=j.layers;
-    // !!! A PRINTED HEADING IS NOT IN THE TEXT INDEX, because that index is
-    // built from `paragraphs[].text` and a heading lives in `sections/`.  So
-    // section names were unsearchable outright — `Oghataraṇasutta`,
-    // `Ovādavagga`, `Maṅgalasuttavaṇṇanā` all returned nothing.  `names.json`
-    // carries every printed heading with its VOLUME AND ORDINAL, which is what
-    // reader2 accepts as `#VOL#ORD`, so a name hit opens the section itself.
-    try{ const nr=await fetch(bust('index/names.json'));
-         if(nr.ok){ NAMES=await nr.json(); NFOLD=NAMES.labels.map(fold); } }catch(e){}
-    status(`Ready — ${Object.keys(TERMS).length.toLocaleString()} indexed terms across ${VOLS.length} volumes.`);
-  }catch(e){ status('Could not load index/terms.compact.json — serve this folder over http (e.g. `python3 -m http.server`) rather than opening the file directly.'); }
-}
-// A FAILED SHARD MUST NOT BE CACHED AS AN ANSWER, and here it was worse: no
-// try/catch at all, so one lost request threw out of `run()` and the page went
-// quiet (2026-08-08, ported from reader2.html).  The PROMISE is cached and
-// deleted on failure, so the next search retries.
-async function shard(vi){
-  if(shardCache[vi]) return shardCache[vi];
-  return shardCache[vi]=(async()=>{
-    try{ const r=await fetch(bust('index/'+IVOLS()[vi]+'.idx.json'));
-         if(!r.ok) throw new Error('HTTP '+r.status);
-         return await r.json();
-    }catch(e){ delete shardCache[vi]; return {paras:[],inv:{}}; }
-  })();
-}
-// The book on a row, from `booktitle/<VOL>.json` — the stack the edition
-// prints on the book's own title page.  NEVER the corpus `book` field, which
-// names the wrong thing in 61 of 118 volumes (07Di02: a kathā one level too
-// deep on all 335 paragraphs of the Mahāparinibbānasutta).  Same source and
-// same reason as reader2's row line and ¶-tooltip.
-let btCache={};
-async function btFor(vol){ if(btCache[vol]) return btCache[vol];
-  return btCache[vol]=(async()=>{
-    try{ const r=await fetch(bust('reader/booktitle/'+vol+'.json'));
-         if(!r.ok) throw new Error('HTTP '+r.status);
-         return await r.json();
-    }catch(e){ delete btCache[vol]; return {}; }
-  })(); }
-function bookOf(bt,ord){
-  let bk='',bo=-1;
-  for(const k in bt){ const kk=+k; if(kk<=ord&&kk>bo)bo=kk; }
-  if(bo>=0){ const st=bt[String(bo)]; const a=Array.isArray(st)?st:[st];
-             bk=String(a[a.length-1]||'').trim(); }
-  return bk;
-}
+const status=m=>{ el('status').textContent=m; };
+const statusHTML=h=>{ el('status').innerHTML=h; };
+// the mode, named in every status line — the switch alone is not enough
+const modeName=()=>sFold?(window.t?t('s_folded'):'diacritics folded'):(window.t?t('s_exact'):'exact diacritics');
 function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
 // anchored on the phrase where it occurs, else on the earliest word; every
-// query word inside the window is marked — the old builder assumed ONE
-// contiguous match and could not serve a multi-word or wildcard row
+// query word inside the window is marked
 function snippet(text,words,phRx,wordRxs){
-  const f=fold(text);
+  const f=norm()(text);
   let i=-1,len=0;
   phRx.lastIndex=0; const pm=phRx.exec(f);
   if(pm&&pm[0]){ i=pm.index; len=pm[0].length; }
@@ -352,15 +184,16 @@ function snippet(text,words,phRx,wordRxs){
   for(const [s,e] of M){ h+=esc(text.slice(pos,s))+'<mark>'+esc(text.slice(s,e))+'</mark>'; pos=e; }
   return h+esc(text.slice(pos,b))+(b<text.length?' …':'');
 }
-// SECTION NAMES, MATCHED ON THE FOLDED LABEL.  Substring, so a partial name
-// still lands (`ovada` -> *Ovādavagga*), and diacritic-insensitive by the same
-// fold the text index uses.  Exact and opening matches are ranked first, then
-// shorter labels, so the sutta itself beats a compound that contains its name.
-function sectionHits(ft,lf){
-  if(!NAMES||!ft) return '';
+// SECTION NAMES, matched on the label in the SAME mode as the text: exact by
+// default, folded behind the switch.  Substring, so a partial name still
+// lands (`ovāda` -> *Ovādavagga*).  Exact and opening matches rank first,
+// then shorter labels, so the sutta itself beats a compound containing it.
+function sectionHits(fq,lf){
+  if(!NAMES||!fq) return '';
+  const NN=sFold?NNORMF:NNORM;
   const LAYFOLD={'canon':'pali-unicode','commentary':'atthakatha-unicode','subcommentary':'tika-unicode'};
   const idx=[];
-  for(let i=0;i<NFOLD.length;i++){ const p=NFOLD[i].indexOf(ft); if(p>=0) idx.push([i,p]); }
+  for(let i=0;i<NN.length;i++){ const p=NN[i].indexOf(fq); if(p>=0) idx.push([i,p]); }
   if(!idx.length) return '';
   const keep=new Set(idx.map(x=>x[0])), pos={};
   idx.forEach(([i,p])=>{pos[i]=p;});
@@ -369,7 +202,7 @@ function sectionHits(ft,lf){
   if(!rows.length) return '';
   rows.sort((a,b)=>{
     const la=NAMES.labels[a[0]], lb=NAMES.labels[b[0]];
-    const ea=(NFOLD[a[0]]===ft)?0:(pos[a[0]]===0?1:2), eb=(NFOLD[b[0]]===ft)?0:(pos[b[0]]===0?1:2);
+    const ea=(NN[a[0]]===fq)?0:(pos[a[0]]===0?1:2), eb=(NN[b[0]]===fq)?0:(pos[b[0]]===0?1:2);
     return ea-eb || la.length-lb.length || la.localeCompare(lb);
   });
   const shown=rows.slice(0,40);
@@ -383,115 +216,58 @@ function sectionHits(ft,lf){
   return `<div class="secgrp"><h3>${(window.t?t('s_sections'):'Sections')} — ${rows.length}`+
          `${rows.length>shown.length?', showing '+shown.length:''}</h3>${body}</div>`;
 }
+// The book on a row, from `booktitle/<VOL>.json` — the stack the edition
+// prints on the book's own title page.  NEVER the corpus `book` field, which
+// names the wrong thing in 61 of 118 volumes.
+let btCache={};
+async function btFor(vol){ if(btCache[vol]) return btCache[vol];
+  return btCache[vol]=(async()=>{
+    try{ const r=await fetch(bust('reader/booktitle/'+vol+'.json'));
+         if(!r.ok) throw new Error('HTTP '+r.status);
+         return await r.json();
+    }catch(e){ delete btCache[vol]; return {}; }
+  })(); }
+function bookOf(bt,ord){
+  let bk='',bo=-1;
+  for(const k in bt){ const kk=+k; if(kk<=ord&&kk>bo)bo=kk; }
+  if(bo>=0){ const st=bt[String(bo)]; const a=Array.isArray(st)?st:[st];
+             bk=String(a[a.length-1]||'').trim(); }
+  return bk;
+}
 let runSeq=0;
 async function run(){
-  // The reader's box lost a race between keystrokes (2026-07-30n); this one is
-  // only triggered by click or Enter, but two Enters over changed text are the
-  // same shape, and the guard is three lines.
+  // two Enters over changed text are a race; each call takes a ticket and
+  // paints only if it is still the newest
   const my=++runSeq;
   const q=el('q').value.trim(); if(!q){status('Type a query.');return;}
   // the index is fetched HERE, on the first query, not on page load
-  if(!TBMETA&&!TERMS){ await ensureMeta(); if(my!==runSeq) return; }
+  if(!S.ready()){ status('Loading the search index…'); await S.ensure(); if(my!==runSeq) return; }
   await ensureNamesOnly(); if(my!==runSeq) return;
-  if(!TBMETA&&!TERMS){status('Could not load the term index.'+(TBERR?' ('+TBERR+')':''));return;}
-  const ft=fold(q); const lf=sLayer;
-  const secHTML=sectionHits(ft,lf);
-  // A QUERY WITH A SPACE MATCHED NOTHING AND SAID "No matches" — the same one
-  // bug as reader2's box, fixed the same way (2026-08-08, user-reported here
-  // with a screenshot of `sabbe saṅkhārā`): split, resolve each word,
-  // intersect the volume lists, intersect the per-paragraph postings, verify
-  // adjacency on the folded text.  Phrase hits are counted by occurrence;
-  // paragraphs carrying all the words apart are listed after, labelled,
-  // never merged into the phrase count.
-  const words=ft.split(/\s+/).filter(Boolean);
-  const phq=words.join(' ');
-  const anyWC=words.some(w=>w.indexOf('*')>=0);
-  const phSrc=words.map(wpat).join(' ');
-  const resolved=[];
-  for(const wd of words){
-    const r=await resolveWord(wd);
-    if(my!==runSeq) return;
-    if(r===null){ status('The term index could not be loaded. Check the connection and search again.'); return; }
-    resolved.push(r);
-  }
-  const mtsPer=resolved.map(r=>r.keys);
-  let vis=null;
-  if(mtsPer.length && mtsPer.every(m=>m.length)){
-    const vsets=resolved.map(r=>new Set(r.keys.flatMap(k=>r.vols[k]||[])));
-    vis=[...vsets[0]].filter(v=>vsets.every(s=>s.has(v))).sort((a,b)=>a-b);
-    if(lf) vis=vis.filter(v=>ILAYERS()[v]===lf);
-    // CANON FIRST, THEN AṬṬHAKATHĀ, THEN ṬĪKĀ (2026-08-08, user request; same
-    // change as reader2.html).  Volume order interleaves the layers — 01ViT01
-    // is a ṭīkā and sorts ahead of every canon volume.  `vis` itself is
-    // ordered so the row caps favour the canon; sections stay above all.
-    const LRANK={'pali-unicode':0,'atthakatha-unicode':1,'tika-unicode':2};
-    if(vis) vis.sort((a,b)=>((LRANK[ILAYERS()[a]]??3)-(LRANK[ILAYERS()[b]]??3))||a-b);
-    if(!vis.length) vis=null;
-  }
-  if(!vis){
-    // A NAME MATCH IS STILL A MATCH.  `Oghataraṇasutta` occurs in no running
-    // text at all, so the old "no matches" was wrong as well as unhelpful.
-    // ...AND SAY IT AS A RESULT, NOT A FAILURE.  2,229 of the corpus's 2,593
-    // sutta names occur in NO running text — the name is printed in the heading
-    // and nowhere else — so "no text matches" is the normal case for a sutta
-    // and led with the word "No".
-    if(my!==runSeq) return;
-    if(secHTML){ status(`Found in the section titles. “${q}” does not occur in the running text.`);
-                 el('results').innerHTML=secHTML; return; }
-    status(`No matches for “${q}”.`);el('results').innerHTML='';return;}
-  status(`Searching ${vis.length} volume(s)…`);
-  // shards 8 at a time, not one per await — the serial loop was most of the
-  // slowness on a common word (measured in reader2: shards avg 1.64 MB,
-  // 194 MB in all, up to 118 volumes per common word)
-  { const need=[...vis]; let ni=0; const pool=[];
-    for(let w=0;w<Math.min(8,need.length);w++)
-      pool.push((async()=>{ while(ni<need.length && my===runSeq){ await shard(need[ni++]); } })());
-    await Promise.all(pool); }
+  if(!S.ready()){status('Could not load the term index.'+(S.error()?' ('+S.error()+')':''));return;}
+  const lf=sLayer; const fq=norm()(q).trim();
+  const secHTML=sectionHits(fq,lf);
+  status(`Searching…`);
+  const r=await S.search(q,{fold:sFold,layer:lf,capP:70,capA:35,onProgress:n=>{ if(my===runSeq) status(`Searching ${n.toLocaleString()} paragraph(s)…`); }});
   if(my!==runSeq) return;
-  const countOcc=(hay,ndl)=>{ let n=0,i=hay.indexOf(ndl); while(i>=0){n++;i=hay.indexOf(ndl,i+1);} return n; };
-  const phRxG=anyWC?new RegExp(phSrc,'g'):null;
-  const phCount=f=>{ if(!anyWC) return countOcc(f,phq);
-    phRxG.lastIndex=0; let n=0,m;
-    while((m=phRxG.exec(f))){ if(!m[0]){phRxG.lastIndex++;continue;} n++; } return n; };
-  const phRxA=new RegExp(phSrc,'g');
-  const wordRxs=words.map(w=>new RegExp(wpat(w),'g'));
-  // `phrVols`: volumes with PHRASE hits only, so the status line cannot claim
-  // volumes that merely carry the words apart
-  // !!! THE ROW CAP IS PER LAYER, NOT GLOBAL (2026-08-08, same fix as
-  // reader2.html): canon-first ordering plus one shared cap starved the
-  // Aṭṭhakathā and Ṭīkā rows on any word with a cap's worth of canon
-  // paragraphs.  70 per layer for phrase rows, 35 for the not-adjacent list.
-  const CAPP=70, CAPA=35; const nPhr={}, nAnd={};
-  let phrOut=[], andOut=[], total=0, andTotal=0, phrParas=0; const phrVols=new Set();
-  for(const vi of vis){
-    const sh=await shard(vi);
-    if(my!==runSeq) return;
-    const maps=mtsPer.map(m=>{ const mm=new Map();
-      for(const k of m) for(const [pi,c] of (sh.inv[k]||[])) mm.set(pi,(mm.get(pi)||0)+c);
-      return mm; });
-    const pis=[...maps[0].keys()].filter(pi=>maps.every(mm=>mm.has(pi))).sort((a,b)=>a-b);
-    for(const pi of pis){ const p=sh.paras[pi];
-      const _lay=ILAYERS()[vi];
-      if(words.length>1){
-        const c=phCount(fold(p.text));
-        if(c>0){ total+=c; phrParas++; phrVols.add(vi); if((nPhr[_lay]=(nPhr[_lay]||0)+1)<=CAPP) phrOut.push({lay:_lay,vol:IVOLS()[vi],p}); }
-        else    { andTotal++; if((nAnd[_lay]=(nAnd[_lay]||0)+1)<=CAPA) andOut.push({lay:_lay,vol:IVOLS()[vi],p}); }
-      } else {
-        total+=maps[0].get(pi); phrParas++; phrVols.add(vi);
-        if((nPhr[_lay]=(nPhr[_lay]||0)+1)<=CAPP) phrOut.push({lay:_lay,vol:IVOLS()[vi],p});
-      }
-    }
-  }
-  if(!phrOut.length&&!andOut.length){status(`No matches in that layer for “${q}”.`);el('results').innerHTML=secHTML;return;}
-  // the count of everything found, not of the rows drawn — like the reader's
-  // word-lookup pane (2026-08-08, user request)
-  status(`${total.toLocaleString()} ${(window.t?t('s_occ'):'occurrence(s)')} in ${phrParas.toLocaleString()} paragraph(s), ${phrVols.size.toLocaleString()} volume(s)`+
-         (andTotal?` — and ${andTotal.toLocaleString()} paragraph(s) with all ${words.length} words, not adjacent`:'')+`.`);
-  // `Pāḷi`, as the reader's own chips say — the two UIs must not name the same
-  // layer two different things (2026-08-08, user request)
+  if(r===null){ status('The term index could not be loaded. Check the connection and search again.'); return; }
+  const words=r.words;
+  if(!r.vis||(!r.phrOut.length&&!r.andOut.length)){
+    // A NAME MATCH IS STILL A MATCH: 2,229 of the corpus's 2,593 sutta names
+    // occur in no running text at all.  And in exact mode a miss offers the
+    // switch, because a word typed without its diacritics is the commonest
+    // reason for one — but the page never folds on its own.
+    const offer=sFold?'':` — <a href="#" class="foldlink" onclick="setFold(true);return false;">${window.t?t('s_try_fold'):'fold diacritics (a = ā) and search again?'}</a>`;
+    if(secHTML){ statusHTML(`Found in the section titles. “${esc(q)}” does not occur in the running text (${modeName()})${offer}.`);
+                 el('results').innerHTML=secHTML; return; }
+    statusHTML(`No matches for “${esc(q)}” (${modeName()}${lf?', this layer':''})${offer}.`); el('results').innerHTML='';return;}
+  const phRxA=new RegExp(words.map(SearchCore.wpat).join(' '),'g');
+  const wordRxs=words.map(w=>new RegExp(SearchCore.wpat(w),'g'));
+  // the count of everything found, not of the rows drawn — and the mode
+  status(`${r.total.toLocaleString()} ${(window.t?t('s_occ'):'occurrence(s)')} in ${r.phrParas.toLocaleString()} paragraph(s), ${r.phrVols.size.toLocaleString()} volume(s)`+
+         (r.andTotal?` — and ${r.andTotal.toLocaleString()} paragraph(s) with all ${words.length} words, not adjacent`:'')+
+         (r.capped.length?` — ${r.capped.map(c=>`${c.word}: the ${c.used} commonest of ${c.matched.toLocaleString()} forms`).join('; ')}`:'')+` · ${modeName()}.`);
   const layName={'pali-unicode':'Pāḷi','atthakatha-unicode':'Aṭṭhakathā','tika-unicode':'Ṭīkā'};
-  // the book for every row DRAWN, resolved from `booktitle/` (cached per vol)
-  const drawVols=[...new Set(phrOut.concat(andOut).map(h=>h.vol))];
+  const drawVols=[...new Set(r.phrOut.concat(r.andOut).map(h=>h.vol))];
   const btMap={};
   await Promise.all(drawVols.map(async v=>{ btMap[v]=await btFor(v); }));
   if(my!==runSeq) return;
@@ -500,11 +276,7 @@ async function run(){
     const bk=bookOf(btMap[h.vol]||{},p.ord!=null?p.ord:-1);
     const su=(p.sutta&&p.sutta!=='X')?String(p.sutta).replace(/\s+/g,' ').trim():'';
     const loc=[bk,(su&&su!==bk)?su:''].filter(Boolean).join(' · ');
-    // THE ORDINAL, NOT THE `id`.  `p.id` is not unique — 12,110 collisions
-    // across 65 volumes — so an id-keyed jump lands on the FIRST paragraph
-    // that answers to it.  The rebuilt index carries `ord`; older shards do
-    // not, so the id form is still emitted as a fallback and reader2 resolves
-    // both.
+    // THE ORDINAL, NOT THE `id` — `p.id` is not unique (12,110 collisions)
     const tgt=(p.ord!=null)?('#'+h.vol+'#'+p.ord):('#'+h.vol+'/'+encodeURIComponent(p.id));
     const href='reader/reader2.html?q='+encodeURIComponent(q)+tgt;
     return `<a class="hit" href="${href}"><div class="loc"><span class="lay">${layName[h.lay]||h.lay}</span>`+
@@ -512,8 +284,8 @@ async function run(){
       (p.peyyala?' <span class="pey">peyyāla</span>':'')+`</div>`+
       `<div class="txt">${snippet(p.text,words,phRxA,wordRxs)}</div></a>`;
   };
-  el('results').innerHTML=secHTML+phrOut.map(rowHTML).join('')+
-    (andOut.length?`<div class="secgrp"><h3>${andTotal.toLocaleString()} paragraph(s) with all ${words.length} words, not adjacent</h3></div>`+andOut.map(rowHTML).join(''):'');
+  el('results').innerHTML=secHTML+r.phrOut.map(rowHTML).join('')+
+    (r.andOut.length?`<div class="secgrp"><h3>${r.andTotal.toLocaleString()} paragraph(s) with all ${words.length} words, not adjacent</h3></div>`+r.andOut.map(rowHTML).join(''):'');
 }
 el('go').onclick=run;
 // the layer chips: state + repaint + re-run, exactly as the reader box does
@@ -522,10 +294,16 @@ function setLayerChip(v){ sLayer=v;
   document.querySelectorAll('#laychips .lchip').forEach(c=>c.classList.toggle('on',c.dataset.v===v));
   if(el('q').value.trim()) run(); }
 document.querySelectorAll('#laychips .lchip').forEach(c=>c.addEventListener('click',()=>setLayerChip(c.dataset.v)));
+// the fold switch: remembered, shown on the chip, named in the status
+function setFold(v){ sFold=!!v; try{ localStorage.setItem(FOLDKEY,sFold?'1':'0'); }catch(e){}
+  el('foldbtn').classList.toggle('on',sFold);
+  if(el('q').value.trim()) run(); }
+el('foldbtn').classList.toggle('on',sFold);
+el('foldbtn').addEventListener('click',()=>setFold(!sFold));
 el('q').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
 // warm the index on FOCUS, so the common case (click the box, type, Enter) has
-// the download already in flight without costing a visitor who never searches
-el('q').addEventListener('focus',()=>{ensureMeta();},{once:true});
+// the manifest already in flight without costing a visitor who never searches
+el('q').addEventListener('focus',()=>{S.ensure();},{once:true});
 status('Ready — type a query.');
 </script>
 </body>

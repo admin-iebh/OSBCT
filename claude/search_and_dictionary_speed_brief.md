@@ -1,6 +1,13 @@
 # Making search and the dictionary faster — the brief, and what is NOT yet known
 
-**Written 2026-09-05.** Everything here marked *measured* was measured on the
+**Written 2026-09-05, and ACTED ON the same day** — see
+`search_exact_by_default_and_postings_shards.md` for what was measured (§1 is
+answered: Pages and R2 both compress in transit; the cost was the per-volume
+shards, 43 MB for one common word), what shipped (§0, levers 0/2/4/5, the
+harness and baseline of §7) and what was left (lever 3, `k.txt`). The text
+below is kept as written, as the record of the question.
+
+Everything here marked *measured* was measured on the
 repo. **The one measurement that decides the whole shape of this work was NOT
 taken** — see §1. Do not start optimising before taking it.
 

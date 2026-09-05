@@ -97,16 +97,24 @@ window.I18N = {
   // search page
   search_sub:{en:'Full-text search across 118 volumes — Tipiṭaka, Aṭṭhakathā, Ṭīkā · 83,751 paragraphs',
               es:'Búsqueda de texto completo en 118 volúmenes — Tipiṭaka, Aṭṭhakathā, Ṭīkā · 83.751 párrafos'},
-  search_ph:{en:'Search Pāḷi — words, a phrase, * wildcard; diacritics optional',
-             es:'Buscar en Pāḷi — palabras, una frase, comodín *; diacríticos opcionales'},
+  search_ph:{en:'Search Pāḷi — words, a phrase, * wildcard',
+             es:'Buscar en Pāḷi — palabras, una frase, comodín *'},
+  // EXACT DIACRITICS BY DEFAULT (2026-09-05, reader: tassa and tassā are
+  // different words).  Folding is a switch, and the mode is named in every
+  // result line — these are those names.
+  fold_toggle:{en:'Fold diacritics: nibbana finds nibbāna. Off by default — tassa and tassā are different words.',
+               es:'Plegar diacríticos: nibbana encuentra nibbāna. Desactivado por defecto — tassa y tassā son palabras distintas.'},
+  s_exact:{en:'exact diacritics',es:'diacríticos exactos'},
+  s_folded:{en:'diacritics folded',es:'diacríticos plegados'},
+  s_try_fold:{en:'fold diacritics (a = ā) and search again?',es:'¿plegar diacríticos (a = ā) y buscar de nuevo?'},
   opt_all:{en:'All layers',es:'Todas las capas'},
   lay_all:{en:'All',es:'Todas'},
   opt_pali:{en:'Pāḷi only',es:'Solo Pāḷi'},
   opt_atth:{en:'Aṭṭhakathā only',es:'Solo Aṭṭhakathā'},
   opt_tika:{en:'Ṭīkā only',es:'Solo Ṭīkā'},
   search_btn:{en:'Search',es:'Buscar'},
-  search_foot:{en:'Type one word, several words, or a phrase — a phrase matches the words adjacent and in order; paragraphs carrying the words apart are listed separately. Diacritics are optional: nibbana finds nibbāna. * completes a word: dhamm*, *vaggo, dham*ti (at least 3 letters beside the *). A bare word also matches inside longer words. Results show the book, the printed page and the paragraph; click a result to open it in the reader at the marked word.',
-               es:'Escriba una palabra, varias palabras o una frase — una frase encuentra las palabras adyacentes y en orden; los párrafos que llevan las palabras separadas se listan aparte. Los diacríticos son opcionales: nibbana encuentra nibbāna. * completa una palabra: dhamm*, *vaggo, dham*ti (mínimo 3 letras junto al *). Una palabra sola también coincide dentro de palabras más largas. Los resultados muestran el libro, la página impresa y el párrafo; haga clic en un resultado para abrirlo en el lector sobre la palabra marcada.'},
+  search_foot:{en:'Type one word, several words, or a phrase — a phrase matches the words adjacent and in order; paragraphs carrying the words apart are listed separately. Diacritics count: tassa and tassā are different words. Switch on a = ā to fold them, so that nibbana finds nibbāna. * completes a word: dhamm*, *vaggo, dham*ti (at least 3 letters beside the *). A bare word also matches inside longer words. Results show the book, the printed page and the paragraph; click a result to open it in the reader at the marked word.',
+               es:'Escriba una palabra, varias palabras o una frase — una frase encuentra las palabras adyacentes y en orden; los párrafos que llevan las palabras separadas se listan aparte. Los diacríticos cuentan: tassa y tassā son palabras distintas. Active a = ā para plegarlos, de modo que nibbana encuentre nibbāna. * completa una palabra: dhamm*, *vaggo, dham*ti (mínimo 3 letras junto al *). Una palabra sola también coincide dentro de palabras más largas. Los resultados muestran el libro, la página impresa y el párrafo; haga clic en un resultado para abrirlo en el lector sobre la palabra marcada.'},
   s_loading:{en:'Loading term index…',es:'Cargando índice de términos…'},
   s_ready:{en:'Ready.',es:'Listo.'},
   s_open:{en:'open in reader →',es:'abrir en el lector →'},

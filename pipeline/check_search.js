@@ -44,16 +44,24 @@ function mkResolve(base){ return u=>{ u=String(u).split('?')[0];
   if(u.startsWith('../')) return path.join(ROOT,'site',u.slice(3));
   if(u.startsWith('http')){ try{u=new URL(u).pathname.replace(/^\//,'');}catch(e){} }
   return path.join(base,u); }; }
+// the shared core is a <script src> (2026-09-05: searchcore.js, one
+// implementation for both pages); jsdom does not fetch scripts, so it is
+// inlined the way check_lookup_reach.js inlines panel.js
+function inlineScripts(html,resolve){
+  return html.replace(/<script src="([^"]+)"[^>]*><\/script>/g,(m,u)=>{
+    const f=resolve(u); let t=null; try{ t=fs.readFileSync(f,'utf8'); }catch(e){}
+    return t==null?m:'<script>'+t+'</script>'; });
+}
 function boot(file,base,opts){
   const resolve=mkResolve(base);
-  const hideTb=opts&&opts.hideTb;   // simulate an unpacked deposit from before tb/
-  const dom=new JSDOM(fs.readFileSync(file,'utf8'),{runScripts:'dangerously',pretendToBeVisual:true,url:'http://x/',beforeParse(w){
+  const hideTb=opts&&opts.hideTb;   // simulate an unpacked deposit from before tp/
+  const dom=new JSDOM(inlineScripts(fs.readFileSync(file,'utf8'),resolve),{runScripts:'dangerously',pretendToBeVisual:true,url:'http://x/',beforeParse(w){
     w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});
     w.scrollTo=()=>{}; w.Element.prototype.scrollIntoView=()=>{};
     w.__fetched=[];
     w.fetch=u=>{w.__fetched.push(String(u).split('?')[0]);
       const f=resolve(u);let t=null;
-      if(!(hideTb&&/\/tb\//.test(String(u)))){ try{t=fs.readFileSync(f,'utf8');}catch(e){} }
+      if(!(hideTb&&/\/tp\//.test(String(u)))){ try{t=fs.readFileSync(f,'utf8');}catch(e){} }
       return Promise.resolve({ok:t!=null,status:t!=null?200:404,json:()=>Promise.resolve(t?JSON.parse(t):{}),text:()=>Promise.resolve(t||'')});};
   }});
   return dom.window;
@@ -65,35 +73,65 @@ async function readyReader(w){ for(let k=0;k<80;k++){ await wait(100);
 const FOLDM={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
 const foldS=s=>(s||'').toLowerCase().replace(/[āīūṁṃṅñṭḍṇḷ]/g,c=>FOLDM[c]||c);
 const rxEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+// EXACT is the default since 2026-09-05 (reader: `tassa` and `tassā` are
+// different words).  The query is canonicalised — NFC, lower case, the
+// modern ṃ written as the edition's ṁ — and matched against the keys AS
+// STORED; folding is a switch.  `truth()` therefore takes the mode: in exact
+// mode a key matches by identity/substring/wildcard on itself, in fold mode
+// on its folded form, and the phrase check runs over the canonical text
+// rather than the folded one.  Against the pre-09-05 index (folded keys) the
+// two modes coincide, which is why the old assertions still pass on it and
+// the new ones below do not.
+const canonS=s=>(s||'').normalize('NFC').toLowerCase().replace(/ṃ/g,'ṁ');
 let _T=null;
 const T=()=>_T||(_T=JSON.parse(fs.readFileSync(path.join(ROOT,'site','index','terms.compact.json'),'utf8')));
-const keysFor=w=>{
+const keysFor=(w,fold)=>{
+  const norm=fold?foldS:canonS; w=norm(w);
+  const view=k=>fold?foldS(k):k;
   if(w.indexOf('*')>=0){ const rx=new RegExp('^'+w.split('*').map(rxEsc).join('.*')+'$');
-    const out=[]; for(const k in T().terms){ if(rx.test(k)){ out.push(k); if(out.length>=500) break; } } return out; }
-  if(T().terms[w]) return [w];
+    const out=[]; for(const k in T().terms){ if(rx.test(view(k))){ out.push(k); if(out.length>=500) break; } } return out; }
+  if(!fold && T().terms[w]) return [w];
+  if(fold){ const ex=[]; for(const k in T().terms) if(foldS(k)===w) ex.push(k); if(ex.length) return ex; }
   if(w.length<3) return [];
-  const out=[]; for(const k in T().terms){ if(k.indexOf(w)>=0){ out.push(k); if(out.length>=500) break; } } return out;
+  const out=[]; for(const k in T().terms){ if(view(k).indexOf(w)>=0){ out.push(k); if(out.length>=500) break; } } return out;
 };
 // {phrTot, phrParas, andParas, vols} for a query, optionally within one layer
-function truth(words,layer){
-  const per=words.map(w=>keysFor(w));
+function truth(words,layer,fold){
+  const norm=fold?foldS:canonS;
+  const per=words.map(w=>keysFor(w,fold));
   if(per.some(m=>!m.length)) return {phrTot:0,phrParas:0,andParas:0,vols:0};
   const vsets=per.map(m=>new Set(m.flatMap(k=>T().terms[k]||[])));
   let vis=[...vsets[0]].filter(v=>vsets.every(s=>s.has(v)));
   if(layer) vis=vis.filter(v=>T().layers[v]===layer);
-  const phRx=new RegExp(words.map(w=>w.indexOf('*')>=0?w.split('*').map(rxEsc).join('\\S*'):rxEsc(w)).join(' '),'g');
+  const phRx=new RegExp(words.map(norm).map(w=>w.indexOf('*')>=0?w.split('*').map(rxEsc).join('\\S*'):rxEsc(w)).join(' '),'g');
   let phrTot=0,phrParas=0,andParas=0; const volsWith=new Set();
   for(const vi of vis){
     const sh=JSON.parse(fs.readFileSync(path.join(ROOT,'site','index',T().vols[vi]+'.idx.json'),'utf8'));
     const maps=per.map(m=>{const mm=new Map(); for(const k of m) for(const [pi,c] of (sh.inv[k]||[])) mm.set(pi,(mm.get(pi)||0)+c); return mm;});
     for(const pi of maps[0].keys()){ if(!maps.every(mm=>mm.has(pi))) continue;
       if(words.length===1){ phrTot+=maps[0].get(pi); phrParas++; volsWith.add(vi); continue; }
-      const f=foldS(sh.paras[pi].text);
+      const f=norm(sh.paras[pi].text);
       phRx.lastIndex=0; let n=0,m; while((m=phRx.exec(f))){ if(!m[0]){phRx.lastIndex++;continue;} n++; }
       if(n>0){phrTot+=n;phrParas++;volsWith.add(vi);} else {andParas++;}
     }
   }
   return {phrTot,phrParas,andParas,vols:volsWith.size};
+}
+// ---- exact-diacritics truth FROM THE CORPUS TEXT, not from any index ------
+// The assertions built on this are the ones that had to go red on the folded
+// index of 2026-09-05 before it was rebuilt: the map above cannot know what it
+// merged, so the count comes straight from `site/<VOL>.json`, tokenised the
+// way the builder tokenises.
+function corpusCounts(words){
+  const TOKRX=/[^a-zāīūṁṃṅñṇṭḍḷ]+/i;
+  const want=new Set(words); const out={}; words.forEach(w=>out[w]={occ:0,paras:0,vols:new Set()});
+  const man=JSON.parse(fs.readFileSync(path.join(ROOT,'site/reader/manifest.json'),'utf8')).volumes;
+  for(const vol of Object.keys(man).sort()){
+    const P=JSON.parse(fs.readFileSync(path.join(ROOT,'site',vol+'.json'),'utf8')).paragraphs;
+    for(const p of P){ const seen=new Set();
+      for(const w of canonS(p.text).split(TOKRX)){ if(want.has(w)){ out[w].occ++; seen.add(w); } }
+      for(const w of seen){ out[w].paras++; out[w].vols.add(vol); } } }
+  for(const w in out) out[w].vols=out[w].vols.size; return out;
 }
 
 let fails=0;
@@ -108,7 +146,7 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
   const heads=dd=>[...dd.querySelectorAll('.sr-head')].map(h=>h.textContent);
 
   // 1. two-word phrase, rare on purpose (7 volumes) so the run stays light.
-  const t1=truth(['yamakasalanam','antare']);
+  const t1=truth(['yamakasālānaṁ','antare']);
   await w.doSearch('yamakasālānaṁ antare');
   let dd=w.document.getElementById('sdrop');
   ok(heads(dd).some(h=>h.startsWith(t1.phrTot.toLocaleString()+' occurrence')),
@@ -135,8 +173,8 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
   // also carries the ORDER assertion: canon rows first, then aṭṭhakathā, then
   // ṭīkā (2026-08-08, user request; volume order alone leads with 01ViT01, a
   // ṭīkā).  Sections stay above, untouched.
-  const t3=truth(['yamakasalanam']);
-  const t3c=truth(['yamakasalanam'],'pali-unicode');
+  const t3=truth(['yamakasālānaṁ']);
+  const t3c=truth(['yamakasālānaṁ'],'pali-unicode');
   await w.doSearch('yamakasālānaṁ');
   dd=w.document.getElementById('sdrop');
   ok(heads(dd).some(h=>h.startsWith(t3.phrTot.toLocaleString()+' occurrence')),
@@ -149,13 +187,13 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
 
   // 4. `*` wildcard, alone and in a phrase.  `\S*` in text: the star must not
   // cross a word boundary.
-  const t4=truth(['yamakasal*']);
-  await w.doSearch('yamakasal*');
+  const t4=truth(['yamakasāl*']);
+  await w.doSearch('yamakasāl*');
   dd=w.document.getElementById('sdrop');
   ok(t4.phrTot>0 && heads(dd).some(h=>h.startsWith(t4.phrTot.toLocaleString()+' occurrence')),
      'reader: wildcard word', 'want '+t4.phrTot+' | '+heads(dd).join(' / '));
-  const t5=truth(['yamakasal*','antare']);
-  await w.doSearch('yamakasal* antare');
+  const t5=truth(['yamakasāl*','antare']);
+  await w.doSearch('yamakasāl* antare');
   dd=w.document.getElementById('sdrop');
   ok(t5.phrTot>0 && heads(dd).some(h=>h.startsWith(t5.phrTot.toLocaleString()+' occurrence')),
      'reader: wildcard inside a phrase', 'want '+t5.phrTot+' | '+heads(dd).join(' / '));
@@ -164,7 +202,7 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
   // canon: the canon volumes that carry both WORDS carry them in no single
   // PARAGRAPH, so a canon expectation is 0 rows and the assertion would pass
   // vacuously on a build with no filter at all.
-  const t6=truth(['yamakasalanam','antare'],'tika-unicode');
+  const t6=truth(['yamakasālānaṁ','antare'],'tika-unicode');
   w.document.getElementById('sq').value='yamakasālānaṁ antare';
   if(typeof w.setSLayer==='function'){ w.setSLayer('tika-unicode'); await wait(600); }
   dd=w.document.getElementById('sdrop');
@@ -220,19 +258,23 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
   //     exist to remove.  The searches above covered exact, substring-sweep
   //     (none needed yet — added below), both wildcard shapes and phrases.
   const fetched=w.__fetched.join(' ');
-  ok(/\/tb\/meta\.json/.test(fetched)&&/\/tb\/[a-z_]{2}\.json/.test(fetched),
-     'wiring: buckets are fetched');
+  ok(/\/tp\/index\.json/.test(fetched)&&/\/tp\/[a-z_]+\.json/.test(fetched),
+     'wiring: postings shards are fetched');
   ok(!/terms\.compact\.json/.test(fetched),
      'wiring: the 22 MB map is never fetched');
+  // 2026-09-05: nor is any per-volume shard — counting `tassā` used to pull
+  // 117 of them (194 MB); rows now come from text chunks
+  ok(!/\.idx\.json/.test(fetched)&&/\/tx\/[^/]+\/\d+\.json/.test(fetched),
+     'wiring: no per-volume idx.json; rows come from tx/ chunks');
   // a SUBSTRING sweep (not exact, no wildcard) must go through k.txt and
   // still count exactly — truth comes from the source map, so this is the
   // first time the assertion is not circular
-  const tS=truth(['amakasalana']);
+  const tS=truth(['amakasālāna']);
   await w.doSearch('amakasālāna');
   dd=w.document.getElementById('sdrop');
   ok(tS.phrTot>0 && heads(dd).some(h=>h.startsWith(tS.phrTot.toLocaleString()+' occurrence')),
      'wiring: substring sweep via k.txt counts exactly', 'want '+tS.phrTot+' | '+heads(dd).join(' / '));
-  ok(/\/tb\/k\.txt/.test(w.__fetched.join(' ')),'wiring: the sweep fetched k.txt');
+  ok(/k\.txt/.test(w.__fetched.join(' ')),'wiring: the sweep fetched k.txt');
 
   // 6e. the FALLBACK: with tb/ absent (an unpacked deposit from before the
   //     buckets) the box must still answer, from terms.compact.json
@@ -243,10 +285,39 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
       const dd2=w2.document.getElementById('sdrop');
       const h2=[...dd2.querySelectorAll('.sr-head')].map(h=>h.textContent);
       ok(h2.some(h=>h.startsWith(t3.phrTot.toLocaleString()+' occurrence')),
-         'wiring: legacy fallback answers when tb/ is absent', h2.join(' / '));
+         'wiring: legacy fallback answers when tp/ is absent', h2.join(' / '));
       ok(/terms\.compact\.json/.test(w2.__fetched.join(' ')),
          'wiring: the fallback used the legacy map');
     } else { ok(false,'wiring: fallback window did not boot'); }
+  }
+
+  // 6f. EXACT DIACRITICS BY DEFAULT (2026-09-05, reader: "tassa and tassā are
+  //     different words").  Truth from the corpus text.  `anīkaratto` (6
+  //     occurrences, 2 volumes) and `anikaratto` (3) fold to one key; each
+  //     must count only itself, the head must SAY which mode produced the
+  //     count, and the switch must merge them again — and say so.
+  const X=corpusCounts(['anīkaratto','anikaratto','tassā']);
+  const XA=X['anīkaratto'], XB=X['anikaratto'];
+  ok(XA.occ>0&&XB.occ>0&&XA.occ!==XB.occ,'exact: the test pair is real', JSON.stringify([XA,XB]));
+  if(typeof w.setSFold==='function') w.setSFold(false);
+  await w.doSearch('anīkaratto');
+  dd=w.document.getElementById('sdrop');
+  ok(heads(dd).some(h=>h.startsWith(XA.occ.toLocaleString()+' occurrence')&&h.includes(' in '+XA.paras+' paragraph')),
+     'reader exact: anīkaratto counts only anīkaratto', 'want '+XA.occ+'/'+XA.paras+' | '+heads(dd).join(' / '));
+  ok(heads(dd).some(h=>/exact/i.test(h)),'reader exact: the head names the mode', heads(dd).join(' / '));
+  await w.doSearch('anikaratto');
+  dd=w.document.getElementById('sdrop');
+  ok(heads(dd).some(h=>h.startsWith(XB.occ.toLocaleString()+' occurrence')),
+     'reader exact: anikaratto counts only anikaratto', 'want '+XB.occ+' | '+heads(dd).join(' / '));
+  ok(typeof w.setSFold==='function','reader: the fold switch exists');
+  if(typeof w.setSFold==='function'){
+    w.document.getElementById('sq').value='anikaratto';
+    w.setSFold(true); await wait(800);
+    dd=w.document.getElementById('sdrop');
+    ok(heads(dd).some(h=>h.startsWith((XA.occ+XB.occ).toLocaleString()+' occurrence')&&/fold/i.test(h)),
+       'reader fold: the switch merges the pair and the head says so', heads(dd).join(' / '));
+    ok(!!dd.querySelector('.sr-chip.sr-fold.on'),'reader fold: the switch state is visible');
+    w.setSFold(false); await wait(300);
   }
 
   // 7. markInEl: phrase as one run; words apart each marked; wildcard extent.
@@ -286,7 +357,7 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
      'search: book from booktitle/', locs.slice(0,2).join(' | ')||'no rows');
   ok(!locs.some(t=>t.includes('Pubbenivāsa')),'search: corpus book field not printed');
 
-  await sq('yamakasal*');
+  await sq('yamakasāl*');
   ok(t4.phrTot>0&&st().startsWith(t4.phrTot.toLocaleString()+' occurrence'),
      'search: wildcard word', 'want '+t4.phrTot+' | '+st());
 
@@ -322,14 +393,40 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
      'search: layer chip filters', (typeof s.setLayerChip)+' '+s.document.querySelectorAll('.hit').length+' vs '+(t6.phrParas+t6.andParas));
   if(typeof s.setLayerChip==='function') s.setLayerChip('');
 
+  // exact by default, here too — and `tassā` itself, the reader's example:
+  // 4,322 occurrences, not the 36,644 of `tassa`+`tassā` merged
+  if(typeof s.setFold==='function') s.setFold(false);
+  await sq('anīkaratto');
+  ok(st().startsWith(XA.occ.toLocaleString()+' occurrence')&&st().includes(' in '+XA.paras+' paragraph'),
+     'search exact: anīkaratto counts only anīkaratto', 'want '+XA.occ+'/'+XA.paras+' | '+st());
+  ok(/exact/i.test(st()),'search exact: the status names the mode', st());
+  await sq('tassā');
+  ok(st().startsWith(X['tassā'].occ.toLocaleString()+' occurrence'),
+     'search exact: tassā is not tassa', 'want '+X['tassā'].occ+' | '+st());
+  ok(typeof s.setFold==='function','search: the fold switch exists');
+  if(typeof s.setFold==='function'){
+    s.setFold(true); await sq('anikaratto');
+    ok(st().startsWith((XA.occ+XB.occ).toLocaleString()+' occurrence')&&/fold/i.test(st()),
+       'search fold: the switch merges the pair and the status says so', st());
+    ok(!!s.document.querySelector('#foldbtn.on'),'search fold: the switch state is visible');
+    s.setFold(false);
+  }
+  // a word typed WITHOUT its diacritics must not be a silent "No matches":
+  // the status offers the fold switch
+  // (`nibbana` itself IS printed once, so it is not the example)
+  await sq('patisambhida');
+  ok(/fold/i.test(st()),'search exact: a no-match offers the fold switch', st());
+
   // search.html's wiring, asserted on its OWN fetch log — the counts above
   // would pass on the legacy path too, and a silent fallback is exactly the
   // drift these two files keep falling into
   const sf=s.__fetched.join(' ');
-  ok(/\/tb\/meta\.json/.test(sf)&&/\/tb\/[a-z_]{2}\.json/.test(sf),
-     'search wiring: buckets are fetched');
+  ok(/\/tp\/index\.json/.test(sf)&&/\/tp\/[a-z_]+\.json/.test(sf),
+     'search wiring: postings shards are fetched');
   ok(!/terms\.compact\.json/.test(sf),
      'search wiring: the 22 MB map is never fetched');
+  ok(!/\.idx\.json/.test(sf)&&/\/tx\/[^/]+\/\d+\.json/.test(sf),
+     'search wiring: no per-volume idx.json; rows come from tx/ chunks');
 
   console.log(fails?('FAILED: '+fails+' assertion(s)'):'all green');
   process.exit(fails?1:0);

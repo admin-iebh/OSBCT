@@ -63,6 +63,11 @@ TARGETS = [
     # not in the list, so 'LIVE SITE MATCHES' could be printed while the
     # deployed panel was an older build with the flag defaulting off.
     ('/reader/panel.js',       'site/reader/panel.js',       'bytes'),
+    # 2026-09-05: the one search implementation, and the manifest of the
+    # postings shards it reads.  A stale searchcore.js against a new manifest
+    # (or the reverse) is the split-brain this gate exists to see.
+    ('/searchcore.js',         'site/searchcore.js',         'bytes'),
+    ('/index/tp/index.json',   'site/index/tp/index.json',   'bytes'),
     # and the self-hosted type: site/fonts/ is NEW, and .gitignore decides
     # what Actions publishes.  A 404 here means every page fell back to a
     # generic serif and the Pāḷi diacritics are rendering as tofu.
