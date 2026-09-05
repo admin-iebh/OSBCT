@@ -314,7 +314,7 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
     w.document.getElementById('sq').value='anikaratto';
     w.setSFold(true); await wait(800);
     dd=w.document.getElementById('sdrop');
-    ok(heads(dd).some(h=>h.startsWith((XA.occ+XB.occ).toLocaleString()+' occurrence')&&/fold/i.test(h)),
+    ok(heads(dd).some(h=>h.startsWith((XA.occ+XB.occ).toLocaleString()+' occurrence')&&/ignored|fold/i.test(h)),
        'reader fold: the switch merges the pair and the head says so', heads(dd).join(' / '));
     ok(!!dd.querySelector('.sr-chip.sr-fold.on'),'reader fold: the switch state is visible');
     w.setSFold(false); await wait(300);
@@ -406,7 +406,7 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
   ok(typeof s.setFold==='function','search: the fold switch exists');
   if(typeof s.setFold==='function'){
     s.setFold(true); await sq('anikaratto');
-    ok(st().startsWith((XA.occ+XB.occ).toLocaleString()+' occurrence')&&/fold/i.test(st()),
+    ok(st().startsWith((XA.occ+XB.occ).toLocaleString()+' occurrence')&&/ignored|fold/i.test(st()),
        'search fold: the switch merges the pair and the status says so', st());
     ok(!!s.document.querySelector('#foldbtn.on'),'search fold: the switch state is visible');
     s.setFold(false);
@@ -415,7 +415,7 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
   // the status offers the fold switch
   // (`nibbana` itself IS printed once, so it is not the example)
   await sq('patisambhida');
-  ok(/fold/i.test(st()),'search exact: a no-match offers the fold switch', st());
+  ok(/ignore|fold/i.test(st()),'search exact: a no-match offers the fold switch', st());
 
   // search.html's wiring, asserted on its OWN fetch log — the counts above
   // would pass on the legacy path too, and a silent fallback is exactly the

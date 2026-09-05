@@ -74,7 +74,7 @@ else; `build_search_index.py` now asserts that on every run. 682,010 exact keys 
 folded; **34,134 folded keys (5.3%) were merging two or more printed forms** — and they are the
 common words: `tassa`/`tassā`, `evaṁ`/`evam`, `arati` (274 folded, 159 exact).
 
-**The switch.** `a = ā` — a chip beside the layer chips on search.html, a chip in the
+**The switch.** “Ignore diacritics” (labelled `a = ā` for the first hours, renamed the same day at the reader's request) — a chip beside the layer chips on search.html, a chip in the
 dropdown's filter row in reader2. Off by default, remembered in `localStorage['osbct-fold']`
 across both pages. Every result line ends `· exact diacritics` or `· diacritics folded`. A
 miss in exact mode says `No matches for “patisambhida” (exact diacritics) — fold diacritics

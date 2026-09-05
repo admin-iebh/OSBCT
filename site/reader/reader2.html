@@ -137,7 +137,7 @@ body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);colo
          border:1px solid var(--line);border-radius:12px;padding:2px 9px;cursor:pointer}
 .sr-chip:hover{background:var(--hover)}
 .sr-chip.on{color:var(--accent);border-color:var(--accent)}
-.sr-chip.sr-fold{font-family:'Gentium Plus',serif;font-size:12px}
+.sr-chip.sr-fold{}
 .sr-foldlink{color:var(--accent);cursor:pointer;text-decoration:underline}
 .sr-help{margin-left:auto;padding:2px 8px}
 .sr-helpbox{font-family:'Inter',sans-serif;font-size:11.5px;line-height:1.55;color:var(--mut);
@@ -296,7 +296,7 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
    container's, and it has to scroll.
    So the tooltip is now ONE element on `<body>`, `position:fixed`, positioned
    in JS.  Nothing can clip it because nothing contains it. */
-#tiptip{position:fixed;display:none;background:var(--fg);color:var(--bg);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;line-height:1.35;white-space:normal;width:max-content;max-width:260px;text-align:center;padding:5px 9px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.26);z-index:9999;pointer-events:none}
+#tiptip{position:fixed;display:none;background:var(--fg);color:var(--bg);font-family:'Inter',sans-serif;font-size:14.5px;font-weight:500;line-height:1.4;white-space:normal;width:max-content;max-width:320px;text-align:center;padding:8px 12px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.26);z-index:9999;pointer-events:none}
 /* !!! OPENING A SUTTA TOOK EIGHT SECONDS ON A PHONE (2026-07-31c,
    user-reported: "sluggish or unresponsive when one clicks the links").
    Measured in Chromium at 390x844 with the CPU throttled 4x, opening 18Khu01:
@@ -321,8 +321,8 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=13d1e3a5b704"></script>
-<script src="../searchcore.js?v=13d1e3a5b704"></script>
+<script src="../i18n.js?v=bb27db107e1d"></script>
+<script src="../searchcore.js?v=bb27db107e1d"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -524,7 +524,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='13d1e3a5b704';
+const BUILD='bb27db107e1d';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -3401,7 +3401,7 @@ function tipShow(el){
 // because the two copies that used to live here and there drifted twice.
 // Two things changed with the move and they are recorded there in full:
 // diacritics are matched EXACTLY by default (reader: `tassa` and `tassā` are
-// different words) with folding behind the a = ā chip, and a search no longer
+// different words) with folding behind the “Ignore diacritics” chip, and a search no longer
 // downloads the volumes it hits — postings shards and text chunks instead of
 // 117 per-volume files for one common word.
 const FOLDM={'ā':'a','ī':'i','ū':'u','ṁ':'m','ṃ':'m','ṅ':'n','ñ':'n','ṭ':'t','ḍ':'d','ṇ':'n','ḷ':'l'};
@@ -3462,7 +3462,7 @@ let sTimer=null, sSeq=0;
 // The layer filter lives IN the dropdown as chips, not beside the input — the
 // `.search` div shrinks to 90px on a phone and a select would not fit
 // (2026-08-08).  State survives repaints; changing it re-runs the query.
-// The a = ā chip beside them is the fold switch (2026-09-05): remembered
+// The “Ignore diacritics” chip beside them is the fold switch (2026-09-05): remembered
 // across pages in localStorage, shown on the chip, named in every head line.
 let sLayer='', sHelp=false;
 function setSLayer(v){ sLayer=v; doSearch($('#sq').value); }
@@ -3536,11 +3536,11 @@ async function doSearch(q){
   const filtHTML='<div class="sr-filt">'
     +[['','r2_lay_all','All'],['pali-unicode','r2_lay_pali','Pāḷi'],['atthakatha-unicode','r2_lay_a','Aṭṭhakathā'],['tika-unicode','r2_lay_t','Ṭīkā']]
       .map(x=>'<span class="sr-chip'+(sLayer===x[0]?' on':'')+'" onclick="setSLayer(\''+x[0]+'\')">'+esc(TIP(x[1],x[2]))+'</span>').join('')
-    +'<span class="sr-chip sr-fold'+(sFold?' on':'')+'" onclick="setSFold('+(sFold?'false':'true')+')" title="'+escA(TIP('fold_toggle','Fold diacritics: nibbana finds nibbāna. Off by default — tassa and tassā are different words.'))+'">a = ā</span>'
+    +'<span class="sr-chip sr-fold'+(sFold?' on':'')+'" onclick="setSFold('+(sFold?'false':'true')+')" data-tip="'+escA(TIP('fold_toggle','Ignore diacritics: nibbana then also finds nibbāna, and tassa also finds tassā. Off by default, because tassa and tassā are different words. The result line always says which way it was searched.'))+'">'+esc(TIP('fold_label','Ignore diacritics'))+'</span>'
     +'<span class="sr-chip sr-help'+(sHelp?' on':'')+'" onclick="setSHelp()">?</span></div>'
     +(sHelp?'<div class="sr-helpbox">'+esc(TIP('r2_search_help',
-      'Type one word, several words, or a phrase — a phrase matches the words adjacent and in order; words apart are listed separately. Diacritics count: tassa and tassā are different words; the a = ā chip folds them, so that nibbana finds nibbāna. * completes a word: dhamm*, *vaggo, dham*ti (3 letters minimum). A bare word also matches inside longer words. Chips above limit the search to one layer. Click a result to open it in the reader at the marked word.'))+'</div>':'');
-  const offer=sFold?'':' — <span class="sr-foldlink" onclick="setSFold(true)">'+esc(TIP('s_try_fold','fold diacritics (a = ā) and search again?'))+'</span>';
+      'Type one word, several words, or a phrase — a phrase matches the words adjacent and in order; words apart are listed separately. Diacritics count: tassa and tassā are different words; “Ignore diacritics” lets nibbana find nibbāna too. * completes a word: dhamm*, *vaggo, dham*ti (3 letters minimum). A bare word also matches inside longer words. Chips above limit the search to one layer. Click a result to open it in the reader at the marked word.'))+'</div>':'');
+  const offer=sFold?'':' — <span class="sr-foldlink" onclick="setSFold(true)">'+esc(TIP('s_try_fold','ignore diacritics and search again?'))+'</span>';
   if(!r.vis){dd.hidden=false;
     dd.innerHTML=filtHTML+(secHTML||('<div class="sr-head">No matches for “'+esc(q)+'”'+(sLayer?' in this layer':'')+' ('+modeName()+')'+offer+'</div>'));return;}
   const LN={'pali-unicode':'Pāḷi','atthakatha-unicode':'Aṭṭhakathā','tika-unicode':'Ṭīkā'};

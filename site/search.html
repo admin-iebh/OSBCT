@@ -34,7 +34,10 @@
   .lchip{font-family:system-ui,sans-serif;font-size:12.5px;color:var(--mut);border:1px solid var(--line);border-radius:14px;padding:4px 12px;cursor:pointer;user-select:none}
   .lchip:hover{background:var(--tag)}
   .lchip.on{color:var(--accent);border-color:var(--accent)}
-  .lchip.fold{font-family:'Gentium Plus',serif;font-size:13.5px;margin-left:4px}
+  .lchip.fold{margin-left:4px}
+  /* a readable tooltip (2026-09-05, reader: the native one is too small to
+     read).  One fixed box, filled from data-tip on hover/focus. */
+  #tiptip{position:fixed;display:none;background:var(--fg);color:var(--bg);font-family:system-ui,sans-serif;font-size:15px;line-height:1.45;max-width:340px;padding:9px 13px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.26);z-index:9999;pointer-events:none}
   .foldlink{color:var(--accent)}
   button.go{background:var(--accent);color:#fff;border-color:var(--accent)}
   .themebtn{padding:9px 12px}
@@ -80,7 +83,7 @@
          different words).  This chip is the fold switch; its state is also
          named in every status line, so a count always says which question
          produced it. -->
-    <span class="lchip fold" id="foldbtn" data-i18n-title="fold_toggle" title="Fold diacritics: nibbana finds nibbāna. Off by default — tassa and tassā are different words.">a = ā</span>
+    <span class="lchip fold" id="foldbtn" data-i18n="fold_label" data-i18n-tip="fold_toggle" data-tip="Ignore diacritics: nibbana then also finds nibbāna, and tassa also finds tassā. Off by default, because tassa and tassā are different words. The result line always says which way it was searched.">Ignore diacritics</span>
     <button class="go" id="go" data-i18n="search_btn">Search</button>
     <button class="themebtn" id="niggbtn" data-i18n-title="nigg_toggle" title="Niggahita: the edition’s ṁ or the modern ṃ. Display only — the stored text always keeps the edition’s ṁ.">ṁ</button>
     <button class="themebtn" id="themebtn" data-i18n-title="theme_toggle" title="Toggle light/dark">◐</button>
@@ -89,7 +92,7 @@
 <script>
 // cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
 // rewrites it, so a rebuild can never be invisible to a returning browser.
-const BUILD='13d1e3a5b704';
+const BUILD='bb27db107e1d';
 function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
 
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
@@ -135,14 +138,14 @@ document.addEventListener('DOMContentLoaded',()=>{
 <footer data-i18n="search_foot">
   Type one word, several words, or a phrase — a phrase matches the words adjacent
   and in order; paragraphs carrying the words apart are listed separately.
-  Diacritics count: tassa and tassā are different words. Switch on a = ā to fold
-  them, so that nibbana finds nibbāna. * completes a word: dhamm*, *vaggo,
+  Diacritics count: tassa and tassā are different words. Switch on “Ignore
+  diacritics” so that nibbana also finds nibbāna. * completes a word: dhamm*, *vaggo,
   dham*ti (at least 3 letters beside the *). A bare word also matches inside
   longer words. Results show the book, the printed page and the paragraph;
   click a result to open it in the reader at the marked word.
 </footer>
-<script src="i18n.js?v=13d1e3a5b704"></script>
-<script src="searchcore.js?v=13d1e3a5b704"></script>
+<script src="i18n.js?v=bb27db107e1d"></script>
+<script src="searchcore.js?v=bb27db107e1d"></script>
 <script>
 // ONE SEARCH IMPLEMENTATION, IN searchcore.js (2026-09-05) — this page is its
 // UI.  Everything about keys, buckets, sweeps, postings and text chunks that
@@ -256,7 +259,7 @@ async function run(){
     // occur in no running text at all.  And in exact mode a miss offers the
     // switch, because a word typed without its diacritics is the commonest
     // reason for one — but the page never folds on its own.
-    const offer=sFold?'':` — <a href="#" class="foldlink" onclick="setFold(true);return false;">${window.t?t('s_try_fold'):'fold diacritics (a = ā) and search again?'}</a>`;
+    const offer=sFold?'':` — <a href="#" class="foldlink" onclick="setFold(true);return false;">${window.t?t('s_try_fold'):'ignore diacritics and search again?'}</a>`;
     if(secHTML){ statusHTML(`Found in the section titles. “${esc(q)}” does not occur in the running text (${modeName()})${offer}.`);
                  el('results').innerHTML=secHTML; return; }
     statusHTML(`No matches for “${esc(q)}” (${modeName()}${lf?', this layer':''})${offer}.`); el('results').innerHTML='';return;}
@@ -300,6 +303,21 @@ function setFold(v){ sFold=!!v; try{ localStorage.setItem(FOLDKEY,sFold?'1':'0')
   if(el('q').value.trim()) run(); }
 el('foldbtn').classList.toggle('on',sFold);
 el('foldbtn').addEventListener('click',()=>setFold(!sFold));
+// the readable tooltip: anything carrying data-tip; text re-read on each show,
+// so a language switch (data-i18n-tip, applied below) is honoured
+{ let tip=null;
+  const show=el=>{ const t=el.getAttribute('data-tip'); if(!t) return;
+    if(!tip){ tip=document.createElement('div'); tip.id='tiptip'; tip.setAttribute('role','tooltip'); document.body.appendChild(tip); }
+    tip.textContent=t; tip.style.display='block'; tip.style.left='0px'; tip.style.top='0px';
+    const r=el.getBoundingClientRect(), b=tip.getBoundingClientRect(), vw=document.documentElement.clientWidth;
+    tip.style.left=Math.max(6,Math.min(r.left+r.width/2-b.width/2,vw-b.width-6))+'px';
+    tip.style.top=(r.bottom+8)+'px'; };
+  const hide=()=>{ if(tip) tip.style.display='none'; };
+  document.addEventListener('mouseover',e=>{ const t=e.target.closest&&e.target.closest('[data-tip]'); if(t) show(t); });
+  document.addEventListener('mouseout',e=>{ if(e.target.closest&&e.target.closest('[data-tip]')) hide(); });
+  document.addEventListener('focusin',e=>{ const t=e.target.closest&&e.target.closest('[data-tip]'); if(t) show(t); });
+  document.addEventListener('focusout',hide); document.addEventListener('scroll',hide,true);
+  if(window.t&&window.I18N) document.querySelectorAll('[data-i18n-tip]').forEach(el=>el.setAttribute('data-tip',t(el.getAttribute('data-i18n-tip')))); }
 el('q').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
 // warm the index on FOCUS, so the common case (click the box, type, Enter) has
 // the manifest already in flight without costing a visitor who never searches
