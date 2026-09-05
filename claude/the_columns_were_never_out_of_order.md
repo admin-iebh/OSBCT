@@ -1,6 +1,6 @@
 # The columns were never out of order — the rows emitted too many cells
 
-**Reader-reported 2026-08-26**, with a screenshot of `12Sam01`
+**Reader-reported 2026-09-05**, with a screenshot of `12Sam01`
 (Oghataraṇasutta), P and A both on, view `Columns`:
 
 > the left column, headed **PĀḶI (TIPIṬAKA)**, was empty but for a `page 1` rule;
@@ -108,7 +108,7 @@ This was written up as a **question, not a finding**, because jsdom does no
 layout and no hit-testing: the probe that settled §2 could not settle this. It
 went to the reader with a description of exactly what to look for.
 
-**Answered 2026-08-26: "only the one I'm on."** Pointing at the Pāḷi paragraph
+**Answered 2026-09-05: "only the one I'm on."** Pointing at the Pāḷi paragraph
 left the Aṭṭhakathā paragraph opposite it flat. The row-pairing highlight had
 never worked in Columns view.
 

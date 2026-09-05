@@ -1,17 +1,35 @@
-# Closing 2026-08-26 — where things stand
+# Closing 2026-09-05 — where things stand
 
-> # ⚠ ONE THING IS OWED: THE PUSH. SEE `RUN_ON_HOST.md`.
+> # ⚠ THE DATES OF THE 2026-09-05 SESSION WERE WRITTEN AS 2026-08-26, AND ARE NOW CORRECTED
 >
-> **A SECOND session ran on 2026-08-26.** Its work is complete and gated but
-> **sits uncommitted in the working tree** — the sandbox has no write access to
-> `.git`. Two commands on the host finish it; `COMMIT_MSG.bak` is written.
+> **IT HAPPENED AGAIN, in the same repo, the same way, ten days after it was
+> written up as a lesson.** The sandbox clock read `Aug 26` for most of the
+> session; the real date was **2026-09-05**. I took the clock instead of the
+> date the environment stated, and dated the whole session's work to the
+> PREVIOUS session's day.
 >
-> **The live build is still `2b856038234a`.** The tree is stamped
-> `8196f1a01c65` and will go live with the push. A stale `.git/index.lock`
-> (zero bytes, from a `git stash` the sandbox could not complete) is cleared by
-> `push.sh` itself — expected, not a problem.
+> **Extent, measured not estimated: 18 committed lines across 9 files, plus 3 in
+> an untracked brief. All corrected.** One reference was left alone because it is
+> right: `check_sections.py` saying `27KhuA08` *refused* on 2026-08-26 — that
+> refusal really was the earlier session.
 >
-> What that session did, both gated red first:
+> **`site/build.json` carried `"date": "2026-08-26"` and was SERVED that way**,
+> because `stamp_build.py` takes `datetime.date.today()` from whatever machine
+> stamps it. Its comment claims "the date is true by construction — nobody has to
+> remember to bump it". **That claim is false on a machine with a wrong clock**,
+> and this is the second time this project has been bitten by the same clock.
+> Re-stamped: `5c3142ddb8be`, dated 2026-09-05.
+>
+> **The commit messages of 2026-09-05 carry no dates of their own** — checked —
+> so unlike the 08-23/08-26 episode below, nothing is stranded in the history.
+> The three commits are `613c6362a`, `b9ae2be2a`, `b32c7b2b3`.
+>
+> ## The 2026-09-05 session — pushed, live, and one re-stamp owed
+>
+> All three commits are **pushed**. What remains is the date correction above:
+> the tree is stamped `5c3142ddb8be` and needs one more `./push.sh`.
+>
+> What that session did, each part gated red first:
 >
 > 1. **`27KhuA08` written — 84 section names, distinct 0 → 83.** The four
 >    "extra" body headings that made it refuse are all PRINTED IN THE MĀTIKĀ;
@@ -347,7 +365,7 @@ any session that starts fresh:**
   **76.670** once the commentary side followed — more pairs checkable *and* more
   agreeing, which is the shape a real repair makes.
   ~~**`27KhuA08` REFUSES**: body 83, Mātikā 79.~~ **RESOLVED AND WRITTEN
-  2026-08-26 (second session): 84 names, distinct 0 → 83.** All four "extras"
+  2026-09-05: 84 names, distinct 0 → 83.** All four "extras"
   are printed in the Mātikā; the front-matter reader was dropping them, for two
   independent reasons — a run-length heuristic that the printed list's own page
   feet and vagga lines interrupt, and `NUM` not matching the range-numbered
@@ -373,7 +391,7 @@ any session that starts fresh:**
   entries. The PDF correction itself (ToUnicode injection, one volume first)
   stays on standby by your decision.
 
-### The reader — found 2026-08-26 (second session)
+### The reader — found 2026-09-05
 
 * ~~**Columns view put the canon under the Aṭṭhakathā heading.**~~ **FIXED**,
   gated by `pipeline/check_columns.js`. Kept here because the shape of the
@@ -381,7 +399,7 @@ any session that starts fresh:**
   order was never wrong**. Acting on the report as phrased would have moved the
   headings away from the columns. `claude/the_columns_were_never_out_of_order.md`.
 * ~~**Open, and it needs a browser: does row hover work in Columns at all?**~~
-  **ANSWERED BY THE READER 2026-08-26 — it did not, and now does.** `.rowline`
+  **ANSWERED BY THE READER 2026-09-05 — it did not, and now does.** `.rowline`
   is `display:contents`, generates no box, and the handlers were on it, so
   `mouseenter` never fired. It survived because `.para:hover .tools` is pure CSS
   on a real box: the buttons appeared, so the row looked alive, while the half

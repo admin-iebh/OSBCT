@@ -45,7 +45,7 @@ CASES = [
     # 27KhuA08.  This volume REFUSED on 2026-08-26 — body 83 headings, Mātikā
     # 79 — and the four cases below are the four that disagreed.  All four are
     # printed in BOTH the body and the Mātikā; it was the Mātikā reader that
-    # was short.  Read off the rendered pages 2026-08-26 before being asserted:
+    # was short.  Read off the rendered pages 2026-09-05 before being asserted:
     #
     # p.82   the Pīṭhavagga closes, then `2. Cittalatāvagga`, then the bold
     #        `1. Dāsivimānavaṇṇanā` above `Dutiyavagge api Sakkova devindoti

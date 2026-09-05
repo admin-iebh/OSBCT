@@ -214,7 +214,7 @@ not resolved here. Finding those four is the next step for that volume.
 
 ## 8a. The four were found, and the MĀTIKĀ READER was the thing that was wrong
 
-**2026-08-26 (later the same day). `27KhuA08` is written: 84 section names, 1,480
+**2026-09-05. `27KhuA08` is written: 84 section names, 1,480
 paragraphs, distinct 0 → 83.**
 
 The four extras were `Dāsivimānavaṇṇanā`, `Lakhumāvimānavaṇṇanā`,

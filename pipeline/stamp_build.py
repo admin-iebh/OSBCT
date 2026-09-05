@@ -145,8 +145,17 @@ for rp in READERS:
 if '--write' in sys.argv:
     # `date` rides beside the hash (2026-08-09, reader request): the version
     # chip's tooltip shows when the site was last updated, and because this
-    # line runs on EVERY stamp, the date is true by construction — nobody has
-    # to remember to bump it, which is how the citation files fell behind.
+    # line runs on EVERY stamp, nobody has to remember to bump it — which is
+    # how the citation files fell behind.
+    #
+    # !!! "TRUE BY CONSTRUCTION" IS WHAT THIS COMMENT USED TO CLAIM, AND IT IS
+    # FALSE.  It is true by construction only if the stamping machine's clock is
+    # right.  On 2026-09-05 an agent sandbox read `Aug 26` and this line wrote
+    # `"date": "2026-08-26"` into build.json, which then SHIPPED and was served
+    # in the version chip.  That is the SECOND time this project has been bitten
+    # by that clock — the first is the 08-23/08-26 correction in NEXT_SESSION.md.
+    # So: if you are stamping from a sandbox, check `date` against the date the
+    # environment states before pushing, because nothing downstream will.
     import datetime
     with open(os.path.join(SITE, 'build.json'), 'w', encoding='utf-8') as fh:
         json.dump({'build': stamp,

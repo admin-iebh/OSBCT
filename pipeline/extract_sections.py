@@ -262,7 +262,7 @@ def matika(pdf):
     the defect being repaired, re-created by a partial repair.  So the body scan
     must find as many headings as the Mātikā lists, or it must not write.
 
-    SCOPED BY PAGE, NOT BY RUN LENGTH — CHANGED 2026-08-26, and the reason is
+    SCOPED BY PAGE, NOT BY RUN LENGTH — CHANGED 2026-09-05, and the reason is
     that the run-length version UNDERCOUNTED and thereby refused a volume that
     should have been written.
 

@@ -1,6 +1,6 @@
 // What is actually in each COLUMN when P and A are both on?
 //
-// Reader-reported 2026-08-26 with a screenshot of `12Sam01` (Oghataraṇasutta):
+// Reader-reported 2026-09-05 with a screenshot of `12Sam01` (Oghataraṇasutta):
 // the left column is headed PĀḶI (TIPIṬAKA) and is EMPTY; the right column is
 // headed AṬṬHAKATHĀ and carries what reads as the CANON text of the sutta.
 // The report was "P should be on the left tab and A on the right".

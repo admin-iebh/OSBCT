@@ -1,6 +1,6 @@
 // COLUMNS VIEW: is each layer in its own column, on every row?
 //
-// READER-REPORTED 2026-08-26, with a screenshot of `12Sam01` (Oghataraṇasutta),
+// READER-REPORTED 2026-09-05, with a screenshot of `12Sam01` (Oghataraṇasutta),
 // P and A both on: the left column headed PĀḶI (TIPIṬAKA) was EMPTY but for a
 // `page 1` rule, and the right column headed AṬṬHAKATHĀ carried the CANON text
 // of the sutta.  The report was "P should be on the left and A on the right".
@@ -84,7 +84,7 @@ async function run(w, vol, active){
   });
   // ROW PAIRING: hovering one column must light the whole row.
   //
-  // READER-CONFIRMED DEAD 2026-08-26: pointing at the Pāḷi paragraph left the
+  // READER-CONFIRMED DEAD 2026-09-05: pointing at the Pāḷi paragraph left the
   // Aṭṭhakathā paragraph opposite it flat.  The cause is the same
   // `display:contents` that caused the column defect — the handlers were
   // attached to `.rowline`, which generates NO BOX, so the pointer never enters

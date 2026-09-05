@@ -1,4 +1,4 @@
-# Run on the host — 2026-08-26
+# Run on the host — 2026-09-05
 
 ## The command
 
@@ -7,15 +7,25 @@ cd ~/Documents/OSBCT
 ./push.sh
 ```
 
-`COMMIT_MSG.bak` carries the highlight-contrast fix. The build IS stamped
-(`2798a6a45568` → `3d1e09456afa`), so guard 3 will pass, and `push.sh` clears the
-stale zero-byte `.git/index.lock` itself — expected, no action needed.
+`COMMIT_MSG.bak` carries **the date correction**. The three earlier commits of
+this session are already pushed; this last one fixes dates that were written as
+`2026-08-26` when the real date was `2026-09-05`, and re-stamps `build.json`,
+whose `date` field had shipped wrong.
 
-Then, **once Pages has finished**, check cache-busted:
+The build IS stamped (`3d1e09456afa` → `5c3142ddb8be`), so guard 3 will pass, and
+`push.sh` clears the stale zero-byte `.git/index.lock` itself — expected, no
+action needed.
+
+Then, **once Pages has finished**, check cache-busted — and check **both** fields
+this time:
 
 ```
-https://buddha-dhamma.net/build.json?cb=<anything-new>   ->  3d1e09456afa
+https://buddha-dhamma.net/build.json?cb=<anything-new>
+   ->  {"build": "5c3142ddb8be", "date": "2026-09-05"}
 ```
+
+The `date` is the one that was wrong. It comes from the clock of whatever machine
+runs `stamp_build.py`, and an agent sandbox's clock was ten days behind.
 
 The previous deploy took about **four minutes**; the first two reads still
 answered the old stamp. That is now the fifth instance of the same lesson. Do not
