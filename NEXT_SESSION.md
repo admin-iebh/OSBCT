@@ -25,17 +25,38 @@
 > **Dictionary:** `elook('form')` starts beside the first tier; three manifests warm on
 > pointerdown. NO store changed — no `r2_upload.sh`, no `WLV` bump; `panel.js?v=20260905a`.
 >
-> ## Owed
+> ## Later the same day (closing 2026-09-05)
 >
-> 1. **PASTE THE REVISED PROJECT INSTRUCTIONS.** §7 no longer says folding is "essential
->    for usability". The revised whole file was delivered as `OSBCT_Project_Instructions.md`
->    in the session outputs; replace the knowledge copy and paste it into the field, then
->    update its header line. Until then a session reading the field reads the OLD rule.
-> 2. **Cloudflare cache rule for `dict.buddha-dhamma.net`** — every `.json` is
->    `cf-cache-status: DYNAMIC`; the manifest cold was 801 ms. Dashboard, not repo.
-> 3. Lever 3 of the brief (`k.txt`, 12.5 MB raw / 2.7 MB gz per page load for substring and
->    `*`-suffix sweeps) is not done; how often real queries take it is unmeasured.
-> 4. `27KhuA08`'s ☰ Contents — advisory, from the previous session, `RUN_ON_HOST.md` §3.
+> * Live and verified: `13d1e3a5b704`, then the checker fix `77803fb2b`, then
+>   `120fae346` (chip renamed **"Ignore diacritics"**, result line says
+>   "diacritics ignored", tooltip 14.5px) — stamped `bb27db107e1d`. Live check
+>   of that last one is owed: `build.json?cb=…` → `bb27db107e1d`, then
+>   `python3 pipeline/verify_live.py` from the host.
+> * The reader pasted the revised project instructions (§7). This session could
+>   not confirm it from the field; a NEW session sees it in its own system
+>   prompt — §7 must begin "Diacritics are matched exactly by default". If it
+>   still says "essential for usability", the paste did not take.
+> * **Cloudflare cache rule for `dict.buddha-dhamma.net` DONE** by the reader
+>   (Eligible for cache, Edge TTL 3 days, ignore origin cache-control). Measured
+>   after: every dictionary file `HIT` on the second request, 100–145 ms against
+>   300–800 ms before. Remember it when the stores change: `r2_upload.sh` +
+>   `WLV` bump still cache-bust correctly because the URLs carry `?v=WLV`.
+> * `verify_live.py` no longer compares the `panel.js?v=` tag against `WLV` —
+>   they version code and data independently (`77803fb2b`).
+>
+> ## Owed / open
+>
+> 1. **Lever 3 of the brief — `k.txt`.** Substring and `*`-suffix searches still
+>    pull a 12.5 MB (2.7 MB gz) key list and scan it. Unmeasured how often real
+>    queries take that path (no logs). An n-gram or suffix structure would end it.
+> 2. **Phrase searches read every candidate paragraph** (`evaṁ me sutaṁ`: 190 text
+>    chunks). Positions in the postings would decide adjacency without text —
+>    a bigger store, a later change. `perf_search.js` is the gate for both.
+> 3. `27KhuA08`'s ☰ Contents — advisory, from the first session of the day.
+> 4. The site's subtitle still says "83,751 paragraphs"; the corpus has 89,512.
+>    Cosmetic, both pages and i18n.js.
+> 5. The Cloudflare dashboard cannot be driven from the built-in browser pane
+>    (Turnstile refuses it). Use the reader's own Chrome, or Claude in Chrome.
 >
 > Gates run green this session: check_search, check_lookup_reach (12/12), check_apd_gear,
 > check_columns, check_reader_range (37/37 — it had to learn to inline searchcore.js),

@@ -7,6 +7,9 @@ cd ~/Documents/OSBCT
 git push
 ```
 
+(Evening: the same command again for `120fae346` + this note — the chip rename,
+stamp `bb27db107e1d`. Then `build.json?cb=…` should read `bb27db107e1d`.)
+
 **Plain `git push`, not `./push.sh`.** The commit is already made — HEAD, whose subject is
 "Search: exact diacritics by default; postings shards + text chunks replace
 per-volume downloads" — by `./push.sh` run from the sandbox, which committed and
