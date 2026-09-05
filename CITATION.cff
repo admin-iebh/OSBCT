@@ -23,8 +23,21 @@ keywords:
 url: "https://buddha-dhamma.net"
 repository-code: "https://github.com/bthar-mx/OSBCT"
 license: CC-BY-4.0
-version: "2.8.0"
-date-released: "2026-08-16"
+version: "2.9.0"
+date-released: "2026-09-05"
+# 2026-09-05, v2.9.0: no text changed — search matches diacritics EXACTLY, and
+# stops downloading the canon.  Every search key had been folded (tassā stored
+# as tassa), so a search for either word counted both — 36,644 against the
+# 4,322 that are tassā; 34,134 folded keys (5.3%) were merging printed forms.
+# The index now stores the printed tokens; folding is the "Ignore diacritics"
+# switch, off by default, and every result line names its mode.  The search
+# no longer fetches per-volume files (117 of them, ~40 MB, for one common
+# word): postings shards + text chunks, 2.3 MB for the same search, one
+# implementation (site/searchcore.js) for both pages, pipeline/perf_search.js
+# as the performance gate with the before and after recorded.  Dictionary
+# panel: six round trips -> four, and the R2 origin is now edge-cached.
+# check_search.js was made to FAIL on the previous build first.  Three-file
+# checklist bumped together, tag cut LAST.
 # 2026-08-31: the AUTHOR NAME was wrong, and had been wrong in every deposit.
 # This file, `.zenodo.json`, the README and `LICENSE.md` all named "Buddhismo
 # Theravāda México-Hispano AR".  The entity recognised by SEGOB (Secretaría de
