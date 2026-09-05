@@ -71,7 +71,8 @@ apparatus) are released under the licence in [`LICENSE.md`](LICENSE.md).
 See [`CITATION.cff`](CITATION.cff). Each release is archived on Zenodo. Cite the **concept DOI**
 [10.5281/zenodo.21495338](https://doi.org/10.5281/zenodo.21495338), which always resolves to the
 newest version; individual versions have their own DOIs
-([v2.8.0](https://doi.org/10.5281/zenodo.21967270),
+([v2.9.0](https://doi.org/10.5281/zenodo.22421817),
+[v2.8.0](https://doi.org/10.5281/zenodo.21967270),
 [v2.7.1](https://doi.org/10.5281/zenodo.21864177),
 [v2.7.0](https://doi.org/10.5281/zenodo.21863987)).
 

@@ -166,6 +166,17 @@ identifiers:
   # but because nothing added the line.  It exists: 10.5281/zenodo.21760727.
   # Checked against the Zenodo record's own Versions panel, 2026-08-06, which is
   # also where the concept DOI above was confirmed as `Cite all versions`.
+  # Minted 2026-09-05 (Zenodo stamps it 2026-09-06 — its clock is UTC and the
+  # release was published late in the evening in Mexico; that is not an error
+  # to correct) and READ FROM THE RECORD (zenodo.org/records/22421817), not
+  # guessed: version 2.9.0, the "New in 2.9.0" paragraph present at minting —
+  # exact diacritics and the postings-shard search, no text changed, deposit
+  # bthar-mx/OSBCT-v2.9.0.zip, 398.7 MB (the first deposit under the
+  # organisation's name).  SIXTH CONSECUTIVE DEPOSIT to arrive describing
+  # itself correctly.  No in-place correction needed.
+  - type: doi
+    value: "10.5281/zenodo.22421817"
+    description: "Zenodo archive of v2.9.0 (5 September 2026)"
   # Minted 2026-08-16 and READ FROM THE RECORD (zenodo.org/records/21967270),
   # not guessed: "Published August 16, 2026 | Version 2.8.0", with the "New in
   # 2.8.0" paragraph on the record at minting — the niggahita toggle release,
