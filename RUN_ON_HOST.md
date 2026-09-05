@@ -12,7 +12,7 @@ this session are already pushed; this last one fixes dates that were written as
 `2026-08-26` when the real date was `2026-09-05`, and re-stamps `build.json`,
 whose `date` field had shipped wrong.
 
-The build IS stamped (`3d1e09456afa` → `5c3142ddb8be`), so guard 3 will pass, and
+The build IS stamped `a164a57cc4c3`, so guard 3 will pass, and
 `push.sh` clears the stale zero-byte `.git/index.lock` itself — expected, no
 action needed.
 
@@ -21,7 +21,7 @@ this time:
 
 ```
 https://buddha-dhamma.net/build.json?cb=<anything-new>
-   ->  {"build": "5c3142ddb8be", "date": "2026-09-05"}
+   ->  {"build": "a164a57cc4c3", "date": "2026-09-05"}
 ```
 
 The `date` is the one that was wrong. It comes from the clock of whatever machine

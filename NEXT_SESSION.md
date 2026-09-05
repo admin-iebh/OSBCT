@@ -18,7 +18,7 @@
 > stamps it. Its comment claims "the date is true by construction — nobody has to
 > remember to bump it". **That claim is false on a machine with a wrong clock**,
 > and this is the second time this project has been bitten by the same clock.
-> Re-stamped: `5c3142ddb8be`, dated 2026-09-05.
+> Re-stamped `a164a57cc4c3`, dated 2026-09-05.
 >
 > **The commit messages of 2026-09-05 carry no dates of their own** — checked —
 > so unlike the 08-23/08-26 episode below, nothing is stranded in the history.
@@ -27,7 +27,16 @@
 > ## The 2026-09-05 session — pushed, live, and one re-stamp owed
 >
 > All three commits are **pushed**. What remains is the date correction above:
-> the tree is stamped `5c3142ddb8be` and needs one more `./push.sh`.
+> the tree is stamped `a164a57cc4c3` and needs one more `./push.sh`.
+>
+> **REBASED onto ten commits that arrived from elsewhere while this session was
+> running** — `e64d725f2`…`2b3f0203a`, all provenance and licensing work:
+> `README.md`, `LICENSE.md`, `CITATION.cff`, `.zenodo.json` and `site/about.html`.
+> None of it touches the corpus, the links or the reader, and the rebase was
+> clean. **But `site/about.html` is under `site/`, so the stamp had to be redone
+> against the merged tree**: `5c3142ddb8be` never existed as a pushed build and
+> should not be looked for. The live build after this push is `a164a57cc4c3`, and
+> it carries their about-page and citation changes as well as this session's.
 >
 > What that session did, each part gated red first:
 >
