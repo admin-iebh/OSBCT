@@ -23,8 +23,21 @@ keywords:
 url: "https://buddha-dhamma.net"
 repository-code: "https://github.com/bthar-mx/OSBCT"
 license: CC-BY-4.0
-version: "2.9.0"
-date-released: "2026-09-05"
+version: "2.10.0"
+date-released: "2026-09-06"
+# 2026-09-06, v2.10.0: no text changed — A PHRASE IS CONSECUTIVE WORDS.  A phrase
+# had been counted as a substring of the paragraph text: `tassa bhagavato`
+# inside *etassa bhagavato* (63 paragraphs), and *dhammā”ti* refused for
+# `dhammā ti` because the edition closes the quotative up against its word.
+# Now consecutive tokens, each word as the single-word search matches it;
+# every phrase result line names the rule.  Counts move both ways (437/318
+# for tassa bhagavato, was 527/379); pipeline/measure_phrase_semantics.py
+# computes both rules.  A position store was measured and NOT built.  Also:
+# the sweep reads one n-gram shard (tg/) instead of the 12.5 MB key list, and
+# the section names one shard (tn/) instead of the 1.09 MB names.json; the
+# largest file a search fetches is 514 KB, gated.  Every new check_search.js
+# assertion failed on the previous build first.  Three-file checklist bumped
+# together, tag cut LAST.
 # 2026-09-05, v2.9.0: no text changed — search matches diacritics EXACTLY, and
 # stops downloading the canon.  Every search key had been folded (tassā stored
 # as tassa), so a search for either word counted both — 36,644 against the

@@ -1,3 +1,30 @@
+# Run on the host — 2026-09-06, the v2.10.0 release
+
+Order matters: push, verify, THEN tag.
+
+```bash
+cd ~/Documents/OSBCT
+git push
+```
+
+Wait for the deploy; `build.json?cb=…` must read **`bf930a3f6108`**, and the
+footer of every page `v2.10.0`. Then `python3 pipeline/verify_live.py`.
+Only when that says LIVE SITE MATCHES:
+
+```bash
+git tag v2.10.0 && git push origin v2.10.0
+```
+
+Then on GitHub (browser pane is fine): Releases → Draft a new release → tag
+`v2.10.0` → title `v2.10.0 — a phrase is consecutive words` → body from
+`docs/RELEASE_NOTES_v2.10.0.md` → Publish. Zenodo mints the DOI from the
+published release; read it FROM THE RECORD (zenodo.org, Versions panel) and
+add it to CITATION.cff (identifiers list, description "Zenodo archive of
+v2.10.0 (6 September 2026)") and the README "How to cite" list. Check the
+record says version 2.10.0 with the "New in 2.10.0" paragraph.
+
+---
+
 # Run on the host — 2026-09-06
 
 ```bash
