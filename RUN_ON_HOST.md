@@ -5,8 +5,9 @@ cd ~/Documents/OSBCT
 git push
 ```
 
-Plain `git push`; the commit is made. Stamped **`18920c3b3e15`, dated
-2026-09-06**. Code-only under `site/` (searchcore.js, search.html,
+Plain `git push`; the commit is made. Stamped **`e42bb5313b1d`, dated
+2026-09-06** (the second stamp of the day: the ↑ button on search.html after
+the phrase rule). Code-only under `site/` (searchcore.js, search.html,
 reader2.html, i18n.js, the stamped pages) — no new files. Then:
 
 ```

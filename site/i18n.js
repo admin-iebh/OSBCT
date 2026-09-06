@@ -108,6 +108,7 @@ window.I18N = {
   s_exact:{en:'exact diacritics',es:'diacríticos exactos'},
   s_folded:{en:'diacritics ignored',es:'diacríticos ignorados'},
   s_consec:{en:'consecutive words',es:'palabras consecutivas'},
+  s_totop:{en:'Back to the top',es:'Volver arriba'},
   s_try_fold:{en:'ignore diacritics and search again?',es:'¿ignorar diacríticos y buscar de nuevo?'},
   opt_all:{en:'All layers',es:'Todas las capas'},
   lay_all:{en:'All',es:'Todas'},
