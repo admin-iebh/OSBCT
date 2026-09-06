@@ -61,11 +61,11 @@ const RECORD=process.argv.includes('--record');
 const li=process.argv.indexOf('--lat'); const LAT=li>=0?+process.argv[li+1]:40;
 const STORE=fs.existsSync(path.join(ROOT,'stores/lookup/index.json'))?'stores':'site';
 const isStore=p=>/^lookup(_eval)?\//.test(p);
-const MAXFILE=520_000;     // raw bytes: no single fetch by a SEARCH may exceed this (largest postings shard 514 KB; names.json, 1.09 MB, was the ceiling until tn/)
-// the dictionary's largest file is `lookup_eval/index.json`, 653 KB, on R2 —
-// a store change (r2_upload.sh + WLV) that this gate records as an open item
-// rather than hides: the lookup rows get their own ceiling, just above it
-const MAXSTORE=700_000;
+const MAXFILE=520_000;     // raw bytes: no single fetch by ANY row may exceed this (largest postings shard 514 KB; names.json, 1.09 MB, was the ceiling until tn/)
+// 2026-09-06: the lookup rows had their own ceiling of 700 KB for a few hours
+// because `lookup_eval/index.json` was 653 KB — a manifest whose per-shard
+// {keys, bytes} the panel never reads (it tests `m[name]` and nothing else).
+// The diagnostics moved to index.diag.json beside it; one ceiling for every row.
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 
 // gzip -6 size of a file, cached by path+size+mtime
@@ -187,8 +187,7 @@ async function measureLookup(){
       if(!(gzOk&&reqOk)){ cmp+=' FAIL'; fails++; }
     }
     // absolute, baseline or not: no single file over MAXFILE
-    const cap=k.startsWith('lookup')?MAXSTORE:MAXFILE;
-    if(r.max>cap){ cmp+=' FAIL max>'+mb(cap)+'MB'; fails++; }
+    if(r.max>MAXFILE){ cmp+=' FAIL max>'+mb(MAXFILE)+'MB'; fails++; }
     console.log('  '+k.padEnd(34)+String(r.req).padStart(5)+mb(r.raw).padStart(9)+mb(r.gz).padStart(8)+mb(r.max||0).padStart(8)+String(r.waves).padStart(7)+String(r.ms).padStart(7)+cmp+'  '+(r.ktxt?'[k.txt] ':'')+r.status);
   }
   if(RECORD){ fs.writeFileSync(BASE,JSON.stringify({recorded:new Date().toISOString().slice(0,10),lat:LAT,results:res},null,1)); console.log('\nbaseline written: '+path.relative(ROOT,BASE)); }

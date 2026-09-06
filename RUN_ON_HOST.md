@@ -1,3 +1,26 @@
+# Run on the host — 2026-09-06, later: the dictionary manifests
+
+Two commands, in this order:
+
+```bash
+cd ~/Documents/OSBCT
+./pipeline/r2_upload.sh      # rclone: 3 manifests + 3 index.diag.json change
+git push                     # WLV 20260906a, panel.js?v=20260906a, stamp 6dec7aac7e71
+```
+
+Then `build.json?cb=…` → `6dec7aac7e71`, `python3 pipeline/verify_live.py`
+(it prints `WLV 20260906a   panel.js?v=20260906a`), and one cache-busted
+fetch of the store:
+
+```
+https://dict.buddha-dhamma.net/lookup_eval/index.json?v=20260906a
+   ->  176,574 bytes (was 652,959); "shards":{"form":{"ph":1,…
+```
+
+If that still shows `{"keys":…,"bytes":…}` entries, the upload did not run.
+
+---
+
 # Run on the host — 2026-09-06, the v2.10.0 release
 
 Order matters: push, verify, THEN tag.

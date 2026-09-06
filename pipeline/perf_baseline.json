@@ -8,7 +8,7 @@
    "raw": 1218857,
    "gz": 325368,
    "max": 224421,
-   "ms": 247,
+   "ms": 232,
    "waves": 6,
    "ktxt": false,
    "status": "12 occurrence(s) in 11 paragraph(s), 8 volume(s) · exact diacritics."
@@ -19,7 +19,7 @@
    "raw": 0,
    "gz": 0,
    "max": 0,
-   "ms": 9,
+   "ms": 7,
    "waves": 0,
    "ktxt": false,
    "status": "12 occurrence(s) in 11 paragraph(s), 8 volume(s) · exact diacritics."
@@ -30,8 +30,8 @@
    "raw": 9566858,
    "gz": 2729267,
    "max": 301154,
-   "ms": 552,
-   "waves": 14,
+   "ms": 507,
+   "waves": 13,
    "ktxt": false,
    "status": "873 occurrence(s) in 763 paragraph(s), 58 volume(s) · exact diacritics."
   },
@@ -41,7 +41,7 @@
    "raw": 7962613,
    "gz": 2027450,
    "max": 335641,
-   "ms": 446,
+   "ms": 445,
    "waves": 11,
    "ktxt": false,
    "status": "4,322 occurrence(s) in 2,715 paragraph(s), 106 volume(s) · exact diacritics."
@@ -52,7 +52,7 @@
    "raw": 3897600,
    "gz": 1076925,
    "max": 453216,
-   "ms": 390,
+   "ms": 386,
    "waves": 10,
    "ktxt": false,
    "status": "93,869 occurrence(s) in 23,230 paragraph(s), 118 volume(s) — dhamm*: the 500 commonest of "
@@ -63,8 +63,8 @@
    "raw": 23427012,
    "gz": 6117002,
    "max": 514217,
-   "ms": 1544,
-   "waves": 39,
+   "ms": 1489,
+   "waves": 37,
    "ktxt": false,
    "status": "199 occurrence(s) in 109 paragraph(s), 55 volume(s) · exact diacritics."
   },
@@ -74,7 +74,7 @@
    "raw": 3914230,
    "gz": 1102665,
    "max": 293948,
-   "ms": 459,
+   "ms": 431,
    "waves": 11,
    "ktxt": false,
    "status": "44 occurrence(s) in 38 paragraph(s), 26 volume(s) · exact diacritics."
@@ -85,7 +85,7 @@
    "raw": 23589620,
    "gz": 5502174,
    "max": 430481,
-   "ms": 990,
+   "ms": 1007,
    "waves": 25,
    "ktxt": false,
    "status": "510 occurrence(s) in 494 paragraph(s), 30 volume(s) — and 169 paragraph(s) with all 3 word"
@@ -96,7 +96,7 @@
    "raw": 407163,
    "gz": 99197,
    "max": 247259,
-   "ms": 202,
+   "ms": 203,
    "waves": 5,
    "ktxt": false,
    "status": "1 occurrence(s) in 1 paragraph(s), 1 volume(s) · exact diacritics."
@@ -107,7 +107,7 @@
    "raw": 1218857,
    "gz": 325368,
    "max": 224421,
-   "ms": 243,
+   "ms": 246,
    "waves": 6,
    "status": "12 occurrence(s) for “yamakasālānaṁ” in 11 paragraph(s), 8 volume(s) · exact diacritics"
   },
@@ -117,18 +117,18 @@
    "raw": 4222106,
    "gz": 1114178,
    "max": 335641,
-   "ms": 355,
+   "ms": 358,
    "waves": 9,
    "status": "2 sections"
   },
   "lookup: cold common word": {
    "q": "tathāgato",
    "req": 18,
-   "raw": 1461675,
-   "gz": 306150,
-   "max": 652959,
-   "ms": 220,
-   "waves": 6,
+   "raw": 674968,
+   "gz": 181733,
+   "max": 176574,
+   "ms": 207,
+   "waves": 5,
    "status": "2902 corpus · 1558 canon · 1016 aṭṭh. · 328 ṭīkāAlso spelt: tathagato 2"
   },
   "lookup: warm, second word": {
@@ -137,17 +137,17 @@
    "raw": 415278,
    "gz": 125184,
    "max": 124782,
-   "ms": 162,
+   "ms": 155,
    "waves": 4,
    "status": "17211 corpus · 8820 canon · 6149 aṭṭh. · 2242 ṭīkāAlso spelt: bhāgavā 27 bhagāvā 1"
   },
   "lookup: lemma-only word": {
    "q": "atappaka",
    "req": 8,
-   "raw": 1284122,
-   "gz": 257007,
-   "max": 652959,
-   "ms": 160,
+   "raw": 497415,
+   "gz": 132590,
+   "max": 176574,
+   "ms": 146,
    "waves": 4,
    "status": ""
   }

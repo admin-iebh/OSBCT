@@ -28,15 +28,23 @@
 > present) and recorded in CITATION.cff + README (`7f34045c7`, NOT pushed —
 > `git push` owed, docs only).
 >
+> **Later still: the dictionary manifests slimmed** — 653/375/272 KB → 177/65/73
+> KB, the per-shard {keys, bytes} the panel never read moved to
+> `index.diag.json`; `perf_search` now one ceiling (520 KB) for every row,
+> red first on the two lookup rows; `check_lookup_reach` 12/12,
+> `check_hw_reach` green; WLV `20260906a`, `panel.js?v=20260906a`, stamp
+> `6dec7aac7e71`. `claude/dictionary_manifests_slimmed.md`.
+>
 > ## Owed / open
 >
-> 1. **`git push`** of `7f34045c7` (CITATION.cff + README with the DOI).
+> 1. **On the host, in order: `./pipeline/r2_upload.sh`, then `git push`**
+>    (`RUN_ON_HOST.md`). Then `build.json` → `6dec7aac7e71`, `verify_live.py`,
+>    and a cache-busted fetch of `lookup_eval/index.json?v=20260906a` must be
+>    176,574 bytes.
 > 2. The position store (`tq/`) — buildable on the token rule if a measured
 >    need appears; not proposed.
-> 3. `*vaggo` 23.4 MB of prefix-named postings; `27KhuA08` Contents;
->    `lookup_eval/index.json` 653 KB on R2 (now the largest file any page
->    reads; a store change); the seven `_`-terminal tn/ shards — all as in
->    the fourth session's box.
+> 3. `*vaggo` 23.4 MB of prefix-named postings; `27KhuA08` Contents; the
+>    seven `_`-terminal tn/ shards — as in the fourth session's box.
 
 # Closing 2026-09-05 (fourth session) — the section names are one n-gram shard; names.json is the fallback
 
