@@ -1,3 +1,27 @@
+# Run on the host — 2026-09-06
+
+```bash
+cd ~/Documents/OSBCT
+git push
+```
+
+Plain `git push`; the commit is made. Stamped **`18920c3b3e15`, dated
+2026-09-06**. Code-only under `site/` (searchcore.js, search.html,
+reader2.html, i18n.js, the stamped pages) — no new files. Then:
+
+```
+https://buddha-dhamma.net/build.json?cb=<anything-new>
+   ->  {"build": "18920c3b3e15", "date": "2026-09-06"}
+https://buddha-dhamma.net/search.html?cb=<anything-new>
+   ->  search `tassa bhagavato`: 437 occurrence(s) in 318 paragraph(s), 89 volume(s)
+       — and 1,727 paragraph(s) with all 2 words, not adjacent · consecutive words · exact diacritics.
+       (was 527 / 379 / 1,666 under the substring rule)
+```
+
+Then `python3 pipeline/verify_live.py` from the host.
+
+---
+
 # Run on the host — 2026-09-05 (fourth session)
 
 ## The command

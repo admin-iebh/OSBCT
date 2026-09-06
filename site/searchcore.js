@@ -67,6 +67,21 @@ const wpat=w=>w.indexOf('*')>=0?w.split('*').map(rxEsc).join('\\S*'):rxEsc(w);
 const kpat=w=>'^'+w.split('*').map(rxEsc).join('.*')+'$';
 const LRANK={'pali-unicode':0,'atthakatha-unicode':1,'tika-unicode':2};
 const CAPKEYS=500;   // a sweep stops at this many keys, as it always has
+// A PHRASE IS CONSECUTIVE TOKENS (2026-09-06).  Until then a phrase was a
+// substring of the normalised text — `indexOf('tassa bhagavato')` — which
+// counted *etassa bhagavato* (63 paragraphs) and refused *dhammā”ti* for
+// `dhammā ti`, because the edition closes the quotative up against its word
+// and the substring wanted a space.  Now the paragraph is tokenised exactly
+// as the index builder tokenises it (`_TOK` in build_search_index.py), each
+// word matches a token the way the single-word search does — the keys it
+// resolved to — and the words must follow each other, whatever the edition
+// prints between them.  Measured for both rules by
+// pipeline/measure_phrase_semantics.py; the result line names the rule.
+const TOKRX=/[^a-zāīūṁṃṅñṇṭḍḷ]+/;
+const phraseCount=(text,sets)=>{ const toks=canonS(text).split(TOKRX); let n=0;
+  for(let j=0;j+sets.length<=toks.length;j++){ let all=true;
+    for(let i=0;i<sets.length;i++) if(!sets[i].has(toks[j+i])){ all=false; break; }
+    if(all) n++; } return n; };
 
 function create(opts){
   const base=opts.base, bust=opts.bust||(u=>u);
@@ -364,19 +379,17 @@ function create(opts){
       return res;
     }
     // a phrase: every candidate paragraph carrying all the words is read, and
-    // adjacency is decided on its text — never on the postings alone
+    // adjacency is decided on its TOKENS — never on the postings alone, which
+    // carry counts, not positions (a position store was measured and not
+    // built: claude/phrase_positions_are_a_different_semantic.md)
     const cand=[];
     for(const vi of vis){ const pis=[...per[0][vi].keys()].filter(pi=>per.every(m=>m[vi].has(pi))).sort((a,b)=>a-b);
       for(const pi of pis) cand.push([vi,pi]); }
     say(cand.length);
     const ps=await paras(cand); if(ps===null) return null;
-    const anyWC=words.some(w=>w.indexOf('*')>=0), phq=words.join(' ');
-    const phRx=anyWC?new RegExp(words.map(wpat).join(' '),'g'):null;
-    const countOcc=(hay,ndl)=>{ let n=0,i=hay.indexOf(ndl); while(i>=0){n++;i=hay.indexOf(ndl,i+1);} return n; };
-    const phCount=f=>{ if(!anyWC) return countOcc(f,phq); phRx.lastIndex=0; let n=0,m;
-      while((m=phRx.exec(f))){ if(!m[0]){phRx.lastIndex++;continue;} n++; } return n; };
+    const sets=resolved.map(r=>new Set(r.keys));
     cand.forEach(([vi,pi],i)=>{ const p=ps[i]; if(!p) return; const lay=LAY[vi];
-      const c=phCount(norm(p.text));
+      const c=phraseCount(p.text,sets);
       if(c>0){ res.total+=c; res.phrParas++; res.phrVols.add(vi); if((nPhr[lay]=(nPhr[lay]||0)+1)<=CAPP) res.phrOut.push({vi,vol:V[vi],lay,p}); }
       else { res.andTotal++; if((nAnd[lay]=(nAnd[lay]||0)+1)<=CAPA) res.andOut.push({vi,vol:V[vi],lay,p}); } });
     return res;
@@ -412,18 +425,14 @@ function create(opts){
     { const need=[...vis]; let ni=0; const pool=[];
       for(let w=0;w<Math.min(8,need.length);w++) pool.push((async()=>{ while(ni<need.length) await idx(need[ni++]); })());
       await Promise.all(pool); }
-    const anyWC=words.some(w=>w.indexOf('*')>=0), phq=words.join(' ');
-    const phRx=anyWC?new RegExp(words.map(wpat).join(' '),'g'):null;
-    const countOcc=(hay,ndl)=>{ let n=0,i=hay.indexOf(ndl); while(i>=0){n++;i=hay.indexOf(ndl,i+1);} return n; };
-    const phCount=f=>{ if(!anyWC) return countOcc(f,phq); phRx.lastIndex=0; let n=0,m;
-      while((m=phRx.exec(f))){ if(!m[0]){phRx.lastIndex++;continue;} n++; } return n; };
+    const sets=resolved.map(r=>new Set(r.keys));
     const nPhr={}, nAnd={};
     for(const vi of vis){ const sh=await idx(vi); const lay=LAY[vi];
       const maps=resolved.map(r=>{ const mm=new Map();
         for(const k of r.keys) for(const [pi,c] of (sh.inv[k]||[])) mm.set(pi,(mm.get(pi)||0)+c); return mm; });
       const pis=[...maps[0].keys()].filter(pi=>maps.every(mm=>mm.has(pi))).sort((a,b)=>a-b);
       for(const pi of pis){ const p=sh.paras[pi];
-        if(words.length>1){ const c=phCount(norm(p.text));
+        if(words.length>1){ const c=phraseCount(p.text,sets);
           if(c>0){ res.total+=c; res.phrParas++; res.phrVols.add(vi); if((nPhr[lay]=(nPhr[lay]||0)+1)<=CAPP) res.phrOut.push({vi,vol:V[vi],lay,p}); }
           else { res.andTotal++; if((nAnd[lay]=(nAnd[lay]||0)+1)<=CAPA) res.andOut.push({vi,vol:V[vi],lay,p}); } }
         else { res.total+=maps[0].get(pi); res.phrParas++; res.phrVols.add(vi);

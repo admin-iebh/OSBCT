@@ -1,3 +1,42 @@
+# Closing 2026-09-06 — a phrase is consecutive tokens; the position store was measured and not built
+
+> # READ `claude/search_exact_by_default_and_postings_shards.md`, `claude/sweep_by_gram_not_by_key_list.md`, `claude/names_by_gram_not_whole.md` AND `claude/phrase_positions_are_a_different_semantic.md` BEFORE TOUCHING search.html, reader2.html, panel.js, searchcore.js OR site/index/.
+>
+> **Item 2 (phrase positions), measured first:** a position store could not
+> reproduce the page's phrase answer, because the page's rule was a SUBSTRING
+> of the text and positions are TOKENS — `tassa bhagavato` counted 63
+> paragraphs of *etassa bhagavato*; *dhammā”ti* was refused for `dhammā ti`.
+> `pipeline/measure_phrase_semantics.py` has both columns for 15 phrases.
+> Decision put to the reader; **reader chose the token rule**; recommendation
+> taken: change the RULE on the text already read, do NOT build the store
+> (the byte win is small and unproven by any log).
+>
+> **Gate red first:** `check_search.js` `truth()` in tokens + 12 assertions
+> (`tassa bhagavato` 437/318 not 527/379; `kāyena vācāya` 195/134 not
+> 183/124; the line names the rule). Red on `a1cac54f3ff2`:
+> `check_search_red_run_2026-09-06_phrase.txt`. **Then:** `searchcore.js`
+> `phraseCount()` — the builder's `_TOK`, each word = its resolved keys,
+> consecutive; both paths. Result line: `· consecutive words · exact
+> diacritics`; help text on both pages; i18n `s_consec` en/es. Gate and the
+> Python measurement agree. perf unchanged; all gates green.
+>
+> **Committed locally, stamped `18920c3b3e15`, dated 2026-09-06** (sandbox
+> clock checked). **NOT pushed.** `RUN_ON_HOST.md` has the command. Nothing
+> under `site/index/` changed — a code-only deploy.
+>
+> ## Owed / open
+>
+> 1. **Push and verify:** `build.json?cb=…` → `18920c3b3e15`, then
+>    `python3 pipeline/verify_live.py` from the host; live `tassa bhagavato`
+>    on search.html must say 437 occurrence(s) in 318 paragraph(s) ·
+>    consecutive words.
+> 2. The position store (`tq/`) — now buildable on the token rule if a
+>    measured need appears; not proposed.
+> 3. `*vaggo` 23.4 MB of prefix-named postings; `27KhuA08` Contents; release
+>    bump (tg/ + tn/ + phrase rule — the rule change is reader-visible and
+>    belongs in the release note); `lookup_eval/index.json` 653 KB on R2;
+>    the seven `_`-terminal tn/ shards — all as in the fourth session's box.
+
 # Closing 2026-09-05 (fourth session) — the section names are one n-gram shard; names.json is the fallback
 
 > # READ `claude/search_exact_by_default_and_postings_shards.md`, `claude/sweep_by_gram_not_by_key_list.md` AND `claude/names_by_gram_not_whole.md` BEFORE TOUCHING search.html, reader2.html, panel.js, searchcore.js OR site/index/.

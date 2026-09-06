@@ -20,6 +20,13 @@
   only as the fallback and the gate's truth.** `perf_search.js` now caps a
   search's largest file at 520 KB; `check_name_shards.js` is the equivalence
   gate. `claude/names_by_gram_not_whole.md`.
+* **2026-09-06: A PHRASE IS CONSECUTIVE TOKENS, not a substring of the text.**
+  `tassa bhagavato` no longer counts *etassa bhagavato*; *dhammā”ti* now
+  counts for `dhammā ti`. Result lines say `· consecutive words`. The
+  position store was measured and NOT built — it answers this rule, and the
+  rule was changed on the text the page already reads.
+  `claude/phrase_positions_are_a_different_semantic.md`,
+  `pipeline/measure_phrase_semantics.py`.
 
 ## START HERE — earlier (2026-08-25a)
 

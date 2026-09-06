@@ -321,8 +321,8 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=a1cac54f3ff2"></script>
-<script src="../searchcore.js?v=a1cac54f3ff2"></script>
+<script src="../i18n.js?v=18920c3b3e15"></script>
+<script src="../searchcore.js?v=18920c3b3e15"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -405,7 +405,7 @@ if(window.I18N) Object.assign(window.I18N,{
   r2_lay_a:{en:'Aṭṭhakathā',es:'Aṭṭhakathā'},
   r2_lay_t:{en:'Ṭīkā',es:'Ṭīkā'},
   r2_search_help:{
-    en:'Type one word, several words, or a phrase — a phrase matches the words adjacent and in order; paragraphs carrying the words apart are listed separately. Diacritics are optional: nibbana finds nibbāna. * completes a word: dhamm*, *vaggo, dham*ti (at least 3 letters beside the *). A bare word also matches inside longer words. The chips above limit the search to one layer. Click a result to open it in the reader at the marked word.',
+    en:'Type one word, several words, or a phrase — a phrase matches the words as consecutive words, in order — a comma or a closing quote between them (dhammā”ti) does not break it; paragraphs carrying the words apart are listed separately. Diacritics are optional: nibbana finds nibbāna. * completes a word: dhamm*, *vaggo, dham*ti (at least 3 letters beside the *). A bare word also matches inside longer words. The chips above limit the search to one layer. Click a result to open it in the reader at the marked word.',
     es:'Escriba una palabra, varias palabras o una frase — una frase encuentra las palabras adyacentes y en orden; los párrafos que llevan las palabras separadas se listan aparte. Los diacríticos son opcionales: nibbana encuentra nibbāna. * completa una palabra: dhamm*, *vaggo, dham*ti (mínimo 3 letras junto al *). Una palabra sola también coincide dentro de palabras más largas. Las fichas de arriba limitan la búsqueda a una capa. Pulse un resultado para abrirlo en el lector sobre la palabra marcada.'},
   r2_layers:{en:'Layers',es:'Capas'},
   r2_columns:{en:'Columns',es:'Columnas'},
@@ -524,7 +524,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='a1cac54f3ff2';
+const BUILD='18920c3b3e15';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -3553,7 +3553,7 @@ async function doSearch(q){
     +'<span class="sr-chip sr-fold'+(sFold?' on':'')+'" onclick="setSFold('+(sFold?'false':'true')+')" data-tip="'+escA(TIP('fold_toggle','Ignore diacritics: nibbana then also finds nibbāna, and tassa also finds tassā. Off by default, because tassa and tassā are different words. The result line always says which way it was searched.'))+'">'+esc(TIP('fold_label','Ignore diacritics'))+'</span>'
     +'<span class="sr-chip sr-help'+(sHelp?' on':'')+'" onclick="setSHelp()">?</span></div>'
     +(sHelp?'<div class="sr-helpbox">'+esc(TIP('r2_search_help',
-      'Type one word, several words, or a phrase — a phrase matches the words adjacent and in order; words apart are listed separately. Diacritics count: tassa and tassā are different words; “Ignore diacritics” lets nibbana find nibbāna too. * completes a word: dhamm*, *vaggo, dham*ti (3 letters minimum). A bare word also matches inside longer words. Chips above limit the search to one layer. Click a result to open it in the reader at the marked word.'))+'</div>':'');
+      'Type one word, several words, or a phrase — a phrase matches the words as consecutive words, in order — a comma or a closing quote between them (dhammā”ti) does not break it; words apart are listed separately. Diacritics count: tassa and tassā are different words; “Ignore diacritics” lets nibbana find nibbāna too. * completes a word: dhamm*, *vaggo, dham*ti (3 letters minimum). A bare word also matches inside longer words. Chips above limit the search to one layer. Click a result to open it in the reader at the marked word.'))+'</div>':'');
   const offer=sFold?'':' — <span class="sr-foldlink" onclick="setSFold(true)">'+esc(TIP('s_try_fold','ignore diacritics and search again?'))+'</span>';
   if(!r.vis){dd.hidden=false;
     dd.innerHTML=filtHTML+(secHTML||('<div class="sr-head">No matches for “'+esc(q)+'”'+(sLayer?' in this layer':'')+' ('+modeName()+')'+offer+'</div>'));return;}
@@ -3596,7 +3596,8 @@ async function doSearch(q){
   if(my!==sSeq) return;
   let occHTML;
   const capNote=r.capped.length?' — '+r.capped.map(c=>esc(c.word)+': the '+c.used+' commonest of '+c.matched.toLocaleString()+' forms').join('; '):'';
-  const where=' in '+r.phrParas.toLocaleString()+' paragraph(s), '+r.phrVols.size.toLocaleString()+' volume(s)'+capNote+' · '+modeName();
+  // a phrase names its rule beside the mode: consecutive words (2026-09-06)
+  const where=' in '+r.phrParas.toLocaleString()+' paragraph(s), '+r.phrVols.size.toLocaleString()+' volume(s)'+capNote+(words.length>1?' · '+TIP('s_consec','consecutive words'):'')+' · '+modeName();
   if(words.length>1){
     occHTML=(r.total?'<div class="sr-head">'+r.total.toLocaleString()+' occurrence(s) of “'+esc(q)+'”'+where+'</div>'+r.phrOut.map(row).join(''):'')
       +(r.andTotal?'<div class="sr-head">'+r.andTotal.toLocaleString()+' paragraph(s) carry all '+words.length+' words, not adjacent</div>'+r.andOut.map(row).join(''):'');

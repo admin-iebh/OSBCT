@@ -103,15 +103,25 @@ function truth(words,layer,fold){
   const vsets=per.map(m=>new Set(m.flatMap(k=>T().terms[k]||[])));
   let vis=[...vsets[0]].filter(v=>vsets.every(s=>s.has(v)));
   if(layer) vis=vis.filter(v=>T().layers[v]===layer);
-  const phRx=new RegExp(words.map(norm).map(w=>w.indexOf('*')>=0?w.split('*').map(rxEsc).join('\\S*'):rxEsc(w)).join(' '),'g');
+  // A PHRASE IS CONSECUTIVE TOKENS (2026-09-06).  Until then the reference
+  // was a substring of the normalised text, which counted `tassa bhagavato`
+  // inside *etassa bhagavato* (63 paragraphs) and refused *dhammā”ti* for
+  // `dhammā ti` because the edition closes the quotative up against its
+  // word.  Each word matches a token the way the single-word search does —
+  // the resolved keys — and the words must follow each other, whatever
+  // punctuation the edition prints between them.  Measured for both rules
+  // by pipeline/measure_phrase_semantics.py.
+  const TOKRX=/[^a-zāīūṁṃṅñṇṭḍḷ]+/i;
+  const sets=per.map(m=>new Set(m));
   let phrTot=0,phrParas=0,andParas=0; const volsWith=new Set();
   for(const vi of vis){
     const sh=JSON.parse(fs.readFileSync(path.join(ROOT,'site','index',T().vols[vi]+'.idx.json'),'utf8'));
     const maps=per.map(m=>{const mm=new Map(); for(const k of m) for(const [pi,c] of (sh.inv[k]||[])) mm.set(pi,(mm.get(pi)||0)+c); return mm;});
     for(const pi of maps[0].keys()){ if(!maps.every(mm=>mm.has(pi))) continue;
       if(words.length===1){ phrTot+=maps[0].get(pi); phrParas++; volsWith.add(vi); continue; }
-      const f=norm(sh.paras[pi].text);
-      phRx.lastIndex=0; let n=0,m; while((m=phRx.exec(f))){ if(!m[0]){phRx.lastIndex++;continue;} n++; }
+      const toks=canonS(sh.paras[pi].text).split(TOKRX).filter(Boolean);
+      let n=0; for(let j=0;j+sets.length<=toks.length;j++){ let all=true;
+        for(let i=0;i<sets.length;i++) if(!sets[i].has(toks[j+i])){ all=false; break; } if(all) n++; }
       if(n>0){phrTot+=n;phrParas++;volsWith.add(vi);} else {andParas++;}
     }
   }
@@ -197,6 +207,21 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
   ok(heads(dd).some(h=>h.includes(' in '+t1.phrParas.toLocaleString()+' paragraph(s), '+t1.vols.toLocaleString()+' volume(s)')),
      'reader: head counts PHRASE paragraphs and volumes, not AND ones',
      'want '+t1.phrParas+'p/'+t1.vols+'v | '+heads(dd)[0]);
+
+  // 1b. THE PHRASE RULE (2026-09-06): consecutive tokens, the edition's
+  //     punctuation between them notwithstanding.  `tassa bhagavato` is where
+  //     the text rule over-counted (63 paragraphs of *etassa bhagavato*);
+  //     `kāyena vācāya` is where it under-counted (*kāyena, vācāya*, 10).
+  //     Both were red on the text rule; the head must also NAME the rule.
+  for(const q of ['tassa bhagavato','kāyena vācāya']){
+    const tq=truth(q.split(' '));
+    await w.doSearch(q); dd=w.document.getElementById('sdrop');
+    ok(tq.phrTot>0&&heads(dd).some(h=>h.startsWith(tq.phrTot.toLocaleString()+' occurrence')&&h.includes(' in '+tq.phrParas.toLocaleString()+' paragraph')),
+       'reader phrase rule: '+q+' counts consecutive words', 'want '+tq.phrTot+'/'+tq.phrParas+' | '+heads(dd).join(' / '));
+    ok(tq.andParas===0||heads(dd).some(h=>h.includes(tq.andParas.toLocaleString()+' paragraph')&&h.includes('not adjacent')),
+       'reader phrase rule: '+q+' lists the rest apart', 'want '+tq.andParas+' | '+heads(dd).join(' / '));
+    ok(heads(dd).some(h=>/consecutive/i.test(h)),'reader phrase rule: the head names the rule', heads(dd).join(' / '));
+  }
 
   // 2. the book on a row: 07Di02, whose corpus `book` field is the kathā.
   await w.doSearch('piṇḍapātapaṭikkantānaṁ karerimaṇḍalamāḷe');
@@ -436,6 +461,14 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
      'search: row count = phrase + AND paras', s.document.querySelectorAll('.hit').length+' vs '+(t1.phrParas+t1.andParas));
   ok([...s.document.querySelectorAll('.hit mark')].length>0,'search: match marked in snippet');
 
+  for(const q of ['tassa bhagavato','kāyena vācāya']){
+    const tq=truth(q.split(' '));
+    await sq(q);
+    ok(tq.phrTot>0&&st().startsWith(tq.phrTot.toLocaleString()+' occurrence')&&st().includes(' in '+tq.phrParas.toLocaleString()+' paragraph'),
+       'search phrase rule: '+q+' counts consecutive words', 'want '+tq.phrTot+'/'+tq.phrParas+' | '+st());
+    ok(tq.andParas===0||st().includes(tq.andParas.toLocaleString()+' paragraph'),'search phrase rule: '+q+' lists the rest apart', 'want '+tq.andParas+' | '+st());
+    ok(/consecutive/i.test(st()),'search phrase rule: the status names the rule', st());
+  }
   await sq('piṇḍapātapaṭikkantānaṁ karerimaṇḍalamāḷe');
   const locs=[...s.document.querySelectorAll('.hit .loc')].map(e=>e.textContent);
   ok(locs.some(t=>t.includes('Mahāvaggapāḷi')&&t.includes('07Di02')),
