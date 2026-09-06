@@ -19,6 +19,29 @@ https://dict.buddha-dhamma.net/lookup_eval/index.json?v=20260906a
 
 If that still shows `{"keys":…,"bytes":…}` entries, the upload did not run.
 
+**Done 2026-09-06: uploaded and pushed; all three slim manifests confirmed
+live from the pane (176,574 bytes); `build.json` → `6dec7aac7e71`.**
+
+**The upload's `!! MISMATCH` — lookup_eval 24,885 in the bucket, 24,851
+tracked — is EXPLAINED and predates today.** The 34 extra objects are exactly
+the 34 `hw/*.json.gz` shards that commit `2fec02624` deleted from git when
+`hw/` was re-sharded; `rclone copy` never deletes, so they stayed in the
+bucket. No manifest names them, so nothing fetches them. To make the count
+honest again (optional, any time):
+
+```bash
+cd ~/Documents/OSBCT
+git log --diff-filter=D --name-only --pretty=format: -- stores/lookup_eval site/lookup_eval \
+  | grep . | sed 's#^site/#stores/#' | sort -u \
+  | comm -23 - <(git ls-files stores/lookup_eval | sort) \
+  | sed 's#^stores/lookup_eval/##' > /tmp/stale_r2.txt
+wc -l /tmp/stale_r2.txt          # must say 34
+rclone delete osbct-r2:osbct-dict/lookup_eval --files-from /tmp/stale_r2.txt --dry-run
+rclone delete osbct-r2:osbct-dict/lookup_eval --files-from /tmp/stale_r2.txt
+```
+
+Then the next `r2_upload.sh` run reports 24,851 = 24,851.
+
 ---
 
 # Run on the host — 2026-09-06, the v2.10.0 release

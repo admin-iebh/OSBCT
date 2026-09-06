@@ -37,10 +37,12 @@
 >
 > ## Owed / open
 >
-> 1. **On the host, in order: `./pipeline/r2_upload.sh`, then `git push`**
->    (`RUN_ON_HOST.md`). Then `build.json` → `6dec7aac7e71`, `verify_live.py`,
->    and a cache-busted fetch of `lookup_eval/index.json?v=20260906a` must be
->    176,574 bytes.
+> 1. ~~r2_upload + push~~ **Done:** uploaded, pushed, `build.json` →
+>    `6dec7aac7e71`, the three slim manifests confirmed live from the pane.
+>    The upload's MISMATCH (24,885 vs 24,851) is explained in
+>    `RUN_ON_HOST.md`: 34 stale `hw/*.json.gz` from the `2fec02624`
+>    re-sharding that `rclone copy` never deleted; harmless; a cleanup
+>    command is written there, optional.
 > 2. The position store (`tq/`) — buildable on the token rule if a measured
 >    need appears; not proposed.
 > 3. `*vaggo` 23.4 MB of prefix-named postings; `27KhuA08` Contents; the
