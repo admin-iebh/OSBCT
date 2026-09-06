@@ -29,28 +29,26 @@
 > 0.33 gz, waves 9 → 6; every search −0.24 MB gz, +1 request; max file ≤ 0.51 MB.
 > Baseline re-recorded. `verify_live.py` fetches `tn/index.json` (17 checks).
 >
-> **Committed locally, stamped `a1cac54f3ff2`, dated 2026-09-05** (sandbox
-> clock checked against the environment date). **NOT pushed — the sandbox
-> cannot reach GitHub.** `RUN_ON_HOST.md` has the command. The push adds 891
-> files under `site/index/tn/` (`git ls-files site/` 6,744 → 7,635).
+> **Committed `aff6dfac1`, stamped `a1cac54f3ff2`, dated 2026-09-05; pushed by
+> the reader; deploy #229 (7,635 files under `site/`) landed; `build.json`
+> → `a1cac54f3ff2`; `verify_live.py` from the host: LIVE SITE MATCHES (17
+> checks, `tn/index.json` included).** Nothing is owed.
 >
-> ## Owed / open
+> ## Open
 >
-> 1. **Push and verify:** `build.json?cb=…` → `a1cac54f3ff2`, then
->    `python3 pipeline/verify_live.py` from the host.
-> 2. Phrase positions — measured in the third session, design recorded there
+> 1. Phrase positions — measured in the third session, design recorded there
 >    (separate `tq/` store fetched only for phrases; builder re-tokenises),
 >    not built. Reader's call.
-> 3. `*vaggo` still reads 23.4 MB of prefix-named postings for 199 keys. No
+> 2. `*vaggo` still reads 23.4 MB of prefix-named postings for 199 keys. No
 >    logs say real queries take that shape; not proposed.
-> 4. `27KhuA08` ☰ Contents rebuild — advisory, `RUN_ON_HOST.md` "Not done,
+> 3. `27KhuA08` ☰ Contents rebuild — advisory, `RUN_ON_HOST.md` "Not done,
 >    deliberately".
-> 5. Release bump for the tg/ + tn/ changes (three-file checklist:
+> 4. Release bump for the tg/ + tn/ changes (three-file checklist:
 >    .zenodo.json, CITATION.cff, i18n.js; tag cut LAST, after the push) —
 >    reader's call.
-> 6. `lookup_eval/index.json` (653 KB, R2) is now the largest file any page
+> 5. `lookup_eval/index.json` (653 KB, R2) is now the largest file any page
 >    reads; a store change, not done here.
-> 7. The seven `_`-terminal tn/ shards over the cap (`na_` 548 KB) are read
+> 6. The seven `_`-terminal tn/ shards over the cap (`na_` 548 KB) are read
 >    only when a query offers nothing cheaper; none of the gate's queries does.
 >
 > Gates run green: check_search, check_name_shards, perf_search (baseline
