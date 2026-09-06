@@ -1,3 +1,69 @@
+# Closing 2026-09-05 (third session) — the sweep reads one n-gram shard; k.txt is the fallback
+
+> # READ `claude/search_exact_by_default_and_postings_shards.md` AND `claude/sweep_by_gram_not_by_key_list.md` BEFORE TOUCHING search.html, reader2.html, panel.js, searchcore.js OR site/index/.
+>
+> **Confirmed at the start, from a fresh session's own system prompt: §7 begins
+> "Diacritics are matched exactly by default". The paste took.** (The header
+> comment of the source doc still says "Pasted into the instructions field:
+> PENDING" — that line is now stale in the doc, and only there.)
+>
+> **Measured first** (`perf_search.js`, all within baseline): `*vaggo` 36.9 MB raw
+> of which `k.txt` 12.5; `amakasālāna` 17.4 of which 12.5; everything else a
+> search reads is ≤ 515 KB. **Gates red first**: check_search 5 FAIL, perf_search's
+> new `max` column (largest single file, absolute 1.25 MB) 2 FAIL — runs delivered
+> as `check_search_red_run_2026-09-05_lever3.txt` and `perf_search_red_run_…`.
+>
+> **Then the store:** `site/index/tg/<gram>.txt` — the keys containing one folded
+> n-gram, deepened by the following character until ≤ 500 KB (`_` = the key ends
+> there); 2,841 files, 197.7 MB on disk, ONE read per query. `searchcore.js
+> sweep()` picks the query's cheapest gram and verifies every key by the same
+> substring/pattern the k.txt scan used, then sorts — **928 query × mode
+> combinations against the k.txt path: 0 differences.** After: `*vaggo` 9.01 →
+> 6.36 MB gz, `amakasālāna` 3.99 → 1.35, max file 12.47 → 1.09 MB. Baseline
+> re-recorded. `pipeline/build_gram_shards.py`, run AFTER `build_term_postings.py`.
+>
+> Subtitle fixed: 89,512 paragraphs (verified from the corpus), en and es.
+>
+> **Committed locally: `5fa09d7cd`, stamped `188e9c25d629`, dated 2026-09-05**
+> (sandbox clock checked against the environment date). **NOT pushed — the
+> sandbox cannot reach GitHub.** `RUN_ON_HOST.md` has the command. The push adds
+> 2,842 files under `site/` (3,902 → 6,744): the Pages file-count clock in
+> `deploy-pages.yml` applies; 3,902 deployed, 6,744 is untried.
+>
+> ## Measured, not built — item 2 (phrase positions)
+>
+> Positions in the postings would grow `tp/` from 70 to ~117 MB (8,082,470
+> occurrences over 5,084,125 (key, paragraph) postings), i.e. **+66 % on every
+> single-word search** if they live in the same shards. And the win is smaller
+> than the 190-chunk figure suggests: `evaṁ me sutaṁ` draws 212 rows of its 663
+> candidates, and those rows need their text anyway. The phrases that DO pay are
+> the ones with many non-adjacent co-occurrences: `dhamm* ti` reads 471 chunks
+> for 10,609 and-only candidates to draw 261 rows; `bhagavā etadavoca` 1,083
+> and-only. **If it is done, do it as a SEPARATE position store fetched only for
+> phrases (`tq/`, sharded like `tp/`), so the cold single-word path is untouched
+> — and it needs the builder to re-tokenise paragraphs the way
+> `build_search_index.py` does, since the per-volume `inv` holds counts only.**
+> Not started; the reader decides whether the trade is worth a second 47 MB store.
+>
+> ## Owed / open
+>
+> 1. **Push and verify:** `build.json?cb=…` → `188e9c25d629`, then
+>    `python3 pipeline/verify_live.py` (it now fetches `tg/index.json` too).
+> 2. `index/names.json` is **1.09 MB**, fetched once per page and scanned on every
+>    search — found by the new gate; the largest file a search reads now.
+> 3. `*vaggo` is still 24.5 MB raw: the postings of its 199 keys lie across ~150
+>    prefix-named shards. Prefix-named postings serve a suffix query badly by
+>    construction; a suffix-named set would be a second 70 MB store. No logs say
+>    real queries take this shape.
+> 4. Item 2 above (phrase positions) — measured, design recorded, not built.
+> 5. `27KhuA08`'s ☰ Contents — advisory, `RUN_ON_HOST.md` "Not done, deliberately".
+> 6. Sandbox note: this session's sandbox could not unlink anything under the
+>    mounted repo until deletion was granted (`.git/index.lock` from a plain
+>    `git status` blocked `git add`); grant it before the first git write.
+>
+> Gates run green: check_search, perf_search (baseline re-recorded), check_reader_range
+> 37/37, check_archive_fallback, check_lookup_reach 12/12, check_columns.
+
 # Closing 2026-09-05 (second session) — search rebuilt: exact diacritics, no more volume downloads
 
 > # THE SEARCH CHANGED SHAPE TODAY. READ `claude/search_exact_by_default_and_postings_shards.md` BEFORE TOUCHING search.html, reader2.html, panel.js OR site/index/.

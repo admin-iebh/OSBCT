@@ -1,3 +1,41 @@
+# Run on the host — 2026-09-05 (third session)
+
+## The command
+
+```bash
+cd ~/Documents/OSBCT
+git push
+```
+
+**Plain `git push`, not `./push.sh`.** The commit is already made — HEAD is
+`5fa09d7cd`, "Search: the substring / *-suffix sweep reads one n-gram shard
+(tg/), not the 12.5 MB k.txt" — from the sandbox, which cannot reach github.com.
+`./push.sh` would stop at guard 2, correctly, because `COMMIT_MSG.bak` is HEAD's
+message.
+
+The tree is stamped **`188e9c25d629`, dated 2026-09-05** (sandbox clock checked
+against the environment's date: both 2026-09-05). Do not re-stamp.
+
+**This push adds 2,842 files under `site/index/tg/`** (`git ls-files site/`
+3,902 → 6,744, +198 MB raw). The Pages file-count clock note in
+`deploy-pages.yml` applies: if the run times out at ~11m40s, start a FRESH
+"Run workflow", never "Re-run failed jobs". Then, cache-busted:
+
+```
+https://buddha-dhamma.net/build.json?cb=<anything-new>
+   ->  {"build": "188e9c25d629", "date": "2026-09-05"}
+https://buddha-dhamma.net/search.html?cb=<anything-new>
+   ->  search `*vaggo`: 199 occurrence(s) in 109 paragraph(s), 55 volume(s) · exact diacritics
+       (Network tab: index/tg/index.json and ONE or a few tg/*.txt, no tp/k.txt)
+   ->  search `amakasālāna`: 44 occurrence(s) in 38 paragraph(s), 26 volume(s)
+   ->  subtitle reads 89,512 paragraphs
+```
+
+Then `python3 pipeline/verify_live.py` from the host — it now fetches
+`index/tg/index.json` as well.
+
+---
+
 # Run on the host — 2026-09-05 (second session)
 
 ## The command
