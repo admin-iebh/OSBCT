@@ -73,6 +73,10 @@ TARGETS = [
     # archive fallback, but on the live site it would be a regression this
     # gate must see.
     ('/index/tg/index.json',   'site/index/tg/index.json',   'bytes'),
+    # fourth session: the section-name shards' manifest.  Missing live, both
+    # search UIs silently read names.json whole again (1.09 MB) — the same
+    # archive fallback, the same regression if it happens on the live site.
+    ('/index/tn/index.json',   'site/index/tn/index.json',   'bytes'),
     # and the self-hosted type: site/fonts/ is NEW, and .gitignore decides
     # what Actions publishes.  A 404 here means every page fell back to a
     # generic serif and the Pāḷi diacritics are rendering as tofu.

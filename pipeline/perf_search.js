@@ -24,14 +24,16 @@
 //          absolute MAXFILE, not against the baseline: a phone must hold and
 //          scan each file whole.  The postings shards are ≤ 515 KB, the text
 //          chunks ≤ 301 KB, and `index/names.json` — the section names,
-//          scanned on every search, fetched once per page — is 1.09 MB, the
-//          largest file a search legitimately reads; the ceiling sits just
-//          above it at 1.25 MB.  `k.txt`, the substring / `*`-suffix sweep
-//          surface, was 12.5 MB — lever 3 of the brief.  Added 2026-09-05
-//          (later session); red on the two sweep queries before `tg/`
-//          existed.  (A first cut at 1 MB went red on EVERY cold query, which
-//          is how names.json's size was noticed; it is an open item, not a
-//          reason to loosen the gate further.)
+//          scanned on every search, fetched once per page — WAS 1.09 MB, the
+//          largest file a search read, and the ceiling sat just above it at
+//          1.25 MB.  `k.txt`, the substring / `*`-suffix sweep surface, was
+//          12.5 MB — lever 3 of the brief.  Added 2026-09-05 (later session);
+//          red on the two sweep queries before `tg/` existed.  (A first cut
+//          at 1 MB went red on EVERY cold query, which is how names.json's
+//          size was noticed.)  2026-09-05, fourth session: the names are
+//          read as ONE `tn/` shard (≤ 200 KB) and the ceiling is 520 KB —
+//          just above the largest postings shard; red on every cold query
+//          before `tn/` existed.
 //
 // THE QUERY SET is the one §7 of the brief asks for: cold first search and
 // warm; a median word; a `pa`/`sa` word; the common word that pulls every
@@ -59,7 +61,11 @@ const RECORD=process.argv.includes('--record');
 const li=process.argv.indexOf('--lat'); const LAT=li>=0?+process.argv[li+1]:40;
 const STORE=fs.existsSync(path.join(ROOT,'stores/lookup/index.json'))?'stores':'site';
 const isStore=p=>/^lookup(_eval)?\//.test(p);
-const MAXFILE=1_250_000;   // raw bytes: no single fetch may exceed this (names.json is 1.09 MB)
+const MAXFILE=520_000;     // raw bytes: no single fetch by a SEARCH may exceed this (largest postings shard 514 KB; names.json, 1.09 MB, was the ceiling until tn/)
+// the dictionary's largest file is `lookup_eval/index.json`, 653 KB, on R2 —
+// a store change (r2_upload.sh + WLV) that this gate records as an open item
+// rather than hides: the lookup rows get their own ceiling, just above it
+const MAXSTORE=700_000;
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 
 // gzip -6 size of a file, cached by path+size+mtime
@@ -181,7 +187,8 @@ async function measureLookup(){
       if(!(gzOk&&reqOk)){ cmp+=' FAIL'; fails++; }
     }
     // absolute, baseline or not: no single file over MAXFILE
-    if(r.max>MAXFILE){ cmp+=' FAIL max>'+mb(MAXFILE)+'MB'; fails++; }
+    const cap=k.startsWith('lookup')?MAXSTORE:MAXFILE;
+    if(r.max>cap){ cmp+=' FAIL max>'+mb(cap)+'MB'; fails++; }
     console.log('  '+k.padEnd(34)+String(r.req).padStart(5)+mb(r.raw).padStart(9)+mb(r.gz).padStart(8)+mb(r.max||0).padStart(8)+String(r.waves).padStart(7)+String(r.ms).padStart(7)+cmp+'  '+(r.ktxt?'[k.txt] ':'')+r.status);
   }
   if(RECORD){ fs.writeFileSync(BASE,JSON.stringify({recorded:new Date().toISOString().slice(0,10),lat:LAT,results:res},null,1)); console.log('\nbaseline written: '+path.relative(ROOT,BASE)); }

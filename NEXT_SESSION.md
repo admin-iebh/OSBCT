@@ -1,3 +1,62 @@
+# Closing 2026-09-05 (fourth session) — the section names are one n-gram shard; names.json is the fallback
+
+> # READ `claude/search_exact_by_default_and_postings_shards.md`, `claude/sweep_by_gram_not_by_key_list.md` AND `claude/names_by_gram_not_whole.md` BEFORE TOUCHING search.html, reader2.html, panel.js, searchcore.js OR site/index/.
+>
+> **State at the start:** HEAD == origin/main == `e54900ddf`, tree clean, live
+> `188e9c25d629` verified — the third session's push was done by the reader.
+>
+> **Measured first** (`perf_search.js`, all within baseline): the largest file
+> every cold query read was `index/names.json`, **1.09 MB raw / 255 KB gz**,
+> fetched whole before the first query on BOTH pages and scanned on every
+> search; the cold median word read 2.28 MB raw, 1.09 of it this file.
+>
+> **Gates red first.** `check_search.js` had NO assertion on section hits; it
+> gained 16 (the painted list must equal what names.json ranks under each
+> page's own rule; `abhabbasutta` found in titles only; layer chip; fold
+> switch; wiring). `perf_search.js` ceiling 1.25 MB → **520 KB** (the lookup
+> rows get 700 KB: `lookup_eval/index.json` is 653 KB on R2, an open item
+> named in the file). Red: 4 wiring FAIL + 10 max FAIL — runs delivered as
+> `check_search_red_run_2026-09-05_names.txt`, `perf_search_red_run_…_names.txt`.
+>
+> **Then the store:** `site/index/tn/<gram>.json` — the labels whose folded
+> LETTERS contain one n-gram, with all their rows and each row's names.json
+> index, deepened until ≤ 200 KB; **890 files, 22.9 MB**; built by
+> `pipeline/build_name_shards.py` AFTER `build_name_index.py`, self-verified.
+> `searchcore.js names(fq)` picks the cheapest gram and returns an object of
+> names.json's shape in its order; the pages' matching/ranking is unchanged.
+> **`check_name_shards.js`: 1,712 query × mode combinations vs names.json, 0
+> differences** — kept as a gate. After: cold word 2.28 → 1.22 MB raw, 0.57 →
+> 0.33 gz, waves 9 → 6; every search −0.24 MB gz, +1 request; max file ≤ 0.51 MB.
+> Baseline re-recorded. `verify_live.py` fetches `tn/index.json` (17 checks).
+>
+> **Committed locally, stamped `a1cac54f3ff2`, dated 2026-09-05** (sandbox
+> clock checked against the environment date). **NOT pushed — the sandbox
+> cannot reach GitHub.** `RUN_ON_HOST.md` has the command. The push adds 891
+> files under `site/index/tn/` (`git ls-files site/` 6,744 → 7,635).
+>
+> ## Owed / open
+>
+> 1. **Push and verify:** `build.json?cb=…` → `a1cac54f3ff2`, then
+>    `python3 pipeline/verify_live.py` from the host.
+> 2. Phrase positions — measured in the third session, design recorded there
+>    (separate `tq/` store fetched only for phrases; builder re-tokenises),
+>    not built. Reader's call.
+> 3. `*vaggo` still reads 23.4 MB of prefix-named postings for 199 keys. No
+>    logs say real queries take that shape; not proposed.
+> 4. `27KhuA08` ☰ Contents rebuild — advisory, `RUN_ON_HOST.md` "Not done,
+>    deliberately".
+> 5. Release bump for the tg/ + tn/ changes (three-file checklist:
+>    .zenodo.json, CITATION.cff, i18n.js; tag cut LAST, after the push) —
+>    reader's call.
+> 6. `lookup_eval/index.json` (653 KB, R2) is now the largest file any page
+>    reads; a store change, not done here.
+> 7. The seven `_`-terminal tn/ shards over the cap (`na_` 548 KB) are read
+>    only when a query offers nothing cheaper; none of the gate's queries does.
+>
+> Gates run green: check_search, check_name_shards, perf_search (baseline
+> re-recorded), check_reader_range 37/37, check_archive_fallback 11/11,
+> check_lookup_reach 12/12, check_columns.
+
 # Closing 2026-09-05 (third session) — the sweep reads one n-gram shard; k.txt is the fallback
 
 > # READ `claude/search_exact_by_default_and_postings_shards.md` AND `claude/sweep_by_gram_not_by_key_list.md` BEFORE TOUCHING search.html, reader2.html, panel.js, searchcore.js OR site/index/.

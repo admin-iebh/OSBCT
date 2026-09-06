@@ -92,7 +92,7 @@
 <script>
 // cache-buster; `pipeline/stamp_build.py` derives BUILD from the data and
 // rewrites it, so a rebuild can never be invisible to a returning browser.
-const BUILD='188e9c25d629';
+const BUILD='a1cac54f3ff2';
 function bust(u){ return u+(u.includes('?')?'&':'?')+'v='+BUILD; }
 
 document.documentElement.setAttribute('data-theme',localStorage.getItem('osbct-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
@@ -144,8 +144,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   longer words. Results show the book, the printed page and the paragraph;
   click a result to open it in the reader at the marked word.
 </footer>
-<script src="i18n.js?v=188e9c25d629"></script>
-<script src="searchcore.js?v=188e9c25d629"></script>
+<script src="i18n.js?v=a1cac54f3ff2"></script>
+<script src="searchcore.js?v=a1cac54f3ff2"></script>
 <script>
 // ONE SEARCH IMPLEMENTATION, IN searchcore.js (2026-09-05) — this page is its
 // UI.  Everything about keys, buckets, sweeps, postings and text chunks that
@@ -155,11 +155,28 @@ const FOLDKEY='osbct-fold';
 let sFold=false; try{ sFold=localStorage.getItem(FOLDKEY)==='1'; }catch(e){}
 const S=SearchCore.create({base:'index/',bust});
 const norm=()=>S.norm(sFold);
+// SECTION NAMES.  Until 2026-09-05 (fourth session) `index/names.json` —
+// 1.09 MB, every printed heading — was fetched whole before the first query
+// and scanned on every search.  Now `S.names(fq)` reads ONE `tn/` shard, the
+// labels containing the query's cheapest n-gram, and returns them in the
+// file's own shape and order; the matching below is unchanged and still
+// decides every hit itself.  names.json stays as the fallback: a query with
+// no run of two letters, or an archive without tn/.
 let NAMES=null, NNORM=null, NNORMF=null;
 async function ensureNamesOnly(){
   if(NAMES) return;
   try{ const nr=await fetch(bust('index/names.json'));
        if(nr.ok){ NAMES=await nr.json(); NNORM=NAMES.labels.map(SearchCore.canonS); NNORMF=NAMES.labels.map(SearchCore.foldS); } }catch(e){}
+}
+// {d, nn, nf}: the candidate labels for `fq` with their canonical and folded
+// forms, or null when they could not be loaded (the page then draws no
+// sections, as it always did when names.json failed)
+async function namesFor(fq){
+  if(!fq) return null;
+  let n; try{ n=await S.names(fq); }catch(e){ n=null; }
+  if(n===undefined){ await ensureNamesOnly(); return NAMES?{d:NAMES,nn:NNORM,nf:NNORMF}:null; }
+  if(n===null) return null;
+  return {d:n, nn:n.labels.map(SearchCore.canonS), nf:n.labels.map(SearchCore.foldS)};
 }
 const status=m=>{ el('status').textContent=m; };
 const statusHTML=h=>{ el('status').innerHTML=h; };
@@ -191,9 +208,9 @@ function snippet(text,words,phRx,wordRxs){
 // default, folded behind the switch.  Substring, so a partial name still
 // lands (`ovāda` -> *Ovādavagga*).  Exact and opening matches rank first,
 // then shorter labels, so the sutta itself beats a compound containing it.
-function sectionHits(fq,lf){
-  if(!NAMES||!fq) return '';
-  const NN=sFold?NNORMF:NNORM;
+function sectionHits(N,fq,lf){
+  if(!N||!fq) return '';
+  const NAMES=N.d, NN=sFold?N.nf:N.nn;
   const LAYFOLD={'canon':'pali-unicode','commentary':'atthakatha-unicode','subcommentary':'tika-unicode'};
   const idx=[];
   for(let i=0;i<NN.length;i++){ const p=NN[i].indexOf(fq); if(p>=0) idx.push([i,p]); }
@@ -245,14 +262,16 @@ async function run(){
   const q=el('q').value.trim(); if(!q){status('Type a query.');return;}
   // the index is fetched HERE, on the first query, not on page load
   if(!S.ready()){ status('Loading the search index…'); await S.ensure(); if(my!==runSeq) return; }
-  await ensureNamesOnly(); if(my!==runSeq) return;
   if(!S.ready()){status('Could not load the term index.'+(S.error()?' ('+S.error()+')':''));return;}
   const lf=sLayer; const fq=norm()(q).trim();
-  const secHTML=sectionHits(fq,lf);
+  // the names shard is fetched BESIDE the search, not before it
+  const namesP=namesFor(fq);
   status(`Searching…`);
   const r=await S.search(q,{fold:sFold,layer:lf,capP:70,capA:35,onProgress:n=>{ if(my===runSeq) status(`Searching ${n.toLocaleString()} paragraph(s)…`); }});
+  const NM=await namesP;
   if(my!==runSeq) return;
   if(r===null){ status('The term index could not be loaded. Check the connection and search again.'); return; }
+  const secHTML=sectionHits(NM,fq,lf);
   const words=r.words;
   if(!r.vis||(!r.phrOut.length&&!r.andOut.length)){
     // A NAME MATCH IS STILL A MATCH: 2,229 of the corpus's 2,593 sutta names

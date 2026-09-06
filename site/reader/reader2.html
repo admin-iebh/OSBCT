@@ -321,8 +321,8 @@ mark.shl{background:var(--shl,#ffdf7e);color:#111;border-radius:2px;padding:0 1p
 .para,.uddana,.frontmatter{content-visibility:auto;contain-intrinsic-size:auto 180px}
 @media(max-width:860px){body{grid-template-columns:0 1fr}.side{position:fixed;top:52px;bottom:0;left:0;width:84%;max-width:330px;z-index:30;box-shadow:2px 0 16px rgba(0,0,0,.3)}body:not(.showsb) .side{display:none}}
 </style>
-<script src="../i18n.js?v=188e9c25d629"></script>
-<script src="../searchcore.js?v=188e9c25d629"></script>
+<script src="../i18n.js?v=a1cac54f3ff2"></script>
+<script src="../searchcore.js?v=a1cac54f3ff2"></script>
 <!-- WORD-LOOKUP PANEL — ON BY DEFAULT since 2026-08-02.  `?wl=0` turns it off
      and the choice sticks in localStorage['osbct-wl'].  It was off by default
      until then, which made it unreachable rather than merely optional: nothing
@@ -524,7 +524,7 @@ window.addEventListener('error',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='JS error: '+(e.message||'')+'  @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''); b.hidden=false; } });
 window.addEventListener('unhandledrejection',e=>{ const b=document.getElementById('errbar');
   if(b){ b.textContent='Unhandled: '+((e.reason&&(e.reason.message||e.reason))||''); b.hidden=false; } });
-const BUILD='188e9c25d629';
+const BUILD='a1cac54f3ff2';
 
 // !!! THIS PAGE IS THE ONE FILE IN THE SITE WITH NO CACHE-BUSTER, AND IT COST
 // A ROUND-TRIP ON NEARLY EVERY CHECK FOR TWO DAYS (2026-08-03).  Everything
@@ -3433,10 +3433,22 @@ let SNAMES=null, SNNORM=null, SNFOLD=null;
 // printed in the HEADING and nowhere else.  So this box searches `names.json`
 // as well, exactly as `search.html` does, or typing `Abhabbasutta` here would
 // still find nothing however good the text matching got.
+// 2026-09-05 (fourth session): names.json — 1.09 MB, the largest file a
+// search read — is no longer fetched whole.  `SC.names(fq)` reads ONE `tn/`
+// shard (the labels containing the query's cheapest n-gram) and returns
+// them in the file's own shape and order; the substring test below still
+// decides every hit.  names.json stays as the fallback (a query with no run
+// of two letters; an archive without tn/).
 async function ensureNames(){ if(SNAMES!==null) return;
   SNAMES=await jget('../index/names.json',null);
   SNNORM=SNAMES?SNAMES.labels.map(SearchCore.canonS):null;
   SNFOLD=SNAMES?SNAMES.labels.map(foldS):null; }
+// {d, nn, nf} for the query's candidate labels, or null (no sections drawn)
+async function namesFor(fq){
+  let n; try{ n=await SC.names(fq); }catch(e){ n=null; }
+  if(n===undefined){ await ensureNames(); return SNAMES?{d:SNAMES,nn:SNNORM,nf:SNFOLD}:null; }
+  if(n===null) return null;
+  return {d:n, nn:n.labels.map(SearchCore.canonS), nf:n.labels.map(foldS)}; }
 // The book named on a search row.  `booktitle/<VOL>.json` is the stack the
 // edition prints on the book's own title page, keyed by opening ordinal — the
 // same source the paragraph-number tooltip uses, and for the same reason: THE
@@ -3496,14 +3508,16 @@ async function doSearch(q){
   // THE BOX MUST NEVER BE SILENT: a slow network deserves a sign of life.
   if(!SC.ready()){ dd.hidden=false;
     dd.innerHTML='<div class="sr-head">'+esc(TIP('r2_search_loading','Loading the search index…'))+'</div>'; }
-  await SC.ensure(); await ensureNames();
+  // the names shard is fetched BESIDE the index, not after it
+  const namesP=SC.ready()?null:namesFor(fq);
+  await SC.ensure(); const NM=await (namesP||namesFor(fq));
   if(my!==sSeq) return;
   if(!SC.ready()){ dd.hidden=false;
     dd.innerHTML='<div class="sr-head">'+esc(TIP('r2_search_failed','The search index could not be loaded. Check the connection and type again.'))+(SC.error()?' ('+esc(SC.error())+')':'')+'</div>';
     return; }
   let secHTML='', nSec=0;
-  if(SNAMES){
-    const NN=sFold?SNFOLD:SNNORM;
+  if(NM){
+    const SNAMES=NM.d, NN=sFold?NM.nf:NM.nn;
     const hit=[];
     for(let i=0;i<NN.length;i++) if(NN[i].indexOf(fq)>=0) hit.push(i);
     if(hit.length){

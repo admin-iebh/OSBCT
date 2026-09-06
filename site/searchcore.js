@@ -31,6 +31,10 @@
 //                             folded n-gram — a substring or `*vaggo` sweep
 //                             fetches the query's cheapest gram (≤ 500 KB,
 //                             was 12.5 MB) and verifies each key itself
+//      index/tn/<gram>.json   (fourth session) the section names containing
+//                             one folded n-gram, with their rows — a search
+//                             reads its cheapest gram (≤ 200 KB) instead of
+//                             the whole 1.09 MB names.json, now the fallback
 //      index/tx/<VOL>/<i>.json the paragraphs of one volume, chunked — fetched
 //                             only for the rows that are DRAWN, or for the
 //                             candidates of a phrase that must be verified
@@ -173,6 +177,53 @@ function create(opts){
     if(failed) return null;
     const ks=[...seen].sort();
     return {keys:ks.slice(0,CAPKEYS),matched:ks.length};
+  }
+  // ---- SECTION NAMES (2026-09-05, fourth session) -----------------------
+  // `index/names.json` — every printed heading, 1.09 MB — used to be read
+  // whole by both pages before their first query and scanned by substring
+  // on every search: after tg/ it was the largest file a search fetched.
+  // Now `index/tn/<gram>.json` holds the labels (with their rows) whose
+  // folded form contains one n-gram inside a run of letters — the tg/ idiom
+  // applied to labels — and a query reads its cheapest gram.  `names(fq)`
+  // returns an object of names.json's SHAPE ({vols, layers, labels, rows})
+  // holding only the candidates, rows in the file's own order, so the
+  // page's matching, ranking and drawing run unchanged over it: the gram
+  // narrows, the page's substring test decides.  Returns undefined when no
+  // gram applies (no run of `mind` letters) or the store is absent — the
+  // page then reads names.json as before — and null when a shard failed.
+  let NM=null; const NS={};
+  function nmanifest(){ if(NM) return NM;
+    return NM=(async()=>{ try{
+        const r=await fetch(bust(base+'tn/index.json'));
+        if(r.status===404) return {};
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        const j=await r.json(); return (j&&j.grams&&j.vols&&j.layers)?j:{};
+      }catch(e){ NM=null; return null; } })(); }
+  function nshard(name){ if(NS[name]) return NS[name];
+    return NS[name]=(async()=>{ try{
+        const r=await fetch(bust(base+'tn/'+name+'.json'));
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        return await r.json();
+      }catch(e){ delete NS[name]; return null; } })(); }
+  async function names(fq){
+    const M=await nmanifest(); if(M===null) return null;
+    if(!M.grams) return undefined;
+    const mind=M.mind||2, maxd=M.maxd||8; let best=null, any=false;
+    for(const run of (foldS(fq).match(/[a-z]+/g)||[])){
+      for(let L=mind;L<=Math.min(maxd,run.length);L++) for(let j=0;j+L<=run.length;j++){
+        any=true; const r=resolveGram(M,run.slice(j,j+L));
+        if(r&&(!best||r.bytes<best.bytes)) best=r; } }
+    if(!any) return undefined;
+    // a gram no label contains proves the query matches no label
+    if(!best) return {vols:M.vols,layers:M.layers,labels:[],rows:[]};
+    const shards=await Promise.all(best.names.map(nshard));
+    if(shards.some(s=>s===null)) return null;
+    const lidx={}, labels=[], rows={};
+    for(const s of shards){
+      const loc=s.labels.map(l=>{ if(lidx[l]==null){ lidx[l]=labels.length; labels.push(l); } return lidx[l]; });
+      for(const r of s.rows) rows[r[4]]=[loc[r[0]],r[1],r[2],r[3]]; }
+    const order=Object.keys(rows).map(Number).sort((a,b)=>a-b);
+    return {vols:M.vols,layers:M.layers,labels,rows:order.map(g=>rows[g])};
   }
   function chunk(vol,ci){ const k=vol+'/'+ci; if(CH[k]) return CH[k];
     return CH[k]=(async()=>{ try{
@@ -380,7 +431,7 @@ function create(opts){
     return res;
   }
 
-  return {ensure,ready,error,vols,layers,search,resolveWord,
+  return {ensure,ready,error,vols,layers,search,resolveWord,names,
           norm:fold=>fold?foldS:canonS, isLegacy:()=>!!TERMS};
 }
 return {create,foldS,canonS,rxEsc,wpat};

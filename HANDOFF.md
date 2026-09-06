@@ -14,6 +14,12 @@
   under `site/index/tg/` (2,841 files, `build_gram_shards.py`, run AFTER
   `build_term_postings.py`) instead of the 12.5 MB `k.txt`, which stays only
   as the archive fallback.** `claude/sweep_by_gram_not_by_key_list.md`.
+* **Fourth session: the section names are read as ONE n-gram shard under
+  `site/index/tn/` (890 files, `build_name_shards.py`, run AFTER
+  `build_name_index.py`) instead of the 1.09 MB `names.json`, which stays
+  only as the fallback and the gate's truth.** `perf_search.js` now caps a
+  search's largest file at 520 KB; `check_name_shards.js` is the equivalence
+  gate. `claude/names_by_gram_not_whole.md`.
 
 ## START HERE — earlier (2026-08-25a)
 

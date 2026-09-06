@@ -134,6 +134,43 @@ function corpusCounts(words){
   for(const w in out) out[w].vols=out[w].vols.size; return out;
 }
 
+// SECTION NAMES — ground truth from `index/names.json` itself (2026-09-05,
+// fourth session).  The pages no longer READ that file on a search: they read
+// one n-gram shard under `tn/` (the tg/ idiom applied to the 16,998 labels)
+// and verify by substring, so names.json is now what k.txt is to the sweep —
+// the fallback and the gate's truth.  Each page's ranking rule is re-stated
+// here so the rendered list can be compared row for row.
+let _N=null;
+const N=()=>_N||(_N=JSON.parse(fs.readFileSync(path.join(ROOT,'site','index','names.json'),'utf8')));
+const LAYN={'canon':'Pāḷi','commentary':'Aṭṭhakathā','subcommentary':'Ṭīkā'};
+const LAYF={'canon':'pali-unicode','commentary':'atthakatha-unicode','subcommentary':'tika-unicode'};
+// search.html: exact and opening matches first, then shorter, then localeCompare; 40 rows
+function secTruthSearch(q,fold,layer){
+  const D=N(); const fq=(fold?foldS:canonS)(q).trim(); const NN=D.labels.map(fold?foldS:canonS);
+  const pos={}; for(let i=0;i<NN.length;i++){ const p=NN[i].indexOf(fq); if(p>=0) pos[i]=p; }
+  let rows=D.rows.filter(r=>pos[r[0]]!=null);
+  if(layer) rows=rows.filter(r=>LAYF[D.layers[r[3]]]===layer);
+  const total=rows.length;
+  rows.sort((a,b)=>{ const la=D.labels[a[0]], lb=D.labels[b[0]];
+    const ea=(NN[a[0]]===fq)?0:(pos[a[0]]===0?1:2), eb=(NN[b[0]]===fq)?0:(pos[b[0]]===0?1:2);
+    return ea-eb||la.length-lb.length||la.localeCompare(lb); });
+  return {total, rows:rows.slice(0,40).map(r=>D.labels[r[0]]+'|'+LAYN[D.layers[r[3]]]+' · '+D.vols[r[1]])};
+}
+// reader2.html: exact first, then shorter; 10 rows
+function secTruthReader(q,fold,layer){
+  const D=N(); const fq=(fold?foldS:canonS)(q).trim(); const NN=D.labels.map(fold?foldS:canonS);
+  const H=new Set(); for(let i=0;i<NN.length;i++) if(NN[i].indexOf(fq)>=0) H.add(i);
+  let rows=D.rows.filter(r=>H.has(r[0]));
+  if(layer){ const LK={'pali-unicode':'canon','atthakatha-unicode':'commentary','tika-unicode':'subcommentary'}[layer];
+             rows=rows.filter(r=>D.layers[r[3]]===LK); }
+  const total=rows.length;
+  rows.sort((a,b)=>{ const A=D.labels[a[0]],B=D.labels[b[0]];
+    return (NN[a[0]]===fq?0:1)-(NN[b[0]]===fq?0:1)||A.length-B.length; });
+  return {total, rows:rows.slice(0,10).map(r=>D.labels[r[0]]+'|'+LAYN[D.layers[r[3]]]+' · '+D.vols[r[1]])};
+}
+const same=(a,b)=>a.length===b.length&&a.every((x,i)=>x===b[i]);
+const firstDiff=(a,b)=>{ for(let i=0;i<Math.max(a.length,b.length);i++) if(a[i]!==b[i]) return 'row '+i+': got '+JSON.stringify(a[i])+' want '+JSON.stringify(b[i]); return ''; };
+
 let fails=0;
 const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(detail?'  ['+detail+']':'')); if(!cond)fails++; };
 
@@ -294,6 +331,36 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
     ok(!/tp\/k\.txt/.test(sw),'wiring: the *-suffix sweep does not fetch k.txt');
     ok(/\/tg\/[a-z_]+\.txt/.test(sw),'wiring: the *-suffix sweep fetched an n-gram shard (tg/)'); }
 
+  // 6d'. SECTION NAMES (2026-09-05, fourth session).  A sutta's name is
+  //     usually printed in its heading and nowhere else, so the box searches
+  //     the names too — and the list it paints must be, row for row, what
+  //     names.json ranks under the page's own rule.  The names are no longer
+  //     read whole (1.09 MB, the largest file a search fetched): ONE `tn/`
+  //     shard, the labels containing the query's cheapest gram, verified by
+  //     substring.  Red before the store existed.
+  const srHits=dd=>[...dd.querySelectorAll('.sr-hit')].map(e=>e.querySelector('.sr-name').textContent+'|'+e.querySelector('.sr-loc').textContent);
+  const srHead=dd=>heads(dd).find(h=>/ sections?$/.test(h))||'';
+  if(typeof w.setSFold==='function') w.setSFold(false);
+  for(const q of ['oghataraṇa','nidānavaṇṇanā','vagga','abhabbasutta']){
+    const want=secTruthReader(q,false,'');
+    await w.doSearch(q); dd=w.document.getElementById('sdrop');
+    const got=srHits(dd);
+    ok(want.total>0&&same(got,want.rows)&&srHead(dd).startsWith(want.total+' section'),
+       'reader sections: '+q+' lists what names.json ranks', firstDiff(got,want.rows)||(srHead(dd)+' want '+want.total));
+  }
+  if(typeof w.setSFold==='function'){
+    w.setSFold(true);
+    const want=secTruthReader('mangalasutta',true,''); const want0=secTruthReader('mangalasutta',false,'');
+    await w.doSearch('mangalasutta'); dd=w.document.getElementById('sdrop');
+    const got=srHits(dd);
+    ok(want0.total===0&&want.total>0&&same(got,want.rows),
+       'reader sections fold: mangalasutta finds Maṅgalasutta only with the switch', firstDiff(got,want.rows)||('exact '+want0.total+' folded '+want.total));
+    w.setSFold(false);
+  }
+  { const nf=w.__fetched.join(' ');
+    ok(/\/tn\/[a-z_]+\.json/.test(nf),'wiring: section names come from a tn/ shard');
+    ok(!/index\/names\.json/.test(nf),'wiring: names.json is not read whole', /index\/names\.json/.test(nf)?'fetched names.json':''); }
+
   // 6e. the FALLBACK: with tb/ absent (an unpacked deposit from before the
   //     buckets) the box must still answer, from terms.compact.json
   {
@@ -446,6 +513,37 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
   // (`nibbana` itself IS printed once, so it is not the example)
   await sq('patisambhida');
   ok(/ignore|fold/i.test(st()),'search exact: a no-match offers the fold switch', st());
+
+  // section names on THIS page too — same truth, this page's own rule
+  // (opening matches rank second, localeCompare breaks ties, 40 rows)
+  { const seHits=()=>[...s.document.querySelectorAll('.sechit')].map(e=>e.querySelector('.secname').textContent+'|'+e.querySelector('.secwhere').textContent);
+    const seHead=()=>{ const h=s.document.querySelector('.secgrp h3'); return h?h.textContent:''; };
+    if(typeof s.setFold==='function') s.setFold(false);
+    for(const q of ['oghataraṇa','nidānavaṇṇanā','vagga','abhabbasutta']){
+      const want=secTruthSearch(q,false,'');
+      await sq(q); const got=seHits();
+      ok(want.total>0&&same(got,want.rows)&&seHead().startsWith('Sections — '+want.total),
+         'search sections: '+q+' lists what names.json ranks', firstDiff(got,want.rows)||(seHead()+' want '+want.total));
+    }
+    // `abhabbasutta` occurs in no running text: the sections ARE the answer
+    ok(/Found in the section titles/.test(st()),'search sections: a name that is in no prose is still found', st());
+    if(typeof s.setLayerChip==='function'){
+      s.setLayerChip('atthakatha-unicode');
+      const want=secTruthSearch('vagga',false,'atthakatha-unicode');
+      await sq('vagga'); const got=seHits();
+      ok(want.total>0&&same(got,want.rows),'search sections: the layer chip filters the names too', firstDiff(got,want.rows));
+      s.setLayerChip('');
+    }
+    if(typeof s.setFold==='function'){
+      s.setFold(true);
+      const want=secTruthSearch('mangalasutta',true,'');
+      await sq('mangalasutta'); const got=seHits();
+      ok(want.total>0&&same(got,want.rows),'search sections fold: mangalasutta finds Maṅgalasutta with the switch', firstDiff(got,want.rows));
+      s.setFold(false);
+    }
+    const nf=s.__fetched.join(' ');
+    ok(/\/tn\/[a-z_]+\.json/.test(nf),'search wiring: section names come from a tn/ shard');
+    ok(!/index\/names\.json/.test(nf),'search wiring: names.json is not read whole', /index\/names\.json/.test(nf)?'fetched names.json':''); }
 
   // search.html's wiring, asserted on its OWN fetch log — the counts above
   // would pass on the legacy path too, and a silent fallback is exactly the

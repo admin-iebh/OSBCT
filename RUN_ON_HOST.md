@@ -1,3 +1,40 @@
+# Run on the host — 2026-09-05 (fourth session)
+
+## The command
+
+```bash
+cd ~/Documents/OSBCT
+git push
+```
+
+**Plain `git push`, not `./push.sh`.** The commit is already made from the
+sandbox, which cannot reach github.com — HEAD's subject is "Search: the
+section names are read as one n-gram shard (tn/), not the 1.09 MB
+names.json". `./push.sh` would stop at guard 2, correctly, because
+`COMMIT_MSG.bak` is HEAD's message.
+
+The tree is stamped **`a1cac54f3ff2`, dated 2026-09-05** (sandbox clock
+checked against the environment's date: both 2026-09-05). Do not re-stamp.
+
+**This push adds 891 files under `site/index/tn/`** (`git ls-files site/`
+6,744 → 7,635, +23 MB raw). The third session's 2,842-file push deployed in
+1m45s; if this one times out at ~11m40s, start a FRESH "Run workflow", never
+"Re-run failed jobs". Then, cache-busted:
+
+```
+https://buddha-dhamma.net/build.json?cb=<anything-new>
+   ->  {"build": "a1cac54f3ff2", "date": "2026-09-05"}
+https://buddha-dhamma.net/search.html?cb=<anything-new>
+   ->  search `abhabbasutta`: "Found in the section titles" — 3 sections
+       (Network tab: index/tn/index.json and ONE tn/*.json, no index/names.json)
+   ->  search `vagga`: Sections — 2590, showing 40, above the text rows
+```
+
+Then `python3 pipeline/verify_live.py` from the host — it now fetches
+`index/tn/index.json` as well (17 checks).
+
+---
+
 # Run on the host — 2026-09-05 (third session)
 
 ## The command
