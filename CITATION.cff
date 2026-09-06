@@ -179,6 +179,16 @@ identifiers:
   # but because nothing added the line.  It exists: 10.5281/zenodo.21760727.
   # Checked against the Zenodo record's own Versions panel, 2026-08-06, which is
   # also where the concept DOI above was confirmed as `Cite all versions`.
+  # Minted 2026-09-06 and READ FROM THE RECORD (zenodo.org/records/22527597),
+  # not guessed: version 2.10.0, publication date 2026-09-06, the "New in
+  # 2.10.0" paragraph present at minting — the phrase rule (consecutive
+  # words), the tg/ and tn/ shards, no text changed; deposit
+  # bthar-mx/OSBCT-v2.10.0.zip, 451 MB (the 890 tn/ files are the growth).
+  # SEVENTH CONSECUTIVE DEPOSIT to arrive describing itself correctly.  No
+  # in-place correction needed.
+  - type: doi
+    value: "10.5281/zenodo.22527597"
+    description: "Zenodo archive of v2.10.0 (6 September 2026)"
   # Minted 2026-09-05 (Zenodo stamps it 2026-09-06 — its clock is UTC and the
   # release was published late in the evening in Mexico; that is not an error
   # to correct) and READ FROM THE RECORD (zenodo.org/records/22421817), not
