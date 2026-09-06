@@ -20,22 +20,23 @@
 > diacritics`; help text on both pages; i18n `s_consec` en/es. Gate and the
 > Python measurement agree. perf unchanged; all gates green.
 >
-> **Committed locally, stamped `18920c3b3e15`, dated 2026-09-06** (sandbox
-> clock checked). **NOT pushed.** `RUN_ON_HOST.md` has the command. Nothing
-> under `site/index/` changed — a code-only deploy.
+> **Then, the same day:** the ↑ button on search.html (`1e40d0083`);
+> **v2.10.0 released** — three-file bump `9be290313` (stamp `bf930a3f6108`),
+> pushed and verified live by the reader (17 checks), tag cut LAST, GitHub
+> release published from the pane, Zenodo DOI **10.5281/zenodo.22527597**
+> read from the record (version 2.10.0, 451 MB deposit, "New in 2.10.0"
+> present) and recorded in CITATION.cff + README (`7f34045c7`, NOT pushed —
+> `git push` owed, docs only).
 >
 > ## Owed / open
 >
-> 1. **Push and verify:** `build.json?cb=…` → `18920c3b3e15`, then
->    `python3 pipeline/verify_live.py` from the host; live `tassa bhagavato`
->    on search.html must say 437 occurrence(s) in 318 paragraph(s) ·
->    consecutive words.
-> 2. The position store (`tq/`) — now buildable on the token rule if a
->    measured need appears; not proposed.
-> 3. `*vaggo` 23.4 MB of prefix-named postings; `27KhuA08` Contents; release
->    bump (tg/ + tn/ + phrase rule — the rule change is reader-visible and
->    belongs in the release note); `lookup_eval/index.json` 653 KB on R2;
->    the seven `_`-terminal tn/ shards — all as in the fourth session's box.
+> 1. **`git push`** of `7f34045c7` (CITATION.cff + README with the DOI).
+> 2. The position store (`tq/`) — buildable on the token rule if a measured
+>    need appears; not proposed.
+> 3. `*vaggo` 23.4 MB of prefix-named postings; `27KhuA08` Contents;
+>    `lookup_eval/index.json` 653 KB on R2 (now the largest file any page
+>    reads; a store change); the seven `_`-terminal tn/ shards — all as in
+>    the fourth session's box.
 
 # Closing 2026-09-05 (fourth session) — the section names are one n-gram shard; names.json is the fallback
 
