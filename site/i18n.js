@@ -95,8 +95,8 @@ window.I18N = {
            es:'<b>Consejo Editorial y Staff.</b> Este material del Tipiṭaka ha sido patrocinado por el Venerable Aggasāmi, el Sr. Tran Minh Loi, el Sr. Tu Son, el Centro de Meditación Tathāgata, el Centro de Meditación Paññārāma y devotos de Myanmar y Vietnam. Este material está publicado por el Ministerio de Asuntos Religiosos de Myanmar para distribución gratuita como un Regalo del Dhamma. Se otorga permiso para duplicar este material para distribución gratuita, no comercial. Comentarios y sugerencias son bienvenidos; por favor envíelos a <a href="mailto:buddhasasanasociety@gmail.com">buddhasasanasociety@gmail.com</a>. Versión 01 — 10 de noviembre de 2008. Este sitio es un proyecto del Instituto de Estudios Buddhistas Hispano (IEBH) y de Buddhismo Theravāda México-Hispano AR (BTHAR). Para más información sobre este sitio y nuestros proyectos contactar <a href="mailto:admin@iebh.org">admin@iebh.org</a> o <a href="mailto:admin@bthar.org">admin@bthar.org</a>.'},
 
   // search page
-  search_sub:{en:'Full-text search across 118 volumes — Tipiṭaka, Aṭṭhakathā, Ṭīkā · 83,751 paragraphs',
-              es:'Búsqueda de texto completo en 118 volúmenes — Tipiṭaka, Aṭṭhakathā, Ṭīkā · 83.751 párrafos'},
+  search_sub:{en:'Full-text search across 118 volumes — Tipiṭaka, Aṭṭhakathā, Ṭīkā · 89,512 paragraphs',
+              es:'Búsqueda de texto completo en 118 volúmenes — Tipiṭaka, Aṭṭhakathā, Ṭīkā · 89.512 párrafos'},
   search_ph:{en:'Search Pāḷi — words, a phrase, * wildcard',
              es:'Buscar en Pāḷi — palabras, una frase, comodín *'},
   // EXACT DIACRITICS BY DEFAULT (2026-09-05, reader: tassa and tassā are

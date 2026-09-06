@@ -266,15 +266,33 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
   // 117 of them (194 MB); rows now come from text chunks
   ok(!/\.idx\.json/.test(fetched)&&/\/tx\/[^/]+\/\d+\.json/.test(fetched),
      'wiring: no per-volume idx.json; rows come from tx/ chunks');
-  // a SUBSTRING sweep (not exact, no wildcard) must go through k.txt and
-  // still count exactly — truth comes from the source map, so this is the
-  // first time the assertion is not circular
+  // a SUBSTRING sweep (not exact, no wildcard) must still count exactly —
+  // truth comes from the source map, so this is the first time the
+  // assertion is not circular.  2026-09-05 (later): the sweep surface is no
+  // longer `k.txt` (12.5 MB, scanned whole for every substring and
+  // `*`-suffix query) but ONE n-gram shard under `tg/` — the keys containing
+  // the query's rarest gram, verified by substring on the client.  The
+  // assertion that used to say "the sweep fetched k.txt" now says the
+  // opposite; it went red on `20a4d997e795` before the shards existed.
   const tS=truth(['amakasālāna']);
+  const nBefore=w.__fetched.length;
   await w.doSearch('amakasālāna');
   dd=w.document.getElementById('sdrop');
   ok(tS.phrTot>0 && heads(dd).some(h=>h.startsWith(tS.phrTot.toLocaleString()+' occurrence')),
-     'wiring: substring sweep via k.txt counts exactly', 'want '+tS.phrTot+' | '+heads(dd).join(' / '));
-  ok(/k\.txt/.test(w.__fetched.join(' ')),'wiring: the sweep fetched k.txt');
+     'wiring: substring sweep counts exactly', 'want '+tS.phrTot+' | '+heads(dd).join(' / '));
+  { const sw=w.__fetched.slice(nBefore).join(' ');
+    ok(!/tp\/k\.txt/.test(sw),'wiring: the substring sweep does not fetch k.txt', sw.match(/tp\/k\.txt/)?'fetched k.txt':'');
+    ok(/\/tg\/[a-z_]+\.txt/.test(sw),'wiring: the substring sweep fetched an n-gram shard (tg/)'); }
+  // and the `*`-suffix shape, which took the same 12.5 MB path
+  const tV=truth(['*vaggo']);
+  const nB2=w.__fetched.length;
+  await w.doSearch('*vaggo');
+  dd=w.document.getElementById('sdrop');
+  ok(tV.phrTot>0 && heads(dd).some(h=>h.startsWith(tV.phrTot.toLocaleString()+' occurrence')),
+     'wiring: *-suffix sweep counts exactly', 'want '+tV.phrTot+' | '+heads(dd).join(' / '));
+  { const sw=w.__fetched.slice(nB2).join(' ');
+    ok(!/tp\/k\.txt/.test(sw),'wiring: the *-suffix sweep does not fetch k.txt');
+    ok(/\/tg\/[a-z_]+\.txt/.test(sw),'wiring: the *-suffix sweep fetched an n-gram shard (tg/)'); }
 
   // 6e. the FALLBACK: with tb/ absent (an unpacked deposit from before the
   //     buckets) the box must still answer, from terms.compact.json
@@ -360,6 +378,18 @@ const ok=(cond,label,detail)=>{ console.log((cond?'  ok    ':'  FAIL  ')+label+(
   await sq('yamakasāl*');
   ok(t4.phrTot>0&&st().startsWith(t4.phrTot.toLocaleString()+' occurrence'),
      'search: wildcard word', 'want '+t4.phrTot+' | '+st());
+
+  // the two sweep shapes on THIS page too — same counts, no k.txt
+  { const n0=s.__fetched.length; await sq('*vaggo');
+    ok(tV.phrTot>0&&st().startsWith(tV.phrTot.toLocaleString()+' occurrence'),
+       'search: *-suffix sweep counts exactly', 'want '+tV.phrTot+' | '+st());
+    const sw=s.__fetched.slice(n0).join(' ');
+    ok(!/tp\/k\.txt/.test(sw)&&/\/tg\/[a-z_]+\.txt/.test(sw),'search wiring: the *-suffix sweep reads a tg/ shard, not k.txt');
+    const n1=s.__fetched.length; await sq('amakasālāna');
+    ok(tS.phrTot>0&&st().startsWith(tS.phrTot.toLocaleString()+' occurrence'),
+       'search: substring sweep counts exactly', 'want '+tS.phrTot+' | '+st());
+    const sw2=s.__fetched.slice(n1).join(' ');
+    ok(!/tp\/k\.txt/.test(sw2)&&/\/tg\/[a-z_]+\.txt/.test(sw2),'search wiring: the substring sweep reads a tg/ shard, not k.txt'); }
 
   await sq('yamakasālānaṁ');
   // `Pāḷi`, not `Tipiṭaka` — the two UIs must name the layer alike

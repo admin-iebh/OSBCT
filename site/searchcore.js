@@ -25,7 +25,12 @@
 //                             every key whose FOLDED form starts with <name>;
 //                             one fetch counts a word across the whole canon
 //      index/tp/k.txt         every key, sorted, one per line — the sweep
-//                             surface for substrings and *-suffixes
+//                             surface for substrings and *-suffixes UNTIL
+//                             later the same day; now the fallback only
+//      index/tg/<gram>.txt    (later 2026-09-05) the keys containing one
+//                             folded n-gram — a substring or `*vaggo` sweep
+//                             fetches the query's cheapest gram (≤ 500 KB,
+//                             was 12.5 MB) and verifies each key itself
 //      index/tx/<VOL>/<i>.json the paragraphs of one volume, chunked — fetched
 //                             only for the rows that are DRAWN, or for the
 //                             candidates of a phrase that must be verified
@@ -114,6 +119,61 @@ function create(opts){
   // the folded key string, same length and offsets as the exact one
   async function keysFolded(){ const t=await keys(); if(t==null) return null;
     if(KFOLD==null) KFOLD=foldS(t); return KFOLD; }
+  // ---- the n-gram sweep (2026-09-05, later session; lever 3 of the brief) --
+  // Substrings and non-terminal wildcards used to be answered by scanning
+  // k.txt whole — 12.5 MB for `amakasālāna` or `*vaggo`.  Now `tg/<gram>.txt`
+  // holds the keys whose folded form CONTAINS <gram>, deepened by the next
+  // character until it fits (`vag` may be `vaga`…`vagg`…`vag_`, `_` = the
+  // key ends there), and a sweep fetches the CHEAPEST gram of the query's
+  // literal fragments and verifies every key it holds by substring or
+  // pattern in the mode's view.  The gram narrows; the verification decides;
+  // the result is sorted — so keys, order, the 500-cap and `matched` are
+  // what the k.txt scan gave.  Fragments with no gram at all fall back to it.
+  let GM=null; const GS={};
+  function grams(){ if(GM) return GM;
+    return GM=(async()=>{ try{
+        const r=await fetch(bust(base+'tg/index.json'));
+        if(r.status===404) return {};
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        const j=await r.json(); return (j&&j.grams)?j:{};
+      }catch(e){ GM=null; return null; } })(); }
+  function gramShard(name){ if(GS[name]) return GS[name];
+    return GS[name]=(async()=>{ try{
+        const r=await fetch(bust(base+'tg/'+name+'.txt'));
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        return (await r.text()).split('\n').filter(Boolean);
+      }catch(e){ delete GS[name]; return null; } })(); }
+  // {names, bytes} for a folded gram: the shard itself, else its children,
+  // else the shallowest shard that prefixes it
+  function resolveGram(M,g){ const G=M.grams;
+    if(G[g]!=null) return {names:[g],bytes:G[g]};
+    const kids=[]; let b=0; for(const n in G){ if(n.startsWith(g)){ kids.push(n); b+=G[n]; } }
+    if(kids.length) return {names:kids,bytes:b};
+    for(let d=M.mind||2;d<g.length;d++){ const p=g.slice(0,d); if(G[p]!=null) return {names:[p],bytes:G[p]}; }
+    return null; }
+  // `frags`: the literal fragments of the query in the mode's view;
+  // `terminal`: the last fragment ends the key (no trailing `*`).
+  // Returns the sorted matching keys and the total, or null on failure, or
+  // undefined when no gram applies (the caller then sweeps k.txt).
+  async function sweep(frags,terminal,test){
+    const M=await grams(); if(M===null) return null;
+    if(!M.grams) return undefined;
+    const mind=M.mind||2, maxd=M.maxd||8; let best=null;
+    frags.forEach((fr,fi)=>{ const f=foldS(fr);
+      for(let L=mind;L<=Math.min(maxd,f.length);L++) for(let j=0;j+L<=f.length;j++){
+        const g=f.slice(j,j+L); const cands=[g];
+        if(terminal&&fi===frags.length-1&&j+L===f.length&&L<maxd) cands.push(g+'_');
+        for(const c of cands){ const r=resolveGram(M,c); if(r&&(!best||r.bytes<best.bytes)) best=r; } } });
+    if(!best) return undefined;
+    const ns=best.names; let i=0; const pool=[]; const seen=new Set(); let failed=false;
+    for(let w=0;w<Math.min(6,ns.length);w++)
+      pool.push((async()=>{ while(i<ns.length){ const t=await gramShard(ns[i++]);
+        if(t===null){ failed=true; continue; } for(const k of t) if(test(k)) seen.add(k); } })());
+    await Promise.all(pool);
+    if(failed) return null;
+    const ks=[...seen].sort();
+    return {keys:ks.slice(0,CAPKEYS),matched:ks.length};
+  }
   function chunk(vol,ci){ const k=vol+'/'+ci; if(CH[k]) return CH[k];
     return CH[k]=(async()=>{ try{
         const r=await fetch(bust(base+'tx/'+vol+'/'+ci+'.json'));
@@ -180,6 +240,10 @@ function create(opts){
         const kk=ks.slice(0,CAPKEYS); const post={}; kk.forEach(k=>{post[k]=found[k];});
         return {keys:kk,post,matched:ks.length};
       }
+      // *vaggo, a*vaggo: the gram sweep, verified by the pattern
+      { const sw=await sweep(w.split('*').filter(Boolean),!w.endsWith('*'),k=>rx.test(view(k)));
+        if(sw===null) return null;
+        if(sw){ const r=await postingsFor(sw.keys); if(r) r.matched=sw.matched; return r; } }
       const txt=fold?await keysFolded():await keys(); if(txt==null) return null;
       const exact=await keys();
       const rxg=new RegExp(kpat(w),'gm'); const ks=[]; let m, matched=0;
@@ -195,6 +259,9 @@ function create(opts){
     if(ks.length){ const post={}; ks.forEach(k=>{post[k]=t[k];}); return {keys:ks,post}; }
     if(w.length<3) return {keys:[],post:{}};
     // the substring sweep: a bare word also matches inside longer words
+    { const sw=await sweep([w],false,k=>view(k).indexOf(w)>=0);
+      if(sw===null) return null;
+      if(sw){ const r=await postingsFor(sw.keys); if(r) r.matched=sw.matched; return r; } }
     const txt=fold?await keysFolded():await keys(); if(txt==null) return null;
     const exact=await keys();
     const out=[]; let i=txt.indexOf(w), matched=0;

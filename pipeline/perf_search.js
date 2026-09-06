@@ -20,6 +20,18 @@
 //          cost — its files are small and its chain was six deep.
 //   ms     wall time in jsdom (parse + compute + LAT×waves).  Reported, not
 //          gated: it is a laptop number, not the phone's.
+//   max    the LARGEST SINGLE FILE the query fetched, raw bytes.  Gated at an
+//          absolute MAXFILE, not against the baseline: a phone must hold and
+//          scan each file whole.  The postings shards are ≤ 515 KB, the text
+//          chunks ≤ 301 KB, and `index/names.json` — the section names,
+//          scanned on every search, fetched once per page — is 1.09 MB, the
+//          largest file a search legitimately reads; the ceiling sits just
+//          above it at 1.25 MB.  `k.txt`, the substring / `*`-suffix sweep
+//          surface, was 12.5 MB — lever 3 of the brief.  Added 2026-09-05
+//          (later session); red on the two sweep queries before `tg/`
+//          existed.  (A first cut at 1 MB went red on EVERY cold query, which
+//          is how names.json's size was noticed; it is an open item, not a
+//          reason to loosen the gate further.)
 //
 // THE QUERY SET is the one §7 of the brief asks for: cold first search and
 // warm; a median word; a `pa`/`sa` word; the common word that pulls every
@@ -47,6 +59,7 @@ const RECORD=process.argv.includes('--record');
 const li=process.argv.indexOf('--lat'); const LAT=li>=0?+process.argv[li+1]:40;
 const STORE=fs.existsSync(path.join(ROOT,'stores/lookup/index.json'))?'stores':'site';
 const isStore=p=>/^lookup(_eval)?\//.test(p);
+const MAXFILE=1_250_000;   // raw bytes: no single fetch may exceed this (names.json is 1.09 MB)
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 
 // gzip -6 size of a file, cached by path+size+mtime
@@ -67,13 +80,13 @@ function inlineScripts(html,resolve){
 // the instrumented window: every fetch is counted, sized, and delayed LAT ms
 function boot(file,base,url){
   const resolve=mkResolve(base);
-  const log={req:0,raw:0,gz:0,paths:[]};
+  const log={req:0,raw:0,gz:0,paths:[],sizes:[]};
   const dom=new JSDOM(inlineScripts(fs.readFileSync(file,'utf8'),resolve),{runScripts:'dangerously',pretendToBeVisual:true,url:url||'http://x/',beforeParse(w){
     w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});
     w.scrollTo=()=>{}; w.Element.prototype.scrollIntoView=()=>{};
     w.__log=log;
     w.fetch=async u=>{ const f=resolve(u); let b=null; try{b=fs.readFileSync(f);}catch(e){}
-      log.req++; log.paths.push(String(u).split('?')[0]);
+      log.req++; log.paths.push(String(u).split('?')[0]); log.sizes.push(b?b.length:0);
       if(b){ log.raw+=b.length; log.gz+=gzSize(f,b); }
       if(LAT) await wait(LAT);
       return {ok:b!=null,status:b!=null?200:404,
@@ -84,7 +97,8 @@ function boot(file,base,url){
   return dom.window;
 }
 const snap=l=>({req:l.req,raw:l.raw,gz:l.gz});
-const diff=(a,b)=>({req:b.req-a.req,raw:b.raw-a.raw,gz:b.gz-a.gz});
+// the largest single file among the fetches made since snapshot `a`
+const diff=(a,b,l)=>({req:b.req-a.req,raw:b.raw-a.raw,gz:b.gz-a.gz,max:Math.max(0,...l.sizes.slice(a.req))});
 const mb=n=>(n/1e6).toFixed(2);
 
 async function readyReader(w){ for(let k=0;k<100;k++){ await wait(100);
@@ -110,10 +124,10 @@ async function measureSearch(){
     await wait(200);
     const run=async v=>{ s.document.getElementById('q').value=v; const t0=Date.now(); await s.run(); return Date.now()-t0; };
     if(o.warmAfter) await run(o.warmAfter);
-    const a=snap(s.__log); const ms=await run(q); const d=diff(a,snap(s.__log));
+    const a=snap(s.__log); const ms=await run(q); const d=diff(a,snap(s.__log),s.__log);
     const st=s.document.getElementById('status').textContent;
-    const ktxt=s.__log.paths.slice(-d.req).some(p=>/k\.txt$/.test(p));
-    out['search: '+label]={q,req:d.req,raw:d.raw,gz:d.gz,ms,waves:LAT?Math.round(ms/LAT):0,ktxt,status:st.slice(0,90)};
+    const ktxt=s.__log.paths.slice(-d.req).some(p=>/tp\/k\.txt$/.test(p));
+    out['search: '+label]={q,req:d.req,raw:d.raw,gz:d.gz,max:d.max,ms,waves:LAT?Math.round(ms/LAT):0,ktxt,status:st.slice(0,90)};
     s.close();
   }
   // reader2's box: the cold and the common word, so drift between the two
@@ -121,9 +135,9 @@ async function measureSearch(){
   for(const [label,q] of [['cold median word','yamakasālānaṁ'],['common word (117 vols)','tassā']]){
     const w=boot(path.join(SITE,'reader/reader2.html'),path.join(SITE,'reader'));
     if(!await readyReader(w)){ out['reader: '+label]={error:'reader did not boot'}; continue; }
-    const a=snap(w.__log); const t0=Date.now(); await w.doSearch(q); const ms=Date.now()-t0; const d=diff(a,snap(w.__log));
+    const a=snap(w.__log); const t0=Date.now(); await w.doSearch(q); const ms=Date.now()-t0; const d=diff(a,snap(w.__log),w.__log);
     const head=[...w.document.querySelectorAll('.sr-head')].map(h=>h.textContent)[0]||'';
-    out['reader: '+label]={q,req:d.req,raw:d.raw,gz:d.gz,ms,waves:LAT?Math.round(ms/LAT):0,status:head.slice(0,90)};
+    out['reader: '+label]={q,req:d.req,raw:d.raw,gz:d.gz,max:d.max,ms,waves:LAT?Math.round(ms/LAT):0,status:head.slice(0,90)};
     w.close();
   }
   return out;
@@ -140,9 +154,9 @@ async function measureLookup(){
       const t=setInterval(()=>{ n++; if((el&&el.dataset.state&&el.dataset.state!=='loading')||n>400){ clearInterval(t); res(); } },10); });
     if(label.startsWith('warm')){ await w.WL.lookup('tathāgato',para); await done(); }
     const a=snap(w.__log); const t0=Date.now(); await w.WL.lookup(word,para); await done(); const ms=Date.now()-t0;
-    const d=diff(a,snap(w.__log));
+    const d=diff(a,snap(w.__log),w.__log);
     const hdr=(w.document.getElementById('wlc')||{}).textContent||'';
-    out['lookup: '+label]={q:word,req:d.req,raw:d.raw,gz:d.gz,ms,waves:LAT?Math.round(ms/LAT):0,status:hdr.slice(0,90)};
+    out['lookup: '+label]={q:word,req:d.req,raw:d.raw,gz:d.gz,max:d.max,ms,waves:LAT?Math.round(ms/LAT):0,status:hdr.slice(0,90)};
     w.close();
   }
   return out;
@@ -152,7 +166,7 @@ async function measureLookup(){
   console.log('perf: LAT='+LAT+'ms per fetch; store='+STORE);
   const res=Object.assign({},await measureSearch(),await measureLookup());
   const base=(!RECORD&&fs.existsSync(BASE))?JSON.parse(fs.readFileSync(BASE,'utf8')).results:null;
-  console.log('\n  '+'query'.padEnd(34)+'req'.padStart(5)+'raw MB'.padStart(9)+'gz MB'.padStart(8)+'waves'.padStart(7)+'ms'.padStart(7)+(base?'   vs baseline':'')+'  status');
+  console.log('\n  '+'query'.padEnd(34)+'req'.padStart(5)+'raw MB'.padStart(9)+'gz MB'.padStart(8)+'max MB'.padStart(8)+'waves'.padStart(7)+'ms'.padStart(7)+(base?'   vs baseline':'')+'  status');
   let fails=0;
   for(const k in res){ const r=res[k];
     if(r.error){ console.log('  '+k.padEnd(34)+'  ERROR '+r.error); fails++; continue; }
@@ -166,7 +180,9 @@ async function measureLookup(){
       cmp=('  gz '+(r.gz>=b.gz?'+':'')+mb(r.gz-b.gz)+' req '+(r.req>=b.req?'+':'')+(r.req-b.req)).padEnd(24);
       if(!(gzOk&&reqOk)){ cmp+=' FAIL'; fails++; }
     }
-    console.log('  '+k.padEnd(34)+String(r.req).padStart(5)+mb(r.raw).padStart(9)+mb(r.gz).padStart(8)+String(r.waves).padStart(7)+String(r.ms).padStart(7)+cmp+'  '+(r.ktxt?'[k.txt] ':'')+r.status);
+    // absolute, baseline or not: no single file over MAXFILE
+    if(r.max>MAXFILE){ cmp+=' FAIL max>'+mb(MAXFILE)+'MB'; fails++; }
+    console.log('  '+k.padEnd(34)+String(r.req).padStart(5)+mb(r.raw).padStart(9)+mb(r.gz).padStart(8)+mb(r.max||0).padStart(8)+String(r.waves).padStart(7)+String(r.ms).padStart(7)+cmp+'  '+(r.ktxt?'[k.txt] ':'')+r.status);
   }
   if(RECORD){ fs.writeFileSync(BASE,JSON.stringify({recorded:new Date().toISOString().slice(0,10),lat:LAT,results:res},null,1)); console.log('\nbaseline written: '+path.relative(ROOT,BASE)); }
   else if(!base) console.log('\nno baseline yet — run with --record');

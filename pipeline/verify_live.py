@@ -68,6 +68,11 @@ TARGETS = [
     # (or the reverse) is the split-brain this gate exists to see.
     ('/searchcore.js',         'site/searchcore.js',         'bytes'),
     ('/index/tp/index.json',   'site/index/tp/index.json',   'bytes'),
+    # later 2026-09-05: the n-gram sweep manifest.  If it is missing live,
+    # searchcore.js silently sweeps k.txt again (12.5 MB) — by design an
+    # archive fallback, but on the live site it would be a regression this
+    # gate must see.
+    ('/index/tg/index.json',   'site/index/tg/index.json',   'bytes'),
     # and the self-hosted type: site/fonts/ is NEW, and .gitignore decides
     # what Actions publishes.  A 404 here means every page fell back to a
     # generic serif and the Pāḷi diacritics are rendering as tofu.

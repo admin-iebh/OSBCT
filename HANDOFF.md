@@ -1,6 +1,6 @@
 # OSBCT — Session Handoff / Status
 
-## START HERE (updated 2026-09-05b)
+## START HERE (updated 2026-09-05c)
 
 * **SEARCH REBUILT 2026-09-05: exact diacritics by default, postings shards instead
   of per-volume downloads, one implementation in `site/searchcore.js`.** Read
@@ -8,7 +8,12 @@
   `NEXT_SESSION.md` before touching search.html, reader2.html, panel.js or
   `site/index/`. `site/index/tb/` and `build_term_buckets.py` are gone;
   `build_term_postings.py` replaced them. `pipeline/perf_search.js` is the
-  performance gate. The project-instructions paste (§7) is still owed.
+  performance gate. The project-instructions paste (§7) is DONE (confirmed from
+  a fresh session's system prompt, 2026-09-05 third session).
+* **Later the same day: the substring / `*`-suffix sweep reads ONE n-gram shard
+  under `site/index/tg/` (2,841 files, `build_gram_shards.py`, run AFTER
+  `build_term_postings.py`) instead of the 12.5 MB `k.txt`, which stays only
+  as the archive fallback.** `claude/sweep_by_gram_not_by_key_list.md`.
 
 ## START HERE — earlier (2026-08-25a)
 
